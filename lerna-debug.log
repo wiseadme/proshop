@@ -1,0 +1,6 @@
+45 error Error: Command failed with exit code 128: git add -- packages/server/package.json packages/server/package-lock.json packages/client/package.json packages/client/package-lock.json packages/server/CHANGELOG.md packages/client/CHANGELOG.md
+45 error fatal: Спецификатор пути «packages/client/package.json» в подмодуле «packages/client»
+45 error     at makeError (/home/wisead/Рабочий стол/projects/ecommerce-platform/node_modules/execa/lib/error.js:60:11)
+45 error     at handlePromise (/home/wisead/Рабочий стол/projects/ecommerce-platform/node_modules/execa/index.js:118:26)
+45 error     at processTicksAndRejections (node:internal/process/task_queues:96:5)
+45 error     at async Promise.all (index 0)
