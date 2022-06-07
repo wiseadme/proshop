@@ -1,0 +1,11 @@
+{
+  "fixturesFolder": "cypress/fixtures",
+  "pluginsFile": "cypress/plugins/index.js",
+  "supportFile": "cypress/support/index.js",
+  "componentFolder": ".",
+  "testFiles": "**/*.spec.ts",
+  "video": false,
+  "screenshotOnRunFailure": false,
+  "screenshotsFolder": "cypress/screenshots",
+  "baseUrl": "http://localhost:3000"
+}

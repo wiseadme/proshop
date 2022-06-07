@@ -5,7 +5,7 @@
   "author": "Anar Allakhverdiev <wiseadme@gmail.com>",
   "homepage": "https://github.com/wiseadme/ecommerce-platform#readme",
   "license": "ISC",
-  "main": "src/client.js",
+  "main": "src/app/main.ts",
   "files": [
     "src"
   ],
@@ -17,9 +17,63 @@
     "url": "git+ssh://git@github.com/wiseadme/ecommerce-platform.git"
   },
   "scripts": {
-    "test": "echo \"Error: run tests from root\" && exit 1"
+    "dev": "cross-env NODE_ENV=development webpack serve --hot --config build/webpack.dev.config.js",
+    "build": "webpack --config build/webpack.prod.config.js",
+    "start": "serve dist",
+    "prettier": "prettier --write --config .prettierrc './src'",
+    "lint": "eslint '**/*.vue' --ignore-pattern node_modules/",
+    "lint:fix": "eslint '**/*.vue' --fix --ignore-pattern node_modules/",
+    "serve": "serve dist",
+    "test:e2e": "cypress run-ct"
   },
   "bugs": {
     "url": "https://github.com/wiseadme/ecommerce-platform/issues"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.17.5",
+    "@babel/preset-env": "^7.16.11",
+    "@cypress/vue": "^3.1.0",
+    "@cypress/webpack-dev-server": "^1.8.1",
+    "@testing-library/cypress": "^8.0.2",
+    "@typescript-eslint/eslint-plugin": "^5.3.1",
+    "@typescript-eslint/parser": "^5.3.1",
+    "@vue/compiler-sfc": "^3.2.1",
+    "babel-loader": "^8.2.3",
+    "cross-env": "^7.0.3",
+    "css-loader": "^6.6.0",
+    "cypress": "^9.5.0",
+    "editorconfig-checker": "^4.0.2",
+    "eslint": "^7.32.0",
+    "eslint-loader": "^4.0.2",
+    "eslint-plugin-vue": "^8.4.1",
+    "html-webpack-plugin": "^5.5.0",
+    "mini-css-extract-plugin": "^2.5.3",
+    "node-sass": "^7.0.1",
+    "postcss-loader": "^6.2.1",
+    "postcss-preset-env": "^7.4.1",
+    "prettier": "^2.5.1",
+    "regenerator-runtime": "^0.13.9",
+    "sass-loader": "^12.6.0",
+    "sass-resources-loader": "^2.2.4",
+    "serve": "^13.0.2",
+    "style-loader": "^3.3.1",
+    "terser-webpack-plugin": "^5.3.1",
+    "ts-loader": "^9.2.6",
+    "typescript": "^4.5.5",
+    "vue-loader": "^17.0.0",
+    "webpack": "^5.72.0",
+    "webpack-bundle-analyzer": "^4.5.0",
+    "webpack-cli": "^4.9.2",
+    "webpack-dev-server": "^4.9.0",
+    "webpack-merge": "^5.8.0"
+  },
+  "dependencies": {
+    "@vueup/vue-quill": "^1.0.0-beta.8",
+    "axios": "^0.27.2",
+    "pinia": "^2.0.14",
+    "vue": "^3.2.1",
+    "vue-router": "^4.0.15",
+    "vuedraggable": "^4.1.0",
+    "vueland": "github:vueland/vueland-next"
   }
 }
