@@ -6,6 +6,12 @@
   "homepage": "https://github.com/wiseadme/ecommerce-platform#readme",
   "license": "ISC",
   "main": "src/app/cluster.ts",
+  "type": "commonjs",
+  "scripts": {
+    "build": "tsc --project ./",
+    "dev": "nodemon src/app/cluster.ts",
+    "start": "node dist/src/app/cluster.js"
+  },
   "files": [
     "src"
   ],
@@ -15,9 +21,6 @@
   "repository": {
     "type": "git",
     "url": "git+ssh://git@github.com/wiseadme/ecommerce-platform.git"
-  },
-  "scripts": {
-    "test": "echo \"Error: run tests from root\" && exit 1"
   },
   "bugs": {
     "url": "https://github.com/wiseadme/ecommerce-platform/issues"
