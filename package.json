@@ -1,13 +1,17 @@
 {
   "name": "ecommerce-platform",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "ecommerce platform project",
   "scripts": {
-    "dev": "lerna run dev"
+    "dev": "lerna run dev",
+    "bootstrap": "lerna bootstrap",
+    "setup": "npm install && npm run bootstrap"
   },
+  "workspaces": [
+    "packages/*"
+  ],
   "keywords": [],
-  "author": "",
+  "author": "Anar <wiseadme@gmail.com>",
   "license": "ISC",
   "devDependencies": {
     "lerna": "^5.0.0"
