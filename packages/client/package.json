@@ -1,0 +1,25 @@
+{
+  "name": "@ecommerce-platform/client",
+  "version": "1.0.0",
+  "description": "> TODO: description",
+  "author": "Anar Allakhverdiev <wiseadme@gmail.com>",
+  "homepage": "https://github.com/wiseadme/ecommerce-platform#readme",
+  "license": "ISC",
+  "main": "src/client.js",
+  "files": [
+    "src"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/wiseadme/ecommerce-platform.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  },
+  "bugs": {
+    "url": "https://github.com/wiseadme/ecommerce-platform/issues"
+  }
+}
