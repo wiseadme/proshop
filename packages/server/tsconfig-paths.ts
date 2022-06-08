@@ -6,7 +6,7 @@ if (process.env.NODE_ENV === 'production') {
     const [ path ] = tsConfig.compilerOptions.paths[key]
     acc[key] = [ `dist/${ path }` ]
     return acc
-  })
+  }, {})
 }
 
 tsconfigPaths.register({
