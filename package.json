@@ -12,7 +12,7 @@
     "packages/*"
   ],
   "keywords": [],
-  "author": "Anar <wiseadme@gmail.com>",
+  "author": "Anar Allakhverdiev <wiseadme@gmail.com>",
   "license": "ISC",
   "devDependencies": {
     "lerna": "^5.0.0"
