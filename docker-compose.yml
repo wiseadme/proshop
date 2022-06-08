@@ -1,8 +1,9 @@
-version: '3'
+version: '3.9'
 services:
   server:
     build: ./packages/server
     command: npm run start
+    restart: unless-stopped
     ports:
       - "5000:5000"
   client:
