@@ -1,9 +1,6 @@
-FROM node:16.15.1
-WORKDIR app/
-COPY package*.json /app/
-RUN npm install
-RUN rm node_modules/vueland/postcss.config.js
-RUN rm node_modules/vueland/jest.config.js
-COPY . /app
-RUN npm run build
-
+FROM nginx:stable-alpine
+COPY ./nginx/entrypoint.sh /usr/share/nginx/
+COPY ./nginx/nginx.ecommerce.conf /etc/nginx/conf.d/
+COPY dist /usr/share/nginx/html/
+RUN chmod +x /usr/share/nginx/entrypoint.sh
+ENTRYPOINT ["sh", "/usr/share/nginx/entrypoint.sh"]
