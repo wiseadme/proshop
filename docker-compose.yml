@@ -44,7 +44,8 @@ services:
     ports:
       - "80:80"
     volumes:
-      - /etc/nginx/conf.d/nginx.ecommerce.conf:/etc/nginx/conf.d/nginx.conf
+      - ./nginx/nginx.ecommerce.conf:/etc/nginx/conf.d/nginx.conf
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
     depends_on:
       - client
 
