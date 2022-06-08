@@ -1,4 +1,4 @@
-version: '3.9'
+version: '3'
 services:
   server:
     build: ./packages/server
@@ -6,6 +6,20 @@ services:
     restart: unless-stopped
     ports:
       - "5000:5000"
+    environment:
+      - PORT=5000
+      - USER=wiseadme
+      - MONGO_URI=mongodb://db:27017/commerce
+    volumes:
+      - uploads:/home/{$USER}/www/uploads
+    depends_on:
+      - db
+
+  db:
+    image: mongo:latest
+    volumes:
+      - ecommerce:/data/db
+
   client:
     build: ./packages/client
     command: npm run start

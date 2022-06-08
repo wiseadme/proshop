@@ -9,7 +9,7 @@
   "type": "commonjs",
   "scripts": {
     "build": "tsc --project ./",
-    "dev": "cross-env NODE_ENV=development nodemon -r ./tsconfig-paths.ts src/app/cluster.ts",
+    "dev": "cross-env NODE_ENV=development nodemon",
     "start": "cross-env NODE_ENV=production node -r ./tsconfig-paths.ts dist/src/app/cluster.js"
   },
   "files": [

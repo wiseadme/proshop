@@ -72,6 +72,7 @@ export class AttributeController extends BaseController implements IController {
   async updateAttributes({ body, method }: Request<{}, {}, Array<IAttribute & Document>>, res: Response){
     try {
       const { updated } = await this.service.update(body)
+
       this.send({
         response: res,
         data: updated,
@@ -90,7 +91,6 @@ export class AttributeController extends BaseController implements IController {
   async deleteAttribute({ query, method }: Request<{}, {}, {}, { id: string }>, res: Response){
     try {
       await this.service.delete(query.id)
-
       this.send({
         response: res,
         data: null,
