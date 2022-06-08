@@ -2,6 +2,7 @@ version: '3'
 services:
   server:
     build: ./packages/server
+    container_name: server
     command: npm run start
     restart: unless-stopped
     ports:
@@ -10,18 +11,47 @@ services:
       - PORT=5000
       - USER=wiseadme
       - MONGO_URI=mongodb://db:27017/commerce
+      - ROOT_URL=http://localhost
     volumes:
-      - uploads:/home/{$USER}/www/uploads
+      - uploads:/home/${USER}/www/uploads
+    networks:
+      - server-network
+      - client-network
     depends_on:
       - db
 
   db:
     image: mongo:latest
+    container_name: mongo
     volumes:
       - ecommerce:/data/db
+    networks:
+      - server-network
 
   client:
     build: ./packages/client
+    container_name: client
     command: npm run start
+    restart: unless-stopped
     ports:
       - "3000:3000"
+    networks:
+      - client-network
+
+  nginx:
+    image: nginx:stable-alpine
+    container_name: nginx
+    ports:
+      - "80:80"
+    volumes:
+      - /etc/nginx/conf.d/nginx.ecommerce.conf:/etc/nginx/conf.d/nginx.conf
+    depends_on:
+      - client
+
+volumes:
+  ecommerce:
+  uploads:
+
+networks:
+  server-network:
+  client-network:
