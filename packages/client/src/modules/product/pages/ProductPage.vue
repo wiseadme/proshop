@@ -250,7 +250,7 @@
           <template #image="{row}">
             <img
               v-if="row.image"
-              :src="'http://localhost' + row.image"
+              :src="row.image"
               :alt="row.name"
               style="width: auto; height: 30px"
             >

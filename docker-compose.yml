@@ -13,10 +13,7 @@ services:
       - MONGO_URI=mongodb://db:27017/commerce
       - ROOT_URL=http://localhost
     volumes:
-      - uploads:/home/${USER}/www/uploads
-    networks:
-      - server-network
-      - client-network
+      - uploads:/home/wiseadme/www/uploads
     depends_on:
       - db
 
@@ -25,18 +22,14 @@ services:
     container_name: mongo
     volumes:
       - ecommerce:/data/db
-    networks:
-      - server-network
 
   client:
     build: ./packages/client
     container_name: client
-    command: npm run start
+    command: nginx -g "daemon off;"
     restart: unless-stopped
     ports:
       - "3000:3000"
-    networks:
-      - client-network
 
   nginx:
     image: nginx:stable-alpine
@@ -45,14 +38,11 @@ services:
     ports:
       - "80:80"
     volumes:
-      - ./packages/client/nginx/nginx.prod.conf:/etc/nginx/nginx.conf
+      - ./nginx/nginx.prod.conf:/etc/nginx/nginx.conf
+      - uploads:/var/lib/docker/volumes/ecommerceplatform_uploads/_data
     depends_on:
       - client
 
 volumes:
   ecommerce:
   uploads:
-
-networks:
-  server-network:
-  client-network:

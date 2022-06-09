@@ -26,6 +26,7 @@ export const actions: IUnitActions = {
   async delete(id: string): Promise<boolean>{
     try {
       const { data } = await repository.delete(id)
+      this.units = this.units.filter(it => it._id !== id)
       return data.data as boolean
     } catch (err) {
       return Promise.reject(err)
