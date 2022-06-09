@@ -30,7 +30,7 @@
               xl="6"
             >
               <v-text-field
-                v-model="computedTitleProp"
+                v-model.trim="computedTitleProp"
                 label="название"
                 color="#272727"
                 text-color="#272727"
@@ -40,7 +40,7 @@
               xl="6"
             >
               <v-text-field
-                v-model="computedUrlProp"
+                v-model.trim="computedUrlProp"
                 label="url категории"
                 color="#272727"
                 text-color="#272727"
@@ -50,7 +50,7 @@
           <v-row>
             <v-col xl="6">
               <v-text-field
-                v-model="computedSeoTitleProp"
+                v-model.trim="computedSeoTitleProp"
                 label="seo title"
                 color="#272727"
                 text-color="#272727"
@@ -58,7 +58,7 @@
             </v-col>
             <v-col xl="6">
               <v-text-field
-                v-model="computedSeoDescProp"
+                v-model.trim="computedSeoDescProp"
                 label="seo description"
                 color="#272727"
                 text-color="#272727"
@@ -68,7 +68,7 @@
           <v-row>
             <v-col xl="6">
               <v-text-field
-                v-model="computedSeoKeywordsProp"
+                v-model.trim="computedSeoKeywordsProp"
                 label="seo keywords"
                 color="#272727"
                 text-color="#272727"

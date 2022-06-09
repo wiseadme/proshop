@@ -104,7 +104,6 @@ export class Product implements IProduct {
 
   static update(updates){
     if (updates.name) updates.url = translator(updates.name)
-    if (updates.seo) updates.seo = JSON.parse(updates.seo)
 
     return updates
   }

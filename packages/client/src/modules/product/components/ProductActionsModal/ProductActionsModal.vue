@@ -27,7 +27,7 @@
           <v-row class="white my-4 pa-4 elevation-2">
             <v-col xl="6">
               <v-text-field
-                v-model="computedName"
+                v-model.trim="computedName"
                 label="Наименование товара"
                 color="#272727"
                 text-color="#272727"
@@ -35,7 +35,7 @@
             </v-col>
             <v-col xl="6">
               <v-text-field
-                v-model="computedPrice"
+                v-model.number="computedPrice"
                 label="Цена"
                 color="#272727"
                 text-color="#272727"
@@ -44,7 +44,7 @@
             </v-col>
             <v-col xl="6">
               <v-text-field
-                v-model="computedCount"
+                v-model.number="computedCount"
                 label="Количество"
                 color="#272727"
                 type="number"
@@ -64,7 +64,7 @@
             </v-col>
             <v-col xl="6">
               <v-text-field
-                v-model="computedSeoTitle"
+                v-model.trim="computedSeoTitle"
                 label="SEO title"
                 color="#272727"
                 text-color="#272727"
@@ -72,7 +72,7 @@
             </v-col>
             <v-col xl="6">
               <v-text-field
-                v-model="computedSeoDesc"
+                v-model.trim="computedSeoDesc"
                 label="SEO description"
                 color="#272727"
                 text-color="#272727"
@@ -80,7 +80,7 @@
             </v-col>
             <v-col xl="6">
               <v-text-field
-                v-model="computedSeoKeywords"
+                v-model.trim="computedSeoKeywords"
                 label="SEO keywords"
                 color="#272727"
                 text-color="#272727"
@@ -88,7 +88,7 @@
             </v-col>
             <v-col xl="6">
               <v-text-field
-                v-model="computedUrl"
+                v-model.trim="computedUrl"
                 label="URL товара"
                 color="#272727"
                 text-color="#272727"
