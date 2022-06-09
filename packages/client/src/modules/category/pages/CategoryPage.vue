@@ -72,7 +72,9 @@
 
         updates!._id = service.category!._id
 
-        if (updates!.parent) updates!.parent = categoryUpdates.value!.parent._id
+        if (updates!.parent) {
+          updates!.parent = (categoryUpdates.value?.parent as ICategory)?._id
+        }
 
         service.updateCategory(updates!)
           .then(() => {

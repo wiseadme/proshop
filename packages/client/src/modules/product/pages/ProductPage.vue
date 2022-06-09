@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { defineComponent, ref, watch } from 'vue'
+  import { defineComponent, ref, toRaw, watch } from 'vue'
   import { ProductActionsModal } from '../components/ProductActionsModal'
   // Services
   import { useProductService } from '@modules/product/service/product.service'
@@ -11,7 +11,6 @@
 
   export default defineComponent({
     components: { ProductActionsModal },
-
     async setup(){
       const model = ref<IProduct>(Product.create())
       const showCreateModal = ref<boolean>(false)
@@ -132,9 +131,12 @@
       }
 
       const onDeleteImage = (url) => {
+        const raw = toRaw(model.value)
+
         service.deleteProductImage(url)
           .then(() => {
-            model.value.assets = model.value.assets?.filter(it => it.url !== url)!
+            raw.assets = raw.assets?.filter(it => it.url !== url)!
+            model.value = raw
           })
       }
 
@@ -179,9 +181,7 @@
 <template>
   <v-layout column>
     <v-row>
-      <v-col
-        cols="12"
-      >
+      <v-col cols="12">
         <v-data-table
           :cols="cols"
           :rows="service.products"
