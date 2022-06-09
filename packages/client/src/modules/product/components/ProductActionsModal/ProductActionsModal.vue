@@ -122,7 +122,7 @@
             >
               <img
                 style="height: 100px; width: auto"
-                :src="'http://anar.com' + it.url"
+                :src="it.url"
                 alt=""
               >
               <v-icon

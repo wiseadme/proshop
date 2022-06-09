@@ -127,7 +127,7 @@
                 <v-card-content>
                   <img
                     style="width:100%"
-                    :src="'http://anar.com' + computedImageProp"
+                    :src="computedImageProp"
                   >
                 </v-card-content>
               </v-card>
