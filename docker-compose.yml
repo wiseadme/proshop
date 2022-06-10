@@ -11,6 +11,7 @@ services:
       - PORT=5000
       - USER=wiseadme
       - MONGO_URI=mongodb://db:27017/commerce
+      - ROOT_URL=http://localhost
     volumes:
       - uploads:/home/wiseadme/www/uploads
     depends_on:

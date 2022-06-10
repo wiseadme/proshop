@@ -66,48 +66,9 @@ export const productActionsModal = defineComponent({
       positionY: 0,
     })
 
-    const variantOptionPattern = {
-      name: '',
-      count: 0,
-      price: 0,
-      description: '',
-      assets: []
-    }
-
     const variantPattern = {
       group: '',
       options: [] as any[]
-    }
-
-    const setVariants = () => {
-      props.variantItems?.forEach(() => {
-        variantOptions.value.push(clone(variantOptionPattern))
-      })
-    }
-
-
-    const addVariant = (group, variant) => {
-      variantPattern.group = group
-      variantPattern.options.push(variant)
-
-      computedVariants.value = [ ...(props.variants || [])!, variantPattern ]
-    }
-
-    const onImagesContextMenu = (event, asset) => {
-      imagesContextMenu.show = true
-      imagesContextMenu.positionX = event.clientX
-      imagesContextMenu.positionY = event.clientY
-      currentImage.value = clone(asset)
-    }
-
-    const toggleCategory = (ctg) => {
-      if (ctgMap.value.get(ctg._id)) {
-        ctgMap.value.delete(ctg._id)
-      } else {
-        ctgMap.value.set(ctg._id, ctg)
-      }
-
-      computedCategories.value = Array.from(toRaw(ctgMap.value).values())
     }
 
     const computedName = computed<string>({
@@ -246,6 +207,59 @@ export const productActionsModal = defineComponent({
       }
     })
 
+    const genVariantOption = () => ({
+      name: '',
+      count: 0,
+      price: 0,
+      description: '',
+      assets: []
+    })
+
+    const setVariants = () => {
+      props.variantItems?.forEach(() => {
+        variantOptions.value.push(genVariantOption())
+      })
+    }
+
+    const addVariant = (group, option) => {
+      variantPattern.group = group
+      variantPattern.options.push(clone(option))
+
+      computedVariants.value = (props.variants || []).reduce((acc, v) => {
+        if(v && v.group === group) acc.push(variantPattern)
+        else acc.push(v)
+        return acc
+      }, [] as any[])
+    }
+
+    const removeVariantOption = (variant, option) => {
+      const cloned = clone(variant)
+      cloned.options = variant.options.filter(it => it.name !== option.name)
+
+      computedVariants.value = props.variants?.reduce((acc, v) => {
+        if (v.group === cloned.group) acc.push(cloned)
+        else acc.push(v)
+        return acc
+      }, [] as Array<IProductVariant>)!
+    }
+
+    const onImagesContextMenu = (event, asset) => {
+      imagesContextMenu.show = true
+      imagesContextMenu.positionX = event.clientX
+      imagesContextMenu.positionY = event.clientY
+      currentImage.value = clone(asset)
+    }
+
+    const toggleCategory = (ctg) => {
+      if (ctgMap.value.get(ctg._id)) {
+        ctgMap.value.delete(ctg._id)
+      } else {
+        ctgMap.value.set(ctg._id, ctg)
+      }
+
+      computedCategories.value = Array.from(toRaw(ctgMap.value).values())
+    }
+
     const onCreate = validate => {
       validate().then(() => emit('create'))
     }
@@ -325,6 +339,7 @@ export const productActionsModal = defineComponent({
       imagesContextMenu,
       currentImage,
       addVariant,
+      removeVariantOption,
       toggleCategory,
       onImagesContextMenu,
       onLoadImage,

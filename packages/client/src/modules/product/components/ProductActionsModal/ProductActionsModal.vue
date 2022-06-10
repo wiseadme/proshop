@@ -320,6 +320,9 @@
                         <v-chip
                           v-for="it in variants[i].options"
                           :key="it.name"
+                          color="green"
+                          class="elevation-2"
+                          @close="removeVariantOption(variants[i], it)"
                         >
                           {{ it.name }}
                         </v-chip>
