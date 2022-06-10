@@ -111,18 +111,18 @@
             <v-col
               v-for="it in computedAssets"
               :key="it._id"
-              xl="4"
-              lg="6"
+              xl="2"
+              lg="4"
               md="6"
               sm="12"
-              class="image mr-2 mb-4 pa-2 white elevation-2 d-flex justify-center align-center"
+              class="image mb-4 mr-1 pa-2 white elevation-2 d-flex justify-center align-center"
               :class="{'main': it.main}"
-              style="overflow: hidden; position: relative"
+              style="height: 250px; overflow: hidden; position: relative"
               @contextmenu.prevent="onImagesContextMenu($event, it)"
             >
               <img
-                style="height: 100px; width: auto"
-                :src="it.url"
+                style="height: auto; width: 100%"
+                :src="'http://193.168.3.84' + it.url"
                 alt=""
               >
               <v-icon
