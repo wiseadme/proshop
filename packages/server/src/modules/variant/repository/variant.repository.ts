@@ -14,21 +14,15 @@ export class VariantRepository implements IVariantRepository {
   constructor(@inject(TYPES.UTILS.ILogger) private logger: ILogger){
   }
 
-  async create({ group, product, options }: IVariant){
-    validateId(product)
-
+  async create({ group }: IVariant){
     return new VariantModel({
       _id: new Types.ObjectId(),
       group,
-      product,
-      options
     }).save()
   }
 
-  async read(productId: string){
-    validateId(productId)
-
-    return VariantModel.find({ product: productId })
+  async read(){
+    return VariantModel.find({})
   }
 
   async update($set: Partial<Document<IVariant>>){

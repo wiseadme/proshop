@@ -294,7 +294,10 @@
               </v-card>
             </v-col>
           </v-row>
-          <v-row no-gutter>
+          <v-row
+            v-if="isUpdate"
+            no-gutter
+          >
             <v-col class="white mt-2 elevation-2">
               <v-card
                 width="100%"
@@ -303,9 +306,80 @@
                   <h3>Варианты</h3>
                 </v-card-title>
                 <v-card-subtitle v-if="!isUpdate">
-                  данный раздел актуален только после сохранения товара
+                  Варианты товара, например: размеры, цвета, технические характеристики и т.д.
                 </v-card-subtitle>
-                <v-card-content></v-card-content>
+                <v-card-content>
+                  <v-row
+                    v-for="(variant, i) in variantItems"
+                    :key="variant.group"
+                    class="elevation-2 pa-2 mb-1"
+                  >
+                    <v-col cols="3">
+                      <h2>{{ variant.group }}</h2>
+                      <v-row v-if="variants && variants[i]">
+                        <v-chip
+                          v-for="it in variants[i].options"
+                          :key="it.name"
+                        >
+                          {{ it.name }}
+                        </v-chip>
+                      </v-row>
+                    </v-col>
+                    <v-col cols="8">
+                      <v-row>
+                        <v-col cols="6">
+                          <v-text-field
+                            v-model.trim="variantOptions[i].name"
+                            color="#272727"
+                            label="Значение"
+                          />
+                        </v-col>
+                        <v-col cols="6">
+                          <v-text-field
+                            v-model.number="variantOptions[i].count"
+                            color="#272727"
+                            label="количество"
+                            type="number"
+                          />
+                        </v-col>
+                      </v-row>
+                      <v-row>
+                        <v-col cols="6">
+                          <v-text-field
+                            v-model.number="variantOptions[i].price"
+                            color="#272727"
+                            label="цена"
+                            type="number"
+                          />
+                        </v-col>
+                        <v-col cols="6">
+                          <v-text-field
+                            v-model.trim="variantOptions[i].description"
+                            color="#272727"
+                            label="описание"
+                          />
+                        </v-col>
+                      </v-row>
+                      <v-row>
+                        <v-col>
+                          <v-file-input
+                            v-model="variantOptions[i].assets"
+                            color="#272727"
+                          />
+                        </v-col>
+                      </v-row>
+                    </v-col>
+                    <v-row>
+                      <v-button
+                        color="green"
+                        elevation="2"
+                        @click="addVariant(variantItems[i].group, variantOptions[i])"
+                      >
+                        добавить
+                      </v-button>
+                    </v-row>
+                  </v-row>
+                </v-card-content>
               </v-card>
             </v-col>
           </v-row>

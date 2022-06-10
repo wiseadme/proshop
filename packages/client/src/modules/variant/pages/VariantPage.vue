@@ -1,30 +1,32 @@
 <script lang="ts">
   import { defineComponent, ref, watch } from 'vue'
   import draggable from 'vuedraggable'
-  import { useUnitService } from '../service/unit.service'
+  import { useVariantService } from '../service/variant.service'
   import { clone } from '@shared/helpers'
-  import { Unit } from '../model/unit.model'
+  import { Variant } from '../model/variant.model'
 
   export default defineComponent({
-    name: 'unit-page',
+    name: 'variant-page',
     components: {
       draggable
     },
     async setup(){
-      const model = ref<IUnit>(Unit.create())
-      const units = ref<Array<IUnit>>(null)
-      const service = useUnitService()
+      const model = ref<IVariant>(Variant.create())
+      const variants = ref<Array<IVariant>>(null)
+      const service = useVariantService()
 
       const onCreate = (validate) => {
-        validate().then(() => service.createUnit(model.value))
+        validate()
+          .then(() => service.createVariant(model.value))
+          .then(clearForm)
       }
 
       const onDelete = (item) => {
-        return service.deleteUnit(item._id)
+        return service.deleteVariant(item._id)
       }
 
       const clearForm = () => {
-        model.value = Unit.create()
+        model.value = Variant.create()
       }
 
       const onChange = () => {
@@ -32,16 +34,16 @@
       }
 
       watch(
-        () => service.units,
-        to => units.value = clone(to),
+        () => service.variants,
+        to => to && (variants.value = clone(to)),
         { immediate: true, deep: true }
       )
 
-      service.getUnits()
+      service.getVariants()
 
       return {
         model,
-        units,
+        variants,
         service,
         onCreate,
         onDelete,
@@ -67,19 +69,14 @@
             color="#ffffff"
           >
             <v-card-title class="green--text">
-              <h3>Измерения</h3>
+              <h3>Группы вариантов</h3>
             </v-card-title>
             <v-card-content>
               <v-text-field
-                v-model="model.value"
-                label="Значение по умолчанию*"
+                v-model.trim="model.group"
+                label="Название группы"
                 color="#272727"
                 :rules="[val => !!val || 'Обязательное поле']"
-              />
-              <v-text-field
-                v-model="model.meta"
-                label="Мета информация"
-                color="#272727"
               />
             </v-card-content>
             <v-card-actions class="">
@@ -116,9 +113,9 @@
         md="12"
         sm="12"
       >
-        <template v-if="units">
+        <template v-if="variants">
           <draggable
-            v-model="units"
+            v-model="variants"
             item-key="_id"
             @change="onChange"
           >
@@ -133,7 +130,7 @@
                   fas fa-grip-vertical
                 </v-icon>
                 <span>
-                  {{ element.value }}
+                  {{ element.group }}
                 </span>
                 <v-spacer></v-spacer>
                 <v-icon

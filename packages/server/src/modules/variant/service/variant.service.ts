@@ -19,8 +19,8 @@ export class VariantService implements IVariantService {
     return await this.repository.create(variant)
   }
 
-  async read(productId: string){
-    return await this.repository.read(productId)
+  async read(){
+    return await this.repository.read()
   }
 
   async update(updates: Partial<IVariant & Document>){

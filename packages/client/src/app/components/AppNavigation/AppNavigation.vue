@@ -26,6 +26,11 @@
           title: 'Измерения',
           icon: 'fab fa-unity',
           path: '/units'
+        },
+        {
+          title: 'Варианты',
+          icon: 'far fa-object-ungroup',
+          path: '/variants'
         }
       ]
 

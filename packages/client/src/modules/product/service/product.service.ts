@@ -9,6 +9,7 @@ class Service extends Observer {
   private _attributes: Maybe<Array<IProductAttribute>>
   private _categories: Maybe<Array<ICategory>>
   private _units: Maybe<Array<IUnit>>
+  private _variants: Maybe<Array<IVariant>>
   static instance: Service
 
   constructor(store){
@@ -18,6 +19,7 @@ class Service extends Observer {
     this._attributes = null
     this._categories = null
     this._units = null
+    this._variants = null
   }
 
   get products(){
@@ -36,20 +38,28 @@ class Service extends Observer {
     return this._categories
   }
 
-  get units() {
+  get units(){
     return this._units
+  }
+
+  get variants(){
+    return this._variants
   }
 
   async getAttributes(){
     this._attributes = await this.emit('get:attributes')
   }
 
-  async getUnits() {
+  async getUnits(){
     this._units = await this.emit('get:units')
   }
 
   async getCategories(){
     this._categories = await this.emit('get:categories')
+  }
+
+  async getVariants(){
+    this._variants = await this.emit('get:variants')
   }
 
   getProducts(){

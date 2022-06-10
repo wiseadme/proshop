@@ -11,8 +11,9 @@ export const productActionsModal = defineComponent({
   props: {
     modelValue: Boolean,
     isUpdate: Boolean,
-    categoryItems: Array,
-    unitItems: Array,
+    categoryItems: Array as PropType<Array<ICategory>>,
+    unitItems: Array as PropType<Array<IUnit>>,
+    variantItems: Array as PropType<Array<IVariant>>,
     name: String,
     url: String,
     description: String,
@@ -57,12 +58,40 @@ export const productActionsModal = defineComponent({
     const attributesArray = ref<Array<IAttribute>>([])
     const content = ref<string>('')
     const currentImage = ref<Maybe<IProductAsset>>(null)
+    const variantOptions = ref<Array<IProductVariantOption>>([])
 
     const imagesContextMenu = reactive({
       show: false,
       positionX: 0,
       positionY: 0,
     })
+
+    const variantOptionPattern = {
+      name: '',
+      count: 0,
+      price: 0,
+      description: '',
+      assets: []
+    }
+
+    const variantPattern = {
+      group: '',
+      options: [] as any[]
+    }
+
+    const setVariants = () => {
+      props.variantItems?.forEach(() => {
+        variantOptions.value.push(clone(variantOptionPattern))
+      })
+    }
+
+
+    const addVariant = (group, variant) => {
+      variantPattern.group = group
+      variantPattern.options.push(variant)
+
+      computedVariants.value = [ ...(props.variants || [])!, variantPattern ]
+    }
 
     const onImagesContextMenu = (event, asset) => {
       imagesContextMenu.show = true
@@ -156,6 +185,7 @@ export const productActionsModal = defineComponent({
 
     const computedVariants = computed<Array<IProductVariant>>({
       get(){
+        console.log('computed vars', props.variants)
         return props.variants!
       },
       set(val){
@@ -266,6 +296,8 @@ export const productActionsModal = defineComponent({
       }
 
       attributesArray.value = clone(props.attributes)
+
+      props.variantItems && setVariants()
       content.value = props.description!
 
     }, { immediate: true })
@@ -288,9 +320,11 @@ export const productActionsModal = defineComponent({
       computedUrl,
       files,
       attributesArray,
+      variantOptions,
       content,
       imagesContextMenu,
       currentImage,
+      addVariant,
       toggleCategory,
       onImagesContextMenu,
       onLoadImage,

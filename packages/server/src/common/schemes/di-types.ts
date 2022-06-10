@@ -17,10 +17,6 @@ export const TYPES = {
   UTILS: {
     ILogger: Symbol.for('ILogger'),
   },
-  ENTITIES: {
-    CategoryEntity: Symbol.for('CategoryEntity'),
-    ProductEntity: Symbol.for('ProductEntity')
-  },
   REPOSITORIES: {
     ICategoryRepository: Symbol.for('ICategoryRepository'),
     IProductRepository: Symbol.for('IProductRepository'),

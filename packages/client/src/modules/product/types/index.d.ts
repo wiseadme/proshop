@@ -25,10 +25,17 @@ declare interface IProductAttribute {
   meta?: string
 }
 
+declare interface IProductVariantOption {
+  name: string,
+  count: number
+  price: number
+  description: string
+  assets: Array<IProductAsset>
+}
+
 declare interface IProductVariant {
   group: string
-  product: string
-  options: Array<any>
+  options: Array<IProductVariantOption>
 }
 
 declare interface IProduct {

@@ -1,6 +1,5 @@
 import { Store } from 'pinia'
 import { useUnitStore } from '@modules/unit/store'
-import { useCategoryStore } from '@modules/category/store'
 
 class Service {
   private _store: Store<string, IUnitState, {}, IUnitActions>
@@ -33,9 +32,9 @@ class Service {
 
   static create(){
     if (Service.instance) return Service.instance
-    Service.instance = new Service(useCategoryStore())
+    Service.instance = new Service(useUnitStore())
     return Service.instance
   }
 }
 
-export const useUnitService = () => new Service(useUnitStore())
+export const useUnitService = () => Service.create()

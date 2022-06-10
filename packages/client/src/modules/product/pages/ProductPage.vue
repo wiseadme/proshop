@@ -158,7 +158,8 @@
         service.getCategories(),
         service.getAttributes(),
         service.getProducts(),
-        service.getUnits()
+        service.getUnits(),
+        service.getVariants()
       ])
 
       return {
@@ -275,6 +276,7 @@
       v-model:variants="model.variants"
       v-model:is-visible="model.isVisible"
       :category-items="service.categories"
+      :variant-items="service.variants"
       :unit-items="service.units"
       :is-update="isEditMode"
       @create="onCreate"

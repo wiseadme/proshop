@@ -52,9 +52,9 @@ export class VariantController extends BaseController implements IController {
     }
   }
 
-  async getVariants({ query, method }: Request<{}, {}, {}, VariantQuery>, res: Response){
+  async getVariants({ method }: Request<{}, {}, {}>, res: Response){
     try {
-      const variants = await this.service.read(query.productId)
+      const variants = await this.service.read()
 
       this.send({
         response: res,
