@@ -2,8 +2,6 @@ import { useVariantRepository } from '../repository/variant.repository'
 
 const repository = useVariantRepository()
 
-console.log(repository)
-
 export const actions: IVariantActions = {
   async create(variant: IVariant): Promise<IVariant>{
     try {

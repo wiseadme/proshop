@@ -152,8 +152,6 @@
         to => model.value = Product.create(to!)
       )
 
-      watch(model, to => console.log(to), { deep: true })
-
       Promise.all([
         service.getCategories(),
         service.getAttributes(),

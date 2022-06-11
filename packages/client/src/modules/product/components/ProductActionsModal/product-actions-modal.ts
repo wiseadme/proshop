@@ -3,9 +3,13 @@ import { TextEditor } from '@shared/components/TextEditor'
 import { clone } from '@shared/helpers'
 import draggable from 'vuedraggable'
 
+// Components
+import VariantsBlock from './VariantsBlock'
+
 export const productActionsModal = defineComponent({
   components: {
     TextEditor,
+    VariantsBlock,
     draggable
   },
   props: {
@@ -58,18 +62,12 @@ export const productActionsModal = defineComponent({
     const attributesArray = ref<Array<IAttribute>>([])
     const content = ref<string>('')
     const currentImage = ref<Maybe<IProductAsset>>(null)
-    const variantOptions = ref<Array<IProductVariantOption>>([])
 
     const imagesContextMenu = reactive({
       show: false,
       positionX: 0,
       positionY: 0,
     })
-
-    const variantPattern = {
-      group: '',
-      options: [] as any[]
-    }
 
     const computedName = computed<string>({
       get(){
@@ -139,14 +137,12 @@ export const productActionsModal = defineComponent({
         return props.assets!
       },
       set(val){
-        console.log(val)
         emit('update:assets', val)
       }
     })
 
     const computedVariants = computed<Array<IProductVariant>>({
       get(){
-        console.log('computed vars', props.variants)
         return props.variants!
       },
       set(val){
@@ -206,42 +202,6 @@ export const productActionsModal = defineComponent({
         emit('update:categories', val)
       }
     })
-
-    const genVariantOption = () => ({
-      name: '',
-      count: 0,
-      price: 0,
-      description: '',
-      assets: []
-    })
-
-    const setVariants = () => {
-      props.variantItems?.forEach(() => {
-        variantOptions.value.push(genVariantOption())
-      })
-    }
-
-    const addVariant = (group, option) => {
-      variantPattern.group = group
-      variantPattern.options.push(clone(option))
-
-      computedVariants.value = (props.variants || []).reduce((acc, v) => {
-        if(v && v.group === group) acc.push(variantPattern)
-        else acc.push(v)
-        return acc
-      }, [] as any[])
-    }
-
-    const removeVariantOption = (variant, option) => {
-      const cloned = clone(variant)
-      cloned.options = variant.options.filter(it => it.name !== option.name)
-
-      computedVariants.value = props.variants?.reduce((acc, v) => {
-        if (v.group === cloned.group) acc.push(cloned)
-        else acc.push(v)
-        return acc
-      }, [] as Array<IProductVariant>)!
-    }
 
     const onImagesContextMenu = (event, asset) => {
       imagesContextMenu.show = true
@@ -311,7 +271,6 @@ export const productActionsModal = defineComponent({
 
       attributesArray.value = clone(props.attributes)
 
-      props.variantItems && setVariants()
       content.value = props.description!
 
     }, { immediate: true })
@@ -334,12 +293,9 @@ export const productActionsModal = defineComponent({
       computedUrl,
       files,
       attributesArray,
-      variantOptions,
       content,
       imagesContextMenu,
       currentImage,
-      addVariant,
-      removeVariantOption,
       toggleCategory,
       onImagesContextMenu,
       onLoadImage,
