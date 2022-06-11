@@ -53,7 +53,11 @@ export class ProductRepository implements IProductRepository {
 
       return ProductModel
         .find(search)
-        .populate([ 'categories', 'variants', 'assets' ])
+        .populate([ 'categories', 'assets' ])
+        .populate({
+          path: 'variants',
+          populate: { path: 'options', populate: { path: 'assets', model: 'Asset' } }
+        })
         .skip((page * count) - count)
         .limit(count)
     }

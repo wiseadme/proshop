@@ -52,13 +52,15 @@ export const productActionsModal = defineComponent({
     'update:url',
     'upload:image',
     'delete:image',
+    'update:variant-image',
     'create',
+    'close',
     'update'
   ],
 
   async setup(props, { emit }){
     const ctgMap = ref<Map<string, ICategory>>(new Map())
-    const files = ref<Array<File>>([])
+    const productImages = ref<Array<File>>([])
     const attributesArray = ref<Array<IAttribute>>([])
     const content = ref<string>('')
     const currentImage = ref<Maybe<IProductAsset>>(null)
@@ -235,10 +237,16 @@ export const productActionsModal = defineComponent({
       else onCreate(validate)
     }
 
+    const onUpdateVariantImage = uploads => {
+      if (!uploads.files.length) return
+      emit('update:variant-image', uploads)
+      productImages.value = []
+    }
+
     const onLoadImage = uploads => {
       if (!uploads.length) return
       emit('upload:image', uploads)
-      files.value = []
+      productImages.value = []
     }
 
     const onDeleteImage = (asset) => {
@@ -258,6 +266,10 @@ export const productActionsModal = defineComponent({
         acc.push(it)
         return acc
       }, [] as any[]) as IProductAsset[]
+    }
+
+    const onClose = () => {
+      emit('close', false)
     }
 
     watch(() => props.modelValue, to => {
@@ -291,7 +303,7 @@ export const productActionsModal = defineComponent({
       computedCategories,
       computedDescription,
       computedUrl,
-      files,
+      productImages,
       attributesArray,
       content,
       imagesContextMenu,
@@ -300,10 +312,12 @@ export const productActionsModal = defineComponent({
       onImagesContextMenu,
       onLoadImage,
       onSubmit,
+      onClose,
       onDeleteImage,
       onAttributesUpdate,
       onDeleteAttribute,
-      setAsMainImage
+      setAsMainImage,
+      onUpdateVariantImage
     }
   }
 })

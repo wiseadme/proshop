@@ -14,8 +14,9 @@ declare interface IProductActions {
 
 declare interface IProductAsset {
   _id: string
-  url: string,
-  type: string,
+  url: string
+  type: string
+  ownerId: string
   main: boolean
 }
 

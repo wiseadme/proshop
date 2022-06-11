@@ -98,7 +98,7 @@
           <v-row no-gutter>
             <v-col class="mb-4 pa-4 white elevation-2">
               <v-file-input
-                v-model:value="files"
+                v-model:value="productImages"
                 :label="isUpdate ? 'Загрузить изображения' : 'Загруить изображение мождно только после создания продукта'"
                 color="#272727"
                 text-color="#272727"
@@ -296,7 +296,9 @@
           </v-row>
           <variants-block
             v-model:variants="computedVariants"
+            :is-displayed="modelValue"
             :variant-items="variantItems"
+            @update:variant-image="onUpdateVariantImage"
           />
         </v-card-content>
         <v-card-actions>
@@ -315,7 +317,7 @@
             width="120"
             elevation="3"
             outlined
-            @click="$emit('update:modelValue', false)"
+            @click="onClose"
           >
             отмена
           </v-button>

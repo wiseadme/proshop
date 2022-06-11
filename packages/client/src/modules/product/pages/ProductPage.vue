@@ -107,11 +107,19 @@
         model.value.attributes = clone(service.attributes)
       }
 
-      const onUpdate = () => {
+      const checkDiffs = () => {
         const updates: Maybe<IProduct> = getDifferences(
           model.value,
           service.product
         ) as IProduct
+
+        console.log(updates)
+
+        return updates
+      }
+
+      const onUpdate = () => {
+        const updates: Maybe<IProduct> = checkDiffs()
 
         !!updates && (updates._id = model.value._id)
 
@@ -124,6 +132,11 @@
 
       const onDeleteProduct = (product) => {
         service.deleteProduct(product)
+      }
+
+      const onUploadVariantImage = ({ files, option }) => {
+        return service.createFileAsset(files)
+          .then(asset => option.assets.push(asset))
       }
 
       const onUploadImage = (files) => {
@@ -172,7 +185,9 @@
         onAdd,
         onDeleteProduct,
         onDeleteImage,
-        onUploadImage
+        onUploadImage,
+        onUploadVariantImage,
+        checkDiffs
       }
     }
   })
@@ -280,7 +295,9 @@
       @create="onCreate"
       @update="onUpdate"
       @upload:image="onUploadImage"
+      @update:variant-image="onUploadVariantImage"
       @delete:image="onDeleteImage"
+      @close="checkDiffs"
     />
   </v-layout>
 </template>

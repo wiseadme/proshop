@@ -86,16 +86,17 @@ class Service extends Observer {
       .catch(err => console.log(err))
   }
 
-  async uploadProductImage(files){
-    if (!files.length) return
-
+  async createFileAsset(files){
     const { formData, fileName } = await this.emit('create:data', files)
     const ownerId = this._product.value!._id
 
-    const asset: IProductAsset = await this.emit(
-      'upload:file',
-      { ownerId, fileName, formData }
-    )
+    return await this.emit('upload:file', { ownerId, fileName, formData })
+  }
+
+  async uploadProductImage(files){
+    if (!files.length) return
+
+    const asset: IProductAsset = await this.createFileAsset(files)
 
     if (asset && asset.url) {
       let { assets } = this._product.value!
@@ -112,7 +113,7 @@ class Service extends Observer {
       assets.push(asset)
 
       await this.updateProduct({
-        _id: ownerId,
+        _id: asset.ownerId,
         assets
       })
     }
