@@ -2,6 +2,8 @@ export const toString = obj => JSON.stringify(obj).trim()
 export const clone = obj => JSON.parse(toString(obj))
 
 export const getDifferences = (changed, origin) => {
+  if (!origin) return null
+
   const diffs = {}
 
   for (const key in changed) {

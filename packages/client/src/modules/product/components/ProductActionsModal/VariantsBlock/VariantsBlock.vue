@@ -145,7 +145,7 @@
                           style="height: 130px"
                         >
                           <img
-                            :src="'http://anar.com'+asset.url"
+                            :src="asset.url"
                             width="150"
                           >
                         </v-col>

@@ -122,7 +122,7 @@
             >
               <img
                 style="height: auto; width: 100%"
-                :src="'http://193.168.3.84' + it.url"
+                :src="it.url"
                 alt=""
               >
               <v-icon
