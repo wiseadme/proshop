@@ -160,6 +160,12 @@
         isEditMode.value = true
       }
 
+      const onCloseModal = () => {
+        const diffs = checkDiffs()
+
+        if (!diffs) showCreateModal.value = false
+      }
+
       watch(
         () => service.product,
         to => model.value = Product.create(to!)
@@ -184,6 +190,7 @@
         onEdit,
         onAdd,
         onDeleteProduct,
+        onCloseModal,
         onDeleteImage,
         onUploadImage,
         onUploadVariantImage,
@@ -297,7 +304,7 @@
       @upload:image="onUploadImage"
       @update:variant-image="onUploadVariantImage"
       @delete:image="onDeleteImage"
-      @close="checkDiffs"
+      @close="onCloseModal"
     />
   </v-layout>
 </template>

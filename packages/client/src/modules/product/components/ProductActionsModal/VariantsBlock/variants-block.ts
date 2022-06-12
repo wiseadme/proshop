@@ -1,6 +1,5 @@
 import { defineComponent, PropType, ref, watch } from 'vue'
 import { clone } from '@shared/helpers'
-// import { clone } from '@shared/helpers'
 
 export const variantsBlock = defineComponent({
   name: 'variant-block',
@@ -31,28 +30,33 @@ export const variantsBlock = defineComponent({
     }
 
     const setProductVariants = () => {
-      props.variants?.forEach(v => variantsMap.set(v.group, clone(v)))
+
+      props.variants?.forEach((v, i) => {
+        selectedVariants.value.push(clone(v))
+        variantsMap.set(v.group, selectedVariants.value[i])
+      })
     }
 
     const addOptionInVariant = (validate, variant, optionIndex) => {
       validate()
         .then(() => {
           variant.options.push(displayedOptions.value[optionIndex])
-          displayedOptions.value[optionIndex] = genVariantOption()
+          clearVariantOptionForm(optionIndex)
 
           variantsMap.set(variant.group, variant)
-          emit('update:variants', selectedVariants.value.filter(it => !!it.options.length))
+          emit('update:variants', selectedVariants.value)
         })
     }
 
     const removeVariantOption = (variant, optionIndex) => {
       variant.options.splice(optionIndex, 1)
       displayedOptions.value[optionIndex] = genVariantOption()
-      emit('update:variants', selectedVariants.value.filter(it => !!it.options.length))
+      emit('update:variants', selectedVariants.value)
     }
 
     const onChange = (val) => {
-      console.log(val)
+      selectedVariants.value = val
+      emit('update:variants', selectedVariants.value)
     }
 
     const onEditChip = (it, index) => {
@@ -74,6 +78,10 @@ export const variantsBlock = defineComponent({
       }, { deep: true })
     }
 
+    const clearVariantOptionForm = (index) => {
+      displayedOptions.value[index] = genVariantOption()
+    }
+
     watch(() => props.isDisplayed, (to) => {
       if (!to) return
 
@@ -82,8 +90,6 @@ export const variantsBlock = defineComponent({
       displayedVariants.value = Array.from(variantsMap.values())
 
       variantsMap.forEach(() => displayedOptions.value.push(genVariantOption()))
-
-      selectedVariants.value = displayedVariants.value
     }, { immediate: true })
 
     return {
@@ -92,6 +98,7 @@ export const variantsBlock = defineComponent({
       selectedVariants,
       addOptionInVariant,
       removeVariantOption,
+      clearVariantOptionForm,
       updateOption,
       updateAssets,
       onChange,

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { variantsBlock } from './variant-block'
+  import { variantsBlock } from './variants-block'
 
   export default variantsBlock
 </script>
@@ -36,19 +36,18 @@
             class="elevation-2 pa-4 mb-1"
           >
             <v-col
-              cols="3"
               style="border: 1px solid #272727; border-radius: 5px;"
-              class="pa-4"
+              class="px-4 py-6"
             >
-              <h2 class="mb-4">
+              <h2>
                 {{ variant.group }}
               </h2>
               <v-row v-if="variant">
                 <v-chip
                   v-for="(it, j) in variant.options"
                   :key="it.name"
-                  color="green"
-                  class="elevation-2 mr-2"
+                  :color="!it._id ?'grey': 'green'"
+                  class="elevation-2 mr-2 mt-2"
                   @click="onEditChip(it, i)"
                   @close="removeVariantOption(variant, j)"
                 >
@@ -56,104 +55,121 @@
                 </v-chip>
               </v-row>
             </v-col>
-            <v-col cols="9">
-              <v-form
-                v-slot="{validate}"
-              >
-                <v-col cols="9">
-                  <v-row>
-                    <v-col cols="3">
-                      <v-text-field
-                        v-model.trim="displayedOptions[i].name"
-                        color="#272727"
-                        label="значение"
-                        :rules="[val => !!val || 'Обязательное поле']"
-                        @input="updateOption"
-                      />
-                    </v-col>
-                    <v-col cols="3">
-                      <v-text-field
-                        v-model.number="displayedOptions[i].count"
-                        color="#272727"
-                        label="количество"
-                        type="number"
-                        @input="updateOption"
-                      />
-                    </v-col>
-                    <v-col cols="3">
-                      <v-text-field
-                        v-model.number="displayedOptions[i].price"
-                        color="#272727"
-                        label="цена"
-                        type="number"
-                        @input="updateOption"
-                      />
-                    </v-col>
-                    <v-col cols="3">
-                      <v-text-field
-                        v-model.trim="displayedOptions[i].description"
-                        color="#272727"
-                        label="описание"
-                        @input="updateOption"
-                      />
-                    </v-col>
-                  </v-row>
-                  <v-row>
-                    <v-col>
-                      <v-file-input
-                        v-model="displayedOptions[i].assets"
-                        label="загрузить изображения"
-                        color="#272727"
-                        @update:value="updateAssets($event, displayedOptions[i])"
-                      />
-                    </v-col>
-                  </v-row>
-                  <v-row class="px-2 pt-2">
-                    <div
-                      class="variant-images"
-                      style="width: 100%; min-height: 200px; border: 1px dotted #272727; border-radius: 5px;"
-                    >
-                      <h4 class="pa-2">
-                        изображения
-                      </h4>
-                      <v-row>
+            <v-col
+              style="border: 1px solid #272727; border-radius: 5px;"
+              class="py-4 mt-2"
+            >
+              <v-form v-slot="{validate}">
+                <v-row>
+                  <v-col
+                    cols="6"
+                  >
+                    <v-text-field
+                      v-model.trim="displayedOptions[i].name"
+                      color="#272727"
+                      label="значение"
+                      :rules="[val => !!val || 'Обязательное поле']"
+                      @input="updateOption"
+                    />
+                  </v-col>
+                  <v-col
+                    cols="6"
+                  >
+                    <v-text-field
+                      v-model.number="displayedOptions[i].count"
+                      color="#272727"
+                      label="количество"
+                      type="number"
+                      @input="updateOption"
+                    />
+                  </v-col>
+                  <v-col
+                    cols="6"
+                  >
+                    <v-text-field
+                      v-model.number="displayedOptions[i].price"
+                      color="#272727"
+                      label="цена"
+                      type="number"
+                      @input="updateOption"
+                    />
+                  </v-col>
+                  <v-col
+                    cols="6"
+                  >
+                    <v-text-field
+                      v-model.trim="displayedOptions[i].description"
+                      color="#272727"
+                      label="описание"
+                      @input="updateOption"
+                    />
+                  </v-col>
+                  <v-col>
+                    <v-file-input
+                      v-model="displayedOptions[i].assets"
+                      :label="!displayedOptions[i]._id ? 'загрузить изображение можно только после сохранения варианта': 'загрузить изображения'"
+                      color="#272727"
+                      :disabled="!displayedOptions[i]._id"
+                      placeholder="salam"
+                      @update:value="updateAssets($event, displayedOptions[i])"
+                    />
+                  </v-col>
+                </v-row>
+                <v-row class="px-2 pt-2">
+                  <div
+                    class="variant-images"
+                    style="width: 100%; min-height: 200px; border: 1px dotted #272727; border-radius: 5px;"
+                  >
+                    <h4 class="pa-2">
+                      изображения
+                    </h4>
+                    <v-row>
+                      <v-col
+                        v-if="!displayedOptions[i].assets.length"
+                        cols="4"
+                        offset="4"
+                        class="d-flex justify-center align-center"
+                        style="height: 130px"
+                      >
+                        <div
+                          class="grey--text text--lighten-2"
+                        >
+                          тут должны быть изображения варианта
+                        </div>
+                      </v-col>
+                      <template v-else>
                         <v-col
-                          v-if="!displayedOptions[i].assets.length"
+                          v-for="asset in displayedOptions[i].assets"
+                          :key="asset._id"
                           cols="4"
-                          offset="4"
-                          class="d-flex justify-center align-center"
                           style="height: 130px"
                         >
-                          <div
-                            class="grey--text text--lighten-2"
+                          <img
+                            :src="'http://anar.com'+asset.url"
+                            width="150"
                           >
-                            тут должны быть изображения варианта
-                          </div>
                         </v-col>
-                        <template v-else>
-                          <v-col
-                            v-for="asset in displayedOptions[i].assets"
-                            :key="asset._id"
-                            cols="4"
-                            style="height: 130px"
-                          >
-                            <img
-                              :src="'http://anar.com'+asset.url"
-                              width="150"
-                            >
-                          </v-col>
-                        </template>
-                      </v-row>
-                    </div>
-                  </v-row>
-                </v-col>
-                <v-row class="mt-4 ml-4">
+                      </template>
+                    </v-row>
+                  </div>
+                </v-row>
+                <v-row class="mt-4 ml-2">
                   <v-button
                     color="green"
-                    elevation="2"
+                    text
+                    outlined
                     @click="addOptionInVariant(validate, variant, i)"
                   >
                     добавить
+                  </v-button>
+                  <v-button
+                    class="ml-2"
+                    color="error"
+                    text
+                    outlined
+                    @click="clearVariantOptionForm(i)"
+                  >
+                    очистить
                   </v-button>
                 </v-row>
               </v-form>
