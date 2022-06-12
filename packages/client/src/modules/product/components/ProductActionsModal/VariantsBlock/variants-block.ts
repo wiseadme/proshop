@@ -30,7 +30,7 @@ export const variantsBlock = defineComponent({
     }
 
     const setProductVariants = () => {
-
+      selectedVariants.value = []
       props.variants?.forEach((v, i) => {
         selectedVariants.value.push(clone(v))
         variantsMap.set(v.group, selectedVariants.value[i])
