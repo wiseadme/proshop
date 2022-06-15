@@ -4,13 +4,15 @@ import { categoryRoutes } from '@modules/category/routes'
 import { attributeRoutes } from '@modules/attribute/routes'
 import { unitRoutes } from '@modules/unit/routes'
 import { variantRoutes } from '@modules/variant/routes'
+import { elementRoutes } from '@modules/elements/routes'
 
 export const routes = [
   ...categoryRoutes,
   ...productRoutes,
   ...attributeRoutes,
   ...unitRoutes,
-  ...variantRoutes
+  ...variantRoutes,
+  ...elementRoutes
 ]
 
 export const router = createRouter({

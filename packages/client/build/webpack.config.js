@@ -5,6 +5,8 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 const { VueLoaderPlugin } = require('vue-loader')
+const ModuleFederationPlugin = require('webpack/lib/container/ModuleFederationPlugin')
+const deps = require('../package.json').dependencies
 
 const resolve = pathStr => path.resolve(__dirname, pathStr)
 
@@ -22,16 +24,17 @@ module.exports = (env = {}) => {
     entry: {
       main: [
         'regenerator-runtime/runtime.js',
-        resolve('../src/app/main.ts')
+        resolve('../src/app/bootstrap.ts')
       ]
     },
     output: {
       path: PATH.dist,
       filename: '[name].bundle.js',
-      assetModuleFilename: 'images/[hash][ext][query]'
+      assetModuleFilename: 'images/[hash][ext][query]',
+      publicPath: 'auto'
     },
     optimization: {
-      runtimeChunk: 'single',
+      // runtimeChunk: 'single',
       minimize: !env.dev,
       minimizer: [
         new TerserPlugin({
@@ -137,6 +140,19 @@ module.exports = (env = {}) => {
       }
     },
     plugins: [
+      new ModuleFederationPlugin({
+        name: 'app',
+        shared: {
+          ...deps,
+          vue: {
+            eager: true,
+            singleton: true
+          }
+        },
+        remotes: {
+          shop: 'shop@http://localhost:3000/shop.js'
+        }
+      }),
       new MiniCssExtractPlugin({
         filename: `css/[name].${ env.dev ? '' : '[hash].' }css`,
         chunkFilename: `css/chunk.[name].css`

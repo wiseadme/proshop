@@ -5,9 +5,6 @@ const path = require('path')
 
 const devConfig = (env = {}) => merge(baseConfig(env), {
   devtool: 'eval-cheap-module-source-map',
-  output: {
-    publicPath: '/'
-  },
   devServer: {
     host: 'localhost',
     watchFiles: path.resolve(__dirname, '../src/'),

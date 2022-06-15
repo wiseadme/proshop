@@ -15,7 +15,7 @@
     <v-layout column>
       <app-header />
       <app-navigation />
-      <v-main style="padding: 66px 10px 10px 56px">
+      <v-main style="padding: 56px 0 0 56px">
         <router-view />
       </v-main>
     </v-layout>

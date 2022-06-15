@@ -31,6 +31,11 @@
           title: 'Варианты',
           icon: 'far fa-object-ungroup',
           path: '/variants'
+        },
+        {
+          title: 'Элементы',
+          icon: 'fas fa-newspaper',
+          path: '/elements'
         }
       ]
 
