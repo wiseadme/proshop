@@ -10,5 +10,5 @@
   })
 </script>
 <template>
-  <cards-page/>
+  <cards-page :is-active="true"/>
 </template>

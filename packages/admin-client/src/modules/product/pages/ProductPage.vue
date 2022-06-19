@@ -59,6 +59,14 @@
           format: (row) => row.count
         },
         {
+          key: 'summary',
+          title: 'Сумма',
+          width: '250',
+          resizeable: true,
+          sortable: true,
+          filterable: true,
+        },
+        {
           key: 'image',
           title: 'Картинка',
           width: '150',
@@ -112,8 +120,6 @@
           model.value,
           service.product
         ) as IProduct
-
-        console.log(updates)
 
         return updates
       }
@@ -267,6 +273,9 @@
             >
               <v-icon>fas fa-trash-alt</v-icon>
             </v-button>
+          </template>
+          <template #summary="{row}">
+            <span>{{ Number(row.count * row.price).toFixed(2) }} руб.</span>
           </template>
           <template #image="{row}">
             <img

@@ -1,7 +1,7 @@
 version: '3'
 services:
-  server:
-    build: ./packages/server
+  admin_server:
+    build: ./packages/admin-server
     container_name: server
     command: npm run start
     restart: unless-stopped
@@ -22,8 +22,8 @@ services:
     volumes:
       - ecommerce:/data/db
 
-  client:
-    build: ./packages/client
+  admin_client:
+    build: ./packages/admin-client
     container_name: client
     command: nginx -g "daemon off;"
     restart: unless-stopped
@@ -40,7 +40,7 @@ services:
       - ./nginx.prod.conf:/etc/nginx/nginx.conf
       - uploads:/var/lib/docker/volumes/ecommerceplatform_uploads/_data
     depends_on:
-      - client
+      - admin_client
 
 volumes:
   ecommerce:

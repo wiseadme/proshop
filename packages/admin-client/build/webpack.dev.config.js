@@ -16,6 +16,12 @@ const devConfig = (env = {}) => merge(baseConfig(env), {
         ws: false,
         secure: false,
         changeOrigin: true
+      },
+      '/api': {
+        target: 'http://localhost/',
+        ws: false,
+        secure: false,
+        changeOrigin: true
       }
     },
     static: true,
