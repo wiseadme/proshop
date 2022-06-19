@@ -32,10 +32,10 @@ services:
 
   nginx:
     image: nginx:stable-alpine
-    container_name: nginx
+    container_name: admin-nginx
     command: nginx -g "daemon off;"
     ports:
-      - "80:80"
+      - "8080:8080"
     volumes:
       - ./nginx.prod.conf:/etc/nginx/nginx.conf
       - uploads:/var/lib/docker/volumes/ecommerceplatform_uploads/_data
