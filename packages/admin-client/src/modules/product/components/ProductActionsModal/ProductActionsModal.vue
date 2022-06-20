@@ -44,7 +44,7 @@
             </v-col>
             <v-col xl="6">
               <v-text-field
-                v-model.number="computedCount"
+                v-model.number="computedQuantity"
                 label="Количество"
                 color="#272727"
                 type="number"

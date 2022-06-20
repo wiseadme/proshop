@@ -72,7 +72,7 @@ class Service extends Observer {
 
   createProduct(product: IProduct){
     return this._store.create(product)
-      .then(() => this.getProducts())
+      // .then(() => this.getProducts())
       .catch(err => console.log(err))
   }
 

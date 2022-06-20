@@ -39,23 +39,25 @@ declare interface IProductVariant {
   options: Array<IProductVariantOption>
 }
 
+declare interface IProductSeo {
+  title: string
+  description: string
+  keywords: string
+}
+
 declare interface IProduct {
   _id: string
   name: string
   price: number
-  count: number
+  quantity: number
   url: string
   description: string
   isVisible?: boolean
   unit: Maybe<IUnit>
   categories: Array<ICategory>
   image: Maybe<IProductAsset>
-  assets: Maybe<Array<IProductAsset>>
-  attributes: Maybe<Array<IAttribute>>
-  variants: Maybe<Array<IProductVariant>>
-  seo?: {
-    title?: string
-    description?: string
-    keywords?: string
-  },
+  assets: Array<IProductAsset>
+  attributes: Array<IAttribute>
+  variants: Array<IProductVariant>
+  seo?: IProductSeo
 }

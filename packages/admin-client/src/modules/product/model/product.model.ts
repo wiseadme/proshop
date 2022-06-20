@@ -2,7 +2,7 @@ export class Product implements IProduct {
   _id: IProduct['_id']
   name: IProduct['name']
   price: IProduct['price']
-  count: IProduct['count']
+  quantity: IProduct['quantity']
   unit: IProduct['unit']
   isVisible: IProduct['isVisible']
   categories: IProduct['categories']
@@ -18,14 +18,14 @@ export class Product implements IProduct {
     _id = '',
     name = '',
     price = 0,
-    count = 0,
+    quantity = 0,
     unit = null,
     categories = [],
     description = '',
     image = null,
-    assets = null,
-    attributes = null,
-    variants = null,
+    assets = [],
+    attributes = [],
+    variants = [],
     isVisible = true,
     url = '',
     seo = {
@@ -37,7 +37,7 @@ export class Product implements IProduct {
     this._id = _id
     this.name = name
     this.price = price
-    this.count = count
+    this.quantity = quantity
     this.unit = unit
     this.image = image
     this.assets = assets

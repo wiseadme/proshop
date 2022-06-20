@@ -275,7 +275,7 @@
             </v-button>
           </template>
           <template #summary="{row}">
-            <span>{{ Number(row.count * row.price).toFixed(2) }} руб.</span>
+            <span>{{ Number(row.quantity * row.price).toFixed(2) }} руб.</span>
           </template>
           <template #image="{row}">
             <img
@@ -293,7 +293,7 @@
       v-model="showCreateModal"
       v-model:name="model.name"
       v-model:price="model.price"
-      v-model:count="model.count"
+      v-model:quantity="model.quantity"
       v-model:assets="model.assets"
       v-model:image="model.image"
       v-model:url="model.url"

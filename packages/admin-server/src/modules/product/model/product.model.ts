@@ -16,7 +16,7 @@ const ProductSchema = new Schema<IProduct & Document>({
     type: Number,
     default: 0
   },
-  count: {
+  quantity: {
     type: Number,
     default: 0
   },
@@ -44,12 +44,10 @@ const ProductSchema = new Schema<IProduct & Document>({
   },
   seo: {
     type: {
-      _id: false,
       title: String,
       description: String,
       keywords: String
     },
-    default: null
   },
   attributes: {
     type: [ {

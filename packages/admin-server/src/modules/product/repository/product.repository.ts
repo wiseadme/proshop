@@ -24,7 +24,7 @@ export class ProductRepository implements IProductRepository {
       description: product.description,
       image: product.image,
       url: product.url,
-      count: product.count,
+      count: product.quantity,
       categories: product.categories,
       variants: product.variants,
       attributes: product.attributes,

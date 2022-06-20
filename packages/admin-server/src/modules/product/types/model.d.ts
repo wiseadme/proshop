@@ -11,11 +11,11 @@ export interface IProduct {
   name: string
   description: string
   price: number
-  count: number
-  image?: string
-  url?: string
+  quantity: number
+  image: Maybe<string>
+  url: string
   isVisible: boolean
-  seo?: ISEOType
+  seo: ISEOType
   unit: Maybe<IUnit>
   categories: (ICategory & RefType)[]
   assets: (IAssetItem & RefType)[]

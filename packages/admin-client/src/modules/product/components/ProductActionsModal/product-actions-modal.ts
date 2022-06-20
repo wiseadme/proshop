@@ -22,7 +22,7 @@ export const productActionsModal = defineComponent({
     url: String,
     description: String,
     price: Number,
-    count: Number,
+    quantity: Number,
     unit: Object as PropType<IUnit>,
     isVisible: Boolean,
     image: String,
@@ -43,7 +43,7 @@ export const productActionsModal = defineComponent({
     'update:variants',
     'update:seo',
     'update:categories',
-    'update:count',
+    'update:quantity',
     'update:unit',
     'update:isVisible',
     'update:seo:title',
@@ -107,12 +107,12 @@ export const productActionsModal = defineComponent({
       }
     })
 
-    const computedCount = computed<number>({
+    const computedQuantity = computed<number>({
       get(){
-        return props.count!
+        return props.quantity!
       },
       set(val){
-        emit('update:count', +val)
+        emit('update:quantity', +val)
       }
     })
 
@@ -292,7 +292,7 @@ export const productActionsModal = defineComponent({
       computedVisibility,
       computedName,
       computedPrice,
-      computedCount,
+      computedQuantity,
       computedUnit,
       computedImage,
       computedSeoTitle,

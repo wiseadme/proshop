@@ -4,7 +4,7 @@ import { IProduct } from '../types/model'
 export class Product implements IProduct {
   private readonly _name: IProduct['name']
   private readonly _price: IProduct['price']
-  private readonly _count: IProduct['count']
+  private readonly _quantity: IProduct['quantity']
   private readonly _unit: IProduct['unit']
   private readonly _description: IProduct['description']
   private readonly _image: IProduct['image']
@@ -23,7 +23,7 @@ export class Product implements IProduct {
     image,
     assets,
     seo,
-    count,
+    quantity,
     unit,
     url,
     variants,
@@ -33,7 +33,7 @@ export class Product implements IProduct {
   }: IProduct){
     this._name = name
     this._price = price
-    this._count = count
+    this._quantity = quantity
     this._unit = unit
     this._description = description
     this._image = image || ''
@@ -54,8 +54,8 @@ export class Product implements IProduct {
     return this._price
   }
 
-  get count(){
-    return this._count
+  get quantity(){
+    return this._quantity
   }
 
   get unit(){

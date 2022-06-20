@@ -6,6 +6,7 @@ export const actions: IProductActions = {
   async create(product: IProduct){
     try {
       const { data } = await productRepository.create(product)
+      this.products.push(data.data)
       return data.data
     } catch (err) {
       return Promise.reject(err)
