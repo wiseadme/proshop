@@ -24,7 +24,7 @@ module.exports = (env = {}) => {
     entry: {
       main: [
         'regenerator-runtime/runtime.js',
-        resolve('../src/app/bootstrap.ts')
+        resolve('../src/app/index.ts')
       ]
     },
     output: {

@@ -1,9 +1,12 @@
-import { Rest } from '@shared/plugins/rest'
 import axios from 'axios'
+import { getActivePinia } from 'pinia'
+import { Client } from '@shared/plugins/client'
+
+const appStore = getActivePinia()
 
 const baseURL = process.env.NODE_ENV === 'development' ? '/' : '/'
 
-export const rest = new Rest(axios.create({
+const RestClient = axios.create({
   headers: {
     'Content-Type': 'application/json',
     Accept: 'application/json'
@@ -12,9 +15,9 @@ export const rest = new Rest(axios.create({
   withCredentials: false,
   maxContentLength: 50000000,
   timeout: 10000
-}))
+})
 
-export const file = new Rest(axios.create({
+const FilesClient = axios.create({
   headers: {
     'Content-Type': 'multipart/form-data'
   },
@@ -22,4 +25,16 @@ export const file = new Rest(axios.create({
   withCredentials: false,
   maxContentLength: 50000000,
   timeout: 10000
+})
+
+RestClient.interceptors.request.use(config => ({
+  ...config,
+  onDownloadProgress(ev) {
+    const progress = Math.ceil(Math.round(ev.loaded / ev.total * 100))
+    appStore!.state.value.app.progress = progress
+  }
 }))
+
+
+export const file = new Client(FilesClient)
+export const rest = new Client(RestClient)

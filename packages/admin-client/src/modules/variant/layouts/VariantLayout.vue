@@ -1,9 +1,13 @@
 <script lang="ts">
   import { defineComponent } from 'vue'
+  import CircularPreloader from '@shared/components/Preloader/CircularPreloader.vue'
 
   export default defineComponent({
-    name: 'unit-layout',
-    setup(){
+    name: 'variant-layout',
+    components: {
+      CircularPreloader
+    },
+    setup() {
       return {}
     }
   })
@@ -14,10 +18,14 @@
       <transition name="fade">
         <Suspense>
           <template #default>
-            <component :is="Component" />
+            <component :is="Component"/>
+          </template>
+          <template #fallback>
+            <circular-preloader/>
           </template>
         </Suspense>
       </transition>
     </router-view>
   </v-main>
 </template>
+

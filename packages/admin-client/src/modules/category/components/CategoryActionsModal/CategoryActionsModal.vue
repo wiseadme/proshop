@@ -26,9 +26,7 @@
           style="height: 70vh; max-height: 70vh; overflow: auto"
         >
           <v-row>
-            <v-col
-              xl="6"
-            >
+            <v-col xl="6">
               <v-text-field
                 v-model.trim="computedTitleProp"
                 label="название"

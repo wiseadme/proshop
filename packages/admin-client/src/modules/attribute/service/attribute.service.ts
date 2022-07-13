@@ -1,43 +1,41 @@
 import { Store } from 'pinia'
 import { useAttributeStore } from '@modules/attribute/store'
+import { useAppStore } from '@app/store'
 
 export class Service {
   static instance: Service
   private _store: Store<string, IAttributeState, {}, IAttributesActions>
+  private _appStore: Store<string, any, {}, any>
 
-  constructor(store){
+  constructor(store, appStore) {
     this._store = store
+    this._appStore = appStore
   }
 
-  get attributes(){
-    return this._store.attributes
+  get attributes() {
+    return this._appStore.attributes
   }
 
-  updateAttribute(updates){
+  updateAttribute(updates) {
     return this._store.update(updates)
       .then(res => console.log(res))
   }
 
-  createAttribute(attribute){
+  createAttribute(attribute) {
     return this._store.create(attribute)
   }
 
-  deleteAttribute(id){
-    return this._store.delete(id)
+  deleteAttribute(id) {
+    return this._store.delete(id).then(() => this.getAttributes())
   }
 
-  getAttributes(){
-    return this._store.read().catch(err => console.log(err))
+  getAttributes() {
+    return this._appStore.getAttributes().catch(err => console.log(err))
   }
 
-  onGetAttributes(){
-    if (this.attributes) return this.attributes
-    return this.getAttributes()
-  }
-
-  static create(){
+  static create() {
     if (Service.instance) return Service.instance
-    Service.instance = new Service(useAttributeStore())
+    Service.instance = new Service(useAttributeStore(), useAppStore())
     return Service.instance
   }
 }

@@ -11,3 +11,11 @@ export interface IRepository {
   update: (...args: any[]) => Promise<{ data: any }>
   delete: (...args: any[]) => Promise<{ data: any }>
 }
+
+declare type AppState = {
+  attributes: Maybe<Array<IAttribute>>
+  categories: Maybe<Array<ICategory>>
+  variants: Maybe<Array<IVariant>>
+  units: Maybe<Array<IUnit>>,
+  progress: number
+}

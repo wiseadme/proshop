@@ -5,7 +5,7 @@
   "author": "Anar Allakhverdiev <wiseadme@gmail.com>",
   "homepage": "https://github.com/wiseadme/ecommerce-platform#readme",
   "license": "ISC",
-  "main": "src/app/main.ts",
+  "main": "src/app/bootstrap.ts",
   "files": [
     "src"
   ],

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { defineComponent, ref, toRaw, watch } from 'vue'
+  import { defineComponent, shallowRef, ref, toRaw, watch } from 'vue'
   import { ProductActionsModal } from '../components/ProductActionsModal'
   // Services
   import { useProductService } from '@modules/product/service/product.service'
@@ -11,10 +11,11 @@
 
   export default defineComponent({
     components: { ProductActionsModal },
-    async setup(){
+    async setup() {
       const model = ref<IProduct>(Product.create())
-      const showCreateModal = ref<boolean>(false)
-      const isEditMode = ref(false)
+
+      const showCreateModal = shallowRef<boolean>(false)
+      const isEditMode = shallowRef<boolean>(false)
 
       const cols = ref([
         {
@@ -168,7 +169,6 @@
 
       const onCloseModal = () => {
         const diffs = checkDiffs()
-
         if (!diffs) showCreateModal.value = false
       }
 
@@ -177,7 +177,7 @@
         to => model.value = Product.create(to!)
       )
 
-      Promise.all([
+      await Promise.all([
         service.getCategories(),
         service.getAttributes(),
         service.getProducts(),
@@ -290,6 +290,7 @@
       </v-col>
     </v-row>
     <product-actions-modal
+      v-if="service.attributes"
       v-model="showCreateModal"
       v-model:name="model.name"
       v-model:price="model.price"

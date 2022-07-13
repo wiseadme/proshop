@@ -5,7 +5,7 @@
 </script>
 <template>
   <v-modal
-    :model-value="modelValue"
+    v-model="modelValue"
     transition="scale-in"
     width="90%"
     overlay

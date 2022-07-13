@@ -1,6 +1,6 @@
 import { IRest } from '@shared/types/app'
 
-export class Rest {
+export class Client {
   client: IRest
 
   constructor(client){

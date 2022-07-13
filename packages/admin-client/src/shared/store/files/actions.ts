@@ -1,11 +1,11 @@
 import { useFilesRepository } from '@shared/repository/files.repository'
 
-const filesRepository = useFilesRepository()
+const repository = useFilesRepository()
 
 export const actions = {
   async uploadFile({ ownerId, fileName, formData }){
     try {
-      const { data } = await filesRepository.create({ ownerId, fileName, formData })
+      const { data } = await repository.create({ ownerId, fileName, formData })
       return data.data
     } catch (err) {
       return Promise.reject(err)
@@ -14,7 +14,7 @@ export const actions = {
 
   async update(updates){
     try {
-      const { data } = await filesRepository.update(updates)
+      const { data } = await repository.update(updates)
       return data.data
     } catch (err) {
       return Promise.reject(err)
@@ -23,7 +23,7 @@ export const actions = {
 
   async deleteFile({ ownerId, url }){
     try {
-      const { data } = await filesRepository.delete({ ownerId, url })
+      const { data } = await repository.delete({ ownerId, url })
       return data.data
     } catch (err) {
       return Promise.reject(err)
