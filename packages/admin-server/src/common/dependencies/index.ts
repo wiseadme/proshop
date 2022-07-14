@@ -13,6 +13,7 @@ import { AttributeController } from '@modules/attribute/controller/attribute.con
 import { SwaggerController } from '@swagger/controller/swagger.controller'
 import { VariantController } from '@modules/variant/controller/variant.controller'
 import { UnitController } from '@modules/unit/controller/unit.controller'
+import { CartController } from '@modules/cart/controller/cart.controller'
 
 // Services
 import { LoggerService } from '../services/logger.service'
@@ -86,6 +87,7 @@ container.bind<IController>(TYPES.CONTROLLERS.IController).to(VariantController)
 container.bind<IController>(TYPES.CONTROLLERS.IController).to(AttributeController)
 container.bind<IController>(TYPES.CONTROLLERS.IController).to(AssetController)
 container.bind<IController>(TYPES.CONTROLLERS.IController).to(UnitController)
+container.bind<IController>(TYPES.CONTROLLERS.IController).to(CartController)
 
 // Middlewares
 container.bind<IExpressMiddleware>(TYPES.MIDDLEWARES.IMiddleware).to(JsonMiddleware)
