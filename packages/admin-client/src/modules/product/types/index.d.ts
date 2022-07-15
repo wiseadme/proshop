@@ -1,3 +1,5 @@
+import { IVariant } from '@modules/variant/types'
+
 declare interface IProductState {
   products: Maybe<Array<IProduct>>
 }
@@ -20,25 +22,6 @@ declare interface IProductAsset {
   main: boolean
 }
 
-declare interface IProductAttribute {
-  key: string
-  value: string
-  meta?: string
-}
-
-declare interface IProductVariantOption {
-  name: string,
-  count: number
-  price: number
-  description: string
-  assets: Array<IProductAsset>
-}
-
-declare interface IProductVariant {
-  group: string
-  options: Array<IProductVariantOption>
-}
-
 declare interface IProductSeo {
   title: string
   description: string
@@ -58,6 +41,6 @@ declare interface IProduct {
   image: Maybe<IProductAsset>
   assets: Array<IProductAsset>
   attributes: Array<IAttribute>
-  variants: Array<IProductVariant>
+  variants: Array<IVariant>
   seo?: IProductSeo
 }

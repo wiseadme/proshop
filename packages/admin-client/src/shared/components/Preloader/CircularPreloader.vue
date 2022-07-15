@@ -7,7 +7,6 @@
     setup() {
       const percentage = shallowRef(0)
       const store = useAppStore()
-
       let timer: any = null
 
       const percentProgress = () => {

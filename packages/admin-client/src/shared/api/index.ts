@@ -30,7 +30,7 @@ const FilesClient = axios.create({
 RestClient.interceptors.request.use(config => ({
   ...config,
   onDownloadProgress(ev) {
-    const progress = Math.ceil(Math.round(ev.loaded / ev.total * 100))
+    const progress = Math.ceil(Math.round(ev.loaded / (ev.total || ev.loaded) * 100))
     appStore!.state.value.app.progress = progress
   }
 }))

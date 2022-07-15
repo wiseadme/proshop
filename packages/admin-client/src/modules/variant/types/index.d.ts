@@ -1,6 +1,17 @@
+import { IProductAsset } from '@modules/product/types'
+
+interface IVariantOption {
+  assets: Array<IProductAsset>
+  count: number
+  description: string
+  name: string
+  price: number
+}
+
 declare interface IVariant {
   _id: string
   group: string
+  options: Array<IVariantOption>
 }
 
 declare interface IVariantActions {

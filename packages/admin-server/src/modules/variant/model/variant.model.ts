@@ -6,6 +6,10 @@ const VariantSchema = new Schema<Document & IVariant>({
   group: {
     type: String,
     required: true
+  },
+  options: {
+    type: Array as any,
+    required: true
   }
 }, {
   timestamps: true

@@ -5,28 +5,45 @@ import { TYPES } from '@common/schemes/di-types'
 import { ILogger } from '@/types/utils'
 import { ICartService } from '../types/service'
 import { ICartRepository } from '../types/repository'
+import { ICart } from '@modules/cart/types/model'
 
 @injectable()
 export class CartService implements ICartService {
   constructor(
     @inject(TYPES.UTILS.ILogger) private logger: ILogger,
-    @inject(TYPES.REPOSITORIES.IAttributeRepository) private repository: ICartRepository
-  ){
+    @inject(TYPES.REPOSITORIES.ICartRepository) private repository: ICartRepository,
+  ) {
   }
 
-  create(attribute){
-    return this.repository.create(attribute)
+  async create(cart) {
+    return await this.repository.create(cart)
   }
 
-  read(id?: string): Promise<Document & ICart>{
-    return this.repository.read(id)
+  async read(id?: string): Promise<Document & ICart> {
+    return await this.repository.read(id)
   }
 
-  update(updates: ICart & Document): Promise<{ updated: Document<ICart> }>{
-    return this.repository.update(updates)
+  async update(updates: ICart & Document): Promise<{ updated: Document<ICart> }> {
+    if (updates.items) {
+      updates.amount = 0
+      updates.totalItems = 0
+      updates.totalUniqueItems = updates.items.length
+
+      updates.items.forEach(it => {
+        if (it.variant) {
+          updates.amount += it.variant.option.price * it.quantity
+        } else {
+          updates.amount += it.product.price * it.quantity
+        }
+
+        updates.totalItems += it.quantity
+      })
+    }
+
+    return await this.repository.update(updates)
   }
 
-  delete(id: string): Promise<boolean>{
-    return this.repository.delete(id)
+  async delete(id: string): Promise<boolean> {
+    return await this.repository.delete(id)
   }
 }

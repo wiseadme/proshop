@@ -9,6 +9,7 @@ import { Request, Response } from 'express'
 import { ILogger } from '@/types/utils'
 import { IController } from '@/types'
 import { ICartService } from '../types/service'
+import { ICart } from '../types/model'
 
 @injectable()
 export class CartController extends BaseController implements IController {
@@ -17,20 +18,20 @@ export class CartController extends BaseController implements IController {
 
   constructor(
     @inject(TYPES.UTILS.ILogger) private logger: ILogger,
-    @inject(TYPES.SERVICES.IAttributeService) private service: ICartService
-  ){
+    @inject(TYPES.SERVICES.ICartService) private service: ICartService
+  ) {
     super()
     this.initRoutes()
   }
 
-  initRoutes(){
+  initRoutes() {
     this.router.post('/', expressAsyncHandler(this.createCart.bind(this)))
     this.router.get('/', expressAsyncHandler(this.getCart.bind(this)))
     this.router.patch('/', expressAsyncHandler(this.updateCart.bind(this)))
     this.router.delete('/', expressAsyncHandler(this.deleteCart.bind(this)))
   }
 
-  async createCart({ body, method }: Request<{}, {}, ICart>, res: Response){
+  async createCart({ body, method }: Request<{}, {}, ICart>, res: Response) {
     try {
       const cart = await this.service.create(body)
 
@@ -49,7 +50,7 @@ export class CartController extends BaseController implements IController {
     }
   }
 
-  async getCart({ query, method }: Request<{}, {}, {}, { id?: string }>, res: Response){
+  async getCart({ query, method }: Request<{}, {}, {}, { id?: string }>, res: Response) {
     try {
       const cart = await this.service.read(query?.id)
 
@@ -68,7 +69,7 @@ export class CartController extends BaseController implements IController {
     }
   }
 
-  async updateCart({ body, method }: Request<{}, {}, ICart & Document>, res: Response){
+  async updateCart({ body, method }: Request<{}, {}, ICart & Document>, res: Response) {
     try {
       const { updated } = await this.service.update(body)
 
@@ -87,7 +88,7 @@ export class CartController extends BaseController implements IController {
     }
   }
 
-  async deleteCart({ query, method }: Request<{}, {}, {}, { id: string }>, res: Response){
+  async deleteCart({ query, method }: Request<{}, {}, {}, { id: string }>, res: Response) {
     try {
       await this.service.delete(query.id)
       this.send({

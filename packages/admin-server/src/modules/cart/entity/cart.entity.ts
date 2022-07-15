@@ -1,3 +1,5 @@
+import { ICart } from '@modules/cart/types/model'
+
 export class Cart implements ICart {
   private _items: ICart['items']
   private _totalItems: ICart['totalItems']

@@ -1,17 +1,23 @@
 import { IVariant } from '../types/model'
 
 export class Variant {
-  private readonly _group: string
+  private readonly _group: IVariant['group']
+  private _options: IVariant['options']
 
-  constructor({ group }){
+  constructor({ group, options = [] }: IVariant) {
     this._group = group
+    this._options = options
   }
 
-  get group(){
+  get group() {
     return this._group
   }
 
-  static create(variant: IVariant){
-    return new Variant(variant as IVariant)
+  get options() {
+    return this._options
+  }
+
+  static create(variant: IVariant) {
+    return new Variant(variant)
   }
 }

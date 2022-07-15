@@ -1,4 +1,5 @@
 import { model, Schema, Document } from 'mongoose'
+import { ICart } from '@modules/cart/types/model'
 
 const CartSchema = new Schema<Document & ICart>({
   _id: Schema.Types.ObjectId,

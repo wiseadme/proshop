@@ -1,19 +1,21 @@
 import { defineComponent, PropType, ref, watch } from 'vue'
 import { clone } from '@shared/helpers'
+import { IVariant, IVariantOption } from '@modules/variant/types'
 
 export const variantsBlock = defineComponent({
   name: 'variant-block',
   props: {
     isDisplayed: Boolean,
     variantItems: Array as PropType<Array<IVariant>>,
-    variants: Array as PropType<Array<IProductVariant>>
+    variants: Array as PropType<Array<IVariant>>
   },
   emits: [ 'update:variants', 'update:variant-image' ],
-  setup(props, { emit }){
-    const variantsMap: Map<string, IProductVariant> = new Map()
-    const displayedVariants = ref<Array<IProductVariant>>([])
-    const displayedOptions = ref<Array<IProductVariantOption>>([])
-    const selectedVariants = ref<Array<IProductVariant>>([])
+
+  setup(props, { emit }) {
+    const variantsMap: Map<string, IVariant> = new Map()
+    const displayedVariants = ref<Array<IVariant>>([])
+    const displayedOptions = ref<Array<IVariantOption>>([])
+    const selectedVariants = ref<Array<IVariant>>([])
 
     const genVariantOption = () => ({
       name: '',
@@ -24,9 +26,7 @@ export const variantsBlock = defineComponent({
     })
 
     const prepareVariantPatterns = () => {
-      props.variantItems?.forEach(v => {
-        variantsMap.set(v.group, { group: v.group, options: [] })
-      })
+      props.variantItems?.forEach(v => variantsMap.set(v.group, v))
     }
 
     const setProductVariants = () => {

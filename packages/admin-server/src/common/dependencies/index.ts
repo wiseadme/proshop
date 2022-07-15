@@ -23,6 +23,7 @@ import { VariantService } from '@modules/variant/service/variant.service'
 import { AssetService } from '@modules/asset/service/asset.service'
 import { AttributeService } from '@modules/attribute/service/attribute.service'
 import { UnitService } from '@modules/unit/service/unit.service'
+import { CartService } from '@modules/cart/service/cart.service'
 import { EventBusService } from '@common/services/event-bus.service'
 
 // Repositories
@@ -47,6 +48,7 @@ import { IAssetsService } from '@modules/asset/types/service'
 import { IVariantService } from '@modules/variant/types/service'
 import { IAttributeService } from '@modules/attribute/types/service'
 import { IUnitService } from '@modules/unit/types/service'
+import { ICartService } from '@modules/cart/types/service'
 import { IEventBusService } from '@/types/services'
 
 import { ICategoryRepository } from '@modules/category/types/repository'
@@ -55,10 +57,12 @@ import { IProductRepository } from '@modules/product/types/repository'
 import { IVariantRepository } from '@modules/variant/types/repository'
 import { IAttributeRepository } from '@modules/attribute/types/repository'
 import { IUnitRepository } from '@modules/unit/types/repository'
+import { ICartRepository } from '@modules/cart/types/repository'
 
 import { ILogger } from '@/types/utils'
 import { IController, IConfig, IDb } from '@/types'
 import { IMiddleware, IErrorRouteMiddleware, IExpressMiddleware, IFileLoaderMiddleware } from '@/types/middlewares'
+import { CartRepository } from '@modules/cart/repository/cart.repository'
 
 export const container = new Container({ skipBaseClassChecks: true })
 
@@ -78,6 +82,7 @@ container.bind<IVariantService>(TYPES.SERVICES.IVariantService).to(VariantServic
 container.bind<IAttributeService>(TYPES.SERVICES.IAttributeService).to(AttributeService)
 container.bind<IEventBusService>(TYPES.SERVICES.IEventBusService).to(EventBusService)
 container.bind<IUnitService>(TYPES.SERVICES.IUnitService).to(UnitService)
+container.bind<ICartService>(TYPES.SERVICES.ICartService).to(CartService)
 
 // Controllers
 container.bind<IController>(TYPES.CONTROLLERS.IController).to(SwaggerController)
@@ -103,3 +108,4 @@ container.bind<IAssetsRepository>(TYPES.REPOSITORIES.IAssetsRepository).to(Asset
 container.bind<IAttributeRepository>(TYPES.REPOSITORIES.IAttributeRepository).to(AttributeRepository)
 container.bind<IVariantRepository>(TYPES.REPOSITORIES.IVariantRepository).to(VariantRepository)
 container.bind<IUnitRepository>(TYPES.REPOSITORIES.IUnitRepository).to(UnitRepository)
+container.bind<ICartRepository>(TYPES.REPOSITORIES.ICartRepository).to(CartRepository)

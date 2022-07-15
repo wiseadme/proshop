@@ -1,17 +1,18 @@
-declare interface ICartItem {
-  productId: string
-  variantId?: string
-  price: number
+import { IVariantOption } from '@modules/variant/types/model'
+import { IProduct } from '@modules/product/types/model'
+
+interface ICartItem {
+  product: IProduct
+  variant?: { name: string, option: IVariantOption }
   quantity: number
-  amount: number
 }
 
-declare interface ICurrency {
+interface ICurrency {
   code: string
   symbol: string
 }
 
-declare interface ICart {
+export interface ICart {
   items: Array<ICartItem>
   totalItems: number
   totalUniqueItems: number

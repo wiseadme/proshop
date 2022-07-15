@@ -5,7 +5,6 @@ import { IVariant } from '@modules/variant/types/model'
 import { ICategory } from '@modules/category/types/model'
 import { IUnit } from '@modules/unit/types/model'
 import { ISEOType } from '@/types/models'
-import { Maybe } from '@/types/types'
 
 export interface IProduct {
   name: string
