@@ -4,6 +4,7 @@ import expressAsyncHandler from 'express-async-handler'
 
 import { TYPES } from '@common/schemes/di-types'
 import { BaseController } from '@common/controller/base.controller'
+import { ProductDTO } from '@modules/product/dto/product.dto'
 
 // Types
 import { ILogger } from '@/types/utils'
@@ -11,6 +12,7 @@ import { IController } from '@/types'
 import { IProduct } from '../types/model'
 import { IProductService } from '../types/service'
 import { ProductQuery } from '../types/params'
+import { ValidateMiddleware } from '@common/middlewares/validate.middleware'
 
 @injectable()
 export class ProductController extends BaseController implements IController {
@@ -20,19 +22,19 @@ export class ProductController extends BaseController implements IController {
   constructor(
     @inject(TYPES.UTILS.ILogger) private logger: ILogger,
     @inject(TYPES.SERVICES.IProductService) private service: IProductService,
-  ){
+  ) {
     super()
     this.initRoutes()
   }
 
-  public initRoutes(){
-    this.router.post('/', expressAsyncHandler(this.createProduct.bind(this)))
+  public initRoutes() {
+    this.router.post('/', new ValidateMiddleware(ProductDTO).execute, expressAsyncHandler(this.createProduct.bind(this)))
+    this.router.patch('/', new ValidateMiddleware(ProductDTO).execute, expressAsyncHandler(this.updateProduct.bind(this)))
     this.router.get('/', expressAsyncHandler(this.getProducts.bind(this)))
-    this.router.patch('/', expressAsyncHandler(this.updateProduct.bind(this)))
     this.router.delete('/', expressAsyncHandler(this.deleteProduct.bind(this)))
   }
 
-  async createProduct({ body, method }: Request<{}, {}, IProduct>, res: Response){
+  async createProduct({ body, method }: Request<{}, {}, IProduct>, res: Response) {
     try {
       const product = await this.service.create(body)
 
@@ -51,7 +53,7 @@ export class ProductController extends BaseController implements IController {
     }
   }
 
-  async getProducts({ query, method }: Request<{}, {}, {}, ProductQuery>, res: Response){
+  async getProducts({ query, method }: Request<{}, {}, {}, ProductQuery>, res: Response) {
     try {
       const products = await this.service.read(query)
 
@@ -70,7 +72,7 @@ export class ProductController extends BaseController implements IController {
     }
   }
 
-  async updateProduct({ body, method }: Request<{}, {}, Partial<IProduct & Document>>, res: Response){
+  async updateProduct({ body, method }: Request<{}, {}, Partial<IProduct & Document>>, res: Response) {
 
     try {
       const { updated } = await this.service.update(body)
@@ -90,7 +92,7 @@ export class ProductController extends BaseController implements IController {
     }
   }
 
-  async deleteProduct({ query, method }: Request<{}, {}, {}, { id: string }>, res: Response){
+  async deleteProduct({ query, method }: Request<{}, {}, {}, { id: string }>, res: Response) {
     try {
       await this.service.delete(query.id)
 

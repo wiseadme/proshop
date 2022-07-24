@@ -8,37 +8,36 @@ import { Document } from 'mongoose'
 import { Request, Response } from 'express'
 import { ILogger } from '@/types/utils'
 import { IController } from '@/types'
-import { ICartService } from '../types/service'
-import { ICart } from '../types/model'
-import { Cart } from '@modules/cart/entity/cart.entity'
+import { IOrderService } from '../types/service'
+import { IOrder } from '../types/model'
 
 @injectable()
-export class CartController extends BaseController implements IController {
-  public path = '/v1/cart'
+export class OrderController extends BaseController implements IController {
+  public path = '/v1/order'
   public router = Router()
 
   constructor(
     @inject(TYPES.UTILS.ILogger) private logger: ILogger,
-    @inject(TYPES.SERVICES.ICartService) private service: ICartService
+    @inject(TYPES.SERVICES.IOrderService) private service: IOrderService
   ) {
     super()
     this.initRoutes()
   }
 
   initRoutes() {
-    this.router.post('/', expressAsyncHandler(this.createCart.bind(this)))
-    this.router.get('/', expressAsyncHandler(this.getCart.bind(this)))
-    this.router.patch('/', expressAsyncHandler(this.updateCart.bind(this)))
-    this.router.delete('/', expressAsyncHandler(this.deleteCart.bind(this)))
+    this.router.post('/', expressAsyncHandler(this.createOrder.bind(this)))
+    this.router.get('/', expressAsyncHandler(this.getOrder.bind(this)))
+    this.router.patch('/', expressAsyncHandler(this.updateOrder.bind(this)))
+    this.router.delete('/', expressAsyncHandler(this.deleteOrder.bind(this)))
   }
 
-  async createCart({ body, method }: Request<{}, {}, ICart>, res: Response) {
+  async createOrder({ body, method }: Request<{}, {}, IOrder>, res: Response) {
     try {
-      const cart = await this.service.create(Cart.create(body))
+      const order = await this.service.create(body)
 
       this.send({
         response: res,
-        data: cart,
+        data: order,
         url: this.path,
         method
       })
@@ -51,13 +50,13 @@ export class CartController extends BaseController implements IController {
     }
   }
 
-  async getCart({ query, method }: Request<{}, {}, {}, { id?: string }>, res: Response) {
+  async getOrder({ query, method }: Request<{}, {}, {}, { id?: string }>, res: Response) {
     try {
-      const cart = await this.service.read(query?.id)
+      const order = await this.service.read(query?.id)
 
       this.send({
         response: res,
-        data: cart,
+        data: order,
         url: this.path,
         method
       })
@@ -70,7 +69,7 @@ export class CartController extends BaseController implements IController {
     }
   }
 
-  async updateCart({ body, method }: Request<{}, {}, ICart & Document>, res: Response) {
+  async updateOrder({ body, method }: Request<{}, {}, IOrder & Document>, res: Response) {
     try {
       const { updated } = await this.service.update(body)
 
@@ -89,7 +88,7 @@ export class CartController extends BaseController implements IController {
     }
   }
 
-  async deleteCart({ query, method }: Request<{}, {}, {}, { id: string }>, res: Response) {
+  async deleteOrder({ query, method }: Request<{}, {}, {}, { id: string }>, res: Response) {
     try {
       await this.service.delete(query.id)
       this.send({

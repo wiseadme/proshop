@@ -10,7 +10,8 @@ export const TYPES = {
     IEventBusService: Symbol.for('IEventBusService'),
     IAttributeService: Symbol.for('IAttributeService'),
     IUnitService: Symbol.for('IUnitService'),
-    ICartService: Symbol.for('ICartService')
+    ICartService: Symbol.for('ICartService'),
+    IOrderService: Symbol.for('IOrderService')
   },
   CONTROLLERS: {
     IController: Symbol.for('IController'),
@@ -25,7 +26,8 @@ export const TYPES = {
     IVariantRepository: Symbol.for('IVariantRepository'),
     IAttributeRepository: Symbol.for('IAttributeRepository'),
     IUnitRepository: Symbol.for('IUnitRepository'),
-    ICartRepository: Symbol.for('ICartRepository')
+    ICartRepository: Symbol.for('ICartRepository'),
+    IOrderRepository: Symbol.for('IRepository')
   },
   MIDDLEWARES: {
     IMiddleware: Symbol.for('IMiddleware'),

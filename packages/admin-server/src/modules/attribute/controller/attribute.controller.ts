@@ -10,6 +10,9 @@ import { ILogger } from '@/types/utils'
 import { IController } from '@/types'
 import { IAttributeService } from '../types/service'
 import { IAttribute } from '../types/model'
+import { ValidateMiddleware } from '@common/middlewares/validate.middleware'
+import { Attribute } from '@modules/attribute/entity/attribute.entity'
+import { AttributeDTO } from '@modules/attribute/dto/attribute.dto'
 
 @injectable()
 export class AttributeController extends BaseController implements IController {
@@ -25,7 +28,7 @@ export class AttributeController extends BaseController implements IController {
   }
 
   initRoutes(){
-    this.router.post('/', expressAsyncHandler(this.createAttribute.bind(this)))
+    this.router.post('/', new ValidateMiddleware(AttributeDTO).execute, expressAsyncHandler(this.createAttribute.bind(this)))
     this.router.get('/', expressAsyncHandler(this.getAttribute.bind(this)))
     this.router.patch('/', expressAsyncHandler(this.updateAttributes.bind(this)))
     this.router.delete('/', expressAsyncHandler(this.deleteAttribute.bind(this)))

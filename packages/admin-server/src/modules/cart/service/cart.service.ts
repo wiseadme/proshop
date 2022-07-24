@@ -24,13 +24,15 @@ export class CartService implements ICartService {
   }
 
   async update(updates: ICart & Document): Promise<{ updated: Document<ICart> }> {
+    updates.amount = 0
+    updates.totalItems = 0
+    updates.totalUniqueItems = 0
+
     if (updates.items) {
-      updates.amount = 0
-      updates.totalItems = 0
       updates.totalUniqueItems = updates.items.length
 
       updates.items.forEach(it => {
-        if (it.variant) {
+        if (it.variant && it.variant.option.price) {
           updates.amount += it.variant.option.price * it.quantity
         } else {
           updates.amount += it.product.price * it.quantity

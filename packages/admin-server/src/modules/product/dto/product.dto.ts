@@ -1,0 +1,17 @@
+import { IProduct } from '@modules/product/types/model'
+
+export class ProductDTO {
+  name: IProduct['name']
+  price: IProduct['price']
+  quantity: IProduct['quantity']
+  unit: IProduct['unit']
+  description: IProduct['description']
+  image: IProduct['image']
+  url: IProduct['url']
+  categories: IProduct['categories']
+  seo: IProduct['seo']
+  assets: IProduct['assets']
+  variants: IProduct['variants']
+  attributes: IProduct['attributes']
+  isVisible: IProduct['isVisible']
+}
