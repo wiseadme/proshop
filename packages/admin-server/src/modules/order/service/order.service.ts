@@ -19,7 +19,7 @@ export class OrderService implements IOrderService {
   }
 
   async create(order: IOrder) {
-    order.orderId = 'T0000001'
+    order.orderId = `T-${new Date().toLocaleDateString().replace(/\D/g, '')}-${1}`
     order.qrcode = await QRCode.toDataURL(order.orderId)
     order.status = OrderStatus.CREATED
 
