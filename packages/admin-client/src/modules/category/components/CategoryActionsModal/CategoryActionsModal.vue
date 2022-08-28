@@ -12,9 +12,10 @@
   >
     <v-form v-slot="{ validate }">
       <v-card
+        v-click-outside="{handler: () => $emit('update:modelValue', false)}"
         class="elevation-3"
         width="100%"
-        color="#272727"
+        color="#fefefe"
       >
         <v-card-title
           class="card-title green--text text--base"
@@ -22,7 +23,6 @@
           {{ isUpdate ? 'Обновление категории': 'Создание категории' }}
         </v-card-title>
         <v-card-content
-          class="grey lighten-3"
           style="height: 70vh; max-height: 70vh; overflow: auto"
         >
           <v-row>
@@ -30,8 +30,6 @@
               <v-text-field
                 v-model.trim="computedTitleProp"
                 label="название"
-                color="#272727"
-                text-color="#272727"
               />
             </v-col>
             <v-col
@@ -40,8 +38,6 @@
               <v-text-field
                 v-model.trim="computedUrlProp"
                 label="url категории"
-                color="#272727"
-                text-color="#272727"
               />
             </v-col>
           </v-row>
@@ -50,16 +46,12 @@
               <v-text-field
                 v-model.trim="computedSeoTitleProp"
                 label="seo title"
-                color="#272727"
-                text-color="#272727"
               />
             </v-col>
             <v-col xl="6">
               <v-text-field
                 v-model.trim="computedSeoDescProp"
                 label="seo description"
-                color="#272727"
-                text-color="#272727"
               />
             </v-col>
           </v-row>
@@ -68,16 +60,12 @@
               <v-text-field
                 v-model.trim="computedSeoKeywordsProp"
                 label="seo keywords"
-                color="#272727"
-                text-color="#272727"
               />
             </v-col>
             <v-col xl="6">
               <v-text-field
                 v-model.number="computedOrderProp"
                 label="порядковый номер"
-                color="#272727"
-                text-color="#272727"
                 type="number"
               />
             </v-col>
@@ -87,9 +75,7 @@
                 label="Родительская категория"
                 :items="categories"
                 :disabled="categories && !categories.length"
-                color="#272727"
                 active-class="green white--text text--white"
-                text-color="#272727"
                 value-key="title"
               />
             </v-col>
@@ -97,8 +83,6 @@
               <v-file-input
                 v-model:value="files"
                 label="загрузите изображения"
-                color="#272727"
-                text-color="#272727"
                 chip-color="green"
                 :disabled="!isUpdate || !!computedImageProp"
                 @update:value="onLoadImage"
@@ -142,20 +126,18 @@
         </v-card-content>
         <v-card-actions>
           <v-button
-            color="white"
+            color="green"
             elevation="3"
             width="120"
-            outlined
             @click="onSubmit(validate)"
           >
             сохранить
           </v-button>
           <v-button
-            color="warning"
+            color="orange darken-1"
             class="ml-4"
             width="120"
             elevation="3"
-            outlined
             @click="$emit('update:modelValue', false)"
           >
             отмена

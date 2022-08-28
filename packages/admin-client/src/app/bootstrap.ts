@@ -1,17 +1,16 @@
 import { createApp } from 'vue'
 import { router } from './router'
 import { createPinia } from 'pinia'
+import { vueland } from '@shared/plugins/vueland'
 import App from './App.vue'
-import Vueland from 'vueland/lib'
-
-import 'vueland/dist/css/vueland-base.css'
-import 'vueland/dist/css/themes/vueland-theme.css'
 
 const app = createApp(App)
 const pinia = createPinia()
 
-app.use(Vueland)
+app.use(vueland)
 app.use(pinia)
 app.use(router)
+
+console.log(app)
 
 router.isReady().then(() => app.mount('#app'))

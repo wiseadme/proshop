@@ -171,13 +171,9 @@
           :cols="cols"
           :rows="service.categories"
           :header-options="{
-            color: 'green',
-            contentColor: '#ffffff',
-            resizerColor: '#ffffff'
+
           }"
           :footer-options="{
-            color: '#272727',
-            contentColor: '#ffffff',
             counts: {
               displayColor: 'green',
               rowsPerPageText: 'кол-во строк'
@@ -192,19 +188,17 @@
           show-sequence
         >
           <template #toolbar>
-            <v-toolbar color="#272727">
+            <v-toolbar color="grey lighten-4">
               <v-toolbar-logo></v-toolbar-logo>
               <v-spacer></v-spacer>
               <v-toolbar-items>
                 <v-button
                   color="green"
                   elevation="5"
-                  outlined
                   @click="onAddNew"
                 >
                   <v-icon
                     size="14"
-                    color="green"
                     sm
                   >
                     fas fa-plus

@@ -75,6 +75,6 @@
     "vue": "^3.2.1",
     "vue-router": "^4.0.15",
     "vuedraggable": "^4.1.0",
-    "vueland": "github:vueland/vueland-next"
+    "vueland": "^1.0.0"
   }
 }

@@ -151,6 +151,7 @@ module.exports = (env = {}) => {
         },
         remotes: {
           shop: 'shop@http://85.193.81.212/shop.js'
+          // shop: 'shop@http://localhost:3002/shop.js'
         }
       }),
       new MiniCssExtractPlugin({

@@ -68,7 +68,6 @@
           <v-card
             width="100%"
             elevation="2"
-            color="#ffffff"
           >
             <v-card-title class="green--text">
               <h3>Аттрибуты</h3>
@@ -77,24 +76,20 @@
               <v-text-field
                 v-model="attributePattern.key"
                 label="Название*"
-                color="#272727"
                 :rules="[val => !!val || 'Обязательное поле']"
               />
               <v-text-field
                 v-model="attributePattern.value"
                 label="Значение по умолчанию*"
-                color="#272727"
                 :rules="[val => !!val || 'Обязательное поле']"
               />
               <v-text-field
                 v-model="attributePattern.meta"
                 label="Мета информация"
-                color="#272727"
               />
               <v-text-field
                 v-model="attributePattern.order"
                 label="Порядковый номер"
-                color="#272727"
                 type="number"
               />
             </v-card-content>
@@ -140,7 +135,7 @@
           >
             <template #item="{element}">
               <div
-                class="d-flex justify-start align-center elevation-2 my-1 py-4 px-3 white"
+                class="d-flex justify-start align-center elevation-2 my-1 py-4 px-3"
               >
                 <v-icon
                   class="mr-3"

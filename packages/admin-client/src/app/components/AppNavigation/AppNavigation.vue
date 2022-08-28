@@ -63,7 +63,6 @@
   <v-navigation
     fixed
     :on-hover="true"
-    color="#272727"
     offset-top="56"
     class="elevation-2"
   >
@@ -71,7 +70,6 @@
       v-model:value="current"
       active-class="green white--text text--base"
       active
-      text-color="#ffffff"
     >
       <v-list-item
         v-for="it in items"

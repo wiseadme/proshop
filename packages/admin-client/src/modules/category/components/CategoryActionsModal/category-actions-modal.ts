@@ -1,5 +1,4 @@
 import { defineComponent, ref, watch, computed, PropType } from 'vue'
-import { Maybe } from 'vueland/dist/types/base'
 
 export const categoryActionsModal = defineComponent({
   props: {
@@ -8,7 +7,7 @@ export const categoryActionsModal = defineComponent({
     title: String,
     url: String,
     image: String,
-    parent: [Object, String] as PropType<ICategory | string>,
+    parent: [ Object, String ] as PropType<ICategory | string>,
     order: Number,
     seoTitle: String,
     seoDescription: String,
@@ -115,10 +114,10 @@ export const categoryActionsModal = defineComponent({
     })
 
     const computedIsVisibleProp = computed<boolean>({
-      get() {
+      get(){
         return props.isVisible
       },
-      set(val) {
+      set(val){
         emit('update:isVisible', val)
       }
     })
