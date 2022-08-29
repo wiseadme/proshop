@@ -9,12 +9,15 @@
 
   import { clone } from '@shared/helpers'
 
+  import { IProduct } from '@modules/product/types'
+
   export default defineComponent({
     components: { ProductActionsModal },
-    async setup() {
+    async setup(){
       const model = ref<IProduct>(Product.create())
 
       const showCreateModal = shallowRef<boolean>(false)
+      const hasChanges = shallowRef<boolean>(false)
       const isEditMode = shallowRef<boolean>(false)
 
       const cols = ref([
@@ -117,8 +120,8 @@
       }
 
       const checkDiffs = () => {
-        const updates: Maybe<IProduct> = getDifferences(
-          model.value,
+        const updates: Maybe<Partial<IProduct>> = getDifferences(
+          toRaw(model.value),
           service.product
         ) as IProduct
 
@@ -126,7 +129,7 @@
       }
 
       const onUpdate = () => {
-        const updates: Maybe<IProduct> = checkDiffs()
+        const updates: Maybe<Partial<IProduct>> = checkDiffs()
 
         !!updates && (updates._id = model.value._id)
 
@@ -168,14 +171,21 @@
       }
 
       const onCloseModal = () => {
-        const diffs = checkDiffs()
-        if (!diffs) showCreateModal.value = false
+        if (!hasChanges.value) showCreateModal.value = false
       }
 
-      watch(
-        () => service.product,
-        to => model.value = Product.create(to!)
-      )
+      const onDiscard = () => {
+        model.value = Product.create(service.product!)
+      }
+
+      watch(() => service.product, to => {
+        model.value = Product.create(to!)
+      })
+
+      watch(model, () => {
+        hasChanges.value = isEditMode.value && !!checkDiffs()
+
+      }, { deep: true })
 
       await Promise.all([
         service.getCategories(),
@@ -190,6 +200,7 @@
         model,
         service,
         showCreateModal,
+        hasChanges,
         isEditMode,
         onCreate,
         onUpdate,
@@ -200,6 +211,7 @@
         onDeleteImage,
         onUploadImage,
         onUploadVariantImage,
+        onDiscard,
         checkDiffs
       }
     }
@@ -309,12 +321,14 @@
       :variant-items="service.variants"
       :unit-items="service.units"
       :is-update="isEditMode"
-      @create="onCreate"
-      @update="onUpdate"
+      :has-changes="hasChanges"
       @upload:image="onUploadImage"
       @update:variant-image="onUploadVariantImage"
       @delete:image="onDeleteImage"
+      @create="onCreate"
+      @update="onUpdate"
       @close="onCloseModal"
+      @discard="onDiscard"
     />
   </v-layout>
 </template>

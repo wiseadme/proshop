@@ -5,6 +5,8 @@ import { useAppStore } from '@app/store'
 import { useProductStore } from '@modules/product/store'
 // Services
 import { useFilesService } from '@shared/services/files.service'
+// Types
+import { IProductState, IProductActions, IProduct, IProductAsset } from '../types'
 
 class Service {
   private _store: Store<string, IProductState, {}, IProductActions>
@@ -13,88 +15,88 @@ class Service {
   private _files: ReturnType<typeof useFilesService>
   static instance: Service
 
-  constructor({ store, appStore, filesService }) {
+  constructor({ store, appStore, filesService }){
     this._store = store
     this._appStore = appStore
     this._product = ref(null)
     this._files = filesService
   }
 
-  get products() {
+  get products(){
     return this._store.products
   }
 
-  get product() {
+  get product(){
     return this._product.value
   }
 
-  get attributes() {
+  get attributes(){
     return this._appStore.attributes
   }
 
-  get categories() {
+  get categories(){
     return this._appStore.categories
   }
 
-  get units() {
+  get units(){
     return this._appStore.units
   }
 
-  get variants() {
+  get variants(){
     return this._appStore.variants
   }
 
-  async getAttributes() {
+  async getAttributes(){
     if (this._appStore.attributes) return this._appStore.attributes
     await this._appStore.getAttributes()
   }
 
-  async getUnits() {
+  async getUnits(){
     if (this._appStore.units) return this._appStore.units
     await this._appStore.getUnits()
   }
 
-  async getCategories() {
+  async getCategories(){
     if (this._appStore.categories) return this._appStore.categories
     await this._appStore.getCategories()
   }
 
-  async getVariants() {
+  async getVariants(){
     if (this._appStore.variants) return this._appStore.variants
     await this._appStore.getVariants()
   }
 
-  getProducts() {
+  getProducts(){
     return this._store.read().catch(err => console.log(err))
   }
 
-  setAsCurrent(product: IProduct) {
+  setAsCurrent(product: IProduct){
     this._product.value = product
   }
 
-  createProduct(product: IProduct) {
+  createProduct(product: IProduct){
     return this._store.create(product)
       .catch(err => console.log(err))
   }
 
-  deleteProduct(product) {
+  deleteProduct(product){
     this._store.delete(product).catch(err => console.log(err))
   }
 
-  updateProduct(updates) {
+  updateProduct(updates){
     return this._store.update(updates)
       .then(pr => this._product.value = pr)
       .catch(err => console.log(err))
   }
 
-  async createFileAsset(files) {
+  async createFileAsset(files){
     const { formData, fileName } = this._files.createFormData(files)
     const ownerId = this._product.value!._id
 
     return await this._files.uploadFile({ ownerId, fileName, formData })
   }
 
-  async uploadProductImage(files) {
+  async uploadProductImage(files){
     if (!files.length) return
 
     const asset: IProductAsset = await this.createFileAsset(files)
@@ -120,7 +122,7 @@ class Service {
     }
   }
 
-  async deleteProductImage(url) {
+  async deleteProductImage(url){
     const ownerId = this._product.value!._id
 
     await this._files.deleteFile({ ownerId, url })
@@ -141,13 +143,15 @@ class Service {
     })
   }
 
-  static create() {
+  static create(){
     if (Service.instance) return Service.instance
+
     Service.instance = new Service({
       store: useProductStore(),
       appStore: useAppStore(),
       filesService: useFilesService()
     })
+
     return Service.instance
   }
 }

@@ -135,7 +135,7 @@
           </v-button>
           <v-button
             color="orange darken-1"
-            class="ml-4"
+            class="ml-2"
             width="120"
             elevation="3"
             @click="$emit('update:modelValue', false)"

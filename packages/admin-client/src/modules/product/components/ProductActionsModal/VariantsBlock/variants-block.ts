@@ -31,6 +31,7 @@ export const variantsBlock = defineComponent({
 
     const setProductVariants = () => {
       selectedVariants.value = []
+
       props.variants?.forEach((v, i) => {
         selectedVariants.value.push(clone(v))
         variantsMap.set(v.group, selectedVariants.value[i])
@@ -82,7 +83,7 @@ export const variantsBlock = defineComponent({
       displayedOptions.value[index] = genVariantOption()
     }
 
-    watch(() => props.isDisplayed, (to) => {
+    watch(() => [props.isDisplayed, props.variants], (to) => {
       if (!to) return
 
       prepareVariantPatterns()

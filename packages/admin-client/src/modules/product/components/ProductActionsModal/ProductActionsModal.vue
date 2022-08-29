@@ -316,10 +316,21 @@
             class="ml-4"
             width="120"
             elevation="3"
+            :disabled="hasChanges"
             outlined
             @click="onClose"
           >
             отмена
+          </v-button>
+          <v-button
+            v-if="isUpdate"
+            class="ml-4"
+            elevation="3"
+            color="red darken-2"
+            :disabled="!hasChanges"
+            @click="onDiscardChanges"
+          >
+            сбросить изменения
           </v-button>
         </v-card-actions>
       </v-card>

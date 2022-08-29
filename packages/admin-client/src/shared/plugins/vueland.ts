@@ -1,6 +1,6 @@
 import { createVueland } from 'vueland'
 
-import * as components from 'vueland/lib/components'
+import * as components from 'vueland/lib/components/async-components'
 import * as directives from 'vueland/lib/directives'
 
 import colors from 'vueland/lib/services/colors'

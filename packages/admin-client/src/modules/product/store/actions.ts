@@ -1,4 +1,5 @@
 import { useProductRepository } from '@modules/product/repository'
+import { IProductActions, IProduct } from '../types'
 
 const productRepository = useProductRepository()
 

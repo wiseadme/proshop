@@ -1,10 +1,10 @@
 import { IVariant } from '@modules/variant/types'
 
-declare interface IProductState {
+export interface IProductState {
   products: Maybe<Array<IProduct>>
 }
 
-declare interface IProductActions {
+export interface IProductActions {
   create(product: IProduct): Promise<IProduct>
 
   read(id?: string): Promise<Array<IProduct>>
@@ -14,7 +14,7 @@ declare interface IProductActions {
   update(updates: Partial<IProduct>): Promise<IProduct>
 }
 
-declare interface IProductAsset {
+export interface IProductAsset {
   _id: string
   url: string
   type: string
@@ -22,13 +22,13 @@ declare interface IProductAsset {
   main: boolean
 }
 
-declare interface IProductSeo {
+export interface IProductSeo {
   title: string
   description: string
   keywords: string
 }
 
-declare interface IProduct {
+export interface IProduct {
   _id: string
   name: string
   price: number
