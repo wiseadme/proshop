@@ -172,8 +172,12 @@
                 </v-card-title>
                 <v-card-content>
                   <text-editor
-                    :key="content"
+                    :key="textEditorKey"
                     v-model:content="computedDescription"
+                    content-type="html"
+                    :global-options="{
+                      placeholder: 'введите описание товара'
+                    }"
                   />
                 </v-card-content>
               </v-card>

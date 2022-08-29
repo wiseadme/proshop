@@ -1,4 +1,4 @@
-import { defineComponent, ref, reactive, toRaw, computed, PropType, watch } from 'vue'
+import { defineComponent, ref, reactive, toRaw, computed, PropType, watch, shallowRef } from 'vue'
 import { TextEditor } from '@shared/components/TextEditor'
 import { clone } from '@shared/helpers'
 import draggable from 'vuedraggable'
@@ -68,8 +68,10 @@ export const productActionsModal = defineComponent({
     const ctgMap = ref<Map<string, ICategory>>(new Map())
     const productImages = ref<Array<File>>([])
     const attributesArray = ref<Array<IAttribute>>([])
-    const content = ref<string>('')
     const currentImage = ref<Maybe<IProductAsset>>(null)
+
+    const content = shallowRef<string>('')
+    const textEditorKey = shallowRef<string>('')
 
     const imagesContextMenu = reactive({
       show: false,
@@ -281,6 +283,7 @@ export const productActionsModal = defineComponent({
     }
 
     const onDiscardChanges = () => {
+      textEditorKey.value = props.description!
       emit('discard')
     }
 
@@ -296,6 +299,7 @@ export const productActionsModal = defineComponent({
       attributesArray.value = clone(props.attributes)
 
       content.value = props.description!
+      textEditorKey.value = content.value
 
     }, { immediate: true })
 
@@ -318,6 +322,7 @@ export const productActionsModal = defineComponent({
       productImages,
       attributesArray,
       content,
+      textEditorKey,
       imagesContextMenu,
       currentImage,
       toggleCategory,

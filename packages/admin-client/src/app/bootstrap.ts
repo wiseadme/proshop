@@ -11,6 +11,4 @@ app.use(vueland)
 app.use(pinia)
 app.use(router)
 
-console.log(app)
-
 router.isReady().then(() => app.mount('#app'))
