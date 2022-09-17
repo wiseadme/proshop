@@ -1,5 +1,6 @@
 import { ObjectId } from 'mongoose'
 import { OrderStatus } from '@modules/order/dictionaries'
+import { Maybe } from '@/types/types'
 
 interface IOrderClient {
   name: string

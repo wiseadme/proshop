@@ -1,5 +1,6 @@
 import { IVariantOption } from '@modules/variant/types/model'
 import { IProduct } from '@modules/product/types/model'
+import { Maybe } from '@/types/types'
 
 interface ICartItem {
   product: IProduct
