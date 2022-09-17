@@ -1,24 +1,21 @@
-import { Store } from 'pinia'
+import { Store } from 'nervue'
 import { useCategoryStore } from '@modules/category/store'
-import { useAppStore } from '@app/store'
 import { useFilesService } from '@shared/services/files.service'
 
 class Service implements ICategoryService {
-  private _store: Store<string, ICategoryState, {}, ICategoryActions>
-  private _appStore: Store<string, any, {}, any>
+  private _store: Store<string, ICategoryState, {}, {}, ICategoryActions>
   private _category: Maybe<ICategory>
   private _files: ReturnType<typeof useFilesService>
   static instance: Service
 
-  constructor({ store, appStore, filesService }) {
+  constructor({ store, filesService }) {
     this._store = store
-    this._appStore = appStore
     this._files = filesService
     this._category = null
   }
 
   get categories() {
-    return this._appStore.categories
+    return this._store.categories
   }
 
   get category() {
@@ -35,7 +32,7 @@ class Service implements ICategoryService {
   }
 
   getCategories() {
-    return this._appStore.getCategories()
+    return this._store.read()
   }
 
   onGetCategories() {
@@ -82,7 +79,6 @@ class Service implements ICategoryService {
 
     Service.instance = new Service({
       store: useCategoryStore(),
-      appStore: useAppStore(),
       filesService: useFilesService()
     })
 

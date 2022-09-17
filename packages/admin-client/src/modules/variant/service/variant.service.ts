@@ -1,41 +1,39 @@
-import { Store } from 'pinia'
+import { Store } from 'nervue'
 import { useVariantStore } from '@modules/variant/store'
-import { useAppStore } from '@app/store'
+import {IVariantState, IVariantActions, IVariant} from '@modules/variant/types'
 
 class Service {
-  private _store: Store<string, IVariantState, {}, IVariantActions>
-  private _appStore: Store<string, any, {}, any>
+  private _store: Store<string, IVariantState, {}, {}, IVariantActions>
   static instance: Service
 
-  constructor(store, appStore) {
+  constructor(store){
     this._store = store
-    this._appStore = appStore
   }
 
-  get variants() {
-    return this._appStore.variants
+  get variants(){
+    return this._store.variants
   }
 
-  createVariant(variant: IVariant) {
+  createVariant(variant: IVariant){
     return this._store.create(variant)
   }
 
-  deleteVariant(id) {
+  deleteVariant(id){
     return this._store.delete(id)
   }
 
-  getVariants(id = '') {
-    return this._appStore.getVariants(id)
+  getVariants(id = ''){
+    return this._store.read(id)
   }
 
-  onGetVariants() {
+  onGetVariants(){
     if (this._store.variants) return this._store.variants
     return this.getVariants()
   }
 
-  static create() {
+  static create(){
     if (Service.instance) return Service.instance
-    Service.instance = new Service(useVariantStore(), useAppStore())
+    Service.instance = new Service(useVariantStore())
     return Service.instance
   }
 }

@@ -226,9 +226,9 @@
           :rows="service.products"
           class="elevation-2"
           :header-options="{
-            color: '',
-            contentColor: '#272727',
-            resizerColor: '#505050'
+            color: 'green',
+            contentColor: '#ffffff',
+            resizerColor: '#ffffff'
           }"
           :footer-options="{
             color: '#272727',

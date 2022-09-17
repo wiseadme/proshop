@@ -1,6 +1,11 @@
-import { defineStore } from 'pinia'
-import { state } from './state'
-import { actions } from './actions'
-import { AppState } from '@shared/types/app'
+import { useAttributeStore } from '@modules/attribute/store'
+import { useCategoryStore } from '@modules/category/store'
+import { useVariantStore } from '@modules/variant/store'
+import { useUnitStore } from '@modules/unit/store'
 
-export const useAppStore = defineStore<string, AppState, {}, {}>('app', { state, actions })
+export const initStoreExposes = () => {
+  useCategoryStore()
+  useAttributeStore()
+  useUnitStore()
+  useVariantStore()
+}

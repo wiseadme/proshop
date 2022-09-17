@@ -17,8 +17,6 @@ class Service {
     this._store = store
     this._product = ref(null)
     this._files = filesService
-
-    console.log(this._store._exposed)
   }
 
   get products(){
@@ -47,16 +45,15 @@ class Service {
 
   async getAttributes(){
     if (this._store._exposed.ATTRIBUTE.attributes) {
-      this._store._exposed.ATTRIBUTE.attributes
+      return this._store._exposed.ATTRIBUTE.attributes
     }
     await this._store._exposed.ATTRIBUTE.read()
   }
 
   async getUnits(){
     if (this._store._exposed.UNIT.units) {
-      this._store._exposed.UNIT.units
+      return this._store._exposed.UNIT.units
     }
-
     await this._store._exposed.UNIT.read()
   }
 
@@ -64,7 +61,6 @@ class Service {
     if (this._store._exposed.CATEGORY.categories) {
       return this._store._exposed.CATEGORY.categories
     }
-
     await this._store._exposed.CATEGORY.read()
   }
 
@@ -72,7 +68,7 @@ class Service {
     if (this._store._exposed.VARIANT.variants) {
       return this._store._exposed.VARIANT.variants
     }
-    await this._store._exposed.VARIANT.read()
+    await this._store._exposed.VARIANT.getVariants()
   }
 
   getProducts(){

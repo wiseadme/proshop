@@ -1,7 +1,7 @@
 import { defineStore } from 'nervue'
 import { actions } from '@modules/product/store/actions'
 import { state } from '@modules/product/store/state'
-import { IProductState, IProductActions } from '@modules/orders/types'
+import {IProductState, IProductActions} from '@modules/orders/types'
 
 const id = 'PRODUCT'
 

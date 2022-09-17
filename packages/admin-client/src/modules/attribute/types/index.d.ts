@@ -10,7 +10,7 @@ declare interface IAttributeState {
   attributes: Maybe<Array<IAttribute>>
 }
 
-declare interface IAttributesActions {
+declare interface IAttributeActions {
   create(attribute: IAttribute): Promise<IAttribute>
 
   read(id?: string): Promise<Array<IAttribute>>

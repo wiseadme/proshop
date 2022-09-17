@@ -2,7 +2,7 @@ import { useAttributeRepository } from '@modules/attribute/repository/attribute.
 
 const repository = useAttributeRepository()
 
-export const actions: IAttributesActions = {
+export const actions: IAttributeActions = {
   async create(attribute: IAttribute){
     try {
       const { data } = await repository.create(attribute)

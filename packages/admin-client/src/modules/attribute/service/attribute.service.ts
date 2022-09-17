@@ -1,19 +1,16 @@
-import { Store } from 'pinia'
+import { Store } from 'nervue'
 import { useAttributeStore } from '@modules/attribute/store'
-import { useAppStore } from '@app/store'
 
 export class Service {
   static instance: Service
-  private _store: Store<string, IAttributeState, {}, IAttributesActions>
-  private _appStore: Store<string, any, {}, any>
+  private _store: Store<string, IAttributeState, {}, {}, IAttributeActions>
 
-  constructor(store, appStore) {
+  constructor(store) {
     this._store = store
-    this._appStore = appStore
   }
 
   get attributes() {
-    return this._appStore.attributes
+    return this._store.attributes
   }
 
   updateAttribute(updates) {
@@ -30,12 +27,12 @@ export class Service {
   }
 
   getAttributes() {
-    return this._appStore.getAttributes().catch(err => console.log(err))
+    return this._store.read().catch(err => console.log(err))
   }
 
   static create() {
     if (Service.instance) return Service.instance
-    Service.instance = new Service(useAttributeStore(), useAppStore())
+    Service.instance = new Service(useAttributeStore())
     return Service.instance
   }
 }

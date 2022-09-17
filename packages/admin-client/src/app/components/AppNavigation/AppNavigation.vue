@@ -18,6 +18,11 @@
           path: '/products'
         },
         {
+          title: 'Заказы',
+          icon: 'fas fa-folder',
+          path: '/orders'
+        },
+        {
           title: 'Атрибуты',
           icon: 'fab fa-buffer',
           path: '/attributes'

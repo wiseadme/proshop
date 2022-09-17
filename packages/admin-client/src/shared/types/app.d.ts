@@ -1,3 +1,5 @@
+import { IVariant } from '@modules/variant/types'
+
 export interface IRest {
   get: (url: string, ...args: any) => Promise<{ data: any }>
   post: (url: string, ...args: any) => Promise<{ data: any }>

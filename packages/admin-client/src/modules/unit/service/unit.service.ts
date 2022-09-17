@@ -1,19 +1,16 @@
-import { Store } from 'pinia'
+import { Store } from 'nervue'
 import { useUnitStore } from '@modules/unit/store'
-import { useAppStore } from '@app/store'
 
 class Service {
-  private _store: Store<string, IUnitState, {}, IUnitActions>
-  private _appStore: Store<string, any, {}, any>
+  private _store: Store<string, IUnitState, {}, {}, IUnitActions>
   static instance: Service
 
-  constructor(store, appStore) {
+  constructor(store) {
     this._store = store
-    this._appStore = appStore
   }
 
   get units() {
-    return this._appStore.units
+    return this._store.units
   }
 
   createUnit(unit: IUnit) {
@@ -25,7 +22,7 @@ class Service {
   }
 
   getUnits(id = '') {
-    return this._appStore.getUnits(id)
+    return this._store.read(id)
   }
 
   onGetUnits() {
@@ -35,7 +32,7 @@ class Service {
 
   static create() {
     if (Service.instance) return Service.instance
-    Service.instance = new Service(useUnitStore(), useAppStore())
+    Service.instance = new Service(useUnitStore())
     return Service.instance
   }
 }

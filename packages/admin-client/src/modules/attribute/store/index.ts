@@ -1,8 +1,13 @@
-import { defineStore } from 'pinia'
-import { actions } from '@modules/attribute/store/actions'
+import { defineStore } from 'nervue'
 import { state } from '@modules/attribute/store/state'
+import { actions } from '@modules/attribute/store/actions'
+import { expose } from '@modules/attribute/store/expose'
 
-export const useAttributeStore = defineStore<string, IAttributeState, {}, IAttributesActions>('attribute', {
+const id = 'ATTRIBUTE'
+
+export const useAttributeStore = defineStore({
+  id,
   state,
-  actions
+  actions,
+  expose
 })

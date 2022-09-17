@@ -1,8 +1,5 @@
 import axios from 'axios'
-import { getActivePinia } from 'pinia'
 import { Client } from '@shared/plugins/client'
-
-const appStore = getActivePinia()
 
 const baseURL = process.env.NODE_ENV === 'development' ? '/' : '/'
 
@@ -27,13 +24,9 @@ const FilesClient = axios.create({
   timeout: 10000
 })
 
-RestClient.interceptors.request.use(config => ({
-  ...config,
-  onDownloadProgress(ev) {
-    const progress = Math.ceil(Math.round(ev.loaded / (ev.total || ev.loaded) * 100))
-    appStore!.state.value.app.progress = progress
-  }
-}))
+// RestClient.interceptors.request.use(config => ({
+//   ...config,
+// }))
 
 
 export const file = new Client(FilesClient)

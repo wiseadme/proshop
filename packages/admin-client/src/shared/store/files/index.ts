@@ -1,8 +1,11 @@
-import { defineStore } from 'pinia'
+import { defineStore } from 'nervue'
 import { state } from './state'
 import { actions } from './actions'
 
-export const useFilesStore = defineStore('files', {
+const id = 'FILES'
+
+export const useFilesStore = defineStore({
+  id,
   state,
   actions
 })
