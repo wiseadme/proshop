@@ -1,14 +1,14 @@
 <script lang="ts">
   import { defineComponent } from 'vue'
-  // import CardsPage from 'shop/cards'
+  import CardsPage from 'shop/cards'
 
   export default defineComponent({
-    // components: { CardsPage },
+    components: { CardsPage },
     setup(){
       return {}
     }
   })
 </script>
 <template>
-<!--  <cards-page :is-active="true"/>-->
+  <cards-page :is-active="true"/>
 </template>

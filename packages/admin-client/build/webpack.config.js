@@ -140,20 +140,20 @@ module.exports = (env = {}) => {
       }
     },
     plugins: [
-      // new ModuleFederationPlugin({
-      //   name: 'app',
-      //   shared: {
-      //     ...deps,
-      //     vue: {
-      //       eager: true,
-      //       singleton: true
-      //     }
-      //   },
-      //   remotes: {
-      //     shop: 'shop@http://85.193.81.212/shop.js'
-      //     // shop: 'shop@http://localhost:3002/shop.js'
-      //   }
-      // }),
+      new ModuleFederationPlugin({
+        name: 'app',
+        shared: {
+          ...deps,
+          vue: {
+            eager: true,
+            singleton: true
+          }
+        },
+        remotes: {
+          shop: 'shop@http://85.193.81.212/shop.js'
+          // shop: 'shop@http://localhost:3002/shop.js'
+        }
+      }),
       new MiniCssExtractPlugin({
         filename: `css/[name].${ env.dev ? '' : '[hash].' }css`,
         chunkFilename: `css/chunk.[name].css`
