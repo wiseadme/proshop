@@ -17,8 +17,6 @@ class Service {
     this._store = store
     this._product = ref(null)
     this._files = filesService
-
-    console.log(this._store._exposed)
   }
 
   get products(){

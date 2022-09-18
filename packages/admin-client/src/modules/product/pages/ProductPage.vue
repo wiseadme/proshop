@@ -1,12 +1,12 @@
 <script lang="ts">
-  import { defineComponent, shallowRef, ref, toRaw, watch } from 'vue'
+  import { defineComponent, shallowRef, ref, unref, toRaw, watch } from 'vue'
   import { ProductActionsModal } from '../components/ProductActionsModal'
   // Services
   import { useProductService } from '@modules/product/service/product.service'
   // Model
   import { Product } from '@modules/product/model/product.model'
+  // Helpers
   import { getDifferences } from '@shared/helpers'
-
   import { clone } from '@shared/helpers'
 
   import { IProduct } from '@modules/product/types'
@@ -119,17 +119,15 @@
         model.value.attributes = clone(service.attributes)
       }
 
-      const checkDiffs = () => {
-        const updates: Maybe<Partial<IProduct>> = getDifferences(
+      const checkDiffs = (): Maybe<Partial<IProduct>> => {
+        return getDifferences(
           toRaw(model.value),
           service.product
-        ) as IProduct
-
-        return updates
+        )
       }
 
       const onUpdate = () => {
-        const updates: Maybe<Partial<IProduct>> = checkDiffs()
+        const updates = checkDiffs()
 
         !!updates && (updates._id = model.value._id)
 
@@ -171,7 +169,7 @@
       }
 
       const onCloseModal = () => {
-        if (!hasChanges.value) showCreateModal.value = false
+        if (!unref(hasChanges)) showCreateModal.value = false
       }
 
       const onDiscard = () => {
@@ -183,8 +181,7 @@
       })
 
       watch(model, () => {
-        hasChanges.value = isEditMode.value && !!checkDiffs()
-
+        hasChanges.value = unref(isEditMode) && !!checkDiffs()
       }, { deep: true })
 
       await Promise.all([
@@ -223,16 +220,9 @@
       <v-col cols="12">
         <v-data-table
           :cols="cols"
-          :rows="service.products"
+          :rows="service.products || []"
           class="elevation-2"
-          :header-options="{
-            color: '',
-            contentColor: '#272727',
-            resizerColor: '#505050'
-          }"
           :footer-options="{
-            color: '#272727',
-            contentColor: '#ffffff',
             counts: {
               displayColor: 'green',
               rowsPerPageText: 'кол-во строк'
@@ -246,19 +236,17 @@
           show-sequence
         >
           <template #toolbar>
-            <v-toolbar color="#272727">
+            <v-toolbar>
               <v-toolbar-logo></v-toolbar-logo>
               <v-spacer></v-spacer>
               <v-toolbar-items>
                 <v-button
                   color="green"
                   elevation="5"
-                  outlined
                   @click="onAdd"
                 >
                   <v-icon
                     size="14"
-                    color="green"
                     sm
                   >
                     fas fa-plus

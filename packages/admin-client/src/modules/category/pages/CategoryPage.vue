@@ -22,6 +22,7 @@
 
       const model = computed<Maybe<ICategory>>(() => {
         if (isEditMode.value) return categoryUpdates.value
+
         return categoryModel.value
       })
 
@@ -170,9 +171,6 @@
         <v-data-table
           :cols="cols"
           :rows="service.categories"
-          :header-options="{
-
-          }"
           :footer-options="{
             counts: {
               displayColor: 'green',
