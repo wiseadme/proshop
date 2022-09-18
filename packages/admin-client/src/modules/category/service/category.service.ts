@@ -35,11 +35,6 @@ class Service implements ICategoryService {
     return this._store.read()
   }
 
-  onGetCategories() {
-    if (this.categories) return this.categories
-    return this.getCategories()
-  }
-
   updateCategory(updates) {
     return this._store.update(updates)
       .then(() => this.getCategories())

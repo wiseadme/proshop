@@ -22,5 +22,5 @@
   </v-app>
 </template>
 <style lang="scss">
-  @import '../shared/assets/scss/main';
+  @import '@/shared/assets/scss/main';
 </style>

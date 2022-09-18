@@ -1,11 +1,11 @@
 <script lang="ts">
   import { defineComponent } from 'vue'
-  import CircularPreloader from '@shared/components/Preloader/CircularPreloader.vue'
+  import SkeletonPreloader from '@shared/components/Preloader/SkeletonPreloader.vue'
 
   export default defineComponent({
     name: 'product-layout',
     components: {
-      CircularPreloader
+      SkeletonPreloader
     },
     setup() {
       return {}
@@ -24,7 +24,7 @@
             <component :is="Component"/>
           </template>
           <template #fallback>
-            <circular-preloader/>
+            <skeleton-preloader/>
           </template>
         </Suspense>
       </transition>

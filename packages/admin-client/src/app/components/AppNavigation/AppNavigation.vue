@@ -37,11 +37,11 @@
           icon: 'far fa-object-ungroup',
           path: '/variants'
         },
-        {
-          title: 'Элементы',
-          icon: 'fas fa-newspaper',
-          path: '/elements'
-        }
+        // {
+        //   title: 'Элементы',
+        //   icon: 'fas fa-newspaper',
+        //   path: '/elements'
+        // }
       ]
 
       const current = ref<Maybe<number>>(null)

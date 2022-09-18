@@ -31,7 +31,8 @@ module.exports = (env = {}) => {
       path: PATH.dist,
       filename: '[name].bundle.js',
       assetModuleFilename: 'images/[hash][ext][query]',
-      publicPath: env.dev ? 'auto' : '/admin/'
+      // publicPath: env.dev ? 'auto' : 'http://localhost:3000/admin/',
+      publicPath: 'auto'
     },
     optimization: {
       // runtimeChunk: 'single',
@@ -140,20 +141,21 @@ module.exports = (env = {}) => {
       }
     },
     plugins: [
-      new ModuleFederationPlugin({
-        name: 'app',
-        shared: {
-          ...deps,
-          vue: {
-            eager: true,
-            singleton: true
-          }
-        },
-        remotes: {
-          shop: 'shop@http://85.193.81.212/shop.js'
-          // shop: 'shop@http://localhost:3002/shop.js'
-        }
-      }),
+      // new ModuleFederationPlugin({
+      //   name: 'app',
+      //   // remoteType: 'var',
+      //   shared: {
+      //     // ...deps,
+      //     vue: {
+      //       eager: true,
+      //       singleton: true
+      //     }
+      //   },
+      //   remotes: {
+      //     shop: 'shop@http://85.193.81.212/shop.js'
+      //     // shop: 'shop@http://localhost:3002/shop.js'
+      //   }
+      // }),
       new MiniCssExtractPlugin({
         filename: `css/[name].${ env.dev ? '' : '[hash].' }css`,
         chunkFilename: `css/chunk.[name].css`
