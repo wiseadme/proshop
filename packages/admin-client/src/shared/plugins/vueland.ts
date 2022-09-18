@@ -24,8 +24,8 @@ export const vueland = createVueland({
 vueland.setIcons('fa')
 
 vueland.setTheme({
-  base: '#fefefe',
-  primary: colors.green.accent2,
+  base: '#ffffff',
+  primary: colors.green.base,
   content: colors.grey.darken3,
   error: colors.red.accent3
 })

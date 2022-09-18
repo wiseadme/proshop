@@ -1,6 +1,6 @@
 import { file, rest } from '@shared/api'
 import { IRest, IRepository } from '@shared/types/app'
-import {IProductAsset} from '@modules/orders/types'
+import {IProductAsset} from '@modules/order/types'
 
 type CreateFileParams = {
   ownerId: string,

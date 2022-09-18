@@ -1,22 +1,24 @@
 <script lang="ts">
-  import { defineComponent, ref, computed } from 'vue'
-  import { useCategoryService } from '@modules/category/service/category.service'
-  import { Category } from '@modules/category/model/category.model'
+  import { defineComponent, ref, shallowRef, unref, computed } from 'vue'
   import { getDifferences, clone } from '@shared/helpers'
 
+  import { useCategoryService } from '../service/category.service'
+  import { Category } from '../model/category.model'
   import { CategoryActionsModal } from '../components/CategoryActionsModal'
+  import { CategoryTable } from '../components/CategoryTable'
 
   export default defineComponent({
     components: {
+      CategoryTable,
       CategoryActionsModal
     },
 
-    async setup() {
+    async setup(){
       const categoryModel = ref<ICategory>(Category.create())
       const categoryUpdates = ref<Maybe<ICategory>>(null)
 
-      const isEditMode = ref<boolean>(false)
-      const showModal = ref<boolean>(false)
+      const isEditMode = shallowRef<boolean>(false)
+      const showModal = shallowRef<boolean>(false)
 
       const service = useCategoryService()
 
@@ -65,7 +67,7 @@
 
       const onUpdate = () => {
         const updates: Maybe<ICategoryUpdates> = getDifferences(
-          categoryUpdates.value,
+          unref(categoryUpdates),
           service.category
         ) as ICategoryUpdates
 
@@ -74,7 +76,7 @@
         updates!._id = service.category!._id
 
         if (updates!.parent) {
-          updates!.parent = (categoryUpdates.value?.parent as ICategory)?._id
+          updates!.parent = unref(categoryUpdates)?.parent?._id
         }
 
         service.updateCategory(updates!)
@@ -149,10 +151,10 @@
 
       return {
         cols,
-        isEditMode,
-        showModal,
         model,
         service,
+        isEditMode,
+        showModal,
         onAddNew,
         onEdit,
         onCreate,
@@ -165,81 +167,18 @@
   })
 </script>
 <template>
-  <v-layout column>
+  <v-layout
+    column
+  >
     <v-row>
       <v-col>
-        <v-data-table
+        <category-table
           :cols="cols"
           :rows="service.categories"
-          :footer-options="{
-            counts: {
-              displayColor: 'green',
-              rowsPerPageText: 'кол-во строк'
-            },
-            pagination: {
-              buttonsColor: 'green',
-              displayColor: 'green'
-            }
-          }"
-          class="elevation-2"
-          show-checkbox
-          show-sequence
-        >
-          <template #toolbar>
-            <v-toolbar color="grey lighten-4">
-              <v-toolbar-logo></v-toolbar-logo>
-              <v-spacer></v-spacer>
-              <v-toolbar-items>
-                <v-button
-                  color="green"
-                  elevation="5"
-                  @click="onAddNew"
-                >
-                  <v-icon
-                    size="14"
-                    sm
-                  >
-                    fas fa-plus
-                  </v-icon>
-                </v-button>
-              </v-toolbar-items>
-            </v-toolbar>
-          </template>
-          <template #pagination-text="{start, last, length}">
-            <span>{{ `с ${ start } по ${ last } из ${ length }` }}</span>
-          </template>
-          <template #actions="{row}">
-            <v-button
-              color="orange"
-              elevation="2"
-              text
-              @click="onEdit(row)"
-            >
-              <v-icon>fas fa-pen</v-icon>
-            </v-button>
-            <v-button
-              class="ml-1"
-              color="red darken-1"
-              elevation="2"
-              text
-              @click="onDeleteCategory(row)"
-            >
-              <v-icon>fas fa-trash-alt</v-icon>
-            </v-button>
-          </template>
-          <template #image="{ row }">
-            <div class="d-flex justify-center align-center">
-              <img
-                v-if="row.image"
-                style="height: 30px; width: auto"
-                :src="row.image"
-              />
-              <v-icon v-else>
-                fas fa-box
-              </v-icon>
-            </div>
-          </template>
-        </v-data-table>
+          @add="onAddNew"
+          @edit="onEdit"
+          @delete="onDeleteCategory"
+        />
       </v-col>
     </v-row>
     <category-actions-modal

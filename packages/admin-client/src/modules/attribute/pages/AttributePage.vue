@@ -68,6 +68,7 @@
           <v-card
             width="100%"
             elevation="2"
+            color="white"
           >
             <v-card-title class="green--text">
               <h3>Аттрибуты</h3>
@@ -135,7 +136,7 @@
           >
             <template #item="{element}">
               <div
-                class="d-flex justify-start align-center elevation-2 my-1 py-4 px-3"
+                class="d-flex justify-start align-center elevation-2 my-1 py-4 px-3 attribute-item white"
               >
                 <v-icon
                   class="mr-3"
@@ -162,3 +163,6 @@
     </v-row>
   </v-layout>
 </template>
+<style lang="scss">
+  @import "./AttributePage";
+</style>

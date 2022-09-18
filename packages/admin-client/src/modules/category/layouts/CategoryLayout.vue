@@ -13,7 +13,10 @@
   })
 </script>
 <template>
-  <v-main style="position: relative">
+  <div
+    class="category-layout"
+    style="position: relative"
+  >
     <router-view v-slot="{ Component }">
       <transition name="fade">
         <Suspense>
@@ -26,6 +29,6 @@
         </Suspense>
       </transition>
     </router-view>
-  </v-main>
+  </div>
 </template>
 

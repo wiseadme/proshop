@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { categoryActionsModal } from './category-actions-modal'
+  import { CategoryActionsModal } from './category-actions-modal'
 
-  export default categoryActionsModal
+  export default CategoryActionsModal
 </script>
 <template>
   <v-modal

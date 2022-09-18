@@ -1,6 +1,6 @@
 import { defineComponent, ref, watch, computed, PropType } from 'vue'
 
-export const categoryActionsModal = defineComponent({
+export const CategoryActionsModal = defineComponent({
   props: {
     modelValue: Boolean,
     isUpdate: Boolean,

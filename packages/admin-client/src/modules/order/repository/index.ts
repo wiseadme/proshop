@@ -3,10 +3,10 @@ import { IRest, IRepository } from '@shared/types/app'
 
 class Repository implements IRepository {
   rest: IRest = rest
-  baseUrl: string = '/v1/products'
+  baseUrl: string = '/v1/orders'
 
-  create(product){
-    return rest.post(this.baseUrl, product)
+  create(order){
+    return rest.post(this.baseUrl, order)
   }
 
   read(id = ''){
@@ -22,4 +22,4 @@ class Repository implements IRepository {
   }
 }
 
-export const useProductRepository = () => new Repository()
+export const useOrderRepository = () => new Repository()

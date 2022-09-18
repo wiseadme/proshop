@@ -9,7 +9,7 @@
   })
 </script>
 <template>
-  <v-main>
+  <div class="attribute-layout">
     <router-view v-slot="{ Component }">
       <transition name="fade">
         <Suspense>
@@ -19,5 +19,5 @@
         </Suspense>
       </transition>
     </router-view>
-  </v-main>
+  </div>
 </template>
