@@ -1,22 +1,22 @@
 <script lang="ts">
   import { defineComponent, useFetch, useRoute, unref } from '@nuxtjs/composition-api'
-  import { useProductsStore } from '~/store/products'
-  import { useNavigationStore } from '~/store/navigation'
+  import { useProductService } from '~/services/product.service'
+  import { useCategoryService } from '~/services/category.service'
 
   export default defineComponent({
     name: 'category',
-    setup(){
-      const store = useProductsStore()
-      const navStore = useNavigationStore()
+    setup() {
+      const productService = useProductService()
+      const categoryService = useCategoryService()
       const route = useRoute()
 
       if (!unref(navStore.state.categories)) {
         useFetch(async () => {
-          await navStore.fetchCategories()
+          await categoryService.fetchCategories()
           const { id } = unref(route).params
-          const current = (unref(navStore.state.categories)! as any[])!.find(it => it.url === id)
+          const current = (unref(categoryService.categories)! as any[])!.find(it => it.url === id)
 
-          await store.fetchCategoryProducts(current._id)
+          await productService.fetchCategoryProducts(current._id)
         })
       }
 

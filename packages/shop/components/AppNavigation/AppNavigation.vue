@@ -1,15 +1,15 @@
 <script lang="ts">
   import { defineComponent, useFetch } from '@nuxtjs/composition-api'
-  import { useNavigationStore } from '~/store/navigation'
+  import { useCategoryService } from '~/services/category.service'
 
   export default defineComponent({
     setup() {
-      const store = useNavigationStore()
+      const service = useCategoryService()
 
-      useFetch(async () => await store.fetchCategories())
+      useFetch(async () => await service.fetchCategories())
 
       return {
-        store
+        service
       }
     }
   })
@@ -27,11 +27,11 @@
       nav
     >
       <nuxt-link
-        v-for="item in store.state.categories.value"
+        v-for="item in service.categories.value"
         :to="'/category/'+item.url"
         :key="item._id"
         class="nav-link"
-        @click.native="store.state.category.value = item"
+        @click.native="service.category.value = item"
       >
         <v-list-item link>
           <v-list-item-icon>
