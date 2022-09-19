@@ -17,7 +17,7 @@
 <template>
   <v-navigation-drawer
     permanent
-    absolute
+    fixed
     style="z-index: 1;"
     class="elevation-2"
   >
@@ -26,19 +26,26 @@
       dense
       nav
     >
-      <v-list-item
+      <nuxt-link
         v-for="item in store.state.categories.value"
-        :key="item.title"
-        link
+        :to="'/category/'+item.url"
+        :key="item._id"
+        class="nav-link"
+        @click.native="store.state.category.value = item"
       >
-        <v-list-item-icon>
-          <v-icon>{{ item.icon }}</v-icon>
-        </v-list-item-icon>
+        <v-list-item link>
+          <v-list-item-icon>
+            <v-icon>{{ item.icon }}</v-icon>
+          </v-list-item-icon>
 
-        <v-list-item-content>
-          <v-list-item-title>{{ item.title }}</v-list-item-title>
-        </v-list-item-content>
-      </v-list-item>
+          <v-list-item-content>
+            <v-list-item-title>{{ item.title }}</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </nuxt-link>
     </v-list>
   </v-navigation-drawer>
 </template>
+<style lang="scss">
+  @import "AppNavigation";
+</style>

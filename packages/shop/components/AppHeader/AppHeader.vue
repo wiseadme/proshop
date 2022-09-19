@@ -3,7 +3,7 @@
   import { useNavigationStore } from '~/store/navigation'
 
   export default defineComponent({
-    setup() {
+    setup(){
       const store = useNavigationStore()
 
       useFetch(async () => await store.fetchCategories())

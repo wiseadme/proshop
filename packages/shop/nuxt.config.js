@@ -32,7 +32,8 @@ export default {
     '@nuxt/typescript-build',
     '@nuxtjs/stylelint-module',
     '@nuxtjs/vuetify',
-    '@nuxtjs/composition-api/module'
+    '@nuxtjs/composition-api/module',
+    '@vueuse/nuxt'
   ],
   modules: [
     '@nuxtjs/axios',
