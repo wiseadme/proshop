@@ -2,14 +2,14 @@
   import { defineComponent, shallowRef, ref, unref, toRaw, watch } from 'vue'
   import { ProductActionsModal } from '../components/ProductActionsModal'
   // Services
-  import { useProductService } from '@modules/product/service/product.service'
+  import { useProductService } from '../service/product.service'
   // Model
-  import { Product } from '@modules/product/model/product.model'
+  import { Product } from '../model/product.model'
   // Helpers
   import { getDifferences } from '@shared/helpers'
   import { clone } from '@shared/helpers'
 
-  import { IProduct } from '@modules/product/types'
+  import { IProduct } from '../types'
 
   export default defineComponent({
     components: { ProductActionsModal },
@@ -142,9 +142,8 @@
         service.deleteProduct(product)
       }
 
-      const onUploadVariantImage = ({ files, option }) => {
-        return service.createFileAsset(files)
-          .then(asset => option.assets.push(asset))
+      const onUploadVariantImage = ({ files, option, variantId }) => {
+        return service.uploadProductVariantImage(files, option, variantId)
       }
 
       const onUploadImage = (files) => {
@@ -152,13 +151,8 @@
       }
 
       const onDeleteImage = (url) => {
-        const raw = toRaw(model.value)
-
         service.deleteProductImage(url)
-          .then(() => {
-            raw.assets = raw.assets?.filter(it => it.url !== url)!
-            model.value = raw
-          })
+          .then(() => model.value = Product.create(service.product!))
       }
 
       const onEdit = (row) => {
@@ -290,7 +284,6 @@
       </v-col>
     </v-row>
     <product-actions-modal
-      v-if="service.attributes"
       v-model="showCreateModal"
       v-model:name="model.name"
       v-model:price="model.price"

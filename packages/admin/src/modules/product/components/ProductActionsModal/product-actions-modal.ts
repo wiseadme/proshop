@@ -20,6 +20,7 @@ export const productActionsModal = defineComponent({
     modelValue: Boolean,
     isUpdate: Boolean,
     hasChanges: Boolean,
+    isVisible: Boolean,
     categoryItems: Array as PropType<Array<ICategory>>,
     unitItems: Array as PropType<Array<IUnit>>,
     variantItems: Array as PropType<Array<IVariant>>,
@@ -29,7 +30,6 @@ export const productActionsModal = defineComponent({
     price: Number,
     quantity: Number,
     unit: Object as PropType<IUnit>,
-    isVisible: Boolean,
     image: String,
     seo: Object,
     categories: Array as PropType<Array<ICategory>>,
@@ -249,6 +249,7 @@ export const productActionsModal = defineComponent({
       if (!uploads.files.length) return
 
       emit('update:variant-image', uploads)
+
       productImages.value = []
     }
 

@@ -1,3 +1,5 @@
+import { IProduct } from '@modules/product/types'
+
 export class Product implements IProduct {
   _id: IProduct['_id']
   name: IProduct['name']

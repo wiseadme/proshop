@@ -19,19 +19,19 @@
           <v-row>
             <v-col>
               <v-checkbox
-                v-for="(variant) in displayedVariants"
+                v-for="(variant) in existsVariantsMap"
                 :key="variant.group"
                 v-model="selectedVariants"
                 :label="variant?.group"
                 :value="variant"
                 class="mr-4 mb-4"
                 color="green"
-                @change="onChange"
+                @change="toggleVariants"
               />
             </v-col>
           </v-row>
           <v-row
-            v-for="(variant, i) in selectedVariants"
+            v-for="variant in selectedVariants"
             :key="variant.group"
             class="elevation-2 pa-4 mb-1"
           >
@@ -39,23 +39,30 @@
               style="border: 1px solid #272727; border-radius: 5px;"
               class="px-4 py-6"
             >
-              <h2>
-                {{ variant.group }}
-              </h2>
+              <v-row>
+                <v-col>
+                  <h2>
+                    {{ variant.group }}
+                  </h2>
+                </v-col>
+              </v-row>
               <v-row v-if="variant">
-                <v-chip
-                  v-for="(it, j) in variant.options"
-                  :key="it.name"
-                  :color="!it._id ?'grey': 'green'"
-                  class="elevation-2 mr-2 mt-2"
-                  @click="onEditChip(it, i)"
-                  @close="removeVariantOption(variant, j)"
-                >
-                  {{ it.name }}
-                </v-chip>
+                <v-col>
+                  <v-chip
+                    v-for="(option, j) in variant.options"
+                    :key="option.name"
+                    :color="!option._id ?'grey': 'green'"
+                    class="elevation-2 mr-2 mt-2"
+                    @click="setOptionForEditing(variant, option)"
+                    @close="removeVariantOption(variant, j)"
+                  >
+                    {{ option.name }}
+                  </v-chip>
+                </v-col>
               </v-row>
             </v-col>
             <v-col
+              v-if="displayedOptions.get(variant)"
               style="border: 1px solid #272727; border-radius: 5px;"
               class="py-4 mt-2"
             >
@@ -65,67 +72,60 @@
                     cols="6"
                   >
                     <v-text-field
-                      v-model.trim="displayedOptions[i].name"
+                      v-model.trim="displayedOptions.get(variant).name"
                       color="#272727"
                       label="значение"
                       :rules="[val => !!val || 'Обязательное поле']"
-                      @input="updateOption"
                     />
                   </v-col>
                   <v-col
                     cols="6"
                   >
                     <v-text-field
-                      v-model.number="displayedOptions[i].count"
+                      v-model.number="displayedOptions.get(variant).count"
                       color="#272727"
                       label="количество"
                       type="number"
-                      @input="updateOption"
                     />
                   </v-col>
                   <v-col
                     cols="6"
                   >
                     <v-text-field
-                      v-model.number="displayedOptions[i].price"
+                      v-model.number="displayedOptions.get(variant).price"
                       color="#272727"
                       label="цена"
                       type="number"
-                      @input="updateOption"
                     />
                   </v-col>
                   <v-col
                     cols="6"
                   >
                     <v-text-field
-                      v-model.trim="displayedOptions[i].description"
+                      v-model.trim="displayedOptions.get(variant).description"
                       color="#272727"
                       label="описание"
-                      @input="updateOption"
                     />
                   </v-col>
                   <v-col>
                     <v-file-input
-                      v-model="displayedOptions[i].assets"
-                      :label="!displayedOptions[i]._id ? 'загрузить изображение можно только после сохранения варианта': 'загрузить изображения'"
+                      v-model="displayedOptions.get(variant).assets"
+                      :label="!displayedOptions.get(variant)._id ? 'загрузить изображение можно только после сохранения варианта': 'загрузить изображения'"
                       color="#272727"
-                      :disabled="!displayedOptions[i]._id"
+                      :disabled="!displayedOptions.get(variant)._id"
                       placeholder="salam"
-                      @update:value="updateAssets($event, displayedOptions[i])"
+                      @update:value="updateAssets($event, displayedOptions.get(variant), variant._id)"
                     />
                   </v-col>
                 </v-row>
                 <v-row class="px-2 pt-2">
                   <div
-                    class="variant-images"
+                    class="variant-images pa-2"
                     style="width: 100%; min-height: 200px; border: 1px dotted #272727; border-radius: 5px;"
                   >
-                    <h4 class="pa-2">
-                      изображения
-                    </h4>
                     <v-row>
                       <v-col
-                        v-if="!displayedOptions[i].assets.length"
+                        v-if="!displayedOptions.get(variant).assets.length"
                         cols="4"
                         offset="4"
                         class="d-flex justify-center align-center"
@@ -138,17 +138,25 @@
                         </div>
                       </v-col>
                       <template v-else>
-                        <v-col
-                          v-for="asset in displayedOptions[i].assets"
-                          :key="asset._id"
-                          cols="4"
-                          style="height: 130px"
-                        >
-                          <img
-                            :src="asset.url"
-                            width="150"
+                        <v-row>
+                          <v-col
+                            v-for="asset in displayedOptions.get(variant).assets"
+                            :key="asset._id"
+                            cols="2"
+                            style="height: 130px; position: relative"
+                            class="d-flex align-center justify-center elevation-2"
                           >
-                        </v-col>
+                            <v-icon
+                              style="position: absolute; top: 5px; right: 5px;"
+                              icon="fas fa-times"
+                              clickable
+                            />
+                            <img
+                              :src="asset.url"
+                              style="width: 100px;"
+                            >
+                          </v-col>
+                        </v-row>
                       </template>
                     </v-row>
                   </div>
@@ -158,16 +166,16 @@
                     color="green"
                     text
                     outlined
-                    @click="addOptionInVariant(validate, variant, i)"
+                    @click="addOptionInVariant(validate, variant)"
                   >
-                    добавить
+                    {{ displayedOptions.get(variant)._id ? 'изменить' : 'добавить' }}
                   </v-button>
                   <v-button
                     class="ml-2"
-                    color="error"
+                    color="red"
                     text
                     outlined
-                    @click="clearVariantOptionForm(i)"
+                    @click="clearVariantOptionForm(variant)"
                   >
                     очистить
                   </v-button>

@@ -1,15 +1,15 @@
 <script lang="ts">
   import { defineComponent, useFetch } from '@nuxtjs/composition-api'
-  import { useNavigationStore } from '~/store/navigation'
+  import { useCategoryService } from '~/services/category.service'
 
   export default defineComponent({
     setup(){
-      const store = useNavigationStore()
+      const service = useCategoryService()
 
-      useFetch(async () => await store.fetchCategories())
+      useFetch(async () => await service.fetchCategories())
 
       return {
-        store
+        service
       }
     }
   })
@@ -18,7 +18,7 @@
   <v-app-bar
     fixed
     app
-    style="z-index: 2;"
+    style="z-index: 2; max-height: 56px;"
   >
     <span>Категории</span>
   </v-app-bar>

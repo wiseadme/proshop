@@ -13,3 +13,4 @@ router.isReady().then(() => {
   initStoreExposes()
   return app.mount('#app')
 })
+

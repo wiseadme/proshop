@@ -103,6 +103,28 @@ class Service {
     return await this._files.uploadFile({ ownerId, fileName, formData })
   }
 
+  async uploadProductVariantImage(files, option, variantId){
+    const ownerId = this._product.value!._id
+    const optionAsset = await this.createFileAsset(files)
+    let { variants } = this._product.value!
+
+    option.assets.push(optionAsset)
+
+    option.assets = option.assets.map(it => it._id)
+
+    const idx = variants.findIndex(v => v._id === variantId)
+    const optIdx = variants[idx].options.findIndex((o: any) => o._id === option._id)
+
+    variants[idx].options.splice(optIdx, 1, option)
+
+    await this.updateProduct({
+      _id: ownerId,
+      variants
+    })
+
+    return files
+  }
+
   async uploadProductImage(files){
     if (!files.length) return
 

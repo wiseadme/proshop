@@ -1,15 +1,17 @@
 <script lang="ts">
-  import { defineComponent, useFetch } from '@nuxtjs/composition-api'
+  import { defineComponent, useFetch, ref } from '@nuxtjs/composition-api'
   import { useCategoryService } from '~/services/category.service'
 
   export default defineComponent({
     setup() {
+      const current = ref(0)
       const service = useCategoryService()
 
       useFetch(async () => await service.fetchCategories())
 
       return {
-        service
+        service,
+        current
       }
     }
   })
@@ -22,12 +24,13 @@
     class="elevation-2"
   >
     <v-list
+      v-model="current"
       style="margin-top: 60px;"
       dense
       nav
     >
       <nuxt-link
-        v-for="item in service.categories.value"
+        v-for="item in service.categories.value.sort((a,b) => a.order - b.order)"
         :to="'/category/'+item.url"
         :key="item._id"
         class="nav-link"

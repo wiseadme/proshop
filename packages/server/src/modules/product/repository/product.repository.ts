@@ -77,8 +77,11 @@ export class ProductRepository implements IProductRepository {
       { $set },
       { new: true }
     ).populate([
-      'assets', 'categories', 'variants'
-    ]) as Document<IProduct>
+      'assets', 'categories'
+    ]).populate({
+      path: 'variants',
+      populate: { path: 'options', populate: { path: 'assets', model: 'Asset' } }
+    }) as Document<IProduct>
 
     return { updated }
   }

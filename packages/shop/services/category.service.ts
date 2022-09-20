@@ -2,7 +2,7 @@ import { ref } from '@nuxtjs/composition-api'
 import { useCategoryRepository, Repository } from '~/repository/category.repository'
 
 class Service {
-  public categories = ref(null)
+  public categories = ref<any[]>(null)
   public category = ref(null)
   private repository: Repository
   static instance: Service

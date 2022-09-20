@@ -23,7 +23,8 @@ export default {
   ],
 
   proxy: {
-    '/v1': 'http://localhost:5000'
+    '/v1': 'http://193.168.3.84/',
+    '/uploads': 'http://193.168.3.84/'
   },
 
   components: true,

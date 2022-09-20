@@ -1,6 +1,5 @@
 <script lang="ts">
-  import { defineComponent, useFetch } from '@nuxtjs/composition-api'
-  import { useNavigationStore } from '../store/navigation'
+  import { defineComponent } from '@nuxtjs/composition-api'
 
   export default defineComponent({
     name: 'main-page',
