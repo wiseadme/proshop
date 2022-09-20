@@ -12,7 +12,6 @@
   >
     <v-form v-slot="{ validate }">
       <v-card
-        v-click-outside="{handler: () => $emit('update:modelValue', false)}"
         class="elevation-3"
         width="100%"
         color="#fefefe"
