@@ -13,11 +13,11 @@
     >
       <v-form v-slot="{validate}">
         <v-card
-          color="#272727"
+          color="rgba(0,0,0,.4)"
           width="100%"
           class="elevation-5"
         >
-          <v-card-title class="green--text text--base">
+          <v-card-title class="white--text text--base">
             <h3>Создание продукта</h3>
           </v-card-title>
           <v-card-content
@@ -304,27 +304,26 @@
               :is-displayed="modelValue"
               :is-update="isUpdate"
               :variant-items="variantItems"
-              @update:variant-image="onUpdateVariantImage"
+              @upload:variant-image="onUploadVariantImage"
+              @delete:variant-image="onDeleteVariantImage"
             />
           </v-card-content>
           <v-card-actions>
             <v-button
-              color="white"
+              color="green"
               elevation="3"
               width="120"
-              outlined
               :disabled="!hasChanges && isUpdate"
               @click="onSubmit(validate)"
             >
               сохранить
             </v-button>
             <v-button
-              color="warning"
+              color="orange accent-2"
               class="ml-4"
               width="120"
               elevation="3"
               :disabled="hasChanges"
-              outlined
               @click="onClose"
             >
               отмена

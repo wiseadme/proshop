@@ -7,9 +7,8 @@ export class Service {
     this._store = store
   }
 
-  createFormData(files){
+  createFormData(file){
     const formData = new FormData()
-    const file = files[files.length - 1]
     const fileName = file.name
 
     formData.append('image', file)

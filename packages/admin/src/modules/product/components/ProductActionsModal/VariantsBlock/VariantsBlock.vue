@@ -110,11 +110,11 @@
                   <v-col>
                     <v-file-input
                       v-model="displayedOptions.get(variant).assets"
-                      :label="!displayedOptions.get(variant)._id ? 'загрузить изображение можно только после сохранения варианта': 'загрузить изображения'"
+                      :label="!displayedOptions.get(variant)._id ? 'только после сохранения варианта *': 'загрузить изображения'"
                       color="#272727"
                       :disabled="!displayedOptions.get(variant)._id"
                       placeholder="salam"
-                      @update:value="updateAssets($event, displayedOptions.get(variant), variant._id)"
+                      @update:value="onUploadVariantImage($event, displayedOptions.get(variant), variant._id)"
                     />
                   </v-col>
                 </v-row>
@@ -150,6 +150,7 @@
                               style="position: absolute; top: 5px; right: 5px;"
                               icon="fas fa-times"
                               clickable
+                              @click="$emit('delete:variant-image', asset)"
                             />
                             <img
                               :src="asset.url"

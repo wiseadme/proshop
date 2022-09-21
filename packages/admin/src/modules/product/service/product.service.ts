@@ -1,5 +1,5 @@
 import { Store } from 'nervue'
-import { ref, Ref } from 'vue'
+import { ref, toRaw, Ref } from 'vue'
 // Stores
 import { useProductStore } from '@modules/product/store'
 // Services
@@ -45,14 +45,15 @@ class Service {
 
   async getAttributes(){
     if (this._store._exposed.ATTRIBUTE.attributes) {
-      this._store._exposed.ATTRIBUTE.attributes
+      return this._store._exposed.ATTRIBUTE.attributes
     }
+
     await this._store._exposed.ATTRIBUTE.read()
   }
 
   async getUnits(){
     if (this._store._exposed.UNIT.units) {
-      this._store._exposed.UNIT.units
+      return this._store._exposed.UNIT.units
     }
 
     await this._store._exposed.UNIT.read()
@@ -70,6 +71,7 @@ class Service {
     if (this._store._exposed.VARIANT.variants) {
       return this._store._exposed.VARIANT.variants
     }
+
     await this._store._exposed.VARIANT.read()
   }
 
@@ -96,16 +98,16 @@ class Service {
       .catch(err => console.log(err))
   }
 
-  async createFileAsset(files){
-    const { formData, fileName } = this._files.createFormData(files)
+  async createFileAsset(file){
+    const { formData, fileName } = this._files.createFormData(file)
     const ownerId = this._product.value!._id
 
     return await this._files.uploadFile({ ownerId, fileName, formData })
   }
 
-  async uploadProductVariantImage(files, option, variantId){
+  async uploadProductVariantImage(image, option, variantId){
     const ownerId = this._product.value!._id
-    const optionAsset = await this.createFileAsset(files)
+    const optionAsset = await this.createFileAsset(image)
     let { variants } = this._product.value!
 
     option.assets.push(optionAsset)
@@ -122,13 +124,18 @@ class Service {
       variants
     })
 
-    return files
+    return optionAsset
   }
 
-  async uploadProductImage(files){
-    if (!files.length) return
+  /*TODO продумать как обновить продукт после удаления изображения варианта*/
+  async deleteProductVariantImage (file) {
+    console.log(toRaw(file), 'in service')
+  }
 
-    const asset: IProductAsset = await this.createFileAsset(files)
+  async uploadProductImage(file){
+    if (!file) return
+
+    const asset: IProductAsset = await this.createFileAsset(file)
 
     if (asset && asset.url) {
       let { assets } = this._product.value!

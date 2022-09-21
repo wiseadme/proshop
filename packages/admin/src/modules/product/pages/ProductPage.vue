@@ -142,17 +142,23 @@
         service.deleteProduct(product)
       }
 
-      const onUploadVariantImage = ({ files, option, variantId }) => {
-        return service.uploadProductVariantImage(files, option, variantId)
+      const onUploadVariantImage = ({ file, option, variantId }) => {
+        return service.uploadProductVariantImage(file, option, variantId)
       }
 
-      const onUploadImage = (files) => {
-        service.uploadProductImage(files)
+      const onDeleteVariantImage = (file) => {
+        service.deleteProductVariantImage(file)
+      }
+
+      const onUploadImage = (image) => {
+        service.uploadProductImage(image)
       }
 
       const onDeleteImage = (url) => {
         service.deleteProductImage(url)
-          .then(() => model.value = Product.create(service.product!))
+          .then(() => {
+            model.value = Product.create(service.product!)
+          })
       }
 
       const onEdit = (row) => {
@@ -163,7 +169,9 @@
       }
 
       const onCloseModal = () => {
-        if (!unref(hasChanges)) showCreateModal.value = false
+        if (!unref(hasChanges)) {
+          showCreateModal.value = false
+        }
       }
 
       const onDiscard = () => {
@@ -202,6 +210,7 @@
         onDeleteImage,
         onUploadImage,
         onUploadVariantImage,
+        onDeleteVariantImage,
         onDiscard,
         checkDiffs
       }
@@ -303,13 +312,14 @@
       :unit-items="service.units"
       :is-update="isEditMode"
       :has-changes="hasChanges"
-      @upload:image="onUploadImage"
-      @update:variant-image="onUploadVariantImage"
-      @delete:image="onDeleteImage"
       @create="onCreate"
       @update="onUpdate"
       @close="onCloseModal"
       @discard="onDiscard"
+      @upload:image="onUploadImage"
+      @delete:image="onDeleteImage"
+      @upload:variant-image="onUploadVariantImage"
+      @delete:variant-image="onDeleteVariantImage"
     />
   </v-layout>
 </template>

@@ -57,7 +57,8 @@ export const productActionsModal = defineComponent({
     'update:url',
     'upload:image',
     'delete:image',
-    'update:variant-image',
+    'upload:variant-image',
+    'delete:variant-image',
     'create',
     'close',
     'discard',
@@ -245,18 +246,22 @@ export const productActionsModal = defineComponent({
       else onCreate(validate)
     }
 
-    const onUpdateVariantImage = uploads => {
-      if (!uploads.files.length) return
+    const onUploadVariantImage = ({ file, option, variantId }) => {
+      if (!file) return
 
-      emit('update:variant-image', uploads)
+      emit('upload:variant-image', { file, option, variantId })
 
       productImages.value = []
     }
 
-    const onLoadImage = uploads => {
-      if (!uploads.length) return
+    const onDeleteVariantImage = (asset) => {
+      emit('delete:variant-image', asset)
+    }
 
-      emit('upload:image', uploads)
+    const onLoadImage = ([ file ]) => {
+      if (!file) return
+
+      emit('upload:image', file)
       productImages.value = []
     }
 
@@ -284,7 +289,7 @@ export const productActionsModal = defineComponent({
     }
 
     const onDiscardChanges = () => {
-      textEditorKey.value = props.description!
+      textEditorKey.value = `${ Date.now() }`
       emit('discard')
     }
 
@@ -336,7 +341,8 @@ export const productActionsModal = defineComponent({
       onAttributesUpdate,
       onDeleteAttribute,
       setAsMainImage,
-      onUpdateVariantImage
+      onUploadVariantImage,
+      onDeleteVariantImage
     }
   }
 })

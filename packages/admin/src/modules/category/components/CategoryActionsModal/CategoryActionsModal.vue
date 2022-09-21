@@ -14,17 +14,18 @@
       <v-card
         class="elevation-3"
         width="100%"
-        color="#fefefe"
+        color="rgba(0,0,0,.4)"
       >
         <v-card-title
-          class="card-title green--text text--base"
+          class="card-title white--text text--base"
         >
           {{ isUpdate ? 'Обновление категории': 'Создание категории' }}
         </v-card-title>
         <v-card-content
+          class="grey lighten-4"
           style="height: 70vh; max-height: 70vh; overflow: auto"
         >
-          <v-row>
+          <v-row class="white elevation-2 my-2 pa-2">
             <v-col xl="6">
               <v-text-field
                 v-model.trim="computedTitleProp"
@@ -40,7 +41,7 @@
               />
             </v-col>
           </v-row>
-          <v-row>
+          <v-row class="white elevation-2 my-2 pa-2">
             <v-col xl="6">
               <v-text-field
                 v-model.trim="computedSeoTitleProp"
@@ -54,7 +55,7 @@
               />
             </v-col>
           </v-row>
-          <v-row>
+          <v-row class="white elevation-2 my-2 pa-2">
             <v-col xl="6">
               <v-text-field
                 v-model.trim="computedSeoKeywordsProp"
@@ -89,7 +90,10 @@
               />
             </v-col>
           </v-row>
-          <v-row v-if="computedImageProp">
+          <v-row
+            v-if="computedImageProp" 
+            class="white elevation-2 my-2 pa-2"
+          >
             <v-col>
               <v-card
                 color="white"

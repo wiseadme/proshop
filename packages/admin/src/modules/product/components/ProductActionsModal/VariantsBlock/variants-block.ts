@@ -10,7 +10,11 @@ export const variantsBlock = defineComponent({
     variantItems: Array as PropType<Array<IVariant>>,
     variants: Array as PropType<Array<IVariant>>
   },
-  emits: [ 'update:variants', 'update:variant-image' ],
+  emits: [
+    'update:variants',
+    'upload:variant-image',
+    'delete:variant-image'
+  ],
 
   setup(props, { emit }){
     const displayedOptions = ref<Map<IVariant, IVariantOption>>(new Map())
@@ -94,8 +98,8 @@ export const variantsBlock = defineComponent({
       emit('update:variants', updated)
     }
 
-    const updateAssets = (files, option, variantId) => {
-      emit('update:variant-image', { files, option, variantId })
+    const onUploadVariantImage = ([ file ], option, variantId) => {
+      emit('upload:variant-image', { file, option, variantId })
     }
 
     const clearVariantOptionForm = (variant) => {
@@ -116,7 +120,7 @@ export const variantsBlock = defineComponent({
       removeVariantOption,
       clearVariantOptionForm,
       updateOption,
-      updateAssets,
+      onUploadVariantImage,
       toggleVariants,
       setOptionForEditing
     }
