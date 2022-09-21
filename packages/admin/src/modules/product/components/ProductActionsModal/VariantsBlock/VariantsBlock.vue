@@ -164,17 +164,15 @@
                 <v-row class="mt-4 ml-2">
                   <v-button
                     color="green"
-                    text
-                    outlined
+                    elevation="2"
                     @click="addOptionInVariant(validate, variant)"
                   >
                     {{ displayedOptions.get(variant)._id ? 'изменить' : 'добавить' }}
                   </v-button>
                   <v-button
                     class="ml-2"
-                    color="red"
-                    text
-                    outlined
+                    color="error"
+                    elevation="2"
                     @click="clearVariantOptionForm(variant)"
                   >
                     очистить

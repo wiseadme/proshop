@@ -313,6 +313,7 @@
               elevation="3"
               width="120"
               outlined
+              :disabled="!hasChanges && isUpdate"
               @click="onSubmit(validate)"
             >
               сохранить
