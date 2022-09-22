@@ -117,13 +117,14 @@
                 md="6"
                 sm="12"
                 class="image mb-4 mr-1 pa-2 white elevation-2 d-flex justify-center align-center"
-                :class="{'main': it.main}"
+                :class="{'product-image--main': it.main}"
                 style="height: 250px; overflow: hidden; position: relative"
                 @contextmenu.prevent="onImagesContextMenu($event, it)"
               >
                 <img
                   style="height: auto; width: 100%"
                   :src="it.url"
+                  class=""
                   alt=""
                 >
                 <v-icon
@@ -354,8 +355,8 @@
     border: 2px solid transparent;
   }
 
-  .main {
-    border-color: #05b105;
+  .product-image--main {
+    border-color: #05b105 !important;
   }
 
   .attribute:hover {

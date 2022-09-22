@@ -51,8 +51,8 @@
                   <v-chip
                     v-for="(option, j) in variant.options"
                     :key="option.name"
-                    :color="!option._id ?'grey': 'green'"
-                    class="elevation-2 mr-2 mt-2"
+                    :color="!option._id ?'grey': option === currentEditableOption ? 'green lighten-3' : 'green'"
+                    :class="['mr-2 mt-2', {'elevation-2 ': option !== currentEditableOption}]"
                     @click="setOptionForEditing(variant, option)"
                     @close="removeVariantOption(variant, j)"
                   >

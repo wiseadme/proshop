@@ -145,9 +145,9 @@ export const CategoryActionsModal = defineComponent({
       emit('delete:image', computedImageProp.value)
     }
 
-    const onLoadImage = event => {
-      if (!event.length) return
-      emit('upload:image', event)
+    const onLoadImage = ([ file ]) => {
+      if (!file) return
+      emit('upload:image', file)
     }
 
     return {

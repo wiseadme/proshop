@@ -36,8 +36,8 @@
         showModal.value = true
       }
 
-      const onUploadImage = (files) => {
-        service.uploadCategoryImage(files)
+      const onUploadImage = (file) => {
+        service.uploadCategoryImage(file)
           .then((url) => model.value!.image = url)
       }
 

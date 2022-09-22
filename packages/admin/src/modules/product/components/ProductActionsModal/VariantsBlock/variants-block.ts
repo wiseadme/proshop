@@ -1,4 +1,4 @@
-import { defineComponent, PropType, ref, watch } from 'vue'
+import { defineComponent, PropType, ref, shallowRef, watch } from 'vue'
 import { clone } from '@shared/helpers'
 import { IVariant, IVariantOption } from '@modules/variant/types'
 
@@ -20,6 +20,7 @@ export const variantsBlock = defineComponent({
     const displayedOptions = ref<Map<IVariant, IVariantOption>>(new Map())
     const selectedVariants = ref<Array<IVariant>>([])
     const existsVariantsMap = ref<Record<string, IVariant>>({})
+    const currentEditableOption = shallowRef<Maybe<IVariantOption>>(null)
 
     const genVariantOption = () => ({
       name: '',
@@ -86,8 +87,9 @@ export const variantsBlock = defineComponent({
       emit('update:variants', selectedVariants.value)
     }
 
-    const setOptionForEditing = (variant, it) => {
-      setVariantOptions(variant, it)
+    const setOptionForEditing = (variant, option) => {
+      currentEditableOption.value = option
+      setVariantOptions(variant, option)
     }
 
     const updateOption = () => {
@@ -113,6 +115,7 @@ export const variantsBlock = defineComponent({
     watch(() => props.variants, setProductVariants)
 
     watch(() => props.variantItems, (to) => {
+      currentEditableOption.value = null
       to?.forEach((v) => setVariantOptions(v))
     }, { immediate: true })
 
@@ -120,6 +123,7 @@ export const variantsBlock = defineComponent({
       existsVariantsMap,
       displayedOptions,
       selectedVariants,
+      currentEditableOption,
       addOptionInVariant,
       removeVariantOption,
       clearVariantOptionForm,

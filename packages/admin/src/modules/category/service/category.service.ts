@@ -47,10 +47,8 @@ class Service implements ICategoryService {
       .catch(err => console.log(err))
   }
 
-  async uploadCategoryImage(files) {
-    if (!files.length) return
-
-    const { formData, fileName } = this._files.createFormData(files)
+  async uploadCategoryImage(file) {
+    const { formData, fileName } = this._files.createFormData(file)
     const ownerId = this._category!._id
 
     const asset = await this._files.uploadFile({ ownerId, fileName, formData })
