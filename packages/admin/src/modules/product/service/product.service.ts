@@ -1,11 +1,12 @@
 import { Store } from 'nervue'
-import { ref, toRaw, Ref } from 'vue'
+import { ref, Ref } from 'vue'
 // Stores
 import { useProductStore } from '@modules/product/store'
 // Services
 import { useFilesService } from '@shared/services/files.service'
 // Types
 import { IProductState, IProductActions, IProduct, IProductAsset } from '../types'
+import { clone } from '@shared/helpers'
 
 class Service {
   private _store: Store<string, IProductState, {}, {}, IProductActions>
@@ -80,7 +81,7 @@ class Service {
   }
 
   setAsCurrent(product: IProduct){
-    this._product.value = product
+    this._product.value = clone(product)
   }
 
   createProduct(product: IProduct){
@@ -110,14 +111,18 @@ class Service {
     const optionAsset = await this.createFileAsset(image)
     let { variants } = this._product.value!
 
-    option.assets.push(optionAsset)
+    const updates = clone(option)
 
-    option.assets = option.assets.map(it => it._id)
+    updates.assets = option.assets.map(it => it._id)
+
+    updates.assets.push(optionAsset._id)
 
     const idx = variants.findIndex(v => v._id === variantId)
-    const optIdx = variants[idx].options.findIndex((o: any) => o._id === option._id)
 
-    variants[idx].options.splice(optIdx, 1, option)
+    variants[idx].options = Array.from(variants[idx].options, opt => {
+      if (opt._id === option._id) return updates
+      return opt
+    })
 
     await this.updateProduct({
       _id: ownerId,
@@ -127,9 +132,25 @@ class Service {
     return optionAsset
   }
 
-  /*TODO продумать как обновить продукт после удаления изображения варианта*/
-  async deleteProductVariantImage (file) {
-    console.log(toRaw(file), 'in service')
+  async deleteProductVariantImage({ asset, option, variant }){
+    let { variants } = this._product.value!
+
+    await this._files.deleteFile({ ownerId: asset.ownerId, url: asset.url })
+
+    variants = variants.filter(v => v._id !== variant._id)
+
+    option.assets = option.assets.filter(a => a._id !== asset._id)
+
+    variant.options = variant.options.filter(o => o._id !== option._id)
+
+    variant.options.push(option)
+
+    variants.push(variant)
+
+    await this.updateProduct({
+      _id: asset.ownerId,
+      variants
+    })
   }
 
   async uploadProductImage(file){
@@ -151,10 +172,12 @@ class Service {
 
       assets.push(asset)
 
-      await this.updateProduct({
+      const product = await this.updateProduct({
         _id: asset.ownerId,
         assets
-      })
+      }) as IProduct
+
+      this._product.value!.assets = product.assets
     }
   }
 

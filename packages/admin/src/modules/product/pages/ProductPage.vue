@@ -144,25 +144,36 @@
 
       const onUploadVariantImage = ({ file, option, variantId }) => {
         return service.uploadProductVariantImage(file, option, variantId)
+          .then((asset) => option.assets.push(asset))
       }
 
-      const onDeleteVariantImage = (file) => {
-        service.deleteProductVariantImage(file)
+      const onDeleteVariantImage = ({ asset, option, variant }) => {
+        service.deleteProductVariantImage({ asset, option, variant })
+        .then(() => {
+          option.assets = option.assets.reduce((assets, it) => {
+            if (it._id !== asset._id) assets.push(it)
+            return assets
+          }, [])
+        })
       }
 
       const onUploadImage = (image) => {
         service.uploadProductImage(image)
+          .then(() => {
+            model.value.assets = service.product?.assets!
+          })
       }
 
       const onDeleteImage = (url) => {
         service.deleteProductImage(url)
           .then(() => {
-            model.value = Product.create(service.product!)
+            model.value.assets = service.product?.assets!
           })
       }
 
       const onEdit = (row) => {
         service.setAsCurrent(row)
+        model.value = Product.create(row)
 
         showCreateModal.value = true
         isEditMode.value = true
@@ -177,10 +188,6 @@
       const onDiscard = () => {
         model.value = Product.create(service.product!)
       }
-
-      watch(() => service.product, to => {
-        model.value = Product.create(to!)
-      })
 
       watch(model, () => {
         hasChanges.value = unref(isEditMode) && !!checkDiffs()
@@ -201,10 +208,10 @@
         showCreateModal,
         hasChanges,
         isEditMode,
+        onAdd,
+        onEdit,
         onCreate,
         onUpdate,
-        onEdit,
-        onAdd,
         onDeleteProduct,
         onCloseModal,
         onDeleteImage,

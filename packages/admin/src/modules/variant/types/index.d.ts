@@ -1,6 +1,7 @@
 import { IProductAsset } from '@modules/product/types'
 
 interface IVariantOption {
+  _id?: string
   assets: Array<IProductAsset>
   count: number
   description: string

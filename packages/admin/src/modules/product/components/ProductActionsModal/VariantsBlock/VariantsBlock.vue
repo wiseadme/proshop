@@ -150,7 +150,7 @@
                               style="position: absolute; top: 5px; right: 5px;"
                               icon="fas fa-times"
                               clickable
-                              @click="$emit('delete:variant-image', asset)"
+                              @click="onDeleteVariantImage(asset, variant)"
                             />
                             <img
                               :src="asset.url"

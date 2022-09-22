@@ -54,7 +54,6 @@ export const variantsBlock = defineComponent({
       validate()
         .then(() => {
           const option = displayedOptions.value.get(variant)
-
           const idx = variant.options.indexOf(option)
 
           if (idx > -1) {
@@ -102,6 +101,11 @@ export const variantsBlock = defineComponent({
       emit('upload:variant-image', { file, option, variantId })
     }
 
+    const onDeleteVariantImage = (asset, variant) => {
+      const option = displayedOptions.value.get(variant)
+      emit('delete:variant-image', { asset, option, variant })
+    }
+
     const clearVariantOptionForm = (variant) => {
       displayedOptions.value.set(variant, genVariantOption())
     }
@@ -121,6 +125,7 @@ export const variantsBlock = defineComponent({
       clearVariantOptionForm,
       updateOption,
       onUploadVariantImage,
+      onDeleteVariantImage,
       toggleVariants,
       setOptionForEditing
     }

@@ -18,7 +18,7 @@
           class="elevation-5"
         >
           <v-card-title class="white--text text--base">
-            <h3>Создание продукта</h3>
+            <h3>{{ computedModalHeader }}</h3>
           </v-card-title>
           <v-card-content
             class="grey lighten-3"
@@ -173,7 +173,7 @@
                   </v-card-title>
                   <v-card-content>
                     <text-editor
-                      :key="textEditorKey"
+                      :key="rerenderKey"
                       v-model:content="computedDescription"
                       content-type="html"
                       :global-options="{
@@ -201,7 +201,7 @@
                       :key="it._id"
                     >
                       <v-group
-                        v-if="it.children.length"
+                        v-if="it.children && it.children.length"
                         :title="it.title"
                         class="elevation-2"
                         :expand="isUpdate"

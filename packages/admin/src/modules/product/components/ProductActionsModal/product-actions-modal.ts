@@ -1,4 +1,14 @@
-import { defineComponent, ref, reactive, toRaw, computed, PropType, watch, shallowRef } from 'vue'
+import {
+  defineComponent,
+  ref,
+  reactive,
+  toRaw,
+  computed,
+  PropType,
+  watch,
+  nextTick,
+  shallowRef
+} from 'vue'
 import { TextEditor } from '@shared/components/TextEditor'
 import { clone } from '@shared/helpers'
 import draggable from 'vuedraggable'
@@ -72,12 +82,16 @@ export const productActionsModal = defineComponent({
     const currentImage = ref<Maybe<IProductAsset>>(null)
 
     const content = shallowRef<string>('')
-    const textEditorKey = shallowRef<string>('')
+    const rerenderKey = shallowRef<string>('')
 
     const imagesContextMenu = reactive({
       show: false,
       positionX: 0,
       positionY: 0,
+    })
+
+    const computedModalHeader = computed<string>(() => {
+      return `${(props.isUpdate ? 'Редактирование' : 'Создание')} продукта`
     })
 
     const computedName = computed<string>({
@@ -254,8 +268,8 @@ export const productActionsModal = defineComponent({
       productImages.value = []
     }
 
-    const onDeleteVariantImage = (asset) => {
-      emit('delete:variant-image', asset)
+    const onDeleteVariantImage = ({asset, option, variant}) => {
+      emit('delete:variant-image', {asset, option, variant})
     }
 
     const onLoadImage = ([ file ]) => {
@@ -289,7 +303,14 @@ export const productActionsModal = defineComponent({
     }
 
     const onDiscardChanges = () => {
-      textEditorKey.value = `${ Date.now() }`
+      rerenderKey.value = `${ Date.now() }`
+
+      nextTick(() => {
+        ctgMap.value.clear()
+        computedCategories.value?.forEach(toggleCategory)
+        attributesArray.value = clone(props.attributes)
+      })
+
       emit('discard')
     }
 
@@ -305,7 +326,7 @@ export const productActionsModal = defineComponent({
       attributesArray.value = clone(props.attributes)
 
       content.value = props.description!
-      textEditorKey.value = content.value
+      rerenderKey.value = content.value
 
     }, { immediate: true })
 
@@ -325,10 +346,11 @@ export const productActionsModal = defineComponent({
       computedCategories,
       computedDescription,
       computedUrl,
+      computedModalHeader,
       productImages,
       attributesArray,
       content,
-      textEditorKey,
+      rerenderKey,
       imagesContextMenu,
       currentImage,
       toggleCategory,
