@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { defineComponent, shallowRef, ref, unref, toRaw, watch } from 'vue'
+  import { defineComponent, ref, unref, toRaw, watch } from 'vue'
   import { ProductActionsModal } from '../components/ProductActionsModal'
   // Services
   import { useProductService } from '../service/product.service'
@@ -13,12 +13,13 @@
 
   export default defineComponent({
     components: { ProductActionsModal },
+
     async setup(){
       const model = ref<IProduct>(Product.create())
 
-      const showCreateModal = shallowRef<boolean>(false)
-      const hasChanges = shallowRef<boolean>(false)
-      const isEditMode = shallowRef<boolean>(false)
+      const showCreateModal = ref<boolean>(false)
+      const hasChanges = ref<boolean>(false)
+      const isEditMode = ref<boolean>(false)
 
       const cols = ref([
         {
@@ -127,11 +128,11 @@
       }
 
       const onUpdate = () => {
-        const updates = checkDiffs()
+        const updates = checkDiffs()!
 
-        !!updates && (updates._id = model.value._id)
+        updates._id = model.value._id
 
-        !!updates && service.updateProduct(updates)
+        service.updateProduct(updates)
           .then(() => {
             showCreateModal.value = false
             isEditMode.value = false
@@ -189,8 +190,26 @@
         model.value = Product.create(service.product!)
       }
 
+      watch(showCreateModal, to => {
+        console.log(to)
+      })
+
       watch(model, () => {
-        hasChanges.value = unref(isEditMode) && !!checkDiffs()
+        const diffs = checkDiffs()
+
+        if (!(diffs?.assets && diffs.image)) {
+          /*
+          * should not react to these changes
+          * so we delete these changes if they are
+          */
+          delete diffs?.assets
+          delete diffs?.image
+        }
+
+        hasChanges.value = unref(isEditMode)
+          && !!diffs
+          && !!Object.keys(diffs).length
+
       }, { deep: true })
 
       await Promise.all([

@@ -114,9 +114,9 @@ export const variantsBlock = defineComponent({
 
     watch(() => props.variants, setProductVariants)
 
-    watch(() => props.variantItems, (to) => {
+    watch(() => props.variantItems, (newItems) => {
       currentEditableOption.value = null
-      to?.forEach((v) => setVariantOptions(v))
+      newItems?.forEach((v) => setVariantOptions(v))
     }, { immediate: true })
 
     return {

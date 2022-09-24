@@ -109,12 +109,11 @@ class Service {
   async uploadProductVariantImage(image, option, variantId){
     const ownerId = this._product.value!._id
     const optionAsset = await this.createFileAsset(image)
+
     let { variants } = this._product.value!
 
     const updates = clone(option)
-
     updates.assets = option.assets.map(it => it._id)
-
     updates.assets.push(optionAsset._id)
 
     const idx = variants.findIndex(v => v._id === variantId)
@@ -138,9 +137,7 @@ class Service {
     await this._files.deleteFile({ ownerId: asset.ownerId, url: asset.url })
 
     variants = variants.filter(v => v._id !== variant._id)
-
     option.assets = option.assets.filter(a => a._id !== asset._id)
-
     variant.options = variant.options.filter(o => o._id !== option._id)
 
     variant.options.push(option)
