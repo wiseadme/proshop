@@ -70,18 +70,10 @@ const ProductSchema = new Schema<IProduct & Document>({
     type: [
       {
         group: String,
-        options: [
-          {
-            name: String,
-            price: Number,
-            count: Number,
-            description: String,
-            assets: [ {
-              type: Schema.Types.ObjectId,
-              ref: 'Asset'
-            } ]
-          }
-        ]
+        options: [ {
+          type: Schema.Types.ObjectId,
+          ref: 'Option'
+        } ]
       }
     ],
     default: []

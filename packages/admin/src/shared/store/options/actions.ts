@@ -1,13 +1,22 @@
 import { useOptionsRepository } from '@shared/repository/options.repository'
-import { IOption } from '@ecommerce-platform/server/src/modules/option/types/model'
+import { IVariantOption } from '@modules/variant/types'
 
 const repository = useOptionsRepository()
 
 export const actions = {
-  async createOption(option): Promise<IOption>{
+  async createOption(option): Promise<IVariantOption>{
     try {
       const { data } = await repository.create(option)
       return data.data
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+
+  async deleteOption(id){
+    try {
+      await repository.delete(id)
+      return true
     } catch (error) {
       return Promise.reject(error)
     }

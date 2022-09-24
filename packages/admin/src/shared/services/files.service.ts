@@ -24,8 +24,8 @@ export class Service {
     return this._store.update(updates)
   }
 
-  async deleteFile({ ownerId, url }){
-    return await this._store.deleteFile({ ownerId, url })
+  async deleteFile(asset){
+    return await this._store.deleteFile(asset)
   }
 }
 

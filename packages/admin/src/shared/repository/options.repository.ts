@@ -20,6 +20,10 @@ class Repository implements Partial<IOptionsRepository> {
     return this._rest.post(this._baseUrl, option)
   }
 
+  delete(id){
+    return this._rest.delete(this._baseUrl, { params: { id } })
+  }
+
   read(id?: string){
     return this._rest.get(this._baseUrl, { params: { id } })
   }

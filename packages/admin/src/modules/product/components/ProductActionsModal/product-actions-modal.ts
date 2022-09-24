@@ -69,6 +69,8 @@ export const productActionsModal = defineComponent({
     'delete:image',
     'upload:variant-image',
     'delete:variant-image',
+    'create:variant-option',
+    'delete:variant-option',
     'create',
     'close',
     'discard',
@@ -260,6 +262,14 @@ export const productActionsModal = defineComponent({
       else onCreate(validate)
     }
 
+    const onCreateVariantOption = (option) => {
+      emit('create:variant-option', option)
+    }
+
+    const onDeleteVariantOption = (option) => {
+      emit('delete:variant-option', option)
+    }
+
     const onUploadVariantImage = ({ file, option, variantId }) => {
       if (!file) return
 
@@ -280,7 +290,7 @@ export const productActionsModal = defineComponent({
     }
 
     const onDeleteImage = (asset) => {
-      emit('delete:image', asset.url)
+      emit('delete:image', asset)
     }
 
     const onDeleteAttribute = (attr) => {
@@ -360,8 +370,10 @@ export const productActionsModal = defineComponent({
       onClose,
       onDiscardChanges,
       onDeleteImage,
+      onCreateVariantOption,
       onAttributesUpdate,
       onDeleteAttribute,
+      onDeleteVariantOption,
       setAsMainImage,
       onUploadVariantImage,
       onDeleteVariantImage

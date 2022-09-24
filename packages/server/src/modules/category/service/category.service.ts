@@ -87,7 +87,7 @@ export class CategoryService implements ICategoryService {
       await this.repository.update($set)
     }
 
-    this.events.emit('delete:category', { id })
+    this.events.emit('delete:category', id)
 
     return res
   }

@@ -1,6 +1,6 @@
 import { file, rest } from '@shared/api'
 import { IRest, IRepository } from '@shared/types/app'
-import {IProductAsset} from '@modules/order/types'
+import { IProductAsset } from '@modules/order/types'
 
 type CreateFileParams = {
   ownerId: string,
@@ -38,8 +38,8 @@ class Repository implements IFilesRepository {
     return this._rest.patch(this._baseUrl, updates)
   }
 
-  delete({ ownerId, url }){
-    return this._file.delete(`${ this._baseUrl }?id=${ ownerId }&&url=${ url }`)
+  delete(asset){
+    return this._file.delete(this._baseUrl, { params: { ...asset } })
   }
 }
 

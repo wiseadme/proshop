@@ -65,36 +65,46 @@ export class AssetRepository implements IAssetsRepository {
     return { updated }
   }
 
-  async delete(id: string, url?: string){
+  async deleteOne(asset){
+    validateId(asset._id)
+
+    const assetData = await AssetModel.findOne({ _id: asset._id })
+    const ownerDir = asset.ownerId.slice(-4)
+    const dirPath = `${ config.uploadsDir }/${ ownerDir }`
+
+    await assetData!.deleteOne()
+
+    await fs
+      .unlink(`${ dirPath }/${ asset._id }|${ asset.fileName }`)
+      .catch(err => console.log(err))
+
+    const dir = await fs.readdir(dirPath)
+
+    if (!dir.length) {
+      rimraf(dirPath, () => console.log(dirPath, 'deleted'))
+    }
+
+    return true
+  }
+
+  async deleteAll(id){
     try {
       validateId(id)
 
       const assets = await AssetModel.find({ ownerId: id })
       const ownerDir = id.slice(-4)
+      const dirPath = `${ config.uploadsDir }/${ ownerDir }`
 
-      assets.forEach(it => {
-        const fileName = url ? url.split('/')[3] : it._id + '|' + it.fileName
-
-        if ((url && it.url === url) || !url) {
-          it.deleteOne()
-
-          fs.unlink(`${ config.uploadsDir }/${ ownerDir }/${ fileName }`)
-            .catch(err => console.log(err))
-        }
-      })
-
-      const dir = await fs.readdir(`${ config.uploadsDir }/${ ownerDir }/`)
-
-      if (!dir.length) {
-        rimraf(
-          `${ config.uploadsDir }/${ ownerDir }/`,
-          () => console.log(`${ config.uploadsDir }/${ ownerDir }/ deleted`)
-        )
+      for (const data of assets) {
+        await data.deleteOne()
       }
+
+      rimraf(dirPath, () => console.log(dirPath, 'deleted'))
 
       return true
     } catch (err) {
       console.log(err)
+      return false
     }
   }
 }

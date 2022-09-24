@@ -307,6 +307,8 @@
               :variant-items="variantItems"
               @upload:variant-image="onUploadVariantImage"
               @delete:variant-image="onDeleteVariantImage"
+              @create:variant-option="onCreateVariantOption"
+              @delete:variant-option="onDeleteVariantOption"
             />
           </v-card-content>
           <v-card-actions>

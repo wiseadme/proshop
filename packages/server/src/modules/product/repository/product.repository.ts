@@ -80,7 +80,9 @@ export class ProductRepository implements IProductRepository {
       'assets', 'categories'
     ]).populate({
       path: 'variants',
-      populate: { path: 'options', populate: { path: 'assets', model: 'Asset' } }
+      populate: {
+        path: 'options',
+      }
     }) as Document<IProduct>
 
     return { updated }

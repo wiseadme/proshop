@@ -22,14 +22,18 @@ export class AssetService implements IAssetsService {
     return await this.repository.update(updates)
   }
 
-  async deleteFile({ id, url }){
-    return await this.repository.delete(id, url)
+  async deleteFile(asset){
+    return await this.repository.deleteOne(asset)
+  }
+
+  async deleteFiles(id) {
+    return await this.repository.deleteAll(id)
   }
 
   addEventListeners(){
-    this.events.on('delete:category', this.deleteFile.bind(this))
-    this.events.on('delete:variant', this.deleteFile.bind(this))
-    this.events.on('delete:product', this.deleteFile.bind(this))
     this.events.on('update:assets', this.updateFile.bind(this))
+    this.events.on('delete:option', this.deleteFile.bind(this))
+    this.events.on('delete:product', this.deleteFiles.bind(this))
+    this.events.on('delete:category', this.deleteFiles.bind(this))
   }
 }

@@ -7,6 +7,10 @@ const OptionSchema = new Schema<Document & IOption>({
     type: String,
     required: true
   },
+  variantId: {
+    type: String,
+    required: true
+  },
   price: {
     type: Number
   },

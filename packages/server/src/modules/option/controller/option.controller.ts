@@ -4,7 +4,7 @@ import { Router } from 'express'
 import { inject, injectable } from 'inversify'
 import { TYPES } from '@common/schemes/di-types'
 // Types
-import { Document } from 'mongoose'
+// import { Document } from 'mongoose'
 import { Request, Response } from 'express'
 import { ILogger } from '@/types/utils'
 import { IController } from '@/types'
@@ -30,6 +30,7 @@ export class OptionController extends BaseController implements IController {
   initRoutes(){
     this.router.post('/', new ValidateMiddleware(OptionDTO).execute, expressAsyncHandler(this.createOption.bind(this)))
     this.router.get('/', expressAsyncHandler(this.getOptions.bind(this)))
+    this.router.delete('/', expressAsyncHandler(this.deleteOption.bind(this)))
   }
 
   async createOption({ body, method }: Request<{}, {}, IOption>, res: Response){
@@ -62,6 +63,24 @@ export class OptionController extends BaseController implements IController {
         method
       })
     } catch (err) {
+      return this.error({
+        error: err,
+        url: this.path,
+        method
+      })
+    }
+  }
+
+  async deleteOption({ query, method }: Request<{}, {}, {}, { id: string }>, res: Response){
+    try {
+      await this.service.delete(query.id)
+      this.send({
+        response: res,
+        data: null,
+        url: this.path,
+        method
+      })
+    } catch (err: any) {
       return this.error({
         error: err,
         url: this.path,

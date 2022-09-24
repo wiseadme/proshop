@@ -12,6 +12,8 @@ export const variantsBlock = defineComponent({
   },
   emits: [
     'update:variants',
+    'create:variant-option',
+    'delete:variant-option',
     'upload:variant-image',
     'delete:variant-image'
   ],
@@ -22,16 +24,17 @@ export const variantsBlock = defineComponent({
     const existsVariantsMap = ref<Record<string, IVariant>>({})
     const currentEditableOption = shallowRef<Maybe<IVariantOption>>(null)
 
-    const genVariantOption = () => ({
+    const genVariantOption = (variantId) => ({
+      variantId,
       name: '',
-      count: 0,
+      quantity: 0,
       price: 0,
-      description: '',
+      description: null,
       assets: []
     })
 
     const setVariantOptions = (variant, it = null) => {
-      displayedOptions.value.set(variant, it || genVariantOption())
+      displayedOptions.value.set(variant, it || genVariantOption(variant._id))
     }
 
     const setProductVariants = () => {
@@ -55,31 +58,19 @@ export const variantsBlock = defineComponent({
       validate()
         .then(() => {
           const option = displayedOptions.value.get(variant)
-          const idx = variant.options.indexOf(option)
-
-          if (idx > -1) {
-            variant.options.splice(idx, 1, option)
-          } else {
-            variant.options.push(option)
-          }
-
-          setVariantOptions(variant)
-
-          emit('update:variants', selectedVariants.value)
+          emit('create:variant-option', option)
         })
     }
 
-    const removeVariantOption = (variant, optionIndex) => {
-      variant.options.splice(optionIndex, 1)
+    const removeVariantOption = (option) => {
 
-      if (!variant.options.length) {
-        const idx = selectedVariants.value.indexOf(variant)
-        selectedVariants.value.splice(idx, 1)
-      }
-
-      setVariantOptions(variant)
-
-      emit('update:variants', selectedVariants.value)
+      // if (!variant.options.length) {
+      //   const idx = selectedVariants.value.indexOf(variant)
+      //   selectedVariants.value.splice(idx, 1)
+      // }
+      //
+      // setVariantOptions(variant)
+      emit('delete:variant-option', option)
     }
 
     const toggleVariants = (val) => {
@@ -109,7 +100,7 @@ export const variantsBlock = defineComponent({
     }
 
     const clearVariantOptionForm = (variant) => {
-      displayedOptions.value.set(variant, genVariantOption())
+      displayedOptions.value.set(variant, genVariantOption(variant._id))
     }
 
     watch(() => props.variants, setProductVariants)

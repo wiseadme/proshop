@@ -4,20 +4,25 @@ import { ref, Ref } from 'vue'
 import { useProductStore } from '@modules/product/store'
 // Services
 import { useFilesService } from '@shared/services/files.service'
+import { useOptionsService } from '@shared/services/options.service'
+
 // Types
 import { IProductState, IProductActions, IProduct, IProductAsset } from '../types'
 import { clone } from '@shared/helpers'
+import { IVariantOption } from '@modules/variant/types'
 
 class Service {
   private _store: Store<string, IProductState, {}, {}, IProductActions>
   private _product: Ref<Maybe<IProduct>>
-  private _files: ReturnType<typeof useFilesService>
+  private _filesService: ReturnType<typeof useFilesService>
+  private _optionsService: ReturnType<typeof useOptionsService>
   static instance: Service
 
-  constructor({ store, filesService }){
+  constructor({ store, filesService, optionsService }){
     this._store = store
     this._product = ref(null)
-    this._files = filesService
+    this._filesService = filesService
+    this._optionsService = optionsService
   }
 
   get products(){
@@ -89,6 +94,45 @@ class Service {
       .catch(err => console.log(err))
   }
 
+  createVariantOption(option: IVariantOption){
+    return this._optionsService.createOption(option)
+      .then(option => {
+        const { variants } = this._product.value!
+
+        let variant = variants.find(v => v._id === option.variantId)!
+
+        if (variant) {
+          const optionIds = variant.options.map(o => o._id)
+          optionIds.push(option._id)
+          variant.options = optionIds as any
+        } else {
+          variant = this.variants.find(v => v._id === option.variantId)
+          variant.options = [ option._id ] as any
+          variants.push(variant)
+        }
+
+        return this.updateProduct({
+          _id: this._product.value!._id,
+          variants
+        })
+      }) as Promise<IProduct>
+  }
+
+  deleteVariantOption(option){
+    return this._optionsService.deleteOption(option)
+      .then(() => {
+        const { variants } = this._product.value!
+        const variant = variants.find(v => v._id === option.variantId)!
+
+        variant.options = variant.options.filter(it => it._id !== option._id)
+
+        return this.updateProduct({
+          _id: this._product.value!._id,
+          variants
+        })
+      })
+  }
+
   deleteProduct(product){
     this._store.delete(product).catch(err => console.log(err))
   }
@@ -99,16 +143,16 @@ class Service {
       .catch(err => console.log(err))
   }
 
-  async createFileAsset(file){
-    const { formData, fileName } = this._files.createFormData(file)
+  async createAsset(file){
+    const { formData, fileName } = this._filesService.createFormData(file)
     const ownerId = this._product.value!._id
 
-    return await this._files.uploadFile({ ownerId, fileName, formData })
+    return await this._filesService.uploadFile({ ownerId, fileName, formData })
   }
 
   async uploadProductVariantImage(image, option, variantId){
     const ownerId = this._product.value!._id
-    const optionAsset = await this.createFileAsset(image)
+    const optionAsset = await this.createAsset(image)
 
     let { variants } = this._product.value!
 
@@ -134,7 +178,7 @@ class Service {
   async deleteProductVariantImage({ asset, option, variant }){
     let { variants } = this._product.value!
 
-    await this._files.deleteFile({ ownerId: asset.ownerId, url: asset.url })
+    await this._filesService.deleteFile(asset)
 
     variants = variants.filter(v => v._id !== variant._id)
     option.assets = option.assets.filter(a => a._id !== asset._id)
@@ -153,7 +197,7 @@ class Service {
   async uploadProductImage(file){
     if (!file) return
 
-    const asset: IProductAsset = await this.createFileAsset(file)
+    const asset: IProductAsset = await this.createAsset(file)
 
     if (asset && asset.url) {
       let { assets } = this._product.value!
@@ -161,7 +205,7 @@ class Service {
       asset.main = asset.main || !assets.length
 
       if (asset.main) {
-        await this._files.updateFile({
+        await this._filesService.updateFile({
           _id: asset._id,
           main: true
         })
@@ -178,23 +222,21 @@ class Service {
     }
   }
 
-  async deleteProductImage(url){
-    const ownerId = this._product.value!._id
+  async deleteProductImage(asset){
+    await this._filesService.deleteFile(asset)
 
-    await this._files.deleteFile({ ownerId, url })
-
-    let assets = this._product.value!.assets?.filter(it => it.url !== url)
+    let assets = this._product.value!.assets?.filter(it => it._id !== asset._id)
     this._product.value!.assets = assets!
 
     if (assets && assets.length && !assets?.find(it => it.main)) {
-      assets[0] = await this._files.updateFile({
+      assets[0] = await this._filesService.updateFile({
         _id: assets?.[0]._id,
         main: true
       })
     }
 
     await this.updateProduct({
-      _id: ownerId,
+      _id: asset.ownerId,
       assets
     })
   }
@@ -204,7 +246,8 @@ class Service {
 
     Service.instance = new Service({
       store: useProductStore(),
-      filesService: useFilesService()
+      filesService: useFilesService(),
+      optionsService: useOptionsService()
     })
 
     return Service.instance

@@ -46,7 +46,8 @@ export class ProductService implements IProductService {
 
   async delete(id){
     const res = await this.repository.delete(id)
-    this.events.emit('delete:product', { id })
+
+    this.events.emit('delete:product', id)
 
     return res
   }

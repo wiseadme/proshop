@@ -6,12 +6,14 @@ import { ILogger } from '@/types/utils'
 import { IOptionService } from '../types/service'
 import { IOptionRepository } from '../types/repository'
 import { IOption } from '../types/model'
+import { IEventBusService } from '@/types/services'
 
 @injectable()
 export class OptionService implements IOptionService {
   constructor(
     @inject(TYPES.UTILS.ILogger) private logger: ILogger,
-    @inject(TYPES.REPOSITORIES.IOptionRepository) private repository: IOptionRepository
+    @inject(TYPES.REPOSITORIES.IOptionRepository) private repository: IOptionRepository,
+    @inject(TYPES.SERVICES.IEventBusService) private events: IEventBusService
   ){
   }
 
@@ -28,6 +30,7 @@ export class OptionService implements IOptionService {
   }
 
   delete(id: string): Promise<boolean>{
+    // this.events.emit('delete:option', id)
     return this.repository.delete(id)
   }
 }

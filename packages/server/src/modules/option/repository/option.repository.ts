@@ -19,6 +19,7 @@ export class OptionRepository implements IOptionRepository {
     return new OptionModel({
       _id: new mongoose.Types.ObjectId(),
       name: option.name,
+      variantId: option.variantId,
       price: option.price,
       quantity: option.quantity,
       description: option.description,
@@ -29,7 +30,7 @@ export class OptionRepository implements IOptionRepository {
   async read(id?: string): Promise<Array<Document & IOption>>{
     id && validateId(id)
 
-    return OptionModel.find({ id })
+    return OptionModel.find({ _id: id })
   }
 
   async update(updates: Array<IOption & Document>): Promise<{ updated: Array<Document<IOption>> }>{
@@ -51,6 +52,8 @@ export class OptionRepository implements IOptionRepository {
   }
 
   async delete(id){
+    validateId(id)
+
     return !!await OptionModel.findByIdAndDelete(id)
   }
 }

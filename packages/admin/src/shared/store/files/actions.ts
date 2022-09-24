@@ -21,9 +21,9 @@ export const actions = {
     }
   },
 
-  async deleteFile({ ownerId, url }){
+  async deleteFile(asset){
     try {
-      const { data } = await repository.delete({ ownerId, url })
+      const { data } = await repository.delete(asset)
       return data.data
     } catch (err) {
       return Promise.reject(err)

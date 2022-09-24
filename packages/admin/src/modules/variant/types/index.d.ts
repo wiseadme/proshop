@@ -2,11 +2,12 @@ import { IProductAsset } from '@modules/product/types'
 
 interface IVariantOption {
   _id?: string
-  assets: Array<IProductAsset>
-  count: number
-  description: string
+  assets?: Array<IProductAsset>
+  quantity?: number
+  description?: Maybe<string>
+  price?: number
   name: string
-  price: number
+  variantId: string
 }
 
 declare interface IVariant {

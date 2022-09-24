@@ -150,12 +150,32 @@
 
       const onDeleteVariantImage = ({ asset, option, variant }) => {
         service.deleteProductVariantImage({ asset, option, variant })
-        .then(() => {
-          option.assets = option.assets.reduce((assets, it) => {
-            if (it._id !== asset._id) assets.push(it)
-            return assets
-          }, [])
-        })
+          .then(() => {
+            option.assets = option.assets.reduce((assets, it) => {
+              if (it._id !== asset._id) assets.push(it)
+              return assets
+            }, [])
+          })
+      }
+
+      const onCreateVariantOption = (option) => {
+        service.createVariantOption(option)
+          .then(pr => {
+            model.value.variants = pr.variants
+          })
+      }
+
+      const onDeleteVariantOption = (option) => {
+        service.deleteVariantOption(option)
+          .then(() => {
+            const { variants } = model.value
+
+            const id = variants.findIndex(v => v._id === option.variantId)!
+
+            variants[id].options = variants[id].options.filter(o => o._id !== option._id)
+
+            model.value.variants = variants
+          })
       }
 
       const onUploadImage = (image) => {
@@ -165,8 +185,8 @@
           })
       }
 
-      const onDeleteImage = (url) => {
-        service.deleteProductImage(url)
+      const onDeleteImage = (asset) => {
+        service.deleteProductImage(asset)
           .then(() => {
             model.value.assets = service.product?.assets!
           })
@@ -233,6 +253,8 @@
         onUploadImage,
         onUploadVariantImage,
         onDeleteVariantImage,
+        onCreateVariantOption,
+        onDeleteVariantOption,
         onDiscard,
         checkDiffs
       }
@@ -342,6 +364,8 @@
       @delete:image="onDeleteImage"
       @upload:variant-image="onUploadVariantImage"
       @delete:variant-image="onDeleteVariantImage"
+      @create:variant-option="onCreateVariantOption"
+      @delete:variant-option="onDeleteVariantOption"
     />
   </v-layout>
 </template>

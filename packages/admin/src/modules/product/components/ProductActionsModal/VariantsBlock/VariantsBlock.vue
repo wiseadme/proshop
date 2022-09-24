@@ -49,12 +49,12 @@
               <v-row v-if="variant">
                 <v-col>
                   <v-chip
-                    v-for="(option, j) in variant.options"
+                    v-for="option in variant.options"
                     :key="option.name"
                     :color="!option._id ?'grey': option === currentEditableOption ? 'green lighten-3' : 'green'"
                     :class="['mr-2 mt-2', {'elevation-2 ': option !== currentEditableOption}]"
                     @click="setOptionForEditing(variant, option)"
-                    @close="removeVariantOption(variant, j)"
+                    @close="removeVariantOption(option)"
                   >
                     {{ option.name }}
                   </v-chip>
@@ -82,7 +82,7 @@
                     cols="6"
                   >
                     <v-text-field
-                      v-model.number="displayedOptions.get(variant).count"
+                      v-model.number="displayedOptions.get(variant).quantity"
                       color="#272727"
                       label="количество"
                       type="number"

@@ -69,21 +69,21 @@ export class AssetController extends BaseController implements IController {
     }
   }
 
-  async deleteImage({ body, query, method }: Request<{}, {}, {}, { id: string, url: string }>, res: Response) {
+  async deleteImage(req: Request<{}, {}, {}, { id: string, url: string }>, res: Response) {
     try {
-      const result = await this.service.deleteFile(query)
+      const result = await this.service.deleteFile(req.query)
 
       this.send({
         response: res,
         data: result,
         url: this.path,
-        method
+        method: req.method
       })
     } catch (err) {
       return this.error({
         error: err,
         url: this.path,
-        method
+        method: req.method
       })
     }
   }
