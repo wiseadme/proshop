@@ -15,6 +15,7 @@ import { VariantController } from '@modules/variant/controller/variant.controlle
 import { UnitController } from '@modules/unit/controller/unit.controller'
 import { CartController } from '@modules/cart/controller/cart.controller'
 import { OrderController } from '@modules/order/controller/order.controller'
+import { OptionController } from '@modules/option/controller/option.controller'
 
 // Services
 import { LoggerService } from '../services/logger.service'
@@ -26,6 +27,7 @@ import { AttributeService } from '@modules/attribute/service/attribute.service'
 import { UnitService } from '@modules/unit/service/unit.service'
 import { CartService } from '@modules/cart/service/cart.service'
 import { OrderService } from '@modules/order/service/order.service'
+import { OptionService } from '@modules/option/service/option.service'
 import { EventBusService } from '@common/services/event-bus.service'
 
 // Repositories
@@ -37,6 +39,7 @@ import { AttributeRepository } from '@modules/attribute/repository/attribute.rep
 import { UnitRepository } from '@modules/unit/repository/unit.repository'
 import { CartRepository } from '@modules/cart/repository/cart.repository'
 import { OrderRepository } from '@modules/order/repository/order.repository'
+import { OptionRepository } from '@modules/option/repository/option.repository'
 
 // Middlewares
 import { JsonMiddleware } from '@common/middlewares/json.middleware'
@@ -54,6 +57,7 @@ import { IAttributeService } from '@modules/attribute/types/service'
 import { IUnitService } from '@modules/unit/types/service'
 import { ICartService } from '@modules/cart/types/service'
 import { IOrderService } from '@modules/order/types/service'
+import { IOptionService } from '@modules/option/types/service'
 import { IEventBusService } from '@/types/services'
 
 import { ICategoryRepository } from '@modules/category/types/repository'
@@ -64,6 +68,7 @@ import { IAttributeRepository } from '@modules/attribute/types/repository'
 import { IUnitRepository } from '@modules/unit/types/repository'
 import { ICartRepository } from '@modules/cart/types/repository'
 import { IOrderRepository } from '@modules/order/types/repository'
+import { IOptionRepository } from '@modules/option/types/repository'
 
 import { ILogger } from '@/types/utils'
 import { IController, IConfig, IDb } from '@/types'
@@ -89,6 +94,7 @@ container.bind<IEventBusService>(TYPES.SERVICES.IEventBusService).to(EventBusSer
 container.bind<IUnitService>(TYPES.SERVICES.IUnitService).to(UnitService)
 container.bind<ICartService>(TYPES.SERVICES.ICartService).to(CartService)
 container.bind<IOrderService>(TYPES.SERVICES.IOrderService).to(OrderService)
+container.bind<IOptionService>(TYPES.SERVICES.IOptionService).to(OptionService)
 
 // Controllers
 container.bind<IController>(TYPES.CONTROLLERS.IController).to(SwaggerController)
@@ -100,6 +106,7 @@ container.bind<IController>(TYPES.CONTROLLERS.IController).to(AssetController)
 container.bind<IController>(TYPES.CONTROLLERS.IController).to(UnitController)
 container.bind<IController>(TYPES.CONTROLLERS.IController).to(CartController)
 container.bind<IController>(TYPES.CONTROLLERS.IController).to(OrderController)
+container.bind<IController>(TYPES.CONTROLLERS.IController).to(OptionController)
 
 // Middlewares
 container.bind<IExpressMiddleware>(TYPES.MIDDLEWARES.IMiddleware).to(JsonMiddleware)
@@ -117,3 +124,4 @@ container.bind<IVariantRepository>(TYPES.REPOSITORIES.IVariantRepository).to(Var
 container.bind<IUnitRepository>(TYPES.REPOSITORIES.IUnitRepository).to(UnitRepository)
 container.bind<ICartRepository>(TYPES.REPOSITORIES.ICartRepository).to(CartRepository)
 container.bind<IOrderRepository>(TYPES.REPOSITORIES.IOrderRepository).to(OrderRepository)
+container.bind<IOptionRepository>(TYPES.REPOSITORIES.IOptionRepository).to(OptionRepository)

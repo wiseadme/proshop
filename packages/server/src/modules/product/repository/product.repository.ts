@@ -63,7 +63,7 @@ export class ProductRepository implements IProductRepository {
     }
 
     // here we sure that params is the product id
-    // string type and that's why need validate it
+    // string type and that's why we need to validate it
     params && validateId(params)
 
     return ProductModel.find({ _id: params }).populate([ 'categories', 'variants' ])

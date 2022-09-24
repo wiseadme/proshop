@@ -190,10 +190,6 @@
         model.value = Product.create(service.product!)
       }
 
-      watch(showCreateModal, to => {
-        console.log(to)
-      })
-
       watch(model, () => {
         const diffs = checkDiffs()
 
