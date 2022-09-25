@@ -93,7 +93,7 @@ export const productActionsModal = defineComponent({
     })
 
     const computedModalHeader = computed<string>(() => {
-      return `${(props.isUpdate ? 'Редактирование' : 'Создание')} продукта`
+      return `${ (props.isUpdate ? 'Редактирование' : 'Создание') } продукта`
     })
 
     const computedName = computed<string>({
@@ -244,7 +244,9 @@ export const productActionsModal = defineComponent({
         ctgMap.value.set(ctg._id, ctg)
       }
 
-      computedCategories.value = Array.from(toRaw(ctgMap.value).values())
+      computedCategories.value = Array.from(
+        toRaw(ctgMap.value).values()
+      )
     }
 
     const onCreate = validate => {
@@ -266,20 +268,19 @@ export const productActionsModal = defineComponent({
       emit('create:variant-option', option)
     }
 
-    const onDeleteVariantOption = (option) => {
-      emit('delete:variant-option', option)
+    const onDeleteVariantOption = ({ variant, option }) => {
+      emit('delete:variant-option', { variant, option })
     }
 
-    const onUploadVariantImage = ({ file, option, variantId }) => {
+    const onUploadVariantImage = ({ file, option }) => {
       if (!file) return
 
-      emit('upload:variant-image', { file, option, variantId })
-
+      emit('upload:variant-image', { file, option })
       productImages.value = []
     }
 
-    const onDeleteVariantImage = ({asset, option, variant}) => {
-      emit('delete:variant-image', {asset, option, variant})
+    const onDeleteVariantImage = ({ asset, option, variant }) => {
+      emit('delete:variant-image', { asset, option, variant })
     }
 
     const onLoadImage = ([ file ]) => {

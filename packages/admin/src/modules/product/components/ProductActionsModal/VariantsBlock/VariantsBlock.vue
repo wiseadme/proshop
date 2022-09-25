@@ -54,7 +54,7 @@
                     :color="!option._id ?'grey': option === currentEditableOption ? 'green lighten-3' : 'green'"
                     :class="['mr-2 mt-2', {'elevation-2 ': option !== currentEditableOption}]"
                     @click="setOptionForEditing(variant, option)"
-                    @close="removeVariantOption(option)"
+                    @close="removeVariantOption(variant, option)"
                   >
                     {{ option.name }}
                   </v-chip>
@@ -114,7 +114,7 @@
                       color="#272727"
                       :disabled="!displayedOptions.get(variant)._id"
                       placeholder="salam"
-                      @update:value="onUploadVariantImage($event, displayedOptions.get(variant), variant._id)"
+                      @update:value="onUploadVariantImage($event, displayedOptions.get(variant))"
                     />
                   </v-col>
                 </v-row>

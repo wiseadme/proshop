@@ -25,12 +25,12 @@ export class OptionService implements IOptionService {
     return this.repository.read(id)
   }
 
-  update(updates: Array<IOption & Document>): Promise<{ updated: Array<Document<IOption>> }>{
+  update(updates: IOption & Document): Promise<{ updated: Document<IOption> }>{
     return this.repository.update(updates)
   }
 
   delete(id: string): Promise<boolean>{
-    // this.events.emit('delete:option', id)
+    this.events.emit('delete:option', id)
     return this.repository.delete(id)
   }
 }

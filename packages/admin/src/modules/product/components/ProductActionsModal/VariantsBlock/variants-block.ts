@@ -24,8 +24,8 @@ export const variantsBlock = defineComponent({
     const existsVariantsMap = ref<Record<string, IVariant>>({})
     const currentEditableOption = shallowRef<Maybe<IVariantOption>>(null)
 
-    const genVariantOption = (variantId) => ({
-      variantId,
+    const genVariantOption = (id) => ({
+      variantId: id,
       name: '',
       quantity: 0,
       price: 0,
@@ -62,15 +62,11 @@ export const variantsBlock = defineComponent({
         })
     }
 
-    const removeVariantOption = (option) => {
-
-      // if (!variant.options.length) {
-      //   const idx = selectedVariants.value.indexOf(variant)
-      //   selectedVariants.value.splice(idx, 1)
-      // }
-      //
-      // setVariantOptions(variant)
-      emit('delete:variant-option', option)
+    const removeVariantOption = (variant, option) => {
+      emit('delete:variant-option', { variant, option })
+      if (option === currentEditableOption.value) {
+        clearVariantOptionForm(variant)
+      }
     }
 
     const toggleVariants = (val) => {
@@ -90,8 +86,8 @@ export const variantsBlock = defineComponent({
       emit('update:variants', updated)
     }
 
-    const onUploadVariantImage = ([ file ], option, variantId) => {
-      emit('upload:variant-image', { file, option, variantId })
+    const onUploadVariantImage = ([ file ], option) => {
+      emit('upload:variant-image', { file, option })
     }
 
     const onDeleteVariantImage = (asset, variant) => {

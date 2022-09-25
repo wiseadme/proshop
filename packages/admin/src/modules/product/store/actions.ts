@@ -17,7 +17,11 @@ export const actions: IProductActions = {
   async read(id?: string){
     try {
       const { data } = await productRepository.read(id)
-      this.products = data.data
+
+      if (!id) {
+        this.products = data.data
+      }
+
       return data.data
     } catch (err) {
       return Promise.reject(err)

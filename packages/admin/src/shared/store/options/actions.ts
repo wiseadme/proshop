@@ -13,6 +13,15 @@ export const actions = {
     }
   },
 
+  async updateOption(updates){
+    try {
+      const { data } = await repository.update(updates)
+      return data.data
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+
   async deleteOption(id){
     try {
       await repository.delete(id)

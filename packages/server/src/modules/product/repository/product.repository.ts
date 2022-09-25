@@ -31,7 +31,21 @@ export class ProductRepository implements IProductRepository {
       unit: product.unit,
       assets: product.assets,
       seo: product.seo
-    }).save()).populate([ 'categories', 'assets', 'variants' ])
+    })
+      .save())
+      .populate([
+        'categories',
+        'assets',
+        {
+          path: 'variant',
+          populate: {
+            path: 'options',
+            populate: {
+              path: 'assets'
+            }
+          }
+        }
+      ])
   }
 
   async read(params: string | ProductQuery){
@@ -53,11 +67,19 @@ export class ProductRepository implements IProductRepository {
 
       return ProductModel
         .find(search)
-        .populate([ 'categories', 'assets' ])
-        .populate({
-          path: 'variants',
-          populate: { path: 'options', populate: { path: 'assets', model: 'Asset' } }
-        })
+        .populate([
+          'categories',
+          'assets',
+          {
+            path: 'variants',
+            populate: {
+              path: 'options',
+              populate: {
+                path: 'assets'
+              }
+            }
+          }
+        ])
         .skip((page * count) - count)
         .limit(count)
     }
@@ -66,7 +88,19 @@ export class ProductRepository implements IProductRepository {
     // string type and that's why we need to validate it
     params && validateId(params)
 
-    return ProductModel.find({ _id: params }).populate([ 'categories', 'variants' ])
+    return ProductModel.find({ _id: params }).populate([
+      'categories',
+      'assets',
+      {
+        path: 'variants',
+        populate: {
+          path: 'options',
+          populate: {
+            path: 'assets'
+          }
+        }
+      }
+    ])
   }
 
   async update($set: Partial<Document<IProduct>>){
@@ -76,14 +110,20 @@ export class ProductRepository implements IProductRepository {
       { _id: $set._id },
       { $set },
       { new: true }
-    ).populate([
-      'assets', 'categories'
-    ]).populate({
-      path: 'variants',
-      populate: {
-        path: 'options',
-      }
-    }) as Document<IProduct>
+    )
+      .populate([
+        'categories',
+        'assets',
+        {
+          path: 'variants',
+          populate: {
+            path: 'options',
+            populate: {
+              path: 'assets'
+            }
+          }
+        }
+      ]) as Document<IProduct>
 
     return { updated }
   }

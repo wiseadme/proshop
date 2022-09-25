@@ -143,13 +143,15 @@
         service.deleteProduct(product)
       }
 
-      const onUploadVariantImage = ({ file, option, variantId }) => {
-        return service.uploadProductVariantImage(file, option, variantId)
-          .then((asset) => option.assets.push(asset))
+      const onUploadVariantImage = ({ file, option }) => {
+        return service.uploadProductVariantImage(file, option)
+          .then((optionData) => {
+            option.assets = optionData.assets
+          })
       }
 
-      const onDeleteVariantImage = ({ asset, option, variant }) => {
-        service.deleteProductVariantImage({ asset, option, variant })
+      const onDeleteVariantImage = ({ asset, option }) => {
+        service.deleteProductVariantImage({ asset, option })
           .then(() => {
             option.assets = option.assets.reduce((assets, it) => {
               if (it._id !== asset._id) assets.push(it)
@@ -160,21 +162,14 @@
 
       const onCreateVariantOption = (option) => {
         service.createVariantOption(option)
-          .then(pr => {
-            model.value.variants = pr.variants
-          })
+          .then((pr) => model.value.variants = pr.variants!)
       }
 
-      const onDeleteVariantOption = (option) => {
+      const onDeleteVariantOption = ({ variant, option }) => {
         service.deleteVariantOption(option)
           .then(() => {
-            const { variants } = model.value
-
-            const id = variants.findIndex(v => v._id === option.variantId)!
-
-            variants[id].options = variants[id].options.filter(o => o._id !== option._id)
-
-            model.value.variants = variants
+            // model.value.variants = service.product?.variants!
+            variant.options = variant.options.filter(o => o._id !== option._id)
           })
       }
 
@@ -214,12 +209,12 @@
         const diffs = checkDiffs()
 
         if (!(diffs?.assets && diffs.image)) {
-          /*
-          * should not react to these changes
-          * so we delete these changes if they are
-          */
           delete diffs?.assets
           delete diffs?.image
+        }
+
+        if (diffs?.variants) {
+          delete diffs?.variants
         }
 
         hasChanges.value = unref(isEditMode)

@@ -1,13 +1,15 @@
 import { rest } from '@shared/api'
 import { IRest, IRepository } from '@shared/types/app'
-import { IOption } from '@ecommerce-platform/server/src/modules/option/types/model'
+import { IVariantOption } from '@modules/variant/types'
 
 interface IOptionsRepository extends IRepository {
-  create: (option: IOption) => Promise<{ data: { data: IOption } }>
-  read: (id?: string) => Promise<{ data: { data: IOption[] } }>
+  create: (option: IVariantOption) => Promise<{ data: { data: IVariantOption } }>
+  read: (id?: string) => Promise<{ data: { data: IVariantOption[] } }>
+  update: (updates: Partial<IVariantOption>) => Promise<{ data: { data: IVariantOption } }>
+  delete: (id: string) => Promise<{ data: { data: boolean } }>
 }
 
-class Repository implements Partial<IOptionsRepository> {
+class Repository implements IOptionsRepository {
   private _rest: IRest
   private _baseUrl: string
 
@@ -16,12 +18,16 @@ class Repository implements Partial<IOptionsRepository> {
     this._baseUrl = baseUrl
   }
 
-  create(option){
+  create(option: IVariantOption){
     return this._rest.post(this._baseUrl, option)
   }
 
-  delete(id){
+  delete(id: string){
     return this._rest.delete(this._baseUrl, { params: { id } })
+  }
+
+  update(updates: Partial<IVariantOption>){
+    return this._rest.patch(this._baseUrl, updates)
   }
 
   read(id?: string){

@@ -10,7 +10,7 @@ class Repository implements IRepository {
   }
 
   read(id = ''){
-    return rest.get(this.baseUrl, { query: { id } })
+    return rest.get(this.baseUrl, id ? { params: { id } } : {})
   }
 
   update(updates){

@@ -12,6 +12,10 @@ export class Service {
     return await this._store.createOption(option)
   }
 
+  async updateOption(updates){
+    return await this._store.updateOption(updates)
+  }
+
   async deleteOption(option){
     return await this._store.deleteOption(option._id)
   }

@@ -32,7 +32,7 @@ export class AssetService implements IAssetsService {
 
   addEventListeners(){
     this.events.on('update:assets', this.updateFile.bind(this))
-    this.events.on('delete:option', this.deleteFile.bind(this))
+    this.events.on('delete:option', this.deleteFiles.bind(this))
     this.events.on('delete:product', this.deleteFiles.bind(this))
     this.events.on('delete:category', this.deleteFiles.bind(this))
   }

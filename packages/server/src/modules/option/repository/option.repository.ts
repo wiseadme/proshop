@@ -16,7 +16,7 @@ export class OptionRepository implements IOptionRepository {
   }
 
   async create(option: IOption): Promise<Document>{
-    return new OptionModel({
+    return (await new OptionModel({
       _id: new mongoose.Types.ObjectId(),
       name: option.name,
       variantId: option.variantId,
@@ -24,31 +24,25 @@ export class OptionRepository implements IOptionRepository {
       quantity: option.quantity,
       description: option.description,
       assets: option.assets
-    }).save()
+    }).save() as any).populate('assets')
   }
 
   async read(id?: string): Promise<Array<Document & IOption>>{
     id && validateId(id)
 
-    return OptionModel.find({ _id: id })
+    return OptionModel.find({ _id: id }).populate('assets')
   }
 
-  async update(updates: Array<IOption & Document>): Promise<{ updated: Array<Document<IOption>> }>{
-    const updated: Array<Document<IOption>> = []
+  async update(updates: IOption & Document): Promise<{ updated: Document<IOption> }>{
+      validateId(updates._id)
 
-    // for (const attr of updates) {
-    //   validateId(attr._id)
-    //
-    //   const attribute = await AttributeModel.findByIdAndUpdate(
-    //     { _id: attr._id },
-    //     { $set: attr },
-    //     { new: true }
-    //   ) as Document<IAttribute>
-    //
-    //   updated.push(attribute)
-    // }
+      const option = await OptionModel.findByIdAndUpdate(
+        { _id: updates._id },
+        { $set: updates },
+        { new: true }
+      ).populate('assets') as Document<IOption>
 
-    return { updated }
+    return { updated: option }
   }
 
   async delete(id){

@@ -1,5 +1,5 @@
 import { Store } from 'nervue'
-import { ref, Ref } from 'vue'
+import { ref, Ref, unref } from 'vue'
 // Stores
 import { useProductStore } from '@modules/product/store'
 // Services
@@ -81,8 +81,8 @@ class Service {
     await this._store._exposed.VARIANT.read()
   }
 
-  getProducts(){
-    return this._store.read().catch(err => console.log(err))
+  getProducts(id = ''){
+    return this._store.read(id).catch(err => console.log(err))
   }
 
   setAsCurrent(product: IProduct){
@@ -94,43 +94,41 @@ class Service {
       .catch(err => console.log(err))
   }
 
-  createVariantOption(option: IVariantOption){
-    return this._optionsService.createOption(option)
-      .then(option => {
-        const { variants } = this._product.value!
+  async createVariantOption(option: IVariantOption){
+    const optionData = await this._optionsService.createOption(option)
 
-        let variant = variants.find(v => v._id === option.variantId)!
+    const { variants } = this._product.value!
 
-        if (variant) {
-          const optionIds = variant.options.map(o => o._id)
-          optionIds.push(option._id)
-          variant.options = optionIds as any
-        } else {
-          variant = this.variants.find(v => v._id === option.variantId)
-          variant.options = [ option._id ] as any
-          variants.push(variant)
-        }
+    let variant = variants.find(v => v._id === option.variantId)!
 
-        return this.updateProduct({
-          _id: this._product.value!._id,
-          variants
-        })
-      }) as Promise<IProduct>
+    if (variant) {
+      const optionIds = variant.options.map(o => o._id)
+      optionIds.push(optionData._id)
+      variant.options = optionIds as any
+    } else {
+      variant = this.variants.find(v => v._id === optionData.variantId)
+      variant.options = [ optionData._id ] as any
+      variants.push(variant)
+    }
+
+    return await this.updateProduct({
+      _id: this._product.value!._id,
+      variants
+    }) as IProduct
   }
 
-  deleteVariantOption(option){
-    return this._optionsService.deleteOption(option)
-      .then(() => {
-        const { variants } = this._product.value!
-        const variant = variants.find(v => v._id === option.variantId)!
+  async deleteVariantOption(option){
+    await this._optionsService.deleteOption(option)
 
-        variant.options = variant.options.filter(it => it._id !== option._id)
+    const { variants } = this._product.value!
+    const variant = variants.find(v => v._id === option.variantId)!
 
-        return this.updateProduct({
-          _id: this._product.value!._id,
-          variants
-        })
-      })
+    variant.options = variant.options.filter(it => it._id !== option._id)
+
+    await this.updateProduct({
+      _id: this._product.value!._id,
+      variants
+    })
   }
 
   deleteProduct(product){
@@ -143,61 +141,46 @@ class Service {
       .catch(err => console.log(err))
   }
 
-  async createAsset(file){
+  async createAsset(file, ownerId){
     const { formData, fileName } = this._filesService.createFormData(file)
-    const ownerId = this._product.value!._id
-
-    return await this._filesService.uploadFile({ ownerId, fileName, formData })
+    return await this._filesService.uploadFile({
+      ownerId,
+      fileName,
+      formData
+    })
   }
 
-  async uploadProductVariantImage(image, option, variantId){
-    const ownerId = this._product.value!._id
-    const optionAsset = await this.createAsset(image)
+  async uploadProductVariantImage(file, option){
+    const optionAsset = await this.createAsset(file, option._id)
 
-    let { variants } = this._product.value!
+    const updates = {
+      _id: option._id,
+      assets: [
+        ...option.assets.map(a => a._id),
+        optionAsset._id
+      ]
+    }
 
-    const updates = clone(option)
-    updates.assets = option.assets.map(it => it._id)
-    updates.assets.push(optionAsset._id)
-
-    const idx = variants.findIndex(v => v._id === variantId)
-
-    variants[idx].options = Array.from(variants[idx].options, opt => {
-      if (opt._id === option._id) return updates
-      return opt
-    })
-
-    await this.updateProduct({
-      _id: ownerId,
-      variants
-    })
-
-    return optionAsset
+    return await this._optionsService.updateOption(updates)
   }
 
-  async deleteProductVariantImage({ asset, option, variant }){
-    let { variants } = this._product.value!
-
+  async deleteProductVariantImage({ asset, option }){
     await this._filesService.deleteFile(asset)
 
-    variants = variants.filter(v => v._id !== variant._id)
-    option.assets = option.assets.filter(a => a._id !== asset._id)
-    variant.options = variant.options.filter(o => o._id !== option._id)
+    const updates = {
+      _id: option._id,
+      assets: option.assets.filter(a => a._id !== asset._id)
+    }
 
-    variant.options.push(option)
-
-    variants.push(variant)
-
-    await this.updateProduct({
-      _id: asset.ownerId,
-      variants
-    })
+    return await this._optionsService.updateOption(updates)
   }
 
   async uploadProductImage(file){
     if (!file) return
 
-    const asset: IProductAsset = await this.createAsset(file)
+    const product = unref(this._product)
+
+    const asset: IProductAsset = await this.createAsset(file, product?._id)
 
     if (asset && asset.url) {
       let { assets } = this._product.value!
@@ -213,12 +196,12 @@ class Service {
 
       assets.push(asset)
 
-      const product = await this.updateProduct({
-        _id: asset.ownerId,
+      const updated = await this.updateProduct({
+        _id: product?._id,
         assets
       }) as IProduct
 
-      this._product.value!.assets = product.assets
+      this._product.value!.assets = updated.assets
     }
   }
 
