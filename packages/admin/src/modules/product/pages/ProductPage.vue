@@ -162,14 +162,13 @@
 
       const onCreateVariantOption = (option) => {
         service.createVariantOption(option)
-          .then((pr) => model.value.variants = pr.variants!)
+          .then(() => model.value.variants = service.product!.variants!)
       }
 
-      const onDeleteVariantOption = ({ variant, option }) => {
+      const onDeleteVariantOption = ({ option }) => {
         service.deleteVariantOption(option)
           .then(() => {
-            // model.value.variants = service.product?.variants!
-            variant.options = variant.options.filter(o => o._id !== option._id)
+            model.value.variants = service.product?.variants!
           })
       }
 

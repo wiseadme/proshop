@@ -294,10 +294,10 @@ export const productActionsModal = defineComponent({
       emit('delete:image', asset)
     }
 
-    const onDeleteAttribute = (attr) => {
-      attributesArray.value = attributesArray.value.filter(it => it.key !== attr.key)
-      emit('update:attributes', attributesArray.value)
-    }
+    // const onDeleteAttribute = (attr) => {
+    //   attributesArray.value = attributesArray.value.filter(it => it.key !== attr.key)
+    //   emit('update:attributes', attributesArray.value)
+    // }
 
     const setAsMainImage = () => {
       computedImage.value = currentImage.value!.url
@@ -373,7 +373,7 @@ export const productActionsModal = defineComponent({
       onDeleteImage,
       onCreateVariantOption,
       onAttributesUpdate,
-      onDeleteAttribute,
+      // onDeleteAttribute,
       onDeleteVariantOption,
       setAsMainImage,
       onUploadVariantImage,

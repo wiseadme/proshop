@@ -4,7 +4,10 @@
   export default variantsBlock
 </script>
 <template>
-  <v-row no-gutter>
+  <v-row
+    v-if="variantItems"
+    no-gutter
+  >
     <v-col class="white mt-2 elevation-2">
       <v-card
         width="100%"
@@ -15,46 +18,35 @@
         <v-card-subtitle>
           Варианты товара, например: размеры, цвета, технические характеристики и т.д.
         </v-card-subtitle>
-        <v-card-content>
+        <v-card-content v-if="variantItems.length">
           <v-row>
-            <v-col>
-              <v-checkbox
-                v-for="(variant) in existsVariantsMap"
-                :key="variant.group"
-                v-model="selectedVariants"
-                :label="variant?.group"
-                :value="variant"
-                class="mr-4 mb-4"
-                color="green"
-                @change="toggleVariants"
-              />
-            </v-col>
+            <v-button
+              v-for="variant in existsVariants"
+              :key="variant._id"
+              :label="variant?.group"
+              class="mr-2 mb-4"
+              elevation="2"
+              :color="currentVariant._id === variant._id ? 'green' : 'orange'"
+              height="24"
+              @click="setCurrentVariant(variant)"
+            >
+              {{ variant.group }}
+            </v-button>
           </v-row>
-          <v-row
-            v-for="variant in selectedVariants"
-            :key="variant.group"
-            class="elevation-2 pa-4 mb-1"
-          >
+          <v-row class="elevation-2 pa-4 mb-1">
             <v-col
               style="border: 1px solid #272727; border-radius: 5px;"
               class="px-4 py-6"
             >
               <v-row>
                 <v-col>
-                  <h2>
-                    {{ variant.group }}
-                  </h2>
-                </v-col>
-              </v-row>
-              <v-row v-if="variant">
-                <v-col>
                   <v-chip
-                    v-for="option in variant.options"
-                    :key="option.name"
-                    :color="!option._id ?'grey': option === currentEditableOption ? 'green lighten-3' : 'green'"
-                    :class="['mr-2 mt-2', {'elevation-2 ': option !== currentEditableOption}]"
-                    @click="setOptionForEditing(variant, option)"
-                    @close="removeVariantOption(variant, option)"
+                    v-for="option in currentVariant.options"
+                    :key="option._id"
+                    :color="!option._id ?'grey': option === optionPattern ? 'green lighten-3' : 'green'"
+                    :class="['mr-2 mt-2', {'elevation-2 ': option !== optionPattern}]"
+                    @click="optionPattern = option"
+                    @close="removeVariantOption(currentVariant, option)"
                   >
                     {{ option.name }}
                   </v-chip>
@@ -62,7 +54,6 @@
               </v-row>
             </v-col>
             <v-col
-              v-if="displayedOptions.get(variant)"
               style="border: 1px solid #272727; border-radius: 5px;"
               class="py-4 mt-2"
             >
@@ -72,7 +63,7 @@
                     cols="6"
                   >
                     <v-text-field
-                      v-model.trim="displayedOptions.get(variant).name"
+                      v-model.trim="optionPattern.name"
                       color="#272727"
                       label="значение"
                       :rules="[val => !!val || 'Обязательное поле']"
@@ -82,7 +73,7 @@
                     cols="6"
                   >
                     <v-text-field
-                      v-model.number="displayedOptions.get(variant).quantity"
+                      v-model.number="optionPattern.quantity"
                       color="#272727"
                       label="количество"
                       type="number"
@@ -92,7 +83,7 @@
                     cols="6"
                   >
                     <v-text-field
-                      v-model.number="displayedOptions.get(variant).price"
+                      v-model.number="optionPattern.price"
                       color="#272727"
                       label="цена"
                       type="number"
@@ -102,19 +93,19 @@
                     cols="6"
                   >
                     <v-text-field
-                      v-model.trim="displayedOptions.get(variant).description"
+                      v-model.trim="optionPattern.description"
                       color="#272727"
                       label="описание"
                     />
                   </v-col>
                   <v-col>
                     <v-file-input
-                      v-model="displayedOptions.get(variant).assets"
-                      :label="!displayedOptions.get(variant)._id ? 'только после сохранения варианта *': 'загрузить изображения'"
+                      v-model="optionPattern.assets"
+                      :label="!optionPattern._id ? 'только после сохранения варианта *': 'загрузить изображения'"
                       color="#272727"
-                      :disabled="!displayedOptions.get(variant)._id"
+                      :disabled="!optionPattern._id"
                       placeholder="salam"
-                      @update:value="onUploadVariantImage($event, displayedOptions.get(variant))"
+                      @update:value="onUploadVariantImage($event, optionPattern)"
                     />
                   </v-col>
                 </v-row>
@@ -125,7 +116,7 @@
                   >
                     <v-row>
                       <v-col
-                        v-if="!displayedOptions.get(variant).assets.length"
+                        v-if="!optionPattern.assets.length"
                         cols="4"
                         offset="4"
                         class="d-flex justify-center align-center"
@@ -140,7 +131,7 @@
                       <template v-else>
                         <v-row>
                           <v-col
-                            v-for="asset in displayedOptions.get(variant).assets"
+                            v-for="asset in optionPattern.assets"
                             :key="asset._id"
                             cols="2"
                             style="height: 130px; position: relative"
@@ -166,9 +157,9 @@
                   <v-button
                     color="green"
                     elevation="2"
-                    @click="addOptionInVariant(validate, variant)"
+                    @click="createOption(validate)"
                   >
-                    {{ displayedOptions.get(variant)._id ? 'изменить' : 'добавить' }}
+                    {{ optionPattern._id ? 'изменить' : 'добавить' }}
                   </v-button>
                   <v-button
                     class="ml-2"

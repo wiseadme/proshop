@@ -1,5 +1,4 @@
-import { defineComponent, PropType, ref, shallowRef, watch } from 'vue'
-import { clone } from '@shared/helpers'
+import { defineComponent, PropType, ref, watch } from 'vue'
 import { IVariant, IVariantOption } from '@modules/variant/types'
 
 export const variantsBlock = defineComponent({
@@ -19,13 +18,12 @@ export const variantsBlock = defineComponent({
   ],
 
   setup(props, { emit }){
-    const displayedOptions = ref<Map<IVariant, IVariantOption>>(new Map())
-    const selectedVariants = ref<Array<IVariant>>([])
-    const existsVariantsMap = ref<Record<string, IVariant>>({})
-    const currentEditableOption = shallowRef<Maybe<IVariantOption>>(null)
+    const currentVariant = ref<Maybe<IVariant>>(null)
+    const existsVariants = ref<IVariant[]>([])
 
-    const genVariantOption = (id) => ({
-      variantId: id,
+    const genOptionPattern = () => ({
+      _id: '',
+      variantId: '',
       name: '',
       quantity: 0,
       price: 0,
@@ -33,57 +31,40 @@ export const variantsBlock = defineComponent({
       assets: []
     })
 
-    const setVariantOptions = (variant, it = null) => {
-      displayedOptions.value.set(variant, it || genVariantOption(variant._id))
-    }
+    const optionPattern = ref<IVariantOption>(genOptionPattern())
 
-    const setProductVariants = () => {
-      const selected = {}
+    const setExistsVariants = (vars) => {
+      const map = existsVariants.value.reduce((acc, it) => {
+        acc[it.group] = it
+        return acc
+      }, {})
 
-      props.variantItems?.forEach(v => {
-        existsVariantsMap.value[v.group] = v
+      vars?.forEach(v => {
+        map[v.group] = v
       })
 
-      props.variants?.forEach(v => {
-        existsVariantsMap.value[v.group] = clone(v)
-        selected[v.group] = existsVariantsMap.value[v.group]
-
-        setVariantOptions(selected[v.group])
-      })
-
-      selectedVariants.value = Object.values(selected)
+      existsVariants.value = Object.values(map)
     }
 
-    const addOptionInVariant = (validate, variant) => {
+    const createOption = (validate) => {
       validate()
         .then(() => {
-          const option = displayedOptions.value.get(variant)
-          emit('create:variant-option', option)
+          optionPattern.value.variantId = currentVariant.value!._id
+          emit('create:variant-option', optionPattern.value)
         })
     }
 
     const removeVariantOption = (variant, option) => {
       emit('delete:variant-option', { variant, option })
-      if (option === currentEditableOption.value) {
-        clearVariantOptionForm(variant)
-      }
     }
 
-    const toggleVariants = (val) => {
-      selectedVariants.value = val
-      emit('update:variants', selectedVariants.value)
+    const setCurrentVariant = (variant) => {
+      optionPattern.value = genOptionPattern()
+      currentVariant.value = variant
     }
 
-    const setOptionForEditing = (variant, option) => {
-      currentEditableOption.value = option
-      setVariantOptions(variant, option)
-    }
-
-    const updateOption = () => {
-      if (!props.variants) return
-      const updated = selectedVariants.value.filter(it => !!it.options.length)
-
-      emit('update:variants', updated)
+    const setOptionForEditing = (option) => {
+      optionPattern.value = option
     }
 
     const onUploadVariantImage = ([ file ], option) => {
@@ -91,33 +72,49 @@ export const variantsBlock = defineComponent({
     }
 
     const onDeleteVariantImage = (asset, variant) => {
-      const option = displayedOptions.value.get(variant)
-      emit('delete:variant-image', { asset, option, variant })
+      emit('delete:variant-image', { asset, option: optionPattern.value, variant })
     }
 
-    const clearVariantOptionForm = (variant) => {
-      displayedOptions.value.set(variant, genVariantOption(variant._id))
+    const clearVariantOptionForm = () => {
+      optionPattern.value
     }
 
-    watch(() => props.variants, setProductVariants)
+    watch(() => props.variantItems, (variants) => {
+      setExistsVariants(variants)
 
-    watch(() => props.variantItems, (newItems) => {
-      currentEditableOption.value = null
-      newItems?.forEach((v) => setVariantOptions(v))
+      if (!currentVariant.value) {
+        setCurrentVariant(existsVariants.value[0])
+      }
+
+    }, { immediate: true })
+
+    watch(() => props.variants, (variants) => {
+      if (variants!.length) {
+        setExistsVariants(variants)
+      } else {
+        setExistsVariants(props.variantItems)
+      }
+
+      if (currentVariant.value) {
+        setCurrentVariant(variants?.find(
+          v => v._id === currentVariant.value!._id) || existsVariants.value?.[0]
+        )
+      } else {
+        currentVariant.value = variants?.[0] || existsVariants.value?.[0]!
+      }
+
     }, { immediate: true })
 
     return {
-      existsVariantsMap,
-      displayedOptions,
-      selectedVariants,
-      currentEditableOption,
-      addOptionInVariant,
+      optionPattern,
+      currentVariant,
+      existsVariants,
+      createOption,
       removeVariantOption,
       clearVariantOptionForm,
-      updateOption,
       onUploadVariantImage,
       onDeleteVariantImage,
-      toggleVariants,
+      setCurrentVariant,
       setOptionForEditing
     }
   }

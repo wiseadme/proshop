@@ -283,15 +283,15 @@
                               color="#272727"
                               @input="onAttributesUpdate"
                             />
-                            <v-icon
-                              class="mr-3"
-                              color="grey lighten-2"
-                              clickable
-                              style="position: absolute; top: 0; right: 0"
-                              @click="onDeleteAttribute(element)"
-                            >
-                              fas fa-trash-alt
-                            </v-icon>
+                            <!--                            <v-icon-->
+                            <!--                              class="mr-3"-->
+                            <!--                              color="grey lighten-2"-->
+                            <!--                              clickable-->
+                            <!--                              style="position: absolute; top: 0; right: 0"-->
+                            <!--                              @click="onDeleteAttribute(element)"-->
+                            <!--                            >-->
+                            <!--                              fas fa-trash-alt-->
+                            <!--                            </v-icon>-->
                           </v-col>
                         </v-row>
                       </template>

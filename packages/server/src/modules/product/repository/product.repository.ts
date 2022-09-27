@@ -37,7 +37,7 @@ export class ProductRepository implements IProductRepository {
         'categories',
         'assets',
         {
-          path: 'variant',
+          path: 'variants',
           populate: {
             path: 'options',
             populate: {

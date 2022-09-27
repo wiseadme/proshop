@@ -99,31 +99,37 @@ class Service {
 
     const { variants } = this._product.value!
 
-    let variant = variants.find(v => v._id === option.variantId)!
+    let variant = variants?.find(v => v._id === option.variantId)!
 
-    if (variant) {
-      const optionIds = variant.options.map(o => o._id)
-      optionIds.push(optionData._id)
-      variant.options = optionIds as any
-    } else {
+    if (!variant) {
       variant = this.variants.find(v => v._id === optionData.variantId)
-      variant.options = [ optionData._id ] as any
       variants.push(variant)
     }
 
-    return await this.updateProduct({
+    const optionIds = variant.options.map(o => o._id)
+    optionIds.push(optionData._id)
+
+    variant.options = optionIds as any
+
+    await this.updateProduct({
       _id: this._product.value!._id,
       variants
-    }) as IProduct
+    })
+
+    variant.options = []
   }
 
   async deleteVariantOption(option){
     await this._optionsService.deleteOption(option)
 
-    const { variants } = this._product.value!
+    let { variants } = this._product.value!
     const variant = variants.find(v => v._id === option.variantId)!
 
     variant.options = variant.options.filter(it => it._id !== option._id)
+
+    if (!variant.options.length) {
+      variants = variants.filter(v => v._id !== variant._id)
+    }
 
     await this.updateProduct({
       _id: this._product.value!._id,
@@ -135,10 +141,10 @@ class Service {
     this._store.delete(product).catch(err => console.log(err))
   }
 
-  updateProduct(updates){
-    return this._store.update(updates)
-      .then(pr => this._product.value = pr)
-      .catch(err => console.log(err))
+  async updateProduct(updates){
+    const updated = await this._store.update(updates)
+    this._product.value = updated
+    return updated
   }
 
   async createAsset(file, ownerId){
@@ -196,12 +202,10 @@ class Service {
 
       assets.push(asset)
 
-      const updated = await this.updateProduct({
+      await this.updateProduct({
         _id: product?._id,
         assets
-      }) as IProduct
-
-      this._product.value!.assets = updated.assets
+      })
     }
   }
 
