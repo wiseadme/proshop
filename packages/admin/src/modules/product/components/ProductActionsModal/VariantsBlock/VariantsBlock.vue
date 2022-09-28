@@ -165,7 +165,7 @@
                     class="ml-2"
                     color="error"
                     elevation="2"
-                    @click="clearVariantOptionForm(variant)"
+                    @click="clearVariantOptionForm"
                   >
                     очистить
                   </v-button>

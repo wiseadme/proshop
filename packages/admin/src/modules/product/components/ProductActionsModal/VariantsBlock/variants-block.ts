@@ -76,7 +76,8 @@ export const variantsBlock = defineComponent({
     }
 
     const clearVariantOptionForm = () => {
-      optionPattern.value
+      optionPattern.value = genOptionPattern()
+
     }
 
     watch(() => props.variantItems, (variants) => {
