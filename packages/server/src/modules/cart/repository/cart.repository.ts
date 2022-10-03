@@ -15,7 +15,7 @@ export class CartRepository implements ICartRepository {
   ) {
   }
 
-  async create(cart: ICart): Promise<Document> {
+  async create(cart: ICart): Promise<Document & ICart> {
     return new CartModel({
       _id: new mongoose.Types.ObjectId(),
       items: cart.items,

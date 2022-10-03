@@ -8,40 +8,47 @@ export class Cart implements ICart {
   private _currency: ICart['currency']
   private _ownerId: ICart['ownerId']
 
-  constructor({ items, totalItems, totalUniqueItems, amount, currency = null, ownerId = null }: ICart) {
+  constructor({ items, currency = null, ownerId = null }: Omit<ICart, 'amount' | 'totalItems' | 'totalUniqueItems'>){
     this._items = items
-    this._totalItems = totalItems
-    this._totalUniqueItems = totalUniqueItems
-    this._amount = amount
+    this._totalItems = items.reduce((acc, it) => acc + it.quantity, 0)
+    this._totalUniqueItems = items.length
     this._currency = currency
     this._ownerId = ownerId
+    this._amount = items.reduce((acc, it) => {
+      if (it.variant && it.variant.option.price) {
+        acc += it.variant.option.price * it.quantity
+      } else {
+        acc += it.product.price * it.quantity
+      }
+      return acc
+    }, 0)
   }
 
-  get items() {
+  get items(){
     return this._items
   }
 
-  get totalItems() {
+  get totalItems(){
     return this._totalItems
   }
 
-  get totalUniqueItems() {
+  get totalUniqueItems(){
     return this._totalUniqueItems
   }
 
-  get amount() {
+  get amount(){
     return this._amount
   }
 
-  get currency() {
+  get currency(){
     return this._currency
   }
 
-  get ownerId() {
+  get ownerId(){
     return this._ownerId
   }
 
-  static create(cart: ICart) {
+  static create(cart: ICart){
     return new Cart(cart)
   }
 }

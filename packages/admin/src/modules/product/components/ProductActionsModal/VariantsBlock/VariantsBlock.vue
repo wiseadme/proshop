@@ -9,14 +9,12 @@
     no-gutter
   >
     <v-col class="white mt-2 elevation-2">
-      <v-card
-        width="100%"
-      >
+      <v-card width="100%">
         <v-card-title>
           <h3>Варианты</h3>
         </v-card-title>
         <v-card-subtitle>
-          Варианты товара, например: размеры, цвета, технические характеристики и т.д.
+          Варианты товара, например: размеры, цвета и т.д.
         </v-card-subtitle>
         <v-card-content v-if="variantItems.length">
           <v-row>
