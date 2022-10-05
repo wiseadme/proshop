@@ -8,18 +8,21 @@
   // Helpers
   import { getDifferences } from '@shared/helpers'
   import { clone } from '@shared/helpers'
+  // Components
+  import SkeletonPreloader from '@shared/components/Preloader/SkeletonPreloader.vue'
 
   import { IProduct } from '../types'
 
   export default defineComponent({
-    components: { ProductActionsModal },
+    components: { ProductActionsModal, SkeletonPreloader },
 
-    async setup(){
+    setup(){
       const model = ref<IProduct>(Product.create())
 
       const showCreateModal = ref<boolean>(false)
       const hasChanges = ref<boolean>(false)
       const isEditMode = ref<boolean>(false)
+      const loading = ref<boolean>(true)
 
       const cols = ref([
         {
@@ -222,13 +225,14 @@
 
       }, { deep: true })
 
-      await Promise.all([
+      Promise.all([
         service.getCategories(),
         service.getAttributes(),
         service.getProducts(),
         service.getUnits(),
         service.getVariants()
       ])
+        .then(() => loading.value = false)
 
       return {
         cols,
@@ -237,6 +241,7 @@
         showCreateModal,
         hasChanges,
         isEditMode,
+        loading,
         onAdd,
         onEdit,
         onCreate,
@@ -259,7 +264,9 @@
   <v-layout column>
     <v-row>
       <v-col cols="12">
+        <skeleton-preloader v-if="loading"/>
         <v-data-table
+          v-else
           :cols="cols"
           :rows="service.products || []"
           class="elevation-2"

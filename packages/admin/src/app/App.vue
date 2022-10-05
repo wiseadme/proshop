@@ -11,7 +11,7 @@
   })
 </script>
 <template>
-  <v-app class="grey lighten-3">
+  <v-app class="grey lighten-4">
     <v-layout column>
       <app-header />
       <app-navigation />

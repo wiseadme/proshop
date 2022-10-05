@@ -17,39 +17,11 @@
     class="px-2"
   >
     <v-skeleton
+      v-for="it in 20"
+      :key="it"
       height="30"
       dynamic
-      class="elevation-2"
-    />
-    <v-skeleton
-      height="30"
-      dynamic
-      class="mt-2 elevation-2"
-    />
-    <v-skeleton
-      height="30"
-      dynamic
-      class="mt-2 elevation-2"
-    />
-    <v-skeleton
-      height="30"
-      dynamic
-      class="mt-2 elevation-2"
-    />
-    <v-skeleton
-      height="30"
-      dynamic
-      class="mt-2 elevation-2"
-    />
-    <v-skeleton
-      height="30"
-      dynamic
-      class="mt-2 elevation-2"
-    />
-    <v-skeleton
-      height="30"
-      dynamic
-      class="mt-2 elevation-2"
+      class="mt-2 elevation-1"
     />
   </div>
 </template>

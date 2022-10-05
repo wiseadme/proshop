@@ -77,7 +77,7 @@ export const productActionsModal = defineComponent({
     'update'
   ],
 
-  async setup(props, { emit }){
+  setup(props, { emit }){
     const ctgMap = ref<Map<string, ICategory>>(new Map())
     const productImages = ref<Array<File>>([])
     const attributesArray = ref<Array<IAttribute>>([])

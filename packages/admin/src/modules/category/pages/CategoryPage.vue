@@ -13,7 +13,7 @@
       CategoryActionsModal
     },
 
-    async setup(){
+    setup(){
       const categoryModel = ref<ICategory>(Category.create())
       const categoryUpdates = ref<Maybe<ICategory>>(null)
 
@@ -147,7 +147,7 @@
         }
       ])
 
-      await service.getCategories()
+      service.getCategories()
 
       return {
         cols,
