@@ -1,4 +1,4 @@
-import { IVariant } from '@modules/variant/types'
+import { IVariant, IVariantOption } from '@modules/variant/types'
 
 export interface IProductState {
   products: Maybe<Array<IProduct>>
@@ -22,6 +22,10 @@ export interface IProductAsset {
   main: boolean
 }
 
+export interface IProductVariant extends IVariant {
+  options: IVariantOption[]
+}
+
 export interface IProductSeo {
   title: string
   description: string
@@ -41,6 +45,6 @@ export interface IProduct {
   image: Maybe<IProductAsset>
   assets: Array<IProductAsset>
   attributes: Array<IAttribute>
-  variants: Array<IVariant>
+  variants: Array<IProductVariant>
   seo?: IProductSeo
 }

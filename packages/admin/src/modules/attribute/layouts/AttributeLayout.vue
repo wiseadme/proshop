@@ -3,7 +3,7 @@
 
   export default defineComponent({
     name: 'attribute-layout',
-    setup() {
+    setup(){
       return {}
     }
   })
@@ -12,11 +12,7 @@
   <div class="attribute-layout">
     <router-view v-slot="{ Component }">
       <transition name="fade">
-        <Suspense>
-          <template #default>
-            <component :is="Component" />
-          </template>
-        </Suspense>
+        <component :is="Component"/>
       </transition>
     </router-view>
   </div>

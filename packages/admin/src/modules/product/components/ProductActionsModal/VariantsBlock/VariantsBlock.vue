@@ -43,7 +43,7 @@
                     :key="option._id"
                     :color="!option._id ?'grey': option === optionPattern ? 'green lighten-3' : 'green'"
                     :class="['mr-2 mt-2', {'elevation-2 ': option !== optionPattern}]"
-                    @click="optionPattern = option"
+                    @click="setOptionForEditing(option)"
                     @close="removeVariantOption(currentVariant, option)"
                   >
                     {{ option.name }}

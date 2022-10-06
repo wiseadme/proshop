@@ -10,7 +10,7 @@
     components: {
       draggable
     },
-    async setup(){
+    setup(){
       const model = ref<IUnit>(Unit.create())
       const units = ref<Array<IUnit>>(null)
       const service = useUnitService()

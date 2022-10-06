@@ -168,6 +168,10 @@
           .then(() => model.value.variants = service.product!.variants!)
       }
 
+      const onUpdateVariantOption = (option) => {
+        console.log(option, 'update')
+      }
+
       const onDeleteVariantOption = ({ option }) => {
         service.deleteVariantOption(option)
           .then(() => {
@@ -253,6 +257,7 @@
         onUploadVariantImage,
         onDeleteVariantImage,
         onCreateVariantOption,
+        onUpdateVariantOption,
         onDeleteVariantOption,
         onDiscard,
         checkDiffs
@@ -366,6 +371,7 @@
       @upload:variant-image="onUploadVariantImage"
       @delete:variant-image="onDeleteVariantImage"
       @create:variant-option="onCreateVariantOption"
+      @update:variant-option="onUpdateVariantOption"
       @delete:variant-option="onDeleteVariantOption"
     />
   </v-layout>

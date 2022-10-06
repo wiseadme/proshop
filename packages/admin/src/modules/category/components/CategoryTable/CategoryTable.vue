@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { CategoryTable } from './category-table.ts'
+  import { CategoryTable } from './category-table'
 
   export default CategoryTable
 </script>

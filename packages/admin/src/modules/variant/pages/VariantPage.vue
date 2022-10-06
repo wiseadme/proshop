@@ -4,15 +4,16 @@
   import { useVariantService } from '../service/variant.service'
   import { clone } from '@shared/helpers'
   import { Variant } from '../model/variant.model'
+  import { IVariant } from '@modules/variant/types'
 
   export default defineComponent({
     name: 'variant-page',
     components: {
       draggable
     },
-    async setup(){
+    setup(){
       const model = ref<IVariant>(Variant.create())
-      const variants = ref<Array<IVariant>>(null)
+      const variants = ref<Maybe<Array<IVariant>>>(null)
       const service = useVariantService()
 
       const onCreate = (validate) => {

@@ -9,7 +9,7 @@ export const CategoryTable = defineComponent({
     },
     rows: {
       type: Array as PropType<Array<ICategory>>,
-      required: true
+      default: () => []
     }
   },
   emits: [

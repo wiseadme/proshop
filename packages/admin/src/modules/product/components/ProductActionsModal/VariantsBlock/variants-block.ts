@@ -1,4 +1,4 @@
-import { defineComponent, PropType, ref, watch } from 'vue'
+import { defineComponent, toRaw, PropType, ref, watch } from 'vue'
 import { IVariant, IVariantOption } from '@modules/variant/types'
 
 export const variantsBlock = defineComponent({
@@ -13,6 +13,7 @@ export const variantsBlock = defineComponent({
     'update:variants',
     'create:variant-option',
     'delete:variant-option',
+    'update:variant-option',
     'upload:variant-image',
     'delete:variant-image'
   ],
@@ -20,6 +21,7 @@ export const variantsBlock = defineComponent({
   setup(props, { emit }){
     const currentVariant = ref<Maybe<IVariant>>(null)
     const existsVariants = ref<IVariant[]>([])
+    let isEditingMode = false
 
     const genOptionPattern = () => ({
       _id: '',
@@ -50,7 +52,14 @@ export const variantsBlock = defineComponent({
       validate()
         .then(() => {
           optionPattern.value.variantId = currentVariant.value!._id
-          emit('create:variant-option', optionPattern.value)
+
+          const rawOption = toRaw(optionPattern.value)
+
+          if (isEditingMode) {
+            emit('update:variant-option', rawOption)
+          } else {
+            emit('create:variant-option', rawOption)
+          }
         })
     }
 
@@ -64,6 +73,7 @@ export const variantsBlock = defineComponent({
     }
 
     const setOptionForEditing = (option) => {
+      isEditingMode = true
       optionPattern.value = option
     }
 
@@ -76,8 +86,8 @@ export const variantsBlock = defineComponent({
     }
 
     const clearVariantOptionForm = () => {
+      isEditingMode = false
       optionPattern.value = genOptionPattern()
-
     }
 
     watch(() => props.variantItems, (variants) => {

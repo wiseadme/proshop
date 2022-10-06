@@ -13,7 +13,6 @@ interface IVariantOption {
 declare interface IVariant {
   _id: string
   group: string
-  options: Array<IVariantOption>
 }
 
 declare interface IVariantActions {

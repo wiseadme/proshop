@@ -1,3 +1,5 @@
+import { IVariant } from '@modules/variant/types'
+
 export class Variant implements IVariant {
   _id: string
   group: string
@@ -8,6 +10,7 @@ export class Variant implements IVariant {
   }){
     this._id = _id
     this.group = group
+
   }
 
   static create(unit = {}){

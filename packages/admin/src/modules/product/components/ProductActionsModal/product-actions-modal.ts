@@ -71,6 +71,7 @@ export const productActionsModal = defineComponent({
     'delete:variant-image',
     'create:variant-option',
     'delete:variant-option',
+    'update:variant-option',
     'create',
     'close',
     'discard',
@@ -268,6 +269,10 @@ export const productActionsModal = defineComponent({
       emit('create:variant-option', option)
     }
 
+    const onUpdateVariantOption = (option) => {
+      emit('update:variant-option', option)
+    }
+
     const onDeleteVariantOption = ({ variant, option }) => {
       emit('delete:variant-option', { variant, option })
     }
@@ -371,9 +376,10 @@ export const productActionsModal = defineComponent({
       onClose,
       onDiscardChanges,
       onDeleteImage,
-      onCreateVariantOption,
       onAttributesUpdate,
       // onDeleteAttribute,
+      onCreateVariantOption,
+      onUpdateVariantOption,
       onDeleteVariantOption,
       setAsMainImage,
       onUploadVariantImage,

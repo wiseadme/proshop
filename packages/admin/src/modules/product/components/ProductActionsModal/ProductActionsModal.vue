@@ -309,6 +309,7 @@
               @delete:variant-image="onDeleteVariantImage"
               @create:variant-option="onCreateVariantOption"
               @delete:variant-option="onDeleteVariantOption"
+              @update:variant-option="onUpdateVariantOption"
             />
           </v-card-content>
           <v-card-actions>

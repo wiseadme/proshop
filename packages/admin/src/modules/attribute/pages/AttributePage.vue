@@ -10,7 +10,7 @@
     components: {
       draggable
     },
-    async setup(){
+    setup(){
       const attributes = ref<Maybe<Array<IAttribute>>>(null)
       const attributePattern = ref<IAttribute>(Attribute.create())
 
