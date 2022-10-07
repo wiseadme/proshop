@@ -14,6 +14,12 @@ import { ICategoryRepository } from '../types/repository'
 import { IEventBusService } from '@/types/services'
 import { ILogger } from '@/types/utils'
 
+// Constants
+import {
+  DELETE_CATEGORY_EVENT,
+  UPDATE_CATEGORY_EVENT
+} from '@common/constants/events'
+
 @injectable()
 export class CategoryService implements ICategoryService {
 
@@ -88,12 +94,12 @@ export class CategoryService implements ICategoryService {
       await this.repository.update($set)
     }
 
-    this.events.emit('delete:category', id)
+    this.events.emit(DELETE_CATEGORY_EVENT, id)
 
     return res
   }
 
   addListeners(){
-    this.events.on('update:category', this.update.bind(this))
+    this.events.on(UPDATE_CATEGORY_EVENT, this.update.bind(this))
   }
 }

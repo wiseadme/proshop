@@ -8,6 +8,7 @@ import { ISEOType } from '@/types/models'
 import { Maybe } from '@/types/types'
 
 export interface IProduct {
+  _id?: string
   name: string
   description: string
   price: number

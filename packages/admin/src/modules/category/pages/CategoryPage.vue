@@ -129,6 +129,15 @@
           format: (row) => row.parent?.title
         },
         {
+          key: 'length',
+          title: 'Кол-во позиций в категории',
+          width: '250',
+          resizeable: true,
+          sortable: true,
+          filterable: true,
+          format: (row) => row.length
+        },
+        {
           key: 'seo',
           title: 'SEO',
           width: '250',

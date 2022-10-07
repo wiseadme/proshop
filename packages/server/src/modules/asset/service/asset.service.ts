@@ -4,6 +4,13 @@ import { TYPES } from '@common/schemes/di-types'
 import { IAssetsService } from '../types/service'
 import { IAssetsRepository } from '../types/repository'
 import { IEventBusService } from '@/types/services'
+// Constants
+import {
+  UPDATE_ASSETS_EVENT,
+  DELETE_CATEGORY_EVENT,
+  DELETE_OPTION_EVENT,
+  DELETE_PRODUCT_EVENT
+} from '@common/constants/events'
 
 @injectable()
 export class AssetService implements IAssetsService {
@@ -31,9 +38,9 @@ export class AssetService implements IAssetsService {
   }
 
   addEventListeners(){
-    this.events.on('update:assets', this.updateFile.bind(this))
-    this.events.on('delete:option', this.deleteFiles.bind(this))
-    this.events.on('delete:product', this.deleteFiles.bind(this))
-    this.events.on('delete:category', this.deleteFiles.bind(this))
+    this.events.on(UPDATE_ASSETS_EVENT, this.updateFile.bind(this))
+    this.events.on(DELETE_OPTION_EVENT, this.deleteFiles.bind(this))
+    this.events.on(DELETE_PRODUCT_EVENT, this.deleteFiles.bind(this))
+    this.events.on(DELETE_CATEGORY_EVENT, this.deleteFiles.bind(this))
   }
 }

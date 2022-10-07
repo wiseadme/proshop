@@ -1,6 +1,7 @@
 import { ISEOType } from '@/types/models'
 
 export interface ICategory {
+  _id?: string
   title: string
   image?: string
   seo?: ISEOType

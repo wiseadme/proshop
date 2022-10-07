@@ -7,6 +7,8 @@ import { IOptionService } from '../types/service'
 import { IOptionRepository } from '../types/repository'
 import { IOption } from '../types/model'
 import { IEventBusService } from '@/types/services'
+// Constants
+import { DELETE_OPTION_EVENT } from '@common/constants/events'
 
 @injectable()
 export class OptionService implements IOptionService {
@@ -30,7 +32,7 @@ export class OptionService implements IOptionService {
   }
 
   delete(id: string): Promise<boolean>{
-    this.events.emit('delete:option', id)
+    this.events.emit(DELETE_OPTION_EVENT, id)
     return this.repository.delete(id)
   }
 }
