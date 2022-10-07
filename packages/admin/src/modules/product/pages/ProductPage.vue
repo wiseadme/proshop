@@ -169,7 +169,8 @@
       }
 
       const onUpdateVariantOption = (option) => {
-        console.log(option, 'update')
+        service.updateVariantOption(option)
+          .then(() => model.value.variants = service.product!.variants)
       }
 
       const onDeleteVariantOption = ({ option }) => {

@@ -28,10 +28,13 @@ export class CartRepository implements ICartRepository {
   }
 
   async read(id?: string): Promise<Document & ICart> {
+    id && validateId(id)
+
     return CartModel.find({ _id: id })[0]
   }
 
   async update(updates: ICart & Document): Promise<{ updated: Document<ICart> }> {
+    validateId(updates._id)
 
     const updated = await CartModel.findByIdAndUpdate(
       { _id: updates._id },
@@ -43,6 +46,8 @@ export class CartRepository implements ICartRepository {
   }
 
   async delete(id) {
+    validateId(id)
+
     return !!await CartModel.findByIdAndDelete(id)
   }
 }

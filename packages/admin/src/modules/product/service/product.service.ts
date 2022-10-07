@@ -119,6 +119,22 @@ class Service {
     variant.options = []
   }
 
+  async updateVariantOption(option){
+    const updated = await this._optionsService.updateOption(option)
+
+    const { variants } = this._product.value!
+    const varInd = variants.findIndex(v => v._id === option.variantId)!
+
+    const optInd = variants[varInd].options.findIndex(it => it._id === option._id)
+
+    variants[varInd].options.splice(optInd, 1, updated)
+
+    await this.updateProduct({
+      _id: this._product.value!._id,
+      variants
+    })
+  }
+
   async deleteVariantOption(option){
     await this._optionsService.deleteOption(option)
 

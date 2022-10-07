@@ -82,7 +82,8 @@ export const variantsBlock = defineComponent({
     }
 
     const onDeleteVariantImage = (asset, variant) => {
-      emit('delete:variant-image', { asset, option: optionPattern.value, variant })
+      const option = toRaw(optionPattern.value)
+      emit('delete:variant-image', { asset, option, variant })
     }
 
     const clearVariantOptionForm = () => {
