@@ -8,5 +8,6 @@ export interface ICategory {
   parent?: string
   order?: number
   children: string[]
-  isVisible: boolean
+  isVisible: boolean,
+  length: number
 }

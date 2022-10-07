@@ -37,6 +37,10 @@ const CategorySchema: Schema = new Schema<ICategory & Document>({
     type: Boolean,
     default: true
   },
+  length: {
+    type: Number,
+    default: 0
+  }
 }, {
   timestamps: true
 })

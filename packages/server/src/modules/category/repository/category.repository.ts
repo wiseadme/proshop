@@ -23,7 +23,8 @@ export class CategoryRepository implements ICategoryRepository {
       seo: category.seo,
       image: category.image,
       parent: category.parent || null,
-      children: category.children || []
+      children: category.children || [],
+      length: category.length
     }).save()
 
     await Promise.all([

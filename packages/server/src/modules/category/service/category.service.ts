@@ -22,6 +22,7 @@ export class CategoryService implements ICategoryService {
     @inject(TYPES.REPOSITORIES.ICategoryRepository) private repository: ICategoryRepository,
     @inject(TYPES.SERVICES.IEventBusService) private events: IEventBusService
   ){
+    this.addListeners()
   }
 
   async create(category: ICategory){
@@ -90,5 +91,9 @@ export class CategoryService implements ICategoryService {
     this.events.emit('delete:category', id)
 
     return res
+  }
+
+  addListeners(){
+    this.events.on('update:category', this.update.bind(this))
   }
 }

@@ -12,6 +12,7 @@ export class Category implements ICategory {
   private readonly _children?: string[]
   private readonly _seo?: ICategory['seo']
   private readonly _isVisible: boolean
+  private readonly _length: number
 
   constructor({ title, seo, url, order, image, parent, children, isVisible }: ICategory){
     this._title = title
@@ -22,6 +23,7 @@ export class Category implements ICategory {
     this._isVisible = isVisible
     this._seo = seo
     this._url = url || translator(this._title).toLowerCase()
+    this._length = 0
   }
 
   get title(): string{
@@ -54,6 +56,10 @@ export class Category implements ICategory {
 
   get isVisible(){
     return this._isVisible
+  }
+
+  get length() {
+    return this._length
   }
 
   static create(category: ICategory){
