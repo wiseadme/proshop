@@ -1,6 +1,7 @@
 import mongoose, { Document } from 'mongoose'
 import { inject, injectable } from 'inversify'
 import { CategoryModel } from '../model/category.model'
+import { ProductModel } from '@modules/product/model/product.model'
 import { TYPES } from '@common/schemes/di-types'
 import { validateId } from '@common/utils/mongoose-validate-id'
 // Types
@@ -55,11 +56,23 @@ export class CategoryRepository implements ICategoryRepository {
   async update(updates: Partial<ICategory & Document>){
     validateId(updates._id)
 
-    const updated = await CategoryModel.findByIdAndUpdate(
-      { _id: updates._id },
-      { $set: updates },
-      { new: true }
-    )
+    let updated
+
+    if (updates.length) {
+      updated = CategoryModel.findByIdAndUpdate(
+        { _id: updates._id },
+        { $set: { length: await ProductModel.countDocuments({ categories: { $in: updates._id } }) } },
+        { new: true }
+      )
+    } else {
+      updated = CategoryModel.findByIdAndUpdate(
+        { _id: updates._id },
+        { $set: updates },
+        { new: true }
+      )
+    }
+
+    updated = await updated
       .populate('parent', [ 'title', 'url' ])
       .populate('children', [ 'title', 'url' ]) as Document<ICategory>
 

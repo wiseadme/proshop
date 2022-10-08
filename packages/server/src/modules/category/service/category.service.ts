@@ -50,7 +50,6 @@ export class CategoryService implements ICategoryService {
     const [ category ] = await this.repository.read({ id: update._id })
 
     if (update.parent) {
-
       if (category.parent) {
         const [ prevParent ] = await this.repository.read({ id: category.parent })
 
@@ -69,7 +68,7 @@ export class CategoryService implements ICategoryService {
       await this.repository.update($set)
     }
 
-    return this.repository.update(Category.update(update))
+    return this.repository.update(update)
   }
 
   read<T extends Partial<Document & ICategory>>(query: T){
@@ -94,7 +93,7 @@ export class CategoryService implements ICategoryService {
       await this.repository.update($set)
     }
 
-    this.events.emit(DELETE_CATEGORY_EVENT, id)
+    await this.events.emit(DELETE_CATEGORY_EVENT, id)
 
     return res
   }

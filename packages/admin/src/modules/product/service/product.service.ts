@@ -160,11 +160,13 @@ class Service {
   async updateProduct(updates){
     const updated = await this._store.update(updates)
     this._product.value = updated
+
     return updated
   }
 
   async createAsset(file, ownerId){
     const { formData, fileName } = this._filesService.createFormData(file)
+
     return await this._filesService.uploadFile({
       ownerId,
       fileName,

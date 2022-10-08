@@ -5,7 +5,7 @@ export const variantsBlock = defineComponent({
   name: 'variant-block',
   props: {
     isDisplayed: Boolean,
-    isUpdate: Boolean,
+    isEdit: Boolean,
     variantItems: Array as PropType<Array<IVariant>>,
     variants: Array as PropType<Array<IVariant>>
   },

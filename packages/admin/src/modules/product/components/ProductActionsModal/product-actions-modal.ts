@@ -28,7 +28,7 @@ export const productActionsModal = defineComponent({
   },
   props: {
     modelValue: Boolean,
-    isUpdate: Boolean,
+    isEdit: Boolean,
     hasChanges: Boolean,
     isVisible: Boolean,
     categoryItems: Array as PropType<Array<ICategory>>,
@@ -94,7 +94,7 @@ export const productActionsModal = defineComponent({
     })
 
     const computedModalHeader = computed<string>(() => {
-      return `${ (props.isUpdate ? 'Редактирование' : 'Создание') } продукта`
+      return `${ (props.isEdit ? 'Редактирование' : 'Создание') } продукта`
     })
 
     const computedName = computed<string>({
@@ -261,7 +261,7 @@ export const productActionsModal = defineComponent({
     const onUpdate = () => emit('update')
 
     const onSubmit = (validate) => {
-      if (props.isUpdate) onUpdate()
+      if (props.isEdit) onUpdate()
       else onCreate(validate)
     }
 
@@ -299,10 +299,10 @@ export const productActionsModal = defineComponent({
       emit('delete:image', asset)
     }
 
-    // const onDeleteAttribute = (attr) => {
-    //   attributesArray.value = attributesArray.value.filter(it => it.key !== attr.key)
-    //   emit('update:attributes', attributesArray.value)
-    // }
+    const onDeleteAttribute = (attr) => {
+      attributesArray.value = attributesArray.value.filter(it => it.key !== attr.key)
+      emit('update:attributes', attributesArray.value)
+    }
 
     const setAsMainImage = () => {
       computedImage.value = currentImage.value!.url
@@ -333,7 +333,7 @@ export const productActionsModal = defineComponent({
     watch(() => props.modelValue, to => {
       ctgMap.value.clear()
 
-      if (to && props.isUpdate) {
+      if (to && props.isEdit) {
         props.categories?.forEach(ctg => {
           if (!ctgMap.value.get(ctg._id)) toggleCategory(ctg)
         })
@@ -377,7 +377,7 @@ export const productActionsModal = defineComponent({
       onDiscardChanges,
       onDeleteImage,
       onAttributesUpdate,
-      // onDeleteAttribute,
+      onDeleteAttribute,
       onCreateVariantOption,
       onUpdateVariantOption,
       onDeleteVariantOption,

@@ -100,10 +100,10 @@
               <v-col class="mb-4 pa-4 white elevation-2">
                 <v-file-input
                   v-model:value="productImages"
-                  :label="isUpdate ? 'Загрузить изображения' : 'Загрузить изображение можно только после создания продукта'"
+                  :label="isEdit ? 'Загрузить изображения' : 'Загрузить изображение можно только после создания продукта'"
                   color="#272727"
                   text-color="#272727"
-                  :disabled="!isUpdate"
+                  :disabled="!isEdit"
                   @update:value="onLoadImage"
                 />
               </v-col>
@@ -205,7 +205,7 @@
                         v-if="it.children && it.children.length"
                         :title="it.title"
                         class="elevation-2"
-                        :expand="isUpdate"
+                        :expand="isEdit"
                       >
                         <v-list>
                           <v-list-item
@@ -283,15 +283,15 @@
                               color="#272727"
                               @input="onAttributesUpdate"
                             />
-                            <!--                            <v-icon-->
-                            <!--                              class="mr-3"-->
-                            <!--                              color="grey lighten-2"-->
-                            <!--                              clickable-->
-                            <!--                              style="position: absolute; top: 0; right: 0"-->
-                            <!--                              @click="onDeleteAttribute(element)"-->
-                            <!--                            >-->
-                            <!--                              fas fa-trash-alt-->
-                            <!--                            </v-icon>-->
+                            <v-icon
+                              class="mr-3"
+                              color="grey lighten-2"
+                              clickable
+                              style="position: absolute; top: 0; right: 0"
+                              @click="onDeleteAttribute(element)"
+                            >
+                              fas fa-trash-alt
+                            </v-icon>
                           </v-col>
                         </v-row>
                       </template>
@@ -303,7 +303,7 @@
             <variants-block
               v-model:variants="computedVariants"
               :is-displayed="modelValue"
-              :is-update="isUpdate"
+              :is-edit="isEdit"
               :variant-items="variantItems"
               @upload:variant-image="onUploadVariantImage"
               @delete:variant-image="onDeleteVariantImage"
@@ -317,7 +317,7 @@
               color="green"
               elevation="3"
               width="120"
-              :disabled="!hasChanges && isUpdate"
+              :disabled="!hasChanges && isEdit"
               @click="onSubmit(validate)"
             >
               сохранить
@@ -333,7 +333,7 @@
               отмена
             </v-button>
             <v-button
-              v-if="isUpdate"
+              v-if="isEdit"
               class="ml-4"
               elevation="3"
               color="red darken-2"

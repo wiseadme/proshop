@@ -29,68 +29,73 @@ export class ProductService implements IProductService {
   }
 
   async create(product: IProduct){
+    const item = await this.repository.create(Product.create(product))
+
     if (product.categories) {
       for (const category of product.categories) {
         await this.events.emit(
           UPDATE_CATEGORY_EVENT,
-          { _id: category._id, length: category.length + 1 },
+          { _id: category._id, length: true },
           true
         )
       }
     }
 
-    return await this.repository.create(Product.create(product))
+    return item
   }
 
   async read(query){
     const { id, category, name, page, count } = query
     const searchKey = name ? 'name' : category ? 'category' : null
-
     const params = id ? id : { page, count, [searchKey!]: query[searchKey!] }
 
     return await this.repository.read(params)
   }
 
   async update(updates: Partial<Document & IProduct>){
-
     if (updates.assets) {
       updates.assets.forEach(it => this.events.emit(UPDATE_ASSETS_EVENT, it))
       updates.image = updates.assets?.find(it => it.main)?.url || ''
     }
 
-    if (updates.categories) {
-      const [ product ] = await this.repository.read(updates._id)
+    let product, categories
 
-      for (const category of product.categories) {
+    if (updates.categories) {
+      product = await this.repository.read(updates._id)
+      categories = product[0].categories
+    }
+
+    const { updated } = await this.repository.update(Product.update(updates))
+
+    if (categories) {
+      /* TODO - необходимо оптимизировать так как есть повторные апдейт категории здесь */
+      if (updates.categories?.length) {
+        categories = categories.concat((updated as any).categories)
+      }
+
+      for (const category of categories) {
         await this.events.emit(
           UPDATE_CATEGORY_EVENT,
-          { _id: category._id, length: category.length - 1 },
+          { _id: category._id, length: true },
           true
         )
       }
-
-      for (const category of updates.categories) {
-        await this.events.emit(UPDATE_CATEGORY_EVENT, {
-          _id: category._id,
-          length: category.length + 1
-        })
-      }
     }
 
-    return await this.repository.update(Product.update(updates))
+    return { updated }
   }
 
   async delete(id){
     const [ product ] = await this.repository.read(id)
 
+    const res = await this.repository.delete(id)
+
     for (const category of product.categories) {
       await this.events.emit(UPDATE_CATEGORY_EVENT, {
         _id: category._id,
-        length: category.length - 1
+        length: true
       })
     }
-
-    const res = await this.repository.delete(id)
 
     await this.events.emit(DELETE_PRODUCT_EVENT, id)
 

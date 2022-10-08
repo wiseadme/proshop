@@ -34,8 +34,11 @@ export class ProductRepository implements IProductRepository {
     })
       .save())
       .populate([
-        'categories',
         'assets',
+        {
+          path: 'categories',
+          select: 'title'
+        },
         {
           path: 'variants',
           populate: {
@@ -67,8 +70,8 @@ export class ProductRepository implements IProductRepository {
 
       return ProductModel
         .find(search)
+        .populate('categories', ['title'])
         .populate([
-          'categories',
           'assets',
           {
             path: 'variants',
@@ -88,19 +91,20 @@ export class ProductRepository implements IProductRepository {
     // string type and that's why we need to validate it
     params && validateId(params)
 
-    return ProductModel.find({ _id: params }).populate([
-      'categories',
-      'assets',
-      {
-        path: 'variants',
-        populate: {
-          path: 'options',
+    return ProductModel.find({ _id: params })
+      .populate('categories', ['title'])
+      .populate([
+        'assets',
+        {
+          path: 'variants',
           populate: {
-            path: 'assets'
+            path: 'options',
+            populate: {
+              path: 'assets'
+            }
           }
         }
-      }
-    ])
+      ])
   }
 
   async update($set: Partial<Document<IProduct>>){
@@ -111,8 +115,8 @@ export class ProductRepository implements IProductRepository {
       { $set },
       { new: true }
     )
+      .populate('categories', ['title'])
       .populate([
-        'categories',
         'assets',
         {
           path: 'variants',

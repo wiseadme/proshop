@@ -361,7 +361,7 @@
       :category-items="service.categories"
       :variant-items="service.variants"
       :unit-items="service.units"
-      :is-update="isEditMode"
+      :is-edit="isEditMode"
       :has-changes="hasChanges"
       @create="onCreate"
       @update="onUpdate"

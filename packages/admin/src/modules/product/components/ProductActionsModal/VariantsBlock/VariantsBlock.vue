@@ -25,6 +25,7 @@
               class="mr-2 mb-4"
               elevation="2"
               :color="currentVariant._id === variant._id ? 'green' : 'orange'"
+              :disabled="!isEdit"
               height="24"
               @click="setCurrentVariant(variant)"
             >
@@ -63,8 +64,9 @@
                     <v-text-field
                       v-model.trim="optionPattern.name"
                       color="#272727"
-                      label="значение"
+                      label="значение *"
                       :rules="[val => !!val || 'Обязательное поле']"
+                      :disabled="!isEdit"
                     />
                   </v-col>
                   <v-col
@@ -75,6 +77,7 @@
                       color="#272727"
                       label="количество"
                       type="number"
+                      :disabled="!isEdit"
                     />
                   </v-col>
                   <v-col
@@ -85,6 +88,7 @@
                       color="#272727"
                       label="цена"
                       type="number"
+                      :disabled="!isEdit"
                     />
                   </v-col>
                   <v-col
@@ -93,6 +97,7 @@
                     <v-text-field
                       v-model.trim="optionPattern.description"
                       color="#272727"
+                      :disabled="!isEdit"
                       label="описание"
                     />
                   </v-col>
@@ -155,6 +160,7 @@
                   <v-button
                     color="green"
                     elevation="2"
+                    :disabled="!isEdit"
                     @click="createOption(validate)"
                   >
                     {{ optionPattern._id ? 'изменить' : 'добавить' }}
@@ -163,6 +169,7 @@
                     class="ml-2"
                     color="error"
                     elevation="2"
+                    :disabled="!isEdit"
                     @click="clearVariantOptionForm"
                   >
                     очистить

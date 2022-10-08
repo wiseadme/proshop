@@ -18,7 +18,7 @@ export const productActionsModal = defineComponent({
   },
   props: {
     modelValue: Boolean,
-    isUpdate: Boolean,
+    isEdit: Boolean,
     hasChanges: Boolean,
     categoryItems: Array as PropType<Array<ICategory>>,
     unitItems: Array as PropType<Array<IUnit>>,
@@ -241,7 +241,7 @@ export const productActionsModal = defineComponent({
     const onUpdate = () => emit('update')
 
     const onSubmit = (validate) => {
-      if (props.isUpdate) onUpdate()
+      if (props.isEdit) onUpdate()
       else onCreate(validate)
     }
 
@@ -290,7 +290,7 @@ export const productActionsModal = defineComponent({
     watch(() => props.modelValue, to => {
       ctgMap.value.clear()
 
-      if (to && props.isUpdate) {
+      if (to && props.isEdit) {
         props.categories?.forEach(ctg => {
           if (!ctgMap.value.get(ctg._id)) toggleCategory(ctg)
         })

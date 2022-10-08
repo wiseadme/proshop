@@ -42,6 +42,19 @@ services:
     depends_on:
       - admin
 
+  keycloak:
+    image: jboss/keycloak
+    container_name: keycloak-app
+    environment:
+      KEYCLOAK_USER: Anar
+      KEYCLOAK_PASSWORD: uzbekistan1
+    volumes:
+      - keycloak-data-volume:/var/lib/keycloak/data
+    ports:
+      - "9990:8080"
+
 volumes:
   ecommerce:
   uploads:
+  keycloak-data-volume:
+    external: true
