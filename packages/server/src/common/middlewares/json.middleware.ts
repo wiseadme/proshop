@@ -4,5 +4,6 @@ import { injectable } from 'inversify'
 
 @injectable()
 export class JsonMiddleware implements IExpressMiddleware {
-  execute: ReturnType<typeof express.json> = express.json({})
+  public bind: boolean = true
+  public execute: ReturnType<typeof express.json> = express.json({})
 }

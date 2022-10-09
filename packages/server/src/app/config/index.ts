@@ -13,6 +13,10 @@ export class Config implements IConfig {
   dbUri = process.env.MONGO_URI!
   secret = process.env.SECRET_KEY!
   uploadsDir = `/home/${process.env.USER}/www/uploads`!
+  keycloakServer = process.env.KEYCLOAK_SERVER
+  keycloakRealm = process.env.KEYCLOAK_REALM
+  keycloakAdminClientId = process.env.KEYCLOAK_ADMIN_CLI_CLIENT_ID
+  keycloakAdminSecret = process.env.KEYCLOAK_ADMIN_CLI_SECRET
 }
 
 export default new Config()

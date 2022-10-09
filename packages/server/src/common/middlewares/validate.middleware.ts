@@ -4,6 +4,7 @@ import { ClassConstructor, plainToClass } from 'class-transformer'
 import { validate } from 'class-validator'
 
 export class ValidateMiddleware implements IMiddleware {
+  public bind: boolean = true
   static classToValidate
 
   constructor(classToValidate: ClassConstructor<object>) {

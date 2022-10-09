@@ -16,6 +16,7 @@ import { UnitController } from '@modules/unit/controller/unit.controller'
 import { CartController } from '@modules/cart/controller/cart.controller'
 import { OrderController } from '@modules/order/controller/order.controller'
 import { OptionController } from '@modules/option/controller/option.controller'
+import { AuthController } from '@modules/auth/controller/auth.controller'
 
 // Services
 import { LoggerService } from '../services/logger.service'
@@ -47,6 +48,8 @@ import { UrlEncodedMiddleware } from '@common/middlewares/urlencoded.middleware'
 import { LoggerMiddleware } from '../middlewares/logger.middleware'
 import { ErrorRouteMiddleware } from '../middlewares/error.route.middleware'
 import { FileLoaderMiddleware } from '@common/middlewares/fileloader.middleware'
+import { KeycloakMiddleware } from '@common/middlewares/keycloak.middleware'
+import { SessionMiddleware } from '@common/middlewares/session.middleware'
 
 // Types
 import { ICategoryService } from '@modules/category/types/service'
@@ -59,7 +62,6 @@ import { ICartService } from '@modules/cart/types/service'
 import { IOrderService } from '@modules/order/types/service'
 import { IOptionService } from '@modules/option/types/service'
 import { IEventBusService } from '@/types/services'
-
 import { ICategoryRepository } from '@modules/category/types/repository'
 import { IAssetsRepository } from '@modules/asset/types/repository'
 import { IProductRepository } from '@modules/product/types/repository'
@@ -69,10 +71,14 @@ import { IUnitRepository } from '@modules/unit/types/repository'
 import { ICartRepository } from '@modules/cart/types/repository'
 import { IOrderRepository } from '@modules/order/types/repository'
 import { IOptionRepository } from '@modules/option/types/repository'
-
 import { ILogger } from '@/types/utils'
 import { IController, IConfig, IDb } from '@/types'
-import { IMiddleware, IErrorRouteMiddleware, IExpressMiddleware, IFileLoaderMiddleware } from '@/types/middlewares'
+import {
+  IMiddleware,
+  IErrorRouteMiddleware,
+  IExpressMiddleware,
+  IFileLoaderMiddleware,
+} from '@/types/middlewares'
 
 export const container = new Container({ skipBaseClassChecks: true })
 
@@ -107,11 +113,14 @@ container.bind<IController>(TYPES.CONTROLLERS.IController).to(UnitController)
 container.bind<IController>(TYPES.CONTROLLERS.IController).to(CartController)
 container.bind<IController>(TYPES.CONTROLLERS.IController).to(OrderController)
 container.bind<IController>(TYPES.CONTROLLERS.IController).to(OptionController)
+container.bind<IController>(TYPES.CONTROLLERS.IController).to(AuthController)
 
 // Middlewares
+container.bind<IMiddleware>(TYPES.MIDDLEWARES.IMiddleware).to(LoggerMiddleware)
+container.bind<IExpressMiddleware>(TYPES.MIDDLEWARES.IMiddleware).to(SessionMiddleware)
 container.bind<IExpressMiddleware>(TYPES.MIDDLEWARES.IMiddleware).to(JsonMiddleware)
 container.bind<IExpressMiddleware>(TYPES.MIDDLEWARES.IMiddleware).to(UrlEncodedMiddleware)
-container.bind<IMiddleware>(TYPES.MIDDLEWARES.IMiddleware).to(LoggerMiddleware)
+container.bind<IExpressMiddleware>(TYPES.MIDDLEWARES.IMiddleware).to(KeycloakMiddleware)
 container.bind<IErrorRouteMiddleware>(TYPES.MIDDLEWARES.IErrorRouteMiddleware).to(ErrorRouteMiddleware)
 container.bind<IFileLoaderMiddleware>(TYPES.MIDDLEWARES.IFileLoaderMiddleware).to(FileLoaderMiddleware)
 

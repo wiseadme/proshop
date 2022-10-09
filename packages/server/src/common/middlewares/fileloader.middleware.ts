@@ -11,11 +11,13 @@ class FileLoaderOptions {
   storage: Maybe<Options['storage']>
   fileFilter: Maybe<Options['fileFilter']>
   limits: Maybe<Options['limits']>
+  bind: boolean
 
   constructor(){
     this.storage = null
     this.fileFilter = null
     this.limits = null
+    this.bind = true
 
     this.addOptionsStorage()
     this.addFileFilter()
@@ -62,8 +64,10 @@ class FileLoaderOptions {
 @injectable()
 export class FileLoaderMiddleware implements IFileLoaderMiddleware {
   plugin: Multer
+  bind: boolean
 
   constructor(){
+    this.bind = true
     this.plugin = multer(new FileLoaderOptions() as Options)
   }
 

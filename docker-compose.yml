@@ -2,7 +2,7 @@ version: '3'
 services:
   server:
     build: ./packages/server
-    container_name: admin-server
+    container_name: server
     command: npm run start
     restart: unless-stopped
     ports:
@@ -24,7 +24,7 @@ services:
 
   admin:
     build: ./packages/admin
-    container_name: admin-client
+    container_name: admin
     command: nginx -g "daemon off;"
     restart: unless-stopped
     ports:
@@ -32,7 +32,7 @@ services:
 
   nginx:
     image: nginx:stable-alpine
-    container_name: admin-nginx
+    container_name: nginx
     command: nginx -g "daemon off;"
     ports:
       - "80:80"
@@ -49,12 +49,11 @@ services:
       KEYCLOAK_USER: Anar
       KEYCLOAK_PASSWORD: uzbekistan1
     volumes:
-      - keycloak-data-volume:/var/lib/keycloak/data
+      - keycloak:/opt/jboss/keycloak/standalone/data/
     ports:
       - "9990:8080"
 
 volumes:
   ecommerce:
   uploads:
-  keycloak-data-volume:
-    external: true
+  keycloak:
