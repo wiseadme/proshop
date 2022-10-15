@@ -11,7 +11,7 @@ export const setMiddlewares = (props: SetMiddlewareArguments | null = null) => {
   const middlewares: any[] = []
 
   props?.dto && middlewares.push(new ValidateMiddleware(props.dto).execute)
-  props?.protect && middlewares.push(getKeycloak().protect(props?.role))
+  props?.protect && middlewares.push(getKeycloak().protect(props.role || ''))
 
   return middlewares
 }

@@ -1,10 +1,13 @@
 <script lang="ts">
   import { defineComponent } from 'vue'
-  import { AppHeader } from '@app/components/AppHeader'
-  import { AppNavigation } from '@app/components/AppNavigation'
+  import MainLayout from '@shared/layouts/MainLayout.vue'
+  import AuthLayout from '@shared/layouts/AuthLayout.vue'
 
   export default defineComponent({
-    components: { AppHeader, AppNavigation },
+    components: {
+      MainLayout,
+      AuthLayout
+    },
     setup(){
       return {}
     }
@@ -13,11 +16,8 @@
 <template>
   <v-app class="grey lighten-4">
     <v-layout column>
-      <app-header />
-      <app-navigation />
-      <v-main style="padding: 66px 0 10px 56px">
-        <router-view />
-      </v-main>
+      <main-layout v-if="!$route.path.includes('auth')"/>
+      <auth-layout v-else/>
     </v-layout>
   </v-app>
 </template>

@@ -13,6 +13,7 @@ export const TYPES = {
     ICartService: Symbol.for('ICartService'),
     IOrderService: Symbol.for('IOrderService'),
     IOptionService: Symbol.for('IOptionService'),
+    IAuthService: Symbol.for('IAuthService')
   },
   CONTROLLERS: {
     IController: Symbol.for('IController'),

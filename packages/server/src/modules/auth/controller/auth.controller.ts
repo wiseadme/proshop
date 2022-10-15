@@ -1,38 +1,39 @@
-import { Router } from 'express'
-import request from 'request-promise'
-import config from '@app/config'
-import { injectable } from 'inversify'
+import { Response, Request, Router } from 'express'
+import expressAsyncHandler from 'express-async-handler'
+import { inject, injectable } from 'inversify'
+import { BaseController } from '@common/controller/base.controller'
+import { IController } from '@/types'
+import { TYPES } from '@common/schemes/di-types'
+import { IAuthService } from '@modules/auth/types/service'
 
 @injectable()
-export class AuthController {
+export class AuthController extends BaseController implements IController {
   public path: string = '/v1/auth'
   public router: Router = Router()
 
-  constructor(){
+  constructor(
+    @inject(TYPES.SERVICES.IAuthService) private service: IAuthService
+  ){
+    super()
     this.initRoutes()
-    this.login()
   }
 
   initRoutes(){
-    this.router.post('/login', this.login.bind(this))
+    this.router.post('/login', expressAsyncHandler(this.login.bind(this)))
   }
 
-  async login(){
-    const options = {
-      method: 'POST',
-      uri: config.keycloakServer  + '/realms/master/protocol/openid-connect/token',
-      form: {
-        client_id: config.keycloakAdminClientId,
-        client_secret: config.keycloakAdminSecret,
-        grant_type: 'client_credentials'
-      },
-      json: true
-    }
+  async login({ body, method }: Request, res: Response){
     try {
-      const data = await request(options)
-      console.log(data)
+      const { access_token } = await this.service.getRegistrationAccessToken()
+      console.log(access_token)
+      this.send({
+        response: res,
+        data: access_token,
+        url: this.path,
+        method
+      })
     } catch (error) {
-      console.log(error, 'errrrrrrrrr')
+      console.log(error, 'error')
     }
   }
 

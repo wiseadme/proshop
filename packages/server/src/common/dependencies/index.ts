@@ -30,6 +30,7 @@ import { CartService } from '@modules/cart/service/cart.service'
 import { OrderService } from '@modules/order/service/order.service'
 import { OptionService } from '@modules/option/service/option.service'
 import { EventBusService } from '@common/services/event-bus.service'
+import { AuthService } from '@modules/auth/service/auth.service'
 
 // Repositories
 import { CategoryRepository } from '@modules/category/repository/category.repository'
@@ -61,6 +62,7 @@ import { IUnitService } from '@modules/unit/types/service'
 import { ICartService } from '@modules/cart/types/service'
 import { IOrderService } from '@modules/order/types/service'
 import { IOptionService } from '@modules/option/types/service'
+import { IAuthService } from '@modules/auth/types/service'
 import { IEventBusService } from '@/types/services'
 import { ICategoryRepository } from '@modules/category/types/repository'
 import { IAssetsRepository } from '@modules/asset/types/repository'
@@ -101,6 +103,7 @@ container.bind<IUnitService>(TYPES.SERVICES.IUnitService).to(UnitService)
 container.bind<ICartService>(TYPES.SERVICES.ICartService).to(CartService)
 container.bind<IOrderService>(TYPES.SERVICES.IOrderService).to(OrderService)
 container.bind<IOptionService>(TYPES.SERVICES.IOptionService).to(OptionService)
+container.bind<IAuthService>(TYPES.SERVICES.IAuthService).to(AuthService)
 
 // Controllers
 container.bind<IController>(TYPES.CONTROLLERS.IController).to(SwaggerController)
