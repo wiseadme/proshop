@@ -30,20 +30,26 @@ export class ProductController extends BaseController implements IController {
   }
 
   public initRoutes(){
-    this.router.post('/', setMiddlewares({
-      dto: ProductDTO,
-      protect: true
-    }), expressAsyncHandler(this.createProduct.bind(this)))
-    this.router.patch('/', setMiddlewares({
-      dto: ProductDTO,
-      protect: true
-    }), expressAsyncHandler(this.updateProduct.bind(this)))
-    this.router.get('/', setMiddlewares({
-      protect: true
-    }), expressAsyncHandler(this.getProducts.bind(this)))
-    this.router.delete('/', setMiddlewares({
-      protect: true
-    }), expressAsyncHandler(this.deleteProduct.bind(this)))
+    this.router.post(
+      '/',
+      setMiddlewares({ dto: ProductDTO, protect: true }),
+      expressAsyncHandler(this.createProduct.bind(this))
+    )
+    this.router.patch(
+      '/',
+      setMiddlewares({ dto: ProductDTO, protect: true }),
+      expressAsyncHandler(this.updateProduct.bind(this))
+    )
+    this.router.get(
+      '/',
+      setMiddlewares(),
+      expressAsyncHandler(this.getProducts.bind(this))
+    )
+    this.router.delete(
+      '/',
+      setMiddlewares({ protect: true }),
+      expressAsyncHandler(this.deleteProduct.bind(this))
+    )
   }
 
   async createProduct({ body, method }: Request<{}, {}, IProduct>, res: Response){

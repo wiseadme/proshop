@@ -15,7 +15,7 @@ class Repository implements AuthRepository {
   }
 
   async login(user){
-    return this.rest.post('/login', user)
+    return this.rest.post(`${ this.baseUrl }/login`, user)
   }
 }
 

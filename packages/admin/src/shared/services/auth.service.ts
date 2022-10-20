@@ -1,7 +1,7 @@
-import { Store } from 'nervue'
+import { useAuthStore } from '@shared/store/auth'
 
 export class Service {
-  private _store: Store
+  private _store: ReturnType<typeof useAuthStore>
 
   constructor({ store }){
     this._store = store
@@ -11,3 +11,7 @@ export class Service {
     this._store.loginUser(user)
   }
 }
+
+export const useAuthService = () => new Service({
+  store: useAuthStore()
+})
