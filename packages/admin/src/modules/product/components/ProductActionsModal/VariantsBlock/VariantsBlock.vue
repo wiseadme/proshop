@@ -1,7 +1,122 @@
-<script lang="ts">
-  import { variantsBlock } from './variants-block'
+<script lang="ts" setup>
+  import { PropType, toRaw, watch } from 'vue'
+  import { IVariant, IVariantOption } from '@modules/variant/types'
 
-  export default variantsBlock
+  const props = defineProps({
+    isDisplayed: Boolean,
+    isEdit: Boolean,
+    variantItems: Array as PropType<Array<IVariant>>,
+    variants: Array as PropType<Array<IVariant>>
+  })
+
+  const emit = defineEmits([
+    'update:variants',
+    'create:variant-option',
+    'delete:variant-option',
+    'update:variant-option',
+    'upload:variant-image',
+    'delete:variant-image'
+  ])
+
+  let currentVariant = $ref<Maybe<IVariant>>(null)
+  let existsVariants = $ref<IVariant[]>([])
+  let optionPattern = $ref<IVariantOption>()
+  let isEditingMode = false
+
+  const genOptionPattern = () => ({
+    _id: '',
+    variantId: '',
+    name: '',
+    quantity: 0,
+    price: 0,
+    description: null,
+    assets: []
+  })
+
+  const setExistsVariants = (vars) => {
+    const map = existsVariants.reduce((acc, it) => {
+      acc[it.group] = it
+      return acc
+    }, {})
+
+    vars?.forEach(v => {
+      map[v.group] = v
+    })
+
+    existsVariants = Object.values(map)
+  }
+
+  const createOption = (validate) => {
+    validate()
+      .then(() => {
+        optionPattern.variantId = currentVariant!._id
+
+        const rawOption = toRaw(optionPattern)
+
+        if (isEditingMode) {
+          emit('update:variant-option', rawOption)
+        } else {
+          emit('create:variant-option', rawOption)
+        }
+      })
+  }
+
+  const removeVariantOption = (variant, option) => {
+    emit('delete:variant-option', { variant, option })
+  }
+
+  const setCurrentVariant = (variant) => {
+    optionPattern = genOptionPattern()
+    currentVariant = variant
+  }
+
+  const setOptionForEditing = (option) => {
+    isEditingMode = true
+    optionPattern = option
+  }
+
+  const onUploadVariantImage = ([ file ], option) => {
+    emit('upload:variant-image', { file, option })
+  }
+
+  const onDeleteVariantImage = (asset, variant) => {
+    const option = toRaw(optionPattern)
+    emit('delete:variant-image', { asset, option, variant })
+  }
+
+  const clearVariantOptionForm = () => {
+    isEditingMode = false
+    optionPattern = genOptionPattern()
+  }
+
+  watch(() => props.variantItems, (variants) => {
+    setExistsVariants(variants)
+
+    if (!currentVariant) {
+      setCurrentVariant(existsVariants[0])
+    }
+
+  }, { immediate: true })
+
+  watch(() => props.variants, (variants) => {
+    if (variants!.length) {
+      setExistsVariants(variants)
+    } else {
+      setExistsVariants(props.variantItems)
+    }
+
+    if (currentVariant) {
+      setCurrentVariant(variants?.find(
+        v => v._id === currentVariant!._id) || existsVariants?.[0]
+      )
+    } else {
+      currentVariant = variants?.[0] || existsVariants?.[0]!
+    }
+
+  }, { immediate: true })
+
+  optionPattern = genOptionPattern()
+
 </script>
 <template>
   <v-row

@@ -1,7 +1,330 @@
-<script lang="ts">
-  import { productActionsModal } from './product-actions-modal'
+<script lang="ts" setup>
+  import { PropType, nextTick, toRaw, watch } from 'vue'
+  import { IVariant } from '@modules/variant/types'
+  import { IProductAsset } from '@modules/product/types'
+  import { clone } from '@shared/helpers'
+  import { TextEditor } from '@shared/components/TextEditor'
+  import VariantsBlock from './VariantsBlock'
+  import draggable from 'vuedraggable'
 
-  export default productActionsModal
+  const props = defineProps({
+    modelValue: Boolean,
+    isEdit: Boolean,
+    hasChanges: Boolean,
+    isVisible: Boolean,
+    categoryItems: Array as PropType<Array<ICategory>>,
+    unitItems: Array as PropType<Array<IUnit>>,
+    variantItems: Array as PropType<Array<IVariant>>,
+    name: String,
+    url: String,
+    description: String,
+    price: Number,
+    quantity: Number,
+    unit: Object as PropType<IUnit>,
+    image: String,
+    seo: Object,
+    categories: Array as PropType<Array<ICategory>>,
+    attributes: Array as PropType<Array<IAttribute>>,
+    variants: Array as PropType<Array<IVariant>>,
+    assets: Array as PropType<Array<IProductAsset>>
+  })
+
+  const emit = defineEmits([
+    'update:modelValue',
+    'update:name',
+    'update:price',
+    'update:description',
+    'update:image',
+    'update:assets',
+    'update:attributes',
+    'update:variants',
+    'update:seo',
+    'update:categories',
+    'update:quantity',
+    'update:unit',
+    'update:isVisible',
+    'update:seo:title',
+    'update:seo:description',
+    'update:seo:keywords',
+    'update:url',
+    'upload:image',
+    'delete:image',
+    'upload:variant-image',
+    'delete:variant-image',
+    'create:variant-option',
+    'delete:variant-option',
+    'update:variant-option',
+    'create',
+    'discard',
+    'update'
+  ])
+
+  const ctgMap = $ref<Map<string, ICategory>>(new Map())
+
+  let productImages = $ref<Array<File>>([])
+  let attributesArray = $ref<Array<IAttribute>>([])
+  let currentImage = $ref<Maybe<IProductAsset>>(null)
+  let content = $ref<string>('')
+  let rerenderKey = $ref<string>('')
+
+  const imagesContextMenu = $ref({
+    show: false,
+    positionX: 0,
+    positionY: 0,
+  })
+
+  const computedModalHeader = $computed<string>(() => {
+    return `${ (props.isEdit ? 'Редактирование' : 'Создание') } продукта`
+  })
+
+  const computedName = $computed<string>({
+    get(){
+      return props.name!
+    },
+    set(val){
+      emit('update:name', val)
+    }
+  })
+
+  const computedPrice = $computed<number>({
+    get(){
+      return props.price!
+    },
+    set(val){
+      emit('update:price', +val)
+    }
+  })
+
+  let computedDescription = $computed<string>({
+    get(){
+      return content!
+    },
+    set(val){
+      emit('update:description', val)
+    }
+  })
+
+  let computedUnit = $computed<IUnit>({
+    get(){
+      return props.unit!
+    },
+    set(val){
+      emit('update:unit', val)
+    }
+  })
+
+  let computedQuantity = $computed<number>({
+    get(){
+      return props.quantity!
+    },
+    set(val){
+      emit('update:quantity', +val)
+    }
+  })
+
+  let computedUrl = $computed<string>({
+    get(){
+      return props.url!
+    },
+    set(val){
+      emit('update:url', val)
+    }
+  })
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  let computedImage = $computed<string>({
+    get(){
+      return props.image!
+    },
+    set(val){
+      emit('update:image', val)
+    }
+  })
+
+  let computedAssets = $computed<Array<IProductAsset>>({
+    get(){
+      return props.assets!
+    },
+    set(val){
+      emit('update:assets', val)
+    }
+  })
+
+  let computedVariants = $computed<Array<IVariant>>({
+    get(){
+      return props.variants!
+    },
+    set(val){
+      emit('update:variants', toRaw(val))
+    }
+  })
+
+  let computedSeoTitle = $computed<string>({
+    get(){
+      return props.seo?.title
+    },
+    set(val){
+      const seo = JSON.parse(JSON.stringify(props.seo))
+      seo.title = val
+      emit('update:seo', seo)
+    }
+  })
+
+  let computedSeoDesc = $computed<string>({
+    get(){
+      return props.seo?.description
+    },
+    set(val){
+      const seo = JSON.parse(JSON.stringify(props.seo))
+      seo.description = val
+
+      emit('update:seo', seo)
+    }
+  })
+
+  let computedSeoKeywords = $computed<string>({
+    get(){
+      return props.seo?.keywords
+    },
+    set(val){
+      const seo = JSON.parse(JSON.stringify(props.seo))
+      seo.keywords = val
+
+      emit('update:seo', seo)
+    }
+  })
+
+  // let computedVisibility = $computed<boolean>({
+  //   get(){
+  //     return props.isVisible
+  //   },
+  //   set(val){
+  //     emit('update:isVisible', val)
+  //   }
+  // })
+
+  let computedCategories = $computed<Array<ICategory>>({
+    get(){
+      return props.categories!
+    },
+    set(val){
+      emit('update:categories', val)
+    }
+  })
+
+  const onImagesContextMenu = (event, asset) => {
+    imagesContextMenu.show = true
+    imagesContextMenu.positionX = event.clientX
+    imagesContextMenu.positionY = event.clientY
+    currentImage = clone(asset)
+  }
+
+  const toggleCategory = (ctg) => {
+    if (ctgMap.get(ctg._id)) {
+      ctgMap.delete(ctg._id)
+    } else {
+      ctgMap.set(ctg._id, ctg)
+    }
+
+    computedCategories = Array.from(
+      toRaw(ctgMap).values()
+    )
+  }
+
+  const onCreate = validate => {
+    validate().then(() => emit('create'))
+  }
+
+  const onAttributesUpdate = () => {
+    emit('update:attributes', attributesArray)
+  }
+
+  const onUpdate = () => emit('update')
+
+  const onSubmit = (validate) => {
+    if (props.isEdit) onUpdate()
+    else onCreate(validate)
+  }
+
+  const onCreateVariantOption = (option) => {
+    emit('create:variant-option', option)
+  }
+
+  const onUpdateVariantOption = (option) => {
+    emit('update:variant-option', option)
+  }
+
+  const onDeleteVariantOption = ({ variant, option }) => {
+    emit('delete:variant-option', { variant, option })
+  }
+
+  const onUploadVariantImage = ({ file, option }) => {
+    if (!file) return
+
+    emit('upload:variant-image', { file, option })
+    productImages = []
+  }
+
+  const onDeleteVariantImage = ({ asset, option, variant }) => {
+    emit('delete:variant-image', { asset, option, variant })
+  }
+
+  const onLoadImage = ([ file ]) => {
+    if (!file) return
+
+    emit('upload:image', file)
+    productImages = []
+  }
+
+  const onDeleteImage = (asset) => {
+    emit('delete:image', asset)
+  }
+
+  const onDeleteAttribute = (attr) => {
+    attributesArray = attributesArray.filter(it => it.key !== attr.key)
+    emit('update:attributes', attributesArray)
+  }
+
+  const setAsMainImage = () => {
+    computedImage = currentImage!.url
+
+    computedAssets = clone(computedAssets).reduce((acc, it) => {
+      it.main = it._id === currentImage!._id
+      acc.push(it)
+      return acc
+    }, [] as any[]) as IProductAsset[]
+  }
+
+  const onClose = () => {
+    emit('update:modelValue', false)
+  }
+
+  const onDiscardChanges = () => {
+    rerenderKey = `${ Date.now() }`
+
+    nextTick(() => {
+      ctgMap.clear()
+      computedCategories?.forEach(toggleCategory)
+      attributesArray = clone(props.attributes)
+    })
+
+    emit('discard')
+  }
+
+  watch(() => props.modelValue, to => {
+    ctgMap.clear()
+
+    if (to && props.isEdit) {
+      props.categories?.forEach(ctg => {
+        if (!ctgMap.get(ctg._id)) toggleCategory(ctg)
+      })
+    }
+
+    attributesArray = clone(props.attributes)
+
+    content = props.description!
+    rerenderKey = content
+
+  }, { immediate: true })
 </script>
 <template>
   <div>
@@ -349,31 +672,5 @@
   </div>
 </template>
 <style lang="scss">
-  .card-title {
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 700;
-  }
-
-  .image {
-    border: 2px solid transparent;
-  }
-
-  .product-image--main {
-    border-color: #05b105 !important;
-  }
-
-  .attribute:hover {
-    background-color: #f5f5f5;
-    cursor: pointer;
-  }
-
-  .images-menu {
-    &__item {
-      cursor: pointer;
-
-      &:hover {
-        background-color: #f5f5f5;
-      }
-    }
-  }
+  @import "ProductActionsModal";
 </style>

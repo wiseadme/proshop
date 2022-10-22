@@ -89,7 +89,10 @@ module.exports = (env = {}) => {
         {
           test: /\.vue$/,
           exclude: /node_modules/,
-          use: ['vue-loader', 'eslint-loader']
+          use: [
+            { loader: 'vue-loader', options: { reactivityTransform: true } },
+            { loader: 'eslint-loader' },
+          ],
         },
         {
           test: /\.(css|scss)$/,

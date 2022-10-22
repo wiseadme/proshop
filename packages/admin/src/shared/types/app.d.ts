@@ -1,3 +1,4 @@
+/// <reference types="vue/macros-global" />
 import { IVariant } from '@modules/variant/types'
 
 export interface IRest {

@@ -1,11 +1,12 @@
 import { rest } from '@shared/api'
 import { IRest } from '@shared/types/app'
+import { AUTH_URL } from '@shared/constants/api'
 
-interface AuthRepository {
+export interface IAuthRepository {
   login(user: any): Promise<any>
 }
 
-class Repository implements AuthRepository {
+class Repository implements IAuthRepository {
   baseUrl: string
   rest: IRest
 
@@ -19,4 +20,4 @@ class Repository implements AuthRepository {
   }
 }
 
-export const useAuthRepository = () => new Repository(rest, '/v1/auth')
+export const useAuthRepository = () => new Repository(rest, AUTH_URL)

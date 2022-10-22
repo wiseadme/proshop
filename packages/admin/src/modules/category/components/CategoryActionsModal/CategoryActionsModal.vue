@@ -1,7 +1,166 @@
-<script lang="ts">
-  import { CategoryActionsModal } from './category-actions-modal'
+<script lang="ts" setup>
+  import { PropType, watch } from 'vue'
 
-  export default CategoryActionsModal
+  const {
+    modelValue,
+    isUpdate,
+    title,
+    url,
+    image,
+    parent,
+    order,
+    seoTitle,
+    seoDescription,
+    seoKeywords,
+    isVisible,
+    categories
+  } = defineProps({
+    modelValue: Boolean,
+    isUpdate: Boolean,
+    title: String,
+    url: String,
+    image: String,
+    parent: [ Object, String ] as PropType<ICategory | string>,
+    order: Number,
+    seoTitle: String,
+    seoDescription: String,
+    seoKeywords: String,
+    isVisible: Boolean,
+    categories: {
+      type: Array as PropType<Array<ICategory>>,
+      default: null
+    }
+  })
+
+  const emit = defineEmits([
+    'update:modelValue',
+    'update:title',
+    'update:url',
+    'update:image',
+    'update:parent',
+    'update:order',
+    'update:seoTitle',
+    'update:seoDescription',
+    'update:seoKeywords',
+    'update:isVisible',
+    'delete:image',
+    'upload:image',
+    'update',
+    'create',
+    'upload'
+  ])
+
+  const files = $ref<Maybe<any>>([])
+
+  const computedTitleProp = $computed<string | undefined>({
+    get(){
+      return title
+    },
+    set(val){
+      return emit('update:title', val)
+    }
+  })
+
+  const computedUrlProp = $computed<string | undefined>({
+    get(){
+      return url
+    },
+    set(val){
+      return emit('update:url', val)
+    }
+  })
+
+  const computedImageProp = $computed<string | undefined>({
+    get(){
+      return image
+    },
+    set(val){
+      return emit('update:image', val)
+    }
+  })
+
+  const computedSeoTitleProp = $computed<string | undefined>({
+    get(){
+      return seoTitle
+    },
+    set(val){
+      return emit('update:seoTitle', val)
+    }
+  })
+
+  const computedSeoDescProp = $computed<string | undefined>({
+    get(){
+      return seoDescription
+    },
+    set(val){
+      return emit('update:seoDescription', val)
+    }
+  })
+
+  const computedSeoKeywordsProp = $computed<string | undefined>({
+    get(){
+      return seoKeywords
+    },
+    set(val){
+      return emit('update:seoKeywords', val)
+    }
+  })
+
+  const computedOrderProp = $computed<number | undefined>({
+    get(){
+      return order
+    },
+    set(val){
+      return emit('update:order', val)
+    }
+  })
+
+  const computedParentProp = $computed<Maybe<ICategory>>({
+    get(){
+      const id = isUpdate ? (parent as ICategory)?._id : parent
+      return parent ? categories.find(it => it._id === id)! : null
+    },
+    set(val: ICategory){
+      return emit('update:parent', isUpdate ? val : val._id)
+    }
+  })
+
+  const computedIsVisibleProp = $computed<boolean>({
+    get(){
+      return isVisible
+    },
+    set(val){
+      emit('update:isVisible', val)
+    }
+  })
+
+  watch(() => image, () => files.value = [])
+
+  const onCreate = (validate) => {
+    validate().then(() => emit('create'))
+  }
+
+  const onUpdate = (validate) => {
+    validate()
+      .then(() => emit('update'))
+      .then(() => {
+        files.value = []
+      })
+  }
+
+  const onSubmit = validate => {
+    if (isUpdate) onUpdate(validate)
+    if (!isUpdate) onCreate(validate)
+  }
+
+  const onDeleteImage = () => {
+    emit('delete:image', computedImageProp)
+  }
+
+  const onLoadImage = ([ file ]) => {
+    if (!file) return
+    emit('upload:image', file)
+  }
 </script>
 <template>
   <v-modal
@@ -19,7 +178,7 @@
         <v-card-title
           class="card-title white--text text--base"
         >
-          {{ isUpdate ? 'Обновление категории': 'Создание категории' }}
+          {{ isUpdate ? 'Обновление категории' : 'Создание категории' }}
         </v-card-title>
         <v-card-content
           class="grey lighten-4"
@@ -91,7 +250,7 @@
             </v-col>
           </v-row>
           <v-row
-            v-if="computedImageProp" 
+            v-if="computedImageProp"
             class="white elevation-2 my-2 pa-2"
           >
             <v-col>

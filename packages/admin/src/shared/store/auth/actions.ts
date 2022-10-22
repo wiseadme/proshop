@@ -1,15 +1,22 @@
-import { useAuthRepository } from '@shared/repository/auth.repository'
+import { IAuthRepository, useAuthRepository } from '@shared/repository/auth.repository'
 
-const repository = useAuthRepository()
+export class Actions {
+  private repository: IAuthRepository
 
-export const actions = {
+  constructor({ repository }){
+    this.repository = repository
+  }
+
   async loginUser(user){
     try {
-      const { data } = await repository.login(user)
-      console.log(data)
+      const { data } = await this.repository.login(user)
       return data
     } catch (error) {
       return Promise.reject(error)
     }
   }
 }
+
+export const actions = new Actions({
+  repository: useAuthRepository()
+})

@@ -1,58 +1,40 @@
-<script lang="ts">
-  import { defineComponent, ref, watch } from 'vue'
+<script lang="ts" setup>
+  import { watch } from 'vue'
   import draggable from 'vuedraggable'
   import { useVariantService } from '../service/variant.service'
   import { clone } from '@shared/helpers'
   import { Variant } from '../model/variant.model'
   import { IVariant } from '@modules/variant/types'
 
-  export default defineComponent({
-    name: 'variant-page',
-    components: {
-      draggable
-    },
-    setup(){
-      const model = ref<IVariant>(Variant.create())
-      const variants = ref<Maybe<Array<IVariant>>>(null)
-      const service = useVariantService()
+  let model = $ref<IVariant>(Variant.create())
+  let variants = $ref<Maybe<Array<IVariant>>>(null)
+  let service = useVariantService()
 
-      const onCreate = (validate) => {
-        validate()
-          .then(() => service.createVariant(model.value))
-          .then(clearForm)
-      }
+  const onCreate = (validate) => {
+    validate()
+      .then(() => service.createVariant(model))
+      .then(clearForm)
+  }
 
-      const onDelete = (item) => {
-        return service.deleteVariant(item._id)
-      }
+  const onDelete = (item) => {
+    return service.deleteVariant(item._id)
+  }
 
-      const clearForm = () => {
-        model.value = Variant.create()
-      }
+  const clearForm = () => {
+    model = Variant.create()
+  }
 
-      const onChange = () => {
-        console.log('change')
-      }
+  const onChange = () => {
+    console.log('change')
+  }
 
-      watch(
-        () => service.variants,
-        to => to && (variants.value = clone(to)),
-        { immediate: true, deep: true }
-      )
+  watch(
+    () => service.variants,
+    to => to && (variants = clone(to)),
+    { immediate: true, deep: true }
+  )
 
-      service.getVariants()
-
-      return {
-        model,
-        variants,
-        service,
-        onCreate,
-        onDelete,
-        onChange,
-        clearForm
-      }
-    }
-  })
+  service.getVariants()
 </script>
 <template>
   <v-layout column>

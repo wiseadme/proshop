@@ -1,55 +1,38 @@
-<script lang="ts">
-  import { defineComponent, ref, watch } from 'vue'
+<script lang="ts" setup>
+  import { watch } from 'vue'
   import draggable from 'vuedraggable'
-  import { useUnitService } from '../service/unit.service'
+  import { useUnitService } from '@modules/unit/service/unit.service'
   import { clone } from '@shared/helpers'
-  import { Unit } from '../model/unit.model'
+  import { Unit } from '@modules/unit/model/unit.model'
 
-  export default defineComponent({
-    name: 'unit-page',
-    components: {
-      draggable
-    },
-    setup(){
-      const model = ref<IUnit>(Unit.create())
-      const units = ref<Array<IUnit>>(null)
-      const service = useUnitService()
+  let model = $ref<IUnit>(Unit.create())
+  let units = $ref<Maybe<Array<IUnit>>>(null)
 
-      const onCreate = (validate) => {
-        validate().then(() => service.createUnit(model.value))
-      }
+  const service = useUnitService()
 
-      const onDelete = (item) => {
-        return service.deleteUnit(item._id)
-      }
+  const onCreate = (validate) => {
+    validate().then(() => service.createUnit(model))
+  }
 
-      const clearForm = () => {
-        model.value = Unit.create()
-      }
+  const onDelete = (item) => {
+    return service.deleteUnit(item._id)
+  }
 
-      const onChange = () => {
-        console.log('change')
-      }
+  const clearForm = () => {
+    model = Unit.create()
+  }
 
-      watch(
-        () => service.units,
-        to => units.value = clone(to),
-        { immediate: true, deep: true }
-      )
+  const onChange = () => {
+    console.log('change')
+  }
 
-      service.getUnits()
+  watch(
+    () => service.units,
+    to => units = clone(to),
+    { immediate: true, deep: true }
+  )
 
-      return {
-        model,
-        units,
-        service,
-        onCreate,
-        onDelete,
-        onChange,
-        clearForm
-      }
-    }
-  })
+  service.getUnits()
 </script>
 <template>
   <v-layout column>

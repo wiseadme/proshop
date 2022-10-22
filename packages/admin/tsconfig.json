@@ -50,6 +50,7 @@
       "@vue/reactivity/dist/reactivity",
       "@vue/runtime-core/dist/runtime-core",
       "@vue/runtime-dom/dist/runtime-dom",
+      "vue/ref-macros",
       "@types/node",
       "cypress"
     ]

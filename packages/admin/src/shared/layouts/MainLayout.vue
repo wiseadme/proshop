@@ -1,18 +1,6 @@
-<script lang="ts">
-  import { defineComponent } from 'vue'
+<script lang="ts" setup>
   import { AppHeader } from '@app/components/AppHeader'
   import { AppNavigation } from '@app/components/AppNavigation'
-
-  export default defineComponent({
-    name: 'main-layout',
-    components: {
-      AppHeader,
-      AppNavigation,
-    },
-    setup(){
-      return {}
-    }
-  })
 </script>
 <template>
   <app-header/>

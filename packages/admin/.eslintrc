@@ -13,6 +13,13 @@
     "browser": true,
     "es6": true
   },
+  "globals": {
+    "$ref": "readonly",
+    "$computed": "readonly",
+    "$shallowRef": "readonly",
+    "$customRef": "readonly",
+    "$toRef": "readonly"
+  },
   "plugins": [
     "@typescript-eslint/eslint-plugin"
   ],
@@ -31,6 +38,7 @@
       "kebab-case"
     ],
     "vue/no-setup-props-destructure": "off",
+    "vue/no-mutating-props": "off",
     "vue/max-attributes-per-line": [
       "error",
       {
