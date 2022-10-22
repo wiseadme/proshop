@@ -3,5 +3,5 @@ type RegistrationAccessResponse = {
 }
 
 export interface IAuthService {
-  getRegistrationAccessToken(): Promise<RegistrationAccessResponse>
+  login(params): Promise<any>
 }

@@ -60,6 +60,11 @@
   ])
 
   const ctgMap = $ref<Map<string, ICategory>>(new Map())
+  const imagesContextMenu = $ref({
+    show: false,
+    positionX: 0,
+    positionY: 0,
+  })
 
   let productImages = $ref<Array<File>>([])
   let attributesArray = $ref<Array<IAttribute>>([])
@@ -67,102 +72,58 @@
   let content = $ref<string>('')
   let rerenderKey = $ref<string>('')
 
-  const imagesContextMenu = $ref({
-    show: false,
-    positionX: 0,
-    positionY: 0,
-  })
-
   const computedModalHeader = $computed<string>(() => {
     return `${ (props.isEdit ? 'Редактирование' : 'Создание') } продукта`
   })
 
   const computedName = $computed<string>({
-    get(){
-      return props.name!
-    },
-    set(val){
-      emit('update:name', val)
-    }
+    get: () => props.name!,
+    set: (val) => emit('update:name', val)
   })
 
   const computedPrice = $computed<number>({
-    get(){
-      return props.price!
-    },
-    set(val){
-      emit('update:price', +val)
-    }
+    get: () => props.price!,
+    set: (val) => emit('update:price', +val)
   })
 
   let computedDescription = $computed<string>({
-    get(){
-      return content!
-    },
-    set(val){
-      emit('update:description', val)
-    }
+    get: () => content!,
+    set: (val) => emit('update:description', val)
   })
 
   let computedUnit = $computed<IUnit>({
-    get(){
-      return props.unit!
-    },
-    set(val){
-      emit('update:unit', val)
-    }
+    get: () => props.unit!,
+    set: (val) => emit('update:unit', val)
   })
 
   let computedQuantity = $computed<number>({
-    get(){
-      return props.quantity!
-    },
-    set(val){
-      emit('update:quantity', +val)
-    }
+    get: () => props.quantity!,
+    set: (val) => emit('update:quantity', +val)
   })
 
   let computedUrl = $computed<string>({
-    get(){
-      return props.url!
-    },
-    set(val){
-      emit('update:url', val)
-    }
+    get: () => props.url!,
+    set: (val) => emit('update:url', val)
   })
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   let computedImage = $computed<string>({
-    get(){
-      return props.image!
-    },
-    set(val){
-      emit('update:image', val)
-    }
+    get: () => props.image!,
+    set: (val) => emit('update:image', val)
   })
 
   let computedAssets = $computed<Array<IProductAsset>>({
-    get(){
-      return props.assets!
-    },
-    set(val){
-      emit('update:assets', val)
-    }
+    get: () => props.assets!,
+    set: (val) => emit('update:assets', val)
   })
 
   let computedVariants = $computed<Array<IVariant>>({
-    get(){
-      return props.variants!
-    },
-    set(val){
-      emit('update:variants', toRaw(val))
-    }
+    get: () => props.variants!,
+    set: (val) => emit('update:variants', toRaw(val))
   })
 
   let computedSeoTitle = $computed<string>({
-    get(){
-      return props.seo?.title
-    },
-    set(val){
+    get: () => props.seo?.title,
+    set: (val) => {
       const seo = JSON.parse(JSON.stringify(props.seo))
       seo.title = val
       emit('update:seo', seo)
@@ -170,10 +131,8 @@
   })
 
   let computedSeoDesc = $computed<string>({
-    get(){
-      return props.seo?.description
-    },
-    set(val){
+    get: () => props.seo?.description,
+    set: (val) => {
       const seo = JSON.parse(JSON.stringify(props.seo))
       seo.description = val
 
@@ -182,10 +141,8 @@
   })
 
   let computedSeoKeywords = $computed<string>({
-    get(){
-      return props.seo?.keywords
-    },
-    set(val){
+    get: () => props.seo?.keywords,
+    set: (val) => {
       const seo = JSON.parse(JSON.stringify(props.seo))
       seo.keywords = val
 
@@ -194,21 +151,13 @@
   })
 
   // let computedVisibility = $computed<boolean>({
-  //   get(){
-  //     return props.isVisible
-  //   },
-  //   set(val){
-  //     emit('update:isVisible', val)
-  //   }
+  //   get: () => props.isVisible,
+  //   set: (val) => emit('update:isVisible', val)
   // })
 
   let computedCategories = $computed<Array<ICategory>>({
-    get(){
-      return props.categories!
-    },
-    set(val){
-      emit('update:categories', val)
-    }
+    get: () => props.categories!,
+    set: (val) => emit('update:categories', val)
   })
 
   const onImagesContextMenu = (event, asset) => {

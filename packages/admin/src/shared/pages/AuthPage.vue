@@ -1,5 +1,17 @@
 <script lang="ts" setup>
+  import { useAuthService } from '@shared/services/auth.service'
 
+  const service = useAuthService()
+
+  let username = $ref('')
+  let password = $ref('')
+
+  const loginUser = () => {
+    service.login({
+      username,
+      password
+    })
+  }
 </script>
 <template>
   <v-layout
@@ -16,17 +28,22 @@
       <v-card-content>
         <v-form>
           <v-text-field
+            v-model="username"
             label="логин"
             placeholder="введите почту"
           />
           <v-text-field
+            v-model="password"
             label="пароль"
             placeholder="введите пароль"
           />
         </v-form>
       </v-card-content>
       <v-card-actions>
-        <v-button class="elevation-1">
+        <v-button
+          class="elevation-1"
+          @click="loginUser"
+        >
           войти
         </v-button>
       </v-card-actions>

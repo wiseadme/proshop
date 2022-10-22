@@ -22,18 +22,22 @@ export class AuthController extends BaseController implements IController {
     this.router.post('/login', expressAsyncHandler(this.login.bind(this)))
   }
 
-  async login({ body, method }: Request, res: Response){
+  async login({ body, method, url }: Request, res: Response){
     try {
-      const { access_token } = await this.service.getRegistrationAccessToken()
-      console.log(access_token)
+      const data = await this.service.login(body)
+
       this.send({
         response: res,
-        data: access_token,
+        data,
         url: this.path,
         method
       })
     } catch (error) {
-      console.log(error, 'error')
+      return this.error({
+        method,
+        error,
+        url
+      })
     }
   }
 

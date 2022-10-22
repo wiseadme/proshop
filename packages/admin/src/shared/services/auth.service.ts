@@ -8,6 +8,7 @@ export class Service {
   }
 
   async login(user){
+    console.log(this._store)
     this._store.loginUser(user)
   }
 }

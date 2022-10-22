@@ -14,10 +14,9 @@ export class Config implements IConfig {
   secret = process.env.SECRET_KEY!
   uploadsDir = `/home/${process.env.USER}/www/uploads`!
   keycloakServer = process.env.KEYCLOAK_SERVER_URI
-  keycloakRegTokenUri = process.env.KEYCLOAK_REG_TOKEN_URI
   keycloakRealm = process.env.KEYCLOAK_REALM
-  keycloakAdminClientId = process.env.KEYCLOAK_ADMIN_CLI_CLIENT_ID
-  keycloakAdminSecret = process.env.KEYCLOAK_ADMIN_CLI_SECRET
+  keycloakClientId = process.env.KEYCLOAK_CLIENT_ID
+  keycloakClientSecret = process.env.KEYCLOAK_CLIENT_SECRET
 }
 
 export default new Config()

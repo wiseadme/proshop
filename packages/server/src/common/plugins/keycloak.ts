@@ -10,11 +10,11 @@ export const memoryStore = new session.MemoryStore()
 
 const keycloakConfig = {
   bearerOnly: true,
-  clientId: config.keycloakAdminClientId,
+  clientId: config.keycloakClientId,
   serverUrl: config.keycloakServer,
   realm: config.keycloakRealm,
   credentials: {
-    secret: config.keycloakAdminSecret
+    secret: config.keycloakClientSecret
   }
 }
 

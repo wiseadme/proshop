@@ -8,7 +8,7 @@ import { memoryStore } from '@common/plugins/keycloak'
 export class SessionMiddleware implements IMiddleware {
   public bind: true
   public execute: ReturnType<typeof session> = session({
-    secret: config.keycloakAdminSecret,
+    secret: config.keycloakClientSecret,
     resave: false,
     saveUninitialized: true,
     store: memoryStore,
