@@ -32,12 +32,12 @@ export class ProductController extends BaseController implements IController {
   public initRoutes(){
     this.router.post(
       '/',
-      setMiddlewares({ dto: ProductDTO, protect: true }),
+      setMiddlewares({ dto: ProductDTO, protect: true, role: 'root' }),
       expressAsyncHandler(this.createProduct.bind(this))
     )
     this.router.patch(
       '/',
-      setMiddlewares({ dto: ProductDTO, protect: true }),
+      setMiddlewares({ dto: ProductDTO, protect: true, role: 'root' }),
       expressAsyncHandler(this.updateProduct.bind(this))
     )
     this.router.get(
@@ -47,7 +47,7 @@ export class ProductController extends BaseController implements IController {
     )
     this.router.delete(
       '/',
-      setMiddlewares({ protect: true }),
+      setMiddlewares({ protect: true, role: 'root' }),
       expressAsyncHandler(this.deleteProduct.bind(this))
     )
   }

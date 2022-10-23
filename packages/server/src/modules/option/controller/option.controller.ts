@@ -28,7 +28,7 @@ export class OptionController extends BaseController implements IController {
   }
 
   initRoutes(){
-    this.router.post('/', new ValidateMiddleware(OptionDTO).execute, expressAsyncHandler(this.createOption.bind(this)))
+    this.router.post('/', new ValidateMiddleware(OptionDTO).execute(), expressAsyncHandler(this.createOption.bind(this)))
     this.router.patch('/', expressAsyncHandler(this.updateOption.bind(this)))
     this.router.get('/', expressAsyncHandler(this.getOptions.bind(this)))
     this.router.delete('/', expressAsyncHandler(this.deleteOption.bind(this)))

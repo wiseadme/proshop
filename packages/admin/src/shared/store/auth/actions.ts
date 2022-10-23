@@ -6,7 +6,12 @@ export const actions = {
   async loginUser(user){
     try {
       const { data } = await repository.login(user)
-      return data
+
+      for (const key of Object.keys(data.data)) {
+        this[key] = data.data[key]
+      }
+
+      return data.data
     } catch (error) {
       return Promise.reject(error)
     }

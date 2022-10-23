@@ -28,7 +28,7 @@ export class AttributeController extends BaseController implements IController {
   }
 
   initRoutes(){
-    this.router.post('/', new ValidateMiddleware(AttributeDTO).execute, expressAsyncHandler(this.createAttribute.bind(this)))
+    this.router.post('/', new ValidateMiddleware(AttributeDTO).execute(), expressAsyncHandler(this.createAttribute.bind(this)))
     this.router.get('/', expressAsyncHandler(this.getAttribute.bind(this)))
     this.router.patch('/', expressAsyncHandler(this.updateAttributes.bind(this)))
     this.router.delete('/', expressAsyncHandler(this.deleteAttribute.bind(this)))

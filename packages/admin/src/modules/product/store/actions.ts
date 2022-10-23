@@ -33,7 +33,10 @@ export const actions: IProductActions = {
       const { data } = await productRepository.update(updates)
 
       this.products = Array.from(this.products, (pr: IProduct) => {
-        if (pr._id === updates._id) return data.data
+        if (pr._id === updates._id) {
+          return data?.data
+        }
+
         return pr
       })
 
