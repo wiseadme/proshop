@@ -1,4 +1,4 @@
-interface State {
+interface IUser {
   access_token: string
   refresh_token: string
   exp: number
@@ -10,14 +10,10 @@ interface State {
   mobile: string
 }
 
+interface State {
+  user: Maybe<IUser>
+}
+
 export const state = (): State => ({
-  access_token: '',
-  refresh_token: '',
-  exp: 0,
-  expires_in: 0,
-  given_name: '',
-  family_name: '',
-  email: '',
-  role: [],
-  mobile: ''
+  user: null
 })

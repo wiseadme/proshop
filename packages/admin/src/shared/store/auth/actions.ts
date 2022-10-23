@@ -7,13 +7,15 @@ export const actions = {
     try {
       const { data } = await repository.login(user)
 
-      for (const key of Object.keys(data.data)) {
-        this[key] = data.data[key]
-      }
+      this.user = data.data
 
       return data.data
     } catch (error) {
       return Promise.reject(error)
     }
-  }
+  },
+
+  setUser(user) {
+    this.user = user
+  },
 }

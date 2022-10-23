@@ -1,14 +1,20 @@
 class Storage {
   set(key, val){
     return new Promise((resolve) => {
-      localStorage.setItem(key, val)
+      localStorage.setItem(key, JSON.stringify(val))
       resolve(true)
     })
   }
 
   get(key){
-    return new Promise(resolve => {
-      resolve(localStorage.getItem(key))
+    const item = localStorage.getItem(key)
+
+    return new Promise((resolve, reject) => {
+      if (item) {
+        resolve(JSON.parse(item))
+      } else {
+        reject(false)
+      }
     })
   }
 

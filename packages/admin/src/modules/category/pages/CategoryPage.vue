@@ -1,9 +1,9 @@
 <script lang="ts" setup>
   import { getDifferences, clone } from '@shared/helpers'
-  import { useCategoryService } from '../service/category.service'
-  import { Category } from '../model/category.model'
-  import { CategoryActionsModal } from '../components/CategoryActionsModal'
-  import { CategoryTable } from '../components/CategoryTable'
+  import { useCategoryService } from '@modules/category/service/category.service'
+  import { Category } from '@modules/category/model/category.model'
+  import { CategoryActionsModal } from '@modules/category/components/CategoryActionsModal'
+  import { CategoryTable } from '@modules/category/components/CategoryTable'
 
   let categoryModel = $ref<ICategory>(Category.create())
   let categoryUpdates = $ref<Maybe<ICategory>>(null)
@@ -46,7 +46,6 @@
     isEditMode = false
 
     service.setAsCurrent(null)
-
     categoryModel = Category.create({})
   }
 
@@ -57,12 +56,14 @@
   }
 
   const onUpdate = () => {
-    const updates: Maybe<ICategoryUpdates> = getDifferences(
+    const updates = getDifferences(
       categoryUpdates,
       service.category
-    ) as ICategoryUpdates
+    ) as Maybe<ICategoryUpdates>
 
-    if (!updates) return
+    if (!updates) {
+      return
+    }
 
     updates!._id = service.category!._id
 

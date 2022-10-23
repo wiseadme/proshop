@@ -1,7 +1,6 @@
 import axios from 'axios'
 import { Client } from '@shared/plugins/client'
-import { useAuthStore } from '@shared/store/auth'
-import { useRouter } from 'vue-router'
+import { useAuthService } from '@shared/services/auth.service'
 
 const baseURL = '/'
 
@@ -27,10 +26,10 @@ const FilesClient = axios.create({
 })
 
 RestClient.interceptors.request.use(async (config) => {
-  const authStore = useAuthStore()
+  const token = useAuthService().accessToken
 
-  if (authStore.access_token) {
-    config.headers!['Authorization'] = `Bearer ${ authStore.access_token }`
+  if (token) {
+    config.headers!['Authorization'] = `Bearer ${ token }`
   }
 
   return config
@@ -39,10 +38,8 @@ RestClient.interceptors.request.use(async (config) => {
 RestClient.interceptors.response.use(
   (config) => config,
   (config) => {
-    const router = useRouter()
-    console.log(router)
     if (config.response.status === 401 || config.response.status === 403) {
-      throw config.response
+      useAuthService().logout()
     } else {
       return config
     }

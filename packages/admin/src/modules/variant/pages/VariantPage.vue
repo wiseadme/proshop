@@ -1,14 +1,15 @@
 <script lang="ts" setup>
   import { watch } from 'vue'
   import draggable from 'vuedraggable'
-  import { useVariantService } from '../service/variant.service'
+  import { useVariantService } from '@modules/variant/service/variant.service'
   import { clone } from '@shared/helpers'
-  import { Variant } from '../model/variant.model'
+  import { Variant } from '@modules/variant/model/variant.model'
   import { IVariant } from '@modules/variant/types'
+
+  const service = useVariantService()
 
   let model = $ref<IVariant>(Variant.create())
   let variants = $ref<Maybe<Array<IVariant>>>(null)
-  let service = useVariantService()
 
   const onCreate = (validate) => {
     validate()

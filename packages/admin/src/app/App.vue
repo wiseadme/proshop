@@ -1,17 +1,6 @@
-<script lang="ts">
-  import { defineComponent } from 'vue'
+<script lang="ts" setup>
   import MainLayout from '@shared/layouts/MainLayout.vue'
   import AuthLayout from '@shared/layouts/AuthLayout.vue'
-
-  export default defineComponent({
-    components: {
-      MainLayout,
-      AuthLayout
-    },
-    setup(){
-      return {}
-    }
-  })
 </script>
 <template>
   <v-app class="grey lighten-4">

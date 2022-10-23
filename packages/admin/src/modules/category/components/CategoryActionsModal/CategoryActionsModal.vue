@@ -53,85 +53,51 @@
   const files = $ref<Maybe<any>>([])
 
   const computedTitleProp = $computed<string | undefined>({
-    get(){
-      return title
-    },
-    set(val){
-      return emit('update:title', val)
-    }
+    get: () => title,
+    set: (val) => emit('update:title', val)
   })
 
   const computedUrlProp = $computed<string | undefined>({
-    get(){
-      return url
-    },
-    set(val){
-      return emit('update:url', val)
-    }
+    get: () => url,
+    set: (val) => emit('update:url', val)
   })
 
   const computedImageProp = $computed<string | undefined>({
-    get(){
-      return image
-    },
-    set(val){
-      return emit('update:image', val)
-    }
+    get: () => image,
+    set: (val) => emit('update:image', val)
   })
 
   const computedSeoTitleProp = $computed<string | undefined>({
-    get(){
-      return seoTitle
-    },
-    set(val){
-      return emit('update:seoTitle', val)
-    }
+    get: () => seoTitle,
+    set: (val) => emit('update:seoTitle', val)
   })
 
   const computedSeoDescProp = $computed<string | undefined>({
-    get(){
-      return seoDescription
-    },
-    set(val){
-      return emit('update:seoDescription', val)
-    }
+    get: () => seoDescription,
+    set: (val) => emit('update:seoDescription', val)
   })
 
   const computedSeoKeywordsProp = $computed<string | undefined>({
-    get(){
-      return seoKeywords
-    },
-    set(val){
-      return emit('update:seoKeywords', val)
-    }
+    get: () => seoKeywords,
+    set: (val) => emit('update:seoKeywords', val)
   })
 
   const computedOrderProp = $computed<number | undefined>({
-    get(){
-      return order
-    },
-    set(val){
-      return emit('update:order', val)
-    }
+    get: () => order,
+    set: (val) => emit('update:order', val)
   })
 
   const computedParentProp = $computed<Maybe<ICategory>>({
-    get(){
+    get: () => {
       const id = isUpdate ? (parent as ICategory)?._id : parent
       return parent ? categories.find(it => it._id === id)! : null
     },
-    set(val: ICategory){
-      return emit('update:parent', isUpdate ? val : val._id)
-    }
+    set: (val: ICategory) => emit('update:parent', isUpdate ? val : val._id)
   })
 
   const computedIsVisibleProp = $computed<boolean>({
-    get(){
-      return isVisible
-    },
-    set(val){
-      emit('update:isVisible', val)
-    }
+    get: () => isVisible,
+    set: (val) => emit('update:isVisible', val)
   })
 
   watch(() => image, () => files.value = [])

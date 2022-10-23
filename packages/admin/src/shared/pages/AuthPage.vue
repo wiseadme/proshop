@@ -1,24 +1,13 @@
 <script lang="ts" setup>
-  import { useRouter } from 'vue-router'
   import { useAuthService } from '@shared/services/auth.service'
-  import { storage } from '@shared/utils/storage'
 
-  const router = useRouter()
   const service = useAuthService()
 
   let username = $ref('')
   let password = $ref('')
 
-  const loginUser = () => {
-    service.login({
-      username,
-      password
-    })
-      .then((user) => {
-        storage.set('access_token', user.access_token)
-        router.push('/')
-      })
-  }
+  const loginUser = () => service.login({ username, password })
+
 </script>
 <template>
   <v-layout

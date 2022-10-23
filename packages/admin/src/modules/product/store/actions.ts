@@ -6,9 +6,9 @@ const productRepository = useProductRepository()
 export const actions: IProductActions = {
   async create(product: IProduct){
     try {
-      const { data } = await productRepository.create(product)
-      this.products.push(data.data)
-      return data.data
+      const response = await productRepository.create(product)
+      this.products.push(response.data.data)
+      return response.data.data
     } catch (err) {
       return Promise.reject(err)
     }
@@ -30,17 +30,17 @@ export const actions: IProductActions = {
 
   async update(updates){
     try {
-      const { data } = await productRepository.update(updates)
+      const response = await productRepository.update(updates)
 
       this.products = Array.from(this.products, (pr: IProduct) => {
         if (pr._id === updates._id) {
-          return data?.data
+          return response.data?.data
         }
 
         return pr
       })
 
-      return data.data
+      return response.data.data
     } catch (err) {
       return Promise.reject(err)
     }
