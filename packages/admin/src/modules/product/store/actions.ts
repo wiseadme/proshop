@@ -8,7 +8,7 @@ export const actions: IProductActions = {
     try {
       const response = await productRepository.create(product)
       this.products.push(response.data.data)
-      return response.data.data
+      return response?.data.data
     } catch (err) {
       return Promise.reject(err)
     }
@@ -34,13 +34,13 @@ export const actions: IProductActions = {
 
       this.products = Array.from(this.products, (pr: IProduct) => {
         if (pr._id === updates._id) {
-          return response.data?.data
+          return response?.data.data
         }
 
         return pr
       })
 
-      return response.data.data
+      return response?.data.data
     } catch (err) {
       return Promise.reject(err)
     }
@@ -48,9 +48,9 @@ export const actions: IProductActions = {
 
   async delete(product: IProduct){
     try {
-      const { data } = await productRepository.delete(product._id)
+      const response = await productRepository.delete(product._id)
       this.products = this.products.filter(it => it._id !== product._id)
-      return data
+      return response?.data
     } catch (err) {
       return Promise.reject(err)
     }

@@ -27,6 +27,6 @@ vueland.setTheme({
   base: '#ffffff',
   primary: colors.green.base,
   content: colors.grey.darken3,
-  error: colors.red.accent3,
+  error: colors.red.lighten2,
   warning: colors.orange.base
 })

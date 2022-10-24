@@ -1,4 +1,4 @@
-<script lang="ts" setup>
+<script setup lang="ts">
 import { PropType } from 'vue'
 import { ICategory } from '@ecommerce-platform/server/src/modules/category/types/model'
 

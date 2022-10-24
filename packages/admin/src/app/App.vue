@@ -1,4 +1,4 @@
-<script lang="ts" setup>
+<script setup lang="ts">
   import MainLayout from '@shared/layouts/MainLayout.vue'
   import AuthLayout from '@shared/layouts/AuthLayout.vue'
 </script>

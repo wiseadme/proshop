@@ -1,6 +1,7 @@
 import { defineStore } from 'nervue'
 import { actions } from '@modules/product/store/actions'
 import { state } from '@modules/product/store/state'
+import { guards } from '@modules/product/store/guards'
 import { IProductState, IProductActions } from '@modules/order/types'
 
 const id = 'PRODUCT'
@@ -8,5 +9,6 @@ const id = 'PRODUCT'
 export const useProductStore = defineStore<string, IProductState, {}, {}, IProductActions>({
   id,
   state,
+  guards,
   actions,
 })

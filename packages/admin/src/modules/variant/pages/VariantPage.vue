@@ -1,4 +1,4 @@
-<script lang="ts" setup>
+<script setup lang="ts">
   import { watch } from 'vue'
   import draggable from 'vuedraggable'
   import { useVariantService } from '@modules/variant/service/variant.service'

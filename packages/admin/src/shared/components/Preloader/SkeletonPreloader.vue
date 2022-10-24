@@ -1,15 +1,4 @@
-<script lang="ts">
-  import { defineComponent } from 'vue'
-
-  export default defineComponent({
-    name: 'circular-preloader',
-    setup(){
-
-      return {
-
-      }
-    }
-  })
+<script setup lang="ts">
 </script>
 <template>
   <div
@@ -20,8 +9,9 @@
       v-for="it in 20"
       :key="it"
       height="30"
-      dynamic
-      class="mt-2 elevation-1"
+      color="grey lighten-2"
+      origin="center"
+      class="mt-2"
     />
   </div>
 </template>
