@@ -1,9 +1,7 @@
 export const guards = {
   products: [
-    products => {
-      return {
-        next: !products.some(it => !it)
-      }
-    }
+    items => ({
+      next: !items.some(it => !it)
+    })
   ]
 }
