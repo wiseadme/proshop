@@ -34,51 +34,51 @@ class Service {
   }
 
   get attributes(){
-    return this._store._exposed.ATTRIBUTE.attributes
+    return this._store.$exposed?.ATTRIBUTE.attributes
   }
 
   get categories(){
-    return this._store._exposed.CATEGORY.categories
+    return this._store.$exposed?.CATEGORY.categories
   }
 
   get units(){
-    return this._store._exposed.UNIT.units
+    return this._store.$exposed?.UNIT.units
   }
 
   get variants(){
-    return this._store._exposed.VARIANT.variants
+    return this._store.$exposed?.VARIANT.variants
   }
 
   async getAttributes(){
-    if (this._store._exposed.ATTRIBUTE.attributes) {
-      return this._store._exposed.ATTRIBUTE.attributes
+    if (this._store.$exposed?.ATTRIBUTE.attributes) {
+      return this._store.$exposed?.ATTRIBUTE.attributes
     }
 
-    await this._store._exposed.ATTRIBUTE.read()
+    await this._store.$exposed?.ATTRIBUTE.read()
   }
 
   async getUnits(){
-    if (this._store._exposed.UNIT.units) {
-      return this._store._exposed.UNIT.units
+    if (this._store.$exposed?.UNIT.units) {
+      return this._store.$exposed?.UNIT.units
     }
 
-    await this._store._exposed.UNIT.read()
+    await this._store.$exposed?.UNIT.read()
   }
 
   async getCategories(){
-    if (this._store._exposed.CATEGORY.categories) {
-      return this._store._exposed.CATEGORY.categories
+    if (this._store.$exposed?.CATEGORY.categories) {
+      return this._store.$exposed?.CATEGORY.categories
     }
 
-    await this._store._exposed.CATEGORY.read()
+    await this._store.$exposed?.CATEGORY.read()
   }
 
   async getVariants(){
-    if (this._store._exposed.VARIANT.variants) {
-      return this._store._exposed.VARIANT.variants
+    if (this._store.$exposed?.VARIANT.variants) {
+      return this._store.$exposed?.VARIANT.variants
     }
 
-    await this._store._exposed.VARIANT.read()
+    await this._store.$exposed?.VARIANT.read()
   }
 
   getProducts(id = ''){

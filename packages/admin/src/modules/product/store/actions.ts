@@ -19,7 +19,9 @@ export const actions: IProductActions = {
       const { data } = await productRepository.read(id)
 
       if (!id) {
-        this.products = data.data
+        this.$patch(state => {
+          state.products = data.data
+        })
       }
 
       return data.data

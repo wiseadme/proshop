@@ -1,12 +1,11 @@
 import { defineStore } from 'nervue'
-import { actions } from '@modules/product/store/actions'
 import { state } from '@modules/product/store/state'
+import { actions } from '@modules/product/store/actions'
 import { guards } from '@modules/product/store/guards'
-import { IProductState, IProductActions } from '@modules/order/types'
 
-const id = 'PRODUCT'
+export const id = 'PRODUCT'
 
-export const useProductStore = defineStore<string, IProductState, {}, {}, IProductActions>({
+export const useProductStore = defineStore({
   id,
   state,
   guards,
