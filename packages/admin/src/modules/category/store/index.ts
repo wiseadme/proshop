@@ -5,7 +5,7 @@ import { expose } from '@modules/category/store/expose'
 
 const id = 'CATEGORY'
 
-export const useCategoryStore = defineStore<string, ICategoryState, {}, {}, ICategoryActions>({
+export const useCategoryStore = defineStore({
     id,
     state,
     actions,

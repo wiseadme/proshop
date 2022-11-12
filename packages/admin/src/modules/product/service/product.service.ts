@@ -1,28 +1,48 @@
-import { Store } from 'nervue'
 import { ref, Ref, unref } from 'vue'
 // Stores
 import { useProductStore } from '@modules/product/store'
+import { useAttributeStore } from '@modules/attribute/store'
+import { useCategoryStore } from '@modules/category/store'
+import { useVariantStore } from '@modules/variant/store'
+import { useUnitStore } from '@modules/unit/store'
 // Services
 import { useFilesService } from '@shared/services/files.service'
 import { useOptionsService } from '@shared/services/options.service'
 
 // Types
-import { IProductState, IProductActions, IProduct, IProductAsset } from '../types'
+import { IProduct, IProductAsset, IProductVariant } from '../types'
 import { clone } from '@shared/helpers'
 import { IVariantOption } from '@modules/variant/types'
 
 class Service {
-  private _store: Store<string, IProductState, {}, {}, IProductActions>
+  private _store: ReturnType<typeof useProductStore>
+  private _attributesStore: ReturnType<typeof useAttributeStore>
+  private _categoriesStore: ReturnType<typeof useCategoryStore>
+  private _unitsStore: ReturnType<typeof useUnitStore>
+  private _variantsStore: ReturnType<typeof useVariantStore>
   private _product: Ref<Maybe<IProduct>>
   private _filesService: ReturnType<typeof useFilesService>
   private _optionsService: ReturnType<typeof useOptionsService>
   static instance: Service
 
-  constructor({ store, filesService, optionsService }){
+  constructor({
+    store,
+    attributesStore,
+    categoriesStore,
+    unitsStore,
+    variantsStore,
+    filesService,
+    optionsService
+  }){
     this._store = store
+    this._attributesStore = attributesStore
+    this._unitsStore = unitsStore
+    this._categoriesStore = categoriesStore
+    this._variantsStore = variantsStore
     this._product = ref(null)
     this._filesService = filesService
     this._optionsService = optionsService
+
   }
 
   get products(){
@@ -34,51 +54,51 @@ class Service {
   }
 
   get attributes(){
-    return this._store.$exposed?.ATTRIBUTE.attributes
+    return this._attributesStore.attributes
   }
 
   get categories(){
-    return this._store.$exposed?.CATEGORY.categories
+    return this._categoriesStore.categories
   }
 
   get units(){
-    return this._store.$exposed?.UNIT.units
+    return this._unitsStore.units
   }
 
   get variants(){
-    return this._store.$exposed?.VARIANT.variants
+    return this._variantsStore.variants!
   }
 
   async getAttributes(){
-    if (this._store.$exposed?.ATTRIBUTE.attributes) {
-      return this._store.$exposed?.ATTRIBUTE.attributes
+    if (this._attributesStore.attributes) {
+      return this._attributesStore.attributes
     }
 
-    await this._store.$exposed?.ATTRIBUTE.read()
+    return await this._attributesStore.read()
   }
 
   async getUnits(){
-    if (this._store.$exposed?.UNIT.units) {
-      return this._store.$exposed?.UNIT.units
+    if (this._unitsStore.units) {
+      return this._unitsStore.units
     }
 
-    await this._store.$exposed?.UNIT.read()
+    return await this._unitsStore.read()
   }
 
   async getCategories(){
-    if (this._store.$exposed?.CATEGORY.categories) {
-      return this._store.$exposed?.CATEGORY.categories
+    if (this._categoriesStore.categories) {
+      return this._categoriesStore.categories
     }
 
-    await this._store.$exposed?.CATEGORY.read()
+    return await this._categoriesStore.read()
   }
 
   async getVariants(){
-    if (this._store.$exposed?.VARIANT.variants) {
-      return this._store.$exposed?.VARIANT.variants
+    if (this._variantsStore.variants) {
+      return this._variantsStore.variants
     }
 
-    await this._store.$exposed?.VARIANT.read()
+    return await this._variantsStore.read()
   }
 
   getProducts(id = ''){
@@ -97,12 +117,12 @@ class Service {
   async createVariantOption(option: IVariantOption){
     const optionData = await this._optionsService.createOption(option)
 
-    const { variants } = this._product.value!
+    const { variants } = unref(this._product)!
 
     let variant = variants?.find(v => v._id === option.variantId)!
 
     if (!variant) {
-      variant = this.variants.find(v => v._id === optionData.variantId)
+      variant = this.variants!.find(v => v._id === optionData.variantId) as IProductVariant
       variants.push(variant)
     }
 
@@ -138,7 +158,7 @@ class Service {
   async deleteVariantOption(option){
     await this._optionsService.deleteOption(option)
 
-    let { variants } = this._product.value!
+    let { variants } = unref(this._product)!
     const variant = variants.find(v => v._id === option.variantId)!
 
     variant.options = variant.options.filter(it => it._id !== option._id)
@@ -148,7 +168,7 @@ class Service {
     }
 
     await this.updateProduct({
-      _id: this._product.value!._id,
+      _id: unref(this._product)!._id,
       variants
     })
   }
@@ -251,6 +271,10 @@ class Service {
 
     Service.instance = new Service({
       store: useProductStore(),
+      attributesStore: useAttributeStore(),
+      categoriesStore: useCategoryStore(),
+      unitsStore: useUnitStore(),
+      variantsStore: useVariantStore(),
       filesService: useFilesService(),
       optionsService: useOptionsService()
     })
