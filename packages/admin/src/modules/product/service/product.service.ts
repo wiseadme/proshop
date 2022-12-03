@@ -228,6 +228,7 @@ class Service {
 
     if (asset && asset.url) {
       let { assets } = this._product.value!
+
       assets = assets || []
       asset.main = asset.main || !assets.length
 

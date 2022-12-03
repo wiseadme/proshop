@@ -3,9 +3,9 @@ import session from 'express-session'
 
 const Keycloak = require('keycloak-connect')
 
-
 let _keycloak
 
+/** TODO - replace MemoryStore for production */
 export const memoryStore = new session.MemoryStore()
 
 const keycloakConfig = {

@@ -72,7 +72,7 @@
     "@vue/reactivity-transform": "^3.2.41",
     "@vueup/vue-quill": "^1.0.0",
     "axios": "^0.27.2",
-    "nervue": "^0.0.18",
+    "nervue": "^0.0.23",
     "vue": "^3.2.3",
     "vue-router": "^4.0.15",
     "vuedraggable": "^4.1.0",

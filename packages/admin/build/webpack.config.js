@@ -5,8 +5,8 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 const { VueLoaderPlugin } = require('vue-loader')
-const ModuleFederationPlugin = require('webpack/lib/container/ModuleFederationPlugin')
-const deps = require('../package.json').dependencies
+// const ModuleFederationPlugin = require('webpack/lib/container/ModuleFederationPlugin')
+// const deps = require('../package.json').dependencies
 
 const resolve = pathStr => path.resolve(__dirname, pathStr)
 
@@ -31,8 +31,8 @@ module.exports = (env = {}) => {
       path: PATH.dist,
       filename: '[name].bundle.js',
       assetModuleFilename: 'images/[hash][ext][query]',
-      // publicPath: env.dev ? 'auto' : 'http://localhost:3000/admin/',
-      publicPath: 'auto'
+      publicPath: env.dev ? 'auto' : '/admin',
+      // publicPath: 'auto'
     },
     optimization: {
       // runtimeChunk: 'single',

@@ -26,8 +26,8 @@ export class AssetController extends BaseController implements IController {
   }
 
   initRoutes() {
-    this.router.post('/', new ValidateMiddleware(AssetDTO).execute, expressAsyncHandler(this.uploadImage.bind(this)))
-    this.router.patch('/', new ValidateMiddleware(AssetDTO).execute, expressAsyncHandler(this.updateImage.bind(this)))
+    this.router.post('/', /*new ValidateMiddleware(AssetDTO).execute*/ expressAsyncHandler(this.uploadImage.bind(this)))
+    this.router.patch('/', /*new ValidateMiddleware(AssetDTO).execute,*/ expressAsyncHandler(this.updateImage.bind(this)))
     this.router.delete('/', expressAsyncHandler(this.deleteImage.bind(this)))
   }
 

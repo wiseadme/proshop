@@ -12,6 +12,7 @@ WORKDIR /usr/src/app
 COPY . /usr/src/app
 RUN npm install
 RUN npm run build
+COPY ./.env /usr/src/app/dist
 #COPY .env /usr/src/app/dist/
 
 
