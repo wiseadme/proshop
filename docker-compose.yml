@@ -11,16 +11,25 @@ services:
       - PORT=5000
       - USER=wiseadme
       - MONGO_URI=mongodb://db:27017/commerce
+      - KEYCLOAK_SERVER_URI=http://keycloak:8080/auth
+      - KEYCLOAK_REALM=shop-admin
+      - KEYCLOAK_CLIENT_ID=shop-admin-panel
+      - KEYCLOAK_CLIENT_SECRET=7Tfv0mTOQPeJIQv5od2LPKFfsaWedDzc
     volumes:
       - uploads:/home/wiseadme/www/uploads
     depends_on:
       - db
+      - keycloak
+    networks:
+      - ecommerce
 
   db:
     image: mongo:latest
     container_name: mongo
     volumes:
       - ecommerce:/data/db
+    networks:
+      - ecommerce
 
   admin:
     build: ./packages/admin
@@ -29,7 +38,10 @@ services:
     restart: unless-stopped
     ports:
       - "3000:3000"
-
+    depends_on:
+      - server
+    networks:
+      - ecommerce
   nginx:
     image: nginx:stable-alpine
     container_name: nginx
@@ -41,6 +53,8 @@ services:
       - uploads:/var/lib/docker/volumes/ecommerceplatform_uploads/_data
     depends_on:
       - admin
+    networks:
+      - ecommerce
 
   keycloak:
     image: jboss/keycloak
@@ -51,9 +65,15 @@ services:
     volumes:
       - keycloak:/opt/jboss/keycloak/standalone/data/
     ports:
-      - "9990:8080"
+      - "8080:8080"
+    networks:
+      - ecommerce
 
 volumes:
   ecommerce:
   uploads:
   keycloak:
+
+networks:
+  ecommerce:
+    driver: bridge
