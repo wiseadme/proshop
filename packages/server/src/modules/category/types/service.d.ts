@@ -4,7 +4,7 @@ import { Document } from 'mongoose'
 export interface ICategoryService {
   create(category: ICategory): Promise<Document<ICategory>>;
 
-  read(query: { id?: string }): Promise<Array<ICategory>>;
+  read(query: Partial<ICategory>): Promise<Array<ICategory>>;
 
   update(updates: Partial<ICategory & Document>): Promise<{ updated: Document<ICategory> }>;
 

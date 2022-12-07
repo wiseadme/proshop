@@ -73,7 +73,7 @@ export class CategoryController extends BaseController implements IController {
     }
   }
 
-  async getCategories({ query, method }: Request<{}, {}, {}, { id?: string }>, res: Response){
+  async getCategories({ query, method }: Request<{}, {}, {}, Partial<ICategory>>, res: Response){
     try {
       const categories = await this.service.read(query)
 

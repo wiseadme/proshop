@@ -47,11 +47,11 @@ export class CategoryService implements ICategoryService {
   }
 
   async update(update: Partial<Document & ICategory>): Promise<{ updated: Document<ICategory> }>{
-    const [ category ] = await this.repository.read({ id: update._id })
+    const [ category ] = await this.repository.read({ _id: update._id })
 
     if (update.parent) {
       if (category.parent) {
-        const [ prevParent ] = await this.repository.read({ id: category.parent })
+        const [ prevParent ] = await this.repository.read({ _id: category.parent })
 
         const children = prevParent!.children.filter((it) => {
           return (it as any)._id.toString() !== update._id
@@ -62,7 +62,7 @@ export class CategoryService implements ICategoryService {
         await this.repository.update($set)
       }
 
-      const [ currentParent ] = await this.repository.read({ id: update.parent })
+      const [ currentParent ] = await this.repository.read({ _id: update.parent })
       const $set = { children: [ ...currentParent!.children, category!._id ], _id: currentParent._id }
 
       await this.repository.update($set)
@@ -71,16 +71,16 @@ export class CategoryService implements ICategoryService {
     return this.repository.update(update)
   }
 
-  read<T extends Partial<Document & ICategory>>(query: T){
+  read(query: Partial<ICategory>){
     return this.repository.read(query)
   }
 
   async delete(id: string): Promise<boolean>{
-    const [ category ] = await this.repository.read({ id })
+    const [ category ] = await this.repository.read({ _id: id })
     const res = await this.repository.delete(id)
 
     if (category.parent) {
-      const [ parent ] = await this.repository.read({ id: category.parent })
+      const [ parent ] = await this.repository.read({ _id: category.parent })
 
       // here we add the "any" type to
       // children, because they are populated

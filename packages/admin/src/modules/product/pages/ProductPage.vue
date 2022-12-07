@@ -1,4 +1,4 @@
-<script lang="ts" setup>
+<script setup lang="ts">
   import { toRaw, watch } from 'vue'
   // Services
   import { useProductService } from '@modules/product/service/product.service'

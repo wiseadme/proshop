@@ -218,7 +218,9 @@
   }
 
   const onLoadImage = ([ file ]) => {
-    if (!file) return
+    if (!file) {
+      return
+    }
 
     emit('upload:image', file)
     productImages = []
@@ -371,7 +373,7 @@
             <v-row no-gutter>
               <v-col class="mb-4 pa-4 white elevation-2">
                 <v-file-input
-                  v-model:value="productImages"
+                  :value="productImages"
                   :label="isEdit ? 'Загрузить изображения' : 'Загрузить изображение можно только после создания продукта'"
                   color="#272727"
                   text-color="#272727"

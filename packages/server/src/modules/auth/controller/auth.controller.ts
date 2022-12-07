@@ -41,7 +41,11 @@ export class AuthController extends BaseController implements IController {
     }
   }
 
-  create(){
+  refresh(req: Request, res: Response){
+
+  }
+
+  create(req: Request, res: Response){
 
   }
 }

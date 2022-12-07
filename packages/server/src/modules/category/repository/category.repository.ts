@@ -9,13 +9,15 @@ import { ICategory } from '../types/model'
 import { ICategoryRepository } from '../types/repository'
 import { ILogger } from '@/types/utils'
 
+type ReadParams = Partial<ICategory>
+type UpdateParams = Partial<ICategory>
+
 @injectable()
 export class CategoryRepository implements ICategoryRepository {
   constructor(@inject(TYPES.UTILS.ILogger) private logger: ILogger){
   }
 
   async create(category: ICategory){
-
     const created = await new CategoryModel({
       _id: new mongoose.Types.ObjectId(),
       title: category.title,
@@ -36,24 +38,22 @@ export class CategoryRepository implements ICategoryRepository {
     return created
   }
 
-  async read<T extends { id?: string }>({ id }: T){
-    id && validateId(id)
-
-    const params = id ? { _id: id } : {}
+  async read(params: ReadParams = {}){
+    params._id && validateId(params._id)
 
     const categories = await CategoryModel
       .find(params)
       .populate('parent', [ 'title', 'url', 'children' ])
       .populate('children', [ 'title', 'url', 'children' ])
 
-    if (id && !categories.length) {
+    if (params && !categories.length) {
       throw ({ status: 404, message: 'not found' })
     }
 
     return categories
   }
 
-  async update(updates: Partial<ICategory & Document>){
+  async update(updates: UpdateParams){
     validateId(updates._id)
 
     let updated
