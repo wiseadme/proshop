@@ -1,7 +1,8 @@
 export type ProductQuery = {
-  id?: string
+  _id?: string
   category?: string
   name?: string
   page?: number
+  url?: string
   count?: number
 }

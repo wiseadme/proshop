@@ -64,13 +64,17 @@ export class ProductRepository implements IProductRepository {
         search = { categories: { $in: category } }
       }
 
+      if (params.url) {
+        search = { url: params.url }
+      }
+
       if (params.name) {
         search = { 'name': { '$regex': `.*${ params.name }*.`, '$options': 'i' } }
       }
 
       return ProductModel
         .find(search)
-        .populate('categories', ['title'])
+        .populate('categories', [ 'title' ])
         .populate([
           'assets',
           {
@@ -92,7 +96,7 @@ export class ProductRepository implements IProductRepository {
     params && validateId(params)
 
     return ProductModel.find({ _id: params })
-      .populate('categories', ['title'])
+      .populate('categories', [ 'title' ])
       .populate([
         'assets',
         {
@@ -115,7 +119,7 @@ export class ProductRepository implements IProductRepository {
       { $set },
       { new: true }
     )
-      .populate('categories', ['title'])
+      .populate('categories', [ 'title' ])
       .populate([
         'assets',
         {

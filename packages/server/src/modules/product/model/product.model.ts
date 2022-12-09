@@ -29,7 +29,7 @@ const ProductSchema = new Schema<IProduct & Document>({
   },
   url: {
     type: String,
-    default: ''
+    unique: true
   },
   categories: {
     type: [ {
