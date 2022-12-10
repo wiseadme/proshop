@@ -1,7 +1,7 @@
 import { IOrder } from '@modules/order/types/model'
 
 export class Order implements IOrder {
-  private _cart: IOrder['cart']
+  private _cart?: IOrder['cart']
   private _orderId: IOrder['orderId']
   private _address: IOrder['address']
   private _client: IOrder['client']
@@ -9,7 +9,7 @@ export class Order implements IOrder {
   private _owner: IOrder['owner']
   private _status: IOrder['status']
 
-  constructor({ cart, orderId = null, address = null, client, qrcode = null, owner = null, status }: IOrder) {
+  constructor({ cart = null, orderId = null, address = null, client, qrcode = null, owner = null, status = null }: IOrder) {
     this._cart = cart
     this._owner = owner
     this._orderId = orderId

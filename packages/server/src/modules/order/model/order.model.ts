@@ -10,7 +10,8 @@ const OrderSchema = new Schema<Document & IOrder>({
   },
   orderId: {
     type: String,
-    required: true
+    required: true,
+    unique: true
   },
   address: {
     type: String,
@@ -28,7 +29,7 @@ const OrderSchema = new Schema<Document & IOrder>({
   status: {
     type: String,
     required: true
-  }
+  },
 }, {
   timestamps: true
 })

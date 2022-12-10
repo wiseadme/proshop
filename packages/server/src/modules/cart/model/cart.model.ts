@@ -27,9 +27,15 @@ const CartSchema = new Schema<Document & ICart>({
     type: Schema.Types.ObjectId,
     ref: 'User',
     default: null
-  }
+  },
+  expireAt: {
+    type: Date,
+    default: null
+  },
 }, {
   timestamps: true
 })
+
+CartSchema.index({ expireAt: 1 }, { expireAfterSeconds : 0 });
 
 export const CartModel = model<ICart>('Cart', CartSchema)

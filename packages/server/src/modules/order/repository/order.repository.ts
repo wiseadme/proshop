@@ -24,7 +24,7 @@ export class OrderRepository implements IOrderRepository {
       qrcode: order.qrcode,
       owner: order.owner,
       orderId: order.orderId,
-      status: order.status
+      status: order.status,
     }).save()
   }
 

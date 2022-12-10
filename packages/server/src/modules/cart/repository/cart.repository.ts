@@ -12,10 +12,10 @@ import { CartModel } from '@modules/cart/model/cart.model'
 export class CartRepository implements ICartRepository {
   constructor(
     @inject(TYPES.UTILS.ILogger) private logger: ILogger
-  ) {
+  ){
   }
 
-  async create(cart: ICart): Promise<Document & ICart> {
+  async create(cart: ICart): Promise<Document & ICart>{
     return new CartModel({
       _id: new mongoose.Types.ObjectId(),
       items: cart.items,
@@ -23,17 +23,20 @@ export class CartRepository implements ICartRepository {
       totalUniqueItems: cart.totalUniqueItems,
       currency: cart.currency,
       amount: cart.amount,
-      ownerId: cart.ownerId
+      ownerId: cart.ownerId,
+      expireAt: !cart.ownerId ? Date.now() + (43200 * 1000) : null
     }).save()
   }
 
-  async read(id?: string): Promise<Document & ICart> {
+  async read(id?: string): Promise<Document & ICart>{
     id && validateId(id)
 
-    return CartModel.find({ _id: id })[0]
+    const cart = await CartModel.find({ _id: id })
+
+    return cart?.[0]
   }
 
-  async update(updates: ICart & Document): Promise<{ updated: Document<ICart> }> {
+  async update(updates: ICart & Document): Promise<{ updated: Document<ICart> }>{
     validateId(updates._id)
 
     const updated = await CartModel.findByIdAndUpdate(
@@ -45,7 +48,7 @@ export class CartRepository implements ICartRepository {
     return { updated }
   }
 
-  async delete(id) {
+  async delete(id){
     validateId(id)
 
     return !!await CartModel.findByIdAndDelete(id)

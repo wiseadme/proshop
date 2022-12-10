@@ -10,11 +10,11 @@ interface IOrderClient {
 }
 
 export interface IOrder {
-  cart: ObjectId
+  cart?: Maybe<ObjectId>
   address: Maybe<string>
-  orderId: Maybe<string>
-  qrcode: Maybe<string>
   client: IOrderClient
-  owner: Maybe<ObjectId>
-  status: OrderStatus
+  orderId?: Maybe<string>
+  qrcode?: Maybe<string>
+  owner?: Maybe<ObjectId>
+  status?: Maybe<OrderStatus>
 }

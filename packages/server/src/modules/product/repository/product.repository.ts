@@ -11,6 +11,9 @@ import { ILogger } from '@/types/utils'
 
 import { translator } from '@common/utils/translator'
 
+const DEFAULT_COUNT = 20
+const DEFAULT_PAGE = 1
+
 @injectable()
 export class ProductRepository implements IProductRepository {
   constructor(@inject(TYPES.UTILS.ILogger) private logger: ILogger){
@@ -51,29 +54,17 @@ export class ProductRepository implements IProductRepository {
       ])
   }
 
-  async read(params: string | ProductQuery){
-    const DEFAULT_COUNT = 20
-    const DEFAULT_PAGE = 1
+  async read(params: ProductQuery){
+    let search
 
-    if (typeof params === 'object') {
-      let search
+    const { category, page = DEFAULT_PAGE, count = DEFAULT_COUNT } = params as ProductQuery
 
-      const { category, page = DEFAULT_PAGE, count = DEFAULT_COUNT } = params as ProductQuery
+    console.log(params)
 
-      if (params.category) {
-        search = { categories: { $in: category } }
-      }
+    if (params._id) {
+      params._id && validateId(params._id)
 
-      if (params.url) {
-        search = { url: params.url }
-      }
-
-      if (params.name) {
-        search = { 'name': { '$regex': `.*${ params.name }*.`, '$options': 'i' } }
-      }
-
-      return ProductModel
-        .find(search)
+      return ProductModel.find({ _id: params._id })
         .populate('categories', [ 'title' ])
         .populate([
           'assets',
@@ -87,15 +78,22 @@ export class ProductRepository implements IProductRepository {
             }
           }
         ])
-        .skip((page * count) - count)
-        .limit(count)
     }
 
-    // here we sure that params is the product id
-    // string type and that's why we need to validate it
-    params && validateId(params)
+    if (params.category) {
+      search = { categories: { $in: category } }
+    }
 
-    return ProductModel.find({ _id: params })
+    if (params.url) {
+      search = { url: params.url }
+    }
+
+    if (params.name) {
+      search = { 'name': { '$regex': `.*${ params.name }*.`, '$options': 'i' } }
+    }
+
+    return ProductModel
+      .find(search)
       .populate('categories', [ 'title' ])
       .populate([
         'assets',
@@ -109,6 +107,8 @@ export class ProductRepository implements IProductRepository {
           }
         }
       ])
+      .skip((page * count) - count)
+      .limit(count)
   }
 
   async update($set: Partial<Document<IProduct>>){

@@ -15,9 +15,10 @@ interface ICurrency {
 
 export interface ICart {
   items: Array<ICartItem>
+  ownerId: Maybe<string>
   totalItems: number
   totalUniqueItems: number
   amount: number
   currency: Maybe<ICurrency>
-  ownerId: Maybe<string>
+  expireAt?: Maybe<number>
 }
