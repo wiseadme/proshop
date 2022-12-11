@@ -6,17 +6,19 @@ export const usePolling = ({
   let timerId: any = null
 
   const startPolling = () => {
-    const tryAgain = () => {
+    const makeRequest = () => {
       timerId = setTimeout(() => {
         handler()
-        tryAgain()
+        makeRequest()
       }, timeout)
     }
-    tryAgain()
+
+    makeRequest()
   }
 
   const stopPolling = () => {
     clearTimeout(timerId)
+
     if (onCancel) {
       onCancel()
     }

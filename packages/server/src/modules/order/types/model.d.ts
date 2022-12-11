@@ -15,6 +15,7 @@ interface IOrderStatuses {
   confirmed: boolean
   inProcess: boolean
   ready: boolean
+  seen: boolean
   completed: boolean
   cancelled: boolean
 }

@@ -23,12 +23,14 @@ class Service {
   }
 
   async createOrder(order){
-    const newOrder = await this._store.create(order)
-
-    return newOrder
+    return await this._store.create(order)
   }
 
   getOrders(){
+    if (this._store.orders) {
+      return this._store.orders
+    }
+
     return this._store.read()
   }
 

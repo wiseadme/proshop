@@ -6,6 +6,8 @@ export interface IOrderClient {
 
 export interface IOrder {
   _id: string
-  cart: string
+  items: string
+  status: any
+  amount: number
   client: IOrderClient
 }

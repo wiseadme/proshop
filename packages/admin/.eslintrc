@@ -39,6 +39,7 @@
     ],
     "vue/no-setup-props-destructure": "off",
     "vue/no-mutating-props": "off",
+    "vue/one-component-per-file": "off",
     "vue/max-attributes-per-line": [
       "error",
       {

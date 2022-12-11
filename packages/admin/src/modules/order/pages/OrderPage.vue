@@ -1,53 +1,39 @@
 <script setup lang="ts">
-  import { onBeforeUnmount, onMounted } from 'vue'
   import { useOrdersService } from '@modules/order/service/order.service'
   import { OrdersTable } from '@modules/order/components/OrdersTable'
-  import { usePolling } from '@shared/composables/use-polling'
+  import { Status } from '@shared/enums/order-statuses'
 
   const service = useOrdersService()
 
   await service.getOrders()
 
   const getOrderStatusName = (status): string => {
-    if (status.created) {
-      return 'создано'
+    if (status.created || status.seen) {
+      return Status.CREATED
     }
 
     if (status.confirmed) {
-      return 'заказ подтвержден'
+      return Status.CONFIRMED
     }
 
     if (status.inProcess) {
-      return 'в работе'
+      return Status.IN_PROCESS
     }
 
     if (status.ready) {
-      return 'готов'
+      return Status.READY
     }
 
     if (status.completed) {
-      return 'выполнен'
+      return Status.COMPLETED
     }
 
     if (status.cancelled) {
-      return 'отменен'
+      return Status.CANCELED
     }
 
     return ''
   }
-
-  const { stopPolling, startPolling } = usePolling({
-    handler: () => service.getOrders(),
-    timeout: 5000
-  })
-
-  onMounted(() => {
-    startPolling()
-  })
-
-  onBeforeUnmount(() => {
-    stopPolling()
-  })
 
   const cols = $ref([
     {

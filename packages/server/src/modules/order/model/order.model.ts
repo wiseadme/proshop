@@ -51,6 +51,7 @@ const OrderSchema = new Schema<Document & IOrder>({
       inProcess: Boolean,
       completed: Boolean,
       ready: Boolean,
+      seen: Boolean,
       cancelled: Boolean
     },
     required: true

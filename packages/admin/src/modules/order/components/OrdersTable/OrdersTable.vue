@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { PropType } from 'vue'
-  import { ICategory } from '@ecommerce-platform/server/src/modules/category/types/model'
+  import { IOrder } from '@modules/order/types'
 
   defineProps({
     cols: {
@@ -8,16 +8,19 @@
       required: true
     },
     rows: {
-      type: Array as PropType<Array<ICategory>>,
+      type: Array as PropType<Array<IOrder>>,
       default: () => []
     }
   })
 
-  defineEmits([
+  const emit = defineEmits([
     'add',
     'edit',
-    'delete'
+    'delete',
+    'update:rows'
   ])
+
+  const updateRows = () => emit('update:rows')
 
 </script>
 <template>
@@ -40,7 +43,18 @@
   >
     <template #toolbar>
       <v-toolbar>
-        <v-toolbar-logo></v-toolbar-logo>
+        <v-toolbar-items>
+          <v-button
+            color="primary"
+            round
+            elevation="2"
+            @click="updateRows"
+          >
+            <v-icon
+              icon="fas fa-sync-alt"
+            />
+          </v-button>
+        </v-toolbar-items>
         <v-spacer></v-spacer>
         <v-toolbar-items>
           <v-button
@@ -94,9 +108,9 @@
     </template>
     <template #status="{ row, format }">
       <div
-        class="d-flex justify-center align-center py-4 white--text"
+        class="d-flex justify-center align-center py-2 white--text"
         :class="row.status.created ? 'green' : ''"
-        style="width: 100%; height: 100%"
+        style="width: 100%; height: 100%; border-radius: 10px"
       >
         {{ format(row) }}
       </div>
