@@ -1,7 +1,10 @@
 import { IOrder } from '@modules/order/types/model'
+import { ICartItem } from '@modules/cart/types/model'
 
 export class Order implements IOrder {
-  private _cart?: IOrder['cart']
+  private _items: IOrder['items']
+  private _amount: IOrder['amount']
+  private _cartId: IOrder['cartId']
   private _orderId: IOrder['orderId']
   private _address: IOrder['address']
   private _client: IOrder['client']
@@ -9,45 +12,72 @@ export class Order implements IOrder {
   private _owner: IOrder['owner']
   private _status: IOrder['status']
 
-  constructor({ cart = null, orderId = null, address = null, client, qrcode = null, owner = null, status = null }: IOrder) {
-    this._cart = cart
+  constructor({
+    items = [],
+    amount = 0,
+    orderId = null,
+    address = null,
+    client,
+    qrcode = null,
+    owner = null,
+    cartId = '',
+    status = {
+      created: true,
+      confirmed: false,
+      inProcess: false,
+      ready: false,
+      completed: false,
+      cancelled: false
+    }
+  }: IOrder){
+    this._items = items
+    this._amount = amount
     this._owner = owner
     this._orderId = orderId
     this._address = address
     this._client = client
     this._qrcode = qrcode
     this._status = status
+    this._cartId = cartId
   }
 
-  get cart() {
-    return this._cart
+  get items(){
+    return this._items as ICartItem[]
   }
 
-  get orderId() {
+  get amount(){
+    return this._amount!
+  }
+
+  get cartId(){
+    return this._cartId
+  }
+
+  get orderId(){
     return this._orderId
   }
 
-  get owner() {
+  get owner(){
     return this._owner
   }
 
-  get address() {
+  get address(){
     return this._address
   }
 
-  get client() {
+  get client(){
     return this._client
   }
 
-  get qrcode() {
+  get qrcode(){
     return this._qrcode
   }
 
-  get status() {
+  get status(){
     return this._status
   }
 
-  static create(order: IOrder) {
+  static create(order: IOrder){
     return new Order(order)
   }
 }

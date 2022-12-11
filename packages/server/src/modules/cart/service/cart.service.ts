@@ -6,24 +6,28 @@ import { ILogger } from '@/types/utils'
 import { ICartService } from '../types/service'
 import { ICartRepository } from '../types/repository'
 import { ICart } from '@modules/cart/types/model'
+import { IEventBusService } from '@/types/services'
+import { DELETE_CART_EVENT } from '@common/constants/events'
 
 @injectable()
 export class CartService implements ICartService {
   constructor(
     @inject(TYPES.UTILS.ILogger) private logger: ILogger,
     @inject(TYPES.REPOSITORIES.ICartRepository) private repository: ICartRepository,
-  ) {
+    @inject(TYPES.SERVICES.IEventBusService) private events: IEventBusService
+  ){
+    this.addListeners()
   }
 
-  async create(cart) {
+  async create(cart){
     return await this.repository.create(cart)
   }
 
-  async read(id?: string): Promise<Document & ICart> {
+  async read(id?: string): Promise<Document & ICart>{
     return await this.repository.read(id)
   }
 
-  async update(updates: ICart & Document): Promise<{ updated: Document<ICart> }> {
+  async update(updates: ICart & Document): Promise<{ updated: Document<ICart> }>{
     updates.amount = 0
     updates.totalItems = 0
     updates.totalUniqueItems = 0
@@ -45,7 +49,11 @@ export class CartService implements ICartService {
     return await this.repository.update(updates)
   }
 
-  async delete(id: string): Promise<boolean> {
+  async delete(id: string): Promise<boolean>{
     return await this.repository.delete(id)
+  }
+
+  addListeners(){
+    this.events.on(DELETE_CART_EVENT, this.delete.bind(this))
   }
 }

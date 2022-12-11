@@ -3,7 +3,7 @@
   import { useCategoryService } from '@modules/category/service/category.service'
   import { Category } from '@modules/category/model/category.model'
   import { CategoryActionsModal } from '@modules/category/components/CategoryActionsModal'
-  import { CategoryTable } from '@modules/category/components/CategoryTable'
+  import { CategoryTable } from '@modules/category/components/CategoriesTable'
 
   let categoryModel = $ref<ICategory>(Category.create())
   let categoryUpdates = $ref<Maybe<ICategory>>(null)

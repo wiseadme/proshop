@@ -3,14 +3,14 @@ import { IRest, IRepository } from '@shared/types/app'
 
 class Repository implements IRepository {
   rest: IRest = rest
-  baseUrl: string = '/v1/orders'
+  baseUrl: string = '/v1/order'
 
   create(order){
     return rest.post(this.baseUrl, order)
   }
 
   read(id = ''){
-    return rest.get(this.baseUrl, { query: { id } })
+    return rest.get(this.baseUrl, id ? { query: { id } } : null)
   }
 
   update(updates){

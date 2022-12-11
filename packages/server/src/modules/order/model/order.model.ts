@@ -3,10 +3,13 @@ import { IOrder } from '@modules/order/types/model'
 
 const OrderSchema = new Schema<Document & IOrder>({
   _id: Schema.Types.ObjectId,
-  cart: {
-    type: Schema.Types.ObjectId,
-    ref: 'Cart',
-    default: null
+  items: {
+    type: Array as any,
+    default: []
+  },
+  amount: {
+    type: Number,
+    required: true
   },
   orderId: {
     type: String,
@@ -16,6 +19,21 @@ const OrderSchema = new Schema<Document & IOrder>({
   address: {
     type: String,
     default: null
+  },
+  client: {
+    type: {
+      name: {
+        type: String,
+        required: true
+      },
+      phone: {
+        type: String,
+        required: true
+      },
+      email: {
+        type: String
+      }
+    }
   },
   qrcode: {
     type: String,
@@ -27,7 +45,14 @@ const OrderSchema = new Schema<Document & IOrder>({
     default: null
   },
   status: {
-    type: String,
+    type: {
+      created: Boolean,
+      confirmed: Boolean,
+      inProcess: Boolean,
+      completed: Boolean,
+      ready: Boolean,
+      cancelled: Boolean
+    },
     required: true
   },
 }, {

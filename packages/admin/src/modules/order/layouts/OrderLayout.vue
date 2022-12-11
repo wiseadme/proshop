@@ -1,16 +1,5 @@
-<script lang="ts">
-  import { defineComponent } from 'vue'
+<script setup lang="ts">
   import SkeletonPreloader from '@shared/components/Preloader/SkeletonPreloader.vue'
-
-  export default defineComponent({
-    name: 'orders-layout',
-    components: {
-      SkeletonPreloader
-    },
-    setup() {
-      return {}
-    }
-  })
 </script>
 <template>
   <v-main>

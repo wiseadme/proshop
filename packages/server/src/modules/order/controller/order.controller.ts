@@ -19,19 +19,19 @@ export class OrderController extends BaseController implements IController {
   constructor(
     @inject(TYPES.UTILS.ILogger) private logger: ILogger,
     @inject(TYPES.SERVICES.IOrderService) private service: IOrderService
-  ) {
+  ){
     super()
     this.initRoutes()
   }
 
-  initRoutes() {
+  initRoutes(){
     this.router.post('/', expressAsyncHandler(this.createOrder.bind(this)))
-    this.router.get('/', expressAsyncHandler(this.getOrder.bind(this)))
+    this.router.get('/', expressAsyncHandler(this.getOrders.bind(this)))
     this.router.patch('/', expressAsyncHandler(this.updateOrder.bind(this)))
     this.router.delete('/', expressAsyncHandler(this.deleteOrder.bind(this)))
   }
 
-  async createOrder({ body, method }: Request<{}, {}, IOrder>, res: Response) {
+  async createOrder({ body, method }: Request<{}, {}, IOrder>, res: Response){
     try {
       const order = await this.service.create(body)
 
@@ -50,13 +50,13 @@ export class OrderController extends BaseController implements IController {
     }
   }
 
-  async getOrder({ query, method }: Request<{}, {}, {}, { id?: string }>, res: Response) {
+  async getOrders({ query, method }: Request<{}, {}, {}, Partial<IOrder>>, res: Response){
     try {
-      const order = await this.service.read(query?.id)
+      const orders = await this.service.read(query)
 
       this.send({
         response: res,
-        data: order,
+        data: orders,
         url: this.path,
         method
       })
@@ -69,7 +69,7 @@ export class OrderController extends BaseController implements IController {
     }
   }
 
-  async updateOrder({ body, method }: Request<{}, {}, IOrder & Document>, res: Response) {
+  async updateOrder({ body, method }: Request<{}, {}, IOrder & Document>, res: Response){
     try {
       const { updated } = await this.service.update(body)
 
@@ -88,7 +88,7 @@ export class OrderController extends BaseController implements IController {
     }
   }
 
-  async deleteOrder({ query, method }: Request<{}, {}, {}, { id: string }>, res: Response) {
+  async deleteOrder({ query, method }: Request<{}, {}, {}, { id: string }>, res: Response){
     try {
       await this.service.delete(query.id)
       this.send({
