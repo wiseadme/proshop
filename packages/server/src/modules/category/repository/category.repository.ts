@@ -46,9 +46,9 @@ export class CategoryRepository implements ICategoryRepository {
       .populate('parent', [ 'title', 'url', 'children' ])
       .populate('children', [ 'title', 'url', 'children' ])
 
-    if (params && !categories.length) {
-      throw ({ status: 404, message: 'not found' })
-    }
+    // if (params && !categories.length) {
+    //   throw ({ status: 404, message: 'not found' })
+    // }
 
     return categories
   }
