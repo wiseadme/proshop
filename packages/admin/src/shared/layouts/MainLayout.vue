@@ -1,14 +1,51 @@
-<script lang="ts" setup>
+<script setup lang="ts">
+  import { onMounted, onBeforeUnmount, watch } from 'vue'
   import { useRouter } from 'vue-router'
+  import { usePolling } from '@shared/composables/use-polling'
+  import { useNotifications } from '@shared/components/VNotifications/use-notifications'
+  import { useOrdersStore } from '@modules/order/store'
   import { useAuthService } from '@shared/services/auth.service'
   // Components
   import { AppHeader } from '@app/components/AppHeader'
   import { AppNavigation } from '@app/components/AppNavigation'
+  import VNotifications from '@shared/components/VNotifications/VNotifications.vue'
+  import { IOrder } from '@modules/order/types'
 
   const router = useRouter()
 
   const authService = useAuthService()
   authService.setUserFromStorage().catch(() => router.push({ name: 'auth' }))
+
+  const ordersStore = useOrdersStore()
+  const { notify, clear } = useNotifications()
+
+  const { stopPolling, startPolling } = usePolling({
+    handler: () => ordersStore.read(),
+    timeout: 5000
+  })
+
+  onMounted(() => {
+    startPolling()
+  })
+
+  onBeforeUnmount(() => {
+    stopPolling()
+  })
+
+  watch(() => ordersStore.orders, (newOrders: IOrder[]) => {
+    const notSeen = newOrders?.map(o => o.status.created && !o.status.seen)
+
+    if (notSeen.length) {
+      clear()
+
+      setTimeout(() => notify({
+        title: 'Новые заказы',
+        text: `У вас ${ notSeen.length } новых не просмотренных заказа`,
+        type: 'warning',
+        closeOnClick: true
+      }), 500)
+    }
+  })
 
 </script>
 <template>
@@ -20,6 +57,7 @@
   >
     <router-view/>
   </v-main>
+  <v-notifications position="bottom right"/>
 </template>
 <style lang="scss">
 </style>

@@ -10,7 +10,7 @@ services:
     environment:
       - PORT=5000
       - USER=wiseadme
-      - MONGO_URI=mongodb://db:27017/commerce
+      - MONGO_URI=mongodb://mongo1,mongo2,mongo3:27017/commerce
       - KEYCLOAK_SERVER_URI=http://keycloak:8080/auth
       - KEYCLOAK_REALM=shop-admin
       - KEYCLOAK_CLIENT_ID=shop-admin-panel
@@ -18,18 +18,63 @@ services:
     volumes:
       - uploads:/home/wiseadme/www/uploads
     depends_on:
-      - db
+      - mongo-setup
       - keycloak
     networks:
       - ecommerce
+      - mongoNet
 
-  db:
-    image: mongo:latest
-    container_name: mongo
+  mongo1:
+    image: mongo:5.0.14
+    container_name: mongo1
+    ports:
+      - "30001:27017"
     volumes:
-      - ecommerce:/data/db
+      - mongo_primary:/data/db
     networks:
-      - ecommerce
+      - mongoNet
+    command: mongod --replSet my-mongo-set
+
+  mongo2:
+    image: mongo:5.0.14
+    container_name: mongo2
+    ports:
+      - "30002:27017"
+    volumes:
+      - mongo_secondary:/data/db
+    networks:
+      - mongoNet
+    depends_on:
+      - mongo1
+    command: mongod --replSet my-mongo-set
+
+  mongo3:
+    image: mongo:5.0.14
+    container_name: mongo3
+    ports:
+      - "30003:27017"
+    volumes:
+      - mongo_seed:/data/db
+    networks:
+      - mongoNet
+    depends_on:
+      - mongo1
+      - mongo2
+    command: mongod --replSet my-mongo-set
+
+  mongo-setup:
+    image: mongo:5.0.14
+    # this container will exit after executing the command
+    restart: "no"
+    depends_on:
+      - mongo1
+      - mongo2
+      - mongo3
+    volumes:
+      - ./scripts/mongosetup.sh:/scripts/mongosetup.sh
+    entrypoint: [ "bash", "/scripts/mongosetup.sh" ]
+    networks:
+      - mongoNet
 
   admin:
     build: ./packages/admin
@@ -73,7 +118,12 @@ volumes:
   ecommerce:
   uploads:
   keycloak:
+  mongo_primary:
+  mongo_secondary:
+  mongo_seed:
 
 networks:
+  mongoNet:
+    driver: bridge
   ecommerce:
     driver: bridge
