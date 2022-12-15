@@ -1,45 +1,19 @@
 <script setup lang="ts">
-  import { useOrdersService } from '@modules/order/service/order.service'
   import { OrdersTable } from '@modules/order/components/OrdersTable'
-  import { Status } from '@shared/enums/order-statuses'
+  import { OrderActionsModal } from '@modules/order/components/OrderActionsModal'
+  import { useOrdersService } from '@modules/order/service/order.service'
+  import { getOrderStatusName } from '@modules/order/helpers'
 
   const service = useOrdersService()
 
   await service.getOrders()
 
-  const getOrderStatusName = (status): string => {
-    if (status.created || status.seen) {
-      return Status.CREATED
-    }
-
-    if (status.confirmed) {
-      return Status.CONFIRMED
-    }
-
-    if (status.inProcess) {
-      return Status.IN_PROCESS
-    }
-
-    if (status.ready) {
-      return Status.READY
-    }
-
-    if (status.completed) {
-      return Status.COMPLETED
-    }
-
-    if (status.cancelled) {
-      return Status.CANCELED
-    }
-
-    return ''
-  }
-
   const cols = $ref([
     {
       key: 'actions',
       title: 'Действия',
-      align: 'center'
+      align: 'center',
+      width: '250'
     },
     {
       key: 'createdAt',
@@ -89,6 +63,27 @@
     }
   ])
 
+  let openOrderModal = $ref(false)
+  let isUpdate = $ref(false)
+  let isRead = $ref(false)
+
+  const onOpenOrder = (order) => {
+    service.setAsCurrent(order)
+    openOrderModal = true
+    isRead = true
+    isUpdate = false
+  }
+
+  const onAddOrder = () => {
+    openOrderModal = true
+    isRead = false
+    isUpdate = false
+  }
+
+  const onDeleteOrder = (order) => {
+    service.deleteOrder(order._id)
+  }
+
 </script>
 <template>
   <v-row>
@@ -96,6 +91,16 @@
       <orders-table
         :cols="cols"
         :rows="service.orders"
+        @open:order="onOpenOrder"
+        @add:order="onAddOrder"
+        @delete:order="onDeleteOrder"
+      />
+      <order-actions-modal
+        v-model="openOrderModal"
+        :order="service.order"
+        :is-update="isUpdate"
+        :is-read="isRead"
+        @close="openOrderModal = false"
       />
     </v-col>
   </v-row>

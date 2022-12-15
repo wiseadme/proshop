@@ -1,6 +1,18 @@
 type NotifyActions = {
-  ok: () => any
-  dismiss: () => any
+  buttons?: {
+    ok?: {
+      type: NotifyTypes,
+      handler: (...args: any) => any
+    },
+    dismiss?: {
+      type: NotifyTypes,
+      handler: (...args: any) => any
+    },
+  }
+  events?: {
+    onClick?: (...args: any) => any
+    onMouseenter?: (...args: any) => any
+  }
 }
 
 type NotifyTypes = 'success' | 'warning' | 'error' | 'info' | 'simple'

@@ -14,6 +14,10 @@
   ])
 
   const onClick = () => {
+    if (props.params.actions?.events?.onClick) {
+      return props.params.actions.events.onClick()
+    }
+
     if (!props.params?.closeOnClick) {
       return
     }

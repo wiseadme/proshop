@@ -17,12 +17,16 @@
   authService.setUserFromStorage().catch(() => router.push({ name: 'auth' }))
 
   const ordersStore = useOrdersStore()
-  const { notify, clear } = useNotifications()
+  const { notify, remove } = useNotifications()
 
   const { stopPolling, startPolling } = usePolling({
     handler: () => ordersStore.read(),
     timeout: 5000
   })
+
+  let notSeenCount = 0
+
+  let newOrdersNotifyId
 
   onMounted(() => {
     startPolling()
@@ -33,17 +37,35 @@
   })
 
   watch(() => ordersStore.orders, (newOrders: IOrder[]) => {
-    const notSeen = newOrders?.map(o => o.status.created && !o.status.seen)
+    const notSeenOrders = newOrders?.map(o => o.status.created && !o.status.seen)
 
-    if (notSeen.length) {
-      clear()
+    if (notSeenCount !== notSeenOrders.length) {
+      if (newOrdersNotifyId) {
+        remove(newOrdersNotifyId)
+      }
 
-      setTimeout(() => notify({
-        title: 'Новые заказы',
-        text: `У вас ${ notSeen.length } новых не просмотренных заказа`,
-        type: 'warning',
-        closeOnClick: true
-      }), 500)
+      notSeenCount = notSeenOrders.length
+
+      setTimeout(() => {
+        newOrdersNotifyId = notify({
+          title: 'Новые заказы',
+          text: `У вас ${ notSeenCount } новых не просмотренных заказа`,
+          type: 'warning',
+          closeOnClick: false,
+          actions: {
+            events: {
+              onClick: () => {
+                remove(newOrdersNotifyId)
+
+                newOrdersNotifyId = null
+                notSeenCount = 0
+
+                router.replace({ name: 'orders-table' })
+              }
+            }
+          }
+        })
+      }, 500)
     }
   })
 

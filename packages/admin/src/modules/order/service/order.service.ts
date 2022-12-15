@@ -18,6 +18,10 @@ class Service {
     return this._store.orders
   }
 
+  get order(){
+    return this._order
+  }
+
   setAsCurrent(order){
     this._order = order
   }
@@ -32,6 +36,10 @@ class Service {
     }
 
     return this._store.read()
+  }
+
+  async deleteOrder(orderId){
+    await this._store.delete(orderId)
   }
 
   static create(params){

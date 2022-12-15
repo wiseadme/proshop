@@ -12,11 +12,11 @@ services:
       - USER=wiseadme
       - MONGO_URI=mongodb://mongo1,mongo2,mongo3:27017/commerce
       - KEYCLOAK_SERVER_URI=http://keycloak:8080/auth
-      - KEYCLOAK_REALM=shop-admin
-      - KEYCLOAK_CLIENT_ID=shop-admin-panel
-      - KEYCLOAK_CLIENT_SECRET=7Tfv0mTOQPeJIQv5od2LPKFfsaWedDzc
+      - KEYCLOAK_REALM=shop
+      - KEYCLOAK_CLIENT_ID=shop-admin
+      - KEYCLOAK_CLIENT_SECRET=WpnmTNu2UYWf2HBzRhMY7caDWomOAmg5
     volumes:
-      - uploads:/home/wiseadme/www/uploads
+      - uploads:/home/wiseadme/www/uploads/
     depends_on:
       - mongo-setup
       - keycloak
@@ -64,7 +64,6 @@ services:
 
   mongo-setup:
     image: mongo:5.0.14
-    # this container will exit after executing the command
     restart: "no"
     depends_on:
       - mongo1
@@ -87,6 +86,7 @@ services:
       - server
     networks:
       - ecommerce
+
   nginx:
     image: nginx:stable-alpine
     container_name: nginx

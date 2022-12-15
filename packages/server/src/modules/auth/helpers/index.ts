@@ -25,7 +25,7 @@ export const prepareResponseData = (data) => {
     family_name: parsed.family_name,
     exp: parsed.exp,
     expires_in: data.expires_in,
-    role: parsed.resource_access[config.keycloakClientId].roles,
-    mobile: parsed.mobile
+    role: parsed.resource_access[config.keycloakClientId]?.roles,
+    phone: parsed.phone
   }
 }

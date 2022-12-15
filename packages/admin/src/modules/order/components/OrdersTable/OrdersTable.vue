@@ -14,9 +14,10 @@
   })
 
   const emit = defineEmits([
-    'add',
-    'edit',
-    'delete',
+    'add:order',
+    'edit:order',
+    'delete:order',
+    'open:order',
     'update:rows'
   ])
 
@@ -50,9 +51,7 @@
             elevation="2"
             @click="updateRows"
           >
-            <v-icon
-              icon="fas fa-sync-alt"
-            />
+            <v-icon icon="fas fa-sync-alt"/>
           </v-button>
         </v-toolbar-items>
         <v-spacer></v-spacer>
@@ -60,7 +59,7 @@
           <v-button
             color="green"
             elevation="5"
-            @click="$emit('add')"
+            @click="$emit('add:order')"
           >
             <v-icon
               size="14"
@@ -77,10 +76,19 @@
     </template>
     <template #actions="{row}">
       <v-button
+        color="blue"
+        elevation="2"
+        text
+        @click="$emit('open:order', row)"
+      >
+        <v-icon>fas fa-file-alt</v-icon>
+      </v-button>
+      <v-button
+        class="ml-1"
         color="orange"
         elevation="2"
         text
-        @click="$emit('edit', row)"
+        @click="$emit('edit:order', row)"
       >
         <v-icon>fas fa-pen</v-icon>
       </v-button>
@@ -89,7 +97,7 @@
         color="red darken-1"
         elevation="2"
         text
-        @click="$emit('delete', row)"
+        @click="$emit('delete:order', row)"
       >
         <v-icon>fas fa-trash-alt</v-icon>
       </v-button>

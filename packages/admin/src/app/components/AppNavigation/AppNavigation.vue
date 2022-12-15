@@ -1,10 +1,11 @@
 <script lang="ts">
-  import { defineComponent, ref, onMounted } from 'vue'
-  import { useRouter } from 'vue-router'
+  import { defineComponent, ref, onMounted, watch } from 'vue'
+  import { useRouter, useRoute } from 'vue-router'
 
   export default defineComponent({
     setup(){
       const $router = useRouter()
+      const $route = useRoute()
 
       const items = [
         {
@@ -54,6 +55,10 @@
         current.value = items.findIndex(it => {
           return it.path === $router.currentRoute.value.path
         })
+      })
+
+      watch(() => $route.path, (newPath) => {
+        current.value = items.findIndex(it => it.path === newPath)
       })
 
       return {

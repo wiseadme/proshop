@@ -33,8 +33,8 @@
     notifications.push(params)
   }
 
-  const removeItem = (params: Notify) => {
-    notifications = notifications.filter(it => it.id !== params.id)
+  const removeItem = (id: number) => {
+    notifications = notifications.filter(it => it.id !== id)
   }
 
   const clearAll = () => {
