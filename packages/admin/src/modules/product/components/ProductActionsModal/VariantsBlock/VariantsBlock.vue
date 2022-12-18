@@ -1,6 +1,6 @@
 <script lang="ts" setup>
   import { PropType, toRaw, watch } from 'vue'
-  import { IVariant, IVariantOption } from '@modules/variant/types'
+  import { IVariant, IVariantOption } from '@ecommerce-platform/types'
 
   const props = defineProps({
     isDisplayed: Boolean,
@@ -49,7 +49,7 @@
   const createOption = (validate) => {
     validate()
       .then(() => {
-        optionPattern.variantId = currentVariant!._id
+        optionPattern!.variantId = currentVariant!._id!
 
         const rawOption = toRaw(optionPattern)
 

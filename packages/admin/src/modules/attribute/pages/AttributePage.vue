@@ -8,6 +8,7 @@
   import { Attribute } from '@modules/attribute/model/attribute.model'
   // Helpers
   import { clone } from '@shared/helpers'
+  import { IAttribute } from '@ecommerce-platform/types'
 
   let attributes = $ref<Maybe<Array<IAttribute>>>(null)
   let attributePattern = $ref<IAttribute>(Attribute.create())

@@ -1,6 +1,7 @@
 import { Store } from 'nervue'
 import { useVariantStore } from '@modules/variant/store'
-import {IVariantState, IVariantActions, IVariant} from '@modules/variant/types'
+import { IVariant } from '@ecommerce-platform/types'
+import { IVariantState, IVariantActions } from '@modules/variant/types'
 
 class Service {
   private _store: Store<string, IVariantState, {}, {}, IVariantActions>
@@ -28,6 +29,7 @@ class Service {
 
   onGetVariants(){
     if (this._store.variants) return this._store.variants
+
     return this.getVariants()
   }
 

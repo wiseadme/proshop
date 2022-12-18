@@ -1,6 +1,8 @@
 import { Store } from 'nervue'
 import { useCategoryStore } from '@modules/category/store'
 import { useFilesService } from '@shared/services/files.service'
+import { ICategory } from '@ecommerce-platform/types'
+import { ICategoryActions, ICategoryState, ICategoryService } from '@modules/category/types'
 
 class Service implements ICategoryService {
   private _store: Store<string, ICategoryState, {}, {}, ICategoryActions>
@@ -8,46 +10,46 @@ class Service implements ICategoryService {
   private _files: ReturnType<typeof useFilesService>
   static instance: Service
 
-  constructor({ store, filesService }) {
+  constructor({ store, filesService }){
     this._store = store
     this._files = filesService
     this._category = null
   }
 
-  get categories() {
+  get categories(){
     return this._store.categories
   }
 
-  get category() {
+  get category(){
     return this._category
   }
 
-  setAsCurrent(category: Maybe<ICategory>) {
+  setAsCurrent(category: Maybe<ICategory>){
     this._category = category
   }
 
-  createCategory(model) {
+  createCategory(model){
     return this._store.create(model)
       .then(() => this.getCategories())
   }
 
-  getCategories() {
+  getCategories(){
     return this._store.read()
   }
 
-  updateCategory(updates) {
+  updateCategory(updates){
     return this._store.update(updates)
       .then(() => this.getCategories())
       .catch(err => console.log(err))
   }
 
-  deleteCategory(category) {
+  deleteCategory(category){
     this._store.delete(category)
       .then(() => this.getCategories())
       .catch(err => console.log(err))
   }
 
-  async uploadCategoryImage(file) {
+  async uploadCategoryImage(file){
     const { formData, fileName } = this._files.createFormData(file)
     const ownerId = this._category!._id
 
@@ -60,14 +62,14 @@ class Service implements ICategoryService {
     return asset.url
   }
 
-  async deleteImageHandler(url) {
+  async deleteImageHandler(url){
     const ownerId = this._category!._id
 
     await this._files.deleteFile({ ownerId, url })
     return this.updateCategory({ _id: ownerId, image: null })
   }
 
-  static create() {
+  static create(){
     if (Service.instance) return Service.instance
 
     Service.instance = new Service({

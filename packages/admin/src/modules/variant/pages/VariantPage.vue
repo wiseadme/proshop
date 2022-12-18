@@ -4,7 +4,7 @@
   import { useVariantService } from '@modules/variant/service/variant.service'
   import { clone } from '@shared/helpers'
   import { Variant } from '@modules/variant/model/variant.model'
-  import { IVariant } from '@modules/variant/types'
+  import { IVariant } from '@ecommerce-platform/types'
 
   const service = useVariantService()
 

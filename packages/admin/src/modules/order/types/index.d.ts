@@ -1,3 +1,7 @@
+import { ICartItem } from '@ecommerce-platform/server/src/modules/cart/types/model'
+import { Maybe } from '@ecommerce-platform/server/src/types/types'
+import { IOrderStatuses } from '@ecommerce-platform/server/src/modules/order/types/model'
+
 export interface IOrderClient {
   name: string
   phone: string
@@ -6,8 +10,12 @@ export interface IOrderClient {
 
 export interface IOrder {
   _id: string
-  items: string
-  status: any
+  items: ICartItem[]
+  address: Maybe<string>
+  status: IOrderStatuses
   amount: number
   client: IOrderClient
+  orderId?: Maybe<string>
+  qrcode?: Maybe<string>
+  owner?: any
 }

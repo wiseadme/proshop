@@ -1,4 +1,4 @@
-import { IProduct } from '@modules/product/types'
+import { IProduct } from '@ecommerce-platform/types'
 
 export class Product implements IProduct {
   _id: IProduct['_id']

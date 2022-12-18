@@ -1,16 +1,10 @@
-declare interface IAttribute {
-  _id: string
-  key: string
-  value: string
-  meta?: string,
-  order: number
-}
+import { IAttribute } from '@ecommerce-platform/types'
 
-declare interface IAttributeState {
+export interface IAttributeState {
   attributes: Maybe<Array<IAttribute>>
 }
 
-declare interface IAttributeActions {
+export interface IAttributeActions {
   create(attribute: IAttribute): Promise<IAttribute>
 
   read(id?: string): Promise<Array<IAttribute>>

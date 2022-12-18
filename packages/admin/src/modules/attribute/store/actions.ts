@@ -1,4 +1,6 @@
 import { useAttributeRepository } from '@modules/attribute/repository/attribute.repository'
+import { IAttribute } from '@ecommerce-platform/types'
+import { IAttributeActions } from '@modules/attribute/types'
 
 const repository = useAttributeRepository()
 

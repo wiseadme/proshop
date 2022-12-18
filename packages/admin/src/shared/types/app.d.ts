@@ -22,3 +22,7 @@ declare type AppState = {
   units: Maybe<Array<IUnit>>,
   progress: number
 }
+
+declare module '@ecommerce-platform/type' {
+  export const content: any
+}

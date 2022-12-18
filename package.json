@@ -16,8 +16,5 @@
   "license": "ISC",
   "devDependencies": {
     "lerna": "^5.0.0"
-  },
-  "dependencies": {
-    "vueland": "github:vueland/vueland-next"
   }
 }

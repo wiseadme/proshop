@@ -1,19 +1,4 @@
-import { IProductAsset } from '@modules/product/types'
-
-interface IVariantOption {
-  _id?: string
-  assets?: Array<IProductAsset>
-  quantity?: number
-  description?: Maybe<string>
-  price?: number
-  name: string
-  variantId: string
-}
-
-declare interface IVariant {
-  _id: string
-  group: string
-}
+import { IVariant } from '@ecommerce-platform/types'
 
 declare interface IVariantActions {
   create(variant: IVariant): Promise<IVariant>

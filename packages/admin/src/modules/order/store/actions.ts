@@ -1,10 +1,10 @@
 import { useOrderRepository } from '@modules/order/repository'
-// import {  } from '../types'
+import { IOrder } from '@ecommerce-platform/types'
 
 const orderRepository = useOrderRepository()
 
 export const actions = {
-  async create(order){
+  async create(order: IOrder){
     try {
       const { data } = await orderRepository.create(order)
       this.orders = data.data

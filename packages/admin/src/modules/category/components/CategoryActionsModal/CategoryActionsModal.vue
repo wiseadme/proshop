@@ -1,5 +1,6 @@
-<script lang="ts" setup>
+<script setup lang="ts">
   import { PropType, watch } from 'vue'
+  import { ICategory } from '@ecommerce-platform/types'
 
   const {
     modelValue,

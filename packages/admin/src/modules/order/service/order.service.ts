@@ -1,5 +1,5 @@
 import { ref, Ref } from 'vue'
-import { IOrder } from '@modules/order/types'
+import { IOrder } from '@ecommerce-platform/types'
 // Stores
 import { useOrdersStore } from '@modules/order/store'
 

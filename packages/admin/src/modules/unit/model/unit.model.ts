@@ -1,3 +1,5 @@
+import { IUnit } from '@ecommerce-platform/types'
+
 export class Unit implements IUnit {
   _id: string
   value: string

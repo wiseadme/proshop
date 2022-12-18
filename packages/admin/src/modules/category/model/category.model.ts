@@ -1,3 +1,5 @@
+import { ICategory } from '@ecommerce-platform/types'
+
 export class Category implements ICategory {
   _id: ICategory['_id']
   title: ICategory['title']
@@ -7,6 +9,7 @@ export class Category implements ICategory {
   children: ICategory['children']
   order: ICategory['order']
   seo: ICategory['seo']
+  length: ICategory['length']
   isVisible: ICategory['isVisible']
 
   constructor({
@@ -18,6 +21,7 @@ export class Category implements ICategory {
     children = null,
     isVisible = true,
     order = 0,
+    length = 0,
     seo = {
       title: null,
       description: null,
@@ -32,6 +36,7 @@ export class Category implements ICategory {
     this.children = children
     this.order = order
     this.seo = seo
+    this.length = length
     this.isVisible = isVisible
   }
 

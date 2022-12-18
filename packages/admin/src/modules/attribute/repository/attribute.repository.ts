@@ -1,5 +1,6 @@
 import { rest } from '@shared/api'
 import { IRepository, IRest } from '@shared/types/app'
+import { IAttribute } from '@ecommerce-platform/types'
 
 export class Repository implements IRepository {
   rest: IRest = rest

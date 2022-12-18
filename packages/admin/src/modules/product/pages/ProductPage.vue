@@ -12,7 +12,7 @@
   import { ProductTable } from '@modules/product/components/ProductTable'
   import SkeletonPreloader from '@shared/components/Preloader/SkeletonPreloader'
   // Types
-  import { IProduct } from '@modules/product/types'
+  import { IProduct } from '@ecommerce-platform/types'
 
   let model = $ref<IProduct>(Product.create())
   let showCreateModal = $ref<boolean>(false)
@@ -55,7 +55,7 @@
       })
   }
 
-  const onDeleteProduct = (product) => {
+  const onDeleteProduct = (product: IProduct) => {
     service.deleteProduct(product)
   }
 

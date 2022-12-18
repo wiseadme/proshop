@@ -1,6 +1,7 @@
 import { Status } from '@shared/enums/order-statuses'
+import { IOrderStatuses } from '@ecommerce-platform/types'
 
-export const getOrderStatusName = (status): string => {
+export const getOrderStatusName = (status: IOrderStatuses): string => {
   if (status.created || status.seen) {
     return Status.CREATED
   }

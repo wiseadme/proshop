@@ -1,36 +1,38 @@
 import { Store } from 'nervue'
 import { useUnitStore } from '@modules/unit/store'
+import { IUnit } from '@ecommerce-platform/types'
+import { IUnitActions, IUnitState } from '@modules/unit/types'
 
 class Service {
   private _store: Store<string, IUnitState, {}, {}, IUnitActions>
   static instance: Service
 
-  constructor(store) {
+  constructor(store){
     this._store = store
   }
 
-  get units() {
+  get units(){
     return this._store.units
   }
 
-  createUnit(unit: IUnit) {
+  createUnit(unit: IUnit){
     return this._store.create(unit)
   }
 
-  deleteUnit(id) {
+  deleteUnit(id){
     return this._store.delete(id).then(() => this.getUnits())
   }
 
-  getUnits(id = '') {
+  getUnits(id = ''){
     return this._store.read(id)
   }
 
-  onGetUnits() {
+  onGetUnits(){
     if (this._store.units) return this._store.units
     return this.getUnits()
   }
 
-  static create() {
+  static create(){
     if (Service.instance) return Service.instance
     Service.instance = new Service(useUnitStore())
     return Service.instance

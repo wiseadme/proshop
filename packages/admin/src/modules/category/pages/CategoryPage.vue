@@ -4,6 +4,7 @@
   import { Category } from '@modules/category/model/category.model'
   import { CategoryActionsModal } from '@modules/category/components/CategoryActionsModal'
   import { CategoryTable } from '@modules/category/components/CategoriesTable'
+  import { ICategory } from '@ecommerce-platform/types'
 
   let categoryModel = $ref<ICategory>(Category.create())
   let categoryUpdates = $ref<Maybe<ICategory>>(null)
@@ -59,7 +60,7 @@
     const updates = getDifferences(
       categoryUpdates,
       service.category
-    ) as Maybe<ICategoryUpdates>
+    ) as Maybe<Partial<ICategory>>
 
     if (!updates) {
       return

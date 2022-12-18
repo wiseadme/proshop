@@ -41,7 +41,8 @@
       "scripthost",
       "webworker"
     ],
-    "typeRoots": [],
+    "typeRoots": [
+    ],
     "types": [
       "@vue/compiler-core/dist/compiler-core",
       "@vue/compiler-dom/dist/compiler-dom",

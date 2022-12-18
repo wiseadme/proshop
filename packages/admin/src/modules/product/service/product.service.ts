@@ -10,9 +10,8 @@ import { useFilesService } from '@shared/services/files.service'
 import { useOptionsService } from '@shared/services/options.service'
 
 // Types
-import { IProduct, IProductAsset, IProductVariant } from '../types'
+import { IProduct, IAsset, IVariant, IVariantOption } from '@ecommerce-platform/types'
 import { clone } from '@shared/helpers'
-import { IVariantOption } from '@modules/variant/types'
 
 class Service {
   private _store: ReturnType<typeof useProductStore>
@@ -122,7 +121,7 @@ class Service {
     let variant = variants?.find(v => v._id === option.variantId)!
 
     if (!variant) {
-      variant = this.variants!.find(v => v._id === optionData.variantId) as IProductVariant
+      variant = this.variants!.find(v => v._id === optionData.variantId) as IVariant
       variants.push(variant)
     }
 
@@ -224,7 +223,7 @@ class Service {
 
     const product = unref(this._product)
 
-    const asset: IProductAsset = await this.createAsset(file, product?._id)
+    const asset: IAsset = await this.createAsset(file, product?._id)
 
     if (asset && asset.url) {
       let { assets } = this._product.value!

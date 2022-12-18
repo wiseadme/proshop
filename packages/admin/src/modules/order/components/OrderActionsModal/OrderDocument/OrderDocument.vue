@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { ICartItem } from '@ecommerce-platform/server/src/modules/cart/types/model'
+  import { ICartItem } from '@ecommerce-platform/types'
 
   defineProps({
     order: {

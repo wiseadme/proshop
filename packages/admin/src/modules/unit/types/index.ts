@@ -1,10 +1,6 @@
-declare interface IUnit {
-  _id: string
-  value: string
-  meta: Maybe<string>
-}
+import { IUnit } from '@ecommerce-platform/types'
 
-declare interface IUnitActions {
+export interface IUnitActions {
   create(unit: IUnit): Promise<IUnit>
 
   read(id?: string): Promise<Array<IUnit>>
@@ -12,6 +8,6 @@ declare interface IUnitActions {
   delete(id: string): Promise<boolean>
 }
 
-declare interface IUnitState {
+export interface IUnitState {
   units: Maybe<Array<IUnit>>
 }

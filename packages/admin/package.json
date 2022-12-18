@@ -1,5 +1,5 @@
 {
-  "name": "@ecommerce-platform/client",
+  "name": "@ecommerce-platform/admin",
   "version": "1.0.0",
   "description": "> TODO: description",
   "author": "Anar Allakhverdiev <wiseadme@gmail.com>",
@@ -75,7 +75,6 @@
     "nervue": "^0.0.23",
     "vue": "^3.2.3",
     "vue-router": "^4.0.15",
-    "vuedraggable": "^4.1.0",
-    "vueland": "git+ssh://git@github.com:vueland/vueland-next"
+    "vuedraggable": "^4.1.0"
   }
 }

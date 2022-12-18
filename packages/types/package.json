@@ -1,0 +1,10 @@
+{
+  "name": "@ecommerce-platform/types",
+  "version": "1.0.0",
+  "description": "ecommerce platform types",
+  "author": "Anar Allakhverdiev <wiseadme@gmail.com>",
+  "main": "index.ts",
+  "module": "index.ts",
+  "type": "module",
+  "license": "ISC"
+}

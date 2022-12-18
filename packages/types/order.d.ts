@@ -1,6 +1,5 @@
-import { ObjectId } from 'mongoose'
-import { Maybe } from '@/types/types'
-import { ICartItem } from '@modules/cart/types/model'
+import { ICart, ICartItem } from './cart'
+import { Maybe } from './utils'
 
 interface IOrderClient {
   name: string
@@ -25,9 +24,9 @@ export interface IOrder {
   amount: number
   address: Maybe<string>
   client: IOrderClient
-  cartId?: string
+  cart?: string | ICart
   orderId?: Maybe<string>
   qrcode?: Maybe<string>
-  owner?: Maybe<ObjectId>
-  status?: IOrderStatuses
+  owner?: Maybe<string>
+  status: IOrderStatuses
 }

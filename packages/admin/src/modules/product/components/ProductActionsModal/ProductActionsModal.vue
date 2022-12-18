@@ -1,6 +1,6 @@
 <script lang="ts" setup>
   import { PropType, nextTick, toRaw, watch } from 'vue'
-  import { IVariant } from '@modules/variant/types'
+  import { IVariant, ICategory, IAsset, IAttribute } from '@ecommerce-platform/types'
   import { IProductAsset } from '@modules/product/types'
   import { clone } from '@shared/helpers'
   import { TextEditor } from '@shared/components/TextEditor'
@@ -26,7 +26,7 @@
     categories: Array as PropType<Array<ICategory>>,
     attributes: Array as PropType<Array<IAttribute>>,
     variants: Array as PropType<Array<IVariant>>,
-    assets: Array as PropType<Array<IProductAsset>>
+    assets: Array as PropType<Array<IAsset>>
   })
 
   const emit = defineEmits([
@@ -111,7 +111,7 @@
     set: (val) => emit('update:image', val)
   })
 
-  let computedAssets = $computed<Array<IProductAsset>>({
+  let computedAssets = $computed<Array<IAsset>>({
     get: () => props.assets!,
     set: (val) => emit('update:assets', val)
   })
@@ -242,7 +242,7 @@
       it.main = it._id === currentImage!._id
       acc.push(it)
       return acc
-    }, [] as any[]) as IProductAsset[]
+    }, [] as any[]) as IAsset[]
   }
 
   const onClose = () => {
@@ -266,7 +266,7 @@
 
     if (to && props.isEdit) {
       props.categories?.forEach(ctg => {
-        if (!ctgMap.get(ctg._id)) toggleCategory(ctg)
+        if (!ctgMap.get(ctg._id!)) toggleCategory(ctg)
       })
     }
 

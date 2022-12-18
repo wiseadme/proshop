@@ -1,3 +1,5 @@
+import { IAttribute } from '@ecommerce-platform/types'
+
 export class Attribute implements IAttribute {
   _id: IAttribute['_id']
   key: IAttribute['key']

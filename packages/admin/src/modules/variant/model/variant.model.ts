@@ -1,4 +1,4 @@
-import { IVariant } from '@modules/variant/types'
+import { IVariant } from '@ecommerce-platform/types'
 
 export class Variant implements IVariant {
   _id: string
@@ -10,7 +10,6 @@ export class Variant implements IVariant {
   }){
     this._id = _id
     this.group = group
-
   }
 
   static create(unit = {}){

@@ -1,6 +1,6 @@
-import { IOrder } from '@modules/order/types'
+import { IOrder } from '@ecommerce-platform/types'
 
-export class Order implements IOrder {
+export class Order implements Partial<IOrder> {
   _id: IOrder['_id']
   cart: IOrder['cart']
   client: IOrder['client']

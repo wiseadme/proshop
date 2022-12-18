@@ -4,6 +4,7 @@
   import { useUnitService } from '@modules/unit/service/unit.service'
   import { clone } from '@shared/helpers'
   import { Unit } from '@modules/unit/model/unit.model'
+  import { IUnit } from '@ecommerce-platform/types'
 
   let model = $ref<IUnit>(Unit.create())
   let units = $ref<Maybe<Array<IUnit>>>(null)
