@@ -1,7 +1,7 @@
-import { IOrder } from '@modules/order/types/model'
+import { IOrder } from '@ecommerce-platform/types'
 
 export class OrderDTO {
-  cartId?: IOrder['cartId']
+  cart?: IOrder['cart']
   items: IOrder['items']
   amount: IOrder['amount']
   owner?: IOrder['owner']

@@ -1,5 +1,5 @@
 import { model, Schema, Document } from 'mongoose'
-import { IOption } from '../types/model'
+import { IOption } from '@ecommerce-platform/types'
 
 const OptionSchema = new Schema<Document & IOption>({
   _id: Schema.Types.ObjectId,

@@ -27,6 +27,7 @@
   },
   "devDependencies": {
     "@types/express": "^4.17.13",
+    "@types/mongoose": "^5.11.97",
     "@types/multer": "^1.4.7",
     "@types/node": "^16.11.10",
     "@types/swagger-jsdoc": "^6.0.1",
@@ -49,7 +50,7 @@
     "jsonwebtoken": "^8.5.1",
     "keycloak-connect": "^19.0.3",
     "mkdirp": "^1.0.4",
-    "mongoose": "^6.0.13",
+    "mongoose": "^6.8.1",
     "multer": "^1.4.4",
     "qrcode": "^1.5.1",
     "redis": "^4.2.0",

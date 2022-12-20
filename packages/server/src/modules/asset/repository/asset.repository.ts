@@ -1,6 +1,6 @@
 import * as fs from 'fs/promises'
 import rimraf from 'rimraf'
-import mongoose from 'mongoose'
+import mongoose, { HydratedDocument } from 'mongoose'
 import { inject, injectable } from 'inversify'
 import { validateId } from '@common/utils/mongoose-validate-id'
 
@@ -9,9 +9,9 @@ import { AssetModel } from '@modules/asset/model/asset.model'
 import config from '@app/config'
 // Types
 import { Request, Response } from 'express'
+import { IAsset } from '@ecommerce-platform/types'
 import { IAssetsRepository } from '../types/repository'
 import { AssetsResponse } from '../types/params'
-import { IAssetItem } from '../types/model'
 import { IFileLoaderMiddleware } from '@/types/middlewares'
 
 @injectable()
@@ -49,7 +49,7 @@ export class AssetRepository implements IAssetsRepository {
         url
       })
         .save()
-        .then(resolve)
+        .then((asset) => resolve(asset))
     })
   }
 
@@ -60,7 +60,7 @@ export class AssetRepository implements IAssetsRepository {
       { _id: updates._id },
       { $set: updates },
       { new: true }
-    ) as IAssetItem
+    ) as IAsset
 
     return { updated }
   }
@@ -91,7 +91,7 @@ export class AssetRepository implements IAssetsRepository {
     try {
       validateId(id)
 
-      const assets = await AssetModel.find({ ownerId: id })
+      const assets = await AssetModel.find({ ownerId: id }) as HydratedDocument<IAsset>[]
       const ownerDir = id.slice(-4)
       const dirPath = `${ config.uploadsDir }/${ ownerDir }`
 

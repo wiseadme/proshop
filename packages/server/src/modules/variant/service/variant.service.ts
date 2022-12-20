@@ -3,7 +3,7 @@ import { TYPES } from '@common/schemes/di-types'
 // Types
 import { ILogger } from '@/types/utils'
 import { Document } from 'mongoose'
-import { IVariant } from '../types/model'
+import { IVariant } from '@ecommerce-platform/types'
 import { IVariantService } from '../types/service'
 import { IVariantRepository } from '../types/repository'
 

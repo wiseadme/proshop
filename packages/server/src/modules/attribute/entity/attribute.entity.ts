@@ -1,4 +1,4 @@
-import { IAttribute } from '../types/model'
+import { IAttribute } from '@ecommerce-platform/types'
 
 export class Attribute implements IAttribute {
   private _key: string

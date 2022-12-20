@@ -9,7 +9,7 @@ import { Request, Response } from 'express'
 import { ILogger } from '@/types/utils'
 import { IController } from '@/types'
 import { ICartService } from '../types/service'
-import { ICart } from '../types/model'
+import { ICart } from '@ecommerce-platform/types'
 import { Cart } from '@modules/cart/entity/cart.entity'
 
 @injectable()

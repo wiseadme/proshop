@@ -1,4 +1,4 @@
-import { ICart } from '@modules/cart/types/model'
+import { ICart } from '@ecommerce-platform/types'
 
 export class CartDTO {
   items: ICart['items']

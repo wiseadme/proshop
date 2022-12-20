@@ -1,5 +1,5 @@
 import { Document } from 'mongoose'
-import { IAttribute } from './model'
+import { IAttribute } from '@ecommerce-platform/types'
 
 export interface IAttributeService {
   create(attribute: IAttribute): Promise<Document<IAttribute>>

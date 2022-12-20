@@ -8,7 +8,7 @@ import { Category } from '../entity/category.entity'
 import { TYPES } from '@common/schemes/di-types'
 
 // Types
-import { ICategory } from '../types/model'
+import { ICategory } from '@ecommerce-platform/types'
 import { ICategoryService } from '../types/service'
 import { ICategoryRepository } from '../types/repository'
 import { IEventBusService } from '@/types/services'
@@ -36,7 +36,7 @@ export class CategoryService implements ICategoryService {
 
     if (category.parent) {
       const [ parent ] = await this.repository.read({ id: category.parent })
-      const children = [ ...parent!.children, ctg._id ]
+      const children = [ ...parent!.children!, ctg._id ]
 
       const $set = { _id: parent._id, children }
 
@@ -53,7 +53,7 @@ export class CategoryService implements ICategoryService {
       if (category.parent) {
         const [ prevParent ] = await this.repository.read({ _id: category.parent })
 
-        const children = prevParent!.children.filter((it) => {
+        const children = prevParent!.children!.filter((it) => {
           return (it as any)._id.toString() !== update._id
         })
 
@@ -63,7 +63,7 @@ export class CategoryService implements ICategoryService {
       }
 
       const [ currentParent ] = await this.repository.read({ _id: update.parent })
-      const $set = { children: [ ...currentParent!.children, category!._id ], _id: currentParent._id }
+      const $set = { children: [ ...currentParent!.children!, category!._id ], _id: currentParent._id }
 
       await this.repository.update($set)
     }
@@ -84,7 +84,7 @@ export class CategoryService implements ICategoryService {
 
       // here we add the "any" type to
       // children, because they are populated
-      const children = parent!.children.filter((it) => {
+      const children = parent!.children!.filter((it) => {
         return (it as any)._id.toString() !== category._id
       })
 

@@ -9,7 +9,7 @@ import { Request, Response } from 'express'
 import { ILogger } from '@/types/utils'
 import { IController } from '@/types'
 import { IOrderService } from '../types/service'
-import { IOrder } from '../types/model'
+import { IOrder } from '@ecommerce-platform/types'
 
 @injectable()
 export class OrderController extends BaseController implements IController {

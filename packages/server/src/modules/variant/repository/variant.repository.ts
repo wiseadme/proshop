@@ -6,7 +6,7 @@ import { validateId } from '@common/utils/mongoose-validate-id'
 // Types
 import { Document } from 'mongoose'
 import { ILogger } from '@/types/utils'
-import { IVariant } from '../types/model'
+import { IVariant } from '@ecommerce-platform/types'
 import { IVariantRepository } from '../types/repository'
 
 @injectable()

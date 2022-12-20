@@ -1,6 +1,4 @@
-import { ICartItem } from '@ecommerce-platform/server/src/modules/cart/types/model'
-import { Maybe } from '@ecommerce-platform/server/src/types/types'
-import { IOrderStatuses } from '@ecommerce-platform/server/src/modules/order/types/model'
+import { ICartItem, Maybe, IOrderStatuses } from '@ecommerce-platform/types'
 
 export interface IOrderClient {
   name: string

@@ -7,7 +7,7 @@ import { Request, Response } from 'express'
 import { ILogger } from '@/types/utils'
 import { BaseController } from '@common/controller/base.controller'
 import { IController } from '@/types'
-import { IUnit } from '../types/model'
+import { IUnit } from '@ecommerce-platform/types'
 import { IUnitService } from '@modules/unit/types/service'
 
 @injectable()

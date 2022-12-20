@@ -8,7 +8,7 @@ import { BaseController } from '@common/controller/base.controller'
 // Types
 import { IController } from '@/types'
 import { ILogger } from '@/types/utils'
-import { ICategory } from '../types/model'
+import { ICategory } from '@ecommerce-platform/types'
 import { ICategoryService } from '../types/service'
 
 // Schemes

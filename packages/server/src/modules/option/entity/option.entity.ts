@@ -1,5 +1,4 @@
-import { IOption } from '../types/model'
-import { Maybe } from '@/types/types'
+import { IOption, Maybe } from '@ecommerce-platform/types'
 
 export class Option implements IOption {
   private _name: string

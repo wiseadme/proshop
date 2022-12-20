@@ -1,12 +1,16 @@
 import { model, Schema, Document } from 'mongoose'
-import { IOrder } from '@modules/order/types/model'
+import { IOrder } from '@ecommerce-platform/types'
 
-const OrderSchema = new Schema<Document & IOrder>({
+const OrderSchema = new Schema<IOrder>({
   _id: Schema.Types.ObjectId,
   items: {
     type: Array as any,
     default: []
   },
+  cart: {
+    type: Schema.Types.ObjectId,
+    ref: 'Cart',
+  } as any,
   amount: {
     type: Number,
     required: true
@@ -60,4 +64,4 @@ const OrderSchema = new Schema<Document & IOrder>({
   timestamps: true
 })
 
-export const OrderModel = model<IOrder>('Order', OrderSchema)
+export const OrderModel = model('Order', OrderSchema)

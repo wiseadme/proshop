@@ -1,4 +1,4 @@
-import { IVariant } from '../types/model'
+import { IVariant } from '@ecommerce-platform/types'
 
 export class Variant {
   private readonly _group: IVariant['group']

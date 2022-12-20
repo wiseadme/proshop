@@ -1,10 +1,9 @@
-import { IOrder } from '@modules/order/types/model'
-import { ICartItem } from '@modules/cart/types/model'
+import { IOrder, ICartItem } from '@ecommerce-platform/types'
 
 export class Order implements IOrder {
   private _items: IOrder['items']
   private _amount: IOrder['amount']
-  private _cartId: IOrder['cartId']
+  private _cart: IOrder['cart']
   private _orderId: IOrder['orderId']
   private _address: IOrder['address']
   private _client: IOrder['client']
@@ -20,7 +19,7 @@ export class Order implements IOrder {
     client,
     qrcode = null,
     owner = null,
-    cartId = '',
+    cart = '',
     status = {
       created: true,
       confirmed: false,
@@ -39,7 +38,7 @@ export class Order implements IOrder {
     this._client = client
     this._qrcode = qrcode
     this._status = status
-    this._cartId = cartId
+    this._cart = cart
   }
 
   get items(){
@@ -51,7 +50,7 @@ export class Order implements IOrder {
   }
 
   get cartId(){
-    return this._cartId
+    return this._cart
   }
 
   get orderId(){

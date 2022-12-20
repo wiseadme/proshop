@@ -1,5 +1,5 @@
 import { model, Schema, Document } from 'mongoose'
-import { IAttribute } from '../types/model'
+import { IAttribute } from '@ecommerce-platform/types'
 
 const AttributeSchema = new Schema<Document & IAttribute>({
   _id: Schema.Types.ObjectId,

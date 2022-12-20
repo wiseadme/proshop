@@ -9,7 +9,7 @@ import { Document } from 'mongoose'
 import { ILogger } from '@/types/utils'
 import { IProductRepository } from '../types/repository'
 import { IProductService } from '../types/service'
-import { IProduct } from '../types/model'
+import { IProduct } from '@ecommerce-platform/types'
 import { IEventBusService } from '@/types/services'
 
 // Constants

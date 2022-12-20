@@ -1,7 +1,6 @@
 <script lang="ts" setup>
   import { PropType, nextTick, toRaw, watch } from 'vue'
-  import { IVariant, ICategory, IAsset, IAttribute } from '@ecommerce-platform/types'
-  import { IProductAsset } from '@modules/product/types'
+  import { IVariant, ICategory, IAsset, IUnit, IAttribute } from '@ecommerce-platform/types'
   import { clone } from '@shared/helpers'
   import { TextEditor } from '@shared/components/TextEditor'
   import VariantsBlock from './VariantsBlock'
@@ -68,12 +67,17 @@
 
   let productImages = $ref<Array<File>>([])
   let attributesArray = $ref<Array<IAttribute>>([])
-  let currentImage = $ref<Maybe<IProductAsset>>(null)
+  let currentImage = $ref<Maybe<IAsset>>(null)
   let content = $ref<string>('')
   let rerenderKey = $ref<string>('')
 
   const computedModalHeader = $computed<string>(() => {
     return `${ (props.isEdit ? 'Редактирование' : 'Создание') } продукта`
+  })
+
+  const computedModelValue = $computed<boolean>({
+    get: () => props.modelValue!,
+    set: (val) => emit('update:modelValue', val)
   })
 
   const computedName = $computed<string>({
@@ -265,7 +269,7 @@
     ctgMap.clear()
 
     if (to && props.isEdit) {
-      props.categories?.forEach(ctg => {
+      props.categories.forEach(ctg => {
         if (!ctgMap.get(ctg._id!)) toggleCategory(ctg)
       })
     }
@@ -280,7 +284,7 @@
 <template>
   <div>
     <v-modal
-      v-model="modelValue"
+      v-model="computedModelValue"
       transition="scale-in"
       width="90%"
       overlay

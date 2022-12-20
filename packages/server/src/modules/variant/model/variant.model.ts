@@ -1,5 +1,5 @@
 import { model, Schema, Document } from 'mongoose'
-import { IVariant } from '../types/model'
+import { IVariant } from '@ecommerce-platform/types'
 
 const VariantSchema = new Schema<Document & IVariant>({
   _id: Schema.Types.ObjectId,
@@ -7,10 +7,6 @@ const VariantSchema = new Schema<Document & IVariant>({
     type: String,
     required: true
   },
-  options: {
-    type: Array as any,
-    required: true
-  }
 }, {
   timestamps: true
 })

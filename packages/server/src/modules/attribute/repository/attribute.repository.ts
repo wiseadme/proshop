@@ -5,7 +5,7 @@ import { AttributeModel } from '@modules/attribute/model/attribute.model'
 import { validateId } from '@common/utils/mongoose-validate-id'
 // Types
 import { ILogger } from '@/types/utils'
-import { IAttribute } from '../types/model'
+import { IAttribute } from '@ecommerce-platform/types'
 import { IAttributeRepository } from '../types/repository'
 
 @injectable()

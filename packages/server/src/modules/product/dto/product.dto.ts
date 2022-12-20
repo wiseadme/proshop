@@ -1,4 +1,4 @@
-import { IProduct } from '@modules/product/types/model'
+import { IProduct } from '@ecommerce-platform/types'
 
 export class ProductDTO {
   name: IProduct['name']

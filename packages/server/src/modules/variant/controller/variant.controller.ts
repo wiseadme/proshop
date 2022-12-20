@@ -9,7 +9,7 @@ import { Variant } from '../entity/variant.entity'
 import { Request, Response } from 'express'
 import { IController } from '@/types'
 import { ILogger } from '@/types/utils'
-import { IVariant } from '../types/model'
+import { IVariant } from '@ecommerce-platform/types'
 import { IVariantService } from '../types/service'
 import { VariantQuery } from '../types/params'
 

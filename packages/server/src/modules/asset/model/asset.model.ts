@@ -1,7 +1,7 @@
 import { Document, model, Schema } from 'mongoose'
-import { IAssetItem } from '../types/model'
+import { IAsset } from '@ecommerce-platform/types'
 
-const AssetSchema: Schema = new Schema<IAssetItem & Document>({
+const AssetSchema: Schema = new Schema<IAsset & Document>({
   _id: Schema.Types.ObjectId,
   url: {
     type: String,
@@ -27,4 +27,4 @@ const AssetSchema: Schema = new Schema<IAssetItem & Document>({
   timestamps: true
 })
 
-export const AssetModel = model<IAssetItem>('Asset', AssetSchema)
+export const AssetModel = model<IAsset>('Asset', AssetSchema)

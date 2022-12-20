@@ -5,7 +5,7 @@ import { UnitModel } from '../model/unit.model'
 
 // Types
 import { ILogger } from '@/types/utils'
-import { IUnit } from '../types/model'
+import { IUnit } from '@ecommerce-platform/types'
 import { IUnitRepository } from '@modules/unit/types/repository'
 
 @injectable()

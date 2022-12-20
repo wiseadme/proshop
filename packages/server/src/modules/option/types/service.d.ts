@@ -1,5 +1,5 @@
 import { Document } from 'mongoose'
-import { IOption } from './model'
+import { IOption } from '@ecommerce-platform/types'
 
 export interface IOptionService {
   create(option: IOption): Promise<Document<IOption>>

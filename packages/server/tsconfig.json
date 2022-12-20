@@ -12,7 +12,9 @@
     "strictPropertyInitialization": false,
     "strict": true,
     "types": [
-      "@types/express"
+      "@types/express",
+      "@types/node",
+      "@types/mogoose"
     ],
     "baseUrl": "./",
     "paths": {

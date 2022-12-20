@@ -1,4 +1,4 @@
-import { ICategory } from '@modules/category/types/model'
+import { ICategory } from '@ecommerce-platform/types'
 
 export class CategoryDTO {
   url: string

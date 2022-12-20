@@ -9,7 +9,7 @@ import { Request, Response } from 'express'
 import { ILogger } from '@/types/utils'
 import { IController } from '@/types'
 import { IAttributeService } from '../types/service'
-import { IAttribute } from '../types/model'
+import { IAttribute } from '@ecommerce-platform/types'
 import { ValidateMiddleware } from '@common/middlewares/validate.middleware'
 import { Attribute } from '@modules/attribute/entity/attribute.entity'
 import { AttributeDTO } from '@modules/attribute/dto/attribute.dto'
@@ -36,7 +36,7 @@ export class AttributeController extends BaseController implements IController {
 
   async createAttribute({ body, method }: Request<{}, {}, IAttribute>, res: Response){
     try {
-      const attribute = await this.service.create(body)
+      const attribute = await this.service.create(Attribute.create(body))
 
       this.send({
         response: res,

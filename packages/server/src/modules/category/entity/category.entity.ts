@@ -1,20 +1,32 @@
-import { ICategory } from '../types/model'
-import { ISEOType } from '@/types/models'
+import { ICategory } from '@ecommerce-platform/types'
 import { translator } from '@common/utils/translator'
 
 export class Category implements ICategory {
 
-  private readonly _url: string
-  private readonly _title: string
-  private readonly _order?: number
-  private readonly _image?: string
-  private readonly _parent?: string
-  private readonly _children?: string[]
+  private readonly _url: ICategory['url']
+  private readonly _title: ICategory['title']
+  private readonly _order: ICategory['order']
+  private readonly _image: ICategory['image']
+  private readonly _parent: ICategory['parent']
+  private readonly _children?: ICategory['children']
   private readonly _seo?: ICategory['seo']
-  private readonly _isVisible: boolean
-  private readonly _length: number
+  private readonly _isVisible: ICategory['isVisible']
+  private readonly _length: ICategory['length']
 
-  constructor({ title, seo, url, order, image, parent, children, isVisible }: ICategory){
+  constructor({
+    title,
+    url,
+    order = 0,
+    image = null,
+    parent = null,
+    children,
+    isVisible,
+    seo = {
+      title: null,
+      description: null,
+      keywords: null
+    }
+  }: ICategory){
     this._title = title
     this._order = order
     this._image = image
@@ -26,39 +38,39 @@ export class Category implements ICategory {
     this._length = 0
   }
 
-  get title(): string{
+  get title(){
     return this._title
   }
 
-  get order(): number{
-    return this._order!
+  get order(){
+    return this._order
   }
 
   get url(): string{
     return this._url
   }
 
-  get seo(): ISEOType{
-    return this._seo! as ISEOType
+  get seo(){
+    return this._seo
   }
 
-  get image(): string{
-    return this._image!
+  get image(){
+    return this._image
   }
 
-  get parent(): string{
-    return this._parent!
+  get parent(){
+    return this._parent
   }
 
   get children(){
-    return this._children!
+    return this._children
   }
 
   get isVisible(){
     return this._isVisible
   }
 
-  get length() {
+  get length(){
     return this._length
   }
 

@@ -1,11 +1,11 @@
-import mongoose, { Document } from 'mongoose'
+import mongoose, { Document, Types } from 'mongoose'
 import { inject, injectable } from 'inversify'
 import { TYPES } from '@common/schemes/di-types'
 import { ProductModel } from '@modules/product/model/product.model'
 import { validateId } from '@common/utils/mongoose-validate-id'
 // Types
 import { IProductRepository } from '../types/repository'
-import { IProduct } from '../types/model'
+import { IProduct } from '@ecommerce-platform/types'
 import { ProductQuery } from '../types/params'
 import { ILogger } from '@/types/utils'
 
@@ -20,7 +20,7 @@ export class ProductRepository implements IProductRepository {
   }
 
   async create(product: IProduct){
-    return (await new ProductModel({
+    return await (await new ProductModel({
       _id: new mongoose.Types.ObjectId(),
       name: product.name,
       price: product.price,
@@ -51,15 +51,13 @@ export class ProductRepository implements IProductRepository {
             }
           }
         }
-      ])
+      ]) as any
   }
 
   async read(params: ProductQuery){
     let search
 
     const { category, page = DEFAULT_PAGE, count = DEFAULT_COUNT } = params as ProductQuery
-
-    console.log(params)
 
     if (params._id) {
       params._id && validateId(params._id)
@@ -77,7 +75,7 @@ export class ProductRepository implements IProductRepository {
               }
             }
           }
-        ])
+        ]) as any
     }
 
     if (params.category) {
@@ -108,10 +106,10 @@ export class ProductRepository implements IProductRepository {
         }
       ])
       .skip((page * count) - count)
-      .limit(count)
+      .limit(count) as any
   }
 
-  async update($set: Partial<Document<IProduct>>){
+  async update($set: Partial<IProduct>){
     validateId($set._id)
 
     const updated = await ProductModel.findByIdAndUpdate(
@@ -131,7 +129,7 @@ export class ProductRepository implements IProductRepository {
             }
           }
         }
-      ]) as Document<IProduct>
+      ]) as any
 
     return { updated }
   }

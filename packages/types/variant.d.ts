@@ -12,7 +12,7 @@ export interface IVariantOption {
 }
 
 export interface IVariant {
-  _id: string
+  _id?: string
   group: string,
   options?: Array<IVariantOption>
 }

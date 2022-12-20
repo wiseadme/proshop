@@ -1,4 +1,4 @@
-import { IUnit } from './model'
+import { IUnit } from '@ecommerce-platform/types'
 import { Document } from 'mongoose'
 
 export interface IUnitRepository {

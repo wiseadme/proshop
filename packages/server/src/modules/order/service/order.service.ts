@@ -6,9 +6,8 @@ import { TYPES } from '@common/schemes/di-types'
 import { ILogger } from '@/types/utils'
 import { IOrderService } from '../types/service'
 import { IOrderRepository } from '../types/repository'
-import { IOrder } from '@modules/order/types/model'
+import { IOrder } from '@ecommerce-platform/types'
 import { Order } from '@modules/order/entity/order.entity'
-import { OrderStatus } from '@modules/order/dictionaries'
 import { IEventBusService } from '@/types/services'
 import { DELETE_CART_EVENT } from '@common/constants/events'
 
@@ -27,16 +26,16 @@ export class OrderService implements IOrderService {
 
     const created = await this.repository.create(Order.create(order))
 
-    await this.events.emit(DELETE_CART_EVENT, order.cartId)
+    await this.events.emit(DELETE_CART_EVENT, order.cart)
 
     return created
   }
 
-  async read(params = {}): Promise<Array<Document & IOrder>>{
+  async read(params = {}): Promise<Array<Document<string, {}, IOrder>>>{
     return await this.repository.read(params)
   }
 
-  async update(updates: IOrder & Document): Promise<{ updated: Document<IOrder> }>{
+  async update(updates: IOrder): Promise<{ updated: Document<string, {}, IOrder> }>{
     return await this.repository.update(updates)
   }
 

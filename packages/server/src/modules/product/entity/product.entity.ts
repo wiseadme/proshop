@@ -1,5 +1,5 @@
 import { translator } from '@common/utils/translator'
-import { IProduct } from '../types/model'
+import { IProduct } from '@ecommerce-platform/types'
 
 export class Product implements IProduct {
   private readonly _name: IProduct['name']

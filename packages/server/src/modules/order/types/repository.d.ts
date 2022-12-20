@@ -1,12 +1,12 @@
 import { Document } from 'mongoose'
-import { IOrder } from '@modules/order/types/model'
+import { IOrder } from '@ecommerce-platform/types'
 
 export interface IOrderRepository {
-  create(order: IOrder): Promise<Document>
+  create(order: IOrder): Promise<Document<string, {}, IOrder>>
 
-  read(params?: any): Promise<Array<Document & IOrder>>
+  read(params?: any): Promise<Array<Document<string, {}, IOrder>>>
 
-  update(updates: IOrder & Document): Promise<{ updated: Document<IOrder> }>
+  update(updates: IOrder): Promise<{ updated: Document<string, {}, IOrder> }>
 
   delete(id: string): Promise<boolean>
 }

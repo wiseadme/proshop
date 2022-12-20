@@ -1,5 +1,5 @@
 import { Document } from 'mongoose'
-import { ICart } from '@modules/cart/types/model'
+import { ICart } from '@ecommerce-platform/types'
 
 export interface ICartService {
   create(cart: ICart): Promise<Document<ICart>>

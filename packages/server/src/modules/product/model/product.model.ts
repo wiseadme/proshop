@@ -1,7 +1,7 @@
-import { model, Schema, Document } from 'mongoose'
-import { IProduct } from '../types/model'
+import { model, Schema } from 'mongoose'
+import { IProduct } from '@ecommerce-platform/types'
 
-const ProductSchema = new Schema<IProduct & Document>({
+const ProductSchema = new Schema<IProduct>({
   _id: Schema.Types.ObjectId,
   name: {
     type: String,
@@ -86,4 +86,4 @@ const ProductSchema = new Schema<IProduct & Document>({
   timestamps: true
 })
 
-export const ProductModel = model<IProduct>('Product', ProductSchema)
+export const ProductModel = model('Product', ProductSchema)

@@ -1,4 +1,4 @@
-import { ICart } from '@modules/cart/types/model'
+import { ICart } from '@ecommerce-platform/types'
 
 export class Cart implements ICart {
   private _items: ICart['items']
