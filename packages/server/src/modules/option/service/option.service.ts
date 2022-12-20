@@ -19,15 +19,15 @@ export class OptionService implements IOptionService {
   ){
   }
 
-  create(option){
+  create(option: IOption): Promise<Document & IOption>{
     return this.repository.create(option)
   }
 
-  read(id?: string): Promise<Array<Document<IOption>>>{
+  read(id?: string): Promise<Array<Document & IOption>>{
     return this.repository.read(id)
   }
 
-  update(updates: IOption & Document): Promise<{ updated: Document<IOption> }>{
+  update(updates: Partial<IOption>): Promise<{ updated: Document & IOption }>{
     return this.repository.update(updates)
   }
 

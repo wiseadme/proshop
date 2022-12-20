@@ -31,11 +31,11 @@ export class OrderService implements IOrderService {
     return created
   }
 
-  async read(params = {}): Promise<Array<Document<string, {}, IOrder>>>{
+  async read(params = {}): Promise<Array<Document & IOrder>>{
     return await this.repository.read(params)
   }
 
-  async update(updates: IOrder): Promise<{ updated: Document<string, {}, IOrder> }>{
+  async update(updates: IOrder): Promise<{ updated: Document & IOrder }>{
     return await this.repository.update(updates)
   }
 

@@ -23,4 +23,4 @@ const AttributeSchema = new Schema<Document & IAttribute>({
   timestamps: true
 })
 
-export const AttributeModel = model<IAttribute>('Attribute', AttributeSchema)
+export const AttributeModel = model('Attribute', AttributeSchema)

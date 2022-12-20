@@ -1,7 +1,7 @@
 import { model, Schema, Document } from 'mongoose'
 import { ICart } from '@ecommerce-platform/types'
 
-const CartSchema = new Schema<Document & ICart>({
+const CartSchema = new Schema<ICart & Document>({
   _id: Schema.Types.ObjectId,
   items: {
     type: Array as any,
@@ -38,4 +38,4 @@ const CartSchema = new Schema<Document & ICart>({
 
 CartSchema.index({ expireAt: 1 }, { expireAfterSeconds : 0 });
 
-export const CartModel = model<ICart>('Cart', CartSchema)
+export const CartModel = model('Cart', CartSchema)

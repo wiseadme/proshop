@@ -51,7 +51,7 @@ export class ProductRepository implements IProductRepository {
             }
           }
         }
-      ]) as any
+      ]) as Document & IProduct
   }
 
   async read(params: ProductQuery){
@@ -62,7 +62,7 @@ export class ProductRepository implements IProductRepository {
     if (params._id) {
       params._id && validateId(params._id)
 
-      return ProductModel.find({ _id: params._id })
+      const product = await ProductModel.find({ _id: params._id })
         .populate('categories', [ 'title' ])
         .populate([
           'assets',
@@ -75,7 +75,9 @@ export class ProductRepository implements IProductRepository {
               }
             }
           }
-        ]) as any
+        ])
+
+      return product
     }
 
     if (params.category) {
@@ -90,7 +92,7 @@ export class ProductRepository implements IProductRepository {
       search = { 'name': { '$regex': `.*${ params.name }*.`, '$options': 'i' } }
     }
 
-    return ProductModel
+    const products = await ProductModel
       .find(search)
       .populate('categories', [ 'title' ])
       .populate([
@@ -107,6 +109,8 @@ export class ProductRepository implements IProductRepository {
       ])
       .skip((page * count) - count)
       .limit(count) as any
+
+    return products
   }
 
   async update($set: Partial<IProduct>){
@@ -129,7 +133,7 @@ export class ProductRepository implements IProductRepository {
             }
           }
         }
-      ]) as any
+      ]) as Document & IProduct
 
     return { updated }
   }

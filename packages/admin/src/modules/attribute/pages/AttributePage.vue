@@ -21,7 +21,7 @@
 
   const onCreate = (validate) => {
     validate().then(() => {
-      service.createAttribute(toRaw(attributePattern.value))
+      service.createAttribute(toRaw(attributePattern))
     })
   }
 

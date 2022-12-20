@@ -1,4 +1,4 @@
-import mongoose, { Document } from 'mongoose'
+import mongoose, { Document, Query } from 'mongoose'
 import { inject, injectable } from 'inversify'
 import { TYPES } from '@common/schemes/di-types'
 import { AttributeModel } from '@modules/attribute/model/attribute.model'
@@ -15,7 +15,7 @@ export class AttributeRepository implements IAttributeRepository {
   ){
   }
 
-  async create(attribute: IAttribute): Promise<Document>{
+  async create(attribute: IAttribute): Promise<IAttribute & Document>{
     return new AttributeModel({
       _id: new mongoose.Types.ObjectId(),
       key: attribute.key,
@@ -25,24 +25,20 @@ export class AttributeRepository implements IAttributeRepository {
     }).save()
   }
 
-  async read(id?: string): Promise<Array<Document & IAttribute>>{
-    return AttributeModel.find({ id })
+  async read(id?: string): Promise<Array<IAttribute & Document>>{
+    const attrs = await AttributeModel.find(id ? { _id: id } : {})
+
+    return attrs as Array<IAttribute & Document>
   }
 
-  async update(updates: Array<IAttribute & Document>): Promise<{ updated: Array<Document<IAttribute>> }>{
-    const updated: Array<Document<IAttribute>> = []
+  async update(updates: Partial<IAttribute> & Required<{_id: string}>): Promise<{ updated: IAttribute & Document }>{
+    validateId(updates._id)
 
-    for (const attr of updates) {
-      validateId(attr._id)
-
-      const attribute = await AttributeModel.findByIdAndUpdate(
-        { _id: attr._id },
-        { $set: attr },
-        { new: true }
-      ) as Document<IAttribute>
-
-      updated.push(attribute)
-    }
+    const updated = await AttributeModel.findByIdAndUpdate(
+      { _id: updates._id },
+      { $set: updates },
+      { new: true }
+    ) as IAttribute & Document
 
     return { updated }
   }
