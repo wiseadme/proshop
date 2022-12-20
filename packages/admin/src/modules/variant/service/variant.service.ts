@@ -1,6 +1,6 @@
 import { Store } from 'nervue'
 import { useVariantStore } from '@modules/variant/store'
-import { IVariant } from '@ecommerce-platform/types'
+import { IVariant } from '@ecommerce-platform/types/index'
 import { IVariantState, IVariantActions } from '@modules/variant/types'
 
 class Service {

@@ -78,9 +78,14 @@ const ProductSchema = new Schema<IProduct>({
     ],
     default: []
   },
-  isVisible: {
-    type: Boolean,
-    default: true
+  conditions: {
+    type: {
+      visible: Boolean,
+      countable: Boolean,
+      exists: Boolean,
+      hasDiscounts: Boolean,
+      hasActions: Boolean,
+    }
   },
 }, {
   timestamps: true

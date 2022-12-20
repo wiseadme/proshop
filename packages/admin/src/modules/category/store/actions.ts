@@ -1,5 +1,5 @@
 import { useCategoryRepository } from '@modules/category/repository/category.repository'
-import { ICategory } from '@ecommerce-platform/types'
+import { ICategory } from '@ecommerce-platform/types/index'
 
 const categoryRepository = useCategoryRepository()
 

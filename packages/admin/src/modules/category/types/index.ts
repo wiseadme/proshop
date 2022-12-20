@@ -1,4 +1,4 @@
-import { ICategory } from '@ecommerce-platform/types'
+import { ICategory } from '@ecommerce-platform/types/index'
 
 export interface ICategoryState {
   categories: Maybe<Array<ICategory>>

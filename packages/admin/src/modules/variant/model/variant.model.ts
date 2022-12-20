@@ -1,4 +1,4 @@
-import { IVariant } from '@ecommerce-platform/types'
+import { IVariant } from '@ecommerce-platform/types/index'
 
 export class Variant implements IVariant {
   _id: string

@@ -1,4 +1,4 @@
-import { ICartItem, Maybe, IOrderStatuses } from '@ecommerce-platform/types'
+import { ICartItem, Maybe, IOrderStatuses } from '@ecommerce-platform/types/index'
 
 export interface IOrderClient {
   name: string

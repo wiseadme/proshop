@@ -2,7 +2,6 @@ import { ICategory } from '@ecommerce-platform/types'
 import { translator } from '@common/utils/translator'
 
 export class Category implements ICategory {
-
   private readonly _url: ICategory['url']
   private readonly _title: ICategory['title']
   private readonly _order: ICategory['order']
@@ -10,7 +9,7 @@ export class Category implements ICategory {
   private readonly _parent: ICategory['parent']
   private readonly _children?: ICategory['children']
   private readonly _seo?: ICategory['seo']
-  private readonly _isVisible: ICategory['isVisible']
+  private readonly _conditions: ICategory['conditions']
   private readonly _length: ICategory['length']
 
   constructor({
@@ -20,7 +19,10 @@ export class Category implements ICategory {
     image = null,
     parent = null,
     children,
-    isVisible,
+    conditions = {
+      visible: true,
+      special: false
+    },
     seo = {
       title: null,
       description: null,
@@ -32,7 +34,7 @@ export class Category implements ICategory {
     this._image = image
     this._parent = parent
     this._children = children
-    this._isVisible = isVisible
+    this._conditions = conditions
     this._seo = seo
     this._url = url || translator(this._title).toLowerCase()
     this._length = 0
@@ -66,8 +68,8 @@ export class Category implements ICategory {
     return this._children
   }
 
-  get isVisible(){
-    return this._isVisible
+  get conditions(){
+    return this._conditions
   }
 
   get length(){

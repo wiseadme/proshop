@@ -1,4 +1,4 @@
-import { IOrder } from '@ecommerce-platform/types'
+import { IOrder } from '@ecommerce-platform/types/index'
 
 export class Order implements Partial<IOrder> {
   _id: IOrder['_id']

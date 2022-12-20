@@ -45,10 +45,6 @@ export class ProductService implements IProductService {
   }
 
   async read(query){
-    // const { id, category, name, page, count, url } = query
-    // const searchKey = name ? 'name' : category ? 'category' : null
-    // const params = id ? id : { page, count, [searchKey!]: query[searchKey!] }
-
     return await this.repository.read(query)
   }
 

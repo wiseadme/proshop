@@ -10,7 +10,7 @@ export class Category implements ICategory {
   order: ICategory['order']
   seo: ICategory['seo']
   length: ICategory['length']
-  isVisible: ICategory['isVisible']
+  conditions: ICategory['conditions']
 
   constructor({
     _id = '',
@@ -19,9 +19,12 @@ export class Category implements ICategory {
     image = null,
     parent = null,
     children = null,
-    isVisible = true,
     order = 0,
     length = 0,
+    conditions = {
+      visible: true,
+      special: false
+    },
     seo = {
       title: null,
       description: null,
@@ -37,7 +40,7 @@ export class Category implements ICategory {
     this.order = order
     this.seo = seo
     this.length = length
-    this.isVisible = isVisible
+    this.conditions = conditions
   }
 
   static create(category = {}){

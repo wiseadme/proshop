@@ -27,7 +27,8 @@ export class CategoryRepository implements ICategoryRepository {
       image: category.image,
       parent: category.parent || null,
       children: category.children || [],
-      length: category.length
+      length: category.length,
+      conditions: category.conditions
     }).save()
 
     await Promise.all([
@@ -38,7 +39,7 @@ export class CategoryRepository implements ICategoryRepository {
     return created
   }
 
-  async read(params: ReadParams = {}){
+  async read(params: Partial<ICategory>): Promise<Array<Document & ICategory>>{
     params._id && validateId(params._id)
 
     const categories = await CategoryModel
@@ -46,11 +47,7 @@ export class CategoryRepository implements ICategoryRepository {
       .populate('parent', [ 'title', 'url', 'children' ])
       .populate('children', [ 'title', 'url', 'children' ])
 
-    // if (params && !categories.length) {
-    //   throw ({ status: 404, message: 'not found' })
-    // }
-
-    return categories
+    return categories as Array<Document & ICategory>
   }
 
   async update(updates: UpdateParams){

@@ -10,8 +10,8 @@ RUN mkdir -p /home/wiseadme/www/uploads
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 COPY . /usr/src/app
+COPY dist /usr/src/app
 RUN npm install
-RUN npm run build
 #COPY ./.env /usr/src/app/dist
 
 

@@ -35,7 +35,7 @@ export class CategoryService implements ICategoryService {
     const ctg = await this.repository.create(Category.create(category))
 
     if (category.parent) {
-      const [ parent ] = await this.repository.read({ id: category.parent })
+      const [ parent ] = await this.repository.read({ id: category.parent } as Partial<ICategory>)
       const children = [ ...parent!.children!, ctg._id ]
 
       const $set = { _id: parent._id, children }
@@ -51,7 +51,7 @@ export class CategoryService implements ICategoryService {
 
     if (update.parent) {
       if (category.parent) {
-        const [ prevParent ] = await this.repository.read({ _id: category.parent })
+        const [ prevParent ] = await this.repository.read({ _id: category.parent } as Partial<ICategory>)
 
         const children = prevParent!.children!.filter((it) => {
           return (it as any)._id.toString() !== update._id
@@ -62,7 +62,7 @@ export class CategoryService implements ICategoryService {
         await this.repository.update($set)
       }
 
-      const [ currentParent ] = await this.repository.read({ _id: update.parent })
+      const [ currentParent ] = await this.repository.read({ _id: update.parent } as Partial<ICategory>)
       const $set = { children: [ ...currentParent!.children!, category!._id ], _id: currentParent._id }
 
       await this.repository.update($set)
@@ -80,7 +80,7 @@ export class CategoryService implements ICategoryService {
     const res = await this.repository.delete(id)
 
     if (category.parent) {
-      const [ parent ] = await this.repository.read({ _id: category.parent })
+      const [ parent ] = await this.repository.read({ _id: category.parent } as Partial<ICategory>)
 
       // here we add the "any" type to
       // children, because they are populated

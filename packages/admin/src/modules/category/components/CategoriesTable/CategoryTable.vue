@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { PropType } from 'vue'
-import { ICategory } from '@ecommerce-platform/types'
+import { ICategory } from '@ecommerce-platform/types/index'
 
 defineProps({
   cols: {
@@ -14,9 +14,9 @@ defineProps({
 })
 
 defineEmits([
-  'add',
-  'edit',
-  'delete'
+  'open:create-modal',
+  'open:edit-modal',
+  'delete:category'
 ])
 
 </script>
@@ -46,7 +46,7 @@ defineEmits([
           <v-button
             color="green"
             elevation="5"
-            @click="$emit('add')"
+            @click="$emit('open:create-modal')"
           >
             <v-icon
               size="14"
@@ -66,7 +66,7 @@ defineEmits([
         color="orange"
         elevation="2"
         text
-        @click="$emit('edit', row)"
+        @click="$emit('open:edit-modal', row)"
       >
         <v-icon>fas fa-pen</v-icon>
       </v-button>
@@ -75,7 +75,7 @@ defineEmits([
         color="red darken-1"
         elevation="2"
         text
-        @click="$emit('delete', row)"
+        @click="$emit('delete:category', row)"
       >
         <v-icon>fas fa-trash-alt</v-icon>
       </v-button>

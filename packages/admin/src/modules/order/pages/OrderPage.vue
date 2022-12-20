@@ -69,9 +69,26 @@
 
   const onOpenOrder = (order) => {
     service.setAsCurrent(order)
+
     openOrderModal = true
     isRead = true
     isUpdate = false
+
+    service.updateOrder({
+      _id: order._id,
+      status: {
+        ...order.status,
+        seen: true
+      }
+    })
+  }
+
+  const onUpdateTablePage = (page) => {
+    console.log(page)
+  }
+
+  const onUpdateTableRowsCount = (count) => {
+    console.log(count)
   }
 
   const onAddOrder = () => {
@@ -94,6 +111,8 @@
         @open:order="onOpenOrder"
         @add:order="onAddOrder"
         @delete:order="onDeleteOrder"
+        @update:page="onUpdateTablePage"
+        @update:rows-count="onUpdateTableRowsCount"
       />
       <order-actions-modal
         v-model="openOrderModal"

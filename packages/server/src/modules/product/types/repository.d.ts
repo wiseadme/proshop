@@ -1,13 +1,13 @@
-import { IProduct } from './model'
+import { IProduct } from '@ecommerce-platform/types'
 import { Document } from 'mongoose'
 import { ProductQuery } from './params'
 
 export interface IProductRepository {
-  create(product: IProduct): Promise<Document>
+  create(product: IProduct): Promise<Document & IProduct>
 
-  read(query: ProductQuery): Promise<Array<IProduct & Document>>
+  read(query: ProductQuery): Promise<Array<Document & IProduct>>
 
-  update(updates: Partial<Document<IProduct>>): Promise<{ updated: Document<IProduct> }>
+  update(updates: Partial<IProduct>): Promise<{ updated: Document & IProduct }>
 
   delete(id: string): Promise<boolean>
 }

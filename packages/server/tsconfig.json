@@ -13,8 +13,7 @@
     "strict": true,
     "types": [
       "@types/express",
-      "@types/node",
-      "@types/mogoose"
+      "@types/node"
     ],
     "baseUrl": "./",
     "paths": {

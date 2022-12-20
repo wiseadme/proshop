@@ -1,4 +1,4 @@
-<script lang="ts" setup>
+<script setup lang="ts">
   import { watch, toRaw } from 'vue'
   // Service
   import { useAttributeService } from '@modules/attribute/service/attribute.service'
@@ -21,7 +21,7 @@
 
   const onCreate = (validate) => {
     validate().then(() => {
-      service.createAttribute(toRaw(attributePattern.value))
+      service.createAttribute(toRaw(attributePattern))
     })
   }
 

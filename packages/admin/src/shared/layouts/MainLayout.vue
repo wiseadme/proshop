@@ -9,7 +9,7 @@
   import { AppHeader } from '@app/components/AppHeader'
   import { AppNavigation } from '@app/components/AppNavigation'
   import VNotifications from '@shared/components/VNotifications/VNotifications.vue'
-  import { IOrder } from '@modules/order/types'
+  import { IOrder } from '@ecommerce-platform/types/index'
 
   const router = useRouter()
 
@@ -36,8 +36,8 @@
     stopPolling()
   })
 
-  watch(() => ordersStore.orders, (newOrders: IOrder[]) => {
-    const notSeenOrders = newOrders?.map(o => o.status.created && !o.status.seen)
+  watch(() => ordersStore.orders!, (newOrders: IOrder[]) => {
+    const notSeenOrders = newOrders?.filter(o => o.status.created && !o.status.seen)
 
     if (notSeenCount !== notSeenOrders.length) {
       if (newOrdersNotifyId) {
@@ -46,26 +46,28 @@
 
       notSeenCount = notSeenOrders.length
 
-      setTimeout(() => {
-        newOrdersNotifyId = notify({
-          title: 'Новые заказы',
-          text: `У вас ${ notSeenCount } новых не просмотренных заказа`,
-          type: 'warning',
-          closeOnClick: false,
-          actions: {
-            events: {
-              onClick: () => {
-                remove(newOrdersNotifyId)
+      if (notSeenCount) {
+        setTimeout(() => {
+          newOrdersNotifyId = notify({
+            title: 'Новые заказы',
+            text: `У вас ${ notSeenCount } новых не просмотренных заказа`,
+            type: 'warning',
+            closeOnClick: false,
+            actions: {
+              events: {
+                onClick: () => {
+                  remove(newOrdersNotifyId)
 
-                newOrdersNotifyId = null
-                notSeenCount = 0
+                  newOrdersNotifyId = null
+                  notSeenCount = 0
 
-                router.replace({ name: 'orders-table' })
+                  router.replace({ name: 'orders-table' })
+                }
               }
             }
-          }
-        })
-      }, 500)
+          })
+        }, 500)
+      }
     }
   })
 

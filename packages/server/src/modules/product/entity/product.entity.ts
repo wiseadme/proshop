@@ -14,7 +14,7 @@ export class Product implements IProduct {
   private readonly _assets: IProduct['assets']
   private readonly _variants: IProduct['variants']
   private readonly _attributes: IProduct['attributes']
-  private readonly _isVisible: IProduct['isVisible']
+  private readonly _conditions: IProduct['conditions']
 
   constructor({
     name,
@@ -29,7 +29,7 @@ export class Product implements IProduct {
     variants,
     categories,
     attributes,
-    isVisible,
+    conditions,
   }: IProduct){
     this._name = name
     this._price = price
@@ -43,7 +43,7 @@ export class Product implements IProduct {
     this._variants = variants
     this._categories = categories
     this._attributes = attributes
-    this._isVisible = isVisible
+    this._conditions = conditions
   }
 
   get name(){
@@ -94,8 +94,8 @@ export class Product implements IProduct {
     return this._url
   }
 
-  get isVisible(){
-    return this._isVisible
+  get conditions(){
+    return this._conditions
   }
 
   static create(product): IProduct{

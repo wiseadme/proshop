@@ -161,9 +161,9 @@
         <category-table
           :cols="cols"
           :rows="service.categories"
-          @add="onAddNew"
-          @edit="onEdit"
-          @delete="onDeleteCategory"
+          @open:create-modal="onAddNew"
+          @open:edit-modal="onEdit"
+          @delete:category="onDeleteCategory"
         />
       </v-col>
     </v-row>
@@ -177,7 +177,7 @@
       v-model:seo-keywords="model.seo.keywords"
       v-model:parent="model.parent"
       v-model:order="model.order"
-      v-model:isVisible="model.isVisible"
+      v-model:conditions="model.conditions"
       :categories="service.categories"
       :is-update="isEditMode"
       @create="onCreate"

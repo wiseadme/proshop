@@ -1,6 +1,6 @@
 import { useProductRepository } from '@modules/product/repository'
 import { IProductActions } from '../types'
-import { IProduct } from '@ecommerce-platform/types'
+import { IProduct } from '@ecommerce-platform/types/index'
 
 const productRepository = useProductRepository()
 

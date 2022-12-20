@@ -12,8 +12,8 @@
 
   defineEmits([
     'delete:product',
-    'edit:product',
-    'show-product-modal'
+    'open:edit-modal',
+    'open:create-modal'
   ])
 
   const cols = $ref([
@@ -126,7 +126,7 @@
           <v-button
             color="green"
             elevation="5"
-            @click="$emit('show-product-modal')"
+            @click="$emit('open:create-modal')"
           >
             <v-icon
               size="14"
@@ -143,7 +143,7 @@
         color="orange"
         elevation="2"
         text
-        @click="$emit('edit:product', row)"
+        @click="$emit('open:edit-modal', row)"
       >
         <v-icon>{{ icons.PEN }}</v-icon>
       </v-button>

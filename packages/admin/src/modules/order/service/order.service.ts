@@ -1,5 +1,5 @@
 import { ref, Ref } from 'vue'
-import { IOrder } from '@ecommerce-platform/types'
+import { IOrder } from '@ecommerce-platform/types/index'
 // Stores
 import { useOrdersStore } from '@modules/order/store'
 
@@ -36,6 +36,10 @@ class Service {
     }
 
     return this._store.read()
+  }
+
+  updateOrder(updates) {
+    return this._store.update(updates)
   }
 
   async deleteOrder(orderId){

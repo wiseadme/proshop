@@ -1,4 +1,4 @@
-import { model, Schema, Document } from 'mongoose'
+import { model, Schema } from 'mongoose'
 import { IOrder } from '@ecommerce-platform/types'
 
 const OrderSchema = new Schema<IOrder>({
@@ -56,10 +56,15 @@ const OrderSchema = new Schema<IOrder>({
       completed: Boolean,
       ready: Boolean,
       seen: Boolean,
-      cancelled: Boolean
+      cancelled: Boolean,
     },
-    required: true
+    _id: false
   },
+  executor: {
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+    default: null
+  }
 }, {
   timestamps: true
 })

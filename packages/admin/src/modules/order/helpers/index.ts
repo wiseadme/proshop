@@ -2,29 +2,35 @@ import { Status } from '@shared/enums/order-statuses'
 import { IOrderStatuses } from '@ecommerce-platform/types'
 
 export const getOrderStatusName = (status: IOrderStatuses): string => {
-  if (status.created || status.seen) {
-    return Status.CREATED
+  let statusName = ''
+
+  if (status.created) {
+    statusName = Status.CREATED
+  }
+
+  if (status.seen) {
+    statusName = Status.SEEN
   }
 
   if (status.confirmed) {
-    return Status.CONFIRMED
+    statusName = Status.CONFIRMED
   }
 
   if (status.inProcess) {
-    return Status.IN_PROCESS
+    statusName = Status.IN_PROCESS
   }
 
   if (status.ready) {
-    return Status.READY
+    statusName = Status.READY
   }
 
   if (status.completed) {
-    return Status.COMPLETED
+    statusName = Status.COMPLETED
   }
 
   if (status.cancelled) {
-    return Status.CANCELED
+    statusName = Status.CANCELED
   }
 
-  return ''
+  return statusName
 }

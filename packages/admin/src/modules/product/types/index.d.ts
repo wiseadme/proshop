@@ -1,4 +1,4 @@
-import { IProduct } from '@ecommerce-platform/types'
+import { IProduct } from '@ecommerce-platform/types/index'
 
 export interface IProductState {
   products: Maybe<Array<IProduct>>

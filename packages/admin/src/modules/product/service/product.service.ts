@@ -10,7 +10,7 @@ import { useFilesService } from '@shared/services/files.service'
 import { useOptionsService } from '@shared/services/options.service'
 
 // Types
-import { IProduct, IAsset, IVariant, IVariantOption } from '@ecommerce-platform/types'
+import { IProduct, IAsset, IVariant, IVariantOption } from '@ecommerce-platform/types/index'
 import { clone } from '@shared/helpers'
 
 class Service {

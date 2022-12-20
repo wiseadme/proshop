@@ -72,7 +72,7 @@ export class AttributeController extends BaseController implements IController {
     }
   }
 
-  async updateAttributes({ body, method }: Request<{}, {}, Array<IAttribute & Document>>, res: Response){
+  async updateAttributes({ body, method }: Request<{}, {}, IAttribute & Document>, res: Response){
     try {
       const { updated } = await this.service.update(body)
 

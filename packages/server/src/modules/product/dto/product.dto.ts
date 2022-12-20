@@ -13,5 +13,5 @@ export class ProductDTO {
   assets: IProduct['assets']
   variants: IProduct['variants']
   attributes: IProduct['attributes']
-  isVisible: IProduct['isVisible']
+  conditions: IProduct['conditions']
 }

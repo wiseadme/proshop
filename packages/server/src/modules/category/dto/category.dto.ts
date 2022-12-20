@@ -1,4 +1,4 @@
-import { ICategory } from '@ecommerce-platform/types'
+import { ICategory, ICategoryConditions } from '@ecommerce-platform/types'
 
 export class CategoryDTO {
   url: string
@@ -8,5 +8,5 @@ export class CategoryDTO {
   parent?: string
   children?: string[]
   seo?: ICategory['seo']
-  isVisible: boolean
+  conditions: ICategoryConditions
 }

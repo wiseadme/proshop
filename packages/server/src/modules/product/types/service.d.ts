@@ -1,5 +1,5 @@
 import { Document } from 'mongoose'
-import { IProduct } from './model'
+import { IProduct } from '@ecommerce-platform/types'
 import { ProductQuery } from './params'
 
 export interface IProductService {

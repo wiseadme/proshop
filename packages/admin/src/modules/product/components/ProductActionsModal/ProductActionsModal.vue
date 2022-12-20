@@ -1,16 +1,17 @@
 <script lang="ts" setup>
   import { PropType, nextTick, toRaw, watch } from 'vue'
-  import { IVariant, ICategory, IAsset, IUnit, IAttribute } from '@ecommerce-platform/types'
+  import { IVariant, ICategory, IAsset, IUnit, IAttribute, IProductConditions } from '@ecommerce-platform/types/index'
   import { clone } from '@shared/helpers'
   import { TextEditor } from '@shared/components/TextEditor'
   import VariantsBlock from './VariantsBlock'
+  import ConditionsBlock from './ConditionsBlock'
   import draggable from 'vuedraggable'
 
   const props = defineProps({
     modelValue: Boolean,
-    isEdit: Boolean,
+    isEditMode: Boolean,
     hasChanges: Boolean,
-    isVisible: Boolean,
+    conditions: Object as PropType<IProductConditions>,
     categoryItems: Array as PropType<Array<ICategory>>,
     unitItems: Array as PropType<Array<IUnit>>,
     variantItems: Array as PropType<Array<IVariant>>,
@@ -41,10 +42,10 @@
     'update:categories',
     'update:quantity',
     'update:unit',
-    'update:isVisible',
     'update:seo:title',
     'update:seo:description',
     'update:seo:keywords',
+    'update:conditions',
     'update:url',
     'upload:image',
     'delete:image',
@@ -72,7 +73,7 @@
   let rerenderKey = $ref<string>('')
 
   const computedModalHeader = $computed<string>(() => {
-    return `${ (props.isEdit ? 'Редактирование' : 'Создание') } продукта`
+    return `${ (props.isEditMode ? 'Редактирование' : 'Создание') } продукта`
   })
 
   const computedModelValue = $computed<boolean>({
@@ -154,10 +155,13 @@
     }
   })
 
-  // let computedVisibility = $computed<boolean>({
-  //   get: () => props.isVisible,
-  //   set: (val) => emit('update:isVisible', val)
-  // })
+  let computedConditions = $computed<IProductConditions>({
+    get: () => props.conditions!,
+    set: (val) => {
+      console.log(val, 'suuka')
+      emit('update:conditions', val)
+    }
+  })
 
   let computedCategories = $computed<Array<ICategory>>({
     get: () => props.categories!,
@@ -194,7 +198,7 @@
   const onUpdate = () => emit('update')
 
   const onSubmit = (validate) => {
-    if (props.isEdit) onUpdate()
+    if (props.isEditMode) onUpdate()
     else onCreate(validate)
   }
 
@@ -268,9 +272,11 @@
   watch(() => props.modelValue, to => {
     ctgMap.clear()
 
-    if (to && props.isEdit) {
-      props.categories.forEach(ctg => {
-        if (!ctgMap.get(ctg._id!)) toggleCategory(ctg)
+    if (to && props.isEditMode) {
+      props.categories!.forEach(ctg => {
+        if (!ctgMap.get(ctg._id!)) {
+          toggleCategory(ctg)
+        }
       })
     }
 
@@ -378,10 +384,10 @@
               <v-col class="mb-4 pa-4 white elevation-2">
                 <v-file-input
                   :value="productImages"
-                  :label="isEdit ? 'Загрузить изображения' : 'Загрузить изображение можно только после создания продукта'"
+                  :label="isEditMode ? 'Загрузить изображения' : 'Загрузить изображение можно только после создания продукта'"
                   color="#272727"
                   text-color="#272727"
-                  :disabled="!isEdit"
+                  :disabled="!isEditMode"
                   @update:value="onLoadImage"
                 />
               </v-col>
@@ -447,7 +453,7 @@
             <v-row>
               <v-col class="elevation-2 white mb-4">
                 <v-card width="100%">
-                  <v-card-title>
+                  <v-card-title class="green--text">
                     <h3>Описание товара</h3>
                   </v-card-title>
                   <v-card-content>
@@ -483,7 +489,7 @@
                         v-if="it.children && it.children.length"
                         :title="it.title"
                         class="elevation-2"
-                        :expand="isEdit"
+                        :expand="isEditMode"
                       >
                         <v-list>
                           <v-list-item
@@ -581,7 +587,7 @@
             <variants-block
               v-model:variants="computedVariants"
               :is-displayed="modelValue"
-              :is-edit="isEdit"
+              :is-edit="isEditMode"
               :variant-items="variantItems"
               @upload:variant-image="onUploadVariantImage"
               @delete:variant-image="onDeleteVariantImage"
@@ -589,13 +595,17 @@
               @delete:variant-option="onDeleteVariantOption"
               @update:variant-option="onUpdateVariantOption"
             />
+            <conditions-block
+              v-model:conditions="computedConditions"
+              class="my-4"
+            />
           </v-card-content>
           <v-card-actions>
             <v-button
               color="green"
               elevation="3"
               width="120"
-              :disabled="!hasChanges && isEdit"
+              :disabled="!hasChanges && isEditMode"
               @click="onSubmit(validate)"
             >
               сохранить
@@ -611,7 +621,7 @@
               отмена
             </v-button>
             <v-button
-              v-if="isEdit"
+              v-if="isEditMode"
               class="ml-4"
               elevation="3"
               color="red darken-2"

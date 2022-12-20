@@ -88,6 +88,7 @@
         color="orange"
         elevation="2"
         text
+        :disabled="!row.status.seen"
         @click="$emit('edit:order', row)"
       >
         <v-icon>fas fa-pen</v-icon>
@@ -97,6 +98,7 @@
         color="red darken-1"
         elevation="2"
         text
+        :disabled="!row.status.seen"
         @click="$emit('delete:order', row)"
       >
         <v-icon>fas fa-trash-alt</v-icon>
@@ -117,7 +119,7 @@
     <template #status="{ row, format }">
       <div
         class="d-flex justify-center align-center py-2 white--text"
-        :class="row.status.created ? 'green' : ''"
+        :class="row.status.created && !row.status.seen ? 'green' : 'blue'"
         style="width: 100%; height: 100%; border-radius: 10px"
       >
         {{ format(row) }}

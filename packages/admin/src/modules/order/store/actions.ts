@@ -1,5 +1,5 @@
 import { useOrderRepository } from '@modules/order/repository'
-import { IOrder } from '@ecommerce-platform/types'
+import { IOrder } from '@ecommerce-platform/types/index'
 
 const orderRepository = useOrderRepository()
 
@@ -21,6 +21,23 @@ export const actions = {
       this.orders = data?.data
 
       return this.orders
+    } catch (err) {
+      return Promise.reject(err)
+    }
+  },
+
+  async update(updates){
+    try {
+      const { data } = await orderRepository.update(updates)
+
+      this.$patch(state => {
+        const ind = state.orders.findIndex(it => it._id === data?.data._id)
+
+        state.orders.splice(ind, 1, data?.data)
+      })
+
+      return data?.data
+
     } catch (err) {
       return Promise.reject(err)
     }

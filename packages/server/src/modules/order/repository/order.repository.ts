@@ -8,8 +8,8 @@ import { IOrderRepository } from '../types/repository'
 import { IOrder } from '@ecommerce-platform/types'
 import { OrderModel } from '@modules/order/model/order.model'
 
-const DEFAULT_COUNT = 20
-const DEFAULT_PAGE = 1
+// Constants
+import { DEFAULT_PAGE, DEFAULT_ITEMS_COUNT } from '@common/constants/counts'
 
 @injectable()
 export class OrderRepository implements IOrderRepository {
@@ -18,7 +18,7 @@ export class OrderRepository implements IOrderRepository {
   ){
   }
 
-  async create(order: IOrder): Promise<Document<string, {}, IOrder>>{
+  async create(order: IOrder): Promise<Document & IOrder>{
     return (await new OrderModel({
       _id: new Types.ObjectId(),
       items: order.items,
@@ -32,29 +32,36 @@ export class OrderRepository implements IOrderRepository {
     }).save())
   }
 
-  async read(params: Partial<IOrder & { page: number, count: number }>): Promise<Array<Document<string, {}, IOrder>>>{
+  async read(params: Partial<IOrder & { page: number, count: number }>): Promise<Array<Document & IOrder>>{
     if (params?._id) {
       validateId(params._id)
 
-      return OrderModel.find({ _id: params._id }) as any
+      const order = await OrderModel.find({ _id: params._id })
+
+      return order
     }
 
-    const { page = DEFAULT_PAGE, count = DEFAULT_COUNT } = params
+    const {
+      page = DEFAULT_PAGE,
+      count = DEFAULT_ITEMS_COUNT
+    } = params
 
-    return OrderModel.find()
+    const orders = await OrderModel.find()
       .skip((page * count) - count)
       .limit(count)
       .sort({ createdAt: -1 }) as any
+
+    return orders
   }
 
-  async update(updates: IOrder & Document): Promise<{ updated: Document<string, {}, IOrder> }>{
+  async update(updates: IOrder & Document): Promise<{ updated: Document & IOrder }>{
     validateId(updates._id)
 
     const updated = await OrderModel.findByIdAndUpdate(
       { _id: updates._id },
       { $set: updates },
       { new: true }
-    ) as Document<string, {}, IOrder>
+    ) as Document & IOrder
 
     return { updated }
   }

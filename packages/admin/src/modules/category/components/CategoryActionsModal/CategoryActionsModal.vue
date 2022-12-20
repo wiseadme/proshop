@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { PropType, watch } from 'vue'
-  import { ICategory } from '@ecommerce-platform/types'
+  import { ICategory, ICategoryConditions } from '@ecommerce-platform/types'
 
   const {
     modelValue,
@@ -13,7 +13,7 @@
     seoTitle,
     seoDescription,
     seoKeywords,
-    isVisible,
+    conditions,
     categories
   } = defineProps({
     modelValue: Boolean,
@@ -26,7 +26,10 @@
     seoTitle: String,
     seoDescription: String,
     seoKeywords: String,
-    isVisible: Boolean,
+    conditions: {
+      type: Object as PropType<ICategoryConditions>,
+      default: null
+    },
     categories: {
       type: Array as PropType<Array<ICategory>>,
       default: null
@@ -43,7 +46,7 @@
     'update:seoTitle',
     'update:seoDescription',
     'update:seoKeywords',
-    'update:isVisible',
+    'update:conditions',
     'delete:image',
     'upload:image',
     'update',
@@ -96,9 +99,9 @@
     set: (val: ICategory) => emit('update:parent', isUpdate ? val : val._id)
   })
 
-  const computedIsVisibleProp = $computed<boolean>({
-    get: () => isVisible,
-    set: (val) => emit('update:isVisible', val)
+  const computedConditionsProp = $computed<ICategoryConditions>({
+    get: () => conditions,
+    set: (val) => emit('update:conditions', val)
   })
 
   watch(() => image, () => files.value = [])
@@ -116,8 +119,12 @@
   }
 
   const onSubmit = validate => {
-    if (isUpdate) onUpdate(validate)
-    if (!isUpdate) onCreate(validate)
+    if (isUpdate) {
+      onUpdate(validate)
+    }
+    if (!isUpdate) {
+      onCreate(validate)
+    }
   }
 
   const onDeleteImage = () => {
@@ -247,8 +254,13 @@
           <v-row>
             <v-col>
               <v-checkbox
-                v-model="computedIsVisibleProp"
+                v-model="computedConditionsProp.visible"
                 label="Категория отображаемая"
+              />
+              <v-checkbox
+                v-model="computedConditionsProp.special"
+                class="ml-2"
+                label="Категория специальная"
               />
             </v-col>
           </v-row>

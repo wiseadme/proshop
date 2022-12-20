@@ -1,4 +1,4 @@
-import { IVariant } from '@ecommerce-platform/types'
+import { IVariant } from '@ecommerce-platform/types/index'
 
 declare interface IVariantActions {
   create(variant: IVariant): Promise<IVariant>

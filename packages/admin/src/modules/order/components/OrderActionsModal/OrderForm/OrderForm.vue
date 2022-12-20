@@ -1,8 +1,8 @@
 <script setup lang="ts">
   import { PropType } from 'vue'
-  import { IOrder, ICartItem } from '@ecommerce-platform/types'
+  import { IOrder, ICartItem } from '@ecommerce-platform/types/index'
 
-  const props = defineProps({
+  defineProps({
     orderId: {
       type: [ String, Number ],
       default: null
@@ -23,8 +23,6 @@
       default: null
     }
   })
-
-  console.log(props)
 
 </script>
 <template>

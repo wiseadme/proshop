@@ -33,9 +33,9 @@ const CategorySchema: Schema = new Schema<ICategory & Document>({
     default: null,
     _id: false
   } ],
-  isVisible: {
-    type: Boolean,
-    default: true
+  conditions: {
+    visible: Boolean,
+    special: Boolean
   },
   length: {
     type: Number,

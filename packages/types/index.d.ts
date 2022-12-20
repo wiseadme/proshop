@@ -1,11 +1,34 @@
-export type { IAsset } from './asset';
-export type { IAttribute } from './attribute';
-export type { IUnit } from './unit';
-export type { ICart, ICartItem, ICurrency } from './cart';
-export type { ICategory } from './category';
-export type { ISEOType } from './common';
-export type { IOption } from './option';
-export type { IOrder, IOrderClient, IOrderStatuses } from './order';
-export type { IProduct } from './product';
-export type { IVariant, IVariantOption } from './variant';
-export type { Maybe } from './utils';
+import type { IAsset } from './asset'
+import type { IAttribute } from './attribute'
+import type { IUnit } from './unit'
+import type { ICart, ICartItem, ICurrency } from './cart'
+import type { ICategory, ICategoryConditions } from './category'
+import type { ISEOType } from './common'
+import type { IOption } from './option'
+import type { IOrder, IOrderClient, IOrderStatuses } from './order'
+import type { IProduct, IProductConditions } from './product'
+import type { IVariant, IVariantOption } from './variant'
+import type { Maybe } from './utils'
+
+declare module '@ecommerce-platform/types' {
+  export type {
+    IAsset,
+    IAttribute,
+    IUnit,
+    ICart,
+    ICartItem,
+    ICurrency,
+    ICategory,
+    ICategoryConditions,
+    ISEOType,
+    IOption,
+    IOrder,
+    IOrderClient,
+    IOrderStatuses,
+    IProduct,
+    IProductConditions,
+    IVariant,
+    IVariantOption,
+    Maybe
+  }
+}

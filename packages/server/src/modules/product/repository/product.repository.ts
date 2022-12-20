@@ -9,10 +9,8 @@ import { IProduct } from '@ecommerce-platform/types'
 import { ProductQuery } from '../types/params'
 import { ILogger } from '@/types/utils'
 
-import { translator } from '@common/utils/translator'
-
-const DEFAULT_COUNT = 20
-const DEFAULT_PAGE = 1
+// Constants
+import { DEFAULT_ITEMS_COUNT, DEFAULT_PAGE } from '@common/constants/counts'
 
 @injectable()
 export class ProductRepository implements IProductRepository {
@@ -33,7 +31,8 @@ export class ProductRepository implements IProductRepository {
       attributes: product.attributes,
       unit: product.unit,
       assets: product.assets,
-      seo: product.seo
+      seo: product.seo,
+      conditions: product.conditions
     })
       .save())
       .populate([
@@ -51,18 +50,21 @@ export class ProductRepository implements IProductRepository {
             }
           }
         }
-      ]) as any
+      ]) as Document & IProduct
   }
 
   async read(params: ProductQuery){
     let search
 
-    const { category, page = DEFAULT_PAGE, count = DEFAULT_COUNT } = params as ProductQuery
+    const {
+      page = DEFAULT_PAGE,
+      count = DEFAULT_ITEMS_COUNT
+    } = params as ProductQuery
 
     if (params._id) {
       params._id && validateId(params._id)
 
-      return ProductModel.find({ _id: params._id })
+      const product = await ProductModel.find({ _id: params._id })
         .populate('categories', [ 'title' ])
         .populate([
           'assets',
@@ -75,11 +77,13 @@ export class ProductRepository implements IProductRepository {
               }
             }
           }
-        ]) as any
+        ])
+
+      return product
     }
 
     if (params.category) {
-      search = { categories: { $in: category } }
+      search = { categories: { $in: params.category } }
     }
 
     if (params.url) {
@@ -90,7 +94,7 @@ export class ProductRepository implements IProductRepository {
       search = { 'name': { '$regex': `.*${ params.name }*.`, '$options': 'i' } }
     }
 
-    return ProductModel
+    const products = await ProductModel
       .find(search)
       .populate('categories', [ 'title' ])
       .populate([
@@ -107,6 +111,8 @@ export class ProductRepository implements IProductRepository {
       ])
       .skip((page * count) - count)
       .limit(count) as any
+
+    return products
   }
 
   async update($set: Partial<IProduct>){
@@ -129,7 +135,7 @@ export class ProductRepository implements IProductRepository {
             }
           }
         }
-      ]) as any
+      ]) as Document & IProduct
 
     return { updated }
   }

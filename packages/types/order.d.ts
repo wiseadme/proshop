@@ -2,10 +2,10 @@ import { ICart, ICartItem } from './cart'
 import { Maybe } from './utils'
 
 interface IOrderClient {
+  _id?: string
   name: string
   phone: string
   email: string
-  _id?: string
 }
 
 interface IOrderStatuses {
@@ -29,4 +29,5 @@ export interface IOrder {
   qrcode?: Maybe<string>
   owner?: Maybe<string>
   status: IOrderStatuses
+  executor?: any
 }

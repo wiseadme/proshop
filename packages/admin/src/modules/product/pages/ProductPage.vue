@@ -33,6 +33,7 @@
     isEditMode = false
 
     model = Product.create()
+
     model.attributes = clone(service.attributes)
   }
 
@@ -161,9 +162,9 @@
         <product-table
           v-else
           :products="service.products"
-          @edit:product="onEdit"
+          @open:create-modal="onShowProductModal"
+          @open:edit-modal="onEdit"
           @delete:product="onDeleteProduct"
-          @show-product-modal="onShowProductModal"
         />
       </v-col>
       <product-actions-modal
@@ -180,16 +181,12 @@
         v-model:seo="model.seo"
         v-model:attributes="model.attributes"
         v-model:variants="model.variants"
-        v-model:is-visible="model.isVisible"
+        v-model:conditions="model.conditions"
         :category-items="service.categories"
         :variant-items="service.variants"
         :unit-items="service.units"
-        :is-edit="isEditMode"
+        :is-edit-mode="isEditMode"
         :has-changes="hasChanges"
-        @create="onCreate"
-        @update="onUpdate"
-        @close="onCloseModal"
-        @discard="onDiscard"
         @upload:image="onUploadImage"
         @delete:image="onDeleteImage"
         @upload:variant-image="onUploadVariantImage"
@@ -197,6 +194,10 @@
         @create:variant-option="onCreateVariantOption"
         @update:variant-option="onUpdateVariantOption"
         @delete:variant-option="onDeleteVariantOption"
+        @create="onCreate"
+        @update="onUpdate"
+        @close="onCloseModal"
+        @discard="onDiscard"
       />
     </v-row>
   </v-layout>

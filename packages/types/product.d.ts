@@ -6,6 +6,14 @@ import { IAsset } from './asset'
 import { IVariant } from './variant'
 import { IAttribute } from './attribute'
 
+export interface IProductConditions {
+  visible: boolean
+  countable: boolean
+  exists: boolean
+  hasDiscounts: boolean
+  hasActions: boolean
+}
+
 export interface IProduct {
   _id?: string
   name: string
@@ -14,11 +22,11 @@ export interface IProduct {
   quantity: number
   image: Maybe<string>
   url: string
-  isVisible: boolean
   seo: ISEOType
   unit: Maybe<IUnit>
   categories: ICategory[]
   assets: IAsset[]
   variants: IVariant[]
   attributes: IAttribute[]
+  conditions: IProductConditions
 }

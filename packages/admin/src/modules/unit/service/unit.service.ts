@@ -1,6 +1,6 @@
 import { Store } from 'nervue'
 import { useUnitStore } from '@modules/unit/store'
-import { IUnit } from '@ecommerce-platform/types'
+import { IUnit } from '@ecommerce-platform/types/index'
 import { IUnitActions, IUnitState } from '@modules/unit/types'
 
 class Service {

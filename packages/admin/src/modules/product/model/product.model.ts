@@ -6,7 +6,7 @@ export class Product implements IProduct {
   price: IProduct['price']
   quantity: IProduct['quantity']
   unit: IProduct['unit']
-  isVisible: IProduct['isVisible']
+  conditions: IProduct['conditions']
   categories: IProduct['categories']
   description: IProduct['description']
   image: IProduct['image']
@@ -28,14 +28,20 @@ export class Product implements IProduct {
     assets = [],
     attributes = [],
     variants = [],
-    isVisible = true,
     url = '',
+    conditions = {
+      visible: true,
+      countable: false,
+      exists: true,
+      hasDiscounts: false,
+      hasActions: false
+    },
     seo = {
       title: '',
       description: '',
       keywords: ''
     }
-  }){
+  }: IProduct){
     this._id = _id
     this.name = name
     this.price = price
@@ -47,12 +53,12 @@ export class Product implements IProduct {
     this.description = description
     this.attributes = attributes
     this.variants = variants
-    this.isVisible = isVisible
+    this.conditions = conditions
     this.seo = seo
     this.url = url
   }
 
-  static create(product = {}){
+  static create(product = {} as IProduct){
     return new Product(product)
   }
 }
