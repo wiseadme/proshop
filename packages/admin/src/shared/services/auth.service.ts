@@ -1,7 +1,7 @@
 import { useAuthStore } from '@shared/store/auth'
-import { storage } from '@shared/utils/storage'
 import { router } from '@app/router'
-import { storageKeys } from '@shared/constants/storage-keys'
+// import { storage } from '@shared/utils/storage'
+// import { storageKeys } from '@shared/constants/storage-keys'
 
 export class Service {
   private _store: ReturnType<typeof useAuthStore>
@@ -10,26 +10,35 @@ export class Service {
     this._store = store
   }
 
-  get accessToken() {
-    return this._store.user?.access_token
+  get user(){
+    return this._store.user
   }
 
-  async login(userParams){
-    const user = await this._store.loginUser(userParams)
-    storage.set(storageKeys.USER, user).then(() => router.push('/'))
+  get isAuthenticated(){
+    return this._store.isAuthenticated
+  }
+
+  get isChecked(){
+    return this._store.isChecked
+  }
+
+  async login(user){
+    await this._store.loginUser(user)
+
+    return router.push('/')
+  }
+
+  async create(user){
+    return this._store.createUser(user)
+  }
+
+  async check(){
+    return this._store.whoAmI()
   }
 
   logout(){
-    storage.remove(storageKeys.USER)
-      .then(() => {
-        this._store.setUser(null)
-        router.push({ name: 'auth' })
-      })
-  }
-
-  async setUserFromStorage(){
-    return storage.get(storageKeys.USER)
-      .then(user => this._store.setUser(user))
+    this._store.$patch({ isAuthenticated: false })
+    router.push({ name: 'auth' })
   }
 }
 

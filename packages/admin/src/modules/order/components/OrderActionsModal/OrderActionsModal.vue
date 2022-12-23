@@ -26,7 +26,7 @@
     }
   })
 
-  let currentComponent = $ref<any>(null)
+  let currentComponent: any = null
 
   watch(() => [ props.isUpdate, props.isRead ], ([ isUpdate, isRead ]) => {
     if (isRead) {

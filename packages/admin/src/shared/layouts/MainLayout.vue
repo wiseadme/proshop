@@ -4,18 +4,13 @@
   import { usePolling } from '@shared/composables/use-polling'
   import { useNotifications } from '@shared/components/VNotifications/use-notifications'
   import { useOrdersStore } from '@modules/order/store'
-  import { useAuthService } from '@shared/services/auth.service'
   // Components
   import { AppHeader } from '@app/components/AppHeader'
   import { AppNavigation } from '@app/components/AppNavigation'
   import VNotifications from '@shared/components/VNotifications/VNotifications.vue'
-  import { IOrder } from '@ecommerce-platform/types/index'
+  import { IOrder } from '@ecommerce-platform/types'
 
   const router = useRouter()
-
-  const authService = useAuthService()
-  authService.setUserFromStorage().catch(() => router.push({ name: 'auth' }))
-
   const ordersStore = useOrdersStore()
   const { notify, remove } = useNotifications()
 
@@ -25,7 +20,6 @@
   })
 
   let notSeenCount = 0
-
   let newOrdersNotifyId
 
   onMounted(() => {

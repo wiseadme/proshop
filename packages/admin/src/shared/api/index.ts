@@ -10,7 +10,7 @@ const RestClient = axios.create({
     Accept: 'application/json'
   },
   baseURL,
-  withCredentials: false,
+  withCredentials: true,
   maxContentLength: 50000000,
   timeout: 10000
 })
@@ -20,16 +20,16 @@ const FilesClient = axios.create({
     'Content-Type': 'multipart/form-data'
   },
   baseURL,
-  withCredentials: false,
+  withCredentials: true,
   maxContentLength: 50000000,
   timeout: 10000
 })
 
 RestClient.interceptors.request.use(async (config) => {
-  const token = useAuthService().accessToken
+  const user = useAuthService()?.user
 
-  if (token) {
-    config.headers!['Authorization'] = `Bearer ${ token }`
+  if (user && (user.exp * 1000) <= Date.now()) {
+    console.log('token is expired')
   }
 
   return config

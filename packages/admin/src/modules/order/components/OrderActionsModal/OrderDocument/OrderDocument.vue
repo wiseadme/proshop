@@ -31,7 +31,7 @@
       <v-row>
         <v-col
           cols="3"
-          class="d-flex justify-center align-center"
+          class="d-flex justify-center align-start"
         >
           <img
             v-if="order"
@@ -43,7 +43,7 @@
         </v-col>
         <v-col cols="9">
           <v-list class="elevation-1">
-            <v-list-item class="elevation-1">
+            <v-list-item class="elevation-1 green white--text">
               <v-list-item-icon/>
               <v-list-item-content style="width: 250px">
                 <h4>Наименование</h4>
@@ -61,6 +61,7 @@
             <v-list-item
               v-for="(it, i) in order.items"
               :key="it.product._id"
+              style="border-bottom: 1px solid #dcdcdc"
             >
               <v-list-item-icon>
                 <span>{{ i + 1 }}</span>
@@ -92,7 +93,7 @@
         </v-col>
         <v-col cols="9">
           <v-list class="elevation-1">
-            <v-list-item>
+            <v-list-item class="green white--text">
               <v-list-item-icon/>
               <v-list-item-content style="width: 250px">
                 <h4>Заказчик</h4>

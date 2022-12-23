@@ -1,5 +1,6 @@
 <script lang="ts" setup>
   import { defineProps } from 'vue'
+  import { useAuthService } from '@shared/services/auth.service'
 
   defineProps({
     customClass: {
@@ -7,31 +8,42 @@
       default: '',
     },
   })
+
+  const authService = useAuthService()
+
 </script>
 <template>
   <v-toolbar
     fixed
     class="elevation-3"
   >
-    <v-toolbar-nav-btn/>
     <v-toolbar-logo>
-      <svg
-        class="logo"
-        viewBox="0 0 128 128"
-        width="38"
-        height="38"
-      >
-        <path
-          fill="#42b883"
-          d="M78.8,10L64,35.4L49.2,10H0l64,110l64-110C128,10,78.8,10,78.8,10z"
-        ></path>
-        <path
-          fill="#35495e"
-          d="M78.8,10L64,35.4L49.2,10H25.6L64,76l38.4-66H78.8z"
-        ></path>
-      </svg>
     </v-toolbar-logo>
     <v-spacer/>
+    <v-toolbar-items class="px-3">
+      <div
+        v-if="authService.user"
+        class="d-flex justify-center align-center"
+      >
+        <v-icon
+          icon="fas fa-user-circle"
+          class="mx-2"
+          size="24"
+          color="green"
+        />
+        <h4 class="pb-1">
+          {{ authService.user.displayName }}
+        </h4>
+      </div>
+      <div>
+        <v-icon
+          class="mx-3"
+          icon="fas fa-sign-out-alt"
+          size="20"
+          clickable
+        />
+      </div>
+    </v-toolbar-items>
   </v-toolbar>
 </template>
 <style lang="scss">

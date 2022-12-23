@@ -1,6 +1,7 @@
 import { ICart } from '@ecommerce-platform/types'
 
 export class Cart implements ICart {
+  private __id: string
   private _items: ICart['items']
   private _totalItems: ICart['totalItems']
   private _totalUniqueItems: ICart['totalUniqueItems']
@@ -8,7 +9,13 @@ export class Cart implements ICart {
   private _currency: ICart['currency']
   private _ownerId: ICart['ownerId']
 
-  constructor({ items, currency = null, ownerId = null }: Omit<ICart, 'amount' | 'totalItems' | 'totalUniqueItems'>){
+  constructor({
+    _id = '',
+    items,
+    currency = null,
+    ownerId = null,
+  }: Omit<ICart, 'amount' | 'totalItems' | 'totalUniqueItems'>){
+    this.__id = _id
     this._items = items
     this._totalItems = items.reduce((acc, it) => acc + it.quantity, 0)
     this._totalUniqueItems = items.length
@@ -22,6 +29,10 @@ export class Cart implements ICart {
       }
       return acc
     }, 0)
+  }
+
+  get _id(){
+    return this.__id
   }
 
   get items(){

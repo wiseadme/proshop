@@ -1,19 +1,21 @@
 interface IUser {
-  access_token: string
-  refresh_token: string
   exp: number
-  expires_in: number
-  given_name: string
-  family_name: string
+  expiresIn: number
+  displayName: string
   email: string
   role: string[]
   mobile: string
+  userId: string
 }
 
 interface State {
   user: Maybe<IUser>
+  isChecked: boolean
+  isAuthenticated: boolean
 }
 
 export const state = (): State => ({
-  user: null
+  user: null,
+  isAuthenticated: false,
+  isChecked: false
 })

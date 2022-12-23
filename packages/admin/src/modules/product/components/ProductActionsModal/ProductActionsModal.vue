@@ -157,10 +157,7 @@
 
   let computedConditions = $computed<IProductConditions>({
     get: () => props.conditions!,
-    set: (val) => {
-      console.log(val, 'suuka')
-      emit('update:conditions', val)
-    }
+    set: (val) => emit('update:conditions', val)
   })
 
   let computedCategories = $computed<Array<ICategory>>({

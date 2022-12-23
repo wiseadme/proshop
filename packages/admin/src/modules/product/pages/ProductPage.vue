@@ -126,6 +126,15 @@
     model = Product.create(service.product!)
   }
 
+  /** TODO - реализовать запросы по переключению страниц */
+  const onUpdateTablePage = (data) => {
+    console.log(data, 'onUpdateTablePage')
+  }
+
+  const onUpdateTableRowsCount = (data) => {
+    console.log(data, 'onUpdateTableRowsCount')
+  }
+
   watch(() => model, () => {
     const diffs = checkDiffs()
 
@@ -165,6 +174,8 @@
           @open:create-modal="onShowProductModal"
           @open:edit-modal="onEdit"
           @delete:product="onDeleteProduct"
+          @update:page="onUpdateTablePage"
+          @update:rows-count="onUpdateTableRowsCount"
         />
       </v-col>
       <product-actions-modal

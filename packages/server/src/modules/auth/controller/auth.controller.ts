@@ -20,11 +20,20 @@ export class AuthController extends BaseController implements IController {
 
   initRoutes(){
     this.router.post('/login', expressAsyncHandler(this.login.bind(this)))
+    this.router.post('/create', expressAsyncHandler(this.create.bind(this)))
+    this.router.get('/check', expressAsyncHandler(this.check.bind(this)))
   }
 
   async login({ body, method, url }: Request, res: Response){
     try {
-      const data = await this.service.login(body)
+      const { data, accessToken } = await this.service.loginUser(body)
+
+      res.cookie('auth', accessToken, {
+        sameSite: true,
+        httpOnly: true,
+        maxAge: 100000000,
+        path: '/'
+      })
 
       this.send({
         response: res,
@@ -41,11 +50,45 @@ export class AuthController extends BaseController implements IController {
     }
   }
 
-  refresh(req: Request, res: Response){
+  async create({ body, method, url, cookies }: Request, res: Response){
+    try {
+      const data = await this.service.createUser(body, cookies)
 
+      this.send({
+        response: res,
+        data,
+        method,
+        url: this.path + url
+      })
+    } catch (error) {
+      return this.error({
+        method,
+        error,
+        url: this.path + url
+      })
+    }
   }
 
-  create(req: Request, res: Response){
+  async check({ method, url, cookies }: Request, res: Response){
+    try {
+      const data = await this.service.checkMe(cookies)
+
+      this.send({
+        response: res,
+        data,
+        method,
+        url: this.path + url
+      })
+    } catch (error) {
+      return this.error({
+        method,
+        error,
+        url: this.path + url
+      })
+    }
+  }
+
+  async refresh({ body, method, url, cookies }: Request, res: Response){
 
   }
 }

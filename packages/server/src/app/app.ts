@@ -1,10 +1,9 @@
 import express, { Application } from 'express'
-// import session from 'express-session'
 import { inject, injectable, multiInject } from 'inversify'
 import { DB } from './db'
 import { TYPES } from '@common/schemes/di-types'
 import { IController } from '@/types'
-import { IErrorRouteMiddleware, IMiddleware, IKeycloakMiddleware } from '@/types/middlewares'
+import { IErrorRouteMiddleware, IMiddleware } from '@/types/middlewares'
 import { ILogger } from '@/types/utils'
 import config from './config'
 

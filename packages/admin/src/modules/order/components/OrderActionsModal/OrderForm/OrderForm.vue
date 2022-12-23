@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { PropType } from 'vue'
-  import { IOrder, ICartItem } from '@ecommerce-platform/types/index'
+  import { IOrder, ICartItem } from '@ecommerce-platform/types'
 
   defineProps({
     orderId: {
@@ -35,10 +35,14 @@
       <v-card-title class="card-title white--text text--base">
         Форма заказа
       </v-card-title>
-      <v-card-content>
+      <v-card-content class="white">
         <v-layout>
           <v-row>
-            <v-col></v-col>
+            <v-col>
+              <v-text-field
+                label=""
+              />
+            </v-col>
           </v-row>
         </v-layout>
       </v-card-content>

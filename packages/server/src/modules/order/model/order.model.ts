@@ -51,11 +51,11 @@ const OrderSchema = new Schema<IOrder>({
   status: {
     type: {
       created: Boolean,
+      seen: Boolean,
       confirmed: Boolean,
       inProcess: Boolean,
-      completed: Boolean,
       ready: Boolean,
-      seen: Boolean,
+      completed: Boolean,
       cancelled: Boolean,
     },
     _id: false

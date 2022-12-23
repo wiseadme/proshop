@@ -3,5 +3,11 @@ type RegistrationAccessResponse = {
 }
 
 export interface IAuthService {
-  login(params): Promise<any>
+  loginUser(params): Promise<any>
+
+  createUser(user, cookies): Promise<any>
+
+  checkMe(cookies: Record<string, string>): Promise<any>
+
+  updateToken(refreshToken: string): Promise<any>
 }

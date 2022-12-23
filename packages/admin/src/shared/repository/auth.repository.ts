@@ -1,23 +1,32 @@
 import { rest } from '@shared/api'
 import { IRest } from '@shared/types/app'
-import { AUTH_URL } from '@shared/constants/api'
 
 export interface IAuthRepository {
   login(user: any): Promise<any>
+
+  create(user: any): Promise<any>
+
+  whoAmI(): Promise<any>
 }
 
 class Repository implements IAuthRepository {
-  baseUrl: string
   rest: IRest
 
-  constructor(rest, baseUrl){
+  constructor(rest){
     this.rest = rest
-    this.baseUrl = baseUrl
   }
 
   async login(user){
-    return this.rest.post(`${ this.baseUrl }/login`, user)
+    return this.rest.post(`/v1/auth/login`, user)
+  }
+
+  async create(user){
+    return this.rest.post(`/v1/auth/create`, user)
+  }
+
+  async whoAmI(){
+    return this.rest.get(`/v1/auth/check`)
   }
 }
 
-export const useAuthRepository = () => new Repository(rest, AUTH_URL)
+export const useAuthRepository = () => new Repository(rest)

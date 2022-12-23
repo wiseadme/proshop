@@ -24,6 +24,7 @@ export class CartRepository implements ICartRepository {
       currency: cart.currency,
       amount: cart.amount,
       ownerId: cart.ownerId,
+      // 43200 * 1000 is a milliseconds in 12 hours
       expireAt: !cart.ownerId ? Date.now() + (43200 * 1000) : null
     }).save()
   }

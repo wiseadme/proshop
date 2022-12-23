@@ -14,6 +14,7 @@ interface ICurrency {
 }
 
 export interface ICart {
+  _id: string
   items: Array<ICartItem>
   ownerId: Maybe<string>
   totalItems: number

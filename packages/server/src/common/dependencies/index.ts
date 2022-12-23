@@ -51,6 +51,7 @@ import { ErrorRouteMiddleware } from '../middlewares/error.route.middleware'
 import { FileLoaderMiddleware } from '@common/middlewares/fileloader.middleware'
 import { KeycloakMiddleware } from '@common/middlewares/keycloak.middleware'
 import { SessionMiddleware } from '@common/middlewares/session.middleware'
+import { CookieMiddleware } from '@common/middlewares/cookie.middleware'
 
 // Types
 import { ICategoryService } from '@modules/category/types/service'
@@ -122,6 +123,7 @@ container.bind<IController>(TYPES.CONTROLLERS.IController).to(AuthController)
 container.bind<IMiddleware>(TYPES.MIDDLEWARES.IMiddleware).to(LoggerMiddleware)
 container.bind<IExpressMiddleware>(TYPES.MIDDLEWARES.IMiddleware).to(SessionMiddleware)
 container.bind<IExpressMiddleware>(TYPES.MIDDLEWARES.IMiddleware).to(JsonMiddleware)
+container.bind<IExpressMiddleware>(TYPES.MIDDLEWARES.IMiddleware).to(CookieMiddleware)
 container.bind<IExpressMiddleware>(TYPES.MIDDLEWARES.IMiddleware).to(UrlEncodedMiddleware)
 container.bind<IExpressMiddleware>(TYPES.MIDDLEWARES.IMiddleware).to(KeycloakMiddleware)
 container.bind<IErrorRouteMiddleware>(TYPES.MIDDLEWARES.IErrorRouteMiddleware).to(ErrorRouteMiddleware)
