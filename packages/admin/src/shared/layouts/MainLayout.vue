@@ -3,7 +3,7 @@
   import { useRouter } from 'vue-router'
   import { usePolling } from '@shared/composables/use-polling'
   import { useNotifications } from '@shared/components/VNotifications/use-notifications'
-  import { useOrdersStore } from '@modules/order/store'
+  import { useOrdersService } from '@modules/order/service/order.service'
   // Components
   import { AppHeader } from '@app/components/AppHeader'
   import { AppNavigation } from '@app/components/AppNavigation'
@@ -11,11 +11,11 @@
   import { IOrder } from '@ecommerce-platform/types'
 
   const router = useRouter()
-  const ordersStore = useOrdersStore()
+  const ordersService = useOrdersService()
   const { notify, remove } = useNotifications()
 
   const { stopPolling, startPolling } = usePolling({
-    handler: () => ordersStore.read(),
+    handler: () => ordersService.getNewOrders(),
     timeout: 5000
   })
 
@@ -30,15 +30,13 @@
     stopPolling()
   })
 
-  watch(() => ordersStore.orders!, (newOrders: IOrder[]) => {
-    const notSeenOrders = newOrders?.filter(o => o.status.created && !o.status.seen)
-
-    if (notSeenCount !== notSeenOrders.length) {
+  watch(() => ordersService.newOrders!, (newOrders: IOrder[]) => {
+    if (notSeenCount !== newOrders.length) {
       if (newOrdersNotifyId) {
         remove(newOrdersNotifyId)
       }
 
-      notSeenCount = notSeenOrders.length
+      notSeenCount = newOrders.length
 
       if (notSeenCount) {
         setTimeout(() => {
@@ -54,6 +52,10 @@
 
                   newOrdersNotifyId = null
                   notSeenCount = 0
+
+                  if (router.currentRoute.value.path.includes('/orders')) {
+                    ordersService.getOrders()
+                  }
 
                   router.replace({ name: 'orders-table' })
                 }

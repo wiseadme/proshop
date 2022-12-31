@@ -1,16 +1,9 @@
-<script lang="ts" setup>
-  import { defineProps } from 'vue'
+<script setup lang="ts">
   import { useAuthService } from '@shared/services/auth.service'
-
-  defineProps({
-    customClass: {
-      type: String,
-      default: '',
-    },
-  })
 
   const authService = useAuthService()
 
+  const logout = () => authService.logout()
 </script>
 <template>
   <v-toolbar
@@ -41,6 +34,7 @@
           icon="fas fa-sign-out-alt"
           size="20"
           clickable
+          @click="logout"
         />
       </div>
     </v-toolbar-items>

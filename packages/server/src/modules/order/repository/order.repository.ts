@@ -32,13 +32,15 @@ export class OrderRepository implements IOrderRepository {
     }).save())
   }
 
-  async read(params: Partial<IOrder & { page: number, count: number }>): Promise<Array<Document & IOrder>>{
+  async read(params: any & { page: number, count: number }): Promise<Array<Document & IOrder>>{
     if (params?._id) {
       validateId(params._id)
 
-      const order = await OrderModel.find({ _id: params._id })
+      return OrderModel.find({ _id: params._id })
+    }
 
-      return order
+    if (params.seen) {
+      return OrderModel.find({ 'status.seen': params.seen }).sort({ createdAt: -1 }) as any
     }
 
     const {

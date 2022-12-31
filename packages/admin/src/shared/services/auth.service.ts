@@ -1,13 +1,14 @@
 import { useAuthStore } from '@shared/store/auth'
 import { router } from '@app/router'
-// import { storage } from '@shared/utils/storage'
-// import { storageKeys } from '@shared/constants/storage-keys'
+import { Router } from 'vue-router'
 
 export class Service {
   private _store: ReturnType<typeof useAuthStore>
+  private _router: Router
 
-  constructor({ store }){
+  constructor({ store, router }){
     this._store = store
+    this._router = router
   }
 
   get user(){
@@ -25,7 +26,7 @@ export class Service {
   async login(user){
     await this._store.loginUser(user)
 
-    return router.push('/')
+    return this._router.push('/')
   }
 
   async create(user){
@@ -33,15 +34,26 @@ export class Service {
   }
 
   async check(){
-    return this._store.whoAmI()
+    try {
+      await this._store.whoAmI()
+
+      if (this._router.currentRoute.value.path.includes('/auth')) {
+        return this._router.replace({ name: 'dashboard-table' })
+      }
+
+    } catch (err) {
+      return this.logout()
+    }
   }
 
-  logout(){
-    this._store.$patch({ isAuthenticated: false })
-    router.push({ name: 'auth' })
+  async logout(){
+    await this._store.logout()
+
+    return this._router.push({ name: 'auth' })
   }
 }
 
 export const useAuthService = () => new Service({
-  store: useAuthStore()
+  store: useAuthStore(),
+  router: router
 })

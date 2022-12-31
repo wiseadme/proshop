@@ -1,5 +1,5 @@
 import { useOrderRepository } from '@modules/order/repository'
-import { IOrder } from '@ecommerce-platform/types/index'
+import { IOrder } from '@ecommerce-platform/types'
 
 const orderRepository = useOrderRepository()
 
@@ -15,10 +15,17 @@ export const actions = {
     }
   },
 
-  async read(){
+  async read(params: any = null){
     try {
-      const { data } = await orderRepository.read()
-      this.orders = data?.data
+      const { data } = await orderRepository.read(params)
+
+      this.$patch(state => {
+        if (!params) {
+          state.orders = data?.data
+        } else {
+          state.newOrders = data.data
+        }
+      })
 
       return this.orders
     } catch (err) {

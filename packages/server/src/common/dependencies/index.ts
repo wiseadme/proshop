@@ -82,6 +82,8 @@ import {
   IExpressMiddleware,
   IFileLoaderMiddleware,
 } from '@/types/middlewares'
+import { IAuthRepository } from '@modules/auth/types/repository'
+import { AuthRepository } from '@modules/auth/repository/auth.repository'
 
 export const container = new Container({ skipBaseClassChecks: true })
 
@@ -139,3 +141,4 @@ container.bind<IUnitRepository>(TYPES.REPOSITORIES.IUnitRepository).to(UnitRepos
 container.bind<ICartRepository>(TYPES.REPOSITORIES.ICartRepository).to(CartRepository)
 container.bind<IOrderRepository>(TYPES.REPOSITORIES.IOrderRepository).to(OrderRepository)
 container.bind<IOptionRepository>(TYPES.REPOSITORIES.IOptionRepository).to(OptionRepository)
+container.bind<IAuthRepository>(TYPES.REPOSITORIES.IAuthRepository).to(AuthRepository)

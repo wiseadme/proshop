@@ -1,4 +1,4 @@
-import mongoose, { Document, Query } from 'mongoose'
+import mongoose, { Document } from 'mongoose'
 import { inject, injectable } from 'inversify'
 import { TYPES } from '@common/schemes/di-types'
 import { AttributeModel } from '@modules/attribute/model/attribute.model'

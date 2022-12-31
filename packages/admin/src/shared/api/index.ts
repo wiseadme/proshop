@@ -39,7 +39,7 @@ RestClient.interceptors.response.use(
   (config) => config,
   (config) => {
     if (config.response.status === 401 || config.response.status === 403) {
-      useAuthService().logout()
+      // useAuthService().logout()
     } else {
       return config
     }

@@ -4,6 +4,8 @@ import { IRest } from '@shared/types/app'
 export interface IAuthRepository {
   login(user: any): Promise<any>
 
+  logout(): Promise<any>
+
   create(user: any): Promise<any>
 
   whoAmI(): Promise<any>
@@ -18,6 +20,10 @@ class Repository implements IAuthRepository {
 
   async login(user){
     return this.rest.post(`/v1/auth/login`, user)
+  }
+
+  async logout(){
+    return this.rest.get('/v1/auth/logout')
   }
 
   async create(user){

@@ -20,20 +20,14 @@ export class AuthController extends BaseController implements IController {
 
   initRoutes(){
     this.router.post('/login', expressAsyncHandler(this.login.bind(this)))
+    this.router.get('/logout', expressAsyncHandler(this.logout.bind(this)))
     this.router.post('/create', expressAsyncHandler(this.create.bind(this)))
     this.router.get('/check', expressAsyncHandler(this.check.bind(this)))
   }
 
   async login({ body, method, url }: Request, res: Response){
     try {
-      const { data, accessToken } = await this.service.loginUser(body)
-
-      res.cookie('auth', accessToken, {
-        sameSite: true,
-        httpOnly: true,
-        maxAge: 100000000,
-        path: '/'
-      })
+      const data = await this.service.loginUser(body, res)
 
       this.send({
         response: res,
@@ -46,6 +40,25 @@ export class AuthController extends BaseController implements IController {
         method,
         error,
         url
+      })
+    }
+  }
+
+  async logout({ cookies, method, url }: Request, res: Response){
+    try {
+      const data = await this.service.logoutUser(cookies, res)
+
+      this.send({
+        response: res,
+        data,
+        method,
+        url: this.path + url
+      })
+    } catch (error) {
+      return this.error({
+        method,
+        error,
+        url: this.path + url
       })
     }
   }
@@ -88,7 +101,11 @@ export class AuthController extends BaseController implements IController {
     }
   }
 
-  async refresh({ body, method, url, cookies }: Request, res: Response){
+  async refresh({ method, url, cookies }: Request, res: Response){
+    try {
+      const data = await this.service.updateToken(cookies.auth)
+    } catch (error) {
 
+    }
   }
 }

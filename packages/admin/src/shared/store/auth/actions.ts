@@ -41,7 +41,7 @@ export const actions = {
       const { data } = await repository.whoAmI()
 
       this.$patch(state => {
-        state.user = data.data
+        state.user = data?.data
         state.isAuthenticated = true
         state.isChecked = true
       })
@@ -50,6 +50,23 @@ export const actions = {
     } catch (err) {
       this.isChecked = true
 
+      return Promise.reject(err)
+    }
+  },
+
+  async logout(){
+    try {
+      if (this.user) {
+        await repository.logout()
+      }
+
+      this.$patch(state => {
+        state.user = null
+        state.isAuthenticated = false
+      })
+
+      return true
+    } catch (err) {
       return Promise.reject(err)
     }
   }

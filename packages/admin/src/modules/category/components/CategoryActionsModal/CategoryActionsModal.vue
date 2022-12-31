@@ -1,6 +1,7 @@
 <script setup lang="ts">
   import { PropType, watch } from 'vue'
   import { ICategory, ICategoryConditions } from '@ecommerce-platform/types'
+  import { $computed } from 'vue/macros'
 
   const {
     modelValue,
@@ -104,6 +105,11 @@
     set: (val) => emit('update:conditions', val)
   })
 
+  const computedModelValue = $computed({
+    get: () => modelValue,
+    set: (val) => emit('update:modelValue', val)
+  })
+
   watch(() => image, () => files.value = [])
 
   const onCreate = (validate) => {
@@ -138,7 +144,7 @@
 </script>
 <template>
   <v-modal
-    :model-value="modelValue"
+    v-model="computedModelValue"
     transition="scale-in"
     width="70%"
     overlay

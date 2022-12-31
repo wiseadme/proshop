@@ -1,16 +1,20 @@
 // @ts-ignore
 import KeycloakAdminClient from '@keycloak/keycloak-admin-client'
-import { injectable } from 'inversify'
+import { inject, injectable } from 'inversify'
 import { prepareResponseData, isExpired } from '@modules/auth/helpers'
 import config from '@app/config'
 // Types
 import { IAuthService } from '@modules/auth/types/service'
 import { Credentials } from '@keycloak/keycloak-admin-client/lib/utils/auth'
+import { TYPES } from '@common/schemes/di-types'
 import UserRepresentation from '@keycloak/keycloak-admin-client/lib/defs/userRepresentation'
+import { IAuthRepository } from '@modules/auth/types/repository'
 
 @injectable()
 export class AuthService extends KeycloakAdminClient implements IAuthService {
-  constructor(){
+  constructor(
+    @inject(TYPES.REPOSITORIES.IAuthRepository) private repository: IAuthRepository
+  ){
     super()
 
     this.setConfig({
@@ -60,22 +64,52 @@ export class AuthService extends KeycloakAdminClient implements IAuthService {
     }
   }
 
-  async loginUser(user){
+  async loginUser(user, res){
     await this.auth(this.createUserLoginParams(user))
 
-    const data = prepareResponseData(this)
-    const accessToken = data.accessToken
+    const {
+      exp,
+      phone,
+      email,
+      role
+    } = prepareResponseData(this)
 
-    delete data.accessToken
+    const { accessToken, refreshToken } = this
+    const whoAmI = await this.whoAmI.find()
+    const { userId } = whoAmI
+
+    await this.repository.create({
+      accessToken,
+      refreshToken,
+      userId
+    })
+
+    res.cookie('auth', accessToken, {
+      sameSite: true,
+      httpOnly: true,
+      maxAge: 100000000,
+      path: '/'
+    })
 
     return {
-      data,
-      accessToken
+      ...whoAmI,
+      exp,
+      phone,
+      email,
+      role,
     }
   }
 
-  async logoutUser(){
+  async logoutUser(cookies, res){
+    const [ user ] = await this.repository.read(cookies.auth)
 
+    this.setAccessToken(cookies.auth)
+
+    await this.repository.delete(user._id)
+
+    res.clearCookie('auth')
+
+    return this.users.logout({ id: user.userId })
   }
 
   async createUser(user, cookies){
@@ -84,8 +118,10 @@ export class AuthService extends KeycloakAdminClient implements IAuthService {
     return await this.users.create(this.createUserParams(user))
   }
 
-  async updateToken(refreshToken){
-    return this.auth(this.createRefreshParams(refreshToken) as Credentials)
+  async updateToken(accessToken){
+    const auth = await this.repository.read(accessToken)
+
+    return this.auth(this.createRefreshParams(auth.refreshToken) as Credentials)
   }
 
   async checkMe(cookies){
@@ -102,8 +138,10 @@ export class AuthService extends KeycloakAdminClient implements IAuthService {
       accessToken: cookies.auth
     })
 
+    const whoAmI = await this.whoAmI.find()
+
     return {
-      ...await this.whoAmI.find(),
+      ...whoAmI,
       exp,
       phone,
       email,

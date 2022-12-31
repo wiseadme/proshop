@@ -1,7 +1,8 @@
 import { model, Schema, Document } from 'mongoose'
 
 interface Auth {
-  userId: string,
+  userId: string
+  accessToken: string,
   refreshToken: string
 }
 
@@ -11,9 +12,13 @@ const AuthSchema = new Schema<Document & Auth>({
     type: String,
     required: true
   },
+  accessToken: {
+    type: String,
+    required: true,
+  },
   refreshToken: {
     type: String,
-    required: true
+    required: true,
   }
 }, {
   timestamps: true

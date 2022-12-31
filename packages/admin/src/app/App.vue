@@ -5,14 +5,15 @@
 
   const authService = useAuthService()
 
-  authService.check().catch(() => authService.logout())
+  const isNeedLogin = $computed(() => authService.isChecked && !authService.isAuthenticated)
 
+  authService.check()
 </script>
 <template>
   <v-app class="grey lighten-4">
     <v-layout column>
       <main-layout v-if="authService.isAuthenticated"/>
-      <auth-layout v-if="authService.isChecked && !authService.isAuthenticated"/>
+      <auth-layout v-if="isNeedLogin"/>
     </v-layout>
   </v-app>
 </template>

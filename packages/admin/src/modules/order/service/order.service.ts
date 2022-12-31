@@ -1,5 +1,5 @@
 import { ref, Ref } from 'vue'
-import { IOrder } from '@ecommerce-platform/types/index'
+import { IOrder } from '@ecommerce-platform/types'
 // Stores
 import { useOrdersStore } from '@modules/order/store'
 
@@ -18,6 +18,10 @@ class Service {
     return this._store.orders
   }
 
+  get newOrders(){
+    return this._store.newOrders
+  }
+
   get order(){
     return this._order
   }
@@ -27,18 +31,18 @@ class Service {
   }
 
   async createOrder(order){
-    return await this._store.create(order)
+    return this._store.create(order)
   }
 
-  getOrders(){
-    if (this._store.orders) {
-      return this._store.orders
-    }
-
-    return this._store.read()
+  getOrders(params: any = null){
+    return this._store.read(params)
   }
 
-  updateOrder(updates) {
+  getNewOrders(){
+    return this._store.read({ seen: false })
+  }
+
+  updateOrder(updates){
     return this._store.update(updates)
   }
 

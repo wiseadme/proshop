@@ -10,18 +10,21 @@
     rows: {
       type: Array as PropType<Array<IOrder>>,
       default: () => []
+    },
+    rowsOptions: {
+      type: Array,
+      default: () => ([ 5, 10, 15, 20 ])
     }
   })
 
-  const emit = defineEmits([
+  defineEmits([
     'add:order',
     'edit:order',
     'delete:order',
     'open:order',
-    'update:rows'
   ])
 
-  const updateRows = () => emit('update:rows')
+  const onUpdateRows = ({ page }) => page.value = 1
 
 </script>
 <template>
@@ -31,29 +34,21 @@
     :footer-options="{
       counts: {
         displayColor: 'green',
-        rowsPerPageText: 'кол-во строк'
+        rowsPerPageText: 'кол-во строк',
+        rowsPerPageOptions: rowsOptions
       },
       pagination: {
         buttonsColor: 'green',
-        displayColor: 'green'
+        displayColor: 'green',
       }
     }"
     class="elevation-2"
     show-checkbox
     show-sequence
+    @update:rows="onUpdateRows"
   >
     <template #toolbar>
       <v-toolbar>
-        <v-toolbar-items>
-          <v-button
-            color="primary"
-            round
-            elevation="2"
-            @click="updateRows"
-          >
-            <v-icon icon="fas fa-sync-alt"/>
-          </v-button>
-        </v-toolbar-items>
         <v-spacer></v-spacer>
         <v-toolbar-items>
           <v-button
@@ -88,7 +83,7 @@
         color="orange"
         elevation="2"
         text
-        :disabled="!row.status.seen"
+        :disabled="row.status && !row.status.seen"
         @click="$emit('edit:order', row)"
       >
         <v-icon>fas fa-pen</v-icon>
@@ -98,7 +93,7 @@
         color="red darken-1"
         elevation="2"
         text
-        :disabled="!row.status.seen"
+        :disabled="row.status && !row.status.seen"
         @click="$emit('delete:order', row)"
       >
         <v-icon>fas fa-trash-alt</v-icon>
@@ -119,7 +114,7 @@
     <template #status="{ row, format }">
       <div
         class="d-flex justify-center align-center py-2 white--text"
-        :class="row.status.created && !row.status.seen ? 'green' : 'blue'"
+        :class="row.status && row.status.created && !row.status.seen ? 'green' : 'blue'"
         style="width: 100%; height: 100%; border-radius: 10px"
       >
         {{ format(row) }}
