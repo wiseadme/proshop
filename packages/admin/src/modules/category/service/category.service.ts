@@ -1,14 +1,13 @@
 import { Store } from 'nervue'
 import { useCategoryStore } from '@modules/category/store'
 import { useFilesService } from '@shared/services/files.service'
-import { ICategory } from '@ecommerce-platform/types/index'
+import { ICategory } from '@ecommerce-platform/types'
 import { ICategoryActions, ICategoryState, ICategoryService } from '@modules/category/types'
 
 class Service implements ICategoryService {
   private _store: Store<string, ICategoryState, {}, {}, ICategoryActions>
   private _category: Maybe<ICategory>
   private _files: ReturnType<typeof useFilesService>
-  static instance: Service
 
   constructor({ store, filesService }){
     this._store = store
@@ -68,17 +67,9 @@ class Service implements ICategoryService {
     await this._files.deleteFile({ ownerId, url })
     return this.updateCategory({ _id: ownerId, image: null })
   }
-
-  static create(){
-    if (Service.instance) return Service.instance
-
-    Service.instance = new Service({
-      store: useCategoryStore(),
-      filesService: useFilesService()
-    })
-
-    return Service.instance
-  }
 }
 
-export const useCategoryService = () => Service.create()
+export const useCategoryService = () => new Service({
+  store: useCategoryStore(),
+  filesService: useFilesService()
+})

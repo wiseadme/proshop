@@ -133,7 +133,7 @@
 
   const onUpdateTableRowsCount = async (count) => {
     service.pagination.setPaginationItemsCount(count)
-    await service.getProducts({})
+    // await service.getProducts({})
   }
 
   const onSortColumn = (col) => {
@@ -142,7 +142,8 @@
     } else {
       service.sort.setDesc(col.key)
     }
-    service.getProducts({})
+
+    setTimeout(() => service.getProducts())
   }
 
   watch(() => model, () => {

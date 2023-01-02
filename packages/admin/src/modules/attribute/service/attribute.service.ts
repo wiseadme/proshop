@@ -3,10 +3,9 @@ import { useAttributeStore } from '@modules/attribute/store'
 import { IAttributeActions, IAttributeState } from '@modules/attribute/types'
 
 export class Service {
-  static instance: Service
   private _store: Store<string, IAttributeState, {}, {}, IAttributeActions>
 
-  constructor(store){
+  constructor({ store }){
     this._store = store
   }
 
@@ -30,12 +29,8 @@ export class Service {
   getAttributes(){
     return this._store.read().catch(err => console.log(err))
   }
-
-  static create(){
-    if (Service.instance) return Service.instance
-    Service.instance = new Service(useAttributeStore())
-    return Service.instance
-  }
 }
 
-export const useAttributeService = () => Service.create()
+export const useAttributeService = () => new Service({
+  store: useAttributeStore()
+})

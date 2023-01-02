@@ -5,7 +5,7 @@ export const useSort = () => {
   const asc = ref(false)
   const sortKey = ref('')
 
-  const isNeedToBeSorted = computed(() => unref(desc) || unref(asc))
+  const isNeedToBeSorted = computed<boolean>(() => unref(desc) || unref(asc))
 
   const setDesc = (key) => {
     desc.value = true

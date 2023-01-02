@@ -1,13 +1,12 @@
 import { Store } from 'nervue'
 import { useVariantStore } from '@modules/variant/store'
-import { IVariant } from '@ecommerce-platform/types/index'
+import { IVariant } from '@ecommerce-platform/types'
 import { IVariantState, IVariantActions } from '@modules/variant/types'
 
 class Service {
   private _store: Store<string, IVariantState, {}, {}, IVariantActions>
-  static instance: Service
 
-  constructor(store){
+  constructor({ store }){
     this._store = store
   }
 
@@ -28,16 +27,14 @@ class Service {
   }
 
   onGetVariants(){
-    if (this._store.variants) return this._store.variants
+    if (this._store.variants) {
+      return this._store.variants
+    }
 
     return this.getVariants()
   }
-
-  static create(){
-    if (Service.instance) return Service.instance
-    Service.instance = new Service(useVariantStore())
-    return Service.instance
-  }
 }
 
-export const useVariantService = () => Service.create()
+export const useVariantService = () => new Service({
+  store: useVariantStore()
+})

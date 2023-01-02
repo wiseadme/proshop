@@ -1,6 +1,7 @@
 import { useProductRepository } from '@modules/product/repository'
-import { IProduct } from '@ecommerce-platform/types'
+import { IProduct, IRequestPagination } from '@ecommerce-platform/types'
 import { IProductActions } from '../types'
+import { IRequestSort } from '@ecommerce-platform/types/request'
 
 const productRepository = useProductRepository()
 
@@ -16,7 +17,7 @@ export const actions: IProductActions = {
     }
   },
 
-  async read(params: Partial<IProduct>){
+  async read(params: IRequestPagination & Partial<IRequestSort> & Partial<IProduct>){
     try {
       const { data } = await productRepository.read(params)
 

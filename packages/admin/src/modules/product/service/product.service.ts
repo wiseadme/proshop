@@ -29,8 +29,6 @@ class Service {
   public pagination: ReturnType<typeof usePagination>
   public sort: ReturnType<typeof useSort>
 
-  static instance: Service
-
   constructor({
     store,
     attributesStore,
@@ -47,9 +45,9 @@ class Service {
     this._unitsStore = unitsStore
     this._categoriesStore = categoriesStore
     this._variantsStore = variantsStore
-    this._product = ref(null)
     this._filesService = filesService
     this._optionsService = optionsService
+    this._product = ref(null)
     this.pagination = pagination
     this.sort = sort
   }
@@ -122,8 +120,8 @@ class Service {
     }
   }
 
-  prepareRequestSortParams() {
-    return unref(this.sort.isNeedToBeSorted) ? {
+  prepareRequestSortParams(){
+    return this.sort.isNeedToBeSorted.value ? {
       asc: unref(this.sort.asc),
       desc: unref(this.sort.desc),
       key: unref(this.sort.sortKey),
@@ -132,9 +130,9 @@ class Service {
 
   getProducts(params: Partial<IProduct> | null = null){
     const query: IRequestPagination & Partial<IRequestSort> & Partial<IProduct> = {
+      ...(params ? params : {}),
       ...this.prepareRequestSortParams(),
       ...this.prepareRequestPagination(),
-      ...(params ? params : {})
     }
 
     return this._store.read(query).catch(err => console.log(err))
@@ -301,24 +299,16 @@ class Service {
       assets
     })
   }
-
-  static create(){
-    if (Service.instance) return Service.instance
-
-    Service.instance = new Service({
-      store: useProductStore(),
-      attributesStore: useAttributeStore(),
-      categoriesStore: useCategoryStore(),
-      unitsStore: useUnitStore(),
-      variantsStore: useVariantStore(),
-      filesService: useFilesService(),
-      optionsService: useOptionsService(),
-      pagination: usePagination(),
-      sort: useSort()
-    })
-
-    return Service.instance
-  }
 }
 
-export const useProductService = () => Service.create()
+export const useProductService = () => new Service({
+  store: useProductStore(),
+  attributesStore: useAttributeStore(),
+  categoriesStore: useCategoryStore(),
+  unitsStore: useUnitStore(),
+  variantsStore: useVariantStore(),
+  filesService: useFilesService(),
+  optionsService: useOptionsService(),
+  pagination: usePagination(),
+  sort: useSort()
+})

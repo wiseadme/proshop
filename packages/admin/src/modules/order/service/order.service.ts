@@ -7,8 +7,6 @@ class Service {
   private _store: ReturnType<typeof useOrdersStore>
   private _order: Ref<Maybe<IOrder>>
 
-  static instance: Service
-
   constructor({ store }){
     this._store = store
     this._order = ref(null)
@@ -49,16 +47,8 @@ class Service {
   async deleteOrder(orderId){
     await this._store.delete(orderId)
   }
-
-  static create(params){
-    if (Service.instance) {
-      return Service.instance
-    }
-
-    return new Service(params)
-  }
 }
 
-export const useOrdersService = () => Service.create({
+export const useOrdersService = () => new Service({
   store: useOrdersStore()
 })
