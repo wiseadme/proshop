@@ -1,13 +1,14 @@
-import { IProduct } from '@ecommerce-platform/types/index'
+import { IProduct } from '@ecommerce-platform/types'
 
 export interface IProductState {
   products: Maybe<Array<IProduct>>
+  totalLength: number
 }
 
 export interface IProductActions {
   create(product: IProduct): Promise<IProduct>
 
-  read(id?: string): Promise<Array<IProduct>>
+  read(params?: Partial<IProduct>): Promise<Array<IProduct>>
 
   delete(product): Promise<boolean>
 

@@ -45,7 +45,22 @@ export class ProductService implements IProductService {
   }
 
   async read(query){
-    return await this.repository.read(query)
+    let items, total
+
+    if (query._id) {
+      return this.repository.read(query)
+    }
+
+    if (query.length) {
+      total = await this.repository.getDocumentsCount()
+    }
+
+    items = await this.repository.read(query)
+
+    return {
+      items,
+      total
+    }
   }
 
   async update(updates: Partial<Document & IProduct>){

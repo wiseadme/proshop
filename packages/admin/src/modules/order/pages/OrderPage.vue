@@ -23,7 +23,8 @@
       resizeable: true,
       sortable: true,
       filterable: true,
-      format: (row) => new Date(row.createdAt).toLocaleString()
+      format: (row) => new Date(row.createdAt).toLocaleString(),
+      emit: true
     },
     {
       key: 'orderId',
@@ -41,7 +42,8 @@
       resizeable: true,
       sortable: true,
       filterable: true,
-      format: (row) => row.amount + ' руб'
+      format: (row) => row.amount + ' руб',
+      emit: true
     },
     {
       key: 'status',
@@ -92,6 +94,10 @@
     console.log(count)
   }
 
+  const onSort = (col) => {
+    console.log(col)
+  }
+
   const onAddOrder = () => {
     openOrderModal = true
     isRead = false
@@ -112,6 +118,7 @@
       <orders-table
         :cols="cols"
         :rows="service.orders"
+        @sort:column="onSort"
         @open:order="onOpenOrder"
         @add:order="onAddOrder"
         @delete:order="onDeleteOrder"

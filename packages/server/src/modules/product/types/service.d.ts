@@ -5,7 +5,7 @@ import { ProductQuery } from './params'
 export interface IProductService {
   create(product: IProduct): Promise<Document<IProduct>>
 
-  read(query: ProductQuery): Promise<Array<Document<IProduct>>>,
+  read(query: ProductQuery): Promise<{items: Array<Document<IProduct>>, total?: number} | Array<Document<IProduct>>>,
 
   update(updates: Partial<IProduct & Document>): Promise<{ updated: Document<IProduct> }>
 

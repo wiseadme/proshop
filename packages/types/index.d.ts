@@ -8,6 +8,7 @@ import type { IOption } from './option'
 import type { IOrder, IOrderClient, IOrderStatuses } from './order'
 import type { IProduct, IProductConditions } from './product'
 import type { IVariant, IVariantOption } from './variant'
+import type { IRequestPagination } from './request'
 import type { Maybe } from './utils'
 
 declare module '@ecommerce-platform/types' {
@@ -27,6 +28,7 @@ declare module '@ecommerce-platform/types' {
     IOrderStatuses,
     IProduct,
     IProductConditions,
+    IRequestPagination,
     IVariant,
     IVariantOption,
     Maybe

@@ -1,6 +1,6 @@
 import { useProductRepository } from '@modules/product/repository'
+import { IProduct } from '@ecommerce-platform/types'
 import { IProductActions } from '../types'
-import { IProduct } from '@ecommerce-platform/types/index'
 
 const productRepository = useProductRepository()
 
@@ -9,21 +9,21 @@ export const actions: IProductActions = {
     try {
       const response = await productRepository.create(product)
       this.products.push(response.data.data)
+
       return response?.data.data
     } catch (err) {
       return Promise.reject(err)
     }
   },
 
-  async read(id?: string){
+  async read(params: Partial<IProduct>){
     try {
-      const { data } = await productRepository.read(id)
+      const { data } = await productRepository.read(params)
 
-      if (!id) {
-        this.$patch(state => {
-          state.products = data.data
-        })
-      }
+      this.$patch(state => {
+        state.products = data.data.items
+        state.totalLength = data.data.total
+      })
 
       return data.data
     } catch (err) {

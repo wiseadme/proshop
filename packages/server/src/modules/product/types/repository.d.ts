@@ -10,4 +10,6 @@ export interface IProductRepository {
   update(updates: Partial<IProduct>): Promise<{ updated: Document & IProduct }>
 
   delete(id: string): Promise<boolean>
+
+  getDocumentsCount(): Promise<number>
 }

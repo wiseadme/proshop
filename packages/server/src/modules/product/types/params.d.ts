@@ -5,4 +5,7 @@ export type ProductQuery = {
   page?: number
   url?: string
   count?: number
+  desc?: string
+  asc?: string
+  key?: string
 }

@@ -8,13 +8,15 @@ import { IProductRepository } from '../types/repository'
 import { IProduct } from '@ecommerce-platform/types'
 import { ProductQuery } from '../types/params'
 import { ILogger } from '@/types/utils'
+import { RepositoryHelpers } from '@modules/product/helpers/repository.helpers'
 
 // Constants
 import { DEFAULT_ITEMS_COUNT, DEFAULT_PAGE } from '@common/constants/counts'
 
 @injectable()
-export class ProductRepository implements IProductRepository {
+export class ProductRepository extends RepositoryHelpers implements IProductRepository {
   constructor(@inject(TYPES.UTILS.ILogger) private logger: ILogger){
+    super()
   }
 
   async create(product: IProduct){
@@ -35,84 +37,56 @@ export class ProductRepository implements IProductRepository {
       conditions: product.conditions
     })
       .save())
-      .populate([
-        'assets',
-        {
-          path: 'categories',
-          select: 'title'
-        },
-        {
-          path: 'variants',
-          populate: {
-            path: 'options',
-            populate: {
-              path: 'assets'
-            }
-          }
-        }
-      ]) as Document & IProduct
+      .populate(this.preparePopulateParams()) as Document & IProduct
   }
 
-  async read(params: ProductQuery){
-    let search
+  async read({
+    _id,
+    name,
+    category,
+    url,
+    desc,
+    asc,
+    key,
+    page = DEFAULT_PAGE,
+    count = DEFAULT_ITEMS_COUNT
+  }: ProductQuery){
 
-    const {
-      page = DEFAULT_PAGE,
-      count = DEFAULT_ITEMS_COUNT
-    } = params as ProductQuery
+    let query
 
-    if (params._id) {
-      params._id && validateId(params._id)
-
-      const product = await ProductModel.find({ _id: params._id })
-        .populate('categories', [ 'title' ])
-        .populate([
-          'assets',
-          {
-            path: 'variants',
-            populate: {
-              path: 'options',
-              populate: {
-                path: 'assets'
-              }
-            }
-          }
-        ])
-
-      return product
+    const queryParams = {
+      ...this.preparePaginationParams({ page, count }),
+      ...this.prepareSortParams({ desc, asc, key })
     }
 
-    if (params.category) {
-      search = { categories: { $in: params.category } }
+    if (_id) {
+      validateId(_id)
+
+      return ProductModel.find({ _id }).populate(this.preparePopulateParams())
     }
 
-    if (params.url) {
-      search = { url: params.url }
+    if (category) {
+      query = ProductModel.aggregate(this.prepareAggregateParams({ count, page, category, desc, asc, key }))
     }
 
-    if (params.name) {
-      search = { 'name': { '$regex': `.*${ params.name }*.`, '$options': 'i' } }
+    if (url) {
+      query = ProductModel.find({ url }, [], queryParams).populate(this.preparePopulateParams())
     }
 
-    const products = await ProductModel
-      .find(search)
-      .populate('categories', [ 'title' ])
-      .populate([
-        'assets',
-        {
-          path: 'variants',
-          populate: {
-            path: 'options',
-            populate: {
-              path: 'assets'
-            }
-          }
+    if (name) {
+      query = ProductModel.find({
+        'name': {
+          '$regex': `.*${ name }*.`,
+          '$options': 'i'
         }
-      ])
-      .skip((page * count) - count)
-      .limit(count) as any
+      }, queryParams).populate(this.preparePopulateParams())
+    }
 
-    return products
+    if (!query) {
+      query = ProductModel.find({}, [], queryParams).populate(this.preparePopulateParams())
+    }
+
+    return query
   }
 
   async update($set: Partial<IProduct>){
@@ -123,19 +97,7 @@ export class ProductRepository implements IProductRepository {
       { $set },
       { new: true }
     )
-      .populate('categories', [ 'title' ])
-      .populate([
-        'assets',
-        {
-          path: 'variants',
-          populate: {
-            path: 'options',
-            populate: {
-              path: 'assets'
-            }
-          }
-        }
-      ]) as Document & IProduct
+      .populate(this.preparePopulateParams()) as Document & IProduct
 
     return { updated }
   }
@@ -144,5 +106,9 @@ export class ProductRepository implements IProductRepository {
     validateId(id)
 
     return !!await ProductModel.findOneAndDelete({ _id: id })
+  }
+
+  async getDocumentsCount(){
+    return ProductModel.countDocuments({})
   }
 }

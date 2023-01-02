@@ -1,19 +1,23 @@
 <script setup lang="ts">
   import { PropType } from 'vue'
-  import { IProduct } from '@modules/product/types'
+  import { IProduct } from '@ecommerce-platform/types'
   import { icons } from '@shared/constants/icons'
 
   defineProps({
     products: {
       type: Array as PropType<Array<IProduct>>,
       default: () => []
+    },
+    total: {
+      type: Number
     }
   })
 
-  defineEmits([
+  const emit = defineEmits([
     'delete:product',
     'open:edit-modal',
-    'open:create-modal'
+    'open:create-modal',
+    'sort:column'
   ])
 
   const cols = $ref([
@@ -29,7 +33,8 @@
       resizeable: true,
       sortable: true,
       filterable: true,
-      format: (row) => row.name
+      format: (row) => row.name,
+      onSort: (col) => emit('sort:column', col)
     },
     {
       key: 'url',
@@ -38,7 +43,8 @@
       resizeable: true,
       sortable: true,
       filterable: true,
-      format: (row) => row.url
+      format: (row) => row.url,
+      onSort: (col) => emit('sort:column', col)
     },
     {
       key: 'price',
@@ -47,7 +53,8 @@
       resizeable: true,
       sortable: true,
       filterable: true,
-      format: (row) => row.price
+      format: (row) => row.price,
+      onSort: (col) => emit('sort:column', col)
     },
     {
       key: 'quantity',
@@ -108,7 +115,8 @@
     :footer-options="{
       counts: {
         displayColor: 'green',
-        rowsPerPageText: 'кол-во строк'
+        rowsPerPageText: 'кол-во строк',
+        totalRows: total
       },
       pagination: {
         buttonsColor: 'green',
@@ -137,6 +145,9 @@
           </v-button>
         </v-toolbar-items>
       </v-toolbar>
+    </template>
+    <template #pagination-text="{start, last, length}">
+      <span>{{ start + ' - ' + last + ' из ' + length + ' строк' }}</span>
     </template>
     <template #actions="{row}">
       <v-button

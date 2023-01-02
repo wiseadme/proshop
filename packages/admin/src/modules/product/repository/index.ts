@@ -15,8 +15,8 @@ class Repository implements IRepository {
     return rest.post(this.baseUrl, product)
   }
 
-  read(id = ''){
-    return rest.get(this.baseUrl, id ? { params: { id } } : {})
+  read(params){
+    return rest.get(this.baseUrl, params ? { params } : {})
   }
 
   update(updates){

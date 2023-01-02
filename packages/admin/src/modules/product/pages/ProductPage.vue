@@ -126,13 +126,23 @@
     model = Product.create(service.product!)
   }
 
-  /** TODO - реализовать запросы по переключению страниц */
-  const onUpdateTablePage = (data) => {
-    console.log(data, 'onUpdateTablePage')
+  const onUpdateTablePage = async (page) => {
+    service.pagination.setPaginationPage(page)
+    await service.getProducts({})
   }
 
-  const onUpdateTableRowsCount = (data) => {
-    console.log(data, 'onUpdateTableRowsCount')
+  const onUpdateTableRowsCount = async (count) => {
+    service.pagination.setPaginationItemsCount(count)
+    await service.getProducts({})
+  }
+
+  const onSortColumn = (col) => {
+    if (col.sorted) {
+      service.sort.setAsc(col.key)
+    } else {
+      service.sort.setDesc(col.key)
+    }
+    service.getProducts({})
   }
 
   watch(() => model, () => {
@@ -171,9 +181,11 @@
         <product-table
           v-else
           :products="service.products"
+          :total="service.totalLength"
           @open:create-modal="onShowProductModal"
           @open:edit-modal="onEdit"
           @delete:product="onDeleteProduct"
+          @sort:column="onSortColumn"
           @update:page="onUpdateTablePage"
           @update:rows-count="onUpdateTableRowsCount"
         />

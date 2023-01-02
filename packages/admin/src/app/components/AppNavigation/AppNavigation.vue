@@ -9,6 +9,11 @@
 
       const items = [
         {
+          title: 'Показатели',
+          icon: 'fas fa-chart-pie',
+          path: '/dashboard'
+        },
+        {
           title: 'Категории',
           icon: 'fas fa-cubes',
           path: '/categories'

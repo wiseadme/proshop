@@ -8,10 +8,13 @@ import { useUnitStore } from '@modules/unit/store'
 // Services
 import { useFilesService } from '@shared/services/files.service'
 import { useOptionsService } from '@shared/services/options.service'
-
+// Composables
+import { usePagination } from '@shared/composables/use-pagination'
+import { useSort } from '@shared/composables/use-sort'
 // Types
-import { IProduct, IAsset, IVariant, IVariantOption } from '@ecommerce-platform/types/index'
+import { IProduct, IAsset, IVariant, IVariantOption, IRequestPagination } from '@ecommerce-platform/types'
 import { clone } from '@shared/helpers'
+import { IRequestSort } from '@ecommerce-platform/types/request'
 
 class Service {
   private _store: ReturnType<typeof useProductStore>
@@ -22,6 +25,10 @@ class Service {
   private _product: Ref<Maybe<IProduct>>
   private _filesService: ReturnType<typeof useFilesService>
   private _optionsService: ReturnType<typeof useOptionsService>
+
+  public pagination: ReturnType<typeof usePagination>
+  public sort: ReturnType<typeof useSort>
+
   static instance: Service
 
   constructor({
@@ -31,7 +38,9 @@ class Service {
     unitsStore,
     variantsStore,
     filesService,
-    optionsService
+    optionsService,
+    pagination,
+    sort
   }){
     this._store = store
     this._attributesStore = attributesStore
@@ -41,7 +50,8 @@ class Service {
     this._product = ref(null)
     this._filesService = filesService
     this._optionsService = optionsService
-
+    this.pagination = pagination
+    this.sort = sort
   }
 
   get products(){
@@ -62,6 +72,10 @@ class Service {
 
   get units(){
     return this._unitsStore.units
+  }
+
+  get totalLength(){
+    return this._store.totalLength
   }
 
   get variants(){
@@ -100,8 +114,30 @@ class Service {
     return await this._variantsStore.read()
   }
 
-  getProducts(id = ''){
-    return this._store.read(id).catch(err => console.log(err))
+  prepareRequestPagination(): IRequestPagination{
+    return {
+      page: unref(this.pagination.page),
+      count: unref(this.pagination.itemsCount),
+      length: true,
+    }
+  }
+
+  prepareRequestSortParams() {
+    return unref(this.sort.isNeedToBeSorted) ? {
+      asc: unref(this.sort.asc),
+      desc: unref(this.sort.desc),
+      key: unref(this.sort.sortKey),
+    } : {}
+  }
+
+  getProducts(params: Partial<IProduct> | null = null){
+    const query: IRequestPagination & Partial<IRequestSort> & Partial<IProduct> = {
+      ...this.prepareRequestSortParams(),
+      ...this.prepareRequestPagination(),
+      ...(params ? params : {})
+    }
+
+    return this._store.read(query).catch(err => console.log(err))
   }
 
   setAsCurrent(product: IProduct){
@@ -125,8 +161,8 @@ class Service {
       variants.push(variant)
     }
 
-    const optionIds = variant.options.map(o => o._id)
-    optionIds.push(optionData._id)
+    const optionIds = variant.options?.map(o => o._id)
+    optionIds?.push(optionData._id)
 
     variant.options = optionIds as any
 
@@ -144,9 +180,9 @@ class Service {
     const { variants } = this._product.value!
     const varInd = variants.findIndex(v => v._id === option.variantId)!
 
-    const optInd = variants[varInd].options.findIndex(it => it._id === option._id)
+    const optInd = variants[varInd].options?.findIndex(it => it._id === option._id)
 
-    variants[varInd].options.splice(optInd, 1, updated)
+    variants[varInd].options?.splice(optInd!, 1, updated)
 
     await this.updateProduct({
       _id: this._product.value!._id,
@@ -160,9 +196,9 @@ class Service {
     let { variants } = unref(this._product)!
     const variant = variants.find(v => v._id === option.variantId)!
 
-    variant.options = variant.options.filter(it => it._id !== option._id)
+    variant.options = variant.options?.filter(it => it._id !== option._id)
 
-    if (!variant.options.length) {
+    if (!variant.options?.length) {
       variants = variants.filter(v => v._id !== variant._id)
     }
 
@@ -276,7 +312,9 @@ class Service {
       unitsStore: useUnitStore(),
       variantsStore: useVariantStore(),
       filesService: useFilesService(),
-      optionsService: useOptionsService()
+      optionsService: useOptionsService(),
+      pagination: usePagination(),
+      sort: useSort()
     })
 
     return Service.instance

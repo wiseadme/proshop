@@ -5,7 +5,7 @@ export const dashboardRoutes = [
     name: 'dashboard',
     children: [
       {
-        path: '',
+        path: 'dashboard',
         component: () => import('@modules/dashboard/pages/DashboardPage.vue'),
         name: 'dashboard-table',
       },
