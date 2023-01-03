@@ -13,5 +13,5 @@ export interface IAuthService {
 
   checkMe(cookies: Record<string, string>): Promise<any>
 
-  updateToken(refreshToken: string): Promise<any>
+  updateAccessToken(cookies: Record<string, string>, res: Response): Promise<any>
 }

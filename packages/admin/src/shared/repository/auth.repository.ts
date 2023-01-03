@@ -1,4 +1,4 @@
-import { rest } from '@shared/api'
+import { auth } from '@shared/api'
 import { IRest } from '@shared/types/app'
 
 export interface IAuthRepository {
@@ -9,6 +9,8 @@ export interface IAuthRepository {
   create(user: any): Promise<any>
 
   whoAmI(): Promise<any>
+
+  refresh(): Promise<any>
 }
 
 class Repository implements IAuthRepository {
@@ -19,7 +21,7 @@ class Repository implements IAuthRepository {
   }
 
   async login(user){
-    return this.rest.post(`/v1/auth/login`, user)
+    return this.rest.post('/v1/auth/login', user)
   }
 
   async logout(){
@@ -27,12 +29,16 @@ class Repository implements IAuthRepository {
   }
 
   async create(user){
-    return this.rest.post(`/v1/auth/create`, user)
+    return this.rest.post('/v1/auth/create', user)
+  }
+
+  async refresh(){
+    return this.rest.get('/v1/auth/refresh')
   }
 
   async whoAmI(){
-    return this.rest.get(`/v1/auth/check`)
+    return this.rest.get('/v1/auth/check')
   }
 }
 
-export const useAuthRepository = () => new Repository(rest)
+export const useAuthRepository = () => new Repository(auth)

@@ -23,7 +23,7 @@ export const actions = {
         if (!params) {
           state.orders = data?.data
         } else {
-          state.newOrders = data.data
+          state.newOrders = data?.data
         }
       })
 

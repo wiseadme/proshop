@@ -7,9 +7,12 @@ class Service {
   private _store: ReturnType<typeof useOrdersStore>
   private _order: Ref<Maybe<IOrder>>
 
+  public unsubscribe: Maybe<Function>
+
   constructor({ store }){
     this._store = store
     this._order = ref(null)
+    this.unsubscribe = null
   }
 
   get orders(){
@@ -42,6 +45,22 @@ class Service {
 
   updateOrder(updates){
     return this._store.update(updates)
+  }
+
+  addSubscriber(){
+    this.unsubscribe = this._store.$subscribe({
+      name: 'read',
+      before(params): any{
+        console.log(params)
+      },
+      after(...result): any{
+        console.log(...result)
+      }
+    })
+  }
+
+  removeSubscriber(){
+    this.unsubscribe?.()
   }
 
   async deleteOrder(orderId){

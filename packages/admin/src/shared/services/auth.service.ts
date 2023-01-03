@@ -33,6 +33,10 @@ export class Service {
     return this._store.createUser(user)
   }
 
+  async refresh(){
+    return this._store.refresh()
+  }
+
   async check(){
     try {
       await this._store.whoAmI()

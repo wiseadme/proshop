@@ -15,6 +15,17 @@ const RestClient = axios.create({
   timeout: 10000
 })
 
+const AuthClient = axios.create({
+  headers: {
+    'Content-Type': 'application/json',
+    Accept: 'application/json'
+  },
+  baseURL,
+  withCredentials: true,
+  maxContentLength: 50000000,
+  timeout: 10000
+})
+
 const FilesClient = axios.create({
   headers: {
     'Content-Type': 'multipart/form-data'
@@ -25,20 +36,45 @@ const FilesClient = axios.create({
   timeout: 10000
 })
 
-RestClient.interceptors.request.use(async (config) => {
-  const user = useAuthService()?.user
+let isInProgress: boolean = false
+let response: any = null
 
-  if (user && (user.exp * 1000) <= Date.now()) {
-    console.log('token is expired')
+const wrapper = (action) => {
+  return async () => {
+    if (!isInProgress) {
+      isInProgress = true
+      return await action()
+    }
   }
+}
 
-  return config
+// @ts-ignore
+RestClient.interceptors.request.use(async (config) => {
+  const authService = useAuthService()
+
+  if (authService.user && (authService.user.exp * 1000) <= Date.now()) {
+    const makeOnce = wrapper(authService.refresh.bind(authService))
+
+    if (!isInProgress) {
+      response = await makeOnce()
+
+      if (response && response.ok) {
+        isInProgress = false
+
+        return config
+      } else {
+        await authService.logout()
+      }
+    }
+  } else {
+    return config
+  }
 })
 
 RestClient.interceptors.response.use(
   (config) => config,
   (config) => {
-    if (config.response.status === 401 || config.response.status === 403) {
+    if (config.response?.status === 401 || config.response?.status === 403) {
       // useAuthService().logout()
     } else {
       return config
@@ -47,3 +83,4 @@ RestClient.interceptors.response.use(
 
 export const file = new Client(FilesClient)
 export const rest = new Client(RestClient)
+export const auth = new Client(AuthClient)

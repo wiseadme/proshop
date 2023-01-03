@@ -22,8 +22,8 @@ export const actions: IProductActions = {
       const { data } = await productRepository.read(params)
 
       this.$patch(state => {
-        state.products = data.data.items
-        state.totalLength = data.data.total
+        state.products = data.data?.items
+        state.totalLength = data.data?.total
       })
 
       return data.data

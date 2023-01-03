@@ -33,6 +33,15 @@ export class AuthService extends KeycloakAdminClient implements IAuthService {
     }
   }
 
+  createRefreshParams(refreshToken){
+    return {
+      grantType: 'refresh_token',
+      clientId: config.keycloakClientId,
+      clientSecret: config.keycloakClientSecret,
+      refreshToken: refreshToken,
+    }
+  }
+
   createUserParams(user): UserRepresentation{
     return {
       firstName: user.firstName,
@@ -53,14 +62,6 @@ export class AuthService extends KeycloakAdminClient implements IAuthService {
       clientRoles: {
         user: true
       }
-    }
-  }
-
-  createRefreshParams(rToken: string){
-    return {
-      grantType: 'refresh_token',
-      refreshToken: rToken,
-      clientId: config.keycloakClientId
     }
   }
 
@@ -118,14 +119,44 @@ export class AuthService extends KeycloakAdminClient implements IAuthService {
     return await this.users.create(this.createUserParams(user))
   }
 
-  async updateToken(accessToken){
-    const auth = await this.repository.read(accessToken)
+  async updateAccessToken(cookies, res){
+    const [ auth ] = await this.repository.read(cookies.auth)
 
-    return this.auth(this.createRefreshParams(auth.refreshToken) as Credentials)
+    await this.auth(this.createRefreshParams(auth.refreshToken) as Credentials)
+
+    const { accessToken, refreshToken } = this
+    const { exp, phone, email, role } = prepareResponseData(this)
+
+    const whoAmI = await this.whoAmI.find()
+
+    res.cookie('auth', accessToken, {
+      sameSite: true,
+      httpOnly: true,
+      maxAge: 100000000,
+      path: '/'
+    })
+
+    await this.repository.update({
+      id: auth._id,
+      accessToken,
+      refreshToken,
+    })
+
+    return {
+      ...whoAmI,
+      exp,
+      phone,
+      email,
+      role
+    }
   }
 
   async checkMe(cookies){
     if (isExpired(cookies.auth)) {
+      const [ auth ] = await this.repository.read(cookies.auth)
+
+      auth && await this.repository.delete(auth._id)
+
       return Promise.reject({
         status: 401,
         message: 'Unauthorized'

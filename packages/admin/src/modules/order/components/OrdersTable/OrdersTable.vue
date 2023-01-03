@@ -1,6 +1,8 @@
 <script setup lang="ts">
+  import { onBeforeUnmount } from 'vue'
   import { PropType } from 'vue'
   import { IOrder } from '@modules/order/types'
+  import { useOrdersService } from '@modules/order/service/order.service'
 
   defineProps({
     cols: {
@@ -24,7 +26,11 @@
     'open:order',
   ])
 
-  const onUpdateRows = ({ page }) => page.value = 1
+  const service = useOrdersService()
+
+  service.addSubscriber()
+
+  onBeforeUnmount(() => service.removeSubscriber())
 
 </script>
 <template>
@@ -45,7 +51,6 @@
     class="elevation-2"
     show-checkbox
     show-sequence
-    @update:rows="onUpdateRows"
   >
     <template #toolbar>
       <v-toolbar>

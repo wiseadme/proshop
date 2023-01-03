@@ -23,6 +23,7 @@ export class AuthController extends BaseController implements IController {
     this.router.get('/logout', expressAsyncHandler(this.logout.bind(this)))
     this.router.post('/create', expressAsyncHandler(this.create.bind(this)))
     this.router.get('/check', expressAsyncHandler(this.check.bind(this)))
+    this.router.get('/refresh', expressAsyncHandler(this.refresh.bind(this)))
   }
 
   async login({ body, method, url }: Request, res: Response){
@@ -103,9 +104,21 @@ export class AuthController extends BaseController implements IController {
 
   async refresh({ method, url, cookies }: Request, res: Response){
     try {
-      const data = await this.service.updateToken(cookies.auth)
-    } catch (error) {
+      const data = await this.service.updateAccessToken(cookies, res)
 
+      this.send({
+        response: res,
+        data,
+        method,
+        url: this.path + url
+      })
+
+    } catch (error) {
+      return this.error({
+        method,
+        error,
+        url: this.path + url
+      })
     }
   }
 }
