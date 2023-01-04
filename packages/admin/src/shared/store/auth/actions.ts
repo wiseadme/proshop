@@ -61,8 +61,9 @@ export const actions = {
       }
 
       this.$patch(state => {
-        state.user = null
         state.isAuthenticated = false
+        state.user = null
+        state.isChecked = true
       })
 
       return true
@@ -73,7 +74,7 @@ export const actions = {
 
   async refresh(){
     try {
-      const data = await repository.refresh()
+      const { data } = await repository.refresh()
 
       this.$patch(state => {
         state.user = data.data

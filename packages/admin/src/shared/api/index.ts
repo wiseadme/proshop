@@ -58,7 +58,7 @@ RestClient.interceptors.request.use(async (config) => {
     if (!isInProgress) {
       response = await makeOnce()
 
-      if (response && response.ok) {
+      if (response && response.exp) {
         isInProgress = false
 
         return config

@@ -12,23 +12,32 @@ import { dashboardRoutes } from '@modules/dashboard/routes'
 const baseUrl = process.env.NODE_ENV === 'development' ? '/' : '/admin'
 
 export const routes = [
-  ...dashboardRoutes,
-  ...authRoutes,
-  ...categoryRoutes,
-  ...productRoutes,
-  ...attributeRoutes,
-  ...unitRoutes,
-  ...variantRoutes,
-  ...orderRoutes
-  // ...elementRoutes
+  {
+    path: '/',
+    component: () => import('@shared/layouts/MainLayout.vue'),
+    name: 'main',
+    children: [
+      ...dashboardRoutes,
+      ...categoryRoutes,
+      ...productRoutes,
+      ...attributeRoutes,
+      ...unitRoutes,
+      ...variantRoutes,
+      ...orderRoutes
+      // ...elementRoutes
+    ],
+  },
+  {
+    path: '/auth',
+    component: () => import('@shared/layouts/AuthLayout.vue'),
+    name: 'auth',
+    children: [
+      ...authRoutes,
+    ]
+  }
 ]
 
 export const router = createRouter({
   history: createWebHistory(baseUrl),
   routes
 })
-
-// router.beforeEach((to, from, next) => {
-//   console.log(to, from, next)
-//   next(true)
-// })

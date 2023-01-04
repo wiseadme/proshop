@@ -53,7 +53,7 @@ export class Service {
   async logout(){
     await this._store.logout()
 
-    return this._router.push({ name: 'auth' })
+    return this._router.push({ name: 'login' })
   }
 }
 

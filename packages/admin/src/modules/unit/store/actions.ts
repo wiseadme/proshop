@@ -18,8 +18,12 @@ export const actions: IUnitActions = {
   async read(id?: string): Promise<Array<IUnit>>{
     try {
       const { data } = await repository.read(id)
-      this.units = data.data
-      return data.data
+
+      this.$patch(state => {
+        state.units = data?.data
+      })
+
+      return data?.data
     } catch (err) {
       return Promise.reject(err)
     }

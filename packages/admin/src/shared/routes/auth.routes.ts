@@ -1,12 +1,12 @@
 import AuthPage from '@shared/pages/AuthPage.vue'
 export const authRoutes = [
   {
-    path: '/auth',
+    path: '',
     redirect: '/auth/login',
-    name: 'auth',
+    name: 'auth-r',
   },
   {
-    path: '/auth/login/',
+    path: 'login',
     component: AuthPage,
     name: 'login',
   }

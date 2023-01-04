@@ -1,4 +1,5 @@
 // @ts-ignore
+import axios from 'axios'
 import KeycloakAdminClient from '@keycloak/keycloak-admin-client'
 import { inject, injectable } from 'inversify'
 import { prepareResponseData, isExpired } from '@modules/auth/helpers'
@@ -59,6 +60,7 @@ export class AuthService extends KeycloakAdminClient implements IAuthService {
           temporary: false
         }
       ],
+      realmRoles: [ 'manage-users' ],
       clientRoles: {
         user: true
       }
@@ -104,13 +106,33 @@ export class AuthService extends KeycloakAdminClient implements IAuthService {
   async logoutUser(cookies, res){
     const [ user ] = await this.repository.read(cookies.auth)
 
-    this.setAccessToken(cookies.auth)
+    // const params = {
+    //   method: 'post',
+    //   url: `${config.keycloakServer}/realms/${config.keycloakRealm}/protocol/openid-connect/logout`,
+    //   headers: {
+    //     'Content-Type': 'application/x-www-form-urlencoded',
+    //   },
+    //   data: {
+    //     client_id: config.keycloakClientId,
+    //     client_secret: config.keycloakClientSecret,
+    //     refresh_token: user.refreshToken,
+    //   },
+    // };
+
+    // await axios(params).catch(err => console.log(err))
+
+    this.setAccessToken(user.accessToken)
+    this.refreshToken = user.refreshToken
+
+    await this.users.logout({ id: user.userId }, {
+      catchNotFound: true
+    })
 
     await this.repository.delete(user._id)
 
     res.clearCookie('auth')
 
-    return this.users.logout({ id: user.userId })
+    return true
   }
 
   async createUser(user, cookies){
@@ -152,10 +174,12 @@ export class AuthService extends KeycloakAdminClient implements IAuthService {
   }
 
   async checkMe(cookies){
-    if (isExpired(cookies.auth)) {
-      const [ auth ] = await this.repository.read(cookies.auth)
+    if (!cookies.auth || isExpired(cookies.auth)) {
+      if (cookies.auth) {
+        const [ auth ] = await this.repository.read(cookies.auth)
 
-      auth && await this.repository.delete(auth._id)
+        auth && await this.repository.delete(auth._id)
+      }
 
       return Promise.reject({
         status: 401,

@@ -18,8 +18,12 @@ export const actions: IVariantActions = {
   async read(id?: string): Promise<Array<IVariant>>{
     try {
       const { data } = await repository.read(id)
-      this.variants = data.data
-      return data.data
+
+      this.$patch(state => {
+        state.variants = data?.data
+      })
+
+      return data?.data
     } catch (err) {
       return Promise.reject(err)
     }

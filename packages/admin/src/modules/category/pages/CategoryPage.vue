@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+  import {onMounted, onBeforeUnmount} from 'vue'
   import { getDifferences, clone } from '@shared/helpers'
   import { useCategoryService } from '@modules/category/service/category.service'
   import { Category } from '@modules/category/model/category.model'
@@ -150,6 +151,9 @@
   ])
 
   service.getCategories()
+
+  onMounted(() => console.log('MOUNTED'))
+  onBeforeUnmount(() => console.log('BEFORE UNMOUNT'))
 
 </script>
 <template>
