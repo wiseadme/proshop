@@ -1,6 +1,6 @@
 import { rest } from '@shared/api'
 import { IRest, IRepository } from '@shared/types/app'
-import { IVariantOption } from '@modules/variant/types'
+import { IVariantOption } from '@modules/variants/types'
 
 interface IOptionsRepository extends IRepository {
   create: (option: IVariantOption) => Promise<{ data: { data: IVariantOption } }>

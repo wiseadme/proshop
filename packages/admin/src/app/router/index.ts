@@ -1,12 +1,13 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import { productRoutes } from '@modules/product/routes'
-import { categoryRoutes } from '@modules/category/routes'
-import { attributeRoutes } from '@modules/attribute/routes'
-import { unitRoutes } from '@modules/unit/routes'
-import { variantRoutes } from '@modules/variant/routes'
-import { orderRoutes } from '@modules/order/routes'
+import { productRoutes } from '@modules/products/routes'
+import { categoryRoutes } from '@modules/categories/routes'
+import { attributeRoutes } from '@modules/attributes/routes'
+import { unitRoutes } from '@modules/units/routes'
+import { variantRoutes } from '@modules/variants/routes'
+import { orderRoutes } from '@modules/orders/routes'
 import { authRoutes } from '@shared/routes/auth.routes'
 import { dashboardRoutes } from '@modules/dashboard/routes'
+import { customerRoutes } from '@modules/customers/routes'
 // import { elementRoutes } from '@modules/elements/routes'
 
 const baseUrl = process.env.NODE_ENV === 'development' ? '/' : '/admin'
@@ -23,7 +24,8 @@ export const routes = [
       ...attributeRoutes,
       ...unitRoutes,
       ...variantRoutes,
-      ...orderRoutes
+      ...orderRoutes,
+      ...customerRoutes
       // ...elementRoutes
     ],
   },
