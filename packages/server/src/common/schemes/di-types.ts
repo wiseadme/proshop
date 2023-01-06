@@ -1,5 +1,3 @@
-import { IAuthRepository } from '@modules/auth/types/repository'
-
 export const TYPES = {
   APPLICATION: Symbol.for('App'),
   DB: Symbol.for('DB'),
@@ -15,7 +13,7 @@ export const TYPES = {
     ICartService: Symbol.for('ICartService'),
     IOrderService: Symbol.for('IOrderService'),
     IOptionService: Symbol.for('IOptionService'),
-    IAuthService: Symbol.for('IAuthService')
+    IUserService: Symbol.for('IUserService')
   },
   CONTROLLERS: {
     IController: Symbol.for('IController'),
@@ -33,7 +31,7 @@ export const TYPES = {
     ICartRepository: Symbol.for('ICartRepository'),
     IOrderRepository: Symbol.for('IOrderRepository'),
     IOptionRepository: Symbol.for('IOptionRepository'),
-    IAuthRepository: Symbol.for('IAuthRepository'),
+    IUserRepository: Symbol.for('IUserRepository'),
   },
   MIDDLEWARES: {
     IMiddleware: Symbol.for('IMiddleware'),

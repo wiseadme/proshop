@@ -11,7 +11,8 @@ dotenv.config({
 export class Config implements IConfig {
   port = Number(process.env.PORT!)
   dbUri = process.env.MONGO_URI!
-  secret = process.env.SECRET_KEY!
+  accessSecret = process.env.ACCESS_TOKEN_SECRET_KEY!
+  refreshSecret = process.env.REFRESH_TOKEN_SECRET_KEY!
   uploadsDir = `/home/${process.env.USER}/www/uploads`!
   keycloakServer = process.env.KEYCLOAK_SERVER_URI
   keycloakRealm = process.env.KEYCLOAK_REALM

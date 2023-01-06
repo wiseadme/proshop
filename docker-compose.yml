@@ -101,23 +101,9 @@ services:
     networks:
       - ecommerce
 
-  keycloak:
-    image: jboss/keycloak
-    container_name: keycloak-app
-    environment:
-      KEYCLOAK_USER: Anar
-      KEYCLOAK_PASSWORD: uzbekistan1
-    volumes:
-      - keycloak:/opt/jboss/keycloak/standalone/data/
-    ports:
-      - "8080:8080"
-    networks:
-      - ecommerce
-
 volumes:
   ecommerce:
   uploads:
-  keycloak:
   mongo_primary:
   mongo_secondary:
   mongo_seed:

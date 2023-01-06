@@ -9,6 +9,7 @@ import type { IOrder, IOrderClient, IOrderStatuses } from './order'
 import type { IProduct, IProductConditions } from './product'
 import type { IVariant, IVariantOption } from './variant'
 import type { IRequestPagination } from './request'
+import type { IUser } from './user'
 import type { Maybe } from './utils'
 
 declare module '@ecommerce-platform/types' {
@@ -17,6 +18,7 @@ declare module '@ecommerce-platform/types' {
     IAttribute,
     IUnit,
     ICart,
+    IUser,
     ICartItem,
     ICurrency,
     ICategory,

@@ -1,4 +1,4 @@
-export interface IAuthRepository {
+export interface IUserRepository {
   create(params): Promise<Record<'id', string>>
 
   read(token: string): any

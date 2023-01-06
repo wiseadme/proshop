@@ -4,15 +4,15 @@ import { inject, injectable } from 'inversify'
 import { BaseController } from '@common/controller/base.controller'
 import { IController } from '@/types'
 import { TYPES } from '@common/schemes/di-types'
-import { IAuthService } from '@modules/auth/types/service'
+import { IUserService } from '@modules/user/types/service'
 
 @injectable()
-export class AuthController extends BaseController implements IController {
-  public path: string = '/v1/auth'
+export class UserController extends BaseController implements IController {
+  public path: string = '/v1/user'
   public router: Router = Router()
 
   constructor(
-    @inject(TYPES.SERVICES.IAuthService) private service: IAuthService
+    @inject(TYPES.SERVICES.IUserService) private service: IUserService
   ){
     super()
     this.initRoutes()
@@ -22,13 +22,13 @@ export class AuthController extends BaseController implements IController {
     this.router.post('/login', expressAsyncHandler(this.login.bind(this)))
     this.router.get('/logout', expressAsyncHandler(this.logout.bind(this)))
     this.router.post('/create', expressAsyncHandler(this.create.bind(this)))
-    this.router.get('/check', expressAsyncHandler(this.check.bind(this)))
+    this.router.get('/check', expressAsyncHandler(this.whoami.bind(this)))
     this.router.get('/refresh', expressAsyncHandler(this.refresh.bind(this)))
   }
 
   async login({ body, method, url }: Request, res: Response){
     try {
-      const data = await this.service.loginUser(body, res)
+      const data = await this.service.login(body, res)
 
       this.send({
         response: res,
@@ -47,7 +47,7 @@ export class AuthController extends BaseController implements IController {
 
   async logout({ cookies, method, url }: Request, res: Response){
     try {
-      const data = await this.service.logoutUser(cookies, res)
+      const data = await this.service.logout(cookies, res)
 
       this.send({
         response: res,
@@ -66,7 +66,7 @@ export class AuthController extends BaseController implements IController {
 
   async create({ body, method, url, cookies }: Request, res: Response){
     try {
-      const data = await this.service.createUser(body, cookies)
+      const data = await this.service.create(body)
 
       this.send({
         response: res,
@@ -83,9 +83,9 @@ export class AuthController extends BaseController implements IController {
     }
   }
 
-  async check({ method, url, cookies }: Request, res: Response){
+  async whoami({ method, url, cookies }: Request, res: Response){
     try {
-      const data = await this.service.checkMe(cookies)
+      const data = await this.service.whoami(cookies)
 
       this.send({
         response: res,
@@ -104,7 +104,7 @@ export class AuthController extends BaseController implements IController {
 
   async refresh({ method, url, cookies }: Request, res: Response){
     try {
-      const data = await this.service.updateAccessToken(cookies, res)
+      const data = await this.service.refresh(cookies, res)
 
       this.send({
         response: res,
