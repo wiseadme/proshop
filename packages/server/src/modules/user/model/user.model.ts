@@ -4,7 +4,7 @@ interface User {
   firstName: string
   secondName: string
   email: string
-  login: string
+  username?: string
   password: string
   phone: string
   roles: string[]
@@ -23,17 +23,15 @@ const UserSchema = new Schema<Document & User>({
     type: String,
     required: true,
   },
-  login: {
+  username: {
     type: String,
     default: null,
     unique: true,
-    index: false
   },
   email: {
     type: String,
     required: true,
     unique: true,
-    index: false
   },
   password: {
     type: String,

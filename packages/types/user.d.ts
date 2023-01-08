@@ -4,11 +4,11 @@ export interface IUser {
   firstName: string
   secondName: string
   email: string
-  login: string
+  username: string
   password: string
   phone: string
   roles: string[]
-  accessToken: Maybe<string>,
-  refreshToken: Maybe<string>,
+  accessToken: string,
+  refreshToken: string,
   enabled: boolean
 }

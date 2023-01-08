@@ -1,7 +1,6 @@
 import { ValidateMiddleware } from '@common/middlewares/validate.middleware'
 import { Request, Response, NextFunction } from 'express'
 import jwt from 'jsonwebtoken'
-import config from '@app/config'
 
 type SetMiddlewareArguments = {
   dto?: any,
@@ -19,7 +18,7 @@ const protect = ({ roles }: ProtectMiddlewareArguments) => {
 
     if (roles) {
       const parsed = jwt.decode(cookies.auth)
-      const userRoles = parsed.resource_access[config.keycloakClientId]?.roles
+      const userRoles = parsed.roles
 
       ret = roles.every(role => userRoles.includes(role))
     }

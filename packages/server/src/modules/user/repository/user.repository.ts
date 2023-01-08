@@ -10,10 +10,10 @@ export class UserRepository implements IUserRepository {
 
     const user = new UserModel({
       _id: new mongoose.Types.ObjectId(),
-      firstName: params.userId,
+      firstName: params.firstName,
       secondName: params.secondName,
       email: params.email,
-      login: params.login,
+      username: params.username,
       password: params.password,
       phone: params.phone,
       roles: params.roles,
@@ -27,15 +27,15 @@ export class UserRepository implements IUserRepository {
     return { id: user._id }
   }
 
-  async read(token){
-    return UserModel.find({ accessToken: token })
+  async read(params){
+    return UserModel.find(params)
   }
 
   async update(updates: any){
-    validateId(updates.id)
+    validateId(updates._id)
 
     const updated = await UserModel.findByIdAndUpdate(
-      { _id: updates.id },
+      { _id: updates._id },
       { $set: updates },
       { new: true }
     )

@@ -21,23 +21,23 @@ class Repository implements IAuthRepository {
   }
 
   async login(user){
-    return this.rest.post('/v1/auth/login', user)
+    return this.rest.post('/v1/user/login', user)
   }
 
   async logout(){
-    return this.rest.get('/v1/auth/logout')
+    return this.rest.get('/v1/user/logout')
   }
 
   async create(user){
-    return this.rest.post('/v1/auth/create', user)
+    return this.rest.post('/v1/user/create', user)
   }
 
   async refresh(){
-    return this.rest.get('/v1/auth/refresh')
+    return this.rest.get('/v1/user/refresh')
   }
 
   async whoAmI(){
-    return this.rest.get('/v1/auth/check')
+    return this.rest.get('/v1/user/whoami')
   }
 }
 

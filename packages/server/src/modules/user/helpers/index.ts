@@ -1,15 +1,22 @@
-import config from '@app/config'
 import jwt from 'jsonwebtoken'
+import { IUser } from '@ecommerce-platform/types'
+import config from '@app/config'
 
-export const prepareResponseData = (loginCandidate) => {
-  return {
-    email: loginCandidate.email,
-    exp: loginCandidate.expiresIn,
-    roles: loginCandidate.roles,
-    phone: loginCandidate.phone
+export class UserHelpers {
+  prepareUserResponseData(user: IUser) {
+    return {
+      username: user.username,
+      email: user.email,
+      roles: user.roles,
+      phone: user.phone,
+    }
   }
-}
 
-export const isExpired = (token): boolean => {
-  return Date.now() >= (jwt.decode(token).exp * 1000)
+  isAccessTokenExpired(token) {
+    return Date.now() >= (jwt.decode(token).exp * 1000)
+  }
+
+  genJWToken({ payload, secret, expiresIn }) {
+    return jwt.sign(payload, secret, { expiresIn })
+  }
 }

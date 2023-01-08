@@ -49,7 +49,7 @@ import { UrlEncodedMiddleware } from '@common/middlewares/urlencoded.middleware'
 import { LoggerMiddleware } from '../middlewares/logger.middleware'
 import { ErrorRouteMiddleware } from '../middlewares/error.route.middleware'
 import { FileLoaderMiddleware } from '@common/middlewares/fileloader.middleware'
-import { SessionMiddleware } from '@common/middlewares/session.middleware'
+// import { SessionMiddleware } from '@common/middlewares/session.middleware'
 import { CookieMiddleware } from '@common/middlewares/cookie.middleware'
 
 // Types
@@ -122,7 +122,7 @@ container.bind<IController>(TYPES.CONTROLLERS.IController).to(UserController)
 
 // Middlewares
 container.bind<IMiddleware>(TYPES.MIDDLEWARES.IMiddleware).to(LoggerMiddleware)
-container.bind<IExpressMiddleware>(TYPES.MIDDLEWARES.IMiddleware).to(SessionMiddleware)
+// container.bind<IExpressMiddleware>(TYPES.MIDDLEWARES.IMiddleware).to(SessionMiddleware)
 container.bind<IExpressMiddleware>(TYPES.MIDDLEWARES.IMiddleware).to(JsonMiddleware)
 container.bind<IExpressMiddleware>(TYPES.MIDDLEWARES.IMiddleware).to(CookieMiddleware)
 container.bind<IExpressMiddleware>(TYPES.MIDDLEWARES.IMiddleware).to(UrlEncodedMiddleware)

@@ -8,7 +8,7 @@ import { IUserService } from '@modules/user/types/service'
 
 @injectable()
 export class UserController extends BaseController implements IController {
-  public path: string = '/v1/user'
+  public path: string = '/v1/users'
   public router: Router = Router()
 
   constructor(
@@ -22,7 +22,7 @@ export class UserController extends BaseController implements IController {
     this.router.post('/login', expressAsyncHandler(this.login.bind(this)))
     this.router.get('/logout', expressAsyncHandler(this.logout.bind(this)))
     this.router.post('/create', expressAsyncHandler(this.create.bind(this)))
-    this.router.get('/check', expressAsyncHandler(this.whoami.bind(this)))
+    this.router.get('/whoami', expressAsyncHandler(this.whoami.bind(this)))
     this.router.get('/refresh', expressAsyncHandler(this.refresh.bind(this)))
   }
 

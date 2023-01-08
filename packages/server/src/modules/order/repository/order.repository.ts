@@ -19,7 +19,7 @@ export class OrderRepository implements IOrderRepository {
   }
 
   async create(order: IOrder): Promise<Document & IOrder>{
-    return (await new OrderModel({
+    return new OrderModel({
       _id: new Types.ObjectId(),
       items: order.items,
       amount: order.amount,
@@ -29,7 +29,7 @@ export class OrderRepository implements IOrderRepository {
       owner: order.owner,
       orderId: order.orderId,
       status: order.status,
-    }).save())
+    }).save()
   }
 
   async read(params: any & { page: number, count: number }): Promise<Array<Document & IOrder>>{
