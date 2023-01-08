@@ -37,7 +37,7 @@ export class UserService extends UserHelpers implements IUserService {
           expiresIn: 60 * 60 * 12
         })
 
-        await this.repository.update({
+        const { updated } = await this.repository.update({
           _id: candidate._id,
           accessToken,
           refreshToken,
@@ -50,7 +50,7 @@ export class UserService extends UserHelpers implements IUserService {
           path: '/'
         })
 
-        return this.prepareUserResponseData(candidate)
+        return this.prepareUserResponseData(updated)
       } else {
         return Promise.reject({
           status: 401,
@@ -66,7 +66,9 @@ export class UserService extends UserHelpers implements IUserService {
   }
 
   async logout(cookies, res) {
-    const [ user ] = await this.repository.read(cookies.auth)
+    const [ user ] = await this.repository.read({
+      accessToken: cookies.auth
+    })
 
     await this.repository.update({
       _id: user._id,
@@ -98,23 +100,29 @@ export class UserService extends UserHelpers implements IUserService {
   }
 
   async refresh(cookies, res) {
-    const [ user ] = await this.repository.read(cookies.auth)
+    const [ user ] = await this.repository.read({
+      accessToken: cookies.auth
+    })
 
     if (user) {
+      const userInfo = this.prepareUserResponseData(user)
+
+      delete userInfo.exp
+
       const accessToken = this.genJWToken({
-        payload: this.prepareUserResponseData(user),
+        payload: userInfo,
         secret: config.accessSecret,
         expiresIn: 60
       })
 
       const refreshToken = this.genJWToken({
-        payload: this.prepareUserResponseData(user),
+        payload: userInfo,
         secret: config.refreshSecret,
         expiresIn: 60 * 60 * 12
       })
 
-      await this.repository.update({
-        id: user._id,
+      const { updated } = await this.repository.update({
+        _id: user._id,
         accessToken,
         refreshToken,
       })
@@ -126,7 +134,7 @@ export class UserService extends UserHelpers implements IUserService {
         path: '/'
       })
 
-      return this.prepareUserResponseData(user)
+      return this.prepareUserResponseData(updated)
     }
 
     return Promise.reject({
@@ -147,16 +155,10 @@ export class UserService extends UserHelpers implements IUserService {
       accessToken: cookies.auth
     })
 
-    if (user && this.isAccessTokenExpired(cookies.auth)) {
-      return await this.repository.delete(user._id)
-    }
+    // if (user && this.isAccessTokenExpired(cookies.auth)) {
+    //   return await this.repository.delete(user._id)
+    // }
 
-    const { phone, email, roles } = this.prepareUserResponseData(user)
-
-    return {
-      phone,
-      email,
-      roles
-    }
+    return this.prepareUserResponseData(user)
   }
 }

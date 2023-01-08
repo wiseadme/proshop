@@ -1,6 +1,6 @@
 <script lang="ts" setup>
   import { PropType, toRaw, watch } from 'vue'
-  import { IVariant, IVariantOption } from '@ecommerce-platform/types/index'
+  import { IVariant, IVariantOption } from '@ecommerce-platform/types'
 
   const props = defineProps({
     isDisplayed: Boolean,

@@ -3,13 +3,23 @@ import { IUser } from '@ecommerce-platform/types'
 import config from '@app/config'
 
 export class UserHelpers {
+
   prepareUserResponseData(user: IUser) {
-    return {
+    const { accessToken } = user
+
+    const userData: any = {
+      _id: user._id,
       username: user.username,
       email: user.email,
       roles: user.roles,
       phone: user.phone,
     }
+
+    if (accessToken) {
+      userData.exp = jwt.decode(user.accessToken)?.exp
+    }
+
+    return userData
   }
 
   isAccessTokenExpired(token) {

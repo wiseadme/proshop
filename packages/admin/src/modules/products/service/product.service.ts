@@ -148,19 +148,19 @@ class Service {
   }
 
   async createVariantOption(option: IVariantOption){
-    const optionData = await this._optionsService.createOption(option)
+    const createdOption = await this._optionsService.createOption(option)
 
     const { variants } = unref(this._product)!
 
     let variant = variants?.find(v => v._id === option.variantId)!
 
     if (!variant) {
-      variant = this.variants!.find(v => v._id === optionData.variantId) as IVariant
+      variant = this.variants!.find(v => v._id === createdOption.variantId) as IVariant
       variants.push(variant)
     }
 
-    const optionIds = variant.options?.map(o => o._id)
-    optionIds?.push(optionData._id)
+    const optionIds = variant.options?.map(o => o._id) || []
+    optionIds?.push(createdOption._id)
 
     variant.options = optionIds as any
 

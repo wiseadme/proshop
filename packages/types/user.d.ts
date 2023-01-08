@@ -1,6 +1,7 @@
 import { Maybe } from './utils'
 
 export interface IUser {
+  _id: string
   firstName: string
   secondName: string
   email: string
