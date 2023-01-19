@@ -25,11 +25,11 @@ export class ProductService implements IProductService {
     @inject(TYPES.UTILS.ILogger) private logger: ILogger,
     @inject(TYPES.REPOSITORIES.IProductRepository) private repository: IProductRepository,
     @inject(TYPES.SERVICES.IEventBusService) private events: IEventBusService
-  ){
+  ) {
   }
 
-  async create(product: IProduct){
-    const item = await this.repository.create(Product.create(product))
+  async create(product: IProduct) {
+    const item = await this.repository.create(Product.create(product)) as Document & IProduct
 
     if (product.categories) {
       for (const category of product.categories) {
@@ -41,29 +41,31 @@ export class ProductService implements IProductService {
       }
     }
 
-    return item
+    return {
+      items: [ item ],
+      total: await this.repository.getDocumentsCount()
+    }
   }
 
-  async read(query){
-    let items, total
+  async read(query: Partial<IProduct> & { length?: string }) {
+    let items = await this.repository.read(query) as (Document & IProduct)[]
+    let total = 0
 
     if (query._id) {
-      return this.repository.read(query)
+      return items
     }
 
     if (query.length) {
-      total = await this.repository.getDocumentsCount()
+      total = await this.repository.getDocumentsCount() as number
     }
-
-    items = await this.repository.read(query)
 
     return {
       items,
       total
-    }
+    } as any
   }
 
-  async update(updates: Partial<Document & IProduct>){
+  async update(updates: Partial<Document & IProduct>) {
     if (updates.assets) {
       updates.assets.forEach(it => this.events.emit(UPDATE_ASSETS_EVENT, it))
       updates.image = updates.assets?.find(it => it.main)?.url || ''
@@ -96,7 +98,7 @@ export class ProductService implements IProductService {
     return { updated }
   }
 
-  async delete(id){
+  async delete(id) {
     const [ product ] = await this.repository.read(id)
 
     const res = await this.repository.delete(id)

@@ -50,12 +50,12 @@ class Service {
   addSubscriber(){
     this.unsubscribe = this._store.$subscribe({
       name: 'read',
-      before(params): any{
-        console.log(params)
-      },
-      after(...result): any{
-        console.log(...result)
-      }
+      // before(params): any{
+      //   console.log(params)
+      // },
+      // after(...result): any{
+      //   console.log(...result)
+      // }
     })
   }
 

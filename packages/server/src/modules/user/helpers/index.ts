@@ -1,9 +1,7 @@
 import jwt from 'jsonwebtoken'
 import { IUser } from '@ecommerce-platform/types'
-import config from '@app/config'
 
 export class UserHelpers {
-
   prepareUserResponseData(user: IUser) {
     const { accessToken } = user
 
@@ -15,8 +13,10 @@ export class UserHelpers {
       phone: user.phone,
     }
 
-    if (accessToken) {
+    if (accessToken && !this.isAccessTokenExpired(accessToken)) {
       userData.exp = jwt.decode(user.accessToken)?.exp
+    } else {
+      delete userData.exp
     }
 
     return userData

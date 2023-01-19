@@ -53,6 +53,7 @@
       .then(() => {
         showCreateModal = false
         isEditMode = false
+        hasChanges = false
       })
   }
 
@@ -171,6 +172,8 @@
     }
 
     hasChanges = !!getProductUpdates()
+
+    console.log(hasChanges, 'hasChanges')
 
   }, { deep: true })
 

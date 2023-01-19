@@ -7,6 +7,9 @@ import { TYPES } from '@common/schemes/di-types'
 import { IUserRepository } from '@modules/user/types/repository'
 import config from '@app/config'
 
+const REFRESH_TOKEN_EXP = 60 * 60 * 12
+const ACCESS_TOKEN_EXP = 60
+
 @injectable()
 export class UserService extends UserHelpers implements IUserService {
   constructor(
@@ -28,13 +31,13 @@ export class UserService extends UserHelpers implements IUserService {
         const accessToken = this.genJWToken({
           payload: this.prepareUserResponseData(candidate),
           secret: config.accessSecret,
-          expiresIn: 60
+          expiresIn: ACCESS_TOKEN_EXP
         })
 
         const refreshToken = this.genJWToken({
           payload: this.prepareUserResponseData(candidate),
           secret: config.refreshSecret,
-          expiresIn: 60 * 60 * 12
+          expiresIn: REFRESH_TOKEN_EXP
         })
 
         const { updated } = await this.repository.update({
@@ -112,13 +115,13 @@ export class UserService extends UserHelpers implements IUserService {
       const accessToken = this.genJWToken({
         payload: userInfo,
         secret: config.accessSecret,
-        expiresIn: 60
+        expiresIn: ACCESS_TOKEN_EXP
       })
 
       const refreshToken = this.genJWToken({
         payload: userInfo,
         secret: config.refreshSecret,
-        expiresIn: 60 * 60 * 12
+        expiresIn: REFRESH_TOKEN_EXP
       })
 
       const { updated } = await this.repository.update({

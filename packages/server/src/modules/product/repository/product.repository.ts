@@ -6,7 +6,6 @@ import { validateId } from '@common/utils/mongoose-validate-id'
 // Types
 import { IProductRepository } from '../types/repository'
 import { IProduct } from '@ecommerce-platform/types'
-import { ProductQuery } from '../types/params'
 import { ILogger } from '@/types/utils'
 import { RepositoryHelpers } from '@modules/product/helpers/repository.helpers'
 
@@ -50,7 +49,7 @@ export class ProductRepository extends RepositoryHelpers implements IProductRepo
     key,
     page = DEFAULT_PAGE,
     count = DEFAULT_ITEMS_COUNT
-  }: ProductQuery){
+  }: any){
 
     let query
 
