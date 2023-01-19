@@ -18,7 +18,11 @@ export const actions: IAttributeActions = {
   async read(id?: string){
     try {
       const { data } = await repository.read(id)
-      this.attributes = data.data.sort((a, b) => a.order - b.order)
+
+      this.$patch(state => {
+        state.attributes = data.data?.sort((a, b) => a.order - b.order)
+      })
+
       return this.attributes
     } catch (err) {
       return Promise.reject(err)

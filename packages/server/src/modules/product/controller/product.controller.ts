@@ -11,7 +11,6 @@ import { ILogger } from '@/types/utils'
 import { IController } from '@/types'
 import { IProduct } from '@ecommerce-platform/types'
 import { IProductService } from '../types/service'
-import { ProductQuery } from '../types/params'
 
 // Helpers
 import { setMiddlewares } from '@common/helpers'
@@ -71,7 +70,7 @@ export class ProductController extends BaseController implements IController {
     }
   }
 
-  async getProducts({ query, method }: Request<{}, {}, {}, ProductQuery>, res: Response){
+  async getProducts({ query, method }: Request<{}, {}, {}, Partial<IProduct>>, res: Response){
     try {
       const products = await this.service.read(query)
 

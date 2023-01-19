@@ -1,11 +1,10 @@
 import { Document } from 'mongoose'
 import { IProduct } from '@ecommerce-platform/types'
-import { ProductQuery } from './params'
 
 export interface IProductService {
-  create(product: IProduct): Promise<Document<IProduct>>
+  create(product: IProduct): Promise<{ items: (Document & IProduct)[], total?: number }>
 
-  read(query: ProductQuery): Promise<{items: Array<Document<IProduct>>, total?: number} | Array<Document<IProduct>>>,
+  read(query: Partial<IProduct>): Promise<{ items: (Document & IProduct)[], total?: number }>,
 
   update(updates: Partial<IProduct & Document>): Promise<{ updated: Document<IProduct> }>
 

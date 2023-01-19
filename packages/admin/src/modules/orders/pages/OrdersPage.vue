@@ -77,13 +77,15 @@
     isRead = true
     isUpdate = false
 
-    service.updateOrder({
-      _id: order._id,
-      status: {
-        ...order.status,
-        seen: true
-      }
-    })
+    if (!order.status.seen) {
+      service.updateOrder({
+        _id: order._id,
+        status: {
+          ...order.status,
+          seen: true
+        }
+      })
+    }
   }
 
   const onUpdateTablePage = (page) => {

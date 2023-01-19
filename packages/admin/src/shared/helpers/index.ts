@@ -7,7 +7,7 @@ export const getDifferences = (changed, origin) => {
   const diffs = {}
 
   for (const key in changed) {
-    if (changed.hasOwnProperty(key)) {
+    if (changed[key] && changed.hasOwnProperty(key)) {
       if (toString(changed[key]) !== toString(origin[key])) {
         diffs[key] = changed[key]
       }

@@ -16,7 +16,7 @@ import { UnitController } from '@modules/unit/controller/unit.controller'
 import { CartController } from '@modules/cart/controller/cart.controller'
 import { OrderController } from '@modules/order/controller/order.controller'
 import { OptionController } from '@modules/option/controller/option.controller'
-import { AuthController } from '@modules/auth/controller/auth.controller'
+import { UserController } from '@modules/user/controller/user.controller'
 
 // Services
 import { LoggerService } from '../services/logger.service'
@@ -30,7 +30,7 @@ import { CartService } from '@modules/cart/service/cart.service'
 import { OrderService } from '@modules/order/service/order.service'
 import { OptionService } from '@modules/option/service/option.service'
 import { EventBusService } from '@common/services/event-bus.service'
-import { AuthService } from '@modules/auth/service/auth.service'
+import { UserService } from '@modules/user/service/user.service'
 
 // Repositories
 import { CategoryRepository } from '@modules/category/repository/category.repository'
@@ -49,8 +49,7 @@ import { UrlEncodedMiddleware } from '@common/middlewares/urlencoded.middleware'
 import { LoggerMiddleware } from '../middlewares/logger.middleware'
 import { ErrorRouteMiddleware } from '../middlewares/error.route.middleware'
 import { FileLoaderMiddleware } from '@common/middlewares/fileloader.middleware'
-import { KeycloakMiddleware } from '@common/middlewares/keycloak.middleware'
-import { SessionMiddleware } from '@common/middlewares/session.middleware'
+// import { SessionMiddleware } from '@common/middlewares/session.middleware'
 import { CookieMiddleware } from '@common/middlewares/cookie.middleware'
 
 // Types
@@ -63,7 +62,7 @@ import { IUnitService } from '@modules/unit/types/service'
 import { ICartService } from '@modules/cart/types/service'
 import { IOrderService } from '@modules/order/types/service'
 import { IOptionService } from '@modules/option/types/service'
-import { IAuthService } from '@modules/auth/types/service'
+import { IUserService } from '@modules/user/types/service'
 import { IEventBusService } from '@/types/services'
 import { ICategoryRepository } from '@modules/category/types/repository'
 import { IAssetsRepository } from '@modules/asset/types/repository'
@@ -82,8 +81,8 @@ import {
   IExpressMiddleware,
   IFileLoaderMiddleware,
 } from '@/types/middlewares'
-import { IAuthRepository } from '@modules/auth/types/repository'
-import { AuthRepository } from '@modules/auth/repository/auth.repository'
+import { IUserRepository } from '@modules/user/types/repository'
+import { UserRepository } from '@modules/user/repository/user.repository'
 
 export const container = new Container({ skipBaseClassChecks: true })
 
@@ -106,7 +105,7 @@ container.bind<IUnitService>(TYPES.SERVICES.IUnitService).to(UnitService)
 container.bind<ICartService>(TYPES.SERVICES.ICartService).to(CartService)
 container.bind<IOrderService>(TYPES.SERVICES.IOrderService).to(OrderService)
 container.bind<IOptionService>(TYPES.SERVICES.IOptionService).to(OptionService)
-container.bind<IAuthService>(TYPES.SERVICES.IAuthService).to(AuthService)
+container.bind<IUserService>(TYPES.SERVICES.IUserService).to(UserService)
 
 // Controllers
 container.bind<IController>(TYPES.CONTROLLERS.IController).to(SwaggerController)
@@ -119,15 +118,14 @@ container.bind<IController>(TYPES.CONTROLLERS.IController).to(UnitController)
 container.bind<IController>(TYPES.CONTROLLERS.IController).to(CartController)
 container.bind<IController>(TYPES.CONTROLLERS.IController).to(OrderController)
 container.bind<IController>(TYPES.CONTROLLERS.IController).to(OptionController)
-container.bind<IController>(TYPES.CONTROLLERS.IController).to(AuthController)
+container.bind<IController>(TYPES.CONTROLLERS.IController).to(UserController)
 
 // Middlewares
 container.bind<IMiddleware>(TYPES.MIDDLEWARES.IMiddleware).to(LoggerMiddleware)
-container.bind<IExpressMiddleware>(TYPES.MIDDLEWARES.IMiddleware).to(SessionMiddleware)
+// container.bind<IExpressMiddleware>(TYPES.MIDDLEWARES.IMiddleware).to(SessionMiddleware)
 container.bind<IExpressMiddleware>(TYPES.MIDDLEWARES.IMiddleware).to(JsonMiddleware)
 container.bind<IExpressMiddleware>(TYPES.MIDDLEWARES.IMiddleware).to(CookieMiddleware)
 container.bind<IExpressMiddleware>(TYPES.MIDDLEWARES.IMiddleware).to(UrlEncodedMiddleware)
-container.bind<IExpressMiddleware>(TYPES.MIDDLEWARES.IMiddleware).to(KeycloakMiddleware)
 container.bind<IErrorRouteMiddleware>(TYPES.MIDDLEWARES.IErrorRouteMiddleware).to(ErrorRouteMiddleware)
 container.bind<IFileLoaderMiddleware>(TYPES.MIDDLEWARES.IFileLoaderMiddleware).to(FileLoaderMiddleware)
 
@@ -141,4 +139,4 @@ container.bind<IUnitRepository>(TYPES.REPOSITORIES.IUnitRepository).to(UnitRepos
 container.bind<ICartRepository>(TYPES.REPOSITORIES.ICartRepository).to(CartRepository)
 container.bind<IOrderRepository>(TYPES.REPOSITORIES.IOrderRepository).to(OrderRepository)
 container.bind<IOptionRepository>(TYPES.REPOSITORIES.IOptionRepository).to(OptionRepository)
-container.bind<IAuthRepository>(TYPES.REPOSITORIES.IAuthRepository).to(AuthRepository)
+container.bind<IUserRepository>(TYPES.REPOSITORIES.IUserRepository).to(UserRepository)

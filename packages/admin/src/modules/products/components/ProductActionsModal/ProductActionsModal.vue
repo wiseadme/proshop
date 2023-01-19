@@ -346,7 +346,7 @@
               </v-col>
               <v-col xl="6">
                 <v-text-field
-                  v-model.trim="computedSeoTitle"
+                  v-model="computedSeoTitle"
                   label="SEO title"
                   color="#272727"
                   text-color="#272727"
@@ -354,7 +354,7 @@
               </v-col>
               <v-col xl="6">
                 <v-text-field
-                  v-model.trim="computedSeoDesc"
+                  v-model="computedSeoDesc"
                   label="SEO description"
                   color="#272727"
                   text-color="#272727"
@@ -362,7 +362,7 @@
               </v-col>
               <v-col xl="6">
                 <v-text-field
-                  v-model.trim="computedSeoKeywords"
+                  v-model="computedSeoKeywords"
                   label="SEO keywords"
                   color="#272727"
                   text-color="#272727"

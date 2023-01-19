@@ -30,7 +30,8 @@ export interface IController {
 export interface IConfig {
   port: number
   dbUri: string
-  secret: string
+  accessSecret: string
+  refreshSecret: string
   uploadsDir: string
 }
 

@@ -25,7 +25,7 @@
           color="green"
         />
         <h4 class="pb-1">
-          {{ authService.user.displayName }}
+          {{ authService.user.username }}
         </h4>
       </div>
       <div>

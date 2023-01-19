@@ -10,7 +10,7 @@
   // Components
   import { ProductActionsModal } from '@modules/products/components/ProductActionsModal'
   import { ProductTable } from '@modules/products/components/ProductTable'
-  import SkeletonPreloader from '@shared/components/Preloader/SkeletonPreloader'
+  import SkeletonPreloader from '@shared/components/Preloader/SkeletonPreloader.vue'
   // Types
   import { IProduct } from '@ecommerce-platform/types'
 
@@ -53,12 +53,11 @@
       .then(() => {
         showCreateModal = false
         isEditMode = false
+        hasChanges = false
       })
   }
 
-  const onDeleteProduct = (product: IProduct) => {
-    service.deleteProduct(product)
-  }
+  const onDeleteProduct = (product: IProduct) => service.deleteProduct(product)
 
   const onUploadVariantImage = ({ file, option }) => {
     return service.uploadProductVariantImage(file, option)
@@ -124,6 +123,7 @@
 
   const onDiscard = () => {
     model = Product.create(service.product!)
+    hasChanges = false
   }
 
   const onUpdateTablePage = async (page) => {
@@ -146,23 +146,48 @@
     setTimeout(() => service.getProducts())
   }
 
-  watch(() => model, () => {
-    const diffs = checkDiffs()
+  const notUpdatableKeys = ['assets', 'image', 'variants']
 
-    if (!(diffs?.assets && diffs.image)) {
-      delete diffs?.assets
-      delete diffs?.image
+  const getProductUpdates = () => {
+    const diffs = checkDiffs()!
+    const keys = diffs ? Object.keys(diffs) : null
+
+    if (keys) {
+      notUpdatableKeys.forEach(key => {
+        if (diffs[key]) {
+          delete diffs[key]
+        }
+      })
+
+      return diffs
     }
 
-    if (diffs?.variants) {
-      delete diffs?.variants
+    return null
+  }
+
+  let stopWatching
+  const startWatching = () => watch(() => model, () => {
+    if (!isEditMode || hasChanges) {
+      return
     }
 
-    hasChanges = isEditMode
-      && !!diffs
-      && !!Object.keys(diffs).length
+    hasChanges = !!getProductUpdates()
+
+    console.log(hasChanges, 'hasChanges')
 
   }, { deep: true })
+
+  /**
+   * @description watch for product changes only
+   * if product is in edit mode
+   */
+  watch(() => isEditMode, (state) => {
+    if (state) {
+      stopWatching = startWatching()
+    } else {
+      stopWatching()
+    }
+  })
 
   Promise.all([
     service.getCategories(),

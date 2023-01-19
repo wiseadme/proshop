@@ -11,7 +11,7 @@ const devConfig = (env = {}) => merge(baseConfig(env), {
     allowedHosts: 'all',
     proxy: {
       '/v1': {
-        target: 'http://localhost:5000/',
+        target: 'http://localhost:5001/',
         // target: 'http://193.168.3.84/',
         ws: false,
         secure: false,
