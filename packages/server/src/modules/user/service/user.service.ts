@@ -23,6 +23,8 @@ export class UserService extends UserHelpers implements IUserService {
 
     const [ candidate ] = await this.repository.read({ username })
 
+    console.log(candidate)
+
     if (candidate) {
       const isPasswordValid = await bcrypt.compareSync(password, candidate.password)
 
@@ -158,9 +160,14 @@ export class UserService extends UserHelpers implements IUserService {
       accessToken: cookies.auth
     })
 
-    // if (user && this.isAccessTokenExpired(cookies.auth)) {
-    //   return await this.repository.delete(user._id)
-    // }
+    if (user && this.isExpired(cookies.auth)) {
+      // await this.repository.delete(user._id)
+
+      return Promise.reject({
+        status: 401,
+        message: 'Unauthorized'
+      })
+    }
 
     return this.prepareUserResponseData(user)
   }

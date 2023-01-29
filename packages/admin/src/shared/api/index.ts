@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { Client } from '@shared/plugins/client'
 import { useAuthService } from '@shared/services/auth.service'
+// import { router } from '@app/router'
 
 const baseURL = '/'
 
@@ -52,7 +53,11 @@ const wrapper = (action) => {
 RestClient.interceptors.request.use(async (config) => {
   const authService = useAuthService()
 
-  if (authService.user && (authService.user.exp * 1000) <= Date.now()) {
+  if (!authService.user) {
+    return authService.logout()
+  }
+
+  if (authService.user.exp * 1000 <= Date.now()) {
     const makeOnce = wrapper(authService.refresh.bind(authService))
 
     if (!isInProgress) {
