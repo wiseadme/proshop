@@ -3,7 +3,13 @@ import { IUser } from '@ecommerce-platform/types'
 
 export class UserHelpers {
   prepareUserResponseData(user: IUser) {
-    const { accessToken } = user
+
+    if (!user) {
+      return Promise.reject({
+        status: 401,
+        message: 'Unauthorized'
+      })
+    }
 
     const userData: any = {
       _id: user._id,
@@ -13,7 +19,7 @@ export class UserHelpers {
       phone: user.phone,
     }
 
-    if (accessToken && !this.isAccessTokenExpired(accessToken)) {
+    if (user.accessToken && !this.isExpired(user.accessToken)) {
       userData.exp = jwt.decode(user.accessToken)?.exp
     } else {
       delete userData.exp
@@ -22,7 +28,7 @@ export class UserHelpers {
     return userData
   }
 
-  isAccessTokenExpired(token) {
+  isExpired(token) {
     return Date.now() >= (jwt.decode(token).exp * 1000)
   }
 
