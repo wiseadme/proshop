@@ -1,6 +1,5 @@
 import express, { Errback, NextFunction, Request, Response } from 'express'
 import session from 'express-session'
-import { initKeycloak } from '@common/plugins/keycloak'
 import cookieParser from 'cookie-parser'
 
 export interface IMiddleware {
@@ -15,11 +14,6 @@ export interface IErrorRouteMiddleware {
 export interface IExpressMiddleware {
   bind: boolean
   execute: ReturnType<typeof express.json>
-}
-
-export interface IKeycloakMiddleware {
-  bind: boolean
-  execute: ReturnType<typeof initKeycloak>
 }
 
 export interface ICookieMiddleware {

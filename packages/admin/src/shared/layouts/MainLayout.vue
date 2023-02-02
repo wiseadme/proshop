@@ -66,7 +66,6 @@
       }
     }
   })
-
 </script>
 <template>
   <app-header/>

@@ -20,7 +20,7 @@ export const actions: IAttributeActions = {
       const { data } = await repository.read(id)
 
       this.$patch(state => {
-        state.attributes = data.data?.sort((a, b) => a.order - b.order)
+        state.attributes = data?.data?.sort((a, b) => a.order - b.order)
       })
 
       return this.attributes

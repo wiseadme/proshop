@@ -25,9 +25,16 @@ export const actions = {
   async read(params = null){
     try {
       const { data } = await categoryRepository.read(params)
-      !params && (this.categories = data.data)
-      params && (this.category = data.data)
-      return data.data
+
+      this.$patch(state => {
+        if (!params) {
+          state.categories = data?.data
+        } else {
+          state.category = data?.data
+        }
+      })
+
+      return data?.data
     } catch (err) {
       return Promise.reject(err)
     }

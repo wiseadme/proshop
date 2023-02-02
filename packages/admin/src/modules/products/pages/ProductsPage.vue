@@ -21,6 +21,7 @@
   let loading = $ref<boolean>(true)
 
   const service = useProductService()
+  const notUpdatableKeys = ['assets', 'image', 'variants']
 
   const onCreate = () => {
     service.createProduct(model)
@@ -133,7 +134,6 @@
 
   const onUpdateTableRowsCount = async (count) => {
     service.pagination.setPaginationItemsCount(count)
-    // await service.getProducts({})
   }
 
   const onSortColumn = (col) => {
@@ -146,35 +146,32 @@
     setTimeout(() => service.getProducts())
   }
 
-  const notUpdatableKeys = ['assets', 'image', 'variants']
-
   const getProductUpdates = () => {
     const diffs = checkDiffs()!
+
+    notUpdatableKeys.forEach(key => {
+      if (diffs && diffs[key]) {
+        delete diffs[key]
+      }
+    })
+
     const keys = diffs ? Object.keys(diffs) : null
 
-    if (keys) {
-      notUpdatableKeys.forEach(key => {
-        if (diffs[key]) {
-          delete diffs[key]
-        }
-      })
-
-      return diffs
+    if (!keys || !keys.length) {
+      return null
     }
 
-    return null
+    return diffs
   }
 
   let stopWatching
+
   const startWatching = () => watch(() => model, () => {
     if (!isEditMode || hasChanges) {
       return
     }
 
     hasChanges = !!getProductUpdates()
-
-    console.log(hasChanges, 'hasChanges')
-
   }, { deep: true })
 
   /**

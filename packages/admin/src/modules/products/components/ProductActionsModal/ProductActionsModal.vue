@@ -195,8 +195,11 @@
   const onUpdate = () => emit('update')
 
   const onSubmit = (validate) => {
-    if (props.isEditMode) onUpdate()
-    else onCreate(validate)
+    if (props.isEditMode) {
+      return onUpdate()
+    }
+
+    onCreate(validate)
   }
 
   const onCreateVariantOption = (option) => {
@@ -212,7 +215,9 @@
   }
 
   const onUploadVariantImage = ({ file, option }) => {
-    if (!file) return
+    if (!file) {
+      return
+    }
 
     emit('upload:variant-image', { file, option })
     productImages = []
@@ -246,6 +251,7 @@
     computedAssets = clone(computedAssets).reduce((acc, it) => {
       it.main = it._id === currentImage!._id
       acc.push(it)
+
       return acc
     }, [] as any[]) as IAsset[]
   }

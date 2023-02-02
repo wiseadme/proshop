@@ -23,8 +23,6 @@ export class UserService extends UserHelpers implements IUserService {
 
     const [ candidate ] = await this.repository.read({ username })
 
-    console.log(candidate)
-
     if (candidate) {
       const isPasswordValid = await bcrypt.compareSync(password, candidate.password)
 

@@ -11,15 +11,12 @@ services:
       - PORT=5001
       - USER=wiseadme
       - MONGO_URI=mongodb://mongo1,mongo2,mongo3:27017/commerce
-      - KEYCLOAK_SERVER_URI=http://keycloak:8080/auth
-      - KEYCLOAK_REALM=shop
-      - KEYCLOAK_CLIENT_ID=shop-admin
-      - KEYCLOAK_CLIENT_SECRET=WpnmTNu2UYWf2HBzRhMY7caDWomOAmg5
+      - ACCESS_TOKEN_SECRET_KEY=menesilazerbaijanliyam
+      - REFRESH_TOKEN_SECRET_KEY=esilsozmenasibudur
     volumes:
       - uploads:/home/wiseadme/www/uploads/
     depends_on:
       - mongo-setup
-      - keycloak
     networks:
       - ecommerce
       - mongoNet
