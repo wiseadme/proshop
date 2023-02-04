@@ -7,6 +7,8 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPl
 const { VueLoaderPlugin } = require('vue-loader')
 // const ModuleFederationPlugin = require('webpack/lib/container/ModuleFederationPlugin')
 // const deps = require('../package.json').dependencies
+const dotenv = require('dotenv') // see https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
+dotenv.config()
 
 const resolve = pathStr => path.resolve(__dirname, pathStr)
 
@@ -134,7 +136,7 @@ module.exports = (env = {}) => {
       ]
     },
     resolve: {
-      extensions: ['.ts', '.js', '.vue', '.json'],
+      extensions: [ '.ts', '.js', '.vue', '.json' ],
       alias: {
         '@': PATH.src,
         '@app': `${ PATH.src }/app`,
@@ -178,7 +180,8 @@ module.exports = (env = {}) => {
       }),
       new webpack.DefinePlugin({
         __VUE_OPTIONS_API__: false,
-        __VUE_PROD_DEVTOOLS__: false
+        __VUE_PROD_DEVTOOLS__: false,
+        'process.env.YANDEX_MAP_API_KEY': JSON.stringify(process.env.YANDEX_MAP_API_KEY)
       }),
       new VueLoaderPlugin(),
       new BundleAnalyzerPlugin({

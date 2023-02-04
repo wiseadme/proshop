@@ -41,11 +41,16 @@
             v-if="order"
             :src="order.qrcode"
             alt=""
-            style="width: 150px"
+            style="width: 100%; max-width: 200px"
             class="elevation-1"
           >
         </v-col>
         <v-col cols="9">
+          <address-map class="elevation-2"/>
+        </v-col>
+      </v-row>
+      <v-row class="mt-2">
+        <v-col>
           <v-list class="elevation-1">
             <v-list-item class="elevation-1 green white--text">
               <v-list-item-icon/>
@@ -93,9 +98,7 @@
         </v-col>
       </v-row>
       <v-row class="mt-2">
-        <v-col cols="3">
-        </v-col>
-        <v-col cols="9">
+        <v-col>
           <v-list class="elevation-1">
             <v-list-item class="green white--text">
               <v-list-item-icon/>
@@ -116,11 +119,6 @@
               </v-list-item-content>
             </v-list-item>
           </v-list>
-        </v-col>
-      </v-row>
-      <v-row class="mt-5">
-        <v-col>
-          <address-map/>
         </v-col>
       </v-row>
     </v-card-content>

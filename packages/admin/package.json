@@ -72,7 +72,6 @@
     "@vue/reactivity-transform": "^3.2.41",
     "@vueup/vue-quill": "^1.0.0",
     "axios": "^0.27.2",
-    "leaflet": "^1.9.3",
     "nervue": "^0.0.24",
     "vue": "^3.2.3",
     "vue-router": "^4.0.15",

@@ -43,6 +43,7 @@ const wrapper = (action) => {
   return async () => {
     if (!isInProgress) {
       isInProgress = true
+
       return await action()
     }
   }
@@ -52,8 +53,19 @@ const wrapper = (action) => {
 RestClient.interceptors.request.use(async (config) => {
   const authService = useAuthService()
 
-  if (!authService.user && authService.isChecked) {
-    return authService.logout()
+  if (!authService.user) {
+    await new Promise(resolve => {
+      const waitForUser = () => {
+
+        if (authService.user) {
+          return resolve(true)
+        }
+
+        setTimeout(waitForUser)
+      }
+
+      waitForUser()
+    })
   }
 
   if (authService.user!.exp * 1000 <= Date.now()) {

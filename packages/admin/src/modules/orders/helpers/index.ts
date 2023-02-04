@@ -34,3 +34,13 @@ export const getOrderStatusName = (status: IOrderStatuses): string => {
 
   return statusName
 }
+
+export const addYmapsScript = (apiKey) => {
+  const scriptYandex = document.createElement('script')
+
+  scriptYandex.setAttribute('src', `https://api-maps.yandex.ru/2.1/?apikey=${ apiKey }&lang=ru_RU`)
+  scriptYandex.setAttribute('type', 'text/javascript')
+
+  document.head.appendChild(scriptYandex)
+}
+

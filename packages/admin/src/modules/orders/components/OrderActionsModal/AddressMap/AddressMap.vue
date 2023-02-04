@@ -1,26 +1,50 @@
 <script setup lang="ts">
-  import { onMounted } from 'vue'
-  import L from 'leaflet'
-  import 'leaflet/dist/leaflet.css'
+  import { addYmapsScript } from '@modules/orders/helpers'
 
-  const tileLayer = 'https://api.maptiler.com/maps/streets/{z}/{x}/{y}@2x.png?key=DXBhrLVYaeuix0IPoCn3'
-
-  const layerOptions = {
-    maxZoom: 19,
-    minZoom: 2,
-    edgeBufferTiles: 5,
-    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-  }
-
-  onMounted(() => {
-    const map = L.map('map').setView([41.322655, 69.281718], 19);
-    const layer = L.tileLayer(tileLayer, layerOptions);
-
-    map.addLayer(layer)
-
-    setTimeout(() => map.invalidateSize())
+  const props = defineProps({
+    coords: {
+      type: Array,
+      default: () => [ 55.87, 37.66 ]
+    }
   })
 
+  let map = null
+
+  addYmapsScript(process.env.YANDEX_MAP_API_KEY)
+
+  const getYmaps = () => new Promise(resolve => {
+    const tryGetYmaps = () => {
+      const { ymaps } = window as any
+
+      if (ymaps && typeof ymaps.Map === 'function') {
+        return resolve(ymaps)
+      }
+
+      setTimeout(tryGetYmaps)
+    }
+
+    tryGetYmaps()
+  })
+
+  const init = (ymaps) => {
+    // const searchControl = new ymaps.control.SearchControl({
+    //   options: {
+    //     noSuggestPanel: true
+    //   }
+    // })
+
+    // const geolocationControl = new ymaps.control.GeolocationControl()
+
+    map = new ymaps.Map('map', {
+      center: props.coords,
+      zoom: 10,
+      controls: []
+    })
+
+    console.log(map)
+  }
+
+  getYmaps().then(init)
 
 </script>
 <template>

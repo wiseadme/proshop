@@ -18,7 +18,8 @@
     "$computed": "readonly",
     "$shallowRef": "readonly",
     "$customRef": "readonly",
-    "$toRef": "readonly"
+    "$toRef": "readonly",
+    "ymaps": "readonly"
   },
   "plugins": [
     "@typescript-eslint/eslint-plugin"
