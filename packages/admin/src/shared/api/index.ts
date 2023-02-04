@@ -1,7 +1,6 @@
 import axios from 'axios'
 import { Client } from '@shared/plugins/client'
 import { useAuthService } from '@shared/services/auth.service'
-// import { router } from '@app/router'
 
 const baseURL = '/'
 
@@ -53,11 +52,11 @@ const wrapper = (action) => {
 RestClient.interceptors.request.use(async (config) => {
   const authService = useAuthService()
 
-  if (!authService.user) {
+  if (!authService.user && authService.isChecked) {
     return authService.logout()
   }
 
-  if (authService.user.exp * 1000 <= Date.now()) {
+  if (authService.user!.exp * 1000 <= Date.now()) {
     const makeOnce = wrapper(authService.refresh.bind(authService))
 
     if (!isInProgress) {
@@ -75,16 +74,6 @@ RestClient.interceptors.request.use(async (config) => {
     return config
   }
 })
-
-RestClient.interceptors.response.use(
-  (config) => config,
-  (config) => {
-    if (config.response?.status === 401 || config.response?.status === 403) {
-      // useAuthService().logout()
-    } else {
-      return config
-    }
-  })
 
 export const file = new Client(FilesClient)
 export const rest = new Client(RestClient)

@@ -3,7 +3,6 @@ import { IUser } from '@ecommerce-platform/types'
 
 export class UserHelpers {
   prepareUserResponseData(user: IUser) {
-
     if (!user) {
       return Promise.reject({
         status: 401,
@@ -33,6 +32,7 @@ export class UserHelpers {
   }
 
   genJWToken({ payload, secret, expiresIn }) {
+    delete payload.exp
     return jwt.sign(payload, secret, { expiresIn })
   }
 }

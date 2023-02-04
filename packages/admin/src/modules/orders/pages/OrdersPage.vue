@@ -3,7 +3,6 @@
   import { OrderActionsModal } from '@modules/orders/components/OrderActionsModal'
   import { useOrdersService } from '@modules/orders/service/order.service'
   import { getOrderStatusName } from '@modules/orders/helpers'
-  import { useAuthService } from '@shared/services/auth.service'
 
   const service = useOrdersService()
 
@@ -104,9 +103,6 @@
     openOrderModal = true
     isRead = false
     isUpdate = false
-
-    // @ts-ignore
-    useAuthService().create()
   }
 
   const onDeleteOrder = (order) => {

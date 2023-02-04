@@ -8,6 +8,7 @@
   import { AppHeader } from '@app/components/AppHeader'
   import { AppNavigation } from '@app/components/AppNavigation'
   import VNotifications from '@shared/components/VNotifications/VNotifications.vue'
+  // Types
   import { IOrder } from '@ecommerce-platform/types'
 
   const router = useRouter()
@@ -20,7 +21,7 @@
   })
 
   let notSeenCount = 0
-  let newOrdersNotifyId
+  let newOrdersNotifyId = null
 
   onMounted(() => {
     startPolling()
@@ -61,7 +62,7 @@
                 }
               }
             }
-          })
+          }) as any
         }, 500)
       }
     }

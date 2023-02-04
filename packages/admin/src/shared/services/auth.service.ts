@@ -44,7 +44,6 @@ export class Service {
       if (this._router.currentRoute.value.path.includes('/auth')) {
         return this._router.replace({ name: 'dashboard-table' })
       }
-
     } catch (err) {
       return this.logout()
     }

@@ -26,6 +26,9 @@ export class UserService extends UserHelpers implements IUserService {
     if (candidate) {
       const isPasswordValid = await bcrypt.compareSync(password, candidate.password)
 
+      delete candidate.accessToken
+      delete candidate.refreshToken
+
       if (isPasswordValid) {
 
         const accessToken = this.genJWToken({
@@ -159,8 +162,6 @@ export class UserService extends UserHelpers implements IUserService {
     })
 
     if (user && this.isExpired(cookies.auth)) {
-      // await this.repository.delete(user._id)
-
       return Promise.reject({
         status: 401,
         message: 'Unauthorized'

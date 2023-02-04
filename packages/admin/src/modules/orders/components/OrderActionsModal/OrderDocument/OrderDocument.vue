@@ -1,5 +1,6 @@
 <script setup lang="ts">
-  import { ICartItem } from '@ecommerce-platform/types/index'
+  import { ICartItem } from '@ecommerce-platform/types'
+  import AddressMap from '../AddressMap/AddressMap'
 
   defineProps({
     order: {
@@ -27,7 +28,10 @@
     <v-card-title class="card-title white--text text--base">
       Заказ № {{ order.orderId }}
     </v-card-title>
-    <v-card-content class="grey lighten-4">
+    <v-card-content
+      class="grey lighten-4"
+      style="max-height: 70vh; overflow: auto"
+    >
       <v-row>
         <v-col
           cols="3"
@@ -112,6 +116,11 @@
               </v-list-item-content>
             </v-list-item>
           </v-list>
+        </v-col>
+      </v-row>
+      <v-row class="mt-5">
+        <v-col>
+          <address-map/>
         </v-col>
       </v-row>
     </v-card-content>

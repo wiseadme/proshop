@@ -1,9 +1,13 @@
 <script setup lang="ts">
+  import { onBeforeMount } from 'vue'
   import { useAuthService } from '@shared/services/auth.service'
 
   const authService = useAuthService()
 
-  authService.check()
+  onBeforeMount(async () => {
+    await authService.check()
+  })
+
 </script>
 <template>
   <v-app class="grey lighten-4">
