@@ -21,7 +21,7 @@ const OrderSchema = new Schema<IOrder>({
     unique: true
   },
   address: {
-    type: String,
+    type: Object,
     default: null
   },
   client: {

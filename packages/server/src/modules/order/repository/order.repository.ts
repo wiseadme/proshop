@@ -24,7 +24,7 @@ export class OrderRepository implements IOrderRepository {
       items: order.items,
       amount: order.amount,
       client: order.client,
-      address: order.address,
+      address: order.client.address,
       qrcode: order.qrcode,
       owner: order.owner,
       orderId: order.orderId,

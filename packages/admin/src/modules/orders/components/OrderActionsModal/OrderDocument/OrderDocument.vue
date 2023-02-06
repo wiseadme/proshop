@@ -46,7 +46,11 @@
           >
         </v-col>
         <v-col cols="9">
-          <address-map class="elevation-2"/>
+          <address-map
+            class="elevation-2"
+            :coords="order.address.coords"
+            :address="order.address.address"
+          />
         </v-col>
       </v-row>
       <v-row class="mt-2">

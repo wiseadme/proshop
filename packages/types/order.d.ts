@@ -6,6 +6,7 @@ interface IOrderClient {
   name: string
   phone: string
   email: string
+  address?: any
 }
 
 interface IOrderStatuses {

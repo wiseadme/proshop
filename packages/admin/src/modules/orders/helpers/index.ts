@@ -35,10 +35,16 @@ export const getOrderStatusName = (status: IOrderStatuses): string => {
   return statusName
 }
 
-export const addYmapsScript = (apiKey) => {
+export const addYmapsScript = () => {
+  const url = new URL('https://api-maps.yandex.ru/2.1/')
+  const searchParams = new URLSearchParams()
+
+  searchParams.append('apikey', '')
+  searchParams.append('lang', 'ru_RU')
+
   const scriptYandex = document.createElement('script')
 
-  scriptYandex.setAttribute('src', `https://api-maps.yandex.ru/2.1/?apikey=${ apiKey }&lang=ru_RU`)
+  scriptYandex.setAttribute('src', url.toString() + '?' + searchParams.toString())
   scriptYandex.setAttribute('type', 'text/javascript')
 
   document.head.appendChild(scriptYandex)
