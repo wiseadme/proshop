@@ -46,7 +46,7 @@ export class CategoryService implements ICategoryService {
     return ctg
   }
 
-  async update(update: Partial<Document & ICategory>): Promise<{ updated: Document<ICategory> }>{
+  async update(update: Partial<Document & ICategory>): Promise<{ updated: Document & ICategory }>{
     const [ category ] = await this.repository.read({ _id: update._id })
 
     if (update.parent) {

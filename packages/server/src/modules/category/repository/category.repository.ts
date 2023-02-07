@@ -71,7 +71,7 @@ export class CategoryRepository implements ICategoryRepository {
 
     updated = await updated
       .populate('parent', [ 'title', 'url' ])
-      .populate('children', [ 'title', 'url' ]) as Document<ICategory>
+      .populate('children', [ 'title', 'url' ]) as Document & ICategory
 
     return { updated }
   }

@@ -22,11 +22,10 @@ export class OrderRepository implements IOrderRepository {
     return new OrderModel({
       _id: new Types.ObjectId(),
       items: order.items,
+      customer: order.customer._id,
+      address: order.customer.address,
       amount: order.amount,
-      client: order.client,
-      address: order.client.address,
       qrcode: order.qrcode,
-      owner: order.owner,
       orderId: order.orderId,
       status: order.status,
     }).save()

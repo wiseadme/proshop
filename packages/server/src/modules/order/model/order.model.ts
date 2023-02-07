@@ -24,28 +24,13 @@ const OrderSchema = new Schema<IOrder>({
     type: Object,
     default: null
   },
-  client: {
-    type: {
-      name: {
-        type: String,
-        required: true
-      },
-      phone: {
-        type: String,
-        required: true
-      },
-      email: {
-        type: String
-      }
-    }
+  customer: {
+    type: Schema.Types.ObjectId,
+    ref: 'Customer',
+    default: null
   },
   qrcode: {
     type: String,
-    default: null
-  },
-  owner: {
-    type: Schema.Types.ObjectId,
-    ref: 'User',
     default: null
   },
   status: {

@@ -6,9 +6,8 @@ export class Order implements IOrder {
   private _cart: IOrder['cart']
   private _orderId: IOrder['orderId']
   private _address: IOrder['address']
-  private _client: IOrder['client']
+  private _customer: IOrder['customer']
   private _qrcode: IOrder['qrcode']
-  private _owner: IOrder['owner']
   private _status: IOrder['status']
 
   constructor({
@@ -16,9 +15,8 @@ export class Order implements IOrder {
     amount = 0,
     orderId = null,
     address = null,
-    client,
+    customer,
     qrcode = null,
-    owner = null,
     cart = '',
     status = {
       created: true,
@@ -32,10 +30,9 @@ export class Order implements IOrder {
   }: IOrder){
     this._items = items
     this._amount = amount
-    this._owner = owner
     this._orderId = orderId
     this._address = address
-    this._client = client
+    this._customer = customer
     this._qrcode = qrcode
     this._status = status
     this._cart = cart
@@ -57,16 +54,12 @@ export class Order implements IOrder {
     return this._orderId
   }
 
-  get owner(){
-    return this._owner
-  }
-
   get address(){
     return this._address
   }
 
-  get client(){
-    return this._client
+  get customer(){
+    return this._customer
   }
 
   get qrcode(){

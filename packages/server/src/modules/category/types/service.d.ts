@@ -2,11 +2,11 @@ import { ICategory } from '@ecommerce-platform/types'
 import { Document } from 'mongoose'
 
 export interface ICategoryService {
-  create(category: ICategory): Promise<Document<ICategory>>;
+  create(category: ICategory): Promise<Document & ICategory>;
 
-  read(query: Partial<ICategory>): Promise<Array<ICategory>>;
+  read(query: Partial<ICategory>): Promise<Array<ICategory & Document>>;
 
-  update(updates: Partial<ICategory & Document>): Promise<{ updated: Document<ICategory> }>;
+  update(updates: Partial<ICategory & Document>): Promise<{ updated: Document & ICategory }>;
 
   delete(id: string): Promise<boolean>;
 }

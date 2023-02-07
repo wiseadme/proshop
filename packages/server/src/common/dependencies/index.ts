@@ -17,6 +17,7 @@ import { CartController } from '@modules/cart/controller/cart.controller'
 import { OrderController } from '@modules/order/controller/order.controller'
 import { OptionController } from '@modules/option/controller/option.controller'
 import { UserController } from '@modules/user/controller/user.controller'
+import { CustomerController } from '@modules/customer/controller/customer.controller'
 
 // Services
 import { LoggerService } from '../services/logger.service'
@@ -31,6 +32,7 @@ import { OrderService } from '@modules/order/service/order.service'
 import { OptionService } from '@modules/option/service/option.service'
 import { EventBusService } from '@common/services/event-bus.service'
 import { UserService } from '@modules/user/service/user.service'
+import { CustomerService } from '@modules/customer/service/customer.service'
 
 // Repositories
 import { CategoryRepository } from '@modules/category/repository/category.repository'
@@ -42,6 +44,7 @@ import { UnitRepository } from '@modules/unit/repository/unit.repository'
 import { CartRepository } from '@modules/cart/repository/cart.repository'
 import { OrderRepository } from '@modules/order/repository/order.repository'
 import { OptionRepository } from '@modules/option/repository/option.repository'
+import { UserRepository } from '@modules/user/repository/user.repository'
 
 // Middlewares
 import { JsonMiddleware } from '@common/middlewares/json.middleware'
@@ -70,6 +73,8 @@ import { IProductRepository } from '@modules/product/types/repository'
 import { IVariantRepository } from '@modules/variant/types/repository'
 import { IAttributeRepository } from '@modules/attribute/types/repository'
 import { IUnitRepository } from '@modules/unit/types/repository'
+import { IUserRepository } from '@modules/user/types/repository'
+import { ICustomerRepository } from '@modules/customer/types/repository'
 import { ICartRepository } from '@modules/cart/types/repository'
 import { IOrderRepository } from '@modules/order/types/repository'
 import { IOptionRepository } from '@modules/option/types/repository'
@@ -81,8 +86,6 @@ import {
   IExpressMiddleware,
   IFileLoaderMiddleware,
 } from '@/types/middlewares'
-import { IUserRepository } from '@modules/user/types/repository'
-import { UserRepository } from '@modules/user/repository/user.repository'
 
 export const container = new Container({ skipBaseClassChecks: true })
 
