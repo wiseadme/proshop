@@ -1,18 +1,23 @@
-import { IMiddleware } from '@/types/middlewares'
 import { NextFunction, Request, Response } from 'express'
-import { ClassConstructor, plainToClass } from 'class-transformer'
+import { injectable } from 'inversify'
+import { isExpired } from '@common/helpers'
+import { IMiddleware } from '@/types/middlewares'
 
+@injectable()
 export class AuthMiddleware implements IMiddleware {
-  public bind: boolean = true
-  static classToValidate
+  execute(req: Request, res: Response, next: NextFunction) {
+    const { auth } = req.cookies
 
-  execute() {
-    return ({ cookies }: Request, res: Response, next: NextFunction) => {
-      const { auth } = cookies
+    // console.log(req.headers)
 
-      if (!auth) {
-
-      }
+    if (!auth || isExpired(auth)) {
+      // throw ({
+      //   ok: false,
+      //   status: 403,
+      //   message: 'Forbidden for you asshole'
+      // })
     }
+
+    next()
   }
 }

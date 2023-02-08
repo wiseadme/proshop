@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken'
 import { IUser } from '@ecommerce-platform/types'
+import { isExpired, parseJWToken } from '@common/helpers'
 
 export class UserHelpers {
   prepareUserResponseData(user: IUser) {
@@ -18,21 +19,12 @@ export class UserHelpers {
       phone: user.phone,
     }
 
-    if (user.accessToken && !this.isExpired(user.accessToken)) {
-      userData.exp = jwt.decode(user.accessToken)?.exp
+    if (user.accessToken && !isExpired(user.accessToken)) {
+      userData.exp = parseJWToken(user.accessToken)?.exp
     } else {
       delete userData.exp
     }
 
     return userData
-  }
-
-  isExpired(token) {
-    return Date.now() >= (jwt.decode(token).exp * 1000)
-  }
-
-  genJWToken({ payload, secret, expiresIn }) {
-    delete payload.exp
-    return jwt.sign(payload, secret, { expiresIn })
   }
 }

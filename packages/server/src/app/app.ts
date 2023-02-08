@@ -38,10 +38,7 @@ class App {
   }
 
   private routes(controllers: Array<IController>){
-    controllers.forEach(controller => {
-      this.app.use(controller.path, controller.router)
-    })
-
+    controllers.forEach(controller => this.app.use(controller.path, controller.router))
     this.app.use(this.errorRouteMiddleware.execute as any)
   }
 

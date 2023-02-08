@@ -13,7 +13,6 @@ export class CustomerRepository implements ICustomerRepository {
       _id: new mongoose.Types.ObjectId(),
       name: params.name,
       phone: params.phone,
-      addresses: [params.address]
     })
 
     await customer.save()

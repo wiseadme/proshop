@@ -12,18 +12,34 @@ type ProtectMiddlewareArguments = {
   roles?: string[]
 }
 
+export const parseJWToken = (token: string) => {
+  return jwt.decode(token)
+}
+
+export const isExpired = (token: string): boolean => {
+  const { exp } = parseJWToken(token)
+
+  return Date.now() >= (exp * 1000)
+}
+
+export const genJWToken = ({ payload, secret, expiresIn }): string => {
+  delete payload.exp
+
+  return jwt.sign(payload, secret, { expiresIn })
+}
+
 const protect = ({ roles }: ProtectMiddlewareArguments) => {
   return ({ cookies }: Request, response: Response, next: NextFunction) => {
     let ret = true
 
     if (roles) {
-      const parsed = jwt.decode(cookies.auth)
+      const parsed = parseJWToken(cookies.auth)
       const userRoles = parsed.roles
 
       ret = roles.every(role => userRoles.includes(role))
     }
 
-    if (ret) {
+    if (ret && !isExpired(cookies.auth)) {
       next()
     } else {
       throw ({
@@ -38,7 +54,7 @@ export const setMiddlewares = (props: SetMiddlewareArguments | null = null) => {
   const middlewares: any[] = []
 
   props?.dto && middlewares.push(new ValidateMiddleware(props.dto).execute())
-  props?.protect && middlewares.push(protect(props.roles ? { roles: props.roles } : {}))
+  props?.roles && middlewares.push(protect({ roles: props.roles }))
 
   return middlewares
 }

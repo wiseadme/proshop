@@ -7,6 +7,8 @@ import { TYPES } from '@common/schemes/di-types'
 import { IUserRepository } from '@modules/user/types/repository'
 import config from '@app/config'
 
+import { isExpired, genJWToken } from '@common/helpers'
+
 const REFRESH_TOKEN_EXP = 60 * 60 * 12
 const ACCESS_TOKEN_EXP = 60
 
@@ -31,13 +33,13 @@ export class UserService extends UserHelpers implements IUserService {
 
       if (isPasswordValid) {
 
-        const accessToken = this.genJWToken({
+        const accessToken = genJWToken({
           payload: this.prepareUserResponseData(candidate),
           secret: config.accessSecret,
           expiresIn: ACCESS_TOKEN_EXP
         })
 
-        const refreshToken = this.genJWToken({
+        const refreshToken = genJWToken({
           payload: this.prepareUserResponseData(candidate),
           secret: config.refreshSecret,
           expiresIn: REFRESH_TOKEN_EXP
@@ -115,13 +117,13 @@ export class UserService extends UserHelpers implements IUserService {
 
       delete userInfo.exp
 
-      const accessToken = this.genJWToken({
+      const accessToken = genJWToken({
         payload: userInfo,
         secret: config.accessSecret,
         expiresIn: ACCESS_TOKEN_EXP
       })
 
-      const refreshToken = this.genJWToken({
+      const refreshToken = genJWToken({
         payload: userInfo,
         secret: config.refreshSecret,
         expiresIn: REFRESH_TOKEN_EXP
@@ -161,7 +163,7 @@ export class UserService extends UserHelpers implements IUserService {
       accessToken: cookies.auth
     })
 
-    if (user && this.isExpired(cookies.auth)) {
+    if (user && isExpired(user.accessToken)) {
       return Promise.reject({
         status: 401,
         message: 'Unauthorized'

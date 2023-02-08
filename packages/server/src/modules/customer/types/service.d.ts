@@ -1,12 +1,17 @@
 import { Document } from 'mongoose'
+import { Response } from 'express'
 import { ICustomer } from '@ecommerce-platform/types'
 
 export interface ICustomerService {
-  create(customer: ICustomer): Promise<ICustomer & Document | (ICustomer & Document)[]>
+  createCustomer(res: Response, customer: ICustomer): Promise<ICustomer & Document>
 
-  read(queryParams: Partial<ICustomer>): Promise<(ICustomer & Document)[]>
+  loginCustomer(res: Response, customerParams: { phone: string })
 
-  update(updates: Partial<ICustomer>): Promise<{ updated: ICustomer & Document }>
+  whoami(cookies: Record<string, any>): Promise<ICustomer & Document>
 
-  delete(id: string): Promise<boolean>
+  getCustomers(queryParams: Partial<ICustomer>): Promise<(ICustomer & Document)[]>
+
+  updateCustomer(updates: Partial<ICustomer>): Promise<{ updated: ICustomer & Document }>
+
+  deleteCustomer(id: string): Promise<boolean>
 }

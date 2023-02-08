@@ -1,7 +1,7 @@
 import { ICart, ICartItem } from './cart'
 import { Maybe } from './utils'
 
-interface IOrderClient {
+interface IOrderCustomer {
   _id?: string
   name: string
   phone: string
@@ -22,13 +22,12 @@ interface IOrderStatuses {
 export interface IOrder {
   _id?: string
   items: ICartItem[]
-  amount: number
   address: Maybe<string>
-  client: IOrderClient
+  amount: number
+  customer: IOrderCustomer
   cart?: string | ICart
   orderId?: Maybe<string>
   qrcode?: Maybe<string>
-  owner?: Maybe<string>
   status: IOrderStatuses
   executor?: any
 }

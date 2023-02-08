@@ -15,15 +15,15 @@ import { DEFAULT_PAGE, DEFAULT_ITEMS_COUNT } from '@common/constants/counts'
 export class OrderRepository implements IOrderRepository {
   constructor(
     @inject(TYPES.UTILS.ILogger) private logger: ILogger
-  ){
+  ) {
   }
 
-  async create(order: IOrder): Promise<Document & IOrder>{
+  async create(order: IOrder): Promise<Document & IOrder> {
     return new OrderModel({
       _id: new Types.ObjectId(),
       items: order.items,
-      customer: order.customer._id,
-      address: order.customer.address,
+      customer: order.customer,
+      address: order.address,
       amount: order.amount,
       qrcode: order.qrcode,
       orderId: order.orderId,
@@ -31,31 +31,39 @@ export class OrderRepository implements IOrderRepository {
     }).save()
   }
 
-  async read(params: any & { page: number, count: number }): Promise<Array<Document & IOrder>>{
+  async read(params: any & { page: number, count: number }): Promise<Array<Document & IOrder>> {
+    let orders
+
     if (params?._id) {
       validateId(params._id)
 
-      return OrderModel.find({ _id: params._id })
+      orders = await OrderModel
+        .find({ _id: params._id })
+        .populate([ 'customer' ])
+
+    } else if (params.seen) {
+      orders = await OrderModel
+        .find({ 'status.seen': params.seen })
+        .sort({ createdAt: -1 })
+        .populate([ 'customer' ])
+    } else {
+      const {
+        page = DEFAULT_PAGE,
+        count = DEFAULT_ITEMS_COUNT
+      } = params
+
+      orders = await OrderModel
+        .find()
+        .skip((page * count) - count)
+        .limit(count)
+        .sort({ createdAt: -1 })
+        .populate([ 'customer' ])
     }
-
-    if (params.seen) {
-      return OrderModel.find({ 'status.seen': params.seen }).sort({ createdAt: -1 }) as any
-    }
-
-    const {
-      page = DEFAULT_PAGE,
-      count = DEFAULT_ITEMS_COUNT
-    } = params
-
-    const orders = await OrderModel.find()
-      .skip((page * count) - count)
-      .limit(count)
-      .sort({ createdAt: -1 }) as any
 
     return orders
   }
 
-  async update(updates: IOrder & Document): Promise<{ updated: Document & IOrder }>{
+  async update(updates: IOrder & Document): Promise<{ updated: Document & IOrder }> {
     validateId(updates._id)
 
     const updated = await OrderModel.findByIdAndUpdate(
@@ -67,7 +75,7 @@ export class OrderRepository implements IOrderRepository {
     return { updated }
   }
 
-  async delete(id){
+  async delete(id) {
     return !!await OrderModel.findByIdAndDelete(id)
   }
 }

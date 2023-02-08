@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { ICartItem } from '@ecommerce-platform/types'
-  import AddressMap from '../AddressMap/AddressMap'
+  import AddressMap from '../AddressMap/AddressMap.vue'
 
   defineProps({
     order: {
@@ -116,10 +116,10 @@
             <v-list-item>
               <v-list-item-icon/>
               <v-list-item-content style="width: 250px">
-                {{ order.client.name }}
+                {{ order.customer.name }}
               </v-list-item-content>
               <v-list-item-content style="width: 180px">
-                {{ order.client.phone }}
+                {{ order.customer.phone }}
               </v-list-item-content>
             </v-list-item>
           </v-list>

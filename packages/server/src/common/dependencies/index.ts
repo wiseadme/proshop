@@ -45,6 +45,7 @@ import { CartRepository } from '@modules/cart/repository/cart.repository'
 import { OrderRepository } from '@modules/order/repository/order.repository'
 import { OptionRepository } from '@modules/option/repository/option.repository'
 import { UserRepository } from '@modules/user/repository/user.repository'
+import { CustomerRepository } from '@modules/customer/repository/customer.repository'
 
 // Middlewares
 import { JsonMiddleware } from '@common/middlewares/json.middleware'
@@ -66,6 +67,7 @@ import { ICartService } from '@modules/cart/types/service'
 import { IOrderService } from '@modules/order/types/service'
 import { IOptionService } from '@modules/option/types/service'
 import { IUserService } from '@modules/user/types/service'
+import { ICustomerService } from '@modules/customer/types/service'
 import { IEventBusService } from '@/types/services'
 import { ICategoryRepository } from '@modules/category/types/repository'
 import { IAssetsRepository } from '@modules/asset/types/repository'
@@ -86,6 +88,7 @@ import {
   IExpressMiddleware,
   IFileLoaderMiddleware,
 } from '@/types/middlewares'
+import { AuthMiddleware } from '@common/middlewares/auth.middleware'
 
 export const container = new Container({ skipBaseClassChecks: true })
 
@@ -109,6 +112,7 @@ container.bind<ICartService>(TYPES.SERVICES.ICartService).to(CartService)
 container.bind<IOrderService>(TYPES.SERVICES.IOrderService).to(OrderService)
 container.bind<IOptionService>(TYPES.SERVICES.IOptionService).to(OptionService)
 container.bind<IUserService>(TYPES.SERVICES.IUserService).to(UserService)
+container.bind <ICustomerService>(TYPES.SERVICES.ICustomerService).to(CustomerService)
 
 // Controllers
 container.bind<IController>(TYPES.CONTROLLERS.IController).to(SwaggerController)
@@ -122,13 +126,15 @@ container.bind<IController>(TYPES.CONTROLLERS.IController).to(CartController)
 container.bind<IController>(TYPES.CONTROLLERS.IController).to(OrderController)
 container.bind<IController>(TYPES.CONTROLLERS.IController).to(OptionController)
 container.bind<IController>(TYPES.CONTROLLERS.IController).to(UserController)
+container.bind<IController>(TYPES.CONTROLLERS.IController).to(CustomerController)
 
 // Middlewares
 container.bind<IMiddleware>(TYPES.MIDDLEWARES.IMiddleware).to(LoggerMiddleware)
-// container.bind<IExpressMiddleware>(TYPES.MIDDLEWARES.IMiddleware).to(SessionMiddleware)
 container.bind<IExpressMiddleware>(TYPES.MIDDLEWARES.IMiddleware).to(JsonMiddleware)
 container.bind<IExpressMiddleware>(TYPES.MIDDLEWARES.IMiddleware).to(CookieMiddleware)
 container.bind<IExpressMiddleware>(TYPES.MIDDLEWARES.IMiddleware).to(UrlEncodedMiddleware)
+// @ts-ignore
+container.bind<IExpressMiddleware>(TYPES.MIDDLEWARES.IMiddleware).to(AuthMiddleware)
 container.bind<IErrorRouteMiddleware>(TYPES.MIDDLEWARES.IErrorRouteMiddleware).to(ErrorRouteMiddleware)
 container.bind<IFileLoaderMiddleware>(TYPES.MIDDLEWARES.IFileLoaderMiddleware).to(FileLoaderMiddleware)
 
@@ -143,3 +149,4 @@ container.bind<ICartRepository>(TYPES.REPOSITORIES.ICartRepository).to(CartRepos
 container.bind<IOrderRepository>(TYPES.REPOSITORIES.IOrderRepository).to(OrderRepository)
 container.bind<IOptionRepository>(TYPES.REPOSITORIES.IOptionRepository).to(OptionRepository)
 container.bind<IUserRepository>(TYPES.REPOSITORIES.IUserRepository).to(UserRepository)
+container.bind<ICustomerRepository>(TYPES.REPOSITORIES.ICustomerRepository).to(CustomerRepository)

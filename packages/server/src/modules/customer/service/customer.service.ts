@@ -1,3 +1,4 @@
+import { Response } from 'express'
 import { Document } from 'mongoose'
 import { inject, injectable } from 'inversify'
 import { TYPES } from '@common/schemes/di-types'
@@ -6,42 +7,79 @@ import { Customer } from '@modules/customer/entity/customer.entity'
 import { ILogger } from '@/types/utils'
 import { ICustomerService } from '../types/service'
 import { ICustomerRepository } from '../types/repository'
-import { ICustomer, Maybe } from '@ecommerce-platform/types'
+import { ICustomer } from '@ecommerce-platform/types'
 import { IEventBusService } from '@/types/services'
-import { DELETE_CART_EVENT } from '@common/constants/events'
-
+// Helpers
+import { CustomerHelpers } from '@modules/customer/helpers/customer.helpers'
+import { isExpired, parseJWToken } from '@common/helpers'
 
 @injectable()
-export class CustomerService implements ICustomerService {
+export class CustomerService extends CustomerHelpers implements ICustomerService {
   constructor(
     @inject(TYPES.UTILS.ILogger) private logger: ILogger,
-    @inject(TYPES.REPOSITORIES.ICartRepository) private repository: ICustomerRepository,
+    @inject(TYPES.REPOSITORIES.ICustomerRepository) private repository: ICustomerRepository,
     @inject(TYPES.SERVICES.IEventBusService) private events: IEventBusService
   ) {
+    super()
   }
 
-  async create(customer: ICustomer) {
-    const found: Maybe<ICustomer[]> = await this.repository.read({ phone: customer.phone })
+  async createCustomer(response: Response, customer: ICustomer) {
+    const [ found ]: ICustomer[] = await this.repository.read({ phone: customer.phone })
 
-    /***
-     * TODO - replace it with cookies checking or sending sms
-     */
-    if (found && found.length) {
-      return this.read({ phone: customer.phone })
+    if (!found) {
+      const created = await this.repository.create(Customer.create(customer))
+      const { name, phone } = created
+
+      this.setResponseCookie({
+        key: 'secret',
+        value: this.genAccessToken({ name, phone }),
+        res: response
+      })
+
+      return created
+    } else {
+      return await this.loginCustomer(response, customer)
+    }
+  }
+
+  async whoami(cookies) {
+    const auth = cookies.secret
+
+    if (!auth || isExpired(auth)) {
+      return Promise.reject({
+        status: 401,
+        message: 'Unauthorized'
+      })
     }
 
-    return await this.repository.create(Customer.create(customer))
+    const { phone } = parseJWToken(auth)
+    const [ user ] = await this.repository.read({ phone })
+
+    return user
   }
 
-  async read(params: Partial<ICustomer>): Promise<(Document & ICustomer)[]> {
+  async loginCustomer(response: Response, customerParams) {
+    const [ candidate ] = await this.getCustomers(customerParams)
+    const { name, phone } = candidate
+
+    this.setResponseCookie({
+      key: 'secret',
+      value: this.genAccessToken({ name, phone }),
+      res: response
+    })
+
+    return candidate
+  }
+
+  async getCustomers(params: Partial<ICustomer>): Promise<(Document & ICustomer)[]> {
     return await this.repository.read(params)
   }
 
-  async update(updates: Partial<ICustomer>): Promise<{ updated: Document & ICustomer }> {
+  async updateCustomer(updates: Partial<ICustomer>): Promise<{ updated: Document & ICustomer }> {
     return await this.repository.update(updates)
   }
 
-  async delete(id: string): Promise<boolean> {
+  async deleteCustomer(id: string): Promise<boolean> {
     return await this.repository.delete(id)
   }
 }

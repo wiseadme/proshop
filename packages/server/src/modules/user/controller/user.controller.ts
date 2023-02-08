@@ -33,14 +33,14 @@ export class UserController extends BaseController implements IController {
       this.send({
         response: res,
         data,
-        url: this.path,
+        url: this.path + url,
         method
       })
     } catch (error) {
       return this.error({
         method,
         error,
-        url
+        url: this.path + url
       })
     }
   }

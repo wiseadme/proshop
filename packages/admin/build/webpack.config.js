@@ -34,7 +34,6 @@ module.exports = (env = {}) => {
       filename: '[name].bundle.js',
       assetModuleFilename: 'images/[hash][ext][query]',
       publicPath: env.dev ? 'auto' : '/admin',
-      // publicPath: 'auto'
     },
     optimization: {
       // runtimeChunk: 'single',
