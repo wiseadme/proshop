@@ -5,7 +5,7 @@ import type { ICart, ICartItem, ICurrency } from './cart'
 import type { ICategory, ICategoryConditions } from './category'
 import type { ISEOType } from './common'
 import type { IOption } from './option'
-import type { IOrder, IOrderClient, IOrderStatuses } from './order'
+import type { IOrder, IOrderCustomer, IOrderStatuses } from './order'
 import type { IProduct, IProductConditions } from './product'
 import type { IVariant, IVariantOption } from './variant'
 import type { IRequestPagination } from './request'
@@ -26,7 +26,7 @@ declare module '@ecommerce-platform/types' {
     ISEOType,
     IOption,
     IOrder,
-    IOrderClient,
+    IOrderCustomer,
     IOrderStatuses,
     IProduct,
     IProductConditions,
