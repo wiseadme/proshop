@@ -15,7 +15,6 @@ export class Service {
 
   updateAttribute(updates){
     return this._store.update(updates)
-      .then(res => console.log(res))
   }
 
   createAttribute(attribute){

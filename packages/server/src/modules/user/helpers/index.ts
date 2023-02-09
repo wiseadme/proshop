@@ -13,6 +13,8 @@ export class UserHelpers {
 
     const userData: any = {
       _id: user._id,
+      firstName: user.firstName,
+      secondName: user.secondName,
       username: user.username,
       email: user.email,
       roles: user.roles,

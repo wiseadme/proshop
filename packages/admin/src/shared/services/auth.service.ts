@@ -29,10 +29,6 @@ export class Service {
     return this._router.push('/')
   }
 
-  async create(user){
-    return this._store.createUser(user)
-  }
-
   async refresh(){
     return this._store.refresh()
   }

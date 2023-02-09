@@ -87,11 +87,9 @@
       .then(() => model.variants = service.product!.variants)
   }
 
-  const onDeleteVariantOption = ({ option }) => {
-    service.deleteVariantOption(option)
-      .then(() => {
-        model.variants = service.product?.variants!
-      })
+  const onDeleteVariantOption = ({ option, variant }) => {
+    service.deleteVariantOption({ option, variant })
+      .then(() => model.variants = service.product?.variants!)
   }
 
   const onUploadImage = (image) => {

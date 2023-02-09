@@ -1,13 +1,13 @@
 import { injectable } from 'inversify'
 import { IUserRepository } from '@modules/user/types/repository'
 import { UserModel } from '@modules/user/model/user.model'
-import mongoose from 'mongoose'
+import mongoose, { Document } from 'mongoose'
 import { validateId } from '@common/utils/mongoose-validate-id'
+import { IUser } from '@ecommerce-platform/types'
 
 @injectable()
 export class UserRepository implements IUserRepository {
-  async create(params): Promise<Record<'id', string>>{
-
+  async create(params): Promise<IUser & Document> {
     const user = new UserModel({
       _id: new mongoose.Types.ObjectId(),
       firstName: params.firstName,
@@ -20,14 +20,14 @@ export class UserRepository implements IUserRepository {
       accessToken: params.accessToken,
       refreshToken: params.refreshToken,
       enabled: params.enabled,
-    })
+    }) as IUser & Document
 
     await user.save()
 
-    return { id: user._id }
+    return user
   }
 
-  async read(params){
+  async read(params): Promise<(IUser & Document)[]>{
     return UserModel.find(params)
   }
 
@@ -38,7 +38,7 @@ export class UserRepository implements IUserRepository {
       { _id: updates._id },
       { $set: updates },
       { new: true }
-    )
+    ) as IUser & Document
 
     return { updated }
   }

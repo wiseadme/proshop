@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { watch } from 'vue'
-  import { addYmapsScript } from '@modules/orders/helpers'
+  import { useYandexMaps } from '@shared/composables/use-yandex-maps'
 
   const props = defineProps({
     coords: {
@@ -13,11 +13,12 @@
     }
   })
 
+  const { addYmapsScript } = useYandexMaps()
+  addYmapsScript()
+
   let yandexMaps: any = null
   let map: any = null
   let marker: any = null
-
-  addYmapsScript()
 
   const getYmaps = () => new Promise(resolve => {
     const tryGetYmaps = () => {

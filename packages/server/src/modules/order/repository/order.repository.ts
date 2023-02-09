@@ -39,13 +39,13 @@ export class OrderRepository implements IOrderRepository {
 
       orders = await OrderModel
         .find({ _id: params._id })
-        .populate([ 'customer' ])
+        .populate([ 'customer', 'executor' ])
 
     } else if (params.seen) {
       orders = await OrderModel
         .find({ 'status.seen': params.seen })
         .sort({ createdAt: -1 })
-        .populate([ 'customer' ])
+        .populate([ 'customer', 'executor' ])
     } else {
       const {
         page = DEFAULT_PAGE,
@@ -57,7 +57,7 @@ export class OrderRepository implements IOrderRepository {
         .skip((page * count) - count)
         .limit(count)
         .sort({ createdAt: -1 })
-        .populate([ 'customer' ])
+        .populate([ 'customer', 'executor' ])
     }
 
     return orders
@@ -70,7 +70,8 @@ export class OrderRepository implements IOrderRepository {
       { _id: updates._id },
       { $set: updates },
       { new: true }
-    ) as Document & IOrder
+    )
+      .populate([ 'customer', 'executor' ]) as Document & IOrder
 
     return { updated }
   }

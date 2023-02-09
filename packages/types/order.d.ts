@@ -1,12 +1,11 @@
 import { ICart, ICartItem } from './cart'
+import { IUser } from './user'
 import { Maybe } from './utils'
 
 interface IOrderCustomer {
   _id?: string
   name: string
   phone: string
-  email: string
-  address?: any
 }
 
 interface IOrderStatuses {
@@ -19,15 +18,23 @@ interface IOrderStatuses {
   cancelled: boolean
 }
 
+export interface IOrderAddress {
+  address: string
+  coords: number[]
+  entrance?: string
+  floor?: number
+  doorphone?: string
+}
+
 export interface IOrder {
   _id?: string
   items: ICartItem[]
-  address: Maybe<string>
+  address: Maybe<IOrderAddress>
   amount: number
   customer: IOrderCustomer
   cart?: string | ICart
   orderId?: Maybe<string>
   qrcode?: Maybe<string>
   status: IOrderStatuses
-  executor?: any
+  executor?: IUser
 }

@@ -39,7 +39,7 @@ class Service {
     optionsService,
     pagination,
     sort
-  }){
+  }) {
     this._store = store
     this._attributesStore = attributesStore
     this._unitsStore = unitsStore
@@ -52,35 +52,35 @@ class Service {
     this.sort = sort
   }
 
-  get products(){
+  get products() {
     return this._store.products
   }
 
-  get product(){
+  get product() {
     return this._product.value
   }
 
-  get attributes(){
+  get attributes() {
     return this._attributesStore.attributes
   }
 
-  get categories(){
+  get categories() {
     return this._categoriesStore.categories
   }
 
-  get units(){
+  get units() {
     return this._unitsStore.units
   }
 
-  get totalLength(){
+  get totalLength() {
     return this._store.totalLength
   }
 
-  get variants(){
+  get variants() {
     return this._variantsStore.variants!
   }
 
-  async getAttributes(){
+  async getAttributes() {
     if (this._attributesStore.attributes) {
       return this._attributesStore.attributes
     }
@@ -88,7 +88,7 @@ class Service {
     return await this._attributesStore.read()
   }
 
-  async getUnits(){
+  async getUnits() {
     if (this._unitsStore.units) {
       return this._unitsStore.units
     }
@@ -96,7 +96,7 @@ class Service {
     return await this._unitsStore.read()
   }
 
-  async getCategories(){
+  async getCategories() {
     if (this._categoriesStore.categories) {
       return this._categoriesStore.categories
     }
@@ -104,7 +104,7 @@ class Service {
     return await this._categoriesStore.read()
   }
 
-  async getVariants(){
+  async getVariants() {
     if (this._variantsStore.variants) {
       return this._variantsStore.variants
     }
@@ -112,7 +112,7 @@ class Service {
     return await this._variantsStore.read()
   }
 
-  prepareRequestPagination(): IRequestPagination{
+  prepareRequestPagination(): IRequestPagination {
     return {
       page: unref(this.pagination.page),
       count: unref(this.pagination.itemsCount),
@@ -120,7 +120,7 @@ class Service {
     }
   }
 
-  prepareRequestSortParams(){
+  prepareRequestSortParams() {
     return this.sort.isNeedToBeSorted.value ? {
       asc: unref(this.sort.asc),
       desc: unref(this.sort.desc),
@@ -128,7 +128,7 @@ class Service {
     } : {}
   }
 
-  getProducts(params: Partial<IProduct> | null = null){
+  getProducts(params: Partial<IProduct> | null = null) {
     const query: IRequestPagination & Partial<IRequestSort> & Partial<IProduct> = {
       ...(params ? params : {}),
       ...this.prepareRequestSortParams(),
@@ -138,16 +138,16 @@ class Service {
     return this._store.read(query).catch(err => console.log(err))
   }
 
-  setAsCurrent(product: IProduct){
+  setAsCurrent(product: IProduct) {
     this._product.value = clone(product)
   }
 
-  createProduct(product: IProduct){
+  createProduct(product: IProduct) {
     return this._store.create(product)
       .catch(err => console.log(err))
   }
 
-  async createVariantOption(option: IVariantOption){
+  async createVariantOption(option: IVariantOption) {
     const createdOption = await this._optionsService.createOption(option)
 
     const { variants } = unref(this._product)!
@@ -172,7 +172,7 @@ class Service {
     variant.options = []
   }
 
-  async updateVariantOption(option){
+  async updateVariantOption(option) {
     const updated = await this._optionsService.updateOption(option)
 
     const { variants } = this._product.value!
@@ -188,11 +188,10 @@ class Service {
     })
   }
 
-  async deleteVariantOption(option){
+  async deleteVariantOption({ option, variant }) {
     await this._optionsService.deleteOption(option)
 
     let { variants } = unref(this._product)!
-    const variant = variants.find(v => v._id === option.variantId)!
 
     variant.options = variant.options?.filter(it => it._id !== option._id)
 
@@ -206,18 +205,18 @@ class Service {
     })
   }
 
-  deleteProduct(product){
+  deleteProduct(product) {
     this._store.delete(product).catch(err => console.log(err))
   }
 
-  async updateProduct(updates){
+  async updateProduct(updates) {
     const updated = await this._store.update(updates)
     this._product.value = updated
 
     return updated
   }
 
-  async createAsset(file, ownerId){
+  async createAsset(file, ownerId) {
     const { formData, fileName } = this._filesService.createFormData(file)
 
     return await this._filesService.uploadFile({
@@ -227,7 +226,7 @@ class Service {
     })
   }
 
-  async uploadProductVariantImage(file, option){
+  async uploadProductVariantImage(file, option) {
     const optionAsset = await this.createAsset(file, option._id)
 
     const updates = {
@@ -241,7 +240,7 @@ class Service {
     return await this._optionsService.updateOption(updates)
   }
 
-  async deleteProductVariantImage({ asset, option }){
+  async deleteProductVariantImage({ asset, option }) {
     await this._filesService.deleteFile(asset)
 
     const updates = {
@@ -252,7 +251,7 @@ class Service {
     return await this._optionsService.updateOption(updates)
   }
 
-  async uploadProductImage(file){
+  async uploadProductImage(file) {
     if (!file) return
 
     const product = unref(this._product)
@@ -281,7 +280,7 @@ class Service {
     }
   }
 
-  async deleteProductImage(asset){
+  async deleteProductImage(asset) {
     await this._filesService.deleteFile(asset)
 
     let assets = this._product.value!.assets?.filter(it => it._id !== asset._id)

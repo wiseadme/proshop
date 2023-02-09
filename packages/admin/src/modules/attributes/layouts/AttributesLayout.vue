@@ -1,12 +1,4 @@
-<script lang="ts">
-  import { defineComponent } from 'vue'
-
-  export default defineComponent({
-    name: 'attribute-layout',
-    setup(){
-      return {}
-    }
-  })
+<script setup lang="ts">
 </script>
 <template>
   <div class="attribute-layout">

@@ -8,6 +8,8 @@ import { orderRoutes } from '@modules/orders/routes'
 import { authRoutes } from '@shared/routes/auth.routes'
 import { dashboardRoutes } from '@modules/dashboard/routes'
 import { customerRoutes } from '@modules/customers/routes'
+import { configRoutes } from '@modules/config/routes'
+import { usersRoutes } from '@modules/users/routes'
 // import { elementRoutes } from '@modules/elements/routes'
 
 const baseUrl = process.env.NODE_ENV === 'development' ? '/' : '/admin'
@@ -25,7 +27,9 @@ export const routes = [
       ...unitRoutes,
       ...variantRoutes,
       ...orderRoutes,
-      ...customerRoutes
+      ...customerRoutes,
+      ...configRoutes,
+      ...usersRoutes
       // ...elementRoutes
     ],
   },

@@ -36,12 +36,11 @@
   const setExistsVariants = (vars) => {
     const map = existsVariants.reduce((acc, it) => {
       acc[it.group] = it
+
       return acc
     }, {})
 
-    vars?.forEach(v => {
-      map[v.group] = v
-    })
+    vars?.forEach(v => map[v.group] = v)
 
     existsVariants = Object.values(map)
   }

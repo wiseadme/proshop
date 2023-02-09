@@ -1,6 +1,6 @@
 <script setup lang="ts">
-  import { OrdersTable } from '@modules/orders/components/OrdersTable'
-  import { OrderActionsModal } from '@modules/orders/components/OrderActionsModal'
+  import OrdersTable from '@modules/orders/components/OrdersTable'
+  import OrderActionsModal from '@modules/orders/components/OrderActionsModal'
   import { useOrdersService } from '@modules/orders/service/order.service'
   import { getOrderStatusName } from '@modules/orders/helpers'
 
@@ -13,7 +13,7 @@
       key: 'actions',
       title: 'Действия',
       align: 'center',
-      width: '250'
+      width: '150'
     },
     {
       key: 'createdAt',
@@ -41,7 +41,7 @@
       resizeable: true,
       sortable: true,
       filterable: true,
-      format: (row) => row.amount + ' руб',
+      format: (row) => row.amount,
       emit: true
     },
     {
@@ -109,6 +109,10 @@
     service.deleteOrder(order._id)
   }
 
+  const onUpdateOrder = (updates) => {
+    service.updateOrder(updates).then(res => service.setAsCurrent(res))
+  }
+
 </script>
 <template>
   <v-row>
@@ -126,8 +130,10 @@
       <order-actions-modal
         v-model="openOrderModal"
         :order="service.order"
+        :users="service.users"
         :is-update="isUpdate"
         :is-read="isRead"
+        @update:order="onUpdateOrder"
         @close="openOrderModal = false"
       />
     </v-col>

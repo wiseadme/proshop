@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { onBeforeUnmount } from 'vue'
   import { PropType } from 'vue'
-  import { IOrder } from '@modules/orders/types'
+  import { IOrder } from '@ecommerce-platform/types'
   import { useOrdersService } from '@modules/orders/service/order.service'
 
   defineProps({
@@ -49,28 +49,8 @@
       }
     }"
     class="elevation-2"
-    show-checkbox
     show-sequence
   >
-    <template #toolbar>
-      <v-toolbar>
-        <v-spacer></v-spacer>
-        <v-toolbar-items>
-          <v-button
-            color="green"
-            elevation="5"
-            @click="$emit('add:order')"
-          >
-            <v-icon
-              size="14"
-              sm
-            >
-              fas fa-plus
-            </v-icon>
-          </v-button>
-        </v-toolbar-items>
-      </v-toolbar>
-    </template>
     <template #pagination-text="{start, last, length}">
       <span>{{ `с ${ start } по ${ last } из ${ length }` }}</span>
     </template>
@@ -82,16 +62,6 @@
         @click="$emit('open:order', row)"
       >
         <v-icon>fas fa-file-alt</v-icon>
-      </v-button>
-      <v-button
-        class="ml-1"
-        color="orange"
-        elevation="2"
-        text
-        :disabled="row.status && !row.status.seen"
-        @click="$emit('edit:order', row)"
-      >
-        <v-icon>fas fa-pen</v-icon>
       </v-button>
       <v-button
         class="ml-1"

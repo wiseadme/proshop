@@ -1,19 +1,42 @@
 <script setup lang="ts">
+  import { watch } from 'vue'
   import { ICartItem } from '@ecommerce-platform/types'
   import AddressMap from '../AddressMap/AddressMap.vue'
 
-  defineProps({
+  const props = defineProps({
     order: {
       type: Object,
+      default: null
+    },
+    users: {
+      type: Array,
       default: null
     }
   })
 
-  const emit = defineEmits([ 'close' ])
+  const emit = defineEmits([
+    'close',
+    'update:order'
+  ])
+
+  const computedExecutor = $computed({
+    get: () => props.order.executor,
+    set: (val) => {
+      emit('update:order', { executor: val._id })
+    }
+  })
+
+  watch(computedExecutor, to => {
+    console.log(to)
+  })
 
   const getProductPrice = (item: ICartItem) => {
     return item.variant?.option?.price || item.product.price
   }
+
+  // const onSelectExecutor = (value) => {
+  //   emit('update:order', { executor: value._id })
+  // }
 
   const onClose = () => {
     emit('close')
@@ -83,19 +106,19 @@
                 <span>{{ it.product.name }}</span>
               </v-list-item-content>
               <v-list-item-content style="width: 120px">
-                <span>{{ getProductPrice(it) }} руб</span>
+                <span>{{ getProductPrice(it) }}</span>
               </v-list-item-content>
               <v-list-item-content style="width: 80px">
                 <span>{{ it.quantity }}</span>
               </v-list-item-content>
               <v-list-item-content style="width: 80px">
-                <span>{{ getProductPrice(it) * it.quantity }} руб</span>
+                <span>{{ getProductPrice(it) * it.quantity }}</span>
               </v-list-item-content>
             </v-list-item>
             <v-list-item class="elevation-1 grey lighten-2">
               <v-list-item-icon/>
               <v-list-item-content>
-                <h4>Итого к оплате: {{ order.amount }} руб</h4>
+                <h4>Итого к оплате: {{ order.amount }}</h4>
               </v-list-item-content>
             </v-list-item>
           </v-list>
@@ -123,6 +146,19 @@
               </v-list-item-content>
             </v-list-item>
           </v-list>
+        </v-col>
+      </v-row>
+      <v-row class="mt-4 px-2">
+        <v-col
+          cols="6"
+          class="white elevation-2 pa-2"
+        >
+          <v-select
+            v-model="computedExecutor"
+            label="Исполнитель заказа"
+            :items="users"
+            value-key="firstName"
+          />
         </v-col>
       </v-row>
     </v-card-content>

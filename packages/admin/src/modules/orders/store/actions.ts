@@ -1,10 +1,10 @@
 import { useOrderRepository } from '@modules/orders/repository'
-import { IOrder } from '@ecommerce-platform/types'
+import { IOrder, IOrderStatuses } from '@ecommerce-platform/types'
 
 const orderRepository = useOrderRepository()
 
 export const actions = {
-  async create(order: IOrder){
+  async create(order: IOrder) {
     try {
       const { data } = await orderRepository.create(order)
       this.orders = data.data
@@ -15,12 +15,12 @@ export const actions = {
     }
   },
 
-  async read(params: any = null){
+  async read(params: Partial<IOrder | IOrderStatuses> = {}) {
     try {
       const { data } = await orderRepository.read(params)
 
       this.$patch(state => {
-        if (!params) {
+        if (!Object.keys(params).length) {
           state.orders = data?.data
         } else {
           state.newOrders = data?.data
@@ -33,14 +33,15 @@ export const actions = {
     }
   },
 
-  async update(updates){
+  async update(updates) {
     try {
       const { data } = await orderRepository.update(updates)
 
       this.$patch(state => {
-        const ind = state.orders.findIndex(it => it._id === data?.data._id)
-
-        state.orders.splice(ind, 1, data?.data)
+        state.orders = state.orders.reduce((acc, it) => {
+          acc.push(it._id === updates._id ? data.data : it)
+          return acc
+        }, [])
       })
 
       return data?.data
@@ -50,7 +51,7 @@ export const actions = {
     }
   },
 
-  async delete(id){
+  async delete(id) {
     try {
       const { data } = await orderRepository.delete(id)
 

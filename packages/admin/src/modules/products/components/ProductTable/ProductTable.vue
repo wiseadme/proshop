@@ -169,7 +169,7 @@
       </v-button>
     </template>
     <template #summary="{row}">
-      <span>{{ Number(row.quantity * row.price).toFixed(2) }} руб.</span>
+      <span>{{ Number(row.quantity * row.price).toFixed(2) }}</span>
     </template>
     <template #image="{row}">
       <img

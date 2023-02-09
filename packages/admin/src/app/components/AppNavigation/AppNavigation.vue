@@ -14,6 +14,11 @@
           path: '/dashboard'
         },
         {
+          title: 'Конфигурация',
+          icon: 'fas fa-cog',
+          path: '/config'
+        },
+        {
           title: 'Категории',
           icon: 'fas fa-cubes',
           path: '/categories'
@@ -27,6 +32,16 @@
           title: 'Заказы',
           icon: 'fas fa-folder',
           path: '/orders'
+        },
+        {
+          title: 'Клиенты',
+          icon: 'fas fa-people-arrows',
+          path: '/customers'
+        },
+        {
+          title: 'Сотрудники',
+          icon: 'fas fa-users',
+          path: '/users'
         },
         {
           title: 'Атрибуты',

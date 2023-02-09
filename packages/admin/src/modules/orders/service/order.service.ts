@@ -1,53 +1,70 @@
-import { ref, Ref } from 'vue'
+import { ref, unref, Ref } from 'vue'
 import { IOrder } from '@ecommerce-platform/types'
 // Stores
 import { useOrdersStore } from '@modules/orders/store'
+import { useUsersStore } from '@modules/users/store'
 
 class Service {
   private _store: ReturnType<typeof useOrdersStore>
+  private _usersStore: ReturnType<typeof useUsersStore>
   private _order: Ref<Maybe<IOrder>>
 
   public unsubscribe: Maybe<Function>
 
-  constructor({ store }){
+  constructor({ store, usersStore }) {
     this._store = store
+    this._usersStore = usersStore
     this._order = ref(null)
     this.unsubscribe = null
+
+    this.onInit()
   }
 
-  get orders(){
+  get orders() {
     return this._store.orders
   }
 
-  get newOrders(){
+  get newOrders() {
     return this._store.newOrders
   }
 
-  get order(){
-    return this._order
+  get order() {
+    return this._order.value
   }
 
-  setAsCurrent(order){
-    this._order = order
+  get users() {
+    return this._usersStore.users
   }
 
-  async createOrder(order){
+  onInit() {
+    if (!this._usersStore.users) {
+      this._usersStore.fetchUsers()
+    }
+  }
+
+  setAsCurrent(order) {
+    this._order.value = order
+  }
+
+  async createOrder(order) {
     return this._store.create(order)
   }
 
-  getOrders(params: any = null){
+  getOrders(params: Partial<IOrder> = {}) {
     return this._store.read(params)
   }
 
-  getNewOrders(){
+  getNewOrders() {
     return this._store.read({ seen: false })
   }
 
-  updateOrder(updates){
+  updateOrder(updates) {
+    updates._id = unref(this.order)!._id
+
     return this._store.update(updates)
   }
 
-  addSubscriber(){
+  addSubscriber() {
     this.unsubscribe = this._store.$subscribe({
       name: 'read',
       // before(params): any{
@@ -59,15 +76,16 @@ class Service {
     })
   }
 
-  removeSubscriber(){
+  removeSubscriber() {
     this.unsubscribe?.()
   }
 
-  async deleteOrder(orderId){
+  async deleteOrder(orderId) {
     await this._store.delete(orderId)
   }
 }
 
 export const useOrdersService = () => new Service({
-  store: useOrdersStore()
+  store: useOrdersStore(),
+  usersStore: useUsersStore(),
 })

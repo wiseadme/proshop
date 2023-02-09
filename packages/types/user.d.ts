@@ -9,7 +9,8 @@ export interface IUser {
   password: string
   phone: string
   roles: string[]
-  accessToken: string,
-  refreshToken: string,
+  position?: string
+  accessToken?: string,
+  refreshToken?: string,
   enabled: boolean
 }

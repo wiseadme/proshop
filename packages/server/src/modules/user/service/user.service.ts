@@ -107,6 +107,12 @@ export class UserService extends UserHelpers implements IUserService {
     }
   }
 
+  async getUsers(params) {
+    const users = await this.repository.read(params)
+
+    return users.map(user => this.prepareUserResponseData(user))
+  }
+
   async refresh(cookies, res) {
     const [ user ] = await this.repository.read({
       accessToken: cookies.auth
@@ -138,7 +144,7 @@ export class UserService extends UserHelpers implements IUserService {
       res.cookie('auth', accessToken, {
         sameSite: true,
         httpOnly: true,
-        maxAge: 100000000,
+        maxAge: 999999,
         path: '/'
       })
 
@@ -163,7 +169,7 @@ export class UserService extends UserHelpers implements IUserService {
       accessToken: cookies.auth
     })
 
-    if (user && isExpired(user.accessToken)) {
+    if (user && isExpired(user.accessToken!)) {
       return Promise.reject({
         status: 401,
         message: 'Unauthorized'

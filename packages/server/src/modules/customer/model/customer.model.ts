@@ -11,11 +11,7 @@ const CustomerSchema: Schema = new Schema<ICustomer & Document>({
     type: String,
     required: true,
     unique: true
-  },
-  addresses: {
-    type: Array,
-    default: []
-  },
+  }
 }, {
   timestamps: true
 })

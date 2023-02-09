@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { PropType } from 'vue'
-import { ICategory } from '@ecommerce-platform/types/index'
+import { ICategory } from '@ecommerce-platform/types'
 
 defineProps({
   cols: {

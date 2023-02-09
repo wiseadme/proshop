@@ -1,10 +1,9 @@
 <script lang="ts" setup>
-  import {onMounted, onBeforeUnmount} from 'vue'
   import { getDifferences, clone } from '@shared/helpers'
   import { useCategoryService } from '@modules/categories/service/category.service'
   import { Category } from '@modules/categories/model/category.model'
-  import { CategoryActionsModal } from '@modules/categories/components/CategoryActionsModal'
-  import { CategoryTable } from '@modules/categories/components/CategoriesTable'
+  import CategoryActionsModal from '@modules/categories/components/CategoryActionsModal'
+  import CategoryTable from '@modules/categories/components/CategoriesTable'
   import { ICategory } from '@ecommerce-platform/types'
 
   let categoryModel = $ref<ICategory>(Category.create())
@@ -151,10 +150,6 @@
   ])
 
   service.getCategories()
-
-  onMounted(() => console.log('MOUNTED'))
-  onBeforeUnmount(() => console.log('BEFORE UNMOUNT'))
-
 </script>
 <template>
   <v-layout

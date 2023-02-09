@@ -2,7 +2,7 @@
 </script>
 <template>
   <div
-    class="customer-layout"
+    class="customers-layout"
     style="position: relative"
   >
     <router-view v-slot="{ Component }">

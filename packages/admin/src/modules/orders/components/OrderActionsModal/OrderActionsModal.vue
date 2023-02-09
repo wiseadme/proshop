@@ -1,10 +1,12 @@
 <script setup lang="ts">
-  import { watch } from 'vue'
+  import { PropType, watch } from 'vue'
   import { OrderDocument } from './OrderDocument'
   import { OrderForm } from './OrderForm'
+  import { IUser } from '@ecommerce-platform/types'
 
   defineEmits([
-    'close'
+    'close',
+    'update:order'
   ])
 
   const props = defineProps({
@@ -15,6 +17,10 @@
     order: {
       type: Object,
       default: null
+    },
+    users: {
+      type: Array as PropType<IUser[]>,
+      default: () => []
     },
     isUpdate: {
       type: Boolean,
@@ -53,8 +59,10 @@
     <component
       :is="currentComponent"
       :order="order"
+      :users="users"
       :is-update="isUpdate"
       @close="$emit('close')"
+      @update:order="$emit('update:order', $event)"
     />
   </v-modal>
 </template>

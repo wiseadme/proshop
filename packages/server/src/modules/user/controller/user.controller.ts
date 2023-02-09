@@ -13,20 +13,21 @@ export class UserController extends BaseController implements IController {
 
   constructor(
     @inject(TYPES.SERVICES.IUserService) private service: IUserService
-  ){
+  ) {
     super()
     this.initRoutes()
   }
 
-  initRoutes(){
+  initRoutes() {
     this.router.post('/login', expressAsyncHandler(this.login.bind(this)))
     this.router.get('/logout', expressAsyncHandler(this.logout.bind(this)))
     this.router.post('/create', expressAsyncHandler(this.create.bind(this)))
     this.router.get('/whoami', expressAsyncHandler(this.whoami.bind(this)))
     this.router.get('/refresh', expressAsyncHandler(this.refresh.bind(this)))
+    this.router.get('/', expressAsyncHandler(this.getUsers.bind(this)))
   }
 
-  async login({ body, method, url }: Request, res: Response){
+  async login({ body, method, url }: Request, res: Response) {
     try {
       const data = await this.service.login(body, res)
 
@@ -45,7 +46,7 @@ export class UserController extends BaseController implements IController {
     }
   }
 
-  async logout({ cookies, method, url }: Request, res: Response){
+  async logout({ cookies, method, url }: Request, res: Response) {
     try {
       const data = await this.service.logout(cookies, res)
 
@@ -64,7 +65,7 @@ export class UserController extends BaseController implements IController {
     }
   }
 
-  async create({ body, method, url, cookies }: Request, res: Response){
+  async create({ body, method, url, cookies }: Request, res: Response) {
     try {
       const data = await this.service.create(body)
 
@@ -83,7 +84,26 @@ export class UserController extends BaseController implements IController {
     }
   }
 
-  async whoami({ method, url, cookies }: Request, res: Response){
+  async getUsers({ body, method, url, cookies }: Request, res: Response) {
+    try {
+      const data = await this.service.getUsers(body)
+
+      this.send({
+        response: res,
+        data,
+        method,
+        url: this.path + url
+      })
+    } catch (error) {
+      return this.error({
+        method,
+        error,
+        url: this.path + url
+      })
+    }
+  }
+
+  async whoami({ method, url, cookies }: Request, res: Response) {
     try {
       const data = await this.service.whoami(cookies)
 
@@ -102,7 +122,7 @@ export class UserController extends BaseController implements IController {
     }
   }
 
-  async refresh({ method, url, cookies }: Request, res: Response){
+  async refresh({ method, url, cookies }: Request, res: Response) {
     try {
       const data = await this.service.refresh(cookies, res)
 

@@ -2,14 +2,6 @@ import { IAuthRepository, useAuthRepository } from '@shared/repository/auth.repo
 
 const repository: IAuthRepository = useAuthRepository()
 
-interface IUser {
-  firstName: string
-  lastName: string
-  username: string
-  email: string
-  phone: number
-}
-
 export const actions = {
   async loginUser(user){
     try {
@@ -23,16 +15,6 @@ export const actions = {
       return data.data
     } catch (error) {
       return Promise.reject(error)
-    }
-  },
-
-  async createUser(user: IUser){
-    try {
-      const { data } = await repository.create(user)
-
-      return data.data
-    } catch (err) {
-      return Promise.reject(err)
     }
   },
 

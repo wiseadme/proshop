@@ -9,7 +9,7 @@ class Repository implements IRepository {
     return rest.post(this.baseUrl, order)
   }
 
-  read(params = null){
+  read(params){
     return rest.get(this.baseUrl, params ? { params } : null)
   }
 
