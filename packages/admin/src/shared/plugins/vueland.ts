@@ -28,5 +28,6 @@ vueland.setTheme({
   primary: colors.green.base,
   content: colors.grey.darken3,
   error: colors.red.lighten2,
-  warning: colors.orange.base
+  warning: colors.orange.base,
+  disabled: '#e6e6e6'
 })

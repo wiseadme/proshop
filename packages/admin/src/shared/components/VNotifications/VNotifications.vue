@@ -5,7 +5,8 @@
   import {
     InfoNotification,
     SuccessNotification,
-    WarningNotification
+    WarningNotification,
+    SimpleNotification
   } from './components'
 
   const props = defineProps({
@@ -25,9 +26,11 @@
     info: InfoNotification,
     success: SuccessNotification,
     warning: WarningNotification,
+    simple: SimpleNotification
   }
 
   let notifications = $ref<Notify[]>([])
+  let isClickable = false
 
   const addItem = (params: Notify) => {
     notifications.push(params)
@@ -39,6 +42,14 @@
 
   const clearAll = () => {
     notifications = []
+  }
+
+  const onClick = (id) => {
+    if (!isClickable) {
+      return
+    }
+
+    removeItem(id)
   }
 
   const styles = $computed(() => positions.reduce((acc, pos) => {
@@ -55,6 +66,7 @@
   onMounted(() => {
     emitter.on('add', addItem)
     emitter.on('remove', removeItem)
+    emitter.on('add-listener',() => isClickable = true)
     emitter.on('clear', clearAll)
   })
 
@@ -75,6 +87,7 @@
         :key="notify.id"
         :params="notify"
         class="my-1"
+        @click="onClick(notify.id)"
         @destroy="removeItem"
       >
       </component>

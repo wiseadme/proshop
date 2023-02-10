@@ -273,7 +273,7 @@
         </v-card-content>
         <v-card-actions>
           <v-button
-            color="green"
+            color="primary"
             elevation="3"
             width="120"
             @click="onSubmit(validate)"
@@ -281,7 +281,7 @@
             сохранить
           </v-button>
           <v-button
-            color="orange darken-1"
+            color="warning"
             class="ml-2"
             width="120"
             elevation="3"

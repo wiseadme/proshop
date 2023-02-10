@@ -25,6 +25,8 @@
       const { ymaps } = window as any
 
       if (ymaps && typeof ymaps.Map === 'function') {
+        yandexMaps = ymaps
+
         return resolve(ymaps)
       }
 
@@ -39,6 +41,10 @@
       map.geoObjects.remove(marker)
     }
 
+    if (!yandexMaps) {
+      return
+    }
+
     marker = new yandexMaps.Placemark(props.coords, {}, {
       preset: 'islands#icon',
       iconColor: '#0095b6'
@@ -49,10 +55,8 @@
     map.geoObjects.add(marker)
   }
 
-  const init = (ymaps) => {
-    yandexMaps = ymaps
-
-    map = new ymaps.Map('map', {
+  const init = () => {
+    map = new yandexMaps.Map('map', {
       center: props.coords,
       zoom: 16,
       controls: []
@@ -61,8 +65,8 @@
 
   watch(() => props.coords, setAddressMarker)
 
-  getYmaps().then((maps) => {
-    init(maps)
+  getYmaps().then(() => {
+    init()
     setAddressMarker()
   })
 

@@ -2,17 +2,24 @@
   import { watch } from 'vue'
   import draggable from 'vuedraggable'
   import { useUnitService } from '@modules/units/service/unit.service'
+  import { useLoadingState } from '@shared/composables/use-loading-state'
   import { clone } from '@shared/helpers'
   import { Unit } from '@modules/units/model/unit.model'
-  import { IUnit } from '@ecommerce-platform/types/index'
+  import { IUnit } from '@ecommerce-platform/types'
 
   let model = $ref<IUnit>(Unit.create())
   let units = $ref<Maybe<Array<IUnit>>>(null)
 
   const service = useUnitService()
+  const { loading, setLoadingState } = useLoadingState()
 
   const onCreate = (validate) => {
-    validate().then(() => service.createUnit(model))
+    validate().then(() => {
+      setLoadingState(true)
+
+      service.createUnit(model)
+        .then(() => setLoadingState(false))
+    })
   }
 
   const onDelete = (item) => {
@@ -56,7 +63,7 @@
             <v-card-content>
               <v-text-field
                 v-model="model.value"
-                label="Значение по умолчанию*"
+                label="Название*"
                 color="#272727"
                 :rules="[val => !!val || 'Обязательное поле']"
               />
@@ -69,7 +76,8 @@
             <v-card-actions class="">
               <v-button
                 elevation="2"
-                color="green"
+                color="primary"
+                :loading="loading"
                 @click="onCreate(validate)"
               >
                 <v-icon

@@ -17,6 +17,10 @@ export const useNotifications = () => {
       params.type = 'info'
     }
 
+    if (params.closeOnClick) {
+      emitter.emit('add-listener')
+    }
+
     if (!params.closeOnClick && !params.actions) {
       setTimeout(() => emitter.emit('remove', params), params.time)
     } else {
@@ -26,7 +30,7 @@ export const useNotifications = () => {
     return params.id
   }
 
-  const remove = (id) => emitter.emit('remove', id);
+  const remove = (id) => emitter.emit('remove', id)
   const clear = () => emitter.emit('clear')
 
   return {

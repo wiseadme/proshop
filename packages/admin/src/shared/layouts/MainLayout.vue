@@ -44,7 +44,7 @@
           newOrdersNotifyId = notify({
             title: 'Новые заказы',
             text: `У вас ${ notSeenCount } новых не просмотренных заказа`,
-            type: 'warning',
+            type: 'success',
             closeOnClick: false,
             actions: {
               events: {

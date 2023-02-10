@@ -21,3 +21,10 @@ export const WarningNotification = defineComponent({
     return () => h(Notification, { color: 'yellow darken-4' })
   }
 })
+
+export const SimpleNotification = defineComponent({
+  name: 'v-notification-simple',
+  setup(){
+    return () => h(Notification, { color: 'blue darken-2' })
+  }
+})

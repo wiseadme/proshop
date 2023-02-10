@@ -72,21 +72,24 @@
   let isUpdate = $ref(false)
   let isRead = $ref(false)
 
-  const onOpenOrder = (order) => {
+  const onOpenOrder = async (order) => {
     service.setAsCurrent(order)
 
-    openOrderModal = true
     isRead = true
     isUpdate = false
 
     if (!order.status.seen) {
-      service.updateOrder({
-        _id: order._id,
+      await service.updateOrder({
         status: {
           ...order.status,
           seen: true
         }
+      }).then(o => {
+        service.setAsCurrent(o)
+        openOrderModal = true
       })
+    } else {
+      openOrderModal = true
     }
   }
 

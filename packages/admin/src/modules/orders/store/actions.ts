@@ -40,6 +40,7 @@ export const actions = {
       this.$patch(state => {
         state.orders = state.orders.reduce((acc, it) => {
           acc.push(it._id === updates._id ? data.data : it)
+
           return acc
         }, [])
       })
