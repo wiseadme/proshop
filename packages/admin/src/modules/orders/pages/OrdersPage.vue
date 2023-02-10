@@ -6,7 +6,10 @@
 
   const service = useOrdersService()
 
-  await service.getOrders()
+  await Promise.all([
+    service.getOrders(),
+    service.getUsers()
+  ])
 
   const cols = $ref([
     {

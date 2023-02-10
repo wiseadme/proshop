@@ -14,11 +14,6 @@
           path: '/dashboard'
         },
         {
-          title: 'Конфигурация',
-          icon: 'fas fa-cog',
-          path: '/config'
-        },
-        {
           title: 'Категории',
           icon: 'fas fa-cubes',
           path: '/categories'
@@ -57,6 +52,11 @@
           title: 'Варианты',
           icon: 'far fa-object-ungroup',
           path: '/variants'
+        },
+        {
+          title: 'Конфигурация',
+          icon: 'fas fa-cog',
+          path: '/config'
         },
         // {
         //   title: 'Элементы',

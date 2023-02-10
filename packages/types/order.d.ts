@@ -19,7 +19,7 @@ interface IOrderStatuses {
 }
 
 export interface IOrderAddress {
-  address: string
+  text: string
   coords: number[]
   entrance?: string
   floor?: number

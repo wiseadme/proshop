@@ -16,8 +16,6 @@ class Service {
     this._usersStore = usersStore
     this._order = ref(null)
     this.unsubscribe = null
-
-    this.onInit()
   }
 
   get orders() {
@@ -36,10 +34,12 @@ class Service {
     return this._usersStore.users
   }
 
-  onInit() {
-    if (!this._usersStore.users) {
-      this._usersStore.fetchUsers()
+  getUsers() {
+    if (this.users) {
+      return this.users
     }
+
+    return this._usersStore.fetchUsers()
   }
 
   setAsCurrent(order) {

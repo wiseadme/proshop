@@ -72,7 +72,7 @@
           <address-map
             class="elevation-2"
             :coords="order.address.coords"
-            :address="order.address.address"
+            :address="order.address.text"
           />
         </v-col>
       </v-row>
