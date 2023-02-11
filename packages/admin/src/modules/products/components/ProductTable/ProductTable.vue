@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { PropType } from 'vue'
   import { IProduct } from '@ecommerce-platform/types'
-  import { icons } from '@shared/constants/icons'
+  import { icons } from '@shared/enums/icons'
 
   defineProps({
     products: {

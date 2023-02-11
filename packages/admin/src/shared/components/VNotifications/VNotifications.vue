@@ -32,11 +32,11 @@
   let notifications = $ref<Notify[]>([])
   let isClickable = false
 
-  const addItem = (params: Notify) => {
+  const addNotification = (params: Notify) => {
     notifications.push(params)
   }
 
-  const removeItem = (id: number) => {
+  const removeNotification = (id) => {
     notifications = notifications.filter(it => it.id !== id)
   }
 
@@ -44,12 +44,12 @@
     notifications = []
   }
 
-  const onClick = (id) => {
+  const onClick = (notify) => {
     if (!isClickable) {
       return
     }
 
-    removeItem(id)
+    removeNotification(notify.id)
   }
 
   const styles = $computed(() => positions.reduce((acc, pos) => {
@@ -64,8 +64,8 @@
   }, {}))
 
   onMounted(() => {
-    emitter.on('add', addItem)
-    emitter.on('remove', removeItem)
+    emitter.on('add', addNotification)
+    emitter.on('remove', removeNotification)
     emitter.on('add-listener',() => isClickable = true)
     emitter.on('clear', clearAll)
   })
@@ -87,8 +87,8 @@
         :key="notify.id"
         :params="notify"
         class="my-1"
-        @click="onClick(notify.id)"
-        @destroy="removeItem"
+        @click="onClick(notify)"
+        @destroy="removeNotification"
       >
       </component>
     </transition-group>

@@ -6,7 +6,7 @@ class Repository implements IRepository {
   baseUrl: string = '/v1/users'
 
   create(user) {
-    return this.rest.post(this.baseUrl, user)
+    return this.rest.post(this.baseUrl + '/create', user)
   }
 
   read(params) {

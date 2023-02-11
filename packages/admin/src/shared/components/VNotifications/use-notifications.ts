@@ -21,7 +21,7 @@ export const useNotifications = () => {
       emitter.emit('add-listener')
     }
 
-    if (!params.closeOnClick && !params.actions) {
+    if (!params.actions) {
       setTimeout(() => emitter.emit('remove', params), params.time)
     } else {
       delete params.time

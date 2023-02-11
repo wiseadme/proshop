@@ -184,7 +184,7 @@
         </v-col>
       </v-row>
       <v-row
-        class="mt-4 mx-2 px-2 statuses white elevation-2"
+        class="mt-4 mx-2 statuses white elevation-2"
         style="overflow: hidden"
       >
         <template

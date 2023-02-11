@@ -15,6 +15,8 @@ export interface IUserService {
 
   getUsers(params: Partial<IUser>): Promise<(IUser & Document)[]>
 
+  deleteUser(id: string): Promise<boolean>
+
   whoami(cookies: Record<string, string>): Promise<IUser & Document>
 
   refresh(cookies: Record<string, string>, res: Response): Promise<IUser & Document>

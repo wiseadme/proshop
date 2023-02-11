@@ -85,6 +85,8 @@ RestClient.interceptors.request.use(async (config) => {
   } else {
     return config
   }
+
+  return config
 })
 
 export const file = new Client(FilesClient)

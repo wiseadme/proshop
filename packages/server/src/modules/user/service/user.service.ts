@@ -91,7 +91,7 @@ export class UserService extends UserHelpers implements IUserService {
 
   async create(user) {
     const [ checkedUser ] = await this.repository.read({
-      email: user.email
+      phone: user.phone
     })
 
     if (!checkedUser) {
@@ -177,5 +177,9 @@ export class UserService extends UserHelpers implements IUserService {
     }
 
     return this.prepareUserResponseData(user)
+  }
+
+  async deleteUser(id) {
+    return this.repository.delete(id)
   }
 }

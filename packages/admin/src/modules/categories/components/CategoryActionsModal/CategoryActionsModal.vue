@@ -1,22 +1,8 @@
 <script setup lang="ts">
   import { PropType, watch } from 'vue'
   import { ICategory, ICategoryConditions } from '@ecommerce-platform/types'
-  import { $computed } from 'vue/macros'
 
-  const {
-    modelValue,
-    isUpdate,
-    title,
-    url,
-    image,
-    parent,
-    order,
-    seoTitle,
-    seoDescription,
-    seoKeywords,
-    conditions,
-    categories
-  } = defineProps({
+  const props = defineProps({
     modelValue: Boolean,
     isUpdate: Boolean,
     title: String,
@@ -58,59 +44,61 @@
   const files = $ref<Maybe<any>>([])
 
   const computedTitleProp = $computed<string | undefined>({
-    get: () => title,
+    get: () => props.title,
     set: (val) => emit('update:title', val)
   })
 
   const computedUrlProp = $computed<string | undefined>({
-    get: () => url,
+    get: () => props.url,
     set: (val) => emit('update:url', val)
   })
 
   const computedImageProp = $computed<string | undefined>({
-    get: () => image,
+    get: () => props.image,
     set: (val) => emit('update:image', val)
   })
 
   const computedSeoTitleProp = $computed<string | undefined>({
-    get: () => seoTitle,
+    get: () => props.seoTitle,
     set: (val) => emit('update:seoTitle', val)
   })
 
   const computedSeoDescProp = $computed<string | undefined>({
-    get: () => seoDescription,
+    get: () => props.seoDescription,
     set: (val) => emit('update:seoDescription', val)
   })
 
   const computedSeoKeywordsProp = $computed<string | undefined>({
-    get: () => seoKeywords,
+    get: () => props.seoKeywords,
     set: (val) => emit('update:seoKeywords', val)
   })
 
   const computedOrderProp = $computed<number | undefined>({
-    get: () => order,
+    get: () => props.order,
     set: (val) => emit('update:order', val)
   })
 
   const computedParentProp = $computed<Maybe<ICategory>>({
     get: () => {
-      const id = isUpdate ? (parent as ICategory)?._id : parent
-      return parent ? categories.find(it => it._id === id)! : null
+      const id = props.isUpdate ? (props.parent as ICategory)?._id : props.parent
+      return props.parent ? props.categories.find(it => it._id === id)! : null
     },
-    set: (val: ICategory) => emit('update:parent', isUpdate ? val : val._id)
+    set: (val: ICategory) => emit('update:parent', props.isUpdate ? val : val._id)
   })
 
   const computedConditionsProp = $computed<ICategoryConditions>({
-    get: () => conditions,
+    get: () => props.conditions,
     set: (val) => emit('update:conditions', val)
   })
 
   const computedModelValue = $computed({
-    get: () => modelValue,
+    get: () => props.modelValue,
     set: (val) => emit('update:modelValue', val)
   })
 
-  watch(() => image, () => files.value = [])
+  const computedModalHeader = $computed(() => props.isUpdate ? 'Редактирование категории' : 'Создание категории')
+
+  watch(() => props.image, () => files.value = [])
 
   const onCreate = (validate) => {
     validate().then(() => emit('create'))
@@ -125,10 +113,11 @@
   }
 
   const onSubmit = validate => {
-    if (isUpdate) {
+    if (props.isUpdate) {
       onUpdate(validate)
     }
-    if (!isUpdate) {
+
+    if (!props.isUpdate) {
       onCreate(validate)
     }
   }
@@ -138,7 +127,10 @@
   }
 
   const onLoadImage = ([ file ]) => {
-    if (!file) return
+    if (!file) {
+      return
+    }
+
     emit('upload:image', file)
   }
 </script>
@@ -156,9 +148,9 @@
         color="rgba(0,0,0,.4)"
       >
         <v-card-title
-          class="card-title white--text text--base"
+          class="modal-card-title white--text"
         >
-          {{ isUpdate ? 'Обновление категории' : 'Создание категории' }}
+          {{ computedModalHeader }}
         </v-card-title>
         <v-card-content
           class="grey lighten-4"
@@ -295,8 +287,4 @@
   </v-modal>
 </template>
 <style lang="scss">
-  .card-title {
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 700;
-  }
 </style>

@@ -31,6 +31,13 @@
     stopPolling()
   })
 
+  // const notifyConfig = {
+  //   title: 'Новые заказы',
+  //   text: `У вас ${ notSeenCount } новых не просмотренных заказа`,
+  //   type: 'success',
+  //   closeOnClick: false,
+  // }
+
   watch(() => ordersService.newOrders!, (newOrders: IOrder[]) => {
     if (notSeenCount !== newOrders.length) {
       if (newOrdersNotifyId) {

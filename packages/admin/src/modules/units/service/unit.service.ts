@@ -1,6 +1,6 @@
 import { Store } from 'nervue'
 import { useUnitStore } from '@modules/units/store'
-import { IUnit } from '@ecommerce-platform/types/index'
+import { IUnit } from '@ecommerce-platform/types'
 import { IUnitActions, IUnitState } from '@modules/units/types'
 
 class Service {
@@ -20,7 +20,7 @@ class Service {
   }
 
   deleteUnit(id){
-    return this._store.delete(id).then(() => this.getUnits())
+    return this._store.delete(id)
   }
 
   getUnits(id = ''){

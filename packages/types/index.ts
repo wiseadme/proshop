@@ -9,6 +9,6 @@ export type { IOrder, IOrderCustomer, IOrderStatuses, IOrderAddress } from './or
 export type { IProduct, IProductConditions } from './product'
 export type { IVariant, IVariantOption } from './variant'
 export type { IRequestPagination } from './request'
-export type { IUser } from './user'
+export type { IUser, IUserPosition } from './user'
 export type { Maybe } from './utils'
 export type { ICustomer } from './customer'

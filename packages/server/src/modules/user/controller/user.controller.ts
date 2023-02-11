@@ -25,6 +25,7 @@ export class UserController extends BaseController implements IController {
     this.router.get('/whoami', expressAsyncHandler(this.whoami.bind(this)))
     this.router.get('/refresh', expressAsyncHandler(this.refresh.bind(this)))
     this.router.get('/', expressAsyncHandler(this.getUsers.bind(this)))
+    this.router.delete('/', expressAsyncHandler(this.deleteUser.bind(this)))
   }
 
   async login({ body, method, url }: Request, res: Response) {
@@ -133,6 +134,25 @@ export class UserController extends BaseController implements IController {
         url: this.path + url
       })
 
+    } catch (error) {
+      return this.error({
+        method,
+        error,
+        url: this.path + url
+      })
+    }
+  }
+
+  async deleteUser({ query, method, url }: Request<{}, {}, {}, { id: string }>, res: Response) {
+    try {
+      const data = await this.service.deleteUser(query.id)
+
+      this.send({
+        response: res,
+        data,
+        method,
+        url: this.path + url
+      })
     } catch (error) {
       return this.error({
         method,

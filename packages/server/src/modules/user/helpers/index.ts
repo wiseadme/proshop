@@ -16,9 +16,9 @@ export class UserHelpers {
       firstName: user.firstName,
       secondName: user.secondName,
       username: user.username,
-      email: user.email,
       roles: user.roles,
       phone: user.phone,
+      position: user.position
     }
 
     if (user.accessToken && !isExpired(user.accessToken)) {

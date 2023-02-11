@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { useAuthService } from '@shared/services/auth.service'
-  import { icons } from '@shared/constants/icons'
+  import { icons } from '@shared/enums/icons'
 
   const service = useAuthService()
 

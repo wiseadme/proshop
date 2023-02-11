@@ -1,19 +1,7 @@
 import { model, Schema, Document } from 'mongoose'
+import { IUser } from '@ecommerce-platform/types'
 
-interface User {
-  firstName: string
-  secondName: string
-  email: string
-  username?: string
-  password: string
-  phone: string
-  roles: string[]
-  accessToken: string,
-  refreshToken: string,
-  enabled: boolean
-}
-
-const UserSchema = new Schema<Document & User>({
+const UserSchema = new Schema<Document & IUser>({
   _id: Schema.Types.ObjectId,
   firstName: {
     type: String,
@@ -28,11 +16,6 @@ const UserSchema = new Schema<Document & User>({
     default: null,
     unique: true,
   },
-  email: {
-    type: String,
-    required: true,
-    unique: true,
-  },
   password: {
     type: String,
     required: true
@@ -44,6 +27,10 @@ const UserSchema = new Schema<Document & User>({
   roles: {
     type: Array as any,
     required: true
+  },
+  position: {
+    type: Object,
+    default: null
   },
   accessToken: {
     type: String,

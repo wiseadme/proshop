@@ -4,9 +4,7 @@
 
   const customersService = useCustomersService()
 
-  customersService.fetchCustomers().then(res => {
-    console.log(res)
-  })
+  customersService.fetchCustomers().then(() => {})
 
   const cols = $ref([
     {

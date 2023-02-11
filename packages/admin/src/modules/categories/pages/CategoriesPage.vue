@@ -15,7 +15,9 @@
   const service = useCategoryService()
 
   const model = $computed<Maybe<ICategory>>(() => {
-    if (isEditMode) return categoryUpdates
+    if (isEditMode) {
+      return categoryUpdates
+    }
 
     return categoryModel
   })
