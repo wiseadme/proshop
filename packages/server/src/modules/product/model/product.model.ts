@@ -46,7 +46,15 @@ const ProductSchema = new Schema<IProduct>({
     type: {
       title: String,
       description: String,
-      keywords: String
+      keywords: String,
+      metatags: {
+        type: Array,
+        default: []
+      },
+      schema: {
+        type: Array,
+        default: []
+      }
     },
   },
   attributes: {

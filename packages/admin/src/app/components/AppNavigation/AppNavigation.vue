@@ -16,42 +16,47 @@
         {
           title: 'Категории',
           icon: 'fas fa-cubes',
-          path: '/categories'
+          path: '/category'
         },
         {
           title: 'Товары',
           icon: 'fas fa-boxes',
-          path: '/products'
+          path: '/product'
         },
         {
           title: 'Заказы',
           icon: 'fas fa-folder',
-          path: '/orders'
+          path: '/order'
         },
         {
           title: 'Клиенты',
           icon: 'fas fa-people-arrows',
-          path: '/customers'
+          path: '/customer'
         },
         {
           title: 'Сотрудники',
-          icon: 'fas fa-users',
-          path: '/users'
+          icon: 'fas fa-user',
+          path: '/user'
         },
         {
           title: 'Атрибуты',
           icon: 'fab fa-buffer',
-          path: '/attributes'
+          path: '/attribute'
         },
         {
           title: 'Измерения',
           icon: 'fab fa-unity',
-          path: '/units'
+          path: '/unit'
         },
         {
           title: 'Варианты',
           icon: 'far fa-object-ungroup',
-          path: '/variants'
+          path: '/variant'
+        },
+        {
+          title: 'Мета теги',
+          icon: 'fas fa-code',
+          path: '/metatag'
         },
         {
           title: 'Конфигурация',

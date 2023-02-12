@@ -1,5 +1,5 @@
 import { useOptionsRepository } from '@shared/repository/options.repository'
-import { IVariantOption } from '@modules/variants/types'
+import { IVariantOption } from '@modules/variant/types'
 
 const repository = useOptionsRepository()
 

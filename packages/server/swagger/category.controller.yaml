@@ -3,7 +3,7 @@ paths:
     post:
       summary: 'create new category'
       tags:
-        - categories
+        - category
       requestBody:
         required: true
         content:
@@ -16,11 +16,11 @@ paths:
 
   /v1/category/id:
     get:
-      summary: 'get categories'
+      summary: 'get category'
       consumes:
         - application/json
       tags:
-        - categories
+        - category
 
 
 components:

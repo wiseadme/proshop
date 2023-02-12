@@ -15,7 +15,7 @@ import { VariantQuery } from '../types/params'
 
 @injectable()
 export class VariantController extends BaseController implements IController {
-  public path = '/v1/variants'
+  public path = '/v1/variant'
   public router = Router()
 
   constructor(

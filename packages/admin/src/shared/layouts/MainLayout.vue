@@ -3,7 +3,7 @@
   import { useRouter } from 'vue-router'
   import { usePolling } from '@shared/composables/use-polling'
   import { useNotifications } from '@shared/components/VNotifications/use-notifications'
-  import { useOrdersService } from '@modules/orders/service/order.service'
+  import { useOrdersService } from '@modules/order/service/order.service'
   // Components
   import { AppHeader } from '@app/components/AppHeader'
   import { AppNavigation } from '@app/components/AppNavigation'
@@ -37,11 +37,11 @@
     newOrdersNotifyId = null
     notSeenCount = 0
 
-    if (router.currentRoute.value.path.includes('/orders')) {
+    if (router.currentRoute.value.path.includes('/order')) {
       ordersService.getOrders()
     }
 
-    router.replace({ name: 'orders-table' })
+    router.replace({ name: 'order-table' })
   }
 
   watch(() => ordersService.newOrders!, (newOrders: IOrder[]) => {

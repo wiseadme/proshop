@@ -49,7 +49,7 @@ export class RepositoryHelpers {
         }
       },
       {
-        $unwind: '$categories'
+        $unwind: '$category'
       },
       { '$match': { 'categories.url': category } },
       { '$skip': this.preparePaginationParams({ page, count }).skip },

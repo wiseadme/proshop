@@ -11,6 +11,7 @@ import type { IVariant, IVariantOption } from './variant'
 import type { IRequestPagination } from './request'
 import type { IUser } from './user'
 import type { Maybe } from './utils'
+import type { IMetaTag } from './metatag'
 
 declare module '@ecommerce-platform/types' {
   export type {
@@ -33,6 +34,7 @@ declare module '@ecommerce-platform/types' {
     IRequestPagination,
     IVariant,
     IVariantOption,
+    IMetaTag,
     Maybe
   }
 }

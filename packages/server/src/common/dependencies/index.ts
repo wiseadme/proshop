@@ -18,6 +18,7 @@ import { OrderController } from '@modules/order/controller/order.controller'
 import { OptionController } from '@modules/option/controller/option.controller'
 import { UserController } from '@modules/user/controller/user.controller'
 import { CustomerController } from '@modules/customer/controller/customer.controller'
+import { MetaTagController } from '@modules/metatag/controller/metatag.controller'
 
 // Services
 import { LoggerService } from '../services/logger.service'
@@ -33,6 +34,7 @@ import { OptionService } from '@modules/option/service/option.service'
 import { EventBusService } from '@common/services/event-bus.service'
 import { UserService } from '@modules/user/service/user.service'
 import { CustomerService } from '@modules/customer/service/customer.service'
+import { MetaTagService } from '@modules/metatag/service/metatag.service'
 
 // Repositories
 import { CategoryRepository } from '@modules/category/repository/category.repository'
@@ -46,6 +48,7 @@ import { OrderRepository } from '@modules/order/repository/order.repository'
 import { OptionRepository } from '@modules/option/repository/option.repository'
 import { UserRepository } from '@modules/user/repository/user.repository'
 import { CustomerRepository } from '@modules/customer/repository/customer.repository'
+import { MetaTagRepository } from '@modules/metatag/repository/metatag.repository'
 
 // Middlewares
 import { JsonMiddleware } from '@common/middlewares/json.middleware'
@@ -70,6 +73,7 @@ import { IUserService } from '@modules/user/types/service'
 import { ICustomerService } from '@modules/customer/types/service'
 import { IEventBusService } from '@/types/services'
 import { ICategoryRepository } from '@modules/category/types/repository'
+import { IMetaTagService } from '@modules/metatag/types/service'
 import { IAssetsRepository } from '@modules/asset/types/repository'
 import { IProductRepository } from '@modules/product/types/repository'
 import { IVariantRepository } from '@modules/variant/types/repository'
@@ -80,6 +84,7 @@ import { ICustomerRepository } from '@modules/customer/types/repository'
 import { ICartRepository } from '@modules/cart/types/repository'
 import { IOrderRepository } from '@modules/order/types/repository'
 import { IOptionRepository } from '@modules/option/types/repository'
+import { IMetaTagRepository } from '@modules/metatag/types/repository'
 import { ILogger } from '@/types/utils'
 import { IController, IConfig, IDb } from '@/types'
 import {
@@ -112,7 +117,8 @@ container.bind<ICartService>(TYPES.SERVICES.ICartService).to(CartService)
 container.bind<IOrderService>(TYPES.SERVICES.IOrderService).to(OrderService)
 container.bind<IOptionService>(TYPES.SERVICES.IOptionService).to(OptionService)
 container.bind<IUserService>(TYPES.SERVICES.IUserService).to(UserService)
-container.bind <ICustomerService>(TYPES.SERVICES.ICustomerService).to(CustomerService)
+container.bind<ICustomerService>(TYPES.SERVICES.ICustomerService).to(CustomerService)
+container.bind<IMetaTagService>(TYPES.SERVICES.IMetaTagService).to(MetaTagService)
 
 // Controllers
 container.bind<IController>(TYPES.CONTROLLERS.IController).to(SwaggerController)
@@ -127,6 +133,7 @@ container.bind<IController>(TYPES.CONTROLLERS.IController).to(OrderController)
 container.bind<IController>(TYPES.CONTROLLERS.IController).to(OptionController)
 container.bind<IController>(TYPES.CONTROLLERS.IController).to(UserController)
 container.bind<IController>(TYPES.CONTROLLERS.IController).to(CustomerController)
+container.bind<IController>(TYPES.CONTROLLERS.IController).to(MetaTagController)
 
 // Middlewares
 container.bind<IMiddleware>(TYPES.MIDDLEWARES.IMiddleware).to(LoggerMiddleware)
@@ -150,3 +157,4 @@ container.bind<IOrderRepository>(TYPES.REPOSITORIES.IOrderRepository).to(OrderRe
 container.bind<IOptionRepository>(TYPES.REPOSITORIES.IOptionRepository).to(OptionRepository)
 container.bind<IUserRepository>(TYPES.REPOSITORIES.IUserRepository).to(UserRepository)
 container.bind<ICustomerRepository>(TYPES.REPOSITORIES.ICustomerRepository).to(CustomerRepository)
+container.bind<IMetaTagRepository>(TYPES.REPOSITORIES.IMetaTagRepository).to(MetaTagRepository)

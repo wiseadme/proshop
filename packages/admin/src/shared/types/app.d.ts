@@ -1,5 +1,5 @@
 /// <reference types="vue/macros-global" />
-import { IVariant } from '@modules/variants/types'
+import { IVariant } from '@modules/variant/types'
 
 export interface IRest {
   get: (url: string, ...args: any) => Promise<{ data: any }>

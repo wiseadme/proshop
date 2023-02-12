@@ -8,7 +8,7 @@ import { IUserService } from '@modules/user/types/service'
 
 @injectable()
 export class UserController extends BaseController implements IController {
-  public path: string = '/v1/users'
+  public path: string = '/v1/user'
   public router: Router = Router()
 
   constructor(

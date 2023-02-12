@@ -16,7 +16,7 @@ import { AttributeDTO } from '@modules/attribute/dto/attribute.dto'
 
 @injectable()
 export class AttributeController extends BaseController implements IController {
-  public path = '/v1/attributes'
+  public path = '/v1/attribute'
   public router = Router()
 
   constructor(
