@@ -31,7 +31,7 @@
     }
   })
 
-  const checkStatusKey = (key) => {
+  const checkProcessStatusKey = (key) => {
     return ((processStatuses.indexOf(key) > -1) && !computedExecutor)
   }
 
@@ -51,7 +51,7 @@
       })
     }
 
-    if (checkStatusKey(statusKey)) {
+    if (checkProcessStatusKey(statusKey)) {
       return notify({
         title: 'Информация',
         text: 'Необходимо выбрать исполнителя заказа',
@@ -60,7 +60,10 @@
       })
     }
 
-    if (statusKey === 'completed' && !statuses.ready) {
+    if (
+      statusKey === 'ready' && !statuses.inProcess
+      || statusKey === 'completed' && !statuses.ready
+    ) {
       return
     }
 
@@ -68,10 +71,6 @@
 
     return emit('update:order', { status: statuses })
   }
-
-  // const onSelectExecutor = (value) => {
-  //   emit('update:order', { executor: value._id })
-  // }
 
   const onClose = () => {
     emit('close')

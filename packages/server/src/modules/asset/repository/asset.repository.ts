@@ -18,10 +18,10 @@ import { IFileLoaderMiddleware } from '@/types/middlewares'
 export class AssetRepository implements IAssetsRepository {
   constructor(
     @inject(TYPES.MIDDLEWARES.IFileLoaderMiddleware) private fileLoader: IFileLoaderMiddleware
-  ){
+  ) {
   }
 
-  save(req: Request, res: Response): Promise<AssetsResponse>{
+  save(req: Request, res: Response): Promise<AssetsResponse> {
     return new Promise((resolve, reject) => {
       const upload = this.fileLoader.loadSingle('image')
       const ownerId = req.query.id as string
@@ -36,24 +36,26 @@ export class AssetRepository implements IAssetsRepository {
       req.query.assetId = assetId.toString()
       req.query.ownerDir = ownerDir
 
-      try {
-        upload(req, res, (err, filename) => console.log(err, filename))
-      } catch (err) {
-        reject(err)
-      }
+      upload(req, res, (err, filename) => {
+        console.log(err, filename)
 
-      new AssetModel({
-        _id: assetId,
-        ownerId,
-        fileName,
-        url
+        if (err) {
+          return reject(err)
+        }
+
+        new AssetModel({
+          _id: assetId,
+          ownerId,
+          fileName,
+          url
+        })
+          .save()
+          .then((asset) => resolve(asset))
       })
-        .save()
-        .then((asset) => resolve(asset))
     })
   }
 
-  async update(updates){
+  async update(updates) {
     validateId(updates._id)
 
     const updated = await AssetModel.findByIdAndUpdate(
@@ -65,7 +67,7 @@ export class AssetRepository implements IAssetsRepository {
     return { updated }
   }
 
-  async deleteOne(asset){
+  async deleteOne(asset) {
     validateId(asset._id)
 
     const assetData = await AssetModel.findOne({ _id: asset._id })
@@ -87,7 +89,7 @@ export class AssetRepository implements IAssetsRepository {
     return true
   }
 
-  async deleteAll(id){
+  async deleteAll(id) {
     try {
       validateId(id)
 

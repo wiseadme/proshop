@@ -9,7 +9,7 @@
   import { AppNavigation } from '@app/components/AppNavigation'
   import VNotifications from '@shared/components/VNotifications/VNotifications.vue'
   // Types
-  import { IOrder } from '@ecommerce-platform/types'
+  import { Maybe, IOrder } from '@ecommerce-platform/types'
 
   const router = useRouter()
   const ordersService = useOrdersService()
@@ -21,7 +21,7 @@
   })
 
   let notSeenCount = 0
-  let newOrdersNotifyId = null
+  let newOrdersNotifyId: Maybe<number> = null
 
   onMounted(() => {
     startPolling()
@@ -31,12 +31,18 @@
     stopPolling()
   })
 
-  // const notifyConfig = {
-  //   title: 'Новые заказы',
-  //   text: `У вас ${ notSeenCount } новых не просмотренных заказа`,
-  //   type: 'success',
-  //   closeOnClick: false,
-  // }
+  const onClick = () => {
+    remove(newOrdersNotifyId)
+
+    newOrdersNotifyId = null
+    notSeenCount = 0
+
+    if (router.currentRoute.value.path.includes('/orders')) {
+      ordersService.getOrders()
+    }
+
+    router.replace({ name: 'orders-table' })
+  }
 
   watch(() => ordersService.newOrders!, (newOrders: IOrder[]) => {
     if (notSeenCount !== newOrders.length) {
@@ -54,22 +60,9 @@
             type: 'success',
             closeOnClick: false,
             actions: {
-              events: {
-                onClick: () => {
-                  remove(newOrdersNotifyId)
-
-                  newOrdersNotifyId = null
-                  notSeenCount = 0
-
-                  if (router.currentRoute.value.path.includes('/orders')) {
-                    ordersService.getOrders()
-                  }
-
-                  router.replace({ name: 'orders-table' })
-                }
-              }
+              events: { onClick }
             }
-          }) as any
+          }) as number
         }, 500)
       }
     }

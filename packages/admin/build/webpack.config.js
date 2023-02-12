@@ -184,7 +184,8 @@ module.exports = (env = {}) => {
       }),
       new VueLoaderPlugin(),
       new BundleAnalyzerPlugin({
-        analyzerMode: 'none'
+        analyzerMode: 'none',
+        open: false
       })
     ]
   }

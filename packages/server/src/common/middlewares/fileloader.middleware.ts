@@ -13,7 +13,7 @@ class FileLoaderOptions {
   limits: Maybe<Options['limits']>
   bind: boolean
 
-  constructor(){
+  constructor() {
     this.storage = null
     this.fileFilter = null
     this.limits = null
@@ -24,9 +24,9 @@ class FileLoaderOptions {
     this.addLimits()
   }
 
-  addOptionsStorage(){
+  addOptionsStorage() {
     this.storage = multer.diskStorage({
-      destination(req, file, cb){
+      destination(req, file, cb) {
         const { ownerDir } = req.query
 
         try {
@@ -38,7 +38,7 @@ class FileLoaderOptions {
         cb(null, `${ config.uploadsDir }/${ ownerDir }`)
       },
 
-      filename(req, file, cb){
+      filename(req, file, cb) {
         const { fileName, assetId } = req.query
 
         cb(null, `${ assetId }|${ fileName }`)
@@ -46,9 +46,13 @@ class FileLoaderOptions {
     })
   }
 
-  addFileFilter(){
+  addFileFilter() {
     this.fileFilter = (req, file, cb) => {
-      if (file.mimetype === 'image/png' || file.mimetype === 'image/jpeg') {
+      if (
+        file.mimetype === 'image/png'
+        || file.mimetype === 'image/jpeg'
+        || file.mimetype === 'image/jpg'
+      ) {
         cb(null, true)
       } else {
         cb(null, false)
@@ -56,8 +60,8 @@ class FileLoaderOptions {
     }
   }
 
-  addLimits(){
-    this.limits = { fileSize: 1024 * 1024 * 3 }
+  addLimits() {
+    this.limits = { fileSize: 1024 * 1024 * 10 }
   }
 }
 
@@ -66,16 +70,16 @@ export class FileLoaderMiddleware implements IFileLoaderMiddleware {
   plugin: Multer
   bind: boolean
 
-  constructor(){
+  constructor() {
     this.bind = true
     this.plugin = multer(new FileLoaderOptions() as Options)
   }
 
-  loadSingle(fieldName){
+  loadSingle(fieldName) {
     return this.plugin.single(fieldName)
   }
 
-  loadArray(fieldName, count){
+  loadArray(fieldName, count) {
     return this.plugin.array(fieldName, count)
   }
 }

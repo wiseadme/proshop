@@ -45,6 +45,7 @@
   }
 
   const onClick = (notify) => {
+    console.log(notify)
     if (!isClickable) {
       return
     }

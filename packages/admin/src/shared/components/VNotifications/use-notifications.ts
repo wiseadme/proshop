@@ -22,7 +22,7 @@ export const useNotifications = () => {
     }
 
     if (!params.actions) {
-      setTimeout(() => emitter.emit('remove', params), params.time)
+      setTimeout(() => emitter.emit('remove', params.id), params.time)
     } else {
       delete params.time
     }

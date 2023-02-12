@@ -3,7 +3,7 @@ const baseConfig = require('./webpack.config.js')
 
 const buildConfig = (env = {}) => merge(baseConfig(env), {
   plugins: [],
-  devtool: 'eval-source-map'
+  devtool: 'source-map'
 })
 
 module.exports = new Promise(res => {
