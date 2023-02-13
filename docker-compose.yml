@@ -84,6 +84,18 @@ services:
     networks:
       - ecommerce
 
+  shop:
+    image: shop:app
+    container_name: shop-app
+    restart: unless-stopped
+    command: node .output/server/index.mjs
+    ports:
+      - "3001:3001"
+    depends_on:
+      - server
+    networks:
+      - ecommerce
+
   nginx:
     image: nginx:stable-alpine
     container_name: nginx

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
   import { PropType, nextTick, toRaw, watch } from 'vue'
-  import { IVariant, ICategory, IAsset, IUnit, IAttribute, IProductConditions } from '@ecommerce-platform/types/index'
+  import { IVariant, ICategory, IAsset, IUnit, IAttribute, IProductConditions } from '@ecommerce-platform/types'
   import { clone } from '@shared/helpers'
   import { TextEditor } from '@shared/components/TextEditor'
   import VariantsBlock from './VariantsBlock'
