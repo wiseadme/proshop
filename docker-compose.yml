@@ -88,7 +88,7 @@ services:
     image: shop:app
     container_name: shop-app
     restart: unless-stopped
-    command: node .output/server/index.mjs
+    command: npm run preview
     ports:
       - "3001:3001"
     depends_on:

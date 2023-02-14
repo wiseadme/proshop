@@ -39,6 +39,7 @@ export const TYPES = {
   },
   MIDDLEWARES: {
     IMiddleware: Symbol.for('IMiddleware'),
+    ICorsMiddleware: Symbol.for('ICorsMiddleware'),
     IErrorRouteMiddleware: Symbol.for('IErrorRouteMiddleware'),
     IFileLoaderMiddleware: Symbol.for('IFileLoaderMiddleware'),
     ISessionMiddleware: Symbol.for('ISessionMiddleware'),

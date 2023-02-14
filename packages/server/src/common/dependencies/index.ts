@@ -58,6 +58,7 @@ import { ErrorRouteMiddleware } from '../middlewares/error.route.middleware'
 import { FileLoaderMiddleware } from '@common/middlewares/fileloader.middleware'
 // import { SessionMiddleware } from '@common/middlewares/session.middleware'
 import { CookieMiddleware } from '@common/middlewares/cookie.middleware'
+import { CorsMiddleware } from '@common/middlewares/cors.middleware'
 
 // Types
 import { ICategoryService } from '@modules/category/types/service'
@@ -140,6 +141,7 @@ container.bind<IMiddleware>(TYPES.MIDDLEWARES.IMiddleware).to(LoggerMiddleware)
 container.bind<IExpressMiddleware>(TYPES.MIDDLEWARES.IMiddleware).to(JsonMiddleware)
 container.bind<IExpressMiddleware>(TYPES.MIDDLEWARES.IMiddleware).to(CookieMiddleware)
 container.bind<IExpressMiddleware>(TYPES.MIDDLEWARES.IMiddleware).to(UrlEncodedMiddleware)
+container.bind<IExpressMiddleware>(TYPES.MIDDLEWARES.IMiddleware).to(CorsMiddleware)
 // @ts-ignore
 container.bind<IExpressMiddleware>(TYPES.MIDDLEWARES.IMiddleware).to(AuthMiddleware)
 container.bind<IErrorRouteMiddleware>(TYPES.MIDDLEWARES.IErrorRouteMiddleware).to(ErrorRouteMiddleware)
