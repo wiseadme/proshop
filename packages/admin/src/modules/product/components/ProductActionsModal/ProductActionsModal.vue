@@ -1,11 +1,22 @@
 <script lang="ts" setup>
   import { PropType, nextTick, toRaw, watch } from 'vue'
-  import { IVariant, ICategory, IAsset, IUnit, IAttribute, IProductConditions } from '@ecommerce-platform/types'
+  import {
+    IVariant,
+    ICategory,
+    IAsset,
+    IUnit,
+    IAttribute,
+    IProductConditions,
+    IMetaTag,
+    // ISEOType
+  } from '@ecommerce-platform/types'
   import { clone } from '@shared/helpers'
   import { TextEditor } from '@shared/components/TextEditor'
   import VariantsBlock from './VariantsBlock'
   import ConditionsBlock from './ConditionsBlock'
+  import MetaTagsBlock from './MetaTagsBlock'
   import draggable from 'vuedraggable'
+  import { $computed } from 'vue/macros'
 
   const props = defineProps({
     modelValue: Boolean,
@@ -15,6 +26,7 @@
     categoryItems: Array as PropType<Array<ICategory>>,
     unitItems: Array as PropType<Array<IUnit>>,
     variantItems: Array as PropType<Array<IVariant>>,
+    metaTagItems: Array as PropType<Array<IMetaTag>>,
     name: String,
     url: String,
     description: String,
@@ -42,9 +54,8 @@
     'update:category',
     'update:quantity',
     'update:unit',
-    'update:metatag:title',
-    'update:metatag:description',
-    'update:metatag:keywords',
+    'update:seo',
+    'update:seo:meta-tag',
     'update:conditions',
     'update:url',
     'upload:image',
@@ -126,12 +137,22 @@
     set: (val) => emit('update:variant', toRaw(val))
   })
 
+  let computedMetaTags = $computed({
+    get: () => props.seo?.metatags,
+    set: (val) => {
+      console.log(val)
+      emit('update:seo:meta-tag', toRaw(val))
+
+      return props.seo?.metatags
+    }
+  })
+
   let computedSeoTitle = $computed<string>({
     get: () => props.seo?.title,
     set: (val) => {
       const seo = JSON.parse(JSON.stringify(props.seo))
       seo.title = val
-      emit('update:metatag', seo)
+      emit('update:seo', seo)
     }
   })
 
@@ -141,7 +162,7 @@
       const seo = JSON.parse(JSON.stringify(props.seo))
       seo.description = val
 
-      emit('update:metatag', seo)
+      emit('update:seo', seo)
     }
   })
 
@@ -151,7 +172,7 @@
       const seo = JSON.parse(JSON.stringify(props.seo))
       seo.keywords = val
 
-      emit('update:metatag', seo)
+      emit('update:seo', seo)
     }
   })
 
@@ -458,7 +479,9 @@
               <v-col class="elevation-2 white mb-4">
                 <v-card width="100%">
                   <v-card-title class="green--text">
-                    <h3>Описание товара</h3>
+                    <h3 class="primary--text">
+                      Описание товара
+                    </h3>
                   </v-card-title>
                   <v-card-content>
                     <text-editor
@@ -480,7 +503,7 @@
               >
                 <v-card width="100%">
                   <v-card-title>
-                    <h3>
+                    <h3 class="primary--text">
                       Категории
                     </h3>
                   </v-card-title>
@@ -536,7 +559,9 @@
                   width="100%"
                 >
                   <v-card-title>
-                    <h3>Атрибуты</h3>
+                    <h3 class="primary--text">
+                      Атрибуты
+                    </h3>
                   </v-card-title>
                   <v-card-content>
                     <draggable
@@ -598,6 +623,10 @@
               @create:variant-option="onCreateVariantOption"
               @delete:variant-option="onDeleteVariantOption"
               @update:variant-option="onUpdateVariantOption"
+            />
+            <meta-tags-block
+              v-model:meta-tags="computedMetaTags"
+              :items="metaTagItems"
             />
             <conditions-block
               v-model:conditions="computedConditions"

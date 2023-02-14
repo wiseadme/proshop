@@ -39,7 +39,9 @@ export class Product implements IProduct {
     seo = {
       title: '',
       description: '',
-      keywords: ''
+      keywords: '',
+      metatags: [],
+      schema: []
     }
   }: IProduct){
     this._id = _id

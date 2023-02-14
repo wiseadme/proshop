@@ -125,7 +125,9 @@
     <v-col class="white mt-2 elevation-2">
       <v-card width="100%">
         <v-card-title>
-          <h3>Варианты</h3>
+          <h3 class="primary--text">
+            Варианты
+          </h3>
         </v-card-title>
         <v-card-subtitle>
           Варианты товара, например: размеры, цвета и т.д.

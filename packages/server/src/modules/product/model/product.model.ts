@@ -43,19 +43,11 @@ const ProductSchema = new Schema<IProduct>({
     default: null
   },
   seo: {
-    type: {
-      title: String,
-      description: String,
-      keywords: String,
-      metatags: {
-        type: Array,
-        default: []
-      },
-      schema: {
-        type: Array,
-        default: []
-      }
-    },
+    title: String,
+    description: String,
+    keywords: String,
+    metatags: Array,
+    schema: Array
   },
   attributes: {
     type: [ {

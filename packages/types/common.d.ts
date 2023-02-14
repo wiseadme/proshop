@@ -5,6 +5,6 @@ export interface ISEOType {
   title: Maybe<string>
   description: Maybe<string>
   keywords: Maybe<string>
-  metatags?: IMetaTag[]
-  schema?: Array<any>
+  metatags: Array<IMetaTag>
+  schema: Array<any>
 }

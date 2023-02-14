@@ -11,7 +11,8 @@ export class MetaTagRepository implements IMetaTagRepository {
 
     const metaTag = new MetaTagModel({
       _id: new mongoose.Types.ObjectId(),
-      ...params
+      props: params.props,
+      order: params.order
     })
 
     await metaTag.save()

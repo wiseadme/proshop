@@ -1,4 +1,5 @@
 export interface IMetaTag {
-  content: string
-  [key: string]: string
+  _id: string
+  props: Record<string, string>
+  order: number
 }

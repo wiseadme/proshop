@@ -83,7 +83,11 @@ export class OrderRepository implements IOrderRepository {
       { $set: updates },
       { new: true }
     )
-      .populate([ 'customer', 'executor' ]) as Document & IOrder
+      .populate('customer')
+      .populate({
+        path: 'executor',
+        select: 'firstName secondName roles phone'
+      })as Document & IOrder
 
     return { updated }
   }

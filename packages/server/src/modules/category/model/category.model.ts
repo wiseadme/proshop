@@ -16,7 +16,9 @@ const CategorySchema: Schema = new Schema<ICategory & Document>({
   seo: {
     title: String,
     description: String,
-    keywords: String
+    keywords: String,
+    metatgs: Array,
+    schema: Array
   },
   parent: {
     type: Schema.Types.ObjectId,

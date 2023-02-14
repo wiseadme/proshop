@@ -21,7 +21,7 @@
   let loading = $ref<boolean>(true)
 
   const service = useProductService()
-  const notUpdatableKeys = ['assets', 'image', 'variants']
+  const notUpdatableKeys = ['assets', 'variants']
 
   const onCreate = () => {
     service.createProduct(model)
@@ -189,7 +189,8 @@
     service.getAttributes(),
     service.getProducts(),
     service.getUnits(),
-    service.getVariants()
+    service.getVariants(),
+    service.getMetaTags()
   ])
     .then(() => loading = false)
 
@@ -226,9 +227,11 @@
         v-model:attributes="model.attributes"
         v-model:variants="model.variants"
         v-model:conditions="model.conditions"
+        :attribute-items="service.attributes"
         :category-items="service.categories"
         :variant-items="service.variants"
         :unit-items="service.units"
+        :meta-tags-items="service.metaTags"
         :is-edit-mode="isEditMode"
         :has-changes="hasChanges"
         @upload:image="onUploadImage"

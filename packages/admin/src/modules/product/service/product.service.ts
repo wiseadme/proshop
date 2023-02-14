@@ -5,6 +5,7 @@ import { useAttributeStore } from '@modules/attribute/store'
 import { useCategoryStore } from '@modules/category/store'
 import { useVariantStore } from '@modules/variant/store'
 import { useUnitStore } from '@modules/unit/store'
+import { useMetaTagsStore } from '@modules/metatag/store'
 // Services
 import { useFilesService } from '@shared/services/files.service'
 import { useOptionsService } from '@shared/services/options.service'
@@ -22,6 +23,7 @@ class Service {
   private _categoriesStore: ReturnType<typeof useCategoryStore>
   private _unitsStore: ReturnType<typeof useUnitStore>
   private _variantsStore: ReturnType<typeof useVariantStore>
+  private _metaTagsStore: ReturnType<typeof useMetaTagsStore>
   private _product: Ref<Maybe<IProduct>>
   private _filesService: ReturnType<typeof useFilesService>
   private _optionsService: ReturnType<typeof useOptionsService>
@@ -35,6 +37,7 @@ class Service {
     categoriesStore,
     unitsStore,
     variantsStore,
+    metaTagsStore,
     filesService,
     optionsService,
     pagination,
@@ -45,6 +48,7 @@ class Service {
     this._unitsStore = unitsStore
     this._categoriesStore = categoriesStore
     this._variantsStore = variantsStore
+    this._metaTagsStore = metaTagsStore
     this._filesService = filesService
     this._optionsService = optionsService
     this._product = ref(null)
@@ -72,44 +76,57 @@ class Service {
     return this._unitsStore.units
   }
 
-  get totalLength() {
-    return this._store.totalLength
-  }
-
   get variants() {
     return this._variantsStore.variants!
   }
 
+  get metaTags() {
+    return this._metaTagsStore.metaTags
+  }
+
+  get totalLength() {
+    return this._store.totalLength
+  }
+
+
   async getAttributes() {
-    if (this._attributesStore.attributes) {
-      return this._attributesStore.attributes
+    if (this.attributes) {
+      return this.attributes
     }
 
     return await this._attributesStore.read()
   }
 
   async getUnits() {
-    if (this._unitsStore.units) {
-      return this._unitsStore.units
+    if (this.units) {
+      return this.units
     }
 
     return await this._unitsStore.read()
   }
 
   async getCategories() {
-    if (this._categoriesStore.categories) {
-      return this._categoriesStore.categories
+    if (this.categories) {
+      return this.categories
     }
 
     return await this._categoriesStore.read()
   }
 
   async getVariants() {
-    if (this._variantsStore.variants) {
-      return this._variantsStore.variants
+    if (this.variants) {
+      return this.variants
     }
 
     return await this._variantsStore.read()
+  }
+
+  async getMetaTags(params = {}) {
+    if (this.metaTags) {
+      return this.metaTags
+    }
+
+    return this._metaTagsStore.read(params)
   }
 
   prepareRequestPagination(): IRequestPagination {
@@ -306,6 +323,7 @@ export const useProductService = () => new Service({
   categoriesStore: useCategoryStore(),
   unitsStore: useUnitStore(),
   variantsStore: useVariantStore(),
+  metaTagsStore: useMetaTagsStore(),
   filesService: useFilesService(),
   optionsService: useOptionsService(),
   pagination: usePagination(),
