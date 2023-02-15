@@ -4,6 +4,7 @@
   import draggable from 'vuedraggable'
   import { IMetaTag } from '@ecommerce-platform/types'
   import { clone } from '@shared/helpers'
+  import { descriptorToMetaTag } from '@shared/helpers/metatag'
 
   const service = useMetaTagService()
 
@@ -56,19 +57,6 @@
 
   const onDelete = (el: IMetaTag) => {
     service.deleteMetaTag(el._id)
-  }
-
-  const descriptorToMetaTag = (descriptor) => {
-    let tag = '<meta'
-    let tagEnd = '/>'
-
-    Object.keys(descriptor).forEach((it) => {
-      tag += ` ${ it }="${ descriptor[it] }"`
-    })
-
-    tag += tagEnd
-
-    return tag
   }
 
   const onEdit = (metaTagDescriptor) => {

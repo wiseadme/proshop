@@ -231,7 +231,7 @@
         :category-items="service.categories"
         :variant-items="service.variants"
         :unit-items="service.units"
-        :meta-tags-items="service.metaTags"
+        :meta-tag-items="service.metaTags"
         :is-edit-mode="isEditMode"
         :has-changes="hasChanges"
         @upload:image="onUploadImage"
