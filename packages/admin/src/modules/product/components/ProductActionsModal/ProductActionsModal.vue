@@ -51,11 +51,10 @@
     'update:attribute',
     'update:variant',
     'update:metatag',
-    'update:category',
+    'update:categories',
     'update:quantity',
     'update:unit',
     'update:seo',
-    'update:seo:meta-tag',
     'update:conditions',
     'update:url',
     'upload:image',
@@ -81,7 +80,7 @@
   let attributesArray = $ref<Array<IAttribute>>([])
   let currentImage = $ref<Maybe<IAsset>>(null)
   let content = $ref<string>('')
-  let rerenderKey = $ref<string>('')
+  let textEditorRerenderKey = $ref<string>('')
 
   const computedModalHeader = $computed<string>(() => {
     return `${ (props.isEditMode ? 'Редактирование' : 'Создание') } продукта`
@@ -140,10 +139,10 @@
   let computedMetaTags = $computed({
     get: () => props.seo?.metatags,
     set: (val) => {
-      console.log(val)
-      emit('update:seo:meta-tag', toRaw(val))
+      const seo = JSON.parse(JSON.stringify(props.seo))
+      seo.metatags = val
 
-      return props.seo?.metatags
+      emit('update:seo', seo)
     }
   })
 
@@ -183,7 +182,16 @@
 
   let computedCategories = $computed<Array<ICategory>>({
     get: () => props.categories!,
-    set: (val) => emit('update:category', val)
+    set: (val) => emit('update:categories', val)
+  })
+
+  let computedMetaTagItems = $computed(() => {
+    const productTagsMap = props.seo?.metatags.reduce((acc, it) => {
+      acc[it._id] = true
+      return acc
+    }, {})
+
+    return props.metaTagItems?.filter(it => !productTagsMap[it._id])
   })
 
   const onImagesContextMenu = (event, asset) => {
@@ -200,9 +208,10 @@
       ctgMap.set(ctg._id, ctg)
     }
 
-    computedCategories = Array.from(
-      toRaw(ctgMap).values()
-    )
+    console.log(ctg, ctgMap.get(ctg._id))
+
+    computedCategories = Array.from(toRaw(ctgMap).values())
+    console.log(computedCategories)
   }
 
   const onCreate = validate => {
@@ -283,7 +292,7 @@
   }
 
   const onDiscardChanges = () => {
-    rerenderKey = `${ Date.now() }`
+    textEditorRerenderKey = `${ Date.now() }`
 
     nextTick(() => {
       ctgMap.clear()
@@ -308,7 +317,7 @@
     attributesArray = clone(props.attributes)
 
     content = props.description!
-    rerenderKey = content
+    textEditorRerenderKey = content
 
   }, { immediate: true })
 </script>
@@ -485,7 +494,7 @@
                   </v-card-title>
                   <v-card-content>
                     <text-editor
-                      :key="rerenderKey"
+                      :key="textEditorRerenderKey"
                       v-model:content="computedDescription"
                       content-type="html"
                       :global-options="{
@@ -613,6 +622,10 @@
                 </v-card>
               </v-col>
             </v-row>
+            <meta-tags-block
+              v-model:meta-tags="computedMetaTags"
+              :items="computedMetaTagItems"
+            />
             <variants-block
               v-model:variants="computedVariants"
               :is-displayed="modelValue"
@@ -623,10 +636,6 @@
               @create:variant-option="onCreateVariantOption"
               @delete:variant-option="onDeleteVariantOption"
               @update:variant-option="onUpdateVariantOption"
-            />
-            <meta-tags-block
-              v-model:meta-tags="computedMetaTags"
-              :items="metaTagItems"
             />
             <conditions-block
               v-model:conditions="computedConditions"

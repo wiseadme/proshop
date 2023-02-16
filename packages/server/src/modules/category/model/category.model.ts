@@ -17,7 +17,7 @@ const CategorySchema: Schema = new Schema<ICategory & Document>({
     title: String,
     description: String,
     keywords: String,
-    metatgs: Array,
+    metatags: Array,
     schema: Array
   },
   parent: {

@@ -116,7 +116,7 @@
           >
             <template #item="{element}">
               <div
-                class="d-flex justify-start align-center elevation-2 my-1 py-4 px-3 white"
+                class="d-flex justify-start align-center elevation-2 my-1 py-2 px-3 white"
               >
                 <v-icon
                   class="mr-3"
@@ -128,13 +128,16 @@
                   {{ element.value }}
                 </span>
                 <v-spacer></v-spacer>
-                <v-icon
-                  clickable
-                  color="green"
+                <v-button
+                  color="error"
+                  elevation="2"
+                  round
                   @click="onDelete(element)"
                 >
-                  fas fa-times
-                </v-icon>
+                  <v-icon>
+                    fas fa-times
+                  </v-icon>
+                </v-button>
               </div>
             </template>
           </draggable>

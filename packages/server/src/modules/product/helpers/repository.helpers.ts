@@ -22,7 +22,7 @@ export class RepositoryHelpers {
       'assets',
       {
         path: 'categories',
-        select: 'title'
+        select: 'title url order'
       },
       {
         path: 'variants',
@@ -49,7 +49,7 @@ export class RepositoryHelpers {
         }
       },
       {
-        $unwind: '$category'
+        $unwind: '$categories'
       },
       { '$match': { 'categories.url': category } },
       { '$skip': this.preparePaginationParams({ page, count }).skip },

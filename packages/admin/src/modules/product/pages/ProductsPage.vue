@@ -33,7 +33,7 @@
     showCreateModal = true
     isEditMode = false
 
-    // model = Product.create()
+    model = Product.create()
 
     model.attributes = clone(service.attributes)
   }

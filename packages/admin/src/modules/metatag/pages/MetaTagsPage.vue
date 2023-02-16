@@ -26,10 +26,17 @@
     metaPropertyPattern.value = ''
   }
 
-  const clearAll = () => {
-    clearMetaPattern()
+  const clearMetaProps = () => {
     metaProps.props = {}
     metaProps.order = 0
+  }
+
+  const clearAll = () => {
+    clearMetaPattern()
+    clearMetaProps()
+
+    isEditMode = false
+    service.setAsCurrent(null)
   }
 
   const addPropsToMeta = (validate) => {
@@ -136,7 +143,7 @@
                   text
                   @click="clearAll"
                 >
-                  Сбросить ключи
+                  Сбросить
                 </v-button>
                 <v-button
                   color="green"
@@ -163,8 +170,7 @@
             >
               <template #item="{element}">
                 <div
-                  class="d-flex justify-start align-center elevation-2 my-1 py-4 px-3 meta-tag-item white"
-                  @click="onEdit(element)"
+                  class="d-flex justify-start align-center elevation-2 my-1 py-2 px-3 meta-tag-item white"
                 >
                   <v-icon
                     class="mr-3"
@@ -176,13 +182,27 @@
                     {{ descriptorToMetaTag(element.props) }}
                   </span>
                   <v-spacer></v-spacer>
-                  <v-icon
-                    clickable
-                    color="green"
+                  <v-button
+                    round
+                    color="primary"
+                    elevation="2"
+                    class="mr-2"
+                    @click="onEdit(element)"
+                  >
+                    <v-icon>
+                      fas fa-pen
+                    </v-icon>
+                  </v-button>
+                  <v-button
+                    round
+                    color="error"
+                    elevation="2"
                     @click="onDelete(element)"
                   >
-                    fas fa-times
-                  </v-icon>
+                    <v-icon>
+                      fas fa-times
+                    </v-icon>
+                  </v-button>
                 </div>
               </template>
             </draggable>
@@ -195,9 +215,9 @@
 <style lang="scss">
   .meta-tag-item {
     cursor: pointer;
-
-    &:active {
-      box-shadow: none !important;
-    }
+    //
+    //&:active {
+    //  box-shadow: none !important;
+    //}
   }
 </style>
