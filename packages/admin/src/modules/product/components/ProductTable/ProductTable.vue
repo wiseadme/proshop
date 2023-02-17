@@ -116,7 +116,8 @@
       counts: {
         displayColor: 'green',
         rowsPerPageText: 'кол-во строк',
-        totalRows: total
+        totalRows: total,
+        rowsPerPageOptions: [20, 40, 60, 80]
       },
       pagination: {
         buttonsColor: 'green',

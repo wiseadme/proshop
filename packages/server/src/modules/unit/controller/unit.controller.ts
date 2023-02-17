@@ -18,18 +18,19 @@ export class UnitController extends BaseController implements IController {
   constructor(
     @inject(TYPES.UTILS.ILogger) private logger: ILogger,
     @inject(TYPES.SERVICES.IUnitService) private service: IUnitService
-  ){
+  ) {
     super()
     this.initRoutes()
   }
 
-  initRoutes(){
+  initRoutes() {
     this.router.post('/', expressAsyncHandler(this.createUnit.bind(this)))
     this.router.get('/', expressAsyncHandler(this.getUnits.bind(this)))
+    this.router.patch('/', expressAsyncHandler(this.updateUnit.bind(this)))
     this.router.delete('/', expressAsyncHandler(this.deleteUnit.bind(this)))
   }
 
-  async createUnit({ body, method }: Request<{}, {}, IUnit>, res: Response){
+  async createUnit({ body, method }: Request<{}, {}, IUnit>, res: Response) {
     try {
       const unit = await this.service.create(body)
       this.send({
@@ -47,9 +48,9 @@ export class UnitController extends BaseController implements IController {
     }
   }
 
-  async getUnits({ query, method }: Request<{}, {}, {}, { id: string }>, res: Response){
+  async getUnits({ query, method }: Request<{}, {}, {}, Partial<IUnit>>, res: Response) {
     try {
-      const units = await this.service.read(query?.id)
+      const units = await this.service.read(query)
 
       this.send({
         response: res,
@@ -66,7 +67,26 @@ export class UnitController extends BaseController implements IController {
     }
   }
 
-  async deleteUnit({ query, method }: Request<{}, {}, {}, { id: string }>, res: Response){
+  async updateUnit({ body, method }: Request<{}, {}, {}>, res: Response) {
+    try {
+      const { updated } = await this.service.update(body)
+
+      this.send({
+        response: res,
+        data: updated,
+        url: this.path,
+        method
+      })
+    } catch (err) {
+      return this.error({
+        error: err,
+        url: this.path,
+        method
+      })
+    }
+  }
+
+  async deleteUnit({ query, method }: Request<{}, {}, {}, { id: string }>, res: Response) {
     try {
       await this.service.delete(query.id)
 

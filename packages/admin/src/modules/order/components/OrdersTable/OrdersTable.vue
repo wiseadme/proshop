@@ -13,10 +13,6 @@
       type: Array as PropType<Array<IOrder>>,
       default: () => []
     },
-    rowsOptions: {
-      type: Array,
-      default: () => ([ 5, 10, 15, 20 ])
-    }
   })
 
   defineEmits([
@@ -41,7 +37,7 @@
       counts: {
         displayColor: 'green',
         rowsPerPageText: 'кол-во строк',
-        rowsPerPageOptions: rowsOptions
+        rowsPerPageOptions: [ 20, 40, 60, 80 ]
       },
       pagination: {
         buttonsColor: 'green',

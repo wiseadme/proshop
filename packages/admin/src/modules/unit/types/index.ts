@@ -1,9 +1,11 @@
-import { IUnit } from '@ecommerce-platform/types/index'
+import { IUnit, Maybe } from '@ecommerce-platform/types'
 
 export interface IUnitActions {
   create(unit: IUnit): Promise<IUnit>
 
-  read(id?: string): Promise<Array<IUnit>>
+  read(params: Partial<IUnit>): Promise<Array<IUnit>>
+
+  update(updates: Partial<IUnit>): Promise<IUnit>
 
   delete(id: string): Promise<boolean>
 }

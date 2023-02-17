@@ -7,15 +7,16 @@ import { UnitModel } from '../model/unit.model'
 import { ILogger } from '@/types/utils'
 import { IUnit } from '@ecommerce-platform/types'
 import { IUnitRepository } from '@modules/unit/types/repository'
+import { validateId } from '@common/utils/mongoose-validate-id'
 
 @injectable()
 export class UnitRepository implements IUnitRepository {
   constructor(
     @inject(TYPES.UTILS.ILogger) private logger: ILogger
-  ){
+  ) {
   }
 
-  async create(unit: IUnit): Promise<Document & IUnit>{
+  async create(unit: IUnit) {
     return new UnitModel({
       _id: new mongoose.Types.ObjectId(),
       value: unit.value,
@@ -23,11 +24,23 @@ export class UnitRepository implements IUnitRepository {
     }).save()
   }
 
-  async read(id?: string): Promise<Array<Document & IUnit>>{
-    return UnitModel.find({ id })
+  async read(params) {
+    return UnitModel.find(params)
   }
 
-  async delete(id): Promise<boolean>{
+  async update(updates: Partial<IUnit>) {
+    validateId(updates._id)
+
+    const updated = await UnitModel.findByIdAndUpdate(
+      { _id: updates._id },
+      { $set: updates },
+      { new: true }
+    ) as Document & IUnit
+
+    return { updated }
+  }
+
+  async delete(id): Promise<boolean> {
     return !!await UnitModel.findByIdAndDelete(id)
   }
 }

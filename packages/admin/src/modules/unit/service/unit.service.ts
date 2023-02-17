@@ -1,38 +1,50 @@
 import { Store } from 'nervue'
 import { useUnitStore } from '@modules/unit/store'
-import { IUnit } from '@ecommerce-platform/types'
+import { IUnit, Maybe } from '@ecommerce-platform/types'
 import { IUnitActions, IUnitState } from '@modules/unit/types'
 
 class Service {
   private _store: Store<string, IUnitState, {}, {}, IUnitActions>
+  private _unit: Maybe<IUnit>
   static instance: Service
 
-  constructor(store){
+  constructor(store) {
     this._store = store
+    this._unit = null
   }
 
-  get units(){
+  get units() {
     return this._store.units
   }
 
-  createUnit(unit: IUnit){
+  setAsCurrent(unit: IUnit) {
+    this._unit = unit
+  }
+
+  createUnit(unit: IUnit) {
     return this._store.create(unit)
   }
 
-  deleteUnit(id){
+  updateUnit(updates) {
+    updates._id = this._unit!._id
+    return this._store.update(updates)
+  }
+
+  deleteUnit(id) {
     return this._store.delete(id)
   }
 
-  getUnits(id = ''){
-    return this._store.read(id)
+  getUnits(params?: Partial<IUnit>) {
+    return this._store.read(params as any)
   }
 
-  onGetUnits(){
+  onGetUnits() {
     if (this._store.units) return this._store.units
+
     return this.getUnits()
   }
 
-  static create(){
+  static create() {
     if (Service.instance) return Service.instance
     Service.instance = new Service(useUnitStore())
     return Service.instance

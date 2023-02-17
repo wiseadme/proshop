@@ -12,18 +12,22 @@ export class UnitService implements IUnitService {
   constructor(
     @inject(TYPES.UTILS.ILogger) private logger: ILogger,
     @inject(TYPES.REPOSITORIES.IUnitRepository) private repository: IUnitRepository
-  ){
+  ) {
   }
 
-  create(unit: IUnit): Promise<Document & IUnit>{
+  create(unit: IUnit) {
     return this.repository.create(unit)
   }
 
-  read(id?: string): Promise<Array<Document & IUnit>>{
-    return this.repository.read(id)
+  read(params: Partial<IUnit>) {
+    return this.repository.read(params)
   }
 
-  delete(id: string): Promise<boolean>{
+  update(updates: Partial<IUnit>) {
+    return this.repository.update(updates)
+  }
+
+  delete(id: string) {
     return this.repository.delete(id)
   }
 }

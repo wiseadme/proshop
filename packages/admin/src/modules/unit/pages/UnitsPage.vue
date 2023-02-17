@@ -9,16 +9,24 @@
 
   let model = $ref<IUnit>(Unit.create())
   let units = $ref<Maybe<Array<IUnit>>>(null)
+  let isUpdate = $ref(false)
 
   const service = useUnitService()
   const { loading, setLoadingState } = useLoadingState()
 
-  const onCreate = (validate) => {
-    validate().then(() => {
-      setLoadingState(true)
+  const onSave = (validate) => {
+    setLoadingState(true)
 
-      service.createUnit(model)
-        .then(() => setLoadingState(false))
+    let promise
+
+    validate().then(() => {
+      if (isUpdate) {
+        promise = service.updateUnit(model)
+      } else {
+        promise = service.createUnit(model)
+      }
+
+      promise.then(() => setLoadingState(false))
     })
   }
 
@@ -32,6 +40,12 @@
 
   const onChange = () => {
     console.log('change')
+  }
+
+  const onEdit = (unit) => {
+    isUpdate = true
+    service.setAsCurrent(unit)
+    model = Unit.create(unit)
   }
 
   watch(
@@ -78,7 +92,7 @@
                 elevation="2"
                 color="primary"
                 :loading="loading"
-                @click="onCreate(validate)"
+                @click="onSave(validate)"
               >
                 <v-icon
                   size="14"
@@ -128,6 +142,17 @@
                   {{ element.value }}
                 </span>
                 <v-spacer></v-spacer>
+                <v-button
+                  round
+                  color="primary"
+                  elevation="2"
+                  class="mr-2"
+                  @click="onEdit(element)"
+                >
+                  <v-icon>
+                    fas fa-pen
+                  </v-icon>
+                </v-button>
                 <v-button
                   color="error"
                   elevation="2"

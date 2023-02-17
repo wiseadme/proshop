@@ -1,11 +1,11 @@
 import { useUnitRepository } from '../repository/unit.repository'
-import { IUnit } from '@ecommerce-platform/types/index'
+import { IUnit } from '@ecommerce-platform/types'
 import { IUnitActions } from '@modules/unit/types'
 
 const repository = useUnitRepository()
 
 export const actions: IUnitActions = {
-  async create(unit: IUnit): Promise<IUnit>{
+  async create(unit: IUnit): Promise<IUnit> {
     try {
       const { data } = await repository.create(unit)
       this.units.push(data.data)
@@ -15,9 +15,9 @@ export const actions: IUnitActions = {
     }
   },
 
-  async read(id?: string): Promise<Array<IUnit>>{
+  async read(params: Partial<IUnit> = {}): Promise<Array<IUnit>> {
     try {
-      const { data } = await repository.read(id)
+      const { data } = await repository.read(params)
 
       this.$patch(state => {
         state.units = data?.data
@@ -29,7 +29,25 @@ export const actions: IUnitActions = {
     }
   },
 
-  async delete(id: string): Promise<boolean>{
+  async update(updates) {
+    try {
+      const { data } = await repository.update(updates)
+
+      this.$patch(state => {
+        state.units = state.units.reduce((acc, it) => {
+          acc.push(it._id === data.data._id ? data.data : it)
+
+          return acc
+        }, [])
+      })
+
+      return data.data
+    } catch (err) {
+      return Promise.reject(err)
+    }
+  },
+
+  async delete(id: string): Promise<boolean> {
     try {
       const { data } = await repository.delete(id)
 
