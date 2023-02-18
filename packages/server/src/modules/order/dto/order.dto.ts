@@ -4,6 +4,6 @@ export class OrderDTO {
   cart?: IOrder['cart']
   items: IOrder['items']
   amount: IOrder['amount']
-  address: IOrder['address']
+  delivery: IOrder['delivery']
   customer: IOrder['customer']
 }

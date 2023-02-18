@@ -5,8 +5,8 @@ services:
     container_name: server
     command: npm run start
     restart: unless-stopped
-    ports:
-      - "5001:5001"
+#    ports:
+#      - "5001:5001"
     environment:
       - PORT=5001
       - USER=wiseadme
@@ -24,8 +24,8 @@ services:
   mongo1:
     image: mongo:5.0.14
     container_name: mongo1
-    ports:
-      - "30001:27017"
+#    ports:
+#      - "30001:27017"
     volumes:
       - mongo_primary:/data/db
     networks:
@@ -35,8 +35,8 @@ services:
   mongo2:
     image: mongo:5.0.14
     container_name: mongo2
-    ports:
-      - "30002:27017"
+#    ports:
+#      - "30002:27017"
     volumes:
       - mongo_secondary:/data/db
     networks:
@@ -48,8 +48,8 @@ services:
   mongo3:
     image: mongo:5.0.14
     container_name: mongo3
-    ports:
-      - "30003:27017"
+#    ports:
+#      - "30003:27017"
     volumes:
       - mongo_seed:/data/db
     networks:
@@ -77,20 +77,20 @@ services:
     container_name: admin
     command: nginx -g "daemon off;"
     restart: unless-stopped
-    ports:
-      - "3000:3000"
+#    ports:
+#      - "3000:3000"
     depends_on:
       - server
     networks:
       - ecommerce
 
   shop:
-    image: shop:app
+    image: wiseadme/ecommerce:shop
     container_name: shop-app
     restart: unless-stopped
     command: npm run preview
-    ports:
-      - "3001:3001"
+#    ports:
+#      - "3001:3001"
     depends_on:
       - server
     networks:

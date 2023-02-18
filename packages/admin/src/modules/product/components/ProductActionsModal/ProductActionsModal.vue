@@ -263,7 +263,6 @@
     }
 
     emit('upload:image', file)
-
     productImages = []
   }
 

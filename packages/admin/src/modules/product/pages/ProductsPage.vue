@@ -95,6 +95,7 @@
   const onUploadImage = (image) => {
     service.uploadProductImage(image)
       .then(() => {
+        model.image = service.product?.image
         model.assets = service.product?.assets!
       })
   }
@@ -102,6 +103,7 @@
   const onDeleteImage = (asset) => {
     service.deleteProductImage(asset)
       .then(() => {
+        model.image = service.product?.image
         model.assets = service.product?.assets!
       })
   }

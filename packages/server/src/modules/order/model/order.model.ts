@@ -20,9 +20,9 @@ const OrderSchema = new Schema<IOrder>({
     required: true,
     unique: true
   },
-  address: {
+  delivery: {
     type: {
-      text: String,
+      address: String,
       coords: Array
     },
     default: null

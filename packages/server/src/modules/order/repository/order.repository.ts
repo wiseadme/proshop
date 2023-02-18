@@ -23,7 +23,7 @@ export class OrderRepository implements IOrderRepository {
       _id: new Types.ObjectId(),
       items: order.items,
       customer: order.customer,
-      address: order.address,
+      delivery: order.delivery,
       amount: order.amount,
       qrcode: order.qrcode,
       orderId: order.orderId,

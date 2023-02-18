@@ -19,7 +19,7 @@ interface IOrderStatuses {
 }
 
 export interface IOrderAddress {
-  text: string
+  address: string
   coords: number[]
   entrance?: string
   floor?: number
@@ -29,7 +29,7 @@ export interface IOrderAddress {
 export interface IOrder {
   _id?: string
   items: ICartItem[]
-  address: Maybe<IOrderAddress>
+  delivery: Maybe<IOrderAddress>
   amount: number
   customer: IOrderCustomer
   cart?: string | ICart

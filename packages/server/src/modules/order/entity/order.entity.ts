@@ -5,7 +5,7 @@ export class Order implements IOrder {
   private _amount: IOrder['amount']
   private _cart: IOrder['cart']
   private _orderId: IOrder['orderId']
-  private _address: IOrder['address']
+  private _delivery: IOrder['delivery']
   private _customer: IOrder['customer']
   private _qrcode: IOrder['qrcode']
   private _status: IOrder['status']
@@ -14,7 +14,7 @@ export class Order implements IOrder {
     items = [],
     amount = 0,
     orderId = null,
-    address = null,
+    delivery = null,
     customer,
     qrcode = null,
     cart = '',
@@ -31,7 +31,7 @@ export class Order implements IOrder {
     this._items = items
     this._amount = amount
     this._orderId = orderId
-    this._address = address
+    this._delivery = delivery
     this._customer = customer
     this._qrcode = qrcode
     this._status = status
@@ -54,8 +54,8 @@ export class Order implements IOrder {
     return this._orderId
   }
 
-  get address(){
-    return this._address
+  get delivery(){
+    return this._delivery
   }
 
   get customer(){
