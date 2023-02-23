@@ -60,6 +60,7 @@ export class CustomerService extends CustomerHelpers implements ICustomerService
 
   async loginCustomer(response: Response, customerParams) {
     const [ candidate ] = await this.getCustomers(customerParams)
+
     const { name, phone } = candidate
 
     this.setResponseCookie({
@@ -72,7 +73,13 @@ export class CustomerService extends CustomerHelpers implements ICustomerService
   }
 
   async getCustomers(params: Partial<ICustomer>): Promise<(Document & ICustomer)[]> {
-    return await this.repository.read(params)
+    const { phone } = params
+
+    if (phone) {
+      return await this.repository.read({ phone })
+    }
+
+    return await this.repository.read({})
   }
 
   async updateCustomer(updates: Partial<ICustomer>): Promise<{ updated: Document & ICustomer }> {

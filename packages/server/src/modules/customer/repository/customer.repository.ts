@@ -20,7 +20,7 @@ export class CustomerRepository implements ICustomerRepository {
     return customer
   }
 
-  async read(params) {
+  async read(params: Partial<ICustomer>) {
     return CustomerModel.find(params)
   }
 
