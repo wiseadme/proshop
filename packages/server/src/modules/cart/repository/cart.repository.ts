@@ -29,10 +29,10 @@ export class CartRepository implements ICartRepository {
     }).save()
   }
 
-  async read(id?: string): Promise<Document & ICart>{
-    id && validateId(id)
+  async read(params: Partial<ICart>): Promise<Document & ICart>{
+    params._id && validateId(params._id)
 
-    const cart = await CartModel.find({ _id: id })
+    const cart = await CartModel.find(params)
 
     return cart?.[0]
   }

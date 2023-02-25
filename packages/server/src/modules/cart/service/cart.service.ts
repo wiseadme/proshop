@@ -23,8 +23,8 @@ export class CartService implements ICartService {
     return await this.repository.create(cart)
   }
 
-  async read(id?: string): Promise<Document & ICart>{
-    return await this.repository.read(id)
+  async read(params: Partial<ICart>): Promise<Document & ICart>{
+    return await this.repository.read(params)
   }
 
   async update(updates: ICart & Document): Promise<{ updated: Document<ICart> }>{

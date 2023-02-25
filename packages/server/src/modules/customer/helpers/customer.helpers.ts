@@ -21,8 +21,8 @@ export class CustomerHelpers {
     res.cookie(key, value, {
       sameSite: true,
       httpOnly: true,
-      maxAge: 999999,
-      path: '/'
+      path: '/',
+      maxAge: 60 * 60 * 1000
     })
   }
 }

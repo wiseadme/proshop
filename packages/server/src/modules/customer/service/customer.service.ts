@@ -72,14 +72,18 @@ export class CustomerService extends CustomerHelpers implements ICustomerService
     return candidate
   }
 
+  async logoutCustomer(response: Response) {
+    response.clearCookie('secret')
+  }
+
   async getCustomers(params: Partial<ICustomer>): Promise<(Document & ICustomer)[]> {
     const { phone } = params
 
     if (phone) {
-      return await this.repository.read({ phone })
+      return this.repository.read({ phone })
     }
 
-    return await this.repository.read({})
+    return this.repository.read({})
   }
 
   async updateCustomer(updates: Partial<ICustomer>): Promise<{ updated: Document & ICustomer }> {

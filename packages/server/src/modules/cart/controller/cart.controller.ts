@@ -53,7 +53,7 @@ export class CartController extends BaseController implements IController {
 
   async getCart({ query, method }: Request<{}, {}, {}, { _id?: string }>, res: Response) {
     try {
-      const cart = await this.service.read(query?._id)
+      const cart = await this.service.read(query)
 
       this.send({
         response: res,

@@ -91,6 +91,7 @@ export class OrderController extends BaseController implements IController {
   async deleteOrder({ query, method }: Request<{}, {}, {}, { id: string }>, res: Response){
     try {
       await this.service.delete(query.id)
+
       this.send({
         response: res,
         data: null,

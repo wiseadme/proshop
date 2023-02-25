@@ -30,7 +30,7 @@ export class CustomerController extends BaseController implements IController {
 
   public initRoutes() {
     this.router.get('/', expressAsyncHandler(this.getCustomers.bind(this)))
-    this.router.post('/create', expressAsyncHandler(this.createCustomer.bind(this)))
+    this.router.post('/account', expressAsyncHandler(this.createCustomer.bind(this)))
     this.router.post('/login', expressAsyncHandler(this.loginCustomer.bind(this)))
     this.router.get('/whoami', expressAsyncHandler(this.whoami.bind(this)))
     this.router.patch('/', expressAsyncHandler(this.updateCustomer.bind(this)))
