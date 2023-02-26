@@ -4,8 +4,8 @@ import { BaseController } from '@common/controller/base.controller'
 import { IController } from '@/types'
 
 @injectable()
-export class CurrencyController extends BaseController implements IController {
-  public path = '/v1/currency'
+export class RatingController extends BaseController implements IController {
+  public path = '/v1/rating'
   public router = Router()
 
   constructor() {
