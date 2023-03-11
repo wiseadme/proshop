@@ -5,6 +5,8 @@ services:
     container_name: server
     command: npm run start
     restart: unless-stopped
+#    tags:
+#      - "wiseadme/ecommerce:server"
 #    ports:
 #      - "5001:5001"
     environment:

@@ -3,7 +3,7 @@ import { IUnit, Maybe } from '@ecommerce-platform/types'
 export interface IUnitActions {
   create(unit: IUnit): Promise<IUnit>
 
-  read(params: Partial<IUnit>): Promise<Array<IUnit>>
+  read(params?: Partial<IUnit>): Promise<Array<IUnit>>
 
   update(updates: Partial<IUnit>): Promise<IUnit>
 

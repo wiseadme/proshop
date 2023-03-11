@@ -1,0 +1,36 @@
+name: build
+on:
+  push:
+    branches:
+      - 'master'
+
+jobs:
+  preinstall:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: install lerna
+        run: npm install
+      - name: install project deps
+        run: npm run setup
+  deploy:
+    runs-on: ubuntu-latest
+    needs: preinstall
+    steps:
+      - uses: actions/checkout@v3
+      - name: install lerna
+        run: npm install
+      - name: install project deps
+        run: npm run setup
+      - name: run build
+        run: npm run build
+      - uses: isbang/compose-action@v1.4.1
+        with:
+          compose-file: './docker-compose.yml'
+          services: |
+            admin
+            server
+      - name: docker-compose
+        run: docker-compose build
+      - name: context
+        run: echo "${{ toJSON(github) }}"

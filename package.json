@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "lerna run dev",
     "bootstrap": "lerna bootstrap --hoist",
-    "setup": "npm install && npm run bootstrap",
+    "setup": "npm ci && npm run bootstrap",
+    "build": "lerna run build",
     "publish": "lerna publish --conventional-commits",
     "docker:build": "lerna run build && docker-compose build"
   },
