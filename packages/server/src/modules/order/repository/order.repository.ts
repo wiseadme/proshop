@@ -28,6 +28,7 @@ export class OrderRepository implements IOrderRepository {
       qrcode: order.qrcode,
       orderId: order.orderId,
       status: order.status,
+      payment: order.payment,
     }).save()
   }
 

@@ -9,15 +9,17 @@ export class Order implements IOrder {
   private _customer: IOrder['customer']
   private _qrcode: IOrder['qrcode']
   private _status: IOrder['status']
+  private _payment: IOrder['payment']
 
   constructor({
     items = [],
     amount = 0,
+    customer,
     orderId = null,
     delivery = null,
-    customer,
     qrcode = null,
     cart = '',
+    payment = null,
     status = {
       created: true,
       confirmed: false,
@@ -36,6 +38,7 @@ export class Order implements IOrder {
     this._qrcode = qrcode
     this._status = status
     this._cart = cart
+    this._payment = payment
   }
 
   get items(){
@@ -68,6 +71,10 @@ export class Order implements IOrder {
 
   get status(){
     return this._status
+  }
+
+  get payment() {
+    return this._payment
   }
 
   static create(order: IOrder){

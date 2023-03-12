@@ -18,23 +18,26 @@ interface IOrderStatuses {
   cancelled: boolean
 }
 
-export interface IOrderAddress {
+export interface IOrderDelivery {
   address: string
   coords: number[]
-  entrance?: string
+  entrance?: number
+  apartment?: number
   floor?: number
   doorphone?: string
+  message?: string
 }
 
 export interface IOrder {
   _id?: string
   items: ICartItem[]
-  delivery: Maybe<IOrderAddress>
+  delivery: Maybe<IOrderDelivery>
   amount: number
   customer: IOrderCustomer
   cart?: string | ICart
   orderId?: Maybe<string>
   qrcode?: Maybe<string>
   status: IOrderStatuses
+  payment?: Maybe<number>
   executor?: IUser
 }

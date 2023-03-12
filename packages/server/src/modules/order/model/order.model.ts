@@ -23,7 +23,12 @@ const OrderSchema = new Schema<IOrder>({
   delivery: {
     type: {
       address: String,
-      coords: Array
+      coords: Array,
+      entrance: Number,
+      floor: Number,
+      apartment: Number,
+      doorphone: String,
+      message: String
     },
     default: null
   },
@@ -47,6 +52,10 @@ const OrderSchema = new Schema<IOrder>({
       cancelled: Boolean,
     },
     _id: false
+  },
+  payment: {
+    type: Number,
+    default: null
   },
   executor: {
     type: Schema.Types.ObjectId,
