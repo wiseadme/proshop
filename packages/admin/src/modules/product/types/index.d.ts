@@ -1,7 +1,8 @@
 import { IProduct } from '@ecommerce-platform/types'
 
 export interface IProductState {
-  products: Maybe<Array<IProduct>>
+  products: Maybe<IProduct[]>
+  productsByCategory: Maybe<IProduct[]>
   totalLength: number
 }
 

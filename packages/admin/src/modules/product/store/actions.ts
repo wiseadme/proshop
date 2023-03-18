@@ -1,7 +1,6 @@
 import { useProductRepository } from '@modules/product/repository'
-import { IProduct, IRequestPagination } from '@ecommerce-platform/types'
+import { IProduct, IProductQuery, IRequestParams } from '@ecommerce-platform/types'
 import { IProductActions } from '../types'
-import { IRequestSort } from '@ecommerce-platform/types/request'
 
 const productRepository = useProductRepository()
 
@@ -18,13 +17,17 @@ export const actions: IProductActions = {
     }
   },
 
-  async read(params: IRequestPagination & Partial<IRequestSort> & Partial<IProduct>) {
+  async read(params: IRequestParams<IProductQuery>) {
     try {
       const { data } = await productRepository.read(params)
 
       this.$patch(state => {
-        state.products = data.data?.items
-        state.totalLength = data.data?.total
+        if (params.category) {
+          state.productsByCategory = data.data.items
+        } else {
+          state.products = data.data?.items
+          state.totalLength = data.data?.total
+        }
       })
 
       return data.data?.items

@@ -8,15 +8,15 @@
     IAttribute,
     IProductConditions,
     IMetaTag,
-    // ISEOType
+    IProduct,
   } from '@ecommerce-platform/types'
   import { clone } from '@shared/helpers'
   import { TextEditor } from '@shared/components/TextEditor'
-  import VariantsBlock from './VariantsBlock'
-  import ConditionsBlock from './ConditionsBlock'
-  import MetaTagsBlock from './MetaTagsBlock'
+  import VariantsBlock from './VariantsBlock.vue'
+  import ConditionsBlock from './ConditionsBlock.vue'
+  import MetaTagsBlock from './MetaTagsBlock.vue'
+  import RelatedBlock from './RelatedBlock.vue'
   import draggable from 'vuedraggable'
-  import { $computed } from 'vue/macros'
 
   const props = defineProps({
     modelValue: Boolean,
@@ -27,6 +27,7 @@
     unitItems: Array as PropType<Array<IUnit>>,
     variantItems: Array as PropType<Array<IVariant>>,
     metaTagItems: Array as PropType<Array<IMetaTag>>,
+    productItems: Array as PropType<Array<IProduct>>,
     name: String,
     url: String,
     description: String,
@@ -64,6 +65,7 @@
     'create:variant-option',
     'delete:variant-option',
     'update:variant-option',
+    'load:related',
     'create',
     'discard',
     'update'
@@ -202,16 +204,11 @@
   }
 
   const toggleCategory = (ctg) => {
-    if (ctgMap.get(ctg._id)) {
-      ctgMap.delete(ctg._id)
-    } else {
-      ctgMap.set(ctg._id, ctg)
-    }
+    const category = ctgMap.get(ctg._id)
 
-    console.log(ctg, ctgMap.get(ctg._id))
+    category ? ctgMap.delete(ctg._id) : ctgMap.set(ctg._id, ctg)
 
     computedCategories = Array.from(toRaw(ctgMap).values())
-    console.log(computedCategories)
   }
 
   const onCreate = validate => {
@@ -222,7 +219,9 @@
     emit('update:attribute', attributesArray)
   }
 
-  const onUpdate = () => emit('update')
+  const onUpdate = () => {
+    emit('update')
+  }
 
   const onSubmit = (validate) => {
     if (props.isEditMode) {
@@ -272,6 +271,7 @@
 
   const onDeleteAttribute = (attr) => {
     attributesArray = attributesArray.filter(it => it.key !== attr.key)
+
     emit('update:attribute', attributesArray)
   }
 
@@ -284,6 +284,10 @@
 
       return acc
     }, [] as any[]) as IAsset[]
+  }
+
+  const onLoadRelatedProducts = (category) => {
+    emit('load:related', category)
   }
 
   const onClose = () => {
@@ -636,9 +640,15 @@
               @delete:variant-option="onDeleteVariantOption"
               @update:variant-option="onUpdateVariantOption"
             />
+            <related-block
+              :categories="categoryItems"
+              :products="productItems"
+              class="mt-2"
+              @load:related="onLoadRelatedProducts"
+            />
             <conditions-block
               v-model:conditions="computedConditions"
-              class="my-4"
+              class="mt-2"
             />
           </v-card-content>
           <v-card-actions>
@@ -678,5 +688,5 @@
   </div>
 </template>
 <style lang="scss">
-  @import "ProductActionsModal";
+  @import "styles/ProductActionsModal";
 </style>

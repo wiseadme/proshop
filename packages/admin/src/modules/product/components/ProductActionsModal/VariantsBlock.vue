@@ -121,8 +121,9 @@
   <v-row
     v-if="variantItems"
     no-gutter
+    class="mt-2"
   >
-    <v-col class="white mt-2 elevation-2">
+    <v-col class="white elevation-2">
       <v-card width="100%">
         <v-card-title>
           <h3 class="primary--text">

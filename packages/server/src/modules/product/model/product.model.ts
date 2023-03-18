@@ -87,6 +87,13 @@ const ProductSchema = new Schema<IProduct>({
       hasActions: Boolean,
     }
   },
+  related: {
+    type: [ {
+      type: Schema.Types.ObjectId,
+      ref: 'Product'
+    } ],
+    default: []
+  }
 }, {
   timestamps: true
 })

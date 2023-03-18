@@ -48,6 +48,7 @@ const OrderSchema = new Schema<IOrder>({
       confirmed: Boolean,
       inProcess: Boolean,
       ready: Boolean,
+      inDelivery: Boolean,
       completed: Boolean,
       cancelled: Boolean,
     },

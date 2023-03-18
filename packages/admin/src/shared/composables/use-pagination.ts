@@ -1,8 +1,9 @@
 import { ref } from 'vue'
+import { PAGINATION_DEFAULT_ITEMS_COUNT, PAGINATION_DEFAULT_PAGE_NUMBER } from '@shared/constants/counts'
 
 export const usePagination = () => {
-  const page = ref(1)
-  const itemsCount = ref(20)
+  const page = ref(PAGINATION_DEFAULT_PAGE_NUMBER)
+  const itemsCount = ref(PAGINATION_DEFAULT_ITEMS_COUNT)
 
   const setPaginationPage = (value) => {
     page.value = value

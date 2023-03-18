@@ -6,6 +6,13 @@ import { IAsset } from './asset'
 import { IVariant } from './variant'
 import { IAttribute } from './attribute'
 
+export interface IProductQuery {
+  _id?: string,
+  category?: string
+  name?: string
+  url?: string
+}
+
 export interface IProductConditions {
   visible: boolean
   countable: boolean
@@ -29,4 +36,5 @@ export interface IProduct {
   variants: IVariant[]
   attributes: IAttribute[]
   conditions: IProductConditions
+  related: IProduct[]
 }

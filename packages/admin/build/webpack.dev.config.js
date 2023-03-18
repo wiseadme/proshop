@@ -18,7 +18,7 @@ const devConfig = (env = {}) => merge(baseConfig(env), {
         changeOrigin: true
       },
       '/uploads': {
-        target: 'http://localhost',
+        target: 'http://localhost:5001/',
         // target: 'http://45.95.234.205/',
         ws: false,
         secure: false,

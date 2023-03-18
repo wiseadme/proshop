@@ -1,16 +1,17 @@
-import mongoose, { Document, Types } from 'mongoose'
+import mongoose, { Document } from 'mongoose'
 import { inject, injectable } from 'inversify'
 import { TYPES } from '@common/schemes/di-types'
 import { ProductModel } from '@modules/product/model/product.model'
 import { validateId } from '@common/utils/mongoose-validate-id'
 // Types
 import { IProductRepository } from '../types/repository'
-import { IProduct } from '@ecommerce-platform/types'
+import { IProduct, IProductQuery, IRequestParams } from '@ecommerce-platform/types'
 import { ILogger } from '@/types/utils'
 import { RepositoryHelpers } from '@modules/product/helpers/repository.helpers'
 
 // Constants
 import { DEFAULT_ITEMS_COUNT, DEFAULT_PAGE } from '@common/constants/counts'
+
 
 @injectable()
 export class ProductRepository extends RepositoryHelpers implements IProductRepository {
@@ -33,7 +34,8 @@ export class ProductRepository extends RepositoryHelpers implements IProductRepo
       unit: product.unit,
       assets: product.assets,
       seo: product.seo,
-      conditions: product.conditions
+      conditions: product.conditions,
+      related: product.related,
     })
       .save())
       .populate(this.preparePopulateParams()) as Document & IProduct
@@ -49,9 +51,9 @@ export class ProductRepository extends RepositoryHelpers implements IProductRepo
     key,
     page = DEFAULT_PAGE,
     count = DEFAULT_ITEMS_COUNT
-  }: any){
+  }: IRequestParams<IProductQuery>){
 
-    let query
+    let products
 
     const queryParams = {
       ...this.preparePaginationParams({ page, count }),
@@ -65,15 +67,15 @@ export class ProductRepository extends RepositoryHelpers implements IProductRepo
     }
 
     if (category) {
-      query = ProductModel.aggregate(this.prepareAggregateParams({ count, page, category, desc, asc, key }))
+      products = ProductModel.aggregate(this.prepareAggregateParams({ count, page, category, desc, asc, key }))
     }
 
     if (url) {
-      query = ProductModel.find({ url }, [], queryParams).populate(this.preparePopulateParams())
+      products = ProductModel.find({ url }, [], queryParams).populate(this.preparePopulateParams())
     }
 
     if (name) {
-      query = ProductModel.find({
+      products = ProductModel.find({
         'name': {
           '$regex': `.*${ name }*.`,
           '$options': 'i'
@@ -81,11 +83,11 @@ export class ProductRepository extends RepositoryHelpers implements IProductRepo
       }, queryParams).populate(this.preparePopulateParams())
     }
 
-    if (!query) {
-      query = ProductModel.find({}, [], queryParams).populate(this.preparePopulateParams())
+    if (!products) {
+      products = ProductModel.find({}, [], queryParams).populate(this.preparePopulateParams())
     }
 
-    return query
+    return products
   }
 
   async update($set: Partial<IProduct>){

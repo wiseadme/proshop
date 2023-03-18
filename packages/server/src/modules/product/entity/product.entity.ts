@@ -15,6 +15,7 @@ export class Product implements IProduct {
   private readonly _variants: IProduct['variants']
   private readonly _attributes: IProduct['attributes']
   private readonly _conditions: IProduct['conditions']
+  private readonly _related: IProduct['related']
 
   constructor({
     name,
@@ -30,7 +31,8 @@ export class Product implements IProduct {
     categories,
     attributes,
     conditions,
-  }: IProduct){
+    related
+  }: IProduct) {
     this._name = name
     this._price = price
     this._quantity = quantity
@@ -44,65 +46,70 @@ export class Product implements IProduct {
     this._categories = categories
     this._attributes = attributes
     this._conditions = conditions
+    this._related = related
   }
 
-  get name(){
+  get name() {
     return this._name
   }
 
-  get price(){
+  get price() {
     return this._price
   }
 
-  get quantity(){
+  get quantity() {
     return this._quantity
   }
 
-  get unit(){
+  get unit() {
     return this._unit
   }
 
-  get description(){
+  get description() {
     return this._description
   }
 
-  get categories(){
+  get categories() {
     return this._categories
   }
 
-  get variants(){
+  get variants() {
     return this._variants
   }
 
-  get image(){
+  get image() {
     return this._image
   }
 
-  get assets(){
+  get assets() {
     return this._assets
   }
 
-  get seo(){
+  get seo() {
     return this._seo
   }
 
-  get attributes(){
+  get attributes() {
     return this._attributes
   }
 
-  get url(){
+  get url() {
     return this._url
   }
 
-  get conditions(){
+  get conditions() {
     return this._conditions
   }
 
-  static create(product): IProduct{
+  get related() {
+    return this._related
+  }
+
+  static create(product): IProduct {
     return new Product(product)
   }
 
-  static update(updates){
+  static update(updates) {
     if (updates.name) updates.url = translator(updates.name)
 
     return updates

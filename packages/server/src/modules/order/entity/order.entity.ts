@@ -25,6 +25,7 @@ export class Order implements IOrder {
       confirmed: false,
       inProcess: false,
       ready: false,
+      inDelivery: false,
       seen: false,
       completed: false,
       cancelled: false

@@ -21,7 +21,7 @@
   let loading = $ref<boolean>(true)
 
   const service = useProductService()
-  const notUpdatableKeys = ['assets', 'variants']
+  const notUpdatableKeys = [ 'assets', 'variants' ]
 
   const onCreate = () => {
     service.createProduct(model)
@@ -32,17 +32,12 @@
   const onShowProductModal = () => {
     showCreateModal = true
     isEditMode = false
-
     model = Product.create()
-
     model.attributes = clone(service.attributes)
   }
 
   const checkDiffs = (): Maybe<Partial<IProduct>> => {
-    return getDifferences(
-      toRaw(model),
-      service.product
-    )
+    return getDifferences(toRaw(model), service.product)
   }
 
   const onUpdate = () => {
@@ -71,7 +66,10 @@
     service.deleteProductVariantImage({ asset, option })
       .then(() => {
         option.assets = option.assets.reduce((assets, it) => {
-          if (it._id !== asset._id) assets.push(it)
+          if (it._id !== asset._id) {
+            assets.push(it)
+          }
+
           return assets
         }, [])
       })
@@ -95,31 +93,28 @@
   const onUploadImage = (image) => {
     service.uploadProductImage(image)
       .then(() => {
-        model.image = service.product?.image
-        model.assets = service.product?.assets!
+        model.image = service.product!.image
+        model.assets = service.product!.assets
       })
   }
 
   const onDeleteImage = (asset) => {
     service.deleteProductImage(asset)
       .then(() => {
-        model.image = service.product?.image
+        model.image = service.product?.image!
         model.assets = service.product?.assets!
       })
   }
 
   const onEdit = (row) => {
     service.setAsCurrent(row)
-    model = Product.create(row)
-
+    model = Product.create(row)!
     showCreateModal = true
     isEditMode = true
   }
 
   const onCloseModal = () => {
-    if (hasChanges) {
-      showCreateModal = false
-    }
+    showCreateModal = !hasChanges
   }
 
   const onDiscard = () => {
@@ -137,13 +132,14 @@
   }
 
   const onSortColumn = (col) => {
-    if (col.sorted) {
-      service.sort.setAsc(col.key)
-    } else {
-      service.sort.setDesc(col.key)
-    }
+    const { sorted } = col
+    sorted ? service.sort.setAsc(col.key) : service.sort.setDesc(col.key)
 
     setTimeout(() => service.getProducts())
+  }
+
+  const onLoadRelatedProducts = (category) => {
+    service.getCategoryProducts(category)
   }
 
   const getProductUpdates = () => {
@@ -229,6 +225,7 @@
         v-model:attributes="model.attributes"
         v-model:variants="model.variants"
         v-model:conditions="model.conditions"
+        :product-items="service.productsByCategory"
         :attribute-items="service.attributes"
         :category-items="service.categories"
         :variant-items="service.variants"
@@ -243,6 +240,7 @@
         @create:variant-option="onCreateVariantOption"
         @update:variant-option="onUpdateVariantOption"
         @delete:variant-option="onDeleteVariantOption"
+        @load:related="onLoadRelatedProducts"
         @create="onCreate"
         @update="onUpdate"
         @close="onCloseModal"

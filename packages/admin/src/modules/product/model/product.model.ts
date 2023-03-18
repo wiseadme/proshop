@@ -15,6 +15,7 @@ export class Product implements IProduct {
   variants: IProduct['variants']
   seo: IProduct['seo']
   url: IProduct['url']
+  related: IProduct['related']
 
   constructor({
     _id = '',
@@ -29,6 +30,7 @@ export class Product implements IProduct {
     attributes = [],
     variants = [],
     url = '',
+    related = [],
     conditions = {
       visible: true,
       countable: false,
@@ -56,11 +58,12 @@ export class Product implements IProduct {
     this.attributes = attributes
     this.variants = variants
     this.conditions = conditions
+    this.related = related
     this.seo = seo
     this.url = url
   }
 
   static create(product = {} as IProduct){
-    return new Product(product)
+    return new Product(product) as IProduct
   }
 }

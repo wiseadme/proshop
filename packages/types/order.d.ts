@@ -10,10 +10,11 @@ interface IOrderCustomer {
 
 interface IOrderStatuses {
   created: boolean
+  seen: boolean
   confirmed: boolean
   inProcess: boolean
   ready: boolean
-  seen: boolean
+  inDelivery: boolean
   completed: boolean
   cancelled: boolean
 }

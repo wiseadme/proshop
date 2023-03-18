@@ -13,9 +13,18 @@ import { useOptionsService } from '@shared/services/options.service'
 import { usePagination } from '@shared/composables/use-pagination'
 import { useSort } from '@shared/composables/use-sort'
 // Types
-import { IProduct, IAsset, IVariant, IVariantOption, IRequestPagination } from '@ecommerce-platform/types'
+import {
+  IProduct,
+  IAsset,
+  IVariant,
+  IVariantOption,
+  IRequestPagination,
+  IRequestSort,
+  IProductQuery,
+  ICategory,
+  IRequestParams
+} from '@ecommerce-platform/types'
 import { clone } from '@shared/helpers'
-import { IRequestSort } from '@ecommerce-platform/types/request'
 
 class Service {
   private _store: ReturnType<typeof useProductStore>
@@ -27,7 +36,6 @@ class Service {
   private _product: Ref<Maybe<IProduct>>
   private _filesService: ReturnType<typeof useFilesService>
   private _optionsService: ReturnType<typeof useOptionsService>
-
   public pagination: ReturnType<typeof usePagination>
   public sort: ReturnType<typeof useSort>
 
@@ -60,6 +68,10 @@ class Service {
     return this._store.products
   }
 
+  get productsByCategory() {
+    return this._store.productsByCategory
+  }
+
   get product() {
     return this._product.value
   }
@@ -88,45 +100,32 @@ class Service {
     return this._store.totalLength
   }
 
-
-  async getAttributes() {
-    if (this.attributes) {
-      return this.attributes
-    }
-
-    return await this._attributesStore.read()
+  getAttributes() {
+    return this.attributes || this._attributesStore.read()
   }
 
-  async getUnits() {
-    if (this.units) {
-      return this.units
-    }
-
-    return await this._unitsStore.read()
+  getUnits() {
+    return this.units || this._unitsStore.read()
   }
 
-  async getCategories() {
-    if (this.categories) {
-      return this.categories
-    }
-
-    return await this._categoriesStore.read()
+  getCategories() {
+    return this.categories || this._categoriesStore.read()
   }
 
-  async getVariants() {
-    if (this.variants) {
-      return this.variants
-    }
-
-    return await this._variantsStore.read()
+  getVariants() {
+    return this.variants || this._variantsStore.read()
   }
 
-  async getMetaTags(params = {}) {
-    if (this.metaTags) {
-      return this.metaTags
-    }
+  getMetaTags(params = {}) {
+    return this.metaTags || this._metaTagsStore.read(params)
+  }
 
-    return this._metaTagsStore.read(params)
+  makeRequestParams(params: Maybe<IProductQuery> = null): IRequestParams<IProductQuery> {
+    return {
+      ...(params ? params : {}),
+      ...this.prepareRequestSortParams(),
+      ...this.prepareRequestPagination(),
+    }
   }
 
   prepareRequestPagination(): IRequestPagination {
@@ -137,7 +136,7 @@ class Service {
     }
   }
 
-  prepareRequestSortParams() {
+  prepareRequestSortParams(): IRequestSort | object {
     return this.sort.isNeedToBeSorted.value ? {
       asc: unref(this.sort.asc),
       desc: unref(this.sort.desc),
@@ -145,14 +144,16 @@ class Service {
     } : {}
   }
 
-  getProducts(params: Partial<IProduct> | null = null) {
-    const query: IRequestPagination & Partial<IRequestSort> & Partial<IProduct> = {
-      ...(params ? params : {}),
-      ...this.prepareRequestSortParams(),
-      ...this.prepareRequestPagination(),
-    }
+  getProducts(params: IProductQuery = {}) {
+    const query = this.makeRequestParams(params)
 
     return this._store.read(query).catch(err => console.log(err))
+  }
+
+  getCategoryProducts(category: ICategory) {
+    this.getProducts(this.makeRequestParams({
+      category: category.url
+    })).then(res => console.log(res))
   }
 
   setAsCurrent(product: IProduct) {
@@ -166,7 +167,6 @@ class Service {
 
   async createVariantOption(option: IVariantOption) {
     const createdOption = await this._optionsService.createOption(option)
-
     const { variants } = unref(this._product)!
 
     let variant = variants?.find(v => v._id === option.variantId)!
@@ -227,20 +227,15 @@ class Service {
   }
 
   async updateProduct(updates) {
-    const updated = await this._store.update(updates)
-    this._product.value = updated
+    this._product.value = await this._store.update(updates)
 
-    return updated
+    return unref(this._product)
   }
 
   async createAsset(file, ownerId) {
     const { formData, fileName } = this._filesService.createFormData(file)
 
-    return await this._filesService.uploadFile({
-      ownerId,
-      fileName,
-      formData
-    })
+    return this._filesService.uploadFile({ ownerId, fileName, formData })
   }
 
   async uploadProductVariantImage(file, option) {
@@ -269,16 +264,16 @@ class Service {
   }
 
   async uploadProductImage(file) {
-    if (!file) return
+    if (!file) {
+      return
+    }
 
     const product = unref(this._product)
-
     const asset: IAsset = await this.createAsset(file, product?._id)
 
     if (asset && asset.url) {
-      let { assets } = this._product.value!
+      let { assets = [] } = this._product.value!
 
-      assets = assets || []
       asset.main = asset.main || !assets.length
 
       if (asset.main) {

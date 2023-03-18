@@ -7,5 +7,7 @@ export interface IRequestPagination {
 export interface IRequestSort {
   desc?: boolean,
   asc?: boolean,
-  key: string
+  key?: string
 }
+
+export type IRequestParams<T> = T & IRequestPagination & IRequestSort
