@@ -35,7 +35,7 @@ export class RepositoryHelpers {
       },
       {
         path: 'related',
-        select: 'name price url'
+        select: 'name price url image'
       }
     ]
   }

@@ -225,6 +225,7 @@
         v-model:attributes="model.attributes"
         v-model:variants="model.variants"
         v-model:conditions="model.conditions"
+        v-model:related="model.related"
         :product-items="service.productsByCategory"
         :attribute-items="service.attributes"
         :category-items="service.categories"

@@ -39,7 +39,8 @@
     categories: Array as PropType<Array<ICategory>>,
     attributes: Array as PropType<Array<IAttribute>>,
     variants: Array as PropType<Array<IVariant>>,
-    assets: Array as PropType<Array<IAsset>>
+    assets: Array as PropType<Array<IAsset>>,
+    related: Array as PropType<IProduct['related']>
   })
 
   const emit = defineEmits([
@@ -65,6 +66,7 @@
     'create:variant-option',
     'delete:variant-option',
     'update:variant-option',
+    'update:related',
     'load:related',
     'create',
     'discard',
@@ -185,6 +187,11 @@
   let computedCategories = $computed<Array<ICategory>>({
     get: () => props.categories!,
     set: (val) => emit('update:categories', val)
+  })
+
+  let computedRelatedProducts = $computed({
+    get: () => props.related,
+    set: (val) => emit('update:related', val)
   })
 
   let computedMetaTagItems = $computed(() => {
@@ -641,6 +648,7 @@
               @update:variant-option="onUpdateVariantOption"
             />
             <related-block
+              v-model:related="computedRelatedProducts"
               :categories="categoryItems"
               :products="productItems"
               class="mt-2"
