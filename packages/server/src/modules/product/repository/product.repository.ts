@@ -12,7 +12,6 @@ import { RepositoryHelpers } from '@modules/product/helpers/repository.helpers'
 // Constants
 import { DEFAULT_ITEMS_COUNT, DEFAULT_PAGE } from '@common/constants/counts'
 
-
 @injectable()
 export class ProductRepository extends RepositoryHelpers implements IProductRepository {
   constructor(@inject(TYPES.UTILS.ILogger) private logger: ILogger){

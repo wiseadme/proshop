@@ -1,120 +1,118 @@
-<script lang="ts" setup>
-  import { PropType, toRaw, watch } from 'vue'
+<script lang="ts">
+  import { defineComponent, ref, watch, unref } from 'vue'
   import { IVariant, IVariantOption } from '@ecommerce-platform/types'
+  import { useProduct } from '@modules/product/composables/use-product'
+  import { useProductVariantsBlock } from '@modules/product/composables/use-product-variants-block'
 
-  const props = defineProps({
-    isDisplayed: Boolean,
-    isEdit: Boolean,
-    variantItems: Array as PropType<Array<IVariant>>,
-    variants: Array as PropType<Array<IVariant>>
-  })
+  export default defineComponent({
+    setup() {
+      const { model, isEditMode } = useProduct()
 
-  const emit = defineEmits([
-    'update:variant',
-    'create:variant-option',
-    'delete:variant-option',
-    'update:variant-option',
-    'upload:variant-image',
-    'delete:variant-image'
-  ])
+      const {
+        isVariantEditMode,
+        variantItems,
+        onUploadProductVariantImage,
+        onDeleteProductVariantImage,
+        onUpdateProductVariantOption,
+        onCreateProductVariantOption,
+        onDeleteProductVariantOption,
+        genVariantOptionPattern
+      } = useProductVariantsBlock()
 
-  let currentVariant = $ref<Maybe<IVariant>>(null)
-  let existsVariants = $ref<IVariant[]>([])
-  let optionPattern = $ref<IVariantOption>()
-  let isEditingMode = false
+      const currentVariant = ref<Maybe<IVariant>>(null)
+      const existsVariants = ref<IVariant[]>([])
+      const optionPattern = ref<IVariantOption>(null)
 
-  const genOptionPattern = () => ({
-    _id: '',
-    variantId: '',
-    name: '',
-    quantity: 0,
-    price: 0,
-    description: null,
-    assets: []
-  })
+      const setExistsVariants = (variants) => {
+        const variantsMap = {}
 
-  const setExistsVariants = (vars) => {
-    const map = existsVariants.reduce((acc, it) => {
-      acc[it.group] = it
+        unref(existsVariants).forEach((it) => variantsMap[it.group] = it)
+        variants?.forEach(v => variantsMap[v.group] = v)
 
-      return acc
-    }, {})
+        existsVariants.value = Object.values(variantsMap)
+      }
 
-    vars?.forEach(v => map[v.group] = v)
+      const createOption = (validate) => {
+        validate().then(() => {
+          optionPattern.value!.variantId = unref(currentVariant)!._id!
 
-    existsVariants = Object.values(map)
-  }
+          if (unref(isVariantEditMode)) {
+            onUpdateProductVariantOption(unref(optionPattern))
+          } else {
+            onCreateProductVariantOption(unref(optionPattern))
+          }
+        })
+      }
 
-  const createOption = (validate) => {
-    validate()
-      .then(() => {
-        optionPattern!.variantId = currentVariant!._id!
+      const setCurrentVariant = (variant) => {
+        optionPattern.value = genVariantOptionPattern()
+        currentVariant.value = variant
+      }
 
-        const rawOption = toRaw(optionPattern)
+      const setOptionForEditing = (option) => {
+        isVariantEditMode.value = true
+        optionPattern.value = option
+      }
 
-        if (isEditingMode) {
-          emit('update:variant-option', rawOption)
-        } else {
-          emit('create:variant-option', rawOption)
+      const onUploadVariantImage = ([ file ], option) => {
+        onUploadProductVariantImage({ file, option })
+      }
+
+      const onDeleteVariantImage = (asset) => {
+        const option = unref(optionPattern)
+        onDeleteProductVariantImage({ asset, option })
+      }
+
+      const clearVariantOptionForm = () => {
+        isVariantEditMode.value = false
+        optionPattern.value = genVariantOptionPattern()
+      }
+
+      watch(variantItems, (variants) => {
+        if (!variants) return
+
+        setExistsVariants(variants)
+
+        if (!unref(currentVariant)) {
+          setCurrentVariant(unref(existsVariants)[0])
         }
-      })
-  }
 
-  const removeVariantOption = (variant, option) => {
-    emit('delete:variant-option', { variant, option })
-  }
+      }, { immediate: true })
 
-  const setCurrentVariant = (variant) => {
-    optionPattern = genOptionPattern()
-    currentVariant = variant
-  }
+      /**
+       * @description Наблюдаем в режиме редактирования за вариантами продукта
+       * и перезаписываем мапу существующих вариантов для редактирования
+       */
+      watch(() => unref(model).variants, (variants) => {
+        setExistsVariants(variants.length ? variants : unref(variantItems))
 
-  const setOptionForEditing = (option) => {
-    isEditingMode = true
-    optionPattern = option
-  }
+        if (unref(currentVariant)) {
+          setCurrentVariant(variants?.find(v => v._id === unref(currentVariant)!._id) || unref(existsVariants)?.[0])
+        } else {
+          currentVariant.value = variants?.[0] || unref(existsVariants)?.[0]!
+        }
 
-  const onUploadVariantImage = ([ file ], option) => {
-    emit('upload:variant-image', { file, option })
-  }
+      }, { immediate: true })
 
-  const onDeleteVariantImage = (asset, variant) => {
-    const option = toRaw(optionPattern)
-    emit('delete:variant-image', { asset, option, variant })
-  }
+      optionPattern.value = genVariantOptionPattern()
 
-  const clearVariantOptionForm = () => {
-    isEditingMode = false
-    optionPattern = genOptionPattern()
-  }
-
-  watch(() => props.variantItems, (variants) => {
-    setExistsVariants(variants)
-
-    if (!currentVariant) {
-      setCurrentVariant(existsVariants[0])
+      return {
+        existsVariants,
+        currentVariant,
+        optionPattern,
+        variantItems,
+        isEditMode,
+        setCurrentVariant,
+        createOption,
+        setOptionForEditing,
+        onUploadVariantImage,
+        onDeleteProductVariantOption,
+        onUploadProductVariantImage,
+        onDeleteVariantImage,
+        clearVariantOptionForm
+      }
     }
-
-  }, { immediate: true })
-
-  watch(() => props.variants, (variants) => {
-    if (variants!.length) {
-      setExistsVariants(variants)
-    } else {
-      setExistsVariants(props.variantItems)
-    }
-
-    if (currentVariant) {
-      setCurrentVariant(variants?.find(
-        v => v._id === currentVariant!._id) || existsVariants?.[0]
-      )
-    } else {
-      currentVariant = variants?.[0] || existsVariants?.[0]!
-    }
-
-  }, { immediate: true })
-
-  optionPattern = genOptionPattern()
+  })
 
 </script>
 <template>
@@ -142,7 +140,7 @@
               class="mr-2 mb-4"
               elevation="2"
               :color="currentVariant._id === variant._id ? 'green' : 'orange'"
-              :disabled="!isEdit"
+              :disabled="!isEditMode"
               height="24"
               @click="setCurrentVariant(variant)"
             >
@@ -161,8 +159,9 @@
                     :key="option._id"
                     :color="!option._id ?'grey': option === optionPattern ? 'green lighten-3' : 'green'"
                     :class="['mr-2 mt-2', {'elevation-2 ': option !== optionPattern}]"
+                    closable
                     @click="setOptionForEditing(option)"
-                    @close="removeVariantOption(currentVariant, option)"
+                    @close="onDeleteProductVariantOption({variant: currentVariant, option})"
                   >
                     {{ option.name }}
                   </v-chip>
@@ -183,7 +182,7 @@
                       color="#272727"
                       label="значение *"
                       :rules="[val => !!val || 'Обязательное поле']"
-                      :disabled="!isEdit"
+                      :disabled="!isEditMode"
                     />
                   </v-col>
                   <v-col
@@ -194,7 +193,7 @@
                       color="#272727"
                       label="количество"
                       type="number"
-                      :disabled="!isEdit"
+                      :disabled="!isEditMode"
                     />
                   </v-col>
                   <v-col
@@ -205,7 +204,7 @@
                       color="#272727"
                       label="цена"
                       type="number"
-                      :disabled="!isEdit"
+                      :disabled="!isEditMode"
                     />
                   </v-col>
                   <v-col
@@ -214,7 +213,7 @@
                     <v-text-field
                       v-model.trim="optionPattern.description"
                       color="#272727"
-                      :disabled="!isEdit"
+                      :disabled="!isEditMode"
                       label="описание"
                     />
                   </v-col>
@@ -277,7 +276,7 @@
                   <v-button
                     color="green"
                     elevation="2"
-                    :disabled="!isEdit"
+                    :disabled="!isEditMode"
                     @click="createOption(validate)"
                   >
                     {{ optionPattern._id ? 'изменить' : 'добавить' }}
@@ -286,7 +285,7 @@
                     class="ml-2"
                     color="error"
                     elevation="2"
-                    :disabled="!isEdit"
+                    :disabled="!isEditMode"
                     @click="clearVariantOptionForm"
                   >
                     очистить

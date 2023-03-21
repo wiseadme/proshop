@@ -1,5 +1,5 @@
 /// <reference types="vue/macros-global" />
-import { IVariant } from '@modules/variant/types'
+import { IVariant, IAttribute, ICategory, IUnit } from '@ecommerce-platform/types'
 
 export interface IRest {
   get: (url: string, ...args: any) => Promise<{ data: any }>

@@ -1,62 +1,63 @@
-<script setup lang="ts">
-  import { watch, nextTick } from 'vue'
-  import { ICategory } from '@ecommerce-platform/types'
+<script lang="ts">
+  import { defineComponent, watch, nextTick, ref, unref } from 'vue'
+  import { IProduct } from '@ecommerce-platform/types'
+  import { useProductRelatedBlock } from '@modules/product/composables/use-product-related-block'
+  import { useProduct } from '@modules/product/composables/use-product'
 
-  const emit = defineEmits([ 'load:related', 'update:related' ])
+  export default defineComponent({
+    name: 'related-block',
+    setup() {
+      const {
+        category,
+        related,
+        products,
+        categories,
+        getCategoryProducts
+      } = useProductRelatedBlock()
 
-  const props = defineProps({
-    products: {
-      type: Array,
-      default: () => []
-    },
-    categories: {
-      type: Array,
-      default: () => []
-    },
-    related: {
-      type: Array,
-      default: () => []
+      const { model } = useProduct()
+
+      let selectedProducts = ref<IProduct[]>([])
+      let productsMap: Record<string, IProduct> = {}
+      let isCategoryChanged = false
+
+      watch(selectedProducts, (selects) => {
+        /** если изменилась категория то пропускаем сброс выбранных ранее продуктов */
+        if (isCategoryChanged) return
+
+        nextTick(() => {
+          productsMap[unref(category).url] = {} as any
+          selects.forEach(it => productsMap[unref(category).url][it._id!] = it)
+          unref(model).related = Object.values(productsMap).map(it => Object.keys(it)).flat()
+        })
+      }, { immediate: true })
+
+      watch(category, () => {
+        isCategoryChanged = true
+        selectedProducts = []
+        getCategoryProducts()
+
+        /** nextTick нужен чтоб не среагировал watch на selectedProducts */
+        nextTick(() => isCategoryChanged = false)
+      }, { immediate: true })
+
+      watch(products, (items) => {
+        items?.forEach((it) => {
+          if (productsMap[unref(category)!.url]?.[it._id!]) {
+            selectedProducts.value.push(it)
+          }
+        })
+      }, { immediate: true })
+
+      return {
+        category,
+        categories,
+        related,
+        products,
+        selectedProducts,
+      }
     }
   })
-
-  let category = $ref<Maybe<ICategory>>(props.categories?.[0])
-  let selectedProducts = $ref([])
-  let productsMap = {}
-  let isCategoryChanged = false
-
-  let computedCategory = $computed({
-    get: () => category,
-    set: (val) => category = val as ICategory
-  })
-
-  watch(() => selectedProducts, (selects) => {
-    /** если изменилась категория то пропускаем сброс выбранных ранее продуктов */
-    if (isCategoryChanged) return
-
-    nextTick(() => {
-      productsMap[category.url] = {}
-      selects.forEach(it => productsMap[category.url][it._id] = it)
-
-      emit('update:related', Object.values(productsMap).map(it => Object.keys(it)).flat())
-    })
-  }, { immediate: true })
-
-  watch(() => category, (newCategory) => {
-    isCategoryChanged = true
-    selectedProducts = []
-    emit('load:related', newCategory)
-
-    /** nextTick нужен чтоб не среагировал watch на selectedProducts */
-    nextTick(() => isCategoryChanged = false)
-  }, { immediate: true })
-
-  watch(() => props.products, (items) => {
-    items?.forEach((it) => {
-      if (productsMap[category.url]?.[it._id]) {
-        selectedProducts.push(it)
-      }
-    })
-  }, { immediate: true })
 
 </script>
 <template>
@@ -75,7 +76,7 @@
           <v-row>
             <v-col cols="4">
               <v-select
-                v-model="computedCategory"
+                v-model="category"
                 label="Категории"
                 :items="categories"
                 value-key="title"

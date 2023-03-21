@@ -1,14 +1,9 @@
-<script lang="ts" setup>
-  import { PropType, nextTick, toRaw, watch } from 'vue'
+<script lang="ts">
+  import { computed, defineComponent, nextTick, ref, watch, unref } from 'vue'
   import {
-    IVariant,
     ICategory,
     IAsset,
-    IUnit,
     IAttribute,
-    IProductConditions,
-    IMetaTag,
-    IProduct,
   } from '@ecommerce-platform/types'
   import { clone } from '@shared/helpers'
   import { TextEditor } from '@shared/components/TextEditor'
@@ -17,324 +12,177 @@
   import MetaTagsBlock from './MetaTagsBlock.vue'
   import RelatedBlock from './RelatedBlock.vue'
   import draggable from 'vuedraggable'
+  import { useProduct } from '@modules/product/composables/use-product'
+  import { useActionsModal } from '@modules/product/composables/use-actions-modal'
 
-  const props = defineProps({
-    modelValue: Boolean,
-    isEditMode: Boolean,
-    hasChanges: Boolean,
-    conditions: Object as PropType<IProductConditions>,
-    categoryItems: Array as PropType<Array<ICategory>>,
-    unitItems: Array as PropType<Array<IUnit>>,
-    variantItems: Array as PropType<Array<IVariant>>,
-    metaTagItems: Array as PropType<Array<IMetaTag>>,
-    productItems: Array as PropType<Array<IProduct>>,
-    name: String,
-    url: String,
-    description: String,
-    price: Number,
-    quantity: Number,
-    unit: Object as PropType<IUnit>,
-    image: String,
-    seo: Object,
-    categories: Array as PropType<Array<ICategory>>,
-    attributes: Array as PropType<Array<IAttribute>>,
-    variants: Array as PropType<Array<IVariant>>,
-    assets: Array as PropType<Array<IAsset>>,
-    related: Array as PropType<IProduct['related']>
-  })
+  export default defineComponent({
+    name: 'product-actions-modal',
+    components: {
+      VariantsBlock,
+      ConditionsBlock,
+      MetaTagsBlock,
+      RelatedBlock,
+      TextEditor,
+      draggable
+    },
+    setup() {
+      const {
+        model,
+        isEditMode,
+        isLoading,
+        hasChanges,
+        metatagItems,
+        variantItems,
+        attributeItems,
+        unitItems,
+        categoryItems,
+        onDiscardProductChanges,
+        onUpdateProduct,
+        onCreateProduct,
+        onDeleteProductImage,
+        onUploadProductImage
+      } = useProduct()
 
-  const emit = defineEmits([
-    'update:modelValue',
-    'update:name',
-    'update:price',
-    'update:description',
-    'update:image',
-    'update:assets',
-    'update:attribute',
-    'update:variant',
-    'update:metatag',
-    'update:categories',
-    'update:quantity',
-    'update:unit',
-    'update:seo',
-    'update:conditions',
-    'update:url',
-    'upload:image',
-    'delete:image',
-    'upload:variant-image',
-    'delete:variant-image',
-    'create:variant-option',
-    'delete:variant-option',
-    'update:variant-option',
-    'update:related',
-    'load:related',
-    'create',
-    'discard',
-    'update'
-  ])
+      const { showModal, closeActionsModal } = useActionsModal()
 
-  const ctgMap = $ref<Map<string, ICategory>>(new Map())
-  const imagesContextMenu = $ref({
-    show: false,
-    positionX: 0,
-    positionY: 0,
-  })
-
-  let productImages = $ref<Array<File>>([])
-  let attributesArray = $ref<Array<IAttribute>>([])
-  let currentImage = $ref<Maybe<IAsset>>(null)
-  let content = $ref<string>('')
-  let textEditorRerenderKey = $ref<string>('')
-
-  const computedModalHeader = $computed<string>(() => {
-    return `${ (props.isEditMode ? 'Редактирование' : 'Создание') } продукта`
-  })
-
-  const computedModelValue = $computed<boolean>({
-    get: () => props.modelValue!,
-    set: (val) => emit('update:modelValue', val)
-  })
-
-  const computedName = $computed<string>({
-    get: () => props.name!,
-    set: (val) => emit('update:name', val)
-  })
-
-  const computedPrice = $computed<number>({
-    get: () => props.price!,
-    set: (val) => emit('update:price', +val)
-  })
-
-  let computedDescription = $computed<string>({
-    get: () => content!,
-    set: (val) => emit('update:description', val)
-  })
-
-  let computedUnit = $computed<IUnit>({
-    get: () => props.unit!,
-    set: (val) => emit('update:unit', val)
-  })
-
-  let computedQuantity = $computed<number>({
-    get: () => props.quantity!,
-    set: (val) => emit('update:quantity', +val)
-  })
-
-  let computedUrl = $computed<string>({
-    get: () => props.url!,
-    set: (val) => emit('update:url', val)
-  })
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  let computedImage = $computed<string>({
-    get: () => props.image!,
-    set: (val) => emit('update:image', val)
-  })
-
-  let computedAssets = $computed<Array<IAsset>>({
-    get: () => props.assets!,
-    set: (val) => emit('update:assets', val)
-  })
-
-  let computedVariants = $computed<Array<IVariant>>({
-    get: () => props.variants!,
-    set: (val) => emit('update:variant', toRaw(val))
-  })
-
-  let computedMetaTags = $computed({
-    get: () => props.seo?.metatags,
-    set: (val) => {
-      const seo = JSON.parse(JSON.stringify(props.seo))
-      seo.metatags = val
-
-      emit('update:seo', seo)
-    }
-  })
-
-  let computedSeoTitle = $computed<string>({
-    get: () => props.seo?.title,
-    set: (val) => {
-      const seo = JSON.parse(JSON.stringify(props.seo))
-      seo.title = val
-      emit('update:seo', seo)
-    }
-  })
-
-  let computedSeoDesc = $computed<string>({
-    get: () => props.seo?.description,
-    set: (val) => {
-      const seo = JSON.parse(JSON.stringify(props.seo))
-      seo.description = val
-
-      emit('update:seo', seo)
-    }
-  })
-
-  let computedSeoKeywords = $computed<string>({
-    get: () => props.seo?.keywords,
-    set: (val) => {
-      const seo = JSON.parse(JSON.stringify(props.seo))
-      seo.keywords = val
-
-      emit('update:seo', seo)
-    }
-  })
-
-  let computedConditions = $computed<IProductConditions>({
-    get: () => props.conditions!,
-    set: (val) => emit('update:conditions', val)
-  })
-
-  let computedCategories = $computed<Array<ICategory>>({
-    get: () => props.categories!,
-    set: (val) => emit('update:categories', val)
-  })
-
-  let computedRelatedProducts = $computed({
-    get: () => props.related,
-    set: (val) => emit('update:related', val)
-  })
-
-  let computedMetaTagItems = $computed(() => {
-    const productTagsMap = props.seo?.metatags.reduce((acc, it) => {
-      acc[it._id] = true
-      return acc
-    }, {})
-
-    return props.metaTagItems?.filter(it => !productTagsMap[it._id])
-  })
-
-  const onImagesContextMenu = (event, asset) => {
-    imagesContextMenu.show = true
-    imagesContextMenu.positionX = event.clientX
-    imagesContextMenu.positionY = event.clientY
-    currentImage = clone(asset)
-  }
-
-  const toggleCategory = (ctg) => {
-    const category = ctgMap.get(ctg._id)
-
-    category ? ctgMap.delete(ctg._id) : ctgMap.set(ctg._id, ctg)
-
-    computedCategories = Array.from(toRaw(ctgMap).values())
-  }
-
-  const onCreate = validate => {
-    validate().then(() => emit('create'))
-  }
-
-  const onAttributesUpdate = () => {
-    emit('update:attribute', attributesArray)
-  }
-
-  const onUpdate = () => {
-    emit('update')
-  }
-
-  const onSubmit = (validate) => {
-    if (props.isEditMode) {
-      return onUpdate()
-    }
-
-    onCreate(validate)
-  }
-
-  const onCreateVariantOption = (option) => {
-    emit('create:variant-option', option)
-  }
-
-  const onUpdateVariantOption = (option) => {
-    emit('update:variant-option', option)
-  }
-
-  const onDeleteVariantOption = ({ variant, option }) => {
-    emit('delete:variant-option', { variant, option })
-  }
-
-  const onUploadVariantImage = ({ file, option }) => {
-    if (!file) {
-      return
-    }
-
-    emit('upload:variant-image', { file, option })
-    productImages = []
-  }
-
-  const onDeleteVariantImage = ({ asset, option, variant }) => {
-    emit('delete:variant-image', { asset, option, variant })
-  }
-
-  const onLoadImage = ([ file ]) => {
-    if (!file) {
-      return
-    }
-
-    emit('upload:image', file)
-    productImages = []
-  }
-
-  const onDeleteImage = (asset) => {
-    emit('delete:image', asset)
-  }
-
-  const onDeleteAttribute = (attr) => {
-    attributesArray = attributesArray.filter(it => it.key !== attr.key)
-
-    emit('update:attribute', attributesArray)
-  }
-
-  const setAsMainImage = () => {
-    computedImage = currentImage!.url
-
-    computedAssets = clone(computedAssets).reduce((acc, it) => {
-      it.main = it._id === currentImage!._id
-      acc.push(it)
-
-      return acc
-    }, [] as any[]) as IAsset[]
-  }
-
-  const onLoadRelatedProducts = (category) => {
-    emit('load:related', category)
-  }
-
-  const onClose = () => {
-    emit('update:modelValue', false)
-  }
-
-  const onDiscardChanges = () => {
-    textEditorRerenderKey = `${ Date.now() }`
-
-    nextTick(() => {
-      ctgMap.clear()
-      computedCategories?.forEach(toggleCategory)
-      attributesArray = clone(props.attributes)
-    })
-
-    emit('discard')
-  }
-
-  watch(() => props.modelValue, to => {
-    ctgMap.clear()
-
-    if (to && props.isEditMode) {
-      props.categories!.forEach(ctg => {
-        if (!ctgMap.get(ctg._id!)) {
-          toggleCategory(ctg)
-        }
+      const categoriesMap = ref<Map<string, ICategory>>(new Map())
+      const imagesContextMenu = ref({
+        show: false,
+        positionX: 0,
+        positionY: 0,
       })
+
+      const productImages = ref<Array<File>>([])
+      const attributesArray = ref<Array<IAttribute>>([])
+      const currentImage = ref<Maybe<IAsset>>(null)
+      const content = ref<string>('')
+      const textEditorRerenderKey = ref<string>('')
+
+      const computedModalHeader = computed<string>(() => {
+        return `${ (unref(isEditMode) ? 'Редактирование' : 'Создание') } продукта`
+      })
+
+      const computedMetaTagItems = computed(() => {
+        const productTagsMap = unref(model).seo?.metatags.reduce((acc, it) => {
+          acc[it._id] = true
+          return acc
+        }, {})
+
+        return unref(metatagItems)?.filter(it => !productTagsMap[it._id])
+      })
+
+      const onImagesContextMenu = (event, asset) => {
+        unref(imagesContextMenu).show = true
+        unref(imagesContextMenu).positionX = event.clientX
+        unref(imagesContextMenu).positionY = event.clientY
+
+        currentImage.value = clone(asset)
+      }
+
+      const toggleCategory = (ctg) => {
+        const category = unref(categoriesMap).get(ctg._id)
+
+        category ? categoriesMap.value.delete(ctg._id) : categoriesMap.value.set(ctg._id, ctg)
+        unref(model).categories = Array.from(unref(categoriesMap).values())
+      }
+
+      const onAttributesUpdate = () => {
+        unref(model).attributes = unref(attributesArray)
+      }
+
+      const onSubmit = (validate) => {
+        if (unref(isEditMode)) return onUpdateProduct()
+
+        validate().then(onCreateProduct)
+      }
+
+      const onLoadImage = ([ file ]) => {
+        if (!file) return
+
+        onUploadProductImage(file)
+        productImages.value = []
+      }
+
+      const onDeleteAttribute = (attr) => {
+        unref(model).attributes = unref(model).attributes.filter(it => it.key !== attr.key)
+        attributesArray.value = unref(model).attributes
+      }
+
+      const setAsMainImage = () => {
+        unref(model).image = unref(currentImage)!.url
+
+        unref(model).assets = clone(unref(model).assets).map((it) => {
+          it.main = it._id === unref(currentImage)!._id
+
+          return it
+        })
+      }
+
+      const onDiscardChanges = () => {
+        textEditorRerenderKey.value = `${ Date.now() }`
+
+        nextTick(() => {
+          unref(categoriesMap).clear()
+          unref(model).categories?.forEach(toggleCategory)
+          attributesArray.value = clone(unref(model).attributes)
+        })
+
+        onDiscardProductChanges()
+      }
+
+      watch(showModal, (state) => {
+        unref(categoriesMap).clear()
+
+        attributesArray.value = clone(unref(model).attributes)
+        content.value = unref(model).description!
+        textEditorRerenderKey.value = Date.now()
+
+        if (!state || !unref(isEditMode)) return
+
+        unref(model)!.categories.forEach(ctg => {
+          if (!unref(categoriesMap).get(ctg._id!)) toggleCategory(ctg)
+        })
+
+      }, { immediate: true })
+
+      return {
+        model,
+        showModal,
+        computedModalHeader,
+        computedMetaTagItems,
+        productImages,
+        isEditMode,
+        hasChanges,
+        isLoading,
+        content,
+        textEditorRerenderKey,
+        imagesContextMenu,
+        categoriesMap,
+        attributesArray,
+        currentImage,
+        categoryItems,
+        attributeItems,
+        variantItems,
+        unitItems,
+        onImagesContextMenu,
+        onAttributesUpdate,
+        onSubmit,
+        onLoadImage,
+        onDeleteAttribute,
+        setAsMainImage,
+        onDiscardChanges,
+        toggleCategory,
+        onDeleteProductImage,
+        closeActionsModal
+      }
     }
+  })
 
-    attributesArray = clone(props.attributes)
-
-    content = props.description!
-    textEditorRerenderKey = content
-
-  }, { immediate: true })
 </script>
 <template>
   <div>
     <v-modal
-      v-model="computedModelValue"
+      v-model="showModal"
       transition="scale-in"
       width="90%"
       overlay
@@ -356,7 +204,7 @@
             <v-row class="white my-4 pa-4 elevation-2">
               <v-col xl="6">
                 <v-text-field
-                  v-model.trim="computedName"
+                  v-model.trim="model.name"
                   label="Наименование товара"
                   color="#272727"
                   text-color="#272727"
@@ -364,7 +212,7 @@
               </v-col>
               <v-col xl="6">
                 <v-text-field
-                  v-model.number="computedPrice"
+                  v-model.number="model.price"
                   label="Цена"
                   color="#272727"
                   text-color="#272727"
@@ -373,7 +221,7 @@
               </v-col>
               <v-col xl="6">
                 <v-text-field
-                  v-model.number="computedQuantity"
+                  v-model.number="model.quantity"
                   label="Количество"
                   color="#272727"
                   type="number"
@@ -382,7 +230,7 @@
               </v-col>
               <v-col xl="6">
                 <v-select
-                  v-model="computedUnit"
+                  v-model="model.unit"
                   :items="unitItems"
                   label="Единица измерения"
                   color="#272727"
@@ -393,7 +241,7 @@
               </v-col>
               <v-col xl="6">
                 <v-text-field
-                  v-model="computedSeoTitle"
+                  v-model="model.seo.title"
                   label="SEO title"
                   color="#272727"
                   text-color="#272727"
@@ -401,7 +249,7 @@
               </v-col>
               <v-col xl="6">
                 <v-text-field
-                  v-model="computedSeoDesc"
+                  v-model="model.seo.description"
                   label="SEO description"
                   color="#272727"
                   text-color="#272727"
@@ -409,7 +257,7 @@
               </v-col>
               <v-col xl="6">
                 <v-text-field
-                  v-model="computedSeoKeywords"
+                  v-model="model.seo.keywords"
                   label="SEO keywords"
                   color="#272727"
                   text-color="#272727"
@@ -417,7 +265,7 @@
               </v-col>
               <v-col xl="6">
                 <v-text-field
-                  v-model.trim="computedUrl"
+                  v-model.trim="model.url"
                   label="URL товара"
                   color="#272727"
                   text-color="#272727"
@@ -438,7 +286,7 @@
             </v-row>
             <v-row>
               <v-col
-                v-for="it in computedAssets"
+                v-for="it in model.assets"
                 :key="it._id"
                 xl="2"
                 lg="4"
@@ -458,7 +306,7 @@
                 <v-icon
                   clickable
                   style="position: absolute; top: 5px; right: 5px"
-                  @click="onDeleteImage(it)"
+                  @click="onDeleteProductImage(it)"
                 >
                   fas fa-times
                 </v-icon>
@@ -485,7 +333,7 @@
                   </v-list-item>
                   <v-list-item
                     class="images-menu__item"
-                    @click="onDeleteImage(currentImage)"
+                    @click="onDeleteProductImage(currentImage)"
                   >
                     <v-list-item-title>
                       удалить
@@ -505,7 +353,7 @@
                   <v-card-content>
                     <text-editor
                       :key="textEditorRerenderKey"
-                      v-model:content="computedDescription"
+                      v-model:content="model.description"
                       content-type="html"
                       :global-options="{
                         placeholder: 'введите описание товара'
@@ -541,7 +389,7 @@
                           <v-list-item
                             v-for="c in it.children"
                             :key="c._id"
-                            :class="[{'green white--text text--base': ctgMap.get(c._id)}]"
+                            :class="[{'green white--text text--base': categoriesMap.get(c._id)}]"
                             @click="toggleCategory(c)"
                           >
                             <v-list-item-content>
@@ -557,7 +405,7 @@
                         class="elevation-2"
                       >
                         <v-list-item
-                          :class="[{'green white--text text--base': ctgMap.get(it._id)}]"
+                          :class="[{'green white--text text--base': categoriesMap.get(it._id)}]"
                           @click="toggleCategory(it)"
                         >
                           <v-list-item-content>
@@ -633,29 +481,17 @@
               </v-col>
             </v-row>
             <meta-tags-block
-              v-model:meta-tags="computedMetaTags"
+              v-model:meta-tags="model.seo.metatags"
               :items="computedMetaTagItems"
             />
-            <variants-block
-              v-model:variants="computedVariants"
-              :is-displayed="modelValue"
-              :is-edit="isEditMode"
-              :variant-items="variantItems"
-              @upload:variant-image="onUploadVariantImage"
-              @delete:variant-image="onDeleteVariantImage"
-              @create:variant-option="onCreateVariantOption"
-              @delete:variant-option="onDeleteVariantOption"
-              @update:variant-option="onUpdateVariantOption"
-            />
+            <variants-block/>
             <related-block
-              v-model:related="computedRelatedProducts"
-              :categories="categoryItems"
-              :products="productItems"
+              v-if="categoryItems"
+              v-model:related="model.related"
               class="mt-2"
-              @load:related="onLoadRelatedProducts"
             />
             <conditions-block
-              v-model:conditions="computedConditions"
+              v-model:conditions="model.conditions"
               class="mt-2"
             />
           </v-card-content>
@@ -665,6 +501,7 @@
               elevation="3"
               width="120"
               :disabled="!hasChanges && isEditMode"
+              :loading="isLoading"
               @click="onSubmit(validate)"
             >
               сохранить
@@ -675,7 +512,7 @@
               width="120"
               elevation="3"
               :disabled="hasChanges"
-              @click="onClose"
+              @click="closeActionsModal"
             >
               отмена
             </v-button>

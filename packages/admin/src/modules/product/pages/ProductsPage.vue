@@ -1,252 +1,99 @@
-<script setup lang="ts">
-  import { toRaw, watch } from 'vue'
+<script lang="ts">
+  import { defineComponent, watch, unref } from 'vue'
   // Services
   import { useProductService } from '@modules/product/service/product.service'
-  // Model
-  import { Product } from '@modules/product/model/product.model'
-  // Helpers
-  import { getDifferences } from '@shared/helpers'
-  import { clone } from '@shared/helpers'
   // Components
   import { ProductActionsModal } from '@modules/product/components/ProductActionsModal'
   import { ProductTable } from '@modules/product/components/ProductTable'
   import SkeletonPreloader from '@shared/components/Preloader/SkeletonPreloader.vue'
   // Types
-  import { IProduct } from '@ecommerce-platform/types'
+  import { useProduct } from '@modules/product/composables/use-product'
+  import { useActionsModal } from '@modules/product/composables/use-actions-modal'
+  import { useProductsTable } from '@modules/product/composables/use-products-table'
 
-  let model = $ref<IProduct>(Product.create())
-  let showCreateModal = $ref<boolean>(false)
-  let hasChanges = $ref<boolean>(false)
-  let isEditMode = $ref<boolean>(false)
-  let loading = $ref<boolean>(true)
+  export default defineComponent({
+    components: {
+      ProductActionsModal,
+      ProductTable,
+      SkeletonPreloader
+    },
+    setup() {
+      const {
+        model,
+        hasChanges,
+        isEditMode,
+        isLoading,
+        onOpenCreateProductModal,
+        onOpenEditProductModal,
+        onDeleteProduct,
+        getProductUpdates,
+        onInit
+      } = useProduct()
 
-  const service = useProductService()
-  const notUpdatableKeys = [ 'assets', 'variants' ]
+      const { showModal } = useActionsModal()
 
-  const onCreate = () => {
-    service.createProduct(model)
-      .then(() => showCreateModal = false)
-      .then(() => model = Product.create())
-  }
+      const {
+        onUpdateTablePage,
+        onUpdateTableRowsCount,
+        onSortColumn
+      } = useProductsTable()
 
-  const onShowProductModal = () => {
-    showCreateModal = true
-    isEditMode = false
-    model = Product.create()
-    model.attributes = clone(service.attributes)
-  }
+      const service = useProductService()
 
-  const checkDiffs = (): Maybe<Partial<IProduct>> => {
-    return getDifferences(toRaw(model), service.product)
-  }
+      let stopWatching
 
-  const onUpdate = () => {
-    const updates = checkDiffs()!
+      const startWatching = () => watch(model, () => {
+        if (!unref(isEditMode) || unref(hasChanges)) return
 
-    updates._id = model._id
+        hasChanges.value = !!getProductUpdates()
+      }, { deep: true })
 
-    service.updateProduct(updates)
-      .then(() => {
-        showCreateModal = false
-        isEditMode = false
-        hasChanges = false
+      /**
+       * @description запускаем watch за изменениями продукта,
+       * только если он в режиме редактирования
+       */
+      watch(isEditMode, (state) => {
+        state ? (stopWatching = startWatching()) : stopWatching()
       })
-  }
 
-  const onDeleteProduct = (product: IProduct) => service.deleteProduct(product)
+      onInit()
 
-  const onUploadVariantImage = ({ file, option }) => {
-    return service.uploadProductVariantImage(file, option)
-      .then((optionData) => {
-        option.assets = optionData.assets
-      })
-  }
-
-  const onDeleteVariantImage = ({ asset, option }) => {
-    service.deleteProductVariantImage({ asset, option })
-      .then(() => {
-        option.assets = option.assets.reduce((assets, it) => {
-          if (it._id !== asset._id) {
-            assets.push(it)
-          }
-
-          return assets
-        }, [])
-      })
-  }
-
-  const onCreateVariantOption = (option) => {
-    service.createVariantOption(option)
-      .then(() => model.variants = service.product!.variants!)
-  }
-
-  const onUpdateVariantOption = (option) => {
-    service.updateVariantOption(option)
-      .then(() => model.variants = service.product!.variants)
-  }
-
-  const onDeleteVariantOption = ({ option, variant }) => {
-    service.deleteVariantOption({ option, variant })
-      .then(() => model.variants = service.product?.variants!)
-  }
-
-  const onUploadImage = (image) => {
-    service.uploadProductImage(image)
-      .then(() => {
-        model.image = service.product!.image
-        model.assets = service.product!.assets
-      })
-  }
-
-  const onDeleteImage = (asset) => {
-    service.deleteProductImage(asset)
-      .then(() => {
-        model.image = service.product?.image!
-        model.assets = service.product?.assets!
-      })
-  }
-
-  const onEdit = (row) => {
-    service.setAsCurrent(row)
-    model = Product.create(row)!
-    showCreateModal = true
-    isEditMode = true
-  }
-
-  const onCloseModal = () => {
-    showCreateModal = !hasChanges
-  }
-
-  const onDiscard = () => {
-    model = Product.create(service.product!)
-    hasChanges = false
-  }
-
-  const onUpdateTablePage = async (page) => {
-    service.pagination.setPaginationPage(page)
-    await service.getProducts({})
-  }
-
-  const onUpdateTableRowsCount = async (count) => {
-    service.pagination.setPaginationItemsCount(count)
-  }
-
-  const onSortColumn = (col) => {
-    const { sorted } = col
-    sorted ? service.sort.setAsc(col.key) : service.sort.setDesc(col.key)
-
-    setTimeout(() => service.getProducts())
-  }
-
-  const onLoadRelatedProducts = (category) => {
-    service.getCategoryProducts(category)
-  }
-
-  const getProductUpdates = () => {
-    const diffs = checkDiffs()!
-
-    notUpdatableKeys.forEach(key => {
-      if (diffs && diffs[key]) {
-        delete diffs[key]
+      return {
+        model,
+        showModal,
+        hasChanges,
+        isEditMode,
+        isLoading,
+        service,
+        onOpenCreateProductModal,
+        onDeleteProduct,
+        onOpenEditProductModal,
+        getProductUpdates,
+        onUpdateTablePage,
+        onUpdateTableRowsCount,
+        onSortColumn
       }
-    })
-
-    const keys = diffs ? Object.keys(diffs) : null
-
-    if (!keys || !keys.length) {
-      return null
-    }
-
-    return diffs
-  }
-
-  let stopWatching
-
-  const startWatching = () => watch(() => model, () => {
-    if (!isEditMode || hasChanges) {
-      return
-    }
-
-    hasChanges = !!getProductUpdates()
-  }, { deep: true })
-
-  /**
-   * @description watch for product changes only
-   * if product is in edit mode
-   */
-  watch(() => isEditMode, (state) => {
-    if (state) {
-      stopWatching = startWatching()
-    } else {
-      stopWatching()
     }
   })
-
-  Promise.all([
-    service.getCategories(),
-    service.getAttributes(),
-    service.getProducts(),
-    service.getUnits(),
-    service.getVariants(),
-    service.getMetaTags()
-  ])
-    .then(() => loading = false)
-
 </script>
 <template>
   <v-layout column>
     <v-row>
       <v-col cols="12">
-        <skeleton-preloader v-if="loading"/>
+        <skeleton-preloader v-if="isLoading"/>
         <product-table
           v-else
           :products="service.products"
           :total="service.totalLength"
-          @open:create-modal="onShowProductModal"
-          @open:edit-modal="onEdit"
+          @open:create-modal="onOpenCreateProductModal"
+          @open:edit-modal="onOpenEditProductModal"
           @delete:product="onDeleteProduct"
           @sort:column="onSortColumn"
           @update:page="onUpdateTablePage"
           @update:rows-count="onUpdateTableRowsCount"
         />
       </v-col>
-      <product-actions-modal
-        v-model="showCreateModal"
-        v-model:name="model.name"
-        v-model:price="model.price"
-        v-model:quantity="model.quantity"
-        v-model:assets="model.assets"
-        v-model:image="model.image"
-        v-model:url="model.url"
-        v-model:unit="model.unit"
-        v-model:description="model.description"
-        v-model:categories="model.categories"
-        v-model:seo="model.seo"
-        v-model:attributes="model.attributes"
-        v-model:variants="model.variants"
-        v-model:conditions="model.conditions"
-        v-model:related="model.related"
-        :product-items="service.productsByCategory"
-        :attribute-items="service.attributes"
-        :category-items="service.categories"
-        :variant-items="service.variants"
-        :unit-items="service.units"
-        :meta-tag-items="service.metaTags"
-        :is-edit-mode="isEditMode"
-        :has-changes="hasChanges"
-        @upload:image="onUploadImage"
-        @delete:image="onDeleteImage"
-        @upload:variant-image="onUploadVariantImage"
-        @delete:variant-image="onDeleteVariantImage"
-        @create:variant-option="onCreateVariantOption"
-        @update:variant-option="onUpdateVariantOption"
-        @delete:variant-option="onDeleteVariantOption"
-        @load:related="onLoadRelatedProducts"
-        @create="onCreate"
-        @update="onUpdate"
-        @close="onCloseModal"
-        @discard="onDiscard"
-      />
+      <product-actions-modal/>
     </v-row>
   </v-layout>
 </template>

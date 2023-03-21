@@ -25,6 +25,7 @@ import {
   IRequestParams
 } from '@ecommerce-platform/types'
 import { clone } from '@shared/helpers'
+import { createSharedComposable } from '@shared/features/create-shared-composable'
 
 class Service {
   private _store: ReturnType<typeof useProductStore>
@@ -312,7 +313,7 @@ class Service {
   }
 }
 
-export const useProductService = () => new Service({
+export const useProductService = createSharedComposable(() => new Service({
   store: useProductStore(),
   attributesStore: useAttributeStore(),
   categoriesStore: useCategoryStore(),
@@ -323,4 +324,4 @@ export const useProductService = () => new Service({
   optionsService: useOptionsService(),
   pagination: usePagination(),
   sort: useSort()
-})
+}))
