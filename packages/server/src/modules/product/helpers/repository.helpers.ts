@@ -35,7 +35,10 @@ export class RepositoryHelpers {
       },
       {
         path: 'related',
-        select: 'name price url image'
+        select: 'name price url image categories',
+        populate: {
+          path: 'categories'
+        }
       }
     ]
   }

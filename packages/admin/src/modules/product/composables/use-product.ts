@@ -14,13 +14,14 @@ export const useProduct = createSharedComposable(() => {
   const hasChanges = ref(false)
   const isEditMode = ref(false)
   const isLoading = ref(false)
+  const isSaved = ref(true)
 
   const notUpdatableKeys = [ 'assets', 'variants' ]
 
   const attributeItems = computed<Maybe<IAttribute[]>>(() => service.attributes)
   const categoryItems = computed<Maybe<ICategory[]>>(() => service.categories)
   const variantItems = computed<Maybe<IVariant[]>>(() => service.variants)
-  const metatagItems = computed<Maybe<IMetaTag[]>>(() => service.metaTags)
+  const metaTagItems = computed<Maybe<IMetaTag[]>>(() => service.metaTags)
   const unitItems = computed<Maybe<IUnit[]>>(() => service.units)
 
   const onOpenCreateProductModal = () => {
@@ -35,20 +36,23 @@ export const useProduct = createSharedComposable(() => {
   }
 
   const onCreateProduct = () => {
+    isSaved.value = false
     service.createProduct(unref(model))
       .then(closeActionsModal)
       .then(() => model.value = Product.create())
+      .then(() => isSaved.value = true)
   }
 
   const onUpdateProduct = () => {
     const updates = checkDiffs()!
     updates._id = model.value._id
+    isSaved.value = false
 
     service.updateProduct(updates)
       .then(() => {
-        closeActionsModal()
-        isEditMode.value = false
+        isSaved.value = true
         hasChanges.value = false
+        isLoading.value = false
       })
   }
 
@@ -70,7 +74,7 @@ export const useProduct = createSharedComposable(() => {
 
   const onOpenEditProductModal = (row) => {
     service.setAsCurrent(row)
-    model.value = Product.create(clone(service.product))!
+    model.value = Product.create(clone(row))!
     isEditMode.value = true
     openActionsModal()
   }
@@ -94,7 +98,6 @@ export const useProduct = createSharedComposable(() => {
     notUpdatableKeys.forEach(key => diffs && diffs[key] && (delete diffs[key]))
 
     const keys = diffs ? Object.keys(diffs) : null
-
     if (!keys || !keys.length) return null
 
     return diffs
@@ -117,13 +120,14 @@ export const useProduct = createSharedComposable(() => {
     model,
     isEditMode,
     isLoading,
+    isSaved,
     hasChanges,
     notUpdatableKeys,
     unitItems,
     categoryItems,
     variantItems,
     attributeItems,
-    metatagItems,
+    metaTagItems,
     onInit,
     getProductUpdates,
     onCreateProduct,

@@ -1,48 +1,31 @@
-<script setup lang="ts">
-  import { watch } from 'vue'
+<script lang="ts">
+  import { defineComponent } from 'vue'
   import draggable from 'vuedraggable'
+  import { useProductMetaTagsBlock } from '@modules/product/composables/use-product-metatags-block'
+  // Helpers
   import { descriptorToMetaTag } from '@shared/helpers/metatag'
-  import { IMetaTag } from '@ecommerce-platform/types'
-  import { clone } from '@shared/helpers'
 
-  const props = defineProps({
-    metaTags: {
-      type: Array,
-      default: () => []
-    },
-    items: {
-      type: Array,
-      default: () => []
+  export default defineComponent({
+    name: 'meta-tags-block',
+    components: { draggable },
+    emits: [ 'update:meta-tags' ],
+    setup() {
+      const { usedMetaTags, availableMetaTags } = useProductMetaTagsBlock()
+
+      const onEdit = (tag) => console.log(tag)
+      const onChange = () => console.log('change')
+      const pullFunction = () => console.log('ev')
+
+      return {
+        usedMetaTags,
+        availableMetaTags,
+        onEdit,
+        onChange,
+        pullFunction,
+        descriptorToMetaTag
+      }
     }
   })
-
-  const emit = defineEmits([
-    'update:meta-tags'
-  ])
-
-  let availableTags = $ref<Array<IMetaTag>>(clone(props.items))
-  let alreadyExistsTags = $ref(clone(props.metaTags))
-
-  const onEdit = (tag) => {
-    console.log(tag)
-  }
-
-  const onChange = () => {
-    emit('update:meta-tags', alreadyExistsTags)
-  }
-
-  const pullFunction = () => {
-    console.log('ev')
-  }
-
-  watch(() => props.items, (to) => {
-   availableTags = clone(to)
-  }, { immediate: true })
-
-  watch(() => props.metaTags, (to) => {
-    alreadyExistsTags = clone(to)
-  }, { immediate: true })
-
 </script>
 <template>
   <v-row no-gutter>
@@ -61,7 +44,7 @@
               Текущие мета теги товара
             </h3>
             <draggable
-              :list="alreadyExistsTags"
+              :list="usedMetaTags"
               item-key="_id"
               group="metaTags"
               class="draggable-container exists-tags elevation-2"
@@ -91,7 +74,7 @@
               Список мета тегов
             </h3>
             <draggable
-              :list="availableTags"
+              :list="availableMetaTags"
               item-key="_id"
               :group="{ name: 'metaTags', pull: pullFunction }"
               class="draggable-container elevation-2"

@@ -2,6 +2,7 @@ import { translator } from '@common/utils/translator'
 import { IProduct } from '@ecommerce-platform/types'
 
 export class Product implements IProduct {
+  private readonly __id: string
   private readonly _name: IProduct['name']
   private readonly _price: IProduct['price']
   private readonly _quantity: IProduct['quantity']
@@ -18,10 +19,11 @@ export class Product implements IProduct {
   private readonly _related: IProduct['related']
 
   constructor({
+    _id = '',
     name,
     price,
     description,
-    image,
+    image = '',
     assets,
     seo,
     quantity,
@@ -33,12 +35,13 @@ export class Product implements IProduct {
     conditions,
     related
   }: IProduct) {
+    this.__id = _id
     this._name = name
     this._price = price
     this._quantity = quantity
     this._unit = unit
     this._description = description
-    this._image = image || ''
+    this._image = image
     this._url = url || translator(name).toLowerCase()
     this._seo = seo
     this._assets = assets
@@ -47,6 +50,10 @@ export class Product implements IProduct {
     this._attributes = attributes
     this._conditions = conditions
     this._related = related
+  }
+
+  get _id() {
+    return this.__id
   }
 
   get name() {

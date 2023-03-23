@@ -14,11 +14,11 @@ import { DEFAULT_ITEMS_COUNT, DEFAULT_PAGE } from '@common/constants/counts'
 
 @injectable()
 export class ProductRepository extends RepositoryHelpers implements IProductRepository {
-  constructor(@inject(TYPES.UTILS.ILogger) private logger: ILogger){
+  constructor(@inject(TYPES.UTILS.ILogger) private logger: ILogger) {
     super()
   }
 
-  async create(product: IProduct){
+  async create(product: IProduct) {
     return await (await new ProductModel({
       _id: new mongoose.Types.ObjectId(),
       name: product.name,
@@ -50,7 +50,7 @@ export class ProductRepository extends RepositoryHelpers implements IProductRepo
     key,
     page = DEFAULT_PAGE,
     count = DEFAULT_ITEMS_COUNT
-  }: IRequestParams<IProductQuery>){
+  }: IRequestParams<IProductQuery>) {
 
     let products
 
@@ -66,7 +66,9 @@ export class ProductRepository extends RepositoryHelpers implements IProductRepo
     }
 
     if (category) {
-      products = ProductModel.aggregate(this.prepareAggregateParams({ count, page, category, desc, asc, key }))
+      products = await ProductModel.aggregate(this.prepareAggregateParams({ count, page, category, desc, asc, key })).exec()
+
+      await ProductModel.populate(products, {path: 'related'})
     }
 
     if (url) {
@@ -89,7 +91,7 @@ export class ProductRepository extends RepositoryHelpers implements IProductRepo
     return products
   }
 
-  async update($set: Partial<IProduct>){
+  async update($set: Partial<IProduct>) {
     validateId($set._id)
 
     const updated = await ProductModel.findByIdAndUpdate(
@@ -102,13 +104,13 @@ export class ProductRepository extends RepositoryHelpers implements IProductRepo
     return { updated }
   }
 
-  async delete(id){
+  async delete(id) {
     validateId(id)
 
     return !!await ProductModel.findOneAndDelete({ _id: id })
   }
 
-  async getDocumentsCount(){
+  async getDocumentsCount() {
     return ProductModel.countDocuments({})
   }
 }

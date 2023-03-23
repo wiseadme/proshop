@@ -22,7 +22,7 @@ export interface IProductConditions {
 }
 
 export interface IProduct {
-  _id?: string
+  _id: string
   name: string
   description: string
   price: number
@@ -36,5 +36,5 @@ export interface IProduct {
   variants: IVariant[]
   attributes: IAttribute[]
   conditions: IProductConditions
-  related: IProduct[]
+  related: IProduct[] | string[]
 }

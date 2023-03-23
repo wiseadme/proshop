@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { defineComponent, watch, nextTick, ref, unref } from 'vue'
+  import { defineComponent, watch, ref, unref } from 'vue'
   import { IProduct } from '@ecommerce-platform/types'
   import { useProductRelatedBlock } from '@modules/product/composables/use-product-related-block'
   import { useProduct } from '@modules/product/composables/use-product'
@@ -7,6 +7,8 @@
   export default defineComponent({
     name: 'related-block',
     setup() {
+      const { model } = useProduct()
+
       const {
         category,
         related,
@@ -15,46 +17,89 @@
         getCategoryProducts
       } = useProductRelatedBlock()
 
-      const { model } = useProduct()
+      const selects = ref<IProduct[]>([])
+      const productsMap: Record<string, IProduct> = {}
 
-      let selectedProducts = ref<IProduct[]>([])
-      let productsMap: Record<string, IProduct> = {}
       let isCategoryChanged = false
 
-      watch(selectedProducts, (selects) => {
+      const setExistsRelatedProductsToMap = (model: IProduct) => {
+        model.related?.forEach((product) => {
+          product.categories.forEach(ctg => {
+            if (!productsMap[ctg._id]) {
+              productsMap[ctg._id] = {} as IProduct
+            }
+
+            productsMap[ctg!._id!][product._id] = product
+          })
+        })
+
+        setCurrentCategoryProducts()
+      }
+
+      const setCurrentCategoryProducts = () => {
+        isCategoryChanged = true
+        selects.value = []
+
+        if (!productsMap[unref(category)._id!]) {
+          productsMap[unref(category)._id!] = {} as IProduct
+        }
+
+        getCategoryProducts().then(() => isCategoryChanged = false)
+      }
+
+      const onProductsChange = (items: IProduct[]) => {
+        const categoryMap = productsMap[unref(category)!._id!]
+
+        items?.forEach((it) => categoryMap[it._id] && selects.value.push(it))
+      }
+
+      const removeUnselectedProductsFromMap = (arrayOfRelatedProducts: IProduct[]) => {
+        const categoryProductIds = Object.keys(productsMap[unref(category)!._id!])
+        const categoryMap = productsMap[unref(category)!._id!]
+
+        for (const id of categoryProductIds) {
+          const found = arrayOfRelatedProducts.find(rel => rel._id === id)
+
+          if (!found) {
+            delete categoryMap[id]
+            break
+          }
+        }
+      }
+
+      const onUpdateRelatedProductsArray = (newRelated, oldRelated) => {
         /** если изменилась категория то пропускаем сброс выбранных ранее продуктов */
         if (isCategoryChanged) return
 
-        nextTick(() => {
-          productsMap[unref(category).url] = {} as any
-          selects.forEach(it => productsMap[unref(category).url][it._id!] = it)
-          unref(model).related = Object.values(productsMap).map(it => Object.keys(it)).flat()
+        /** если удален продукт из рекомендуемых то удаляем его из мапы */
+        if (newRelated.length < oldRelated.length) {
+          removeUnselectedProductsFromMap(newRelated)
+        }
+
+        /** объект категории с рекомендованными продуктами по id ключу */
+        const categoryMap = productsMap[unref(category)!._id!]
+
+        /** массив всех категорий с рекомендованными продуктами по id ключу */
+        const categories = Object.values(productsMap)
+
+        unref(selects).forEach(it => {
+          if (!categoryMap?.[it._id!]) categoryMap[it._id!] = it
         })
-      }, { immediate: true })
 
-      watch(category, () => {
-        isCategoryChanged = true
-        selectedProducts = []
-        getCategoryProducts()
+        unref(model).related = categories.map(it => Object.keys(it)).flat()
+      }
 
-        /** nextTick нужен чтоб не среагировал watch на selectedProducts */
-        nextTick(() => isCategoryChanged = false)
-      }, { immediate: true })
-
-      watch(products, (items) => {
-        items?.forEach((it) => {
-          if (productsMap[unref(category)!.url]?.[it._id!]) {
-            selectedProducts.value.push(it)
-          }
-        })
-      }, { immediate: true })
+      watch(category, setCurrentCategoryProducts)
+      watch(products, onProductsChange)
+      watch(selects, onUpdateRelatedProductsArray)
+      watch(model, setExistsRelatedProductsToMap)
 
       return {
         category,
         categories,
         related,
         products,
-        selectedProducts,
+        selects,
       }
     }
   })
@@ -74,7 +119,7 @@
         </v-card-title>
         <v-card-content>
           <v-row>
-            <v-col cols="4">
+            <v-col cols="3">
               <v-select
                 v-model="category"
                 label="Категории"
@@ -82,10 +127,10 @@
                 value-key="title"
               />
             </v-col>
-            <v-col cols="4">
+            <v-col cols="3">
               <v-multi-select
                 v-if="products"
-                v-model="selectedProducts"
+                v-model="selects"
                 label="Список товаров"
                 :items="products"
                 chip
@@ -93,29 +138,18 @@
               />
             </v-col>
           </v-row>
-          <!--          <v-row>-->
-          <!--            <v-col>-->
-          <!--              <v-chip-->
-          <!--                v-for="it in products"-->
-          <!--                :key="it._id"-->
-          <!--                :title="it.name"-->
-          <!--                elevation="2"-->
-          <!--                class="mr-2 mb-2"-->
-          <!--              />-->
-          <!--            </v-col>-->
-          <!--          </v-row>-->
           <v-row class="mt-4">
             <v-col
               v-for="it in related"
               :key="it._id"
-              cols="3"
+              cols="2"
             >
               <div class="related-item elevation-2 pa-2 d-flex">
                 <div class="related-item__image">
                   <img
                     :src="it.image"
                     alt=""
-                    style="width: 100px; height: 100px"
+                    style="width: 100px; height: 100px; object-fit: cover"
                   >
                 </div>
                 <div class="related-item__content px-1">

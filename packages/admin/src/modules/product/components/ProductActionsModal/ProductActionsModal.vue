@@ -30,8 +30,9 @@
         model,
         isEditMode,
         isLoading,
+        isSaved,
         hasChanges,
-        metatagItems,
+        metaTagItems,
         variantItems,
         attributeItems,
         unitItems,
@@ -68,7 +69,7 @@
           return acc
         }, {})
 
-        return unref(metatagItems)?.filter(it => !productTagsMap[it._id])
+        return unref(metaTagItems)?.filter(it => !productTagsMap[it._id])
       })
 
       const onImagesContextMenu = (event, asset) => {
@@ -135,7 +136,7 @@
 
         attributesArray.value = clone(unref(model).attributes)
         content.value = unref(model).description!
-        textEditorRerenderKey.value = Date.now()
+        textEditorRerenderKey.value = Date.now().toString()
 
         if (!state || !unref(isEditMode)) return
 
@@ -154,6 +155,7 @@
         isEditMode,
         hasChanges,
         isLoading,
+        isSaved,
         content,
         textEditorRerenderKey,
         imagesContextMenu,
@@ -501,7 +503,7 @@
               elevation="3"
               width="120"
               :disabled="!hasChanges && isEditMode"
-              :loading="isLoading"
+              :loading="!isSaved"
               @click="onSubmit(validate)"
             >
               сохранить

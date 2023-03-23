@@ -7,7 +7,7 @@ export const useProductRelatedBlock = () => {
 
   const categories = computed<ICategory[]>(() => productService.categories!)
   const products = computed<IProduct[]>(() => productService.productsByCategory!)
-  const related = computed<IProduct[]>(() => productService.product?.related!)
+  const related = computed<IProduct[]>(() => productService.product?.related! as IProduct[])
   const category = ref<ICategory>(unref(categories)?.[0])
 
   const getCategoryProducts = async () => {
