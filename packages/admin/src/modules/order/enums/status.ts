@@ -4,6 +4,7 @@ export enum status {
   confirmed = 'Подтвержден',
   inProcess = 'В работе',
   ready = 'Готов',
+  inDelivery = 'В доставке',
   completed = 'Выполнен',
   cancelled = 'Отменен'
 }

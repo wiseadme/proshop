@@ -11,19 +11,19 @@
   import ConditionsBlock from './ConditionsBlock.vue'
   import MetaTagsBlock from './MetaTagsBlock.vue'
   import RelatedBlock from './RelatedBlock.vue'
-  import draggable from 'vuedraggable'
+  import AttributesBlock from './AttributesBlock.vue'
   import { useProduct } from '@modules/product/composables/use-product'
   import { useActionsModal } from '@modules/product/composables/use-actions-modal'
 
   export default defineComponent({
     name: 'product-actions-modal',
     components: {
+      AttributesBlock,
       VariantsBlock,
       ConditionsBlock,
       MetaTagsBlock,
       RelatedBlock,
       TextEditor,
-      draggable
     },
     setup() {
       const {
@@ -32,7 +32,6 @@
         isLoading,
         isSaved,
         hasChanges,
-        metaTagItems,
         variantItems,
         attributeItems,
         unitItems,
@@ -59,18 +58,7 @@
       const content = ref<string>('')
       const textEditorRerenderKey = ref<string>('')
 
-      const computedModalHeader = computed<string>(() => {
-        return `${ (unref(isEditMode) ? 'Редактирование' : 'Создание') } продукта`
-      })
-
-      const computedMetaTagItems = computed(() => {
-        const productTagsMap = unref(model).seo?.metatags.reduce((acc, it) => {
-          acc[it._id] = true
-          return acc
-        }, {})
-
-        return unref(metaTagItems)?.filter(it => !productTagsMap[it._id])
-      })
+      const computedModalHeader = computed<string>(() => `${ (unref(isEditMode) ? 'Редактирование' : 'Создание') } продукта`)
 
       const onImagesContextMenu = (event, asset) => {
         unref(imagesContextMenu).show = true
@@ -150,7 +138,6 @@
         model,
         showModal,
         computedModalHeader,
-        computedMetaTagItems,
         productImages,
         isEditMode,
         hasChanges,
@@ -422,70 +409,8 @@
                 </v-card>
               </v-col>
             </v-row>
-            <v-row no-gutter>
-              <v-col class="white mt-2 elevation-2">
-                <v-card
-                  width="100%"
-                >
-                  <v-card-title>
-                    <h3 class="primary--text">
-                      Атрибуты
-                    </h3>
-                  </v-card-title>
-                  <v-card-content>
-                    <draggable
-                      v-model="attributesArray"
-                      item-key="_id"
-                      @change="onAttributesUpdate"
-                    >
-                      <template #item="{element}">
-                        <v-row class="my-2 elevation-2 pa-2 attribute">
-                          <v-col
-                            class="d-flex justify-start align-center"
-                            cols="6"
-                          >
-                            <v-icon
-                              class="mr-3"
-                              color="grey lighten-2"
-                            >
-                              fas fa-grip-vertical
-                            </v-icon>
-                            <div class="attr-title py-2">
-                              {{ element.key }}
-                            </div>
-                            <v-spacer
-                              class="mx-2"
-                              style="border-bottom: 1px dotted #272727"
-                            >
-                            </v-spacer>
-                          </v-col>
-                          <v-col cols="6">
-                            <v-text-field
-                              v-model="element.value"
-                              color="#272727"
-                              @input="onAttributesUpdate"
-                            />
-                            <v-icon
-                              class="mr-3"
-                              color="grey lighten-2"
-                              clickable
-                              style="position: absolute; top: 0; right: 0"
-                              @click="onDeleteAttribute(element)"
-                            >
-                              fas fa-trash-alt
-                            </v-icon>
-                          </v-col>
-                        </v-row>
-                      </template>
-                    </draggable>
-                  </v-card-content>
-                </v-card>
-              </v-col>
-            </v-row>
-            <meta-tags-block
-              v-model:meta-tags="model.seo.metatags"
-              :items="computedMetaTagItems"
-            />
+            <attributes-block/>
+            <meta-tags-block/>
             <variants-block/>
             <related-block
               v-if="categoryItems"

@@ -1,7 +1,7 @@
 <script lang="ts">
   import { defineComponent } from 'vue'
   import draggable from 'vuedraggable'
-  import { useProductMetaTagsBlock } from '@modules/product/composables/use-product-metatags-block'
+  import { useProductMetatags } from '@modules/product/composables/use-product-metatags'
   // Helpers
   import { descriptorToMetaTag } from '@shared/helpers/metatag'
 
@@ -10,7 +10,7 @@
     components: { draggable },
     emits: [ 'update:meta-tags' ],
     setup() {
-      const { usedMetaTags, availableMetaTags } = useProductMetaTagsBlock()
+      const { usedMetaTags, availableMetaTags } = useProductMetatags()
 
       const onEdit = (tag) => console.log(tag)
       const onChange = () => console.log('change')
@@ -38,7 +38,7 @@
         </v-card-title>
         <v-card-content>
           <div
-            class="exists-meta-tags"
+            class="used-meta-tags"
           >
             <h3 class="py-2 meta-tags-head grey--text text--lighten-1">
               Текущие мета теги товара

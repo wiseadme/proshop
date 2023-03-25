@@ -1,4 +1,4 @@
-import {computed, ref, unref } from 'vue'
+import { computed, ref, unref } from 'vue'
 import { useProductService } from '@modules/product/service/product.service'
 import { useActionsModal } from '@modules/product/composables/use-actions-modal'
 import { Product } from '@modules/product/model/product.model'
@@ -28,12 +28,17 @@ export const useProduct = createSharedComposable(() => {
     openActionsModal()
     isEditMode.value = false
     model.value = Product.create()
-    model.value.attributes = clone(service.attributes)
+    unref(model).attributes = clone(service.attributes)
   }
 
-  const checkDiffs = (): Maybe<Partial<IProduct>> => {
-    return getDifferences(unref(model), service.product)
+  const onOpenEditProductModal = (row) => {
+    service.setAsCurrent(row)
+    model.value = Product.create(clone(row))!
+    isEditMode.value = true
+    openActionsModal()
   }
+
+  const checkDiffs = (): Maybe<Partial<IProduct>> => getDifferences(unref(model), service.product)
 
   const onCreateProduct = () => {
     isSaved.value = false
@@ -44,8 +49,12 @@ export const useProduct = createSharedComposable(() => {
   }
 
   const onUpdateProduct = () => {
-    const updates = checkDiffs()!
-    updates._id = model.value._id
+    const updates = checkDiffs()
+    hasChanges.value = !!updates
+
+    if (!unref(hasChanges)) return
+
+    updates!._id = model.value._id
     isSaved.value = false
 
     service.updateProduct(updates)
@@ -59,24 +68,17 @@ export const useProduct = createSharedComposable(() => {
   const onUploadProductImage = (image) => {
     service.uploadProductImage(image)
       .then(() => {
-        model.value.image = service.product!.image
-        model.value.assets = service.product!.assets
+        unref(model).image = service.product!.image
+        unref(model).assets = service.product!.assets
       })
   }
 
   const onDeleteProductImage = (asset) => {
     service.deleteProductImage(asset)
       .then(() => {
-        model.value.image = service.product?.image!
-        model.value.assets = service.product?.assets!
+        unref(model).image = service.product?.image!
+        unref(model).assets = service.product?.assets!
       })
-  }
-
-  const onOpenEditProductModal = (row) => {
-    service.setAsCurrent(row)
-    model.value = Product.create(clone(row))!
-    isEditMode.value = true
-    openActionsModal()
   }
 
   const onDeleteProduct = (product: IProduct) => service.deleteProduct(product)
@@ -88,7 +90,7 @@ export const useProduct = createSharedComposable(() => {
   }
 
   const onDiscardProductChanges = () => {
-    model.value = Product.create(service.product!)
+    model.value = Product.create(clone(service.product!))
     hasChanges.value = false
   }
 

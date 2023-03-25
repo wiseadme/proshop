@@ -2,7 +2,7 @@ import { ref } from 'vue'
 import { useProductService } from '@modules/product/service/product.service'
 import { useProduct } from '@modules/product/composables/use-product'
 
-export const useProductVariantsBlock = () => {
+export const useProductVariants = () => {
   const { model, variantItems } = useProduct()
   const productService = useProductService()
 

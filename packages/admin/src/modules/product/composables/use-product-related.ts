@@ -2,7 +2,7 @@ import { computed, ref, unref } from 'vue'
 import { useProductService } from '@modules/product/service/product.service'
 import { ICategory, IProduct } from '@ecommerce-platform/types'
 
-export const useProductRelatedBlock = () => {
+export const useProductRelated = () => {
   const productService = useProductService()
 
   const categories = computed<ICategory[]>(() => productService.categories!)

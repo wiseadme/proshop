@@ -1,7 +1,7 @@
 <script lang="ts">
   import { defineComponent, watch, ref, unref } from 'vue'
   import { IProduct } from '@ecommerce-platform/types'
-  import { useProductRelatedBlock } from '@modules/product/composables/use-product-related-block'
+  import { useProductRelated } from '@modules/product/composables/use-product-related'
   import { useProduct } from '@modules/product/composables/use-product'
 
   export default defineComponent({
@@ -15,7 +15,7 @@
         products,
         categories,
         getCategoryProducts
-      } = useProductRelatedBlock()
+      } = useProductRelated()
 
       const selects = ref<IProduct[]>([])
       const productsMap: Record<string, IProduct> = {}

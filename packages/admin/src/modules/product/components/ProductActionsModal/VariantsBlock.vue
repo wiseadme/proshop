@@ -2,7 +2,7 @@
   import { defineComponent, ref, watch, unref } from 'vue'
   import { IVariant, IVariantOption } from '@ecommerce-platform/types'
   import { useProduct } from '@modules/product/composables/use-product'
-  import { useProductVariantsBlock } from '@modules/product/composables/use-product-variants-block'
+  import { useProductVariants } from '@modules/product/composables/use-product-variants'
 
   export default defineComponent({
     setup() {
@@ -17,7 +17,7 @@
         onCreateProductVariantOption,
         onDeleteProductVariantOption,
         genVariantOptionPattern
-      } = useProductVariantsBlock()
+      } = useProductVariants()
 
       const currentVariant = ref<Maybe<IVariant>>(null)
       const existsVariants = ref<IVariant[]>([])

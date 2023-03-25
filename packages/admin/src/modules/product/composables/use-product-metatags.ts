@@ -2,7 +2,7 @@ import { computed, unref } from 'vue'
 import { useProduct } from '@modules/product/composables/use-product'
 import { IMetaTag } from '@ecommerce-platform/types'
 
-export const useProductMetaTagsBlock = () => {
+export const useProductMetatags = () => {
   const { metaTagItems, model } = useProduct()
 
   const usedMetaTags = computed<IMetaTag[]>(() => unref(model).seo.metatags)
