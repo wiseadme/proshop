@@ -1,5 +1,5 @@
 import { Store } from 'nervue'
-import { useAttributeStore } from '@modules/attribute/store'
+import { useAttributesStore } from '@modules/attribute/store'
 import { IAttributeActions, IAttributeState } from '@modules/attribute/types'
 
 export class Service {
@@ -31,5 +31,5 @@ export class Service {
 }
 
 export const useAttributeService = () => new Service({
-  store: useAttributeStore()
+  store: useAttributesStore()
 })

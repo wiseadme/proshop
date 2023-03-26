@@ -1,5 +1,5 @@
 import { Store } from 'nervue'
-import { useVariantStore } from '@modules/variant/store'
+import { useVariantsStore } from '@modules/variant/store'
 import { IVariant } from '@ecommerce-platform/types'
 import { IVariantState, IVariantActions } from '@modules/variant/types'
 
@@ -36,5 +36,5 @@ class Service {
 }
 
 export const useVariantService = () => new Service({
-  store: useVariantStore()
+  store: useVariantsStore()
 })

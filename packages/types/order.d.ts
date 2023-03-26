@@ -40,5 +40,5 @@ export interface IOrder {
   qrcode?: Maybe<string>
   status: IOrderStatuses
   payment?: Maybe<number>
-  executor?: IUser
+  executor: Maybe<IUser>
 }

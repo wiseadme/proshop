@@ -1,89 +1,85 @@
-<script setup lang="ts">
-  import { ICartItem } from '@ecommerce-platform/types'
+<script lang="ts">
+  import { defineComponent, unref } from 'vue'
   import AddressMap from '@modules/order/components/OrderActionsModal/AddressMap/AddressMap.vue'
-  import { status } from '@modules/order/enums/status'
+  import { OrderStatuses, OrderProcessStatuses } from '@modules/order/enums/status'
   import { useNotifications } from '@shared/components/VNotifications/use-notifications'
+  import { useOrders } from '@modules/order/composables/use-orders'
+  import { ICartItem } from '@ecommerce-platform/types'
 
-  const props = defineProps({
-    order: {
-      type: Object,
-      default: null
+  export default defineComponent({
+    name: 'order-document',
+    components: { AddressMap },
+    props: {
+      users: {
+        type: Array,
+        default: null
+      }
     },
-    users: {
-      type: Array,
-      default: null
+    emits: [ 'close', 'update:order' ],
+    setup(props, { emit }) {
+      const { model, order, onUpdateOrder } = useOrders()
+      const { notify } = useNotifications()
+
+      const checkProcessStatusKey = (key: string) => (OrderProcessStatuses[key] && !unref(model).executor)
+      const getProductPrice = (item: ICartItem) => item.variant?.option?.price || item.product.price
+
+      const changeOrderStatus = (statusKey) => {
+        const { status: statuses, executor } = unref(model)
+
+        if (statuses[statusKey]) {
+          return notify({
+            title: 'Информация',
+            text: `Заказ уже имеет статус "${ OrderStatuses[statusKey] }"`,
+            type: 'warning',
+            closeOnClick: true,
+          })
+        }
+
+        if (checkProcessStatusKey(statusKey)) {
+          return notify({
+            title: 'Информация',
+            text: 'Необходимо выбрать исполнителя заказа',
+            type: 'warning',
+            closeOnClick: true,
+          })
+        }
+
+        if (
+          statusKey === OrderProcessStatuses.ready && !statuses.inProcess
+          || statusKey === OrderProcessStatuses.completed && !statuses.ready
+        ) {
+          return
+        }
+
+        statuses[statusKey] = true
+
+        onUpdateOrder(Object.assign({}, { status: statuses }, executor ? { executor } : {}))
+      }
+
+      const onClose = () => emit('close')
+
+      return {
+        model,
+        order,
+        OrderStatuses,
+        OrderProcessStatuses,
+        onClose,
+        changeOrderStatus,
+        getProductPrice,
+      }
     }
   })
 
-  const emit = defineEmits([
-    'close',
-    'update:order'
-  ])
-
-  const processStatuses = [ 'inProcess', 'ready', 'completed' ]
-
-  const { notify } = useNotifications()
-
-  const computedExecutor = $computed({
-    get: () => props.order.executor,
-    set: (val) => {
-      emit('update:order', { executor: val._id })
-    }
-  })
-
-  const checkProcessStatusKey = (key) => {
-    return ((processStatuses.indexOf(key) > -1) && !computedExecutor)
-  }
-
-  const getProductPrice = (item: ICartItem) => {
-    return item.variant?.option?.price || item.product.price
-  }
-
-  const changeOrderStatus = (statusKey) => {
-    const { status: statuses } = props.order
-
-    if (statuses[statusKey]) {
-      return notify({
-        title: 'Информация',
-        text: `Заказ уже имеет статус "${ status[statusKey] }"`,
-        type: 'warning',
-        closeOnClick: true,
-      })
-    }
-
-    if (checkProcessStatusKey(statusKey)) {
-      return notify({
-        title: 'Информация',
-        text: 'Необходимо выбрать исполнителя заказа',
-        type: 'warning',
-        closeOnClick: true,
-      })
-    }
-
-    if (
-      statusKey === 'ready' && !statuses.inProcess
-      || statusKey === 'completed' && !statuses.ready
-    ) {
-      return
-    }
-
-    statuses[statusKey] = true
-
-    return emit('update:order', { status: statuses })
-  }
-
-  const onClose = () => {
-    emit('close')
-  }
 </script>
 <template>
   <v-card
+    v-if="model._id"
     class="elevation-3"
     width="100%"
     color="rgba(0,0,0,.4)"
   >
     <v-card-title class="card-title white--text text--base">
-      Заказ № {{ order.orderId }}
+      Заказ № {{ model.orderId }}
     </v-card-title>
     <v-card-content
       class="grey lighten-4"
@@ -95,8 +91,8 @@
           class="d-flex justify-center align-start"
         >
           <img
-            v-if="order"
-            :src="order.qrcode"
+            v-if="model.qrcode"
+            :src="model.qrcode"
             alt=""
             style="width: 100%; max-width: 200px"
             class="elevation-1"
@@ -105,8 +101,8 @@
         <v-col cols="9">
           <address-map
             class="elevation-2"
-            :coords="order.delivery.coords"
-            :address="order.delivery.address"
+            :coords="model.delivery.coords"
+            :address="model.delivery.address"
           />
         </v-col>
       </v-row>
@@ -129,7 +125,7 @@
               </v-list-item-content>
             </v-list-item>
             <v-list-item
-              v-for="(it, i) in order.items"
+              v-for="(it, i) in model.items"
               :key="it.product._id"
               style="border-bottom: 1px solid #dcdcdc"
             >
@@ -152,7 +148,7 @@
             <v-list-item class="elevation-1 grey lighten-2">
               <v-list-item-icon/>
               <v-list-item-content>
-                <h4>Итого к оплате: {{ order.amount }}</h4>
+                <h4>Итого к оплате: {{ model.amount }}</h4>
               </v-list-item-content>
             </v-list-item>
           </v-list>
@@ -173,10 +169,10 @@
             <v-list-item>
               <v-list-item-icon/>
               <v-list-item-content style="width: 250px">
-                {{ order.customer.name }}
+                {{ model.customer.name }}
               </v-list-item-content>
               <v-list-item-content style="width: 180px">
-                {{ order.customer.phone }}
+                {{ model.customer.phone }}
               </v-list-item-content>
             </v-list-item>
           </v-list>
@@ -187,13 +183,16 @@
         style="overflow: hidden"
       >
         <template
-          v-for="it in Object.keys(order.status)"
+          v-for="it in Object.keys(model.status)"
           :key="it"
         >
           <v-col
             v-if="it !== 'cancelled'"
             class="pa-2 d-flex justify-center align-center statuses__step"
-            :class="{['statuses__step--done']: order.status[it]}"
+            :class="{
+              ['statuses__step--done-after']: model.status[it] && it !== OrderProcessStatuses.completed,
+              ['statuses__step--done-before']: model.status[it],
+            }"
             xl="2"
             lg="4"
             md="6"
@@ -207,17 +206,17 @@
                 class="mb-5 px-1 elevation-1 grey--text text--darken-3"
                 color="white"
               >
-                <span>{{ status[it] }}</span>
+                <span>{{ OrderStatuses[it] }}</span>
               </v-chip>
               <v-button
                 class="elevation-2 my-1"
-                :color="!order.status[it] ? 'grey lighten-2' : 'primary'"
+                :color="!model.status[it] ? 'grey lighten-2' : 'primary'"
                 round
                 @click="changeOrderStatus(it)"
               >
                 <v-icon
                   size="14"
-                  :icon="order.status[it] ? 'fas fa-check' : 'fas fa-power-off'"
+                  :icon="model.status[it] ? 'fas fa-check' : 'fas fa-power-off'"
                 />
               </v-button>
             </div>
@@ -230,9 +229,9 @@
           class="white elevation-2 pa-2 d-flex"
         >
           <v-select
-            v-model="computedExecutor"
+            v-model="model.executor"
             :items="users"
-            :disabled="order.status.inProcess"
+            :disabled="model.status.inProcess"
             label="Исполнитель"
             prepend-icon="fas fa-user-tie"
             value-key="firstName"
@@ -256,26 +255,30 @@
     position: relative;
 
     &--done {
-      &:before {
-        content: "";
-        position: absolute;
-        width: 100%;
-        height: 2px;
-        background-color: var(--primary);
-        top: 68%;
-        left: 50%;
-        transform: translateY(-50%);
+      &-before {
+        &:before {
+          content: "";
+          position: absolute;
+          width: 50%;
+          height: 2px;
+          background-color: var(--primary);
+          top: 68%;
+          left: 0;
+          transform: translateY(-50%);
+        }
       }
 
-      &:after {
-        content: "";
-        position: absolute;
-        width: 100%;
-        height: 2px;
-        background-color: var(--primary);
-        top: 68%;
-        left: 0;
-        transform: translateY(-50%);
+      &-after {
+        &:after {
+          content: "";
+          position: absolute;
+          width: 50%;
+          height: 2px;
+          background-color: var(--primary);
+          top: 68%;
+          left: 50%;
+          transform: translateY(-50%);
+        }
       }
     }
   }

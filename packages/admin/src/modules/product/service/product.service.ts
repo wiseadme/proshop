@@ -1,44 +1,38 @@
 import { ref, Ref, unref } from 'vue'
 // Stores
 import { useProductStore } from '@modules/product/store'
-import { useAttributeStore } from '@modules/attribute/store'
-import { useCategoryStore } from '@modules/category/store'
-import { useVariantStore } from '@modules/variant/store'
-import { useUnitStore } from '@modules/unit/store'
+import { useAttributesStore } from '@modules/attribute/store'
+import { useCategoriesStore } from '@modules/category/store'
+import { useVariantsStore } from '@modules/variant/store'
+import { useUnitsStore } from '@modules/unit/store'
 import { useMetaTagsStore } from '@modules/metatag/store'
 // Services
 import { useFilesService } from '@shared/services/files.service'
 import { useOptionsService } from '@shared/services/options.service'
 // Composables
-import { usePagination } from '@shared/composables/use-pagination'
-import { useSort } from '@shared/composables/use-sort'
+import { RequestParams } from '@shared/helpers/request-params'
 // Types
 import {
   IProduct,
   IAsset,
   IVariant,
   IVariantOption,
-  IRequestPagination,
-  IRequestSort,
   IProductQuery,
   ICategory,
-  IRequestParams
 } from '@ecommerce-platform/types'
 import { clone } from '@shared/helpers'
 import { createSharedComposable } from '@shared/features/create-shared-composable'
 
-class Service {
+class Service extends RequestParams {
   private _store: ReturnType<typeof useProductStore>
-  private _attributesStore: ReturnType<typeof useAttributeStore>
-  private _categoriesStore: ReturnType<typeof useCategoryStore>
-  private _unitsStore: ReturnType<typeof useUnitStore>
-  private _variantsStore: ReturnType<typeof useVariantStore>
+  private _attributesStore: ReturnType<typeof useAttributesStore>
+  private _categoriesStore: ReturnType<typeof useCategoriesStore>
+  private _unitsStore: ReturnType<typeof useUnitsStore>
+  private _variantsStore: ReturnType<typeof useVariantsStore>
   private _metaTagsStore: ReturnType<typeof useMetaTagsStore>
   private _product: Ref<Maybe<IProduct>>
   private _filesService: ReturnType<typeof useFilesService>
   private _optionsService: ReturnType<typeof useOptionsService>
-  public pagination: ReturnType<typeof usePagination>
-  public sort: ReturnType<typeof useSort>
 
   constructor({
     store,
@@ -49,9 +43,8 @@ class Service {
     metaTagsStore,
     filesService,
     optionsService,
-    pagination,
-    sort
   }) {
+    super()
     this._store = store
     this._attributesStore = attributesStore
     this._unitsStore = unitsStore
@@ -61,8 +54,6 @@ class Service {
     this._filesService = filesService
     this._optionsService = optionsService
     this._product = ref(null)
-    this.pagination = pagination
-    this.sort = sort
   }
 
   get products() {
@@ -121,40 +112,22 @@ class Service {
     return this.metaTags || this._metaTagsStore.read(params)
   }
 
-  makeRequestParams(params: Maybe<IProductQuery> = null): IRequestParams<IProductQuery> {
-    return {
-      ...(params ? params : {}),
-      ...this.prepareRequestSortParams(),
-      ...this.prepareRequestPagination(),
-    }
-  }
-
-  prepareRequestPagination(): IRequestPagination {
-    return {
-      page: unref(this.pagination.page),
-      count: unref(this.pagination.itemsCount),
-      length: true,
-    }
-  }
-
-  prepareRequestSortParams(): IRequestSort | object {
-    return this.sort.isNeedToBeSorted.value ? {
-      asc: unref(this.sort.asc),
-      desc: unref(this.sort.desc),
-      key: unref(this.sort.sortKey),
-    } : {}
-  }
-
   getProducts(params: IProductQuery = {}) {
-    const query = this.makeRequestParams(params)
+    const query = {
+      ...params,
+      ...this.getPaginationParams(),
+      ...this.getSortParams()
+    }
 
     return this._store.read(query).catch(err => console.log(err))
   }
 
   getCategoryProducts(category: ICategory) {
-    this.getProducts(this.makeRequestParams({
-      category: category.url
-    })).then(res => console.log(res))
+    this.getProducts({
+      ...{ category: category.url },
+      ...this.getPaginationParams(),
+      ...this.getSortParams()
+    }).then(res => console.log(res))
   }
 
   setAsCurrent(product: IProduct) {
@@ -315,13 +288,11 @@ class Service {
 
 export const useProductService = createSharedComposable(() => new Service({
   store: useProductStore(),
-  attributesStore: useAttributeStore(),
-  categoriesStore: useCategoryStore(),
-  unitsStore: useUnitStore(),
-  variantsStore: useVariantStore(),
+  attributesStore: useAttributesStore(),
+  categoriesStore: useCategoriesStore(),
+  unitsStore: useUnitsStore(),
+  variantsStore: useVariantsStore(),
   metaTagsStore: useMetaTagsStore(),
   filesService: useFilesService(),
   optionsService: useOptionsService(),
-  pagination: usePagination(),
-  sort: useSort()
 }))

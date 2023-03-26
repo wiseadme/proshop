@@ -34,7 +34,7 @@
 
       const createOption = (validate) => {
         validate().then(() => {
-          optionPattern.value!.variantId = unref(currentVariant)!._id!
+          unref(optionPattern)!.variantId = unref(currentVariant)!._id!
 
           if (unref(isVariantEditMode)) {
             onUpdateProductVariantOption(unref(optionPattern))
@@ -45,6 +45,7 @@
       }
 
       const setCurrentVariant = (variant) => {
+        console.log(variant)
         optionPattern.value = genVariantOptionPattern()
         currentVariant.value = variant
       }

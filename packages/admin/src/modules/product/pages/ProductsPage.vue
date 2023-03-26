@@ -1,14 +1,14 @@
 <script lang="ts">
   import { defineComponent, watch, unref } from 'vue'
   // Services
-  import { useProductService } from '@modules/product/service/product.service'
+  import { useProductsService } from '@modules/product/composables/use-products-service'
   // Components
   import { ProductActionsModal } from '@modules/product/components/ProductActionsModal'
   import { ProductTable } from '@modules/product/components/ProductTable'
   import SkeletonPreloader from '@shared/components/Preloader/SkeletonPreloader.vue'
   // Types
   import { useProduct } from '@modules/product/composables/use-product'
-  import { useActionsModal } from '@modules/product/composables/use-actions-modal'
+  import { useProductActionsModal } from '@modules/product/composables/use-product-actions-modal'
   import { useProductsTable } from '@modules/product/composables/use-products-table'
 
   export default defineComponent({
@@ -30,7 +30,7 @@
         onInit
       } = useProduct()
 
-      const { showModal } = useActionsModal()
+      const { showModal } = useProductActionsModal()
 
       const {
         onUpdateTablePage,
@@ -38,7 +38,7 @@
         onSortColumn
       } = useProductsTable()
 
-      const service = useProductService()
+      const { products, totalLength } = useProductsService()
 
       let stopWatching
 
@@ -64,7 +64,8 @@
         hasChanges,
         isEditMode,
         isLoading,
-        service,
+        products,
+        totalLength,
         onOpenCreateProductModal,
         onDeleteProduct,
         onOpenEditProductModal,
@@ -83,8 +84,8 @@
         <skeleton-preloader v-if="isLoading"/>
         <product-table
           v-else
-          :products="service.products"
-          :total="service.totalLength"
+          :products="products"
+          :total="totalLength"
           @open:create-modal="onOpenCreateProductModal"
           @open:edit-modal="onOpenEditProductModal"
           @delete:product="onDeleteProduct"

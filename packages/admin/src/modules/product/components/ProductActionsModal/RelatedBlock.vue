@@ -14,7 +14,7 @@
         related,
         products,
         categories,
-        getCategoryProducts
+        getProducts
       } = useProductRelated()
 
       const selects = ref<IProduct[]>([])
@@ -22,9 +22,10 @@
 
       let isCategoryChanged = false
 
-      const setExistsRelatedProductsToMap = (model: IProduct) => {
+      const setExistingRelatedProductsToMap = (model: IProduct) => {
         model.related?.forEach((product) => {
           product.categories.forEach(ctg => {
+
             if (!productsMap[ctg._id]) {
               productsMap[ctg._id] = {} as IProduct
             }
@@ -44,7 +45,7 @@
           productsMap[unref(category)._id!] = {} as IProduct
         }
 
-        getCategoryProducts().then(() => isCategoryChanged = false)
+        getProducts().then(() => isCategoryChanged = false)
       }
 
       const onProductsChange = (items: IProduct[]) => {
@@ -53,12 +54,12 @@
         items?.forEach((it) => categoryMap[it._id] && selects.value.push(it))
       }
 
-      const removeUnselectedProductsFromMap = (arrayOfRelatedProducts: IProduct[]) => {
+      const removeUnselectedProductsFromMap = (relatedProducts: IProduct[]) => {
         const categoryProductIds = Object.keys(productsMap[unref(category)!._id!])
         const categoryMap = productsMap[unref(category)!._id!]
 
         for (const id of categoryProductIds) {
-          const found = arrayOfRelatedProducts.find(rel => rel._id === id)
+          const found = relatedProducts.find(rel => rel._id === id)
 
           if (!found) {
             delete categoryMap[id]
@@ -92,7 +93,7 @@
       watch(category, setCurrentCategoryProducts)
       watch(products, onProductsChange)
       watch(selects, onUpdateRelatedProductsArray)
-      watch(model, setExistsRelatedProductsToMap)
+      watch(model, setExistingRelatedProductsToMap)
 
       return {
         category,

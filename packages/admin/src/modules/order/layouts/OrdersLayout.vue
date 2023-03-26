@@ -1,5 +1,10 @@
-<script setup lang="ts">
+<script lang="ts">
+  import { defineComponent } from 'vue'
   import SkeletonPreloader from '@shared/components/Preloader/SkeletonPreloader.vue'
+
+  export default defineComponent({
+    components: { SkeletonPreloader }
+  })
 </script>
 <template>
   <v-main>

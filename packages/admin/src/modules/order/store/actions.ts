@@ -15,12 +15,12 @@ export const actions = {
     }
   },
 
-  async read(params: Partial<IOrder | IOrderStatuses> = {}) {
+  async read(params?: Maybe<Partial<IOrder | IOrderStatuses>>) {
     try {
       const { data } = await orderRepository.read(params)
 
       this.$patch(state => {
-        if (!Object.keys(params).length) {
+        if (!Object.keys(params!).includes('seen')) {
           state.orders = data?.data
         } else {
           state.newOrders = data?.data

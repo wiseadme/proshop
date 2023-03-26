@@ -1,9 +1,11 @@
 import { computed, ref, unref } from 'vue'
+import { useProductsService } from '@modules/product/composables/use-products-service'
 import { useProduct } from '@modules/product/composables/use-product'
 import { IAttribute } from '@ecommerce-platform/types'
 
 export const useProductAttributes = () => {
-  const { attributeItems, model } = useProduct()
+  const { attributeItems } = useProductsService()
+  const { model } = useProduct()
 
   const attributes = ref<IAttribute[]>([])
 

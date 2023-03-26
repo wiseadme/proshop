@@ -1,22 +1,22 @@
-import { useProductService } from '@modules/product/service/product.service'
+import { useProductsService } from '@modules/product/composables/use-products-service'
 
 export const useProductsTable = () => {
-  const service= useProductService()
+  const { pagination, sort, getProducts } = useProductsService()
 
   const onUpdateTablePage = async (page) => {
-    service.pagination.setPaginationPage(page)
-    await service.getProducts({})
+    pagination.setPage(page)
+    await getProducts({})
   }
 
   const onUpdateTableRowsCount = async (count) => {
-    service.pagination.setPaginationItemsCount(count)
+    pagination.setItemsCount(count)
   }
 
   const onSortColumn = (col) => {
     const { sorted } = col
-    sorted ? service.sort.setAsc(col.key) : service.sort.setDesc(col.key)
+    sorted ? sort.setAsc(col.key) : sort.setDesc(col.key)
 
-    setTimeout(() => service.getProducts())
+    setTimeout(() => getProducts())
   }
 
   return {

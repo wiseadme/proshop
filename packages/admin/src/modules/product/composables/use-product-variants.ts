@@ -1,10 +1,18 @@
-import { ref } from 'vue'
-import { useProductService } from '@modules/product/service/product.service'
+import { ref, unref } from 'vue'
+import { useProductsService } from '@modules/product/composables/use-products-service'
 import { useProduct } from '@modules/product/composables/use-product'
 
 export const useProductVariants = () => {
-  const { model, variantItems } = useProduct()
-  const productService = useProductService()
+  const { model } = useProduct()
+  const {
+    product,
+    variantItems,
+    uploadProductVariantImage,
+    deleteProductVariantImage,
+    createVariantOption,
+    updateVariantOption,
+    deleteVariantOption,
+  } = useProductsService()
 
   const isVariantEditMode = ref(false)
 
@@ -19,12 +27,12 @@ export const useProductVariants = () => {
   })
 
   const onUploadProductVariantImage = ({ file, option }) => {
-    return productService.uploadProductVariantImage(file, option)
+    return uploadProductVariantImage(file, option)
       .then((optionData) => option.assets = optionData.assets)
   }
 
   const onDeleteProductVariantImage = ({ asset, option }) => {
-    productService.deleteProductVariantImage({ asset, option })
+    deleteProductVariantImage({ asset, option })
       .then(() => {
         option.assets = option.assets.reduce((assets, it) => {
           if (it._id !== asset._id) assets.push(it)
@@ -35,18 +43,15 @@ export const useProductVariants = () => {
   }
 
   const onCreateProductVariantOption = (option) => {
-    productService.createVariantOption(option)
-      .then(() => model.value.variants = productService.product!.variants!)
+    createVariantOption(option).then(() => model.value.variants = unref(product)!.variants!)
   }
 
   const onUpdateProductVariantOption = (option) => {
-    productService.updateVariantOption(option)
-      .then(() => model.value.variants = productService.product!.variants)
+    updateVariantOption(option).then(() => model.value.variants = unref(product)!.variants)
   }
 
   const onDeleteProductVariantOption = ({ option, variant }) => {
-    productService.deleteVariantOption({ option, variant })
-      .then(() => model.value.variants = productService.product?.variants!)
+    deleteVariantOption({ option, variant }).then(() => model.value.variants = unref(product)?.variants!)
   }
 
   return {

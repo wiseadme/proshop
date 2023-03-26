@@ -1,7 +1,7 @@
 import { ref } from 'vue'
 import { createSharedComposable } from '@shared/features/create-shared-composable'
 
-export const useActionsModal = createSharedComposable(() => {
+export const useProductActionsModal = createSharedComposable(() => {
   const showModal = ref(false)
 
   const openActionsModal = () => (showModal.value = true)

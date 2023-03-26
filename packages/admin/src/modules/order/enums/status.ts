@@ -1,4 +1,4 @@
-export enum status {
+export enum OrderStatuses {
   created = 'Новый заказ',
   seen = 'Просмотрен',
   confirmed = 'Подтвержден',
@@ -7,4 +7,11 @@ export enum status {
   inDelivery = 'В доставке',
   completed = 'Выполнен',
   cancelled = 'Отменен'
+}
+
+export enum OrderProcessStatuses {
+  inProcess = 'inProcess',
+  ready = 'ready',
+  inDelivery = 'inDelivery',
+  completed = 'completed'
 }

@@ -1,5 +1,5 @@
 import { Store } from 'nervue'
-import { useCategoryStore } from '@modules/category/store'
+import { useCategoriesStore } from '@modules/category/store'
 import { useFilesService } from '@shared/services/files.service'
 import { ICategory } from '@ecommerce-platform/types'
 import { ICategoryActions, ICategoryState, ICategoryService } from '@modules/category/types'
@@ -70,6 +70,6 @@ class Service implements ICategoryService {
 }
 
 export const useCategoryService = () => new Service({
-  store: useCategoryStore(),
+  store: useCategoriesStore(),
   filesService: useFilesService()
 })

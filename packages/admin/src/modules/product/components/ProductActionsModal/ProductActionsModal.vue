@@ -7,13 +7,14 @@
   } from '@ecommerce-platform/types'
   import { clone } from '@shared/helpers'
   import { TextEditor } from '@shared/components/TextEditor'
+  import { useProduct } from '@modules/product/composables/use-product'
+  import { useProductActionsModal } from '@modules/product/composables/use-product-actions-modal'
+  // Components
   import VariantsBlock from './VariantsBlock.vue'
   import ConditionsBlock from './ConditionsBlock.vue'
   import MetaTagsBlock from './MetaTagsBlock.vue'
   import RelatedBlock from './RelatedBlock.vue'
   import AttributesBlock from './AttributesBlock.vue'
-  import { useProduct } from '@modules/product/composables/use-product'
-  import { useActionsModal } from '@modules/product/composables/use-actions-modal'
 
   export default defineComponent({
     name: 'product-actions-modal',
@@ -32,18 +33,16 @@
         isLoading,
         isSaved,
         hasChanges,
-        variantItems,
-        attributeItems,
-        unitItems,
         categoryItems,
-        onDiscardProductChanges,
+        unitItems,
         onUpdateProduct,
         onCreateProduct,
         onDeleteProductImage,
-        onUploadProductImage
+        onUploadProductImage,
+        onDiscardProductChanges,
       } = useProduct()
 
-      const { showModal, closeActionsModal } = useActionsModal()
+      const { showModal, closeActionsModal } = useProductActionsModal()
 
       const categoriesMap = ref<Map<string, ICategory>>(new Map())
       const imagesContextMenu = ref({
@@ -90,11 +89,6 @@
 
         onUploadProductImage(file)
         productImages.value = []
-      }
-
-      const onDeleteAttribute = (attr) => {
-        unref(model).attributes = unref(model).attributes.filter(it => it.key !== attr.key)
-        attributesArray.value = unref(model).attributes
       }
 
       const setAsMainImage = () => {
@@ -150,14 +144,11 @@
         attributesArray,
         currentImage,
         categoryItems,
-        attributeItems,
-        variantItems,
         unitItems,
         onImagesContextMenu,
         onAttributesUpdate,
         onSubmit,
         onLoadImage,
-        onDeleteAttribute,
         setAsMainImage,
         onDiscardChanges,
         toggleCategory,
@@ -414,7 +405,6 @@
             <variants-block/>
             <related-block
               v-if="categoryItems"
-              v-model:related="model.related"
               class="mt-2"
             />
             <conditions-block

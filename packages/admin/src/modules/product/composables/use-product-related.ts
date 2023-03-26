@@ -1,25 +1,27 @@
 import { computed, ref, unref } from 'vue'
-import { useProductService } from '@modules/product/service/product.service'
+import { useProductsService } from '@modules/product/composables/use-products-service'
 import { ICategory, IProduct } from '@ecommerce-platform/types'
 
 export const useProductRelated = () => {
-  const productService = useProductService()
+  const {
+    categoryItems,
+    product,
+    productsByCategory,
+    getCategoryProducts
+  } = useProductsService()
 
-  const categories = computed<ICategory[]>(() => productService.categories!)
-  const products = computed<IProduct[]>(() => productService.productsByCategory!)
-  const related = computed<IProduct[]>(() => productService.product?.related! as IProduct[])
-  const category = ref<ICategory>(unref(categories)?.[0])
+  const related = computed<IProduct[]>(() => unref(product)?.related! as IProduct[])
+  const category = ref<ICategory>(unref(categoryItems)?.[0]!)
 
-  const getCategoryProducts = async () => {
-    return productService.getProducts({ category: unref(category).url })
+  const getProducts = () => {
+    return getCategoryProducts(unref(category))
   }
 
   return {
-    categories,
-    products,
+    categories: categoryItems,
+    products: productsByCategory,
     related,
     category,
-    productService,
-    getCategoryProducts
+    getProducts
   }
 }
