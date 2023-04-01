@@ -1,13 +1,32 @@
 <script lang="ts">
-  import { defineComponent } from 'vue'
+  import { defineComponent, unref, watch } from 'vue'
   import { useProduct } from '@modules/product/composables/use-product'
+  import { useProductsService } from '@modules/product/composables/use-products-service'
   import { useProductCategories } from '@modules/product/composables/use-product-categories'
+  import { useProductActionsModal } from '@modules/product/composables/use-product-actions-modal'
 
   export default defineComponent({
     name: 'categories-block',
     setup() {
-      const { isEditMode, categoryItems } = useProduct()
+      const { isEditMode, model, hasChanges } = useProduct()
+      const { categoryItems } = useProductsService()
       const { toggleCategory, categoriesMap } = useProductCategories()
+      const { showModal } = useProductActionsModal()
+
+      watch(showModal, (state) => state && unref(categoriesMap).clear())
+
+      watch(isEditMode, () => {
+        unref(model)!.categories.forEach(ctg => {
+          if (!unref(categoriesMap).get(ctg._id!)) toggleCategory(ctg)
+        })
+      })
+
+      watch(hasChanges, (state) => {
+        if (state) return
+
+        unref(categoriesMap).clear()
+        unref(model).categories?.forEach(toggleCategory)
+      })
 
       return {
         isEditMode,

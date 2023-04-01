@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { defineComponent, ref, watch, unref } from 'vue'
+  import { defineComponent, ref, unref, watch } from 'vue'
   import { IVariant, IVariantOption } from '@ecommerce-platform/types'
   import { useProduct } from '@modules/product/composables/use-product'
   import { useProductVariants } from '@modules/product/composables/use-product-variants'
@@ -119,9 +119,9 @@
   <v-row
     v-if="variantItems"
     no-gutter
-    class="mt-2"
+    class="mt-2 white elevation-2"
   >
-    <v-col class="white elevation-2">
+    <v-col>
       <v-card width="100%">
         <v-card-title>
           <h3 class="primary--text">

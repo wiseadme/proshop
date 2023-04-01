@@ -1,22 +1,29 @@
 <script lang="ts">
-  import { defineComponent, ref, unref } from 'vue'
+  import { defineComponent, ref, unref, watch } from 'vue'
+  import { TextEditor } from '@shared/components/TextEditor'
   import { useProduct } from '@modules/product/composables/use-product'
   import { IAsset } from '@ecommerce-platform/types'
   import { clone } from '@shared/helpers'
+  import { useProductActionsModal } from '@modules/product/composables/use-product-actions-modal'
 
   export default defineComponent({
     name: 'info-block',
+    components: { TextEditor },
     setup() {
       const {
         model,
         unitItems,
         isEditMode,
+        hasChanges,
         onUploadProductImage,
         onDeleteProductImage,
       } = useProduct()
 
+      const { showModal } = useProductActionsModal()
+
       const productImages = ref<Array<File>>([])
       const currentImage = ref<Maybe<IAsset>>(null)
+      const textEditorRerenderKey = ref<string>('')
       const imagesContextMenu = ref({
         show: false,
         positionX: 0,
@@ -40,12 +47,19 @@
 
       const setAsMainImage = () => {
         unref(model).image = unref(currentImage)!.url
-        unref(model).assets = clone(unref(model).assets).map((it) => {
+        unref(model).assets = unref(model).assets.slice().map((it) => {
           it.main = it._id === unref(currentImage)!._id
 
           return it
         })
       }
+
+      const discardInfoChanges = () => {
+        textEditorRerenderKey.value = Date.now().toString()
+      }
+
+      watch(showModal, state => state && (textEditorRerenderKey.value = Date.now().toString()))
+      watch(hasChanges, state => !state && (textEditorRerenderKey.value = Date.now().toString()))
 
       return {
         model,
@@ -54,16 +68,18 @@
         currentImage,
         imagesContextMenu,
         isEditMode,
+        textEditorRerenderKey,
         onImagesContextMenu,
         onDeleteProductImage,
         onLoadImage,
         setAsMainImage,
+        discardInfoChanges,
       }
     }
   })
 </script>
 <template>
-  <v-row class="white my-4 pa-4 elevation-2">
+  <v-row class="white pa-4 elevation-2">
     <v-col class="pb-8">
       <h2 class="primary--text">
         Информация о товаре
@@ -138,10 +154,48 @@
         text-color="#272727"
       />
     </v-col>
-    <v-col
-      xl="6"
-      class="mb-4 white"
+    <v-menu
+      v-model="imagesContextMenu.show"
+      :position-x="imagesContextMenu.positionX"
+      :position-y="imagesContextMenu.positionY"
+      width="200"
+      absolute
+      open-on-click
+      @hide="imagesContextMenu.show = false"
     >
+      <v-list
+        class="images-menu white"
+      >
+        <v-list-item
+          class="images-menu__item"
+          @click="setAsMainImage"
+        >
+          <v-list-item-title>
+            установить главным
+          </v-list-item-title>
+        </v-list-item>
+        <v-list-item
+          class="images-menu__item"
+          @click="onDeleteProductImage(currentImage)"
+        >
+          <v-list-item-title>
+            удалить
+          </v-list-item-title>
+        </v-list-item>
+      </v-list>
+    </v-menu>
+    <v-col>
+      <text-editor
+        :key="textEditorRerenderKey"
+        v-model:content="model.description"
+        style="height: 300px"
+        content-type="html"
+        :global-options="{
+          placeholder: 'введите описание товара'
+        }"
+      />
+    </v-col>
+    <v-col class="mt-4 white">
       <v-file-input
         :value="productImages"
         :label="isEditMode ? 'Загрузить изображения' : 'Загрузить изображение можно только после создания продукта'"
@@ -151,7 +205,7 @@
         @update:value="onLoadImage"
       />
     </v-col>
-    <v-row>
+    <v-row class="pa-2">
       <v-col
         v-for="it in model.assets"
         :key="it._id"
@@ -183,35 +237,5 @@
         </v-button>
       </v-col>
     </v-row>
-    <v-menu
-      v-model="imagesContextMenu.show"
-      :position-x="imagesContextMenu.positionX"
-      :position-y="imagesContextMenu.positionY"
-      width="200"
-      absolute
-      open-on-click
-      @hide="imagesContextMenu.show = false"
-    >
-      <v-list
-        class="images-menu white"
-      >
-        <v-list-item
-          class="images-menu__item"
-          @click="setAsMainImage"
-        >
-          <v-list-item-title>
-            установить главным
-          </v-list-item-title>
-        </v-list-item>
-        <v-list-item
-          class="images-menu__item"
-          @click="onDeleteProductImage(currentImage)"
-        >
-          <v-list-item-title>
-            удалить
-          </v-list-item-title>
-        </v-list-item>
-      </v-list>
-    </v-menu>
   </v-row>
 </template>

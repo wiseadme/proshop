@@ -9,8 +9,8 @@
     setup() {
       const {
         attributes,
-        availableAttributes,
         usedAttributes,
+        availableAttributes,
         onUpdateAttributes,
         onDeleteAttribute
       } = useProductAttributes()

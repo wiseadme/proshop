@@ -1,46 +1,19 @@
-<script setup lang="ts">
-  import { PropType, toRaw, watch } from 'vue'
-  import { IProductConditions } from '@ecommerce-platform/types'
+<script lang="ts">
+  import { defineComponent } from 'vue'
   import { getProductConditionTitle } from '@modules/product/helpers'
-  import { $computed } from 'vue/macros'
+  import { useProduct } from '@modules/product/composables/use-product'
 
-  const props = defineProps({
-    conditions: Object as PropType<IProductConditions>
-  })
-
-  let rawConditions
-
-  const emit = defineEmits([
-    'update:conditions'
-  ])
-
-  const countable = $computed({
-    get: () => props.conditions!.countable,
-    set(val){
-      rawConditions.countable = val
-      emit('update:conditions', rawConditions)
+  export default defineComponent({
+    name: 'conditions-block',
+    setup() {
+      const { model } = useProduct()
+      
+      return {
+        model,
+        getProductConditionTitle
+      }
     }
   })
-
-  const exists = $computed({
-    get: () => props.conditions!.exists,
-    set(val){
-      rawConditions.exists = val
-      emit('update:conditions', rawConditions)
-    }
-  })
-
-  const visible = $computed({
-    get: () => props.conditions!.visible,
-    set(val){
-      rawConditions.visible = val
-      emit('update:conditions', rawConditions)
-    }
-  })
-
-  watch(() => props.conditions, (newConditions) => {
-    rawConditions = toRaw(JSON.parse(JSON.stringify(newConditions)))
-  }, { immediate: true })
 
 </script>
 <template>
@@ -55,7 +28,7 @@
       sm="12"
     >
       <v-checkbox
-        v-model="countable"
+        v-model="model.conditions.countable"
         :label="getProductConditionTitle('countable')"
       />
     </v-col>
@@ -66,7 +39,7 @@
       sm="12"
     >
       <v-checkbox
-        v-model="exists"
+        v-model="model.conditions.exists"
         :label="getProductConditionTitle('exists')"
       />
     </v-col>
@@ -77,7 +50,7 @@
       sm="12"
     >
       <v-checkbox
-        v-model="visible"
+        v-model="model.conditions.visible"
         :label="getProductConditionTitle('visible')"
       />
     </v-col>

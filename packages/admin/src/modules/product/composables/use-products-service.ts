@@ -99,7 +99,7 @@ export const useProductsService = createSharedComposable(() => {
     return _productsStore.read(query).catch(err => console.log(err))
   }
 
-  const setAsCurrent = (item: IProduct) => {
+  const setAsCurrent = (item: Maybe<IProduct>) => {
     product.value = clone(item)
   }
 

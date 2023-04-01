@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { defineComponent, watch, unref } from 'vue'
+  import { defineComponent, unref, watch } from 'vue'
   // Services
   import { useProductsService } from '@modules/product/composables/use-products-service'
   // Components
@@ -44,7 +44,7 @@
 
       const startWatching = () => watch(model, () => {
         if (!unref(isEditMode) || unref(hasChanges)) return
-
+        
         hasChanges.value = !!getProductUpdates()
       }, { deep: true })
 

@@ -1,9 +1,8 @@
 <script lang="ts">
-  import { computed, defineComponent, nextTick, ref, unref, watch } from 'vue'
-  import { TextEditor } from '@shared/components/TextEditor'
+  import { computed, defineComponent, unref } from 'vue'
   import { useProduct } from '@modules/product/composables/use-product'
+  import { useProductsService } from '@modules/product/composables/use-products-service'
   import { useProductActionsModal } from '@modules/product/composables/use-product-actions-modal'
-  import { useProductCategories } from '@modules/product/composables/use-product-categories'
   // Components
   import AttributesBlock from './AttributesBlock.vue'
   import ConditionsBlock from './ConditionsBlock.vue'
@@ -23,52 +22,33 @@
       RelatedBlock,
       CategoriesBlock,
       InfoBlock,
-      TextEditor,
     },
     setup() {
       const {
         model,
-        isEditMode,
-        isLoading,
         isSaved,
+        isLoading,
+        isEditMode,
         hasChanges,
-        categoryItems,
-        unitItems,
         onUpdateProduct,
         onCreateProduct,
+        onCloseProductModal,
         onDiscardProductChanges,
       } = useProduct()
 
-      const { toggleCategory, categoriesMap } = useProductCategories()
-
+      const { categoryItems } = useProductsService()
       const { showModal, closeActionsModal } = useProductActionsModal()
-
-      const content = ref<string>('')
-      const textEditorRerenderKey = ref<string>('')
 
       const computedModalHeader = computed<string>(() => `${ (unref(isEditMode) ? 'Редактирование' : 'Создание') } продукта`)
 
       const onSubmit = (validate) => {
-        if (unref(isEditMode)) return onUpdateProduct()
-
-        validate().then(onCreateProduct)
+        validate().then(unref(isEditMode) ? onUpdateProduct : onCreateProduct)
       }
 
-      const onDiscardChanges = () => {
-        textEditorRerenderKey.value = `${ Date.now() }`
-
-        nextTick(() => {
-          unref(categoriesMap).clear()
-          unref(model).categories?.forEach(toggleCategory)
-        })
-
-        onDiscardProductChanges()
+      const closeModal = () => {
+        onCloseProductModal()
+        closeActionsModal()
       }
-
-      watch(showModal, () => {
-        content.value = unref(model).description!
-        textEditorRerenderKey.value = Date.now().toString()
-      }, { immediate: true })
 
       return {
         model,
@@ -78,14 +58,10 @@
         hasChanges,
         isLoading,
         isSaved,
-        content,
-        textEditorRerenderKey,
-        categoriesMap,
         categoryItems,
-        unitItems,
         onSubmit,
-        onDiscardChanges,
-        closeActionsModal
+        onDiscardProductChanges,
+        closeModal
       }
     }
   })
@@ -114,27 +90,6 @@
             style="height: 80vh; max-height: 80vh; overflow: auto"
           >
             <info-block class="product-modal-block"/>
-            <v-row>
-              <v-col class="elevation-2 white mb-4">
-                <v-card width="100%">
-                  <v-card-title class="green--text">
-                    <h3 class="primary--text">
-                      Описание товара
-                    </h3>
-                  </v-card-title>
-                  <v-card-content>
-                    <text-editor
-                      :key="textEditorRerenderKey"
-                      v-model:content="model.description"
-                      content-type="html"
-                      :global-options="{
-                        placeholder: 'введите описание товара'
-                      }"
-                    />
-                  </v-card-content>
-                </v-card>
-              </v-col>
-            </v-row>
             <categories-block class="product-modal-block"/>
             <attributes-block class="product-modal-block"/>
             <meta-tags-block class="product-modal-block"/>
@@ -165,7 +120,7 @@
               width="120"
               elevation="3"
               :disabled="hasChanges"
-              @click="closeActionsModal"
+              @click="closeModal"
             >
               отмена
             </v-button>
@@ -175,7 +130,7 @@
               elevation="3"
               color="red darken-2"
               :disabled="!hasChanges"
-              @click="onDiscardChanges"
+              @click="onDiscardProductChanges"
             >
               сбросить изменения
             </v-button>

@@ -32,7 +32,6 @@ export const useProductAttributes = () => {
   return {
     attributes,
     availableAttributes,
-    attributeItems,
     usedAttributes,
     onUpdateAttributes,
     onDeleteAttribute
