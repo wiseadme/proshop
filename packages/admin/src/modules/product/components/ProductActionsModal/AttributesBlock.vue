@@ -31,8 +31,11 @@
   })
 </script>
 <template>
-  <v-row no-gutter>
-    <v-col class="white mt-2 elevation-2">
+  <v-row
+    class="white mt-2 elevation-2"
+    no-gutter
+  >
+    <v-col>
       <v-card
         width="100%"
       >
@@ -133,7 +136,7 @@
     </v-col>
   </v-row>
 </template>
-<style lang="scss">
+<style lang="scss" scoped>
   .draggable-container {
     min-height: 120px;
     border-radius: 5px;

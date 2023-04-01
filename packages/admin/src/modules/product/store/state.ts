@@ -2,6 +2,6 @@ import { IProductState } from '@modules/product/types'
 
 export const state = () => ({
   products: null,
-  productsByCategory: null,
+  categoryProducts: null,
   totalLength: 0
 }) as IProductState

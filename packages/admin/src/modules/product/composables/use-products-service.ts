@@ -47,7 +47,7 @@ export const useProductsService = createSharedComposable(() => {
   const product = ref<Maybe<IProduct>>(null)
 
   const products = computed<Maybe<IProduct[]>>(() => _productsStore.products)
-  const productsByCategory = computed<Maybe<IProduct[]>>(() => _productsStore.productsByCategory)
+  const categoryProducts = computed<Maybe<IProduct[]>>(() => _productsStore.categoryProducts)
   const attributeItems = computed<Maybe<IAttribute[]>>(() => _attributesStore.attributes)
   const categoryItems = computed<Maybe<ICategory[]>>(() => _categoriesStore.categories)
   const variantItems = computed<Maybe<IVariant[]>>(() => _variantsStore.variants)
@@ -222,8 +222,8 @@ export const useProductsService = createSharedComposable(() => {
 
   return {
     product,
-    productsByCategory,
     products,
+    categoryProducts,
     attributeItems,
     categoryItems,
     variantItems,

@@ -12,8 +12,8 @@
       const {
         category,
         related,
-        products,
-        categories,
+        categoryProducts,
+        categoryItems,
         getProducts
       } = useProductRelated()
 
@@ -91,15 +91,15 @@
       }
 
       watch(category, setCurrentCategoryProducts)
-      watch(products, onProductsChange)
+      watch(categoryProducts, onProductsChange)
       watch(selects, onUpdateRelatedProductsArray)
       watch(model, setExistingRelatedProductsToMap)
 
       return {
         category,
-        categories,
+        categoryItems,
         related,
-        products,
+        categoryProducts,
         selects,
       }
     }
@@ -124,16 +124,16 @@
               <v-select
                 v-model="category"
                 label="Категории"
-                :items="categories"
+                :items="categoryItems"
                 value-key="title"
               />
             </v-col>
             <v-col cols="3">
               <v-multi-select
-                v-if="products"
+                v-if="categoryProducts"
                 v-model="selects"
                 label="Список товаров"
-                :items="products"
+                :items="categoryProducts"
                 chip
                 value-key="name"
               />

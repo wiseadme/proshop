@@ -28,8 +28,11 @@
   })
 </script>
 <template>
-  <v-row no-gutter>
-    <v-col class="white mt-2 elevation-2">
+  <v-row
+    no-gutter
+    class="white elevation-2 mt-2"
+  >
+    <v-col>
       <v-card width="100%">
         <v-card-title>
           <h3 class="primary--text">
@@ -111,11 +114,4 @@
     border-radius: 5px;
     overflow: hidden !important;
   }
-
-  //.exists-tags {
-  //  border: 1px solid #d3d3d3;
-  //}
-  //.available-tags {
-  //  border: 1px solid #d3d3d3;
-  //}
 </style>

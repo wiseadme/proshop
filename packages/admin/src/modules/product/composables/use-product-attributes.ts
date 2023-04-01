@@ -15,7 +15,10 @@ export const useProductAttributes = () => {
     return map
   }, {}))
   const usedAttributes = computed<IAttribute[]>(() => unref(model).attributes)
-  const availableAttributes = computed<IAttribute[]>(() => unref(attributeItems)?.filter(it => !unref(usedAttributesMap)[it.key!]) || [])
+
+  const availableAttributes = computed<IAttribute[]>(() => {
+    return unref(attributeItems)?.filter(it => !unref(usedAttributesMap)[it.key!]) || []
+  })
 
   const onUpdateAttributes = () => {
     unref(model).attributes = unref(usedAttributes)

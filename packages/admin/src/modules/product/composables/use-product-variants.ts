@@ -1,6 +1,7 @@
 import { ref, unref } from 'vue'
 import { useProductsService } from '@modules/product/composables/use-products-service'
 import { useProduct } from '@modules/product/composables/use-product'
+import { IVariantOption } from '@ecommerce-platform/types'
 
 export const useProductVariants = () => {
   const { model } = useProduct()
@@ -16,7 +17,7 @@ export const useProductVariants = () => {
 
   const isVariantEditMode = ref(false)
 
-  const genVariantOptionPattern = () => ({
+  const genVariantOptionPattern = (): IVariantOption => ({
     _id: '',
     variantId: '',
     name: '',
@@ -26,9 +27,9 @@ export const useProductVariants = () => {
     assets: []
   })
 
-  const onUploadProductVariantImage = ({ file, option }) => {
-    return uploadProductVariantImage(file, option)
-      .then((optionData) => option.assets = optionData.assets)
+  const onUploadProductVariantImage = async ({ file, option }) => {
+    const optionData = await uploadProductVariantImage(file, option)
+    option.assets = optionData.assets
   }
 
   const onDeleteProductVariantImage = ({ asset, option }) => {
@@ -42,16 +43,19 @@ export const useProductVariants = () => {
       })
   }
 
-  const onCreateProductVariantOption = (option) => {
-    createVariantOption(option).then(() => model.value.variants = unref(product)!.variants!)
+  const onCreateProductVariantOption = async (option) => {
+    await createVariantOption(option)
+    model.value.variants = unref(product)!.variants!
   }
 
-  const onUpdateProductVariantOption = (option) => {
-    updateVariantOption(option).then(() => model.value.variants = unref(product)!.variants)
+  const onUpdateProductVariantOption = async (option) => {
+    await updateVariantOption(option)
+    model.value.variants = unref(product)!.variants
   }
 
-  const onDeleteProductVariantOption = ({ option, variant }) => {
-    deleteVariantOption({ option, variant }).then(() => model.value.variants = unref(product)?.variants!)
+  const onDeleteProductVariantOption = async ({ option, variant }) => {
+    await deleteVariantOption({ option, variant })
+    model.value.variants = unref(product)?.variants!
   }
 
   return {

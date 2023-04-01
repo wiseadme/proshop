@@ -45,7 +45,6 @@
       }
 
       const setCurrentVariant = (variant) => {
-        console.log(variant)
         optionPattern.value = genVariantOptionPattern()
         currentVariant.value = variant
       }

@@ -6,20 +6,18 @@ export const useProductRelated = () => {
   const {
     categoryItems,
     product,
-    productsByCategory,
+    categoryProducts,
     getCategoryProducts
   } = useProductsService()
 
   const related = computed<IProduct[]>(() => unref(product)?.related! as IProduct[])
   const category = ref<ICategory>(unref(categoryItems)?.[0]!)
 
-  const getProducts = () => {
-    return getCategoryProducts(unref(category))
-  }
+  const getProducts = () => getCategoryProducts(unref(category))
 
   return {
-    categories: categoryItems,
-    products: productsByCategory,
+    categoryItems,
+    categoryProducts,
     related,
     category,
     getProducts

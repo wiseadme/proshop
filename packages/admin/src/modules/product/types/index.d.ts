@@ -2,7 +2,7 @@ import { IProduct, IProductQuery, IRequestParams } from '@ecommerce-platform/typ
 
 export interface IProductState {
   products: Maybe<IProduct[]>
-  productsByCategory: Maybe<IProduct[]>
+  categoryProducts: Maybe<IProduct[]>
   totalLength: number
 }
 
