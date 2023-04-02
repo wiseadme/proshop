@@ -1,46 +1,57 @@
-<script setup lang="ts">
-  import { watch, toRaw } from 'vue'
+<script lang="ts">
+  import { defineComponent, ref, unref } from 'vue'
   // Service
-  import { useAttributeService } from '@modules/attribute/service/attribute.service'
   // Components
   import draggable from 'vuedraggable'
   // Types
   import { Attribute } from '@modules/attribute/model/attribute.model'
   // Helpers
-  import { clone } from '@shared/helpers'
   import { IAttribute } from '@ecommerce-platform/types'
+  import { useAttributesService } from '@modules/attribute/composables/use-attributes-service'
 
-  let attributes = $ref<Maybe<Array<IAttribute>>>(null)
-  let attributePattern = $ref<IAttribute>(Attribute.create())
+  export default defineComponent({
+    name: 'attributes-page',
+    components: { draggable },
+    setup() {
+      const {
+        attributes,
+        updateAttribute,
+        deleteAttribute,
+        createAttribute,
+        getAttributes
+      } = useAttributesService()
 
-  const service = useAttributeService()
+      const attributePattern = ref<IAttribute>(Attribute.create())
 
-  const clearForm = () => {
-    attributePattern = Attribute.create()
-  }
+      const clearForm = () => {
+        attributePattern.value = Attribute.create()
+      }
 
-  const onCreate = (validate) => {
-    validate().then(() => {
-      service.createAttribute(toRaw(attributePattern))
-    })
-  }
+      const onCreate = (validate) => {
+        validate().then(() => createAttribute(unref(attributePattern)))
+      }
 
-  const onChange = () => {
-    attributes!.forEach((it, i) => it.order = i)
-    service.updateAttribute(attributes)
-  }
+      const onChange = () => {
+        attributes!.forEach((it, i) => it.order = i)
+        updateAttribute(attributes)
+      }
 
-  const onDelete = (attribute: IAttribute) => {
-    service.deleteAttribute(attribute._id)
-  }
+      const onDelete = (attribute: IAttribute) => {
+        deleteAttribute(attribute._id)
+      }
 
-  watch(
-    () => service.attributes,
-    to => attributes = clone(to),
-    { immediate: true, deep: true }
-  )
+      getAttributes()
 
-  service.getAttributes()
+      return {
+        attributes,
+        attributePattern,
+        clearForm,
+        onCreate,
+        onChange,
+        onDelete
+      }
+    }
+  })
 </script>
 <template>
   <v-layout column>

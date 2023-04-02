@@ -17,25 +17,25 @@ export const useOrders = createSharedComposable(() => {
 
   const model = ref<IOrder>({} as IOrder)
 
-  const onUpdateOrder = (updates) => {
-    updateOrder(updates).then(res => setAsCurrent(res))
+  const onUpdateOrder = async (updates) => {
+    const order = await updateOrder(updates) as IOrder
+    setAsCurrent(order)
   }
 
-  const onOpenOrder = async (item) => {
+  const onOpenOrder = async (item: IOrder) => {
     setAsCurrent(item)
     model.value = Order.create(unref(item)!)
 
     if (!item.status.seen) {
-      const order = await updateOrder({ status: Object.assign({}, unref(item).status, { seen: true }) })
+      item.status.seen = true
+      const order = await updateOrder({ status: unref(item).status })
       model.value = Order.create(order!)
     }
 
     openOrder()
   }
 
-  const onDeleteOrder = (order) => {
-    deleteOrder(order._id)
-  }
+  const onDeleteOrder = (order) => deleteOrder(order._id)
 
   return {
     model,

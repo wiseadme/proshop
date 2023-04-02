@@ -9,15 +9,11 @@ import { Document } from 'mongoose'
 import { ILogger } from '@/types/utils'
 import { IProductRepository } from '../types/repository'
 import { IProductService } from '../types/service'
-import { IProduct } from '@ecommerce-platform/types'
+import { IProduct, IRequestParams } from '@ecommerce-platform/types'
 import { IEventBusService } from '@/types/services'
 
 // Constants
-import {
-  UPDATE_CATEGORY_EVENT,
-  UPDATE_ASSETS_EVENT,
-  DELETE_PRODUCT_EVENT
-} from '@common/constants/events'
+import { DELETE_PRODUCT_EVENT, UPDATE_ASSETS_EVENT, UPDATE_CATEGORY_EVENT } from '@common/constants/events'
 
 @injectable()
 export class ProductService implements IProductService {
@@ -47,12 +43,12 @@ export class ProductService implements IProductService {
     }
   }
 
-  async read(query: Partial<IProduct> & { length?: string }) {
+  async read(query: IRequestParams<Partial<IProduct>>) {
     let items = await this.repository.read(query) as (Document & IProduct)[]
     let total = 0
 
     if (query._id) {
-      return items
+      return { items, total }
     }
 
     if (query.length) {
@@ -62,7 +58,7 @@ export class ProductService implements IProductService {
     return {
       items,
       total
-    } as any
+    }
   }
 
   async update(updates: Partial<Document & IProduct>) {

@@ -1,5 +1,5 @@
 import { computed, ref, unref } from 'vue'
-import { IOrder, Maybe } from '@ecommerce-platform/types'
+import { IOrder, IUser, Maybe } from '@ecommerce-platform/types'
 import { createSharedComposable } from '@shared/features/create-shared-composable'
 import { useRequestParams } from '@shared/composables/use-request-params'
 // Stores
@@ -9,27 +9,27 @@ import { useUserStore } from '@modules/user/store'
 export const useOrdersService = createSharedComposable(() => {
   const _store = useOrdersStore()
   const _usersStore = useUserStore()
-  const { getSortParams, getPaginationParams, pagination, sort } = useRequestParams()
+  const {
+    sort,
+    pagination,
+    getSortParams,
+    getPaginationParams,
+  } = useRequestParams()
 
   const order = ref<Maybe<IOrder>>(null)
 
   const orders = computed<Maybe<IOrder[]>>(() => _store.orders)
   const newOrders = computed<Maybe<IOrder[]>>(() => _store.newOrders)
-  const users = computed(() => _usersStore.users)
+  const users = computed<Maybe<IUser[]>>(() => _usersStore.users)
 
   const getUsers = () => unref(users) ? unref(users) : _usersStore.fetchUsers()
-
-  const setAsCurrent = (item) => order.value = item
-
-  const createOrder = (order) => _store.create(order)
-
-  const getOrders = (params: Partial<IOrder> = {}) => {
-    return _store.read({
-      ...params,
-      ...getSortParams(),
-      ...getPaginationParams()
-    })
-  }
+  const setAsCurrent = (item: IOrder) => order.value = item
+  const createOrder = (order: IOrder) => _store.create(order)
+  const getOrders = (params: Partial<IOrder> = {}) => _store.read({
+    ...params,
+    ...getSortParams(),
+    ...getPaginationParams()
+  })
 
   const getNewOrders = () => _store.read({ seen: false })
 
@@ -47,14 +47,14 @@ export const useOrdersService = createSharedComposable(() => {
   return {
     order,
     orders,
-    newOrders,
     users,
-    pagination,
     sort,
+    newOrders,
+    pagination,
     getUsers,
-    setAsCurrent,
-    createOrder,
     getOrders,
+    createOrder,
+    setAsCurrent,
     getNewOrders,
     updateOrder,
     deleteOrder

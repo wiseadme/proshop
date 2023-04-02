@@ -1,116 +1,26 @@
 <script lang="ts">
-  import { defineComponent, ref } from 'vue'
-  import { PropType } from 'vue'
-  import { IProduct } from '@ecommerce-platform/types'
+  import { defineComponent } from 'vue'
   import { icons } from '@shared/enums/icons'
+  import { useProductsService } from '@modules/product/composables/use-products-service'
+  import { useProductsTable } from '@modules/product/composables/use-products-table'
 
   export default defineComponent({
     name: 'product-table',
-    props: {
-      products: {
-        type: Array as PropType<Array<IProduct>>,
-        default: () => []
-      },
-      total: {
-        type: Number
-      }
-    },
     emits: [
       'delete:product',
       'open:edit-modal',
       'open:create-modal',
       'sort:column'
     ],
-    setup(_, { emit }) {
-      const cols = ref([
-        {
-          key: 'actions',
-          title: 'Действия',
-          align: 'center'
-        },
-        {
-          key: 'name',
-          title: 'Название',
-          width: '300',
-          resizeable: true,
-          sortable: true,
-          filterable: true,
-          format: (row) => row.name,
-          onSort: (col) => emit('sort:column', col)
-        },
-        {
-          key: 'url',
-          title: 'Url товара',
-          width: '250',
-          resizeable: true,
-          sortable: true,
-          filterable: true,
-          format: (row) => row.url,
-          onSort: (col) => emit('sort:column', col)
-        },
-        {
-          key: 'price',
-          title: 'Цена',
-          width: '250',
-          resizeable: true,
-          sortable: true,
-          filterable: true,
-          format: (row) => row.price,
-          onSort: (col) => emit('sort:column', col)
-        },
-        {
-          key: 'quantity',
-          title: 'Количество',
-          width: '250',
-          resizeable: true,
-          sortable: true,
-          filterable: true,
-          format: (row) => row.quantity
-        },
-        {
-          key: 'summary',
-          title: 'Сумма',
-          width: '250',
-          resizeable: true,
-          sortable: true,
-          filterable: true,
-        },
-        {
-          key: 'image',
-          title: 'Картинка',
-          width: '150',
-          resizeable: true,
-          sortable: true,
-          filterable: true
-        },
-        {
-          key: 'categories',
-          title: 'Категории',
-          width: '250',
-          resizeable: true,
-          sortable: true,
-          filterable: true,
-          format: (row) => row.categories.reduce((acc, c, i, arr) => {
-            acc += c.title
-            if (i + 1 !== arr.length) acc += ', '
-
-            return acc
-          }, '')
-        },
-        {
-          key: 'seo',
-          title: 'SEO',
-          width: '250',
-          resizeable: true,
-          sortable: true,
-          filterable: true,
-          format: (row) => row.seo.title
-        }
-      ])
+    setup() {
+      const { products, totalLength } = useProductsService()
+      const { cols } = useProductsTable()
 
       return {
         icons,
-        cols
+        cols,
+        products,
+        totalLength
       }
     }
   })
@@ -125,7 +35,7 @@
       counts: {
         displayColor: 'green',
         rowsPerPageText: 'кол-во строк',
-        totalRows: total,
+        totalRows: totalLength,
         rowsPerPageOptions: [20, 40, 60, 80]
       },
       pagination: {
@@ -169,7 +79,7 @@
         <v-icon>{{ icons.PEN }}</v-icon>
       </v-button>
       <v-button
-        class="ml-1"
+        class="ml-2"
         color="red darken-1"
         elevation="2"
         text
@@ -182,12 +92,17 @@
       <span>{{ Number(row.quantity * row.price).toFixed(2) }}</span>
     </template>
     <template #image="{row}">
-      <img
+      <div
         v-if="row.image"
-        :src="row.image"
-        :alt="row.name"
-        style="width: auto; height: 30px"
+        class="elevation-2"
+        style="width: 40px; height: 40px; border-radius: 50px; overflow: hidden"
       >
+        <img
+          :src="row.image"
+          :alt="row.name"
+          style="width: auto; height: 100%; object-fit: contain"
+        >
+      </div>
       <span v-else>null</span>
     </template>
   </v-data-table>

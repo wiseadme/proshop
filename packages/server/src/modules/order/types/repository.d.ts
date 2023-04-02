@@ -9,4 +9,6 @@ export interface IOrderRepository {
   update(updates: IOrder): Promise<{ updated: Document & IOrder }>
 
   delete(id: string): Promise<boolean>
+
+  getDocumentsCount(): Promise<number>
 }

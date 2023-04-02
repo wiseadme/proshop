@@ -41,7 +41,7 @@
     'upload'
   ])
 
-  const files = $ref<Maybe<any>>([])
+  let files = $ref<Maybe<any>>([])
 
   const computedTitleProp = $computed<string | undefined>({
     get: () => props.title,
@@ -98,7 +98,7 @@
 
   const computedModalHeader = $computed(() => props.isUpdate ? 'Редактирование категории' : 'Создание категории')
 
-  watch(() => props.image, () => files.value = [])
+  watch(() => props.image, () => files = [])
 
   const onCreate = (validate) => {
     validate().then(() => emit('create'))
@@ -107,9 +107,7 @@
   const onUpdate = (validate) => {
     validate()
       .then(() => emit('update'))
-      .then(() => {
-        files.value = []
-      })
+      .then(() => files = [])
   }
 
   const onSubmit = validate => {
@@ -132,6 +130,7 @@
     }
 
     emit('upload:image', file)
+    files = []
   }
 </script>
 <template>

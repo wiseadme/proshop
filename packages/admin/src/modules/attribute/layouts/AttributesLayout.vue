@@ -1,4 +1,9 @@
-<script setup lang="ts">
+<script lang="ts">
+  import { defineComponent } from 'vue'
+
+  export default defineComponent({
+    name: 'attributes-layout'
+  })
 </script>
 <template>
   <div class="attribute-layout">

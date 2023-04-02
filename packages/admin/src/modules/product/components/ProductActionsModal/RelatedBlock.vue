@@ -9,7 +9,7 @@
   export default defineComponent({
     name: 'related-block',
     setup() {
-      const { model, hasChanges } = useProduct()
+      const { model } = useProduct()
       const { categoryItems } = useProductsService()
 
       const {
@@ -25,8 +25,10 @@
       let productsMap: Record<string, IProduct> = {}
       let isCategoryChanged = false
 
-      const setProductCategoriesMap = (product: IProduct) => {
-        product.categories.forEach((category: ICategory) => {
+      const clearSelects = () => selects.value = []
+
+      const setToCategoryMap = (product: IProduct) => {
+        product.categories?.forEach((category: ICategory) => {
           if (!productsMap[category.url]) {
             productsMap[category.url] = {} as IProduct
           }
@@ -36,13 +38,13 @@
       }
 
       const setExistingRelatedProductsToMap = (model: IProduct) => {
-        model.related?.forEach((pr) => setProductCategoriesMap(pr))
+        model.related?.forEach((pr) => setToCategoryMap(pr))
         setCurrentCategoryProducts()
       }
 
       const setCurrentCategoryProducts = async () => {
         isCategoryChanged = true
-        selects.value = []
+        clearSelects()
 
         if (!productsMap[unref(category).url!]) {
           productsMap[unref(category).url!] = {} as IProduct
@@ -97,9 +99,7 @@
       watch(categoryProducts, onLoadNewProducts)
       watch(selects, onUpdateRelatedProductsArray)
       watch(model, setExistingRelatedProductsToMap)
-
-      watch(showModal, (state) => !state && (selects.value = []))
-      watch(hasChanges, (state) => !state && (selects.value = []))
+      watch(showModal, (state) => !state && clearSelects())
 
       return {
         category,

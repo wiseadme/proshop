@@ -21,9 +21,9 @@ export const actions = {
 
       this.$patch(state => {
         if (!Object.keys(params!).includes('seen')) {
-          state.orders = data?.data
+          state.orders = data?.data.items
         } else {
-          state.newOrders = data?.data
+          state.newOrders = data?.data.items
         }
       })
 

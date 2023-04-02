@@ -1,7 +1,5 @@
 <script lang="ts">
   import { defineComponent, unref, watch } from 'vue'
-  // Services
-  import { useProductsService } from '@modules/product/composables/use-products-service'
   // Components
   import { ProductActionsModal } from '@modules/product/components/ProductActionsModal'
   import { ProductTable } from '@modules/product/components/ProductTable'
@@ -38,13 +36,11 @@
         onSortColumn
       } = useProductsTable()
 
-      const { products, totalLength } = useProductsService()
-
       let stopWatching
 
       const startWatching = () => watch(model, () => {
         if (!unref(isEditMode) || unref(hasChanges)) return
-        
+
         hasChanges.value = !!getProductUpdates()
       }, { deep: true })
 
@@ -64,8 +60,6 @@
         hasChanges,
         isEditMode,
         isLoading,
-        products,
-        totalLength,
         onOpenCreateProductModal,
         onDeleteProduct,
         onOpenEditProductModal,
@@ -84,8 +78,6 @@
         <skeleton-preloader v-if="isLoading"/>
         <product-table
           v-else
-          :products="products"
-          :total="totalLength"
           @open:create-modal="onOpenCreateProductModal"
           @open:edit-modal="onOpenEditProductModal"
           @delete:product="onDeleteProduct"

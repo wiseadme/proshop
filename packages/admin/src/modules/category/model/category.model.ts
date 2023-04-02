@@ -28,9 +28,11 @@ export class Category implements ICategory {
     seo = {
       title: null,
       description: null,
-      keywords: null
+      keywords: null,
+      metatags: [],
+      schema: []
     }
-  }){
+  } = {}){
     this._id = _id
     this.title = title
     this.url = url

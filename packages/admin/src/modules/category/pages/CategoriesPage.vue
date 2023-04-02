@@ -1,157 +1,57 @@
-<script lang="ts" setup>
-  import { getDifferences, clone } from '@shared/helpers'
-  import { useCategoryService } from '@modules/category/service/category.service'
-  import { Category } from '@modules/category/model/category.model'
+<script lang="ts">
+  import { defineComponent } from 'vue'
   import CategoryActionsModal from '@modules/category/components/CategoryActionsModal'
   import CategoryTable from '@modules/category/components/CategoriesTable'
-  import { ICategory } from '@ecommerce-platform/types'
+  import { useCategory } from '@modules/category/composables/use-category'
+  import { useCategoriesService } from '@modules/category/composables/use-categories-service'
+  import { useCategoryActionsModal } from '@modules/category/composables/use-category-actions-modal'
+  import { useCategoriesTable } from '@modules/category/composables/use-categories-table'
 
-  let categoryModel = $ref<ICategory>(Category.create())
-  let categoryUpdates = $ref<Maybe<ICategory>>(null)
+  export default defineComponent({
+    name: 'categories-page',
+    components: {
+      CategoryActionsModal,
+      CategoryTable
+    },
+    setup() {
+      const {
+        categories,
+        getCategories
+      } = useCategoriesService()
 
-  let isEditMode = $ref<boolean>(false)
-  let showModal = $ref<boolean>(false)
+      const {
+        model,
+        isEditMode,
+        onEdit,
+        onUploadImage,
+        onDeleteImage,
+        onDeleteCategory,
+        onCreate,
+        onUpdate,
+        onAddNew
+      } = useCategory()
 
-  const service = useCategoryService()
+      const { cols } = useCategoriesTable()
+      const { showModal } = useCategoryActionsModal()
 
-  const model = $computed<Maybe<ICategory>>(() => {
-    if (isEditMode) {
-      return categoryUpdates
+      getCategories()
+
+      return {
+        cols,
+        categories,
+        model,
+        isEditMode,
+        showModal,
+        onAddNew,
+        onEdit,
+        onUploadImage,
+        onDeleteImage,
+        onDeleteCategory,
+        onCreate,
+        onUpdate,
+      }
     }
-
-    return categoryModel
   })
-
-  const onEdit = (row) => {
-    service.setAsCurrent(row)
-    categoryUpdates = clone(row)
-
-    isEditMode = true
-    showModal = true
-  }
-
-  const onUploadImage = (file) => {
-    service.uploadCategoryImage(file)
-      .then((url) => model!.image = url)
-  }
-
-  const onDeleteImage = (url) => {
-    service.deleteImageHandler(url)
-      .then(() => model!.image = null)
-  }
-
-  const onDeleteCategory = (category) => {
-    service.deleteCategory(category)
-  }
-
-  const onAddNew = () => {
-    showModal = true
-    isEditMode = false
-
-    service.setAsCurrent(null)
-    categoryModel = Category.create({})
-  }
-
-  const onCreate = () => {
-    service.createCategory(model)
-      .then(() => categoryModel = Category.create({}))
-      .then(() => showModal = false)
-  }
-
-  const onUpdate = () => {
-    const updates = getDifferences(
-      categoryUpdates,
-      service.category
-    ) as Maybe<Partial<ICategory>>
-
-    if (!updates) {
-      return
-    }
-
-    updates!._id = service.category!._id
-
-    if (updates!.parent) {
-      updates!.parent = (categoryUpdates?.parent as ICategory)?._id
-    }
-
-    service.updateCategory(updates!)
-      .then(() => {
-        showModal = false
-        isEditMode = false
-        categoryUpdates = null
-      })
-  }
-
-  const cols = $ref([
-    {
-      key: 'actions',
-      title: 'Действия',
-      align: 'center'
-    },
-    {
-      key: 'title',
-      title: 'Название',
-      width: '300',
-      resizeable: true,
-      sortable: true,
-      filterable: true,
-      format: (row) => row.title
-    },
-    {
-      key: 'url',
-      title: 'Url категории',
-      width: '250',
-      resizeable: true,
-      sortable: true,
-      filterable: true,
-      format: (row) => row.url
-    },
-    {
-      key: 'image',
-      title: 'Картинка',
-      width: '150',
-      resizeable: true,
-      sortable: true,
-      filterable: true
-    },
-    {
-      key: 'parent',
-      title: 'Родительская категория',
-      width: '250',
-      resizeable: true,
-      sortable: true,
-      filterable: true,
-      format: (row) => row.parent?.title
-    },
-    {
-      key: 'length',
-      title: 'Кол-во позиций в категории',
-      width: '250',
-      resizeable: true,
-      sortable: true,
-      filterable: true,
-      format: (row) => row.length
-    },
-    {
-      key: 'seo',
-      title: 'SEO',
-      width: '250',
-      resizeable: true,
-      sortable: true,
-      filterable: true,
-      format: (row) => row.seo.title
-    },
-    {
-      key: 'order',
-      title: 'Порядковый номер',
-      width: '200',
-      resizeable: true,
-      sortable: true,
-      filterable: true
-    }
-  ])
-
-  service.getCategories()
 </script>
 <template>
   <v-layout
@@ -161,10 +61,10 @@
       <v-col>
         <category-table
           :cols="cols"
-          :rows="service.categories"
+          :rows="categories"
           @open:create-modal="onAddNew"
           @open:edit-modal="onEdit"
-          @delete:category="onDeleteCategory"
+          @delete:category="onDeleteCategory($event._id)"
         />
       </v-col>
     </v-row>
@@ -179,7 +79,7 @@
       v-model:parent="model.parent"
       v-model:order="model.order"
       v-model:conditions="model.conditions"
-      :categories="service.categories"
+      :categories="categories"
       :is-update="isEditMode"
       @create="onCreate"
       @update="onUpdate"

@@ -80,7 +80,7 @@
 </script>
 <template>
   <v-row class="white pa-4 elevation-2">
-    <v-col class="pb-8">
+    <v-col class="block-head pb-6 mb-8">
       <h2 class="primary--text">
         Информация о товаре
       </h2>

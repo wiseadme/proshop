@@ -1,49 +1,24 @@
-<script setup lang="ts">
+<script lang="ts">
+  import { defineComponent } from 'vue'
   import { CustomersTable } from '@modules/customer/components/CustomersTable'
-  import { useCustomersService } from '@modules/customer/service/customers.service'
 
-  const customersService = useCustomersService()
-
-  customersService.fetchCustomers().then(() => {})
-
-  const cols = $ref([
-    {
-      key: 'name',
-      title: 'Имя',
-      width: '300',
-      resizeable: true,
-      sortable: true,
-      filterable: true,
-      format: (row) => row.name
+  export default defineComponent({
+    name: 'customer-page',
+    components: {
+      CustomersTable
     },
-    {
-      key: 'phone',
-      title: 'Телефон',
-      width: '250',
-      resizeable: true,
-      sortable: true,
-      filterable: true,
-      format: (row) => row.phone
-    },
-    {
-      key: 'image',
-      title: 'Фото',
-      width: '150',
-      resizeable: true,
-      sortable: true,
-      filterable: true
-    },
-  ])
+    setup() {
 
+
+      return {}
+    }
+  })
 </script>
 <template>
   <div class="customers-page">
     <v-row>
       <v-col>
-        <customers-table
-          :cols="cols"
-          :rows="customersService.customers"
-        />
+        <customers-table/>
       </v-col>
     </v-row>
   </div>

@@ -1,29 +1,33 @@
-<script setup lang="ts">
-  import { PropType } from 'vue'
-  import { ICustomer } from '@ecommerce-platform/types'
+<script lang="ts">
+  import { defineComponent } from 'vue'
+  import { useCustomersTable } from '@modules/customer/composables/use-customers-table'
+  import { useCustomers } from '@modules/customer/composables/use-customers'
 
-  defineProps({
-    cols: {
-      type: Array,
-      required: true
-    },
-    rows: {
-      type: Array as PropType<Array<ICustomer>>,
-      default: () => []
+  export default defineComponent({
+    name: 'customers-table',
+    emits: [
+      'open:create-modal',
+      'open:edit-modal',
+      'delete:customer'
+    ],
+    setup() {
+      const { cols } = useCustomersTable()
+      const { customers, fetchCustomers } = useCustomers()
+
+      fetchCustomers()
+
+      return {
+        customers,
+        cols
+      }
     }
   })
-
-  defineEmits([
-    'open:create-modal',
-    'open:edit-modal',
-    'delete:customer'
-  ])
 
 </script>
 <template>
   <v-data-table
     :cols="cols"
-    :rows="rows"
+    :rows="customers"
     :footer-options="{
       counts: {
         displayColor: 'green',
