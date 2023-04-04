@@ -35,12 +35,12 @@ export const useCategory = createSharedComposable(() => {
     openActionsModal()
   }
 
-  const onUploadImage = async (file) => {
+  const onUploadCategoryImage = async (file) => {
     await uploadCategoryImage(file)
     unref(model).image = unref(category)!.image
   }
 
-  const onDeleteImage = async (url) => {
+  const onDeleteCategoryImage = async (url) => {
     await deleteCategoryImage(url)
 
     unref(model)!.image = null
@@ -58,14 +58,14 @@ export const useCategory = createSharedComposable(() => {
     model.value = Category.create()
   }
 
-  const onCreate = async () => {
+  const onCreateCategory = async () => {
     await createCategory(unref(model))
 
     model.value = Category.create()
     closeActionsModal()
   }
 
-  const onUpdate = async () => {
+  const onUpdateCategory = async () => {
     const updates = getDifferences(
       unref(model),
       unref(category)
@@ -91,10 +91,10 @@ export const useCategory = createSharedComposable(() => {
     hasChanges,
     onEdit,
     onAddNew,
-    onCreate,
-    onUpdate,
-    onUploadImage,
-    onDeleteImage,
+    onCreateCategory,
+    onUpdateCategory,
+    onUploadCategoryImage,
+    onDeleteCategoryImage,
     onDeleteCategory
   }
 })

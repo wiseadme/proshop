@@ -21,7 +21,7 @@
 
       const currentVariant = ref<Maybe<IVariant>>(null)
       const existsVariants = ref<IVariant[]>([])
-      const optionPattern = ref<IVariantOption>(null)
+      const optionPattern = ref<Maybe<IVariantOption>>(null)
 
       const setExistsVariants = (variants) => {
         const variantsMap = {}
@@ -47,6 +47,7 @@
       const setCurrentVariant = (variant) => {
         optionPattern.value = genVariantOptionPattern()
         currentVariant.value = variant
+        isVariantEditMode.value = false
       }
 
       const setOptionForEditing = (option) => {
