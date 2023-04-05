@@ -1,340 +1,76 @@
-<script lang="ts" setup>
-  import { PropType, nextTick, toRaw, watch } from 'vue'
-  import {
-    IVariant,
-    ICategory,
-    IAsset,
-    IUnit,
-    IAttribute,
-    IProductConditions,
-    IMetaTag,
-    IProduct,
-  } from '@ecommerce-platform/types'
-  import { clone } from '@shared/helpers'
-  import { TextEditor } from '@shared/components/TextEditor'
-  import VariantsBlock from './VariantsBlock.vue'
+<script lang="ts">
+  import { computed, defineComponent, unref } from 'vue'
+  import { useProduct } from '@modules/product/composables/use-product'
+  import { useProductsService } from '@modules/product/composables/use-products-service'
+  import { useProductActionsModal } from '@modules/product/composables/use-product-actions-modal'
+  // Components
+  import AttributesBlock from './AttributesBlock.vue'
   import ConditionsBlock from './ConditionsBlock.vue'
+  import VariantsBlock from './VariantsBlock.vue'
   import MetaTagsBlock from './MetaTagsBlock.vue'
   import RelatedBlock from './RelatedBlock.vue'
-  import draggable from 'vuedraggable'
+  import InfoBlock from './InfoBlock.vue'
+  import CategoriesBlock from './CategoriesBlock.vue'
 
-  const props = defineProps({
-    modelValue: Boolean,
-    isEditMode: Boolean,
-    hasChanges: Boolean,
-    conditions: Object as PropType<IProductConditions>,
-    categoryItems: Array as PropType<Array<ICategory>>,
-    unitItems: Array as PropType<Array<IUnit>>,
-    variantItems: Array as PropType<Array<IVariant>>,
-    metaTagItems: Array as PropType<Array<IMetaTag>>,
-    productItems: Array as PropType<Array<IProduct>>,
-    name: String,
-    url: String,
-    description: String,
-    price: Number,
-    quantity: Number,
-    unit: Object as PropType<IUnit>,
-    image: String,
-    seo: Object,
-    categories: Array as PropType<Array<ICategory>>,
-    attributes: Array as PropType<Array<IAttribute>>,
-    variants: Array as PropType<Array<IVariant>>,
-    assets: Array as PropType<Array<IAsset>>,
-    related: Array as PropType<IProduct['related']>
-  })
+  export default defineComponent({
+    name: 'product-actions-modal',
+    components: {
+      AttributesBlock,
+      VariantsBlock,
+      ConditionsBlock,
+      MetaTagsBlock,
+      RelatedBlock,
+      CategoriesBlock,
+      InfoBlock,
+    },
+    setup() {
+      const {
+        model,
+        isSaved,
+        isLoading,
+        isEditMode,
+        hasChanges,
+        onUpdateProduct,
+        onCreateProduct,
+        onCloseProductModal,
+        onDiscardProductChanges,
+      } = useProduct()
 
-  const emit = defineEmits([
-    'update:modelValue',
-    'update:name',
-    'update:price',
-    'update:description',
-    'update:image',
-    'update:assets',
-    'update:attribute',
-    'update:variant',
-    'update:metatag',
-    'update:categories',
-    'update:quantity',
-    'update:unit',
-    'update:seo',
-    'update:conditions',
-    'update:url',
-    'upload:image',
-    'delete:image',
-    'upload:variant-image',
-    'delete:variant-image',
-    'create:variant-option',
-    'delete:variant-option',
-    'update:variant-option',
-    'update:related',
-    'load:related',
-    'create',
-    'discard',
-    'update'
-  ])
+      const { categoryItems } = useProductsService()
+      const { showModal, closeActionsModal } = useProductActionsModal()
 
-  const ctgMap = $ref<Map<string, ICategory>>(new Map())
-  const imagesContextMenu = $ref({
-    show: false,
-    positionX: 0,
-    positionY: 0,
-  })
+      const computedModalHeader = computed<string>(() => `${ (unref(isEditMode) ? 'Редактирование' : 'Создание') } продукта`)
 
-  let productImages = $ref<Array<File>>([])
-  let attributesArray = $ref<Array<IAttribute>>([])
-  let currentImage = $ref<Maybe<IAsset>>(null)
-  let content = $ref<string>('')
-  let textEditorRerenderKey = $ref<string>('')
+      const onSubmit = (validate) => {
+        validate().then(unref(isEditMode) ? onUpdateProduct : onCreateProduct)
+      }
 
-  const computedModalHeader = $computed<string>(() => {
-    return `${ (props.isEditMode ? 'Редактирование' : 'Создание') } продукта`
-  })
+      const closeModal = () => {
+        onCloseProductModal()
+        closeActionsModal()
+      }
 
-  const computedModelValue = $computed<boolean>({
-    get: () => props.modelValue!,
-    set: (val) => emit('update:modelValue', val)
-  })
-
-  const computedName = $computed<string>({
-    get: () => props.name!,
-    set: (val) => emit('update:name', val)
-  })
-
-  const computedPrice = $computed<number>({
-    get: () => props.price!,
-    set: (val) => emit('update:price', +val)
-  })
-
-  let computedDescription = $computed<string>({
-    get: () => content!,
-    set: (val) => emit('update:description', val)
-  })
-
-  let computedUnit = $computed<IUnit>({
-    get: () => props.unit!,
-    set: (val) => emit('update:unit', val)
-  })
-
-  let computedQuantity = $computed<number>({
-    get: () => props.quantity!,
-    set: (val) => emit('update:quantity', +val)
-  })
-
-  let computedUrl = $computed<string>({
-    get: () => props.url!,
-    set: (val) => emit('update:url', val)
-  })
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  let computedImage = $computed<string>({
-    get: () => props.image!,
-    set: (val) => emit('update:image', val)
-  })
-
-  let computedAssets = $computed<Array<IAsset>>({
-    get: () => props.assets!,
-    set: (val) => emit('update:assets', val)
-  })
-
-  let computedVariants = $computed<Array<IVariant>>({
-    get: () => props.variants!,
-    set: (val) => emit('update:variant', toRaw(val))
-  })
-
-  let computedMetaTags = $computed({
-    get: () => props.seo?.metatags,
-    set: (val) => {
-      const seo = JSON.parse(JSON.stringify(props.seo))
-      seo.metatags = val
-
-      emit('update:seo', seo)
+      return {
+        model,
+        showModal,
+        computedModalHeader,
+        isEditMode,
+        hasChanges,
+        isLoading,
+        isSaved,
+        categoryItems,
+        onSubmit,
+        onDiscardProductChanges,
+        closeModal
+      }
     }
   })
 
-  let computedSeoTitle = $computed<string>({
-    get: () => props.seo?.title,
-    set: (val) => {
-      const seo = JSON.parse(JSON.stringify(props.seo))
-      seo.title = val
-      emit('update:seo', seo)
-    }
-  })
-
-  let computedSeoDesc = $computed<string>({
-    get: () => props.seo?.description,
-    set: (val) => {
-      const seo = JSON.parse(JSON.stringify(props.seo))
-      seo.description = val
-
-      emit('update:seo', seo)
-    }
-  })
-
-  let computedSeoKeywords = $computed<string>({
-    get: () => props.seo?.keywords,
-    set: (val) => {
-      const seo = JSON.parse(JSON.stringify(props.seo))
-      seo.keywords = val
-
-      emit('update:seo', seo)
-    }
-  })
-
-  let computedConditions = $computed<IProductConditions>({
-    get: () => props.conditions!,
-    set: (val) => emit('update:conditions', val)
-  })
-
-  let computedCategories = $computed<Array<ICategory>>({
-    get: () => props.categories!,
-    set: (val) => emit('update:categories', val)
-  })
-
-  let computedRelatedProducts = $computed({
-    get: () => props.related,
-    set: (val) => emit('update:related', val)
-  })
-
-  let computedMetaTagItems = $computed(() => {
-    const productTagsMap = props.seo?.metatags.reduce((acc, it) => {
-      acc[it._id] = true
-      return acc
-    }, {})
-
-    return props.metaTagItems?.filter(it => !productTagsMap[it._id])
-  })
-
-  const onImagesContextMenu = (event, asset) => {
-    imagesContextMenu.show = true
-    imagesContextMenu.positionX = event.clientX
-    imagesContextMenu.positionY = event.clientY
-    currentImage = clone(asset)
-  }
-
-  const toggleCategory = (ctg) => {
-    const category = ctgMap.get(ctg._id)
-
-    category ? ctgMap.delete(ctg._id) : ctgMap.set(ctg._id, ctg)
-
-    computedCategories = Array.from(toRaw(ctgMap).values())
-  }
-
-  const onCreate = validate => {
-    validate().then(() => emit('create'))
-  }
-
-  const onAttributesUpdate = () => {
-    emit('update:attribute', attributesArray)
-  }
-
-  const onUpdate = () => {
-    emit('update')
-  }
-
-  const onSubmit = (validate) => {
-    if (props.isEditMode) {
-      return onUpdate()
-    }
-
-    onCreate(validate)
-  }
-
-  const onCreateVariantOption = (option) => {
-    emit('create:variant-option', option)
-  }
-
-  const onUpdateVariantOption = (option) => {
-    emit('update:variant-option', option)
-  }
-
-  const onDeleteVariantOption = ({ variant, option }) => {
-    emit('delete:variant-option', { variant, option })
-  }
-
-  const onUploadVariantImage = ({ file, option }) => {
-    if (!file) {
-      return
-    }
-
-    emit('upload:variant-image', { file, option })
-    productImages = []
-  }
-
-  const onDeleteVariantImage = ({ asset, option, variant }) => {
-    emit('delete:variant-image', { asset, option, variant })
-  }
-
-  const onLoadImage = ([ file ]) => {
-    if (!file) {
-      return
-    }
-
-    emit('upload:image', file)
-    productImages = []
-  }
-
-  const onDeleteImage = (asset) => {
-    emit('delete:image', asset)
-  }
-
-  const onDeleteAttribute = (attr) => {
-    attributesArray = attributesArray.filter(it => it.key !== attr.key)
-
-    emit('update:attribute', attributesArray)
-  }
-
-  const setAsMainImage = () => {
-    computedImage = currentImage!.url
-
-    computedAssets = clone(computedAssets).reduce((acc, it) => {
-      it.main = it._id === currentImage!._id
-      acc.push(it)
-
-      return acc
-    }, [] as any[]) as IAsset[]
-  }
-
-  const onLoadRelatedProducts = (category) => {
-    emit('load:related', category)
-  }
-
-  const onClose = () => {
-    emit('update:modelValue', false)
-  }
-
-  const onDiscardChanges = () => {
-    textEditorRerenderKey = `${ Date.now() }`
-
-    nextTick(() => {
-      ctgMap.clear()
-      computedCategories?.forEach(toggleCategory)
-      attributesArray = clone(props.attributes)
-    })
-
-    emit('discard')
-  }
-
-  watch(() => props.modelValue, to => {
-    ctgMap.clear()
-
-    if (to && props.isEditMode) {
-      props.categories!.forEach(ctg => {
-        if (!ctgMap.get(ctg._id!)) {
-          toggleCategory(ctg)
-        }
-      })
-    }
-
-    attributesArray = clone(props.attributes)
-
-    content = props.description!
-    textEditorRerenderKey = content
-
-  }, { immediate: true })
 </script>
 <template>
   <div>
     <v-modal
-      v-model="computedModelValue"
+      v-model="showModal"
       transition="scale-in"
       width="90%"
       overlay
@@ -353,310 +89,18 @@
             width="100%"
             style="height: 80vh; max-height: 80vh; overflow: auto"
           >
-            <v-row class="white my-4 pa-4 elevation-2">
-              <v-col xl="6">
-                <v-text-field
-                  v-model.trim="computedName"
-                  label="Наименование товара"
-                  color="#272727"
-                  text-color="#272727"
-                />
-              </v-col>
-              <v-col xl="6">
-                <v-text-field
-                  v-model.number="computedPrice"
-                  label="Цена"
-                  color="#272727"
-                  text-color="#272727"
-                  type="number"
-                />
-              </v-col>
-              <v-col xl="6">
-                <v-text-field
-                  v-model.number="computedQuantity"
-                  label="Количество"
-                  color="#272727"
-                  type="number"
-                  text-color="#272727"
-                />
-              </v-col>
-              <v-col xl="6">
-                <v-select
-                  v-model="computedUnit"
-                  :items="unitItems"
-                  label="Единица измерения"
-                  color="#272727"
-                  value-key="value"
-                  active-class="green white--text"
-                  text-color="#272727"
-                />
-              </v-col>
-              <v-col xl="6">
-                <v-text-field
-                  v-model="computedSeoTitle"
-                  label="SEO title"
-                  color="#272727"
-                  text-color="#272727"
-                />
-              </v-col>
-              <v-col xl="6">
-                <v-text-field
-                  v-model="computedSeoDesc"
-                  label="SEO description"
-                  color="#272727"
-                  text-color="#272727"
-                />
-              </v-col>
-              <v-col xl="6">
-                <v-text-field
-                  v-model="computedSeoKeywords"
-                  label="SEO keywords"
-                  color="#272727"
-                  text-color="#272727"
-                />
-              </v-col>
-              <v-col xl="6">
-                <v-text-field
-                  v-model.trim="computedUrl"
-                  label="URL товара"
-                  color="#272727"
-                  text-color="#272727"
-                />
-              </v-col>
-            </v-row>
-            <v-row no-gutter>
-              <v-col class="mb-4 pa-4 white elevation-2">
-                <v-file-input
-                  :value="productImages"
-                  :label="isEditMode ? 'Загрузить изображения' : 'Загрузить изображение можно только после создания продукта'"
-                  color="#272727"
-                  text-color="#272727"
-                  :disabled="!isEditMode"
-                  @update:value="onLoadImage"
-                />
-              </v-col>
-            </v-row>
-            <v-row>
-              <v-col
-                v-for="it in computedAssets"
-                :key="it._id"
-                xl="2"
-                lg="4"
-                md="6"
-                sm="12"
-                class="image mb-4 mr-1 pa-2 white elevation-2 d-flex justify-center align-center"
-                :class="{'product-image--main': it.main}"
-                style="height: 250px; overflow: hidden; position: relative"
-                @contextmenu.prevent="onImagesContextMenu($event, it)"
-              >
-                <img
-                  style="height: auto; width: 100%"
-                  :src="it.url"
-                  class=""
-                  alt=""
-                >
-                <v-icon
-                  clickable
-                  style="position: absolute; top: 5px; right: 5px"
-                  @click="onDeleteImage(it)"
-                >
-                  fas fa-times
-                </v-icon>
-              </v-col>
-              <v-menu
-                v-model="imagesContextMenu.show"
-                :position-x="imagesContextMenu.positionX"
-                :position-y="imagesContextMenu.positionY"
-                width="200"
-                absolute
-                open-on-click
-                @hide="imagesContextMenu.show = false"
-              >
-                <v-list
-                  class="images-menu white"
-                >
-                  <v-list-item
-                    class="images-menu__item"
-                    @click="setAsMainImage"
-                  >
-                    <v-list-item-title>
-                      установить главным
-                    </v-list-item-title>
-                  </v-list-item>
-                  <v-list-item
-                    class="images-menu__item"
-                    @click="onDeleteImage(currentImage)"
-                  >
-                    <v-list-item-title>
-                      удалить
-                    </v-list-item-title>
-                  </v-list-item>
-                </v-list>
-              </v-menu>
-            </v-row>
-            <v-row>
-              <v-col class="elevation-2 white mb-4">
-                <v-card width="100%">
-                  <v-card-title class="green--text">
-                    <h3 class="primary--text">
-                      Описание товара
-                    </h3>
-                  </v-card-title>
-                  <v-card-content>
-                    <text-editor
-                      :key="textEditorRerenderKey"
-                      v-model:content="computedDescription"
-                      content-type="html"
-                      :global-options="{
-                        placeholder: 'введите описание товара'
-                      }"
-                    />
-                  </v-card-content>
-                </v-card>
-              </v-col>
-            </v-row>
-            <v-row no-gutter>
-              <v-col
-                xl="12"
-                class="elevation-2 pt-2 white"
-              >
-                <v-card width="100%">
-                  <v-card-title>
-                    <h3 class="primary--text">
-                      Категории
-                    </h3>
-                  </v-card-title>
-                  <v-card-content>
-                    <template
-                      v-for="it in categoryItems"
-                      :key="it._id"
-                    >
-                      <v-group
-                        v-if="it.children && it.children.length"
-                        :title="it.title"
-                        class="elevation-2"
-                        :expand="isEditMode"
-                      >
-                        <v-list>
-                          <v-list-item
-                            v-for="c in it.children"
-                            :key="c._id"
-                            :class="[{'green white--text text--base': ctgMap.get(c._id)}]"
-                            @click="toggleCategory(c)"
-                          >
-                            <v-list-item-content>
-                              <v-list-item-title>
-                                {{ c.title }}
-                              </v-list-item-title>
-                            </v-list-item-content>
-                          </v-list-item>
-                        </v-list>
-                      </v-group>
-                      <v-list
-                        v-else-if="!it.parent && !it.children.length"
-                        class="elevation-2"
-                      >
-                        <v-list-item
-                          :class="[{'green white--text text--base': ctgMap.get(it._id)}]"
-                          @click="toggleCategory(it)"
-                        >
-                          <v-list-item-content>
-                            <v-list-item-title>
-                              {{ it.title }}
-                            </v-list-item-title>
-                          </v-list-item-content>
-                        </v-list-item>
-                      </v-list>
-                    </template>
-                  </v-card-content>
-                </v-card>
-              </v-col>
-            </v-row>
-            <v-row no-gutter>
-              <v-col class="white mt-2 elevation-2">
-                <v-card
-                  width="100%"
-                >
-                  <v-card-title>
-                    <h3 class="primary--text">
-                      Атрибуты
-                    </h3>
-                  </v-card-title>
-                  <v-card-content>
-                    <draggable
-                      v-model="attributesArray"
-                      item-key="_id"
-                      @change="onAttributesUpdate"
-                    >
-                      <template #item="{element}">
-                        <v-row class="my-2 elevation-2 pa-2 attribute">
-                          <v-col
-                            class="d-flex justify-start align-center"
-                            cols="6"
-                          >
-                            <v-icon
-                              class="mr-3"
-                              color="grey lighten-2"
-                            >
-                              fas fa-grip-vertical
-                            </v-icon>
-                            <div class="attr-title py-2">
-                              {{ element.key }}
-                            </div>
-                            <v-spacer
-                              class="mx-2"
-                              style="border-bottom: 1px dotted #272727"
-                            >
-                            </v-spacer>
-                          </v-col>
-                          <v-col cols="6">
-                            <v-text-field
-                              v-model="element.value"
-                              color="#272727"
-                              @input="onAttributesUpdate"
-                            />
-                            <v-icon
-                              class="mr-3"
-                              color="grey lighten-2"
-                              clickable
-                              style="position: absolute; top: 0; right: 0"
-                              @click="onDeleteAttribute(element)"
-                            >
-                              fas fa-trash-alt
-                            </v-icon>
-                          </v-col>
-                        </v-row>
-                      </template>
-                    </draggable>
-                  </v-card-content>
-                </v-card>
-              </v-col>
-            </v-row>
-            <meta-tags-block
-              v-model:meta-tags="computedMetaTags"
-              :items="computedMetaTagItems"
-            />
-            <variants-block
-              v-model:variants="computedVariants"
-              :is-displayed="modelValue"
-              :is-edit="isEditMode"
-              :variant-items="variantItems"
-              @upload:variant-image="onUploadVariantImage"
-              @delete:variant-image="onDeleteVariantImage"
-              @create:variant-option="onCreateVariantOption"
-              @delete:variant-option="onDeleteVariantOption"
-              @update:variant-option="onUpdateVariantOption"
-            />
+            <info-block class="product-modal-block"/>
+            <categories-block class="product-modal-block"/>
+            <attributes-block class="product-modal-block"/>
+            <meta-tags-block class="product-modal-block"/>
+            <variants-block class="product-modal-block"/>
             <related-block
-              v-model:related="computedRelatedProducts"
-              :categories="categoryItems"
-              :products="productItems"
-              class="mt-2"
-              @load:related="onLoadRelatedProducts"
+              v-if="categoryItems"
+              class="mt-2 product-modal-block"
             />
             <conditions-block
-              v-model:conditions="computedConditions"
-              class="mt-2"
+              v-model:conditions="model.conditions"
+              class="mt-2 product-modal-block"
             />
           </v-card-content>
           <v-card-actions>
@@ -665,6 +109,7 @@
               elevation="3"
               width="120"
               :disabled="!hasChanges && isEditMode"
+              :loading="!isSaved"
               @click="onSubmit(validate)"
             >
               сохранить
@@ -675,7 +120,7 @@
               width="120"
               elevation="3"
               :disabled="hasChanges"
-              @click="onClose"
+              @click="closeModal"
             >
               отмена
             </v-button>
@@ -685,7 +130,7 @@
               elevation="3"
               color="red darken-2"
               :disabled="!hasChanges"
-              @click="onDiscardChanges"
+              @click="onDiscardProductChanges"
             >
               сбросить изменения
             </v-button>
@@ -697,4 +142,5 @@
 </template>
 <style lang="scss">
   @import "styles/ProductActionsModal";
+
 </style>

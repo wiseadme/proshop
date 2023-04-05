@@ -11,14 +11,14 @@ const devConfig = (env = {}) => merge(baseConfig(env), {
     allowedHosts: 'all',
     proxy: {
       '/v1': {
-        target: 'http://localhost:5001/',
+        target: 'http://localhost/',
         // target: 'http://45.95.234.205/',
         ws: false,
         secure: false,
         changeOrigin: true
       },
       '/uploads': {
-        target: 'http://localhost:5001/',
+        target: 'http://localhost/',
         // target: 'http://45.95.234.205/',
         ws: false,
         secure: false,

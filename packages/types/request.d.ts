@@ -1,6 +1,6 @@
 export interface IRequestPagination {
-  page: number
-  count: number
+  page?: number
+  count?: number
   length?: boolean
 }
 

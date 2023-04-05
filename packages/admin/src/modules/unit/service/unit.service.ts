@@ -1,5 +1,5 @@
 import { Store } from 'nervue'
-import { useUnitStore } from '@modules/unit/store'
+import { useUnitsStore } from '@modules/unit/store'
 import { IUnit, Maybe } from '@ecommerce-platform/types'
 import { IUnitActions, IUnitState } from '@modules/unit/types'
 
@@ -46,7 +46,7 @@ class Service {
 
   static create() {
     if (Service.instance) return Service.instance
-    Service.instance = new Service(useUnitStore())
+    Service.instance = new Service(useUnitsStore())
     return Service.instance
   }
 }

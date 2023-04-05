@@ -40,10 +40,11 @@ export const actions = {
     }
   },
 
-  async delete(category){
+  async delete(id){
     try {
-      const { data } = await categoryRepository.delete(category._id)
-      return data
+      const { data } = await categoryRepository.delete(id)
+
+      return data.data
     } catch (err) {
       return Promise.reject(err)
     }

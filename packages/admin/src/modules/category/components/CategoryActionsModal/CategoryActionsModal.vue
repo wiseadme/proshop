@@ -1,142 +1,90 @@
-<script setup lang="ts">
-  import { PropType, watch } from 'vue'
-  import { ICategory, ICategoryConditions } from '@ecommerce-platform/types'
+<script lang="ts">
+  import { computed, defineComponent, ref, unref, watch } from 'vue'
+  import { ICategory } from '@ecommerce-platform/types'
+  import { useCategoriesService } from '@modules/category/composables/use-categories-service'
+  import { useCategory } from '@modules/category/composables/use-category'
+  import { useCategoryActionsModal } from '@modules/category/composables/use-category-actions-modal'
+  import { CREATE_CATEGORY, EDIT_CATEGORY } from '@modules/category/constants'
 
-  const props = defineProps({
-    modelValue: Boolean,
-    isUpdate: Boolean,
-    title: String,
-    url: String,
-    image: String,
-    parent: [ Object, String ] as PropType<ICategory | string>,
-    order: Number,
-    seoTitle: String,
-    seoDescription: String,
-    seoKeywords: String,
-    conditions: {
-      type: Object as PropType<ICategoryConditions>,
-      default: null
-    },
-    categories: {
-      type: Array as PropType<Array<ICategory>>,
-      default: null
-    }
-  })
+  export default defineComponent({
+    name: 'category-actions-modal',
+    setup() {
+      const { categories } = useCategoriesService()
+      const { showModal, closeActionsModal } = useCategoryActionsModal()
+      const {
+        model,
+        isEditMode,
+        onCreateCategory,
+        onUpdateCategory,
+        onDeleteCategoryImage,
+        onUploadCategoryImage
+      } = useCategory()
 
-  const emit = defineEmits([
-    'update:modelValue',
-    'update:title',
-    'update:url',
-    'update:image',
-    'update:parent',
-    'update:order',
-    'update:seoTitle',
-    'update:seoDescription',
-    'update:seoKeywords',
-    'update:conditions',
-    'delete:image',
-    'upload:image',
-    'update',
-    'create',
-    'upload'
-  ])
+      const files = ref<File[]>([])
 
-  const files = $ref<Maybe<any>>([])
+      const modalHeader = computed(() => unref(isEditMode) ? EDIT_CATEGORY : CREATE_CATEGORY)
 
-  const computedTitleProp = $computed<string | undefined>({
-    get: () => props.title,
-    set: (val) => emit('update:title', val)
-  })
-
-  const computedUrlProp = $computed<string | undefined>({
-    get: () => props.url,
-    set: (val) => emit('update:url', val)
-  })
-
-  const computedImageProp = $computed<string | undefined>({
-    get: () => props.image,
-    set: (val) => emit('update:image', val)
-  })
-
-  const computedSeoTitleProp = $computed<string | undefined>({
-    get: () => props.seoTitle,
-    set: (val) => emit('update:seoTitle', val)
-  })
-
-  const computedSeoDescProp = $computed<string | undefined>({
-    get: () => props.seoDescription,
-    set: (val) => emit('update:seoDescription', val)
-  })
-
-  const computedSeoKeywordsProp = $computed<string | undefined>({
-    get: () => props.seoKeywords,
-    set: (val) => emit('update:seoKeywords', val)
-  })
-
-  const computedOrderProp = $computed<number | undefined>({
-    get: () => props.order,
-    set: (val) => emit('update:order', val)
-  })
-
-  const computedParentProp = $computed<Maybe<ICategory>>({
-    get: () => {
-      const id = props.isUpdate ? (props.parent as ICategory)?._id : props.parent
-      return props.parent ? props.categories.find(it => it._id === id)! : null
-    },
-    set: (val: ICategory) => emit('update:parent', props.isUpdate ? val : val._id)
-  })
-
-  const computedConditionsProp = $computed<ICategoryConditions>({
-    get: () => props.conditions,
-    set: (val) => emit('update:conditions', val)
-  })
-
-  const computedModelValue = $computed({
-    get: () => props.modelValue,
-    set: (val) => emit('update:modelValue', val)
-  })
-
-  const computedModalHeader = $computed(() => props.isUpdate ? 'Редактирование категории' : 'Создание категории')
-
-  watch(() => props.image, () => files.value = [])
-
-  const onCreate = (validate) => {
-    validate().then(() => emit('create'))
-  }
-
-  const onUpdate = (validate) => {
-    validate()
-      .then(() => emit('update'))
-      .then(() => {
-        files.value = []
+      const computedParent = computed({
+        get: () => {
+          const id = unref(isEditMode) ? (unref(model).parent as ICategory)?._id : unref(model).parent
+          return unref(model).parent ? unref(categories).find(it => it._id === id)! : null
+        },
+        set: (val) => {
+          unref(model).parent = unref(isEditMode) ? val : val!._id
+        }
       })
-  }
 
-  const onSubmit = validate => {
-    if (props.isUpdate) {
-      onUpdate(validate)
+      const createCategory = (validate) => {
+        validate().then(() => onCreateCategory())
+      }
+
+      const updateCategory = (validate) => {
+        validate()
+          .then(() => onUpdateCategory())
+          .then(() => files.value = [])
+      }
+
+      const onSubmit = validate => {
+        if (!unref(isEditMode)) {
+          createCategory(validate)
+        } else {
+          updateCategory(validate)
+        }
+      }
+
+      const onDeleteImage = () => onDeleteCategoryImage(unref(model).image)
+
+      const onLoadImage = ([ file ]) => {
+        if (!file) {
+          return
+        }
+        onUploadCategoryImage(file)
+        files.value = []
+      }
+
+      watch(() => unref(model).image, () => files.value = [])
+
+      return {
+        model,
+        files,
+        categories,
+        isEditMode,
+        showModal,
+        modalHeader,
+        computedParent,
+        closeActionsModal,
+        onDeleteImage,
+        createCategory,
+        updateCategory,
+        onSubmit,
+        onLoadImage
+      }
     }
-
-    if (!props.isUpdate) {
-      onCreate(validate)
-    }
-  }
-
-  const onDeleteImage = () => {
-    emit('delete:image', computedImageProp)
-  }
-
-  const onLoadImage = ([ file ]) => {
-    if (!file) {
-      return
-    }
-
-    emit('upload:image', file)
-  }
+  })
 </script>
 <template>
   <v-modal
-    v-model="computedModelValue"
+    v-model="showModal"
     transition="scale-in"
     width="70%"
     overlay
@@ -150,7 +98,7 @@
         <v-card-title
           class="modal-card-title white--text"
         >
-          {{ computedModalHeader }}
+          {{ modalHeader }}
         </v-card-title>
         <v-card-content
           class="grey lighten-4"
@@ -159,7 +107,7 @@
           <v-row class="white elevation-2 my-2 pa-2">
             <v-col xl="6">
               <v-text-field
-                v-model.trim="computedTitleProp"
+                v-model.trim="model.title"
                 label="название"
               />
             </v-col>
@@ -167,7 +115,7 @@
               xl="6"
             >
               <v-text-field
-                v-model.trim="computedUrlProp"
+                v-model.trim="model.url"
                 label="url категории"
               />
             </v-col>
@@ -175,13 +123,13 @@
           <v-row class="white elevation-2 my-2 pa-2">
             <v-col xl="6">
               <v-text-field
-                v-model.trim="computedSeoTitleProp"
+                v-model.trim="model.seo.title"
                 label="seo title"
               />
             </v-col>
             <v-col xl="6">
               <v-text-field
-                v-model.trim="computedSeoDescProp"
+                v-model.trim="model.seo.description"
                 label="seo description"
               />
             </v-col>
@@ -189,20 +137,20 @@
           <v-row class="white elevation-2 my-2 pa-2">
             <v-col xl="6">
               <v-text-field
-                v-model.trim="computedSeoKeywordsProp"
+                v-model.trim="model.seo.keywords"
                 label="seo keywords"
               />
             </v-col>
             <v-col xl="6">
               <v-text-field
-                v-model.number="computedOrderProp"
+                v-model.number="model.order"
                 label="порядковый номер"
                 type="number"
               />
             </v-col>
             <v-col xl="6">
               <v-select
-                v-model="computedParentProp"
+                v-model="computedParent"
                 label="Родительская категория"
                 :items="categories"
                 :disabled="categories && !categories.length"
@@ -215,14 +163,14 @@
                 v-model:value="files"
                 label="загрузите изображения"
                 chip-color="green"
-                :disabled="!isUpdate || !!computedImageProp"
+                :disabled="!isEditMode || !!model.image"
                 @update:value="onLoadImage"
                 @delete="onDeleteImage"
               />
             </v-col>
           </v-row>
           <v-row
-            v-if="computedImageProp"
+            v-if="model.image"
             class="white elevation-2 my-2 pa-2"
           >
             <v-col>
@@ -236,14 +184,14 @@
                   style="position: absolute; right: 10px; top: 10px"
                   color="#272727"
                   clickable
-                  @click="onDeleteImage(computedImageProp)"
+                  @click="onDeleteImage"
                 >
                   fas fa-times
                 </v-icon>
                 <v-card-content>
                   <img
                     style="width:100%"
-                    :src="computedImageProp"
+                    :src="model.image"
                   >
                 </v-card-content>
               </v-card>
@@ -252,11 +200,11 @@
           <v-row>
             <v-col>
               <v-checkbox
-                v-model="computedConditionsProp.visible"
+                v-model="model.conditions.visible"
                 label="Категория отображаемая"
               />
               <v-checkbox
-                v-model="computedConditionsProp.special"
+                v-model="model.conditions.special"
                 class="ml-2"
                 label="Категория специальная"
               />
@@ -277,7 +225,7 @@
             class="ml-2"
             width="120"
             elevation="3"
-            @click="$emit('update:modelValue', false)"
+            @click="closeActionsModal"
           >
             отмена
           </v-button>

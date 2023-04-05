@@ -3,20 +3,20 @@ import { PAGINATION_DEFAULT_ITEMS_COUNT, PAGINATION_DEFAULT_PAGE_NUMBER } from '
 
 export const usePagination = () => {
   const page = ref(PAGINATION_DEFAULT_PAGE_NUMBER)
-  const itemsCount = ref(PAGINATION_DEFAULT_ITEMS_COUNT)
+  const count = ref(PAGINATION_DEFAULT_ITEMS_COUNT)
 
-  const setPaginationPage = (value) => {
+  const setPage = (value) => {
     page.value = value
   }
 
-  const setPaginationItemsCount = (value) => {
-    itemsCount.value = value
+  const setItemsCount = (value) => {
+    count.value = value
   }
 
   return {
     page,
-    itemsCount,
-    setPaginationPage,
-    setPaginationItemsCount
+    count,
+    setPage,
+    setItemsCount
   }
 }

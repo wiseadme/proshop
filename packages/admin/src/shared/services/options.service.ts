@@ -9,15 +9,15 @@ export class Service {
   }
 
   async createOption(option){
-    return await this._store.createOption(option)
+    return this._store.createOption(option)
   }
 
   async updateOption(updates){
-    return await this._store.updateOption(updates)
+    return this._store.updateOption(updates)
   }
 
   async deleteOption(option){
-    return await this._store.deleteOption(option._id)
+    return this._store.deleteOption(option._id)
   }
 
   static create(){

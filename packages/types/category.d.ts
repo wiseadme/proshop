@@ -7,7 +7,7 @@ export interface ICategoryConditions {
 }
 
 export interface ICategory {
-  _id?: string
+  _id: string
   title: string
   image: Maybe<string>
   seo?: ISEOType

@@ -1,29 +1,30 @@
-<script setup lang="ts">
-import { PropType } from 'vue'
-import { ICategory } from '@ecommerce-platform/types'
+<script lang="ts">
+  import { defineComponent } from 'vue'
+  import { useCategoriesService } from '@modules/category/composables/use-categories-service'
+  import { useCategoriesTable } from '@modules/category/composables/use-categories-table'
 
-defineProps({
-  cols: {
-    type: Array,
-    required: true
-  },
-  rows: {
-    type: Array as PropType<Array<ICategory>>,
-    default: () => []
-  }
-})
+  export default defineComponent({
+    name: 'category-table',
+    emits: [
+      'open:create-modal',
+      'open:edit-modal',
+      'delete:category'
+    ],
+    setup() {
+      const { categories } = useCategoriesService()
+      const { cols } = useCategoriesTable()
 
-defineEmits([
-  'open:create-modal',
-  'open:edit-modal',
-  'delete:category'
-])
-
+      return {
+        cols,
+        categories
+      }
+    }
+  })
 </script>
 <template>
   <v-data-table
     :cols="cols"
-    :rows="rows"
+    :rows="categories"
     :footer-options="{
       counts: {
         displayColor: 'green',

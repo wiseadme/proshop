@@ -1,57 +1,38 @@
-<script setup lang="ts">
-  import { PropType, watch } from 'vue'
+<script lang="ts">
+  import { defineComponent } from 'vue'
+  import { useOrderActionsModal } from '@modules/order/composables/use-order-actions-modal'
+  import { useOrders } from '@modules/order/composables/use-orders'
   import { OrderDocument } from './OrderDocument'
-  import { OrderForm } from './OrderForm'
-  import { IUser } from '@ecommerce-platform/types'
 
-  defineEmits([
-    'close',
-    'update:order'
-  ])
+  export default defineComponent({
+    name: 'order-actions-modal',
+    props: {
+      users: {
+        type: Array,
+        default: () => []
+      }
+    },
+    emits: [ 'close', 'update:order' ],
+    setup() {
+      const { order } = useOrders()
+      const { showModal, openOrder, closeOrder } = useOrderActionsModal()
+      const currentComponent = OrderDocument
 
-  const props = defineProps({
-    modelValue: {
-      type: Boolean,
-      default: false
-    },
-    order: {
-      type: Object,
-      default: null
-    },
-    users: {
-      type: Array as PropType<IUser[]>,
-      default: () => []
-    },
-    isUpdate: {
-      type: Boolean,
-      default: false,
-    },
-    isRead: {
-      type: Boolean,
-      default: false,
+      return {
+        OrderDocument,
+        currentComponent,
+        showModal,
+        order,
+        openOrder,
+        closeOrder,
+      }
     }
   })
-
-  let currentComponent: any = null
-
-  watch(() => [ props.isUpdate, props.isRead ], ([ isUpdate, isRead ]) => {
-    if (isRead) {
-      currentComponent = OrderDocument
-    }
-
-    if (isUpdate) {
-      console.log('update')
-    }
-
-    if (!isRead && !isUpdate) {
-      currentComponent = OrderForm
-    }
-  }, { immediate: true })
 
 </script>
 <template>
   <v-modal
-    :model-value="modelValue"
+    v-model="showModal"
     transition="scale-in"
     width="70%"
     overlay
@@ -60,7 +41,6 @@
       :is="currentComponent"
       :order="order"
       :users="users"
-      :is-update="isUpdate"
       @close="$emit('close')"
       @update:order="$emit('update:order', $event)"
     />

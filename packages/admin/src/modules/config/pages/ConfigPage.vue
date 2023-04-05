@@ -1,14 +1,29 @@
-<script setup lang="ts">
+<script lang="ts">
+  import { defineComponent, ref } from 'vue'
   import { ColorPicker } from 'vue-color-kit'
 
-  let color = $ref('#fa5a5a')
-  let suckerCanvas = $ref(null)
-  let suckerArea = $ref([])
-  let suckerHide = $ref(false)
+  export default defineComponent({
+    name: 'config-page',
+    components: { ColorPicker },
+    setup() {
+      const color = ref('#fa5a5a')
+      const suckerCanvas = ref(null)
+      const suckerArea = ref([])
+      const suckerHide = ref(false)
 
-  const onChange = (data) => {
-    color = data.hex
-  }
+      const onChange = (data) => {
+        color.value = data.hex
+      }
+
+      return {
+        color,
+        suckerCanvas,
+        suckerArea,
+        suckerHide,
+        onChange
+      }
+    }
+  })
 </script>
 <template>
   <v-layout>

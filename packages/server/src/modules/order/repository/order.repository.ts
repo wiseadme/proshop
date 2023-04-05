@@ -5,11 +5,11 @@ import { validateId } from '@common/utils/mongoose-validate-id'
 // Types
 import { ILogger } from '@/types/utils'
 import { IOrderRepository } from '../types/repository'
-import { IOrder } from '@ecommerce-platform/types'
+import { IOrder, IRequestParams } from '@ecommerce-platform/types'
 import { OrderModel } from '@modules/order/model/order.model'
 
 // Constants
-import { DEFAULT_PAGE, DEFAULT_ITEMS_COUNT } from '@common/constants/counts'
+import { DEFAULT_ITEMS_COUNT, DEFAULT_PAGE } from '@common/constants/counts'
 
 @injectable()
 export class OrderRepository implements IOrderRepository {
@@ -32,7 +32,7 @@ export class OrderRepository implements IOrderRepository {
     }).save()
   }
 
-  async read(params: any & { page: number, count: number }): Promise<Array<Document & IOrder>> {
+  async read(params: IRequestParams<Partial<IOrder>> & { seen?: boolean }): Promise<Array<Document & IOrder>> {
     let orders
 
     if (params?._id) {
@@ -88,12 +88,16 @@ export class OrderRepository implements IOrderRepository {
       .populate({
         path: 'executor',
         select: 'firstName secondName roles phone'
-      })as Document & IOrder
+      }) as Document & IOrder
 
     return { updated }
   }
 
   async delete(id) {
     return !!await OrderModel.findByIdAndDelete(id)
+  }
+
+  async getDocumentsCount() {
+    return OrderModel.countDocuments({})
   }
 }

@@ -2,8 +2,8 @@ import { defineStore } from 'nervue'
 import { state } from './state'
 import { actions } from './actions'
 
-export const useVariantStore = defineStore({
-  id: 'VARIANT',
+export const useVariantsStore = defineStore({
+  id: 'variants',
   state,
   actions,
 })

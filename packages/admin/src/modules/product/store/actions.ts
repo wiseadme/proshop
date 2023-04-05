@@ -23,7 +23,7 @@ export const actions: IProductActions = {
 
       this.$patch(state => {
         if (params.category) {
-          state.productsByCategory = data.data.items
+          state.categoryProducts = data.data.items
         } else {
           state.products = data.data?.items
           state.totalLength = data.data?.total

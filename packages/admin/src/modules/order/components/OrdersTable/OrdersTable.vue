@@ -1,38 +1,39 @@
-<script setup lang="ts">
-  import { onBeforeUnmount } from 'vue'
-  import { PropType } from 'vue'
-  import { IOrder } from '@ecommerce-platform/types'
-  import { useOrdersService } from '@modules/order/service/order.service'
+<script lang="ts">
+  import { defineComponent } from 'vue'
+  import { useOrders } from '@modules/order/composables/use-orders'
+  import { useOrdersTable } from '@modules/order/composables/use-orders-table'
 
-  defineProps({
-    cols: {
-      type: Array,
-      required: true
-    },
-    rows: {
-      type: Array as PropType<Array<IOrder>>,
-      default: () => []
-    },
+  export default defineComponent({
+    name: 'orders-table',
+    emits: [ 'open:order' ],
+    setup() {
+      const {
+        orders,
+        onDeleteOrder
+      } = useOrders()
+
+      const {
+        cols,
+        onSort,
+        onUpdateTableRowsCount,
+        onUpdateTablePage
+      } = useOrdersTable()
+
+      return {
+        orders,
+        cols,
+        onDeleteOrder,
+        onSort,
+        onUpdateTableRowsCount,
+        onUpdateTablePage
+      }
+    }
   })
-
-  defineEmits([
-    'add:order',
-    'edit:order',
-    'delete:order',
-    'open:order',
-  ])
-
-  const service = useOrdersService()
-
-  service.addSubscriber()
-
-  onBeforeUnmount(() => service.removeSubscriber())
-
 </script>
 <template>
   <v-data-table
     :cols="cols"
-    :rows="rows"
+    :rows="orders"
     :footer-options="{
       counts: {
         displayColor: 'green',
@@ -46,6 +47,8 @@
     }"
     class="elevation-2"
     show-sequence
+    @update:page="onUpdateTablePage"
+    @update:rows-count="onUpdateTableRowsCount"
   >
     <template #pagination-text="{start, last, length}">
       <span>{{ `с ${ start } по ${ last } из ${ length }` }}</span>
@@ -65,7 +68,7 @@
         elevation="2"
         text
         :disabled="row.status && !row.status.seen"
-        @click="$emit('delete:order', row)"
+        @click="onDeleteOrder(row)"
       >
         <v-icon>fas fa-trash-alt</v-icon>
       </v-button>

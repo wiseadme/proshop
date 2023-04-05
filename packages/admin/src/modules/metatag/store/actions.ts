@@ -15,7 +15,7 @@ export const actions = {
     }
   },
 
-  async read(params) {
+  async read(params = {}) {
     try {
       const { data } = await repository.read(params)
 

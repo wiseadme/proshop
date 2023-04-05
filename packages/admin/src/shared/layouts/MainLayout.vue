@@ -1,9 +1,9 @@
-<script setup lang="ts">
-  import { onMounted, onBeforeUnmount, watch } from 'vue'
+<script lang="ts">
+  import { defineComponent, onMounted, onBeforeUnmount, watch } from 'vue'
   import { useRouter } from 'vue-router'
   import { usePolling } from '@shared/composables/use-polling'
   import { useNotifications } from '@shared/components/VNotifications/use-notifications'
-  import { useOrdersService } from '@modules/order/service/order.service'
+  import { useOrdersService } from '@modules/order/composables/use-orders-service'
   // Components
   import { AppHeader } from '@app/components/AppHeader'
   import { AppNavigation } from '@app/components/AppNavigation'
@@ -11,62 +11,70 @@
   // Types
   import { Maybe, IOrder } from '@ecommerce-platform/types'
 
-  const router = useRouter()
-  const ordersService = useOrdersService()
-  const { notify, remove } = useNotifications()
+  export default defineComponent({
+    components: {
+      VNotifications,
+      AppHeader,
+      AppNavigation
+    },
+    setup() {
+      const router = useRouter()
+      const { newOrders, getNewOrders, getOrders } = useOrdersService()
+      const { notify, remove } = useNotifications()
 
-  const { stopPolling, startPolling } = usePolling({
-    handler: () => ordersService.getNewOrders(),
-    timeout: 5000
-  })
+      const { stopPolling, startPolling } = usePolling({
+        handler: () => getNewOrders(),
+        timeout: 5000
+      })
 
-  let notSeenCount = 0
-  let newOrdersNotifyId: Maybe<number> = null
+      let notSeenCount = 0
+      let newOrdersNotifyId: Maybe<number> = null
 
-  onMounted(() => {
-    startPolling()
-  })
+      onMounted(() => startPolling())
+      onBeforeUnmount(() => stopPolling())
 
-  onBeforeUnmount(() => {
-    stopPolling()
-  })
-
-  const onClick = () => {
-    remove(newOrdersNotifyId)
-
-    newOrdersNotifyId = null
-    notSeenCount = 0
-
-    if (router.currentRoute.value.path.includes('/order')) {
-      ordersService.getOrders()
-    }
-
-    router.replace({ name: 'order-table' })
-  }
-
-  watch(() => ordersService.newOrders!, (newOrders: IOrder[]) => {
-    if (notSeenCount !== newOrders.length) {
-      if (newOrdersNotifyId) {
+      const onClick = () => {
         remove(newOrdersNotifyId)
+
+        newOrdersNotifyId = null
+        notSeenCount = 0
+
+        if (router.currentRoute.value.path.includes('/order')) {
+          getOrders()
+        }
+
+        router.replace({ name: 'order-table' })
       }
 
-      notSeenCount = newOrders.length
+      watch(newOrders!, (newOrders: IOrder[]) => {
+        if (notSeenCount !== newOrders.length) {
+          if (newOrdersNotifyId) {
+            remove(newOrdersNotifyId)
+          }
 
-      if (notSeenCount) {
-        setTimeout(() => {
-          newOrdersNotifyId = notify({
-            title: 'Новые заказы',
-            text: `У вас ${ notSeenCount } новых не просмотренных заказа`,
-            type: 'success',
-            closeOnClick: false,
-            actions: {
-              events: { onClick }
-            }
-          }) as number
-        }, 500)
+          notSeenCount = newOrders.length
+
+          if (notSeenCount) {
+            setTimeout(() => {
+              newOrdersNotifyId = notify({
+                title: 'Новые заказы',
+                text: `У вас ${ notSeenCount } новых не просмотренных заказа`,
+                type: 'success',
+                closeOnClick: false,
+                actions: {
+                  events: { onClick }
+                }
+              }) as number
+            }, 500)
+          }
+        }
+      })
+
+      return {
       }
     }
   })
+
 </script>
 <template>
   <app-header/>
