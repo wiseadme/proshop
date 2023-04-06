@@ -32,5 +32,3 @@ jobs:
             server
       - name: docker-compose
         run: docker-compose build
-      - name: context
-        run: echo "${{ toJSON(github) }}"
