@@ -2,17 +2,20 @@ import { ref, unref, watch } from 'vue'
 import { useProductsService } from '@modules/product/composables/use-products-service'
 import { useProduct } from '@modules/product/composables/use-product'
 import { IMetaTag, Maybe } from '@ecommerce-platform/types'
+import { createSharedComposable } from '@shared/features/create-shared-composable'
 
-export const useProductMetatags = () => {
+export const useProductMetaTags = createSharedComposable(() => {
   const { model } = useProduct()
   const { metaTagItems } = useProductsService()
+
+  const metaTag = ref<Maybe<IMetaTag>>(null)
 
   const availableMetaTags = ref<Maybe<IMetaTag[]>>(null)
   const usedMetaTags = ref<Maybe<IMetaTag[]>>(null)
 
-  watch(() => unref(model).seo.metatags, (metaTags) => {
-    availableMetaTags.value = metaTags
-  })
+  const editTag = (item: IMetaTag) => {
+    metaTag.value = item
+  }
 
   watch(() => unref(model).seo.metatags, (metaTags) => {
     const map = metaTags.reduce((acc, it) => {
@@ -21,11 +24,14 @@ export const useProductMetatags = () => {
       return acc
     }, {})
 
-    usedMetaTags.value = unref(metaTagItems)?.filter(it => !map[it._id]) || []
-  })
+    availableMetaTags.value = unref(metaTagItems)?.filter(it => !map[it._id]) || []
+    usedMetaTags.value = unref(metaTagItems)?.filter(it => map[it._id]) || []
+  }, { immediate: true })
 
   return {
+    metaTag,
     usedMetaTags,
-    availableMetaTags
+    availableMetaTags,
+    editTag
   }
-}
+})

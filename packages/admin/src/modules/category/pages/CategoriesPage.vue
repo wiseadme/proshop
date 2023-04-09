@@ -23,11 +23,11 @@
         model,
         isEditMode,
         onEdit,
-        onUploadImage,
-        onDeleteImage,
+        onUploadCategoryImage,
+        onDeleteCategoryImage,
         onDeleteCategory,
-        onCreate,
-        onUpdate,
+        onCreateCategory,
+        onUpdateCategory,
         onAddNew
       } = useCategory()
 
@@ -44,11 +44,11 @@
         showModal,
         onAddNew,
         onEdit,
-        onUploadImage,
-        onDeleteImage,
+        onUploadCategoryImage,
+        onDeleteCategoryImage,
         onDeleteCategory,
-        onCreate,
-        onUpdate,
+        onCreateCategory,
+        onUpdateCategory,
       }
     }
   })
@@ -81,10 +81,10 @@
       v-model:conditions="model.conditions"
       :categories="categories"
       :is-update="isEditMode"
-      @create="onCreate"
-      @update="onUpdate"
-      @delete:image="onDeleteImage"
-      @upload:image="onUploadImage"
+      @create="onCreateCategory"
+      @update="onUpdateCategory"
+      @delete:image="onDeleteCategoryImage"
+      @upload:image="onUploadCategoryImage"
     />
   </v-layout>
 </template>

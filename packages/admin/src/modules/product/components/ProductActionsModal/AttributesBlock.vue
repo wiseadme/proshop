@@ -17,7 +17,9 @@
 
       const pullFunction = () => {
       }
-      const onChange = (val) => console.log(val)
+
+      const onChange = () => {
+      }
 
       return {
         attributes,
@@ -32,10 +34,7 @@
   })
 </script>
 <template>
-  <v-row
-    class="white mt-2 pa-4 elevation-2"
-    no-gutter
-  >
+  <v-row class="white mt-2 pa-4 elevation-2">
     <v-col class="block-head pb-6 mb-8">
       <h2 class="primary--text">
         Атрибуты

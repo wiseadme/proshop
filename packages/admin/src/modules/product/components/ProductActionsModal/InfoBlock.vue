@@ -5,14 +5,15 @@
   import { IAsset } from '@ecommerce-platform/types'
   import { clone } from '@shared/helpers'
   import { useProductActionsModal } from '@modules/product/composables/use-product-actions-modal'
+  import { useProductsService } from '@modules/product/composables/use-products-service'
 
   export default defineComponent({
     name: 'info-block',
     components: { TextEditor },
     setup() {
+      const { unitItems } = useProductsService()
       const {
         model,
-        unitItems,
         isEditMode,
         hasChanges,
         onUploadProductImage,
@@ -24,13 +25,14 @@
       const productImages = ref<Array<File>>([])
       const currentImage = ref<Maybe<IAsset>>(null)
       const textEditorRerenderKey = ref<string>('')
+
       const imagesContextMenu = ref({
         show: false,
         positionX: 0,
         positionY: 0,
       })
 
-      const onImagesContextMenu = (event, asset) => {
+      const onImageContextMenu = (event, asset) => {
         unref(imagesContextMenu).show = true
         unref(imagesContextMenu).positionX = event.clientX
         unref(imagesContextMenu).positionY = event.clientY
@@ -47,6 +49,7 @@
 
       const setAsMainImage = () => {
         unref(model).image = unref(currentImage)!.url
+
         unref(model).assets = unref(model).assets.slice().map((it) => {
           it.main = it._id === unref(currentImage)!._id
 
@@ -69,7 +72,7 @@
         imagesContextMenu,
         isEditMode,
         textEditorRerenderKey,
-        onImagesContextMenu,
+        onImageContextMenu,
         onDeleteProductImage,
         onLoadImage,
         setAsMainImage,
@@ -216,7 +219,7 @@
         class="image mb-4 mr-1 white elevation-2 d-flex justify-center align-center"
         :class="{'product-image--main': it.main}"
         style="height: 250px; overflow: hidden; position: relative; border-radius: 10px; padding: 0"
-        @contextmenu.prevent="onImagesContextMenu($event, it)"
+        @contextmenu.prevent="onImageContextMenu($event, it)"
       >
         <img
           style="height: 250px; width: 100%; object-fit: cover"
