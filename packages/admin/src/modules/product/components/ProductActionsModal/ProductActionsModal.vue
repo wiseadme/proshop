@@ -4,24 +4,24 @@
   import { useProductsService } from '@modules/product/composables/use-products-service'
   import { useProductActionsModal } from '@modules/product/composables/use-product-actions-modal'
   // Components
-  import AttributesBlock from './AttributesBlock.vue'
-  import ConditionsBlock from './ConditionsBlock.vue'
-  import VariantsBlock from './VariantsBlock.vue'
-  import MetaTagsBlock from './MetaTagsBlock.vue'
-  import RelatedBlock from './RelatedBlock.vue'
-  import InfoBlock from './InfoBlock.vue'
-  import CategoriesBlock from './CategoriesBlock.vue'
+  import ProductAttributesBlock from './ProductAttributesBlock.vue'
+  import ProductConditionsBlock from './ProductConditionsBlock.vue'
+  import ProductVariantsBlock from './ProductVariantsBlock.vue'
+  import ProductMetaTagsBlock from './ProductMetaTagsBlock.vue'
+  import ProductRelatedBlock from './ProductRelatedBlock.vue'
+  import ProductInfoBlock from './ProductInfoBlock.vue'
+  import ProductCategoriesBlock from './ProductCategoriesBlock.vue'
 
   export default defineComponent({
     name: 'product-actions-modal',
     components: {
-      AttributesBlock,
-      VariantsBlock,
-      ConditionsBlock,
-      MetaTagsBlock,
-      RelatedBlock,
-      CategoriesBlock,
-      InfoBlock,
+      ProductAttributesBlock,
+      ProductVariantsBlock,
+      ProductConditionsBlock,
+      ProductMetaTagsBlock,
+      ProductRelatedBlock,
+      ProductCategoriesBlock,
+      ProductInfoBlock,
     },
     setup() {
       const {
@@ -89,16 +89,16 @@
             width="100%"
             style="height: 80vh; max-height: 80vh; overflow: auto"
           >
-            <info-block class="product-modal-block"/>
-            <categories-block class="product-modal-block"/>
-            <attributes-block class="product-modal-block"/>
-            <meta-tags-block class="product-modal-block"/>
-            <variants-block class="product-modal-block"/>
-            <related-block
+            <product-info-block class="product-modal-block"/>
+            <product-categories-block class="product-modal-block"/>
+            <product-attributes-block class="product-modal-block"/>
+            <product-meta-tags-block class="product-modal-block"/>
+            <product-variants-block class="product-modal-block"/>
+            <product-related-block
               v-if="categoryItems"
               class="mt-2 product-modal-block"
             />
-            <conditions-block
+            <product-conditions-block
               v-model:conditions="model.conditions"
               class="mt-2 product-modal-block"
             />
@@ -142,5 +142,4 @@
 </template>
 <style lang="scss">
   @import "styles/ProductActionsModal";
-
 </style>

@@ -43,7 +43,6 @@
         displayColor: 'green'
       }
     }"
-    show-checkbox
     show-sequence
   >
     <template #toolbar>
@@ -74,6 +73,7 @@
         color="orange"
         elevation="2"
         text
+        style="z-index: 0"
         @click="$emit('open:edit-modal', row)"
       >
         <v-icon>{{ icons.PEN }}</v-icon>
@@ -83,6 +83,7 @@
         color="red darken-1"
         elevation="2"
         text
+        style="z-index: 0"
         @click="$emit('delete:product', row)"
       >
         <v-icon>{{ icons.TRASH }}</v-icon>

@@ -1,27 +1,37 @@
 <script lang="ts">
   import { defineComponent } from 'vue'
   import draggable from 'vuedraggable'
-  import { useProductMetatags } from '@modules/product/composables/use-product-metatags'
+  import MetaTagEditForm from './MetaTagsEditForm.vue'
+  import { useProductMetaTags } from '@modules/product/composables/use-product-metatags'
+  import { useProduct } from '@modules/product/composables/use-product'
   // Helpers
   import { descriptorToMetaTag } from '@shared/helpers/metatag'
 
   export default defineComponent({
-    name: 'meta-tags-block',
-    components: { draggable },
+    name: 'product-meta-tags-block',
+    components: {
+      draggable,
+      MetaTagEditForm
+    },
     emits: [ 'update:meta-tags' ],
     setup() {
-      const { usedMetaTags, availableMetaTags } = useProductMetatags()
+      const { model } = useProduct()
+      const {
+        availableMetaTags,
+        metaTag,
+        editTag
+      } = useProductMetaTags()
 
-      const onEdit = (tag) => console.log(tag)
-      const onChange = (tag) => {
-        console.log('change', tag)
+      const onChange = () => {
       }
-      const pullFunction = () => console.log('ev')
+      const pullFunction = () => {
+      }
 
       return {
-        usedMetaTags,
+        model,
+        metaTag,
         availableMetaTags,
-        onEdit,
+        editTag,
         onChange,
         pullFunction,
         descriptorToMetaTag
@@ -30,10 +40,7 @@
   })
 </script>
 <template>
-  <v-row
-    no-gutter
-    class="white elevation-2 mt-2 pa-4"
-  >
+  <v-row class="white elevation-2 mt-2 pa-4">
     <v-col class="block-head pb-6 mb-8">
       <h2 class="primary--text">
         Мета теги
@@ -48,7 +55,7 @@
           Текущие мета теги товара
         </h3>
         <draggable
-          :list="usedMetaTags"
+          :list="model.seo.metatags"
           item-key="_id"
           group="metaTags"
           class="draggable-container exists-tags"
@@ -56,9 +63,10 @@
         >
           <template #item="{element}">
             <div
+              v-if="element !== metaTag"
               class="d-flex justify-start align-center elevation-2 my-1 mx-1 py-4 px-3 meta-tag-item primary"
               style="border-radius: 10px; overflow: hidden"
-              @click="onEdit(element)"
+              @click="editTag(element)"
             >
               <v-icon
                 class="mr-3"
@@ -71,6 +79,7 @@
               </span>
               <v-spacer></v-spacer>
             </div>
+            <meta-tag-edit-form v-else/>
           </template>
         </draggable>
       </div>
@@ -95,7 +104,7 @@
             <div
               class="d-flex justify-start align-center elevation-2 my-1 mx-1 py-4 px-3 meta-tag-item white"
               style="border-radius: 10px; overflow: hidden"
-              @click="onEdit(element)"
+              @click="editTag(element)"
             >
               <v-icon
                 class="mr-3"

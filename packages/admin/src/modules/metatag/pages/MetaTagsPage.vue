@@ -1,89 +1,76 @@
-<script setup lang="ts">
-  import { watch, toRaw } from 'vue'
-  import { useMetaTagService } from '@modules/metatag/service/metatag.service'
+<script lang="ts">
+  import { defineComponent, ref, unref, watch } from 'vue'
   import draggable from 'vuedraggable'
+  import { useMetaTag } from '@modules/metatag/composables/use-meta-tag'
+  import { useMetaTagsService } from '@modules/metatag/composables/use-meta-tags-service'
   import { IMetaTag } from '@ecommerce-platform/types'
-  import { clone } from '@shared/helpers'
   import { descriptorToMetaTag } from '@shared/helpers/metatag'
+  import { clone } from '@shared/helpers'
 
-  const service = useMetaTagService()
+  export default defineComponent({
+    name: 'meta-tags-page',
+    components: {
+      draggable
+    },
+    setup() {
+      const {
+        metaTags,
+        fetchMetaTags,
+        onDeleteMetaTag,
+        onUpdateMetaTag,
+        onCreateMetaTag,
+      } = useMetaTagsService()
 
-  const metaProps = $ref({
-    props: {},
-    order: 0
-  })
+      const {
+        isEditMode,
+        displayMeta,
+        isDescriptorHasKeys,
+        saveBtnTitle,
+        metaProps,
+        metaPropertyPattern,
+        addPropsToMeta,
+        clearAll,
+        onEditMetaTag,
+      } = useMetaTag()
 
-  const metaPropertyPattern = $ref({
-    key: '',
-    value: ''
-  })
+      const tags = ref<Maybe<IMetaTag[]>>([])
 
-  let tags = $ref<Maybe<Array<IMetaTag>>>(null)
-  let isEditMode = $ref(false)
+      const saveMetaTagDescriptor = async () => {
+        const meta = unref(metaProps)
 
-  const clearMetaPattern = () => {
-    metaPropertyPattern.key = ''
-    metaPropertyPattern.value = ''
-  }
+        if (unref(isEditMode)) {
+          await onUpdateMetaTag(meta)
+          isEditMode.value = false
+        } else {
+          await onCreateMetaTag(meta)
+        }
 
-  const clearMetaProps = () => {
-    metaProps.props = {}
-    metaProps.order = 0
-  }
+        setTimeout(clearAll)
+      }
 
-  const clearAll = () => {
-    clearMetaPattern()
-    clearMetaProps()
+      fetchMetaTags()
 
-    isEditMode = false
-    service.setAsCurrent(null)
-  }
+      watch(metaTags, (newTags) => {
+        tags.value = clone(newTags)
+      })
 
-  const addPropsToMeta = (validate) => {
-    validate().then(() => {
-      const key = metaPropertyPattern.key.toLowerCase()
-
-      metaProps.props[key] = metaPropertyPattern.value
-
-      clearMetaPattern()
-    })
-  }
-
-  const saveMetaTagDescriptor = async () => {
-    const meta = toRaw(metaProps)
-
-    if (isEditMode) {
-      await service.updateMetaTag(meta)
-      isEditMode = false
-    } else {
-      await service.createMetaTag(meta)
+      return {
+        metaTags,
+        tags,
+        metaPropertyPattern,
+        metaProps,
+        displayMeta,
+        isDescriptorHasKeys,
+        saveBtnTitle,
+        addPropsToMeta,
+        clearAll,
+        saveMetaTagDescriptor,
+        descriptorToMetaTag,
+        onEditMetaTag,
+        onDeleteMetaTag,
+      }
     }
-
-    setTimeout(clearAll)
-  }
-
-  const onDelete = (el: IMetaTag) => {
-    service.deleteMetaTag(el._id)
-  }
-
-  const onEdit = (metaTagDescriptor) => {
-    service.setAsCurrent(metaTagDescriptor)
-
-    metaProps.props = clone(metaTagDescriptor.props)
-    metaProps.order = metaTagDescriptor.order
-
-    isEditMode = true
-  }
-
-  const displayMeta = $computed(() => descriptorToMetaTag(metaProps.props))
-  const isDescriptorHasKeys = $computed(() => Object.keys(metaProps.props).length)
-  const saveBtnTitle = $computed(() => isEditMode ? 'Изменить' : 'Сохранить')
-
-  service.fetchMetaTags().then(res => console.log(res))
-
-  watch(() => service.metaTags, (metaTags) => {
-    tags = metaTags
-  }, { immediate: true })
+  })
 
 </script>
 <template>
@@ -163,7 +150,7 @@
           md="12"
           sm="12"
         >
-          <template v-if="service.metaTags">
+          <template v-if="metaTags">
             <draggable
               v-model="tags"
               item-key="_id"
@@ -187,7 +174,7 @@
                     color="primary"
                     elevation="2"
                     class="mr-2"
-                    @click="onEdit(element)"
+                    @click="onEditMetaTag(element)"
                   >
                     <v-icon>
                       fas fa-pen
@@ -197,7 +184,7 @@
                     round
                     color="error"
                     elevation="2"
-                    @click="onDelete(element)"
+                    @click="onDeleteMetaTag(element._id)"
                   >
                     <v-icon>
                       fas fa-times

@@ -32,8 +32,8 @@
       }
 
       const onChange = () => {
-        attributes!.forEach((it, i) => it.order = i)
-        updateAttribute(attributes)
+        unref(attributes)!.forEach((it, i) => it.order = i)
+        updateAttribute(unref(attributes))
       }
 
       const onDelete = (attribute: IAttribute) => {

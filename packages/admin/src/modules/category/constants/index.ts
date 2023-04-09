@@ -1,2 +1,2 @@
-export const CREATE_CATEGORY = 'Создание категории'
-export const EDIT_CATEGORY = 'Редактирование категории'
+export const CREATE_CATEGORY_TITLE = 'Создание категории'
+export const EDIT_CATEGORY_TITLE = 'Редактирование категории'

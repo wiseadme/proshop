@@ -4,10 +4,10 @@
   import { useProduct } from '@modules/product/composables/use-product'
 
   export default defineComponent({
-    name: 'conditions-block',
+    name: 'product-conditions-block',
     setup() {
       const { model } = useProduct()
-      
+
       return {
         model,
         getProductConditionTitle

@@ -4,7 +4,7 @@
   import { useCategoriesService } from '@modules/category/composables/use-categories-service'
   import { useCategory } from '@modules/category/composables/use-category'
   import { useCategoryActionsModal } from '@modules/category/composables/use-category-actions-modal'
-  import { CREATE_CATEGORY, EDIT_CATEGORY } from '@modules/category/constants'
+  import { CREATE_CATEGORY_TITLE, EDIT_CATEGORY_TITLE } from '@modules/category/constants'
 
   export default defineComponent({
     name: 'category-actions-modal',
@@ -22,16 +22,21 @@
 
       const files = ref<File[]>([])
 
-      const modalHeader = computed(() => unref(isEditMode) ? EDIT_CATEGORY : CREATE_CATEGORY)
+      const modalHeader = computed<string>(() => unref(isEditMode) ? EDIT_CATEGORY_TITLE : CREATE_CATEGORY_TITLE)
 
-      const computedParent = computed({
-        get: () => {
-          const id = unref(isEditMode) ? (unref(model).parent as ICategory)?._id : unref(model).parent
-          return unref(model).parent ? unref(categories).find(it => it._id === id)! : null
-        },
-        set: (val) => {
-          unref(model).parent = unref(isEditMode) ? val : val!._id
-        }
+      const getParent = () => {
+        const id = unref(isEditMode) ? (unref(model).parent as ICategory)?._id : unref(model).parent
+
+        return unref(model).parent ? unref(categories).find(it => it._id === id)! : null
+      }
+
+      const setParent = (val: ICategory) => {
+        unref(model).parent = unref(isEditMode) ? val : val!._id
+      }
+
+      const computedParent = computed<Maybe<ICategory>>({
+        get: getParent,
+        set: setParent
       })
 
       const createCategory = (validate) => {

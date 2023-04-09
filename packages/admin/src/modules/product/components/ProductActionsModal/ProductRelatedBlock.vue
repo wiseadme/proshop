@@ -7,7 +7,7 @@
   import { useProductsService } from '@modules/product/composables/use-products-service'
 
   export default defineComponent({
-    name: 'related-block',
+    name: 'product-related-block',
     setup() {
       const { model } = useProduct()
       const { categoryItems } = useProductsService()
@@ -20,8 +20,8 @@
       } = useProductRelated()
 
       const selects = ref<IProduct[]>([])
+      const productsMap: Record<string, Record<string, IProduct>> = {}
 
-      let productsMap: Record<string, IProduct> = {}
       let isCategoryChanged: boolean = false
 
       const clearSelects = () => selects.value = []
@@ -36,7 +36,7 @@
         })
       }
 
-      const addRelatedToSelects = () => {
+      const selectRelatedFromProducts = () => {
         const categoryMap = productsMap[unref(category)!.url!]
 
         unref(categoryProducts)!.forEach((it) => {
@@ -46,16 +46,16 @@
         })
       }
 
-      const setCurrentCategoryProducts = async () => {
+      const setRelatedProducts = async () => {
         clearSelects()
 
         isCategoryChanged = true
-        productsMap[unref(category).url!] = {} as IProduct
+        productsMap[unref(category).url!] = {} as Record<string, IProduct>
 
         await getProducts()
 
         unref(model).related?.forEach((pr) => setToCategoryMap(pr))
-        addRelatedToSelects()
+        selectRelatedFromProducts()
 
         isCategoryChanged = false
       }
@@ -100,9 +100,9 @@
         !state && clearSelects()
       }
 
-      watch(category, setCurrentCategoryProducts)
+      watch(category, setRelatedProducts)
       watch(selects, onUpdateRelatedProductsArray)
-      watch(model, setCurrentCategoryProducts)
+      watch(model, setRelatedProducts)
       watch(showModal, onShowModal)
 
       return {
@@ -117,20 +117,17 @@
 
 </script>
 <template>
-  <v-row
-    no-gutter
-    class="white elevation-2"
-  >
+  <v-row class="white pa-4 elevation-2">
+    <v-col class="block-head pb-6 mb-8">
+      <h2 class="primary--text">
+        Рекомендуемые товары
+      </h2>
+    </v-col>
     <v-col>
       <v-card
         color="white"
         style="width: 100%"
       >
-        <v-card-title>
-          <h3 class="green--text">
-            Рекомендуемые товары
-          </h3>
-        </v-card-title>
         <v-card-content>
           <v-row>
             <v-col cols="3">
