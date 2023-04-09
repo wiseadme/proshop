@@ -3,7 +3,7 @@ import { state } from './state'
 import { actions } from './actions'
 
 export const useMetaTagsStore = defineStore({
-  id: 'metatags',
+  id: 'metaTags',
   state,
   actions
 })

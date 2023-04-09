@@ -7,7 +7,9 @@ export const actions = {
     try {
       const { data } = await repository.create(metaTag)
 
-      this.$patch(state => state.metaTags.push(data.data))
+      this.$patch(state => {
+        state.metaTags = [ ...state.metaTags, data.data ]
+      })
 
       return data.data
     } catch (err) {
