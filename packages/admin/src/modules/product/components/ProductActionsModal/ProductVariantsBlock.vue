@@ -5,6 +5,7 @@
   import { useProductVariants } from '@modules/product/composables/use-product-variants'
 
   export default defineComponent({
+    name: 'product-variants-block',
     setup() {
       const { model, isEditMode } = useProduct()
 

@@ -2,14 +2,15 @@
   import { defineComponent } from 'vue'
   import draggable from 'vuedraggable'
   import { useProductAttributes } from '@modules/product/composables/use-product-attributes'
+  import { useProduct } from '@modules/product/composables/use-product'
 
   export default defineComponent({
-    name: 'attributes-block',
+    name: 'product-attributes-block',
     components: { draggable },
     setup() {
+      const { model } = useProduct()
+
       const {
-        attributes,
-        usedAttributes,
         availableAttributes,
         onUpdateAttributes,
         onDeleteAttribute
@@ -22,9 +23,8 @@
       }
 
       return {
-        attributes,
+        model,
         availableAttributes,
-        usedAttributes,
         onUpdateAttributes,
         onDeleteAttribute,
         pullFunction,
@@ -46,7 +46,7 @@
           Текущие атрибуты
         </h3>
         <draggable
-          :list="usedAttributes"
+          :list="model.attributes"
           item-key="key"
           group="attributes"
           class="draggable-container elevation-2"

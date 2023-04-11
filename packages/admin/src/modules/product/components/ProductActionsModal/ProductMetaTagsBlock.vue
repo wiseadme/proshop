@@ -8,7 +8,7 @@
   import { descriptorToMetaTag } from '@shared/helpers/metatag'
 
   export default defineComponent({
-    name: 'meta-tags-block',
+    name: 'product-meta-tags-block',
     components: {
       draggable,
       MetaTagEditForm

@@ -7,7 +7,7 @@
   import { useProductsService } from '@modules/product/composables/use-products-service'
 
   export default defineComponent({
-    name: 'related-block',
+    name: 'product-related-block',
     setup() {
       const { model } = useProduct()
       const { categoryItems } = useProductsService()

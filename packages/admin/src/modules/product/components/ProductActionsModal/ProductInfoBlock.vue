@@ -8,7 +8,7 @@
   import { useProductsService } from '@modules/product/composables/use-products-service'
 
   export default defineComponent({
-    name: 'info-block',
+    name: 'product-info-block',
     components: { TextEditor },
     setup() {
       const { unitItems } = useProductsService()
