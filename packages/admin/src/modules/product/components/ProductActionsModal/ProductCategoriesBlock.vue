@@ -52,7 +52,7 @@
   <v-row class="white elevation-2 mt-2 pa-4">
     <v-col class="block-head pb-6 mb-8">
       <h2 class="primary--text">
-        Варианты
+        Категории
       </h2>
     </v-col>
     <v-col xl="12">
@@ -68,14 +68,14 @@
         >
           <v-list>
             <v-list-item
-              v-for="c in it.children"
-              :key="c._id"
-              :class="[{'green white--text text--base': categoriesMap.get(c._id)}]"
-              @click="toggleCategory(c)"
+              v-for="child in it.children"
+              :key="child._id"
+              :class="[{'green white--text text--base': categoriesMap.get(child._id)}]"
+              @click="toggleCategory(child)"
             >
               <v-list-item-content>
                 <v-list-item-title>
-                  {{ c.title }}
+                  {{ child.title }}
                 </v-list-item-title>
               </v-list-item-content>
             </v-list-item>

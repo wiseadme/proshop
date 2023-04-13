@@ -47,6 +47,8 @@
       }
 
       const setRelatedProducts = async () => {
+        if (!unref(category)) return
+
         clearSelects()
 
         isCategoryChanged = true
@@ -76,7 +78,7 @@
 
       const onUpdateRelatedProductsArray = (newRelated, oldRelated) => {
         /** если изменилась категория то пропускаем сброс выбранных ранее продуктов */
-        if (isCategoryChanged) return
+        if (isCategoryChanged || !unref(category)) return
 
         /** если удален продукт из рекомендуемых то удаляем его из мапы */
         if (newRelated.length < oldRelated.length) {

@@ -55,10 +55,8 @@ export class CategoryService implements ICategoryService {
       if (category.parent) {
         const [ prevParent ] = await this.repository.read({ _id: category.parent } as Partial<ICategory>)
 
-        const children = prevParent!.children!.filter((it) => {
-          return (it as any)._id.toString() !== updates._id
-        })
-
+        // @ts-ignore
+        const children = prevParent!.children!.filter((it: ICategory) => it._id.toString() !== updates._id)
         const set = { _id: prevParent._id, children }
 
         await this.repository.update(set)
@@ -86,10 +84,8 @@ export class CategoryService implements ICategoryService {
     if (category.parent) {
       const [ parent ] = await this.repository.read({ _id: category.parent } as Partial<ICategory>)
 
-      const children = parent!.children!.filter((it) => {
-        return (it as any)._id.toString() !== category._id
-      })
-
+      // @ts-ignore
+      const children = parent!.children!.filter((it: ICategory) => it._id.toString() !== category._id)
       const set = { _id: parent._id, children }
 
       await this.repository.update(set)

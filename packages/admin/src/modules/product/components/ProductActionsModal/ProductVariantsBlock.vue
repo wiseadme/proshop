@@ -143,7 +143,7 @@
       </v-button>
     </v-col>
     <v-col
-      v-if="currentVariant.options"
+      v-if="currentVariant && currentVariant.options"
       style="border-radius: 5px;"
       class="pa-2 elevation-2"
     >

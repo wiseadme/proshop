@@ -14,7 +14,7 @@ export interface ICategory {
   url: string
   parent: Maybe<string | ICategory>
   order?: number
-  children?: Maybe<string[]>
+  children?: Maybe<ICategory[] | string[]>
   length: number
   conditions: ICategoryConditions
 }
