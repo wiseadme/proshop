@@ -92,8 +92,8 @@
       <v-text-field
         v-model.trim="model.name"
         label="Наименование товара"
-        color="#272727"
-        text-color="#272727"
+        color="secondary"
+        text-color="content"
       />
     </v-col>
     <v-col xl="6">

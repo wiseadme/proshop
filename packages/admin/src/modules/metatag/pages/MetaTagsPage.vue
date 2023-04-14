@@ -117,7 +117,7 @@
               </v-card-content>
               <v-card-actions>
                 <v-button
-                  color="green"
+                  color="var(--primary)"
                   class="mr-2"
                   text
                   @click="addPropsToMeta(validate)"
@@ -125,7 +125,7 @@
                   Добавить ключ
                 </v-button>
                 <v-button
-                  color="orange"
+                  color="var(--warning)"
                   class="mr-2"
                   text
                   @click="clearAll"
@@ -133,7 +133,7 @@
                   Сбросить
                 </v-button>
                 <v-button
-                  color="green"
+                  color="primary"
                   elevation="2"
                   :disabled="!isDescriptorHasKeys"
                   @click="saveMetaTagDescriptor()"

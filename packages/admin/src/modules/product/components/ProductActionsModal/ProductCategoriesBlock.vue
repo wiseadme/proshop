@@ -70,7 +70,7 @@
             <v-list-item
               v-for="child in it.children"
               :key="child._id"
-              :class="[{'green white--text text--base': categoriesMap.get(child._id)}]"
+              :class="[{'primary white--text text--base': categoriesMap.get(child._id)}]"
               @click="toggleCategory(child)"
             >
               <v-list-item-content>
@@ -86,7 +86,7 @@
           class="elevation-2"
         >
           <v-list-item
-            :class="[{'green white--text text--base': categoriesMap.get(it._id)}]"
+            :class="[{'primary white--text text--base': categoriesMap.get(it._id)}]"
             @click="toggleCategory(it)"
           >
             <v-list-item-content>

@@ -53,7 +53,8 @@
 
         statuses[statusKey] = true
 
-        onUpdateOrder(Object.assign({}, { status: statuses }, executor ? { executor } : {}))
+        return onUpdateOrder(Object.assign({}, { status: statuses }, executor ? { executor } : {}))
+
       }
 
       const onClose = () => emit('close')
@@ -109,7 +110,7 @@
       <v-row class="mt-2">
         <v-col>
           <v-list class="elevation-1">
-            <v-list-item class="elevation-1 green white--text">
+            <v-list-item class="elevation-1 primary white--text">
               <v-list-item-icon/>
               <v-list-item-content style="width: 250px">
                 <h4>Наименование</h4>
@@ -157,7 +158,7 @@
       <v-row class="mt-2">
         <v-col>
           <v-list class="elevation-1">
-            <v-list-item class="green white--text">
+            <v-list-item class="primary white--text">
               <v-list-item-icon/>
               <v-list-item-content style="width: 250px">
                 <h4>Заказчик</h4>

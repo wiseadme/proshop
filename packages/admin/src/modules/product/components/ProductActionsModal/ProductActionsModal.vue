@@ -105,7 +105,7 @@
           </v-card-content>
           <v-card-actions>
             <v-button
-              color="green"
+              color="primary"
               elevation="3"
               width="120"
               :disabled="!hasChanges && isEditMode"
@@ -115,7 +115,7 @@
               сохранить
             </v-button>
             <v-button
-              color="orange accent-2"
+              color="warning"
               class="ml-4"
               width="120"
               elevation="3"

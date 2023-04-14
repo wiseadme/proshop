@@ -36,13 +36,13 @@
     :rows="orders"
     :footer-options="{
       counts: {
-        displayColor: 'green',
+        displayColor: 'primary',
         rowsPerPageText: 'кол-во строк',
         rowsPerPageOptions: [ 20, 40, 60, 80 ]
       },
       pagination: {
-        buttonsColor: 'green',
-        displayColor: 'green',
+        buttonsColor: 'primary',
+        displayColor: 'primary',
       }
     }"
     class="elevation-2"
@@ -88,7 +88,7 @@
     <template #status="{ row, format }">
       <div
         class="d-flex justify-center align-center py-2 white--text"
-        :class="row.status && row.status.created && !row.status.seen ? 'green' : 'blue'"
+        :class="row.status && row.status.created && !row.status.seen ? 'primary' : 'success'"
         style="width: 100%; height: 100%; border-radius: 10px"
       >
         {{ format(row) }}

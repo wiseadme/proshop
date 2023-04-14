@@ -52,21 +52,21 @@
             elevation="2"
             color="#ffffff"
           >
-            <v-card-title class="green--text">
+            <v-card-title class="primary--text">
               <h3>Группы вариантов</h3>
             </v-card-title>
             <v-card-content>
               <v-text-field
                 v-model.trim="model.group"
                 label="Название группы"
-                color="#272727"
+                color="content"
                 :rules="[val => !!val || 'Обязательное поле']"
               />
             </v-card-content>
             <v-card-actions class="">
               <v-button
                 elevation="2"
-                color="green"
+                color="primary"
                 @click="onCreate(validate)"
               >
                 <v-icon

@@ -33,14 +33,14 @@
     class="elevation-2"
     :footer-options="{
       counts: {
-        displayColor: 'green',
+        displayColor: 'primary',
         rowsPerPageText: 'кол-во строк',
         totalRows: totalLength,
         rowsPerPageOptions: [20, 40, 60, 80]
       },
       pagination: {
-        buttonsColor: 'green',
-        displayColor: 'green'
+        buttonsColor: 'primary',
+        displayColor: 'primary'
       }
     }"
     show-sequence
@@ -51,7 +51,7 @@
         <v-spacer></v-spacer>
         <v-toolbar-items>
           <v-button
-            color="green"
+            color="primary"
             elevation="5"
             @click="$emit('open:create-modal')"
           >

@@ -68,7 +68,7 @@
             elevation="2"
             color="white"
           >
-            <v-card-title class="green--text">
+            <v-card-title class="primary--text">
               <h3>Аттрибуты</h3>
             </v-card-title>
             <v-card-content>
@@ -95,7 +95,7 @@
             <v-card-actions class="">
               <v-button
                 elevation="2"
-                color="green"
+                color="primary"
                 @click="onCreate(validate)"
               >
                 <v-icon

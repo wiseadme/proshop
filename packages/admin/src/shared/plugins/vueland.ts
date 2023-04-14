@@ -24,10 +24,12 @@ export const vueland = createVueland({
 vueland.setIcons('fa')
 
 vueland.setTheme({
-  base: '#ffffff',
-  primary: colors.green.base,
+  base: colors.white.base,
+  primary: 'rgb(37,134,236)',
+  secondary: 'rgb(48,48,52)',
   content: colors.grey.darken3,
   error: colors.red.lighten2,
-  warning: colors.orange.base,
-  disabled: '#e6e6e6'
+  success: 'rgb(7,187,59)',
+  warning: 'rgb(253,211,0)',
+  disabled: '#e6e6e6',
 })

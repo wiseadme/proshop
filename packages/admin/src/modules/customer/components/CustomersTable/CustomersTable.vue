@@ -30,12 +30,12 @@
     :rows="customers"
     :footer-options="{
       counts: {
-        displayColor: 'green',
+        displayColor: 'primary',
         rowsPerPageText: 'кол-во строк'
       },
       pagination: {
-        buttonsColor: 'green',
-        displayColor: 'green'
+        buttonsColor: 'primary',
+        displayColor: 'primary'
       }
     }"
     class="elevation-2"

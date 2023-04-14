@@ -103,7 +103,7 @@
   >
     <v-list
       v-model:value="current"
-      active-class="green white--text text--base"
+      active-class="primary white--text text--base"
       active
     >
       <v-list-item

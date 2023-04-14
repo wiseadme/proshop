@@ -135,7 +135,7 @@
         class="mr-2 mb-4"
         outlined
         rounded
-        :color="currentVariant._id === variant._id ? 'green' : 'orange'"
+        :color="currentVariant._id === variant._id ? 'var(--primary)' : 'warning'"
         :disabled="!isEditMode"
         @click="setCurrentVariant(variant)"
       >
@@ -150,7 +150,7 @@
       <v-chip
         v-for="option in currentVariant.options"
         :key="option._id"
-        :color="!option._id ?'grey': option === optionPattern ? 'green lighten-3' : 'green'"
+        :color="!option._id ?'grey': option === optionPattern ? 'primary lighten-3' : 'primary'"
         :class="['mr-2']"
         closable
         @click="setOptionForEditing(option)"
@@ -265,7 +265,7 @@
         </v-row>
         <v-row class="mt-4 ml-2">
           <v-button
-            color="green"
+            color="primary"
             elevation="2"
             :disabled="!isEditMode"
             @click="createOption(validate)"

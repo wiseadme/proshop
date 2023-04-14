@@ -71,7 +71,7 @@
             elevation="2"
             color="#ffffff"
           >
-            <v-card-title class="green--text">
+            <v-card-title class="primary--text">
               <h3>Измерения</h3>
             </v-card-title>
             <v-card-content>

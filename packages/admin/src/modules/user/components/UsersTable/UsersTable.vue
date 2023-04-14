@@ -26,12 +26,12 @@
     :rows="rows"
     :footer-options="{
       counts: {
-        displayColor: 'green',
+        displayColor: 'primary',
         rowsPerPageText: 'кол-во строк'
       },
       pagination: {
-        buttonsColor: 'green',
-        displayColor: 'green'
+        buttonsColor: 'primary',
+        displayColor: 'primary'
       }
     }"
     class="elevation-2"
@@ -43,7 +43,7 @@
         <v-spacer></v-spacer>
         <v-toolbar-items>
           <v-button
-            color="green"
+            color="primary"
             elevation="5"
             @click="$emit('open:create-modal')"
           >
@@ -62,7 +62,7 @@
     </template>
     <template #actions="{row}">
       <v-button
-        color="orange"
+        color="var(--warning)"
         elevation="2"
         text
         @click="$emit('open:edit-modal', row)"
@@ -71,7 +71,7 @@
       </v-button>
       <v-button
         class="ml-1"
-        color="red darken-1"
+        color="var(--error)"
         elevation="2"
         text
         @click="$emit('delete:user', row)"

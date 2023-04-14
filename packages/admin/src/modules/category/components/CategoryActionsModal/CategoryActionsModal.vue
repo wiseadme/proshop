@@ -91,33 +91,36 @@
   <v-modal
     v-model="showModal"
     transition="scale-in"
-    width="70%"
+    width="700px"
     overlay
+    color="white"
   >
     <v-form v-slot="{ validate }">
       <v-card
         class="elevation-3"
         width="100%"
-        color="rgba(0,0,0,.4)"
+        color="white"
+        style="border-radius: 22px; overflow: hidden"
       >
-        <v-card-title
-          class="modal-card-title white--text"
-        >
+        <v-card-title class="modal-card-title secondary--text">
           {{ modalHeader }}
         </v-card-title>
         <v-card-content
-          class="grey lighten-4"
           style="height: 70vh; max-height: 70vh; overflow: auto"
         >
-          <v-row class="white elevation-2 my-2 pa-2">
-            <v-col xl="6">
+          <v-row class="y-2 py-2">
+            <v-col
+              xl="12"
+              md="12"
+            >
               <v-text-field
                 v-model.trim="model.title"
                 label="название"
               />
             </v-col>
             <v-col
-              xl="6"
+              xl="12"
+              md="12"
             >
               <v-text-field
                 v-model.trim="model.url"
@@ -125,35 +128,47 @@
               />
             </v-col>
           </v-row>
-          <v-row class="white elevation-2 my-2 pa-2">
-            <v-col xl="6">
+          <v-row class="my-2 py-2">
+            <v-col xl="12">
               <v-text-field
                 v-model.trim="model.seo.title"
                 label="seo title"
               />
             </v-col>
-            <v-col xl="6">
+            <v-col
+              xl="12"
+              md="12"
+            >
               <v-text-field
                 v-model.trim="model.seo.description"
                 label="seo description"
               />
             </v-col>
           </v-row>
-          <v-row class="white elevation-2 my-2 pa-2">
-            <v-col xl="6">
+          <v-row class="my-2 py-2">
+            <v-col
+              xl="12"
+              md="12"
+            >
               <v-text-field
                 v-model.trim="model.seo.keywords"
                 label="seo keywords"
               />
             </v-col>
-            <v-col xl="6">
+            <v-col
+              xl="12"
+              md="12"
+            >
               <v-text-field
                 v-model.number="model.order"
                 label="порядковый номер"
                 type="number"
               />
             </v-col>
-            <v-col xl="6">
+            <v-col
+              xl="12"
+              md="12"
+            >
               <v-select
                 v-model="computedParent"
                 label="Родительская категория"
@@ -163,7 +178,7 @@
                 value-key="title"
               />
             </v-col>
-            <v-col xl="6">
+            <v-col xl="12">
               <v-file-input
                 v-model:value="files"
                 label="загрузите изображения"
@@ -176,9 +191,12 @@
           </v-row>
           <v-row
             v-if="model.image"
-            class="white elevation-2 my-2 pa-2"
+            class="my-2 py-2"
           >
-            <v-col>
+            <v-col
+              xl="12"
+              md="12"
+            >
               <v-card
                 color="white"
                 width="200"
@@ -221,6 +239,7 @@
             color="primary"
             elevation="3"
             width="120"
+            rounded
             @click="onSubmit(validate)"
           >
             сохранить
@@ -230,6 +249,7 @@
             class="ml-2"
             width="120"
             elevation="3"
+            rounded
             @click="closeActionsModal"
           >
             отмена

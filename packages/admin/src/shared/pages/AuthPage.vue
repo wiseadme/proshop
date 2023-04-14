@@ -1,6 +1,7 @@
 <script setup lang="ts">
   import { useAuthService } from '@shared/services/auth.service'
   import { icons } from '@shared/enums/icons'
+  import ProductLogo from "@shared/components/ProductLogo.vue";
 
   const service = useAuthService()
 
@@ -24,14 +25,10 @@
       <v-card
         elevation="2"
         color="white"
+        style="border-radius: 12px"
       >
         <v-card-title>
-          <v-icon
-            :icon="icons.USER_CIRCLE"
-            size="24"
-            class="mr-2"
-          />
-          <h4>Авторизация</h4>
+          <product-logo fill="var(--primary)"/>
         </v-card-title>
         <v-card-content>
           <v-text-field
@@ -62,9 +59,10 @@
         </v-card-content>
         <v-card-actions>
           <v-button
-            class="elevation-1"
-            color="green"
+            class="elevation-1 my-3"
+            color="primary"
             width="120"
+            rounded
             @click="loginUser(validate)"
           >
             войти

@@ -18,7 +18,7 @@
 </script>
 <template>
   <v-row class="py-2 px-1 white elevation-2">
-    <v-col class="mb-4 green--text">
+    <v-col class="mb-4 primary--text">
       <h2>Состояния товара</h2>
     </v-col>
     <v-col
