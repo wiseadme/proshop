@@ -1,5 +1,11 @@
 <script lang="ts">
-  import { computed, defineComponent, ref, unref, watch } from 'vue'
+  import {
+    computed,
+    defineComponent,
+    ref,
+    unref,
+    watch
+  } from 'vue'
   import { ICategory } from '@ecommerce-platform/types'
   import { useCategoriesService } from '@modules/category/composables/use-categories-service'
   import { useCategory } from '@modules/category/composables/use-category'
@@ -102,7 +108,7 @@
         color="white"
         style="border-radius: 22px; overflow: hidden"
       >
-        <v-card-title class="modal-card-title secondary--text">
+        <v-card-title class="modal-card-title secondary--text py-4">
           {{ modalHeader }}
         </v-card-title>
         <v-card-content

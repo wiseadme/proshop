@@ -1,4 +1,8 @@
-import { computed, ref, unref } from 'vue'
+import {
+  computed,
+  ref,
+  unref
+} from 'vue'
 import { useProductsService } from '@modules/product/composables/use-products-service'
 import { ICategory, IProduct } from '@ecommerce-platform/types'
 

@@ -1,7 +1,7 @@
 <script lang="ts">
   import { defineComponent, unref } from 'vue'
   import AddressMap from '@modules/order/components/OrderActionsModal/AddressMap/AddressMap.vue'
-  import { OrderStatuses, OrderProcessStatuses } from '@modules/order/enums/status'
+  import { OrderProcessStatuses, OrderStatuses } from '@modules/order/enums/status'
   import { useNotifications } from '@shared/components/VNotifications/use-notifications'
   import { useOrders } from '@modules/order/composables/use-orders'
   import { ICartItem } from '@ecommerce-platform/types'

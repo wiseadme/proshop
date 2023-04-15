@@ -1,4 +1,8 @@
-import { computed, ref, unref } from 'vue'
+import {
+  computed,
+  ref,
+  unref
+} from 'vue'
 import { createSharedComposable } from '@shared/features/create-shared-composable'
 // Stores
 import { useProductStore } from '@modules/product/store'
@@ -8,6 +12,7 @@ import { useVariantsStore } from '@modules/variant/store'
 import { useUnitsStore } from '@modules/unit/store'
 import { useMetaTagsStore } from '@modules/metatag/store'
 import { useRequestParams } from '@shared/composables/use-request-params'
+
 // Services
 import { useFilesService } from '@shared/services/files.service'
 import { useOptionsService } from '@shared/services/options.service'

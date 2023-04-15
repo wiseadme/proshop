@@ -1,60 +1,36 @@
-<script lang="ts" setup>
-  import { watch } from 'vue'
+<script lang="ts">
+  import { defineComponent } from 'vue'
   import draggable from 'vuedraggable'
-  import { useUnitService } from '@modules/unit/service/unit.service'
-  import { useLoadingState } from '@shared/composables/use-loading-state'
-  import { clone } from '@shared/helpers'
-  import { Unit } from '@modules/unit/model/unit.model'
-  import { IUnit } from '@ecommerce-platform/types'
+  import { useUnitsService } from '@modules/unit/composables/use-units-service'
+  import { useUnit } from "@modules/unit/composables/use-unit";
 
-  let model = $ref<IUnit>(Unit.create())
-  let units = $ref<Maybe<Array<IUnit>>>(null)
-  let isUpdate = $ref(false)
+  export default defineComponent({
+    name: 'units-page',
+    components: {
+      draggable
+    },
+    setup() {
+      const { units, getUnits } = useUnitsService()
+      const { model, loading, clearUnitModel, onSaveUnit, onEditUnit, onDeleteUnit } = useUnit()
 
-  const service = useUnitService()
-  const { loading, setLoadingState } = useLoadingState()
-
-  const onSave = (validate) => {
-    setLoadingState(true)
-
-    let promise
-
-    validate().then(() => {
-      if (isUpdate) {
-        promise = service.updateUnit(model)
-      } else {
-        promise = service.createUnit(model)
+      const onChange = () => {
       }
 
-      promise.then(() => setLoadingState(false))
-    })
-  }
+      getUnits()
 
-  const onDelete = (item) => {
-    return service.deleteUnit(item._id)
-  }
+      return {
+        model,
+        units,
+        loading,
+        onDeleteUnit,
+        clearUnitModel,
+        onChange,
+        onEditUnit,
+        onSaveUnit,
+      }
+    }
+  })
 
-  const clearForm = () => {
-    model = Unit.create()
-  }
-
-  const onChange = () => {
-    console.log('change')
-  }
-
-  const onEdit = (unit) => {
-    isUpdate = true
-    service.setAsCurrent(unit)
-    model = Unit.create(unit)
-  }
-
-  watch(
-    () => service.units,
-    to => units = clone(to),
-    { immediate: true, deep: true }
-  )
-
-  service.getUnits()
 </script>
 <template>
   <v-layout column>
@@ -92,7 +68,7 @@
                 elevation="2"
                 color="primary"
                 :loading="loading"
-                @click="onSave(validate)"
+                @click="onSaveUnit(validate)"
               >
                 <v-icon
                   size="14"
@@ -104,7 +80,7 @@
                 elevation="2"
                 color="error"
                 class="ml-2"
-                @click="clearForm"
+                @click="clearUnitModel"
               >
                 <v-icon
                   size="14"
@@ -147,7 +123,7 @@
                   color="primary"
                   elevation="2"
                   class="mr-2"
-                  @click="onEdit(element)"
+                  @click="onEditUnit(element)"
                 >
                   <v-icon>
                     fas fa-pen
@@ -157,7 +133,7 @@
                   color="error"
                   elevation="2"
                   round
-                  @click="onDelete(element)"
+                  @click="onDeleteUnit(element)"
                 >
                   <v-icon>
                     fas fa-times

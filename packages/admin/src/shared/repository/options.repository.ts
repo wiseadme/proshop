@@ -1,5 +1,5 @@
 import { rest } from '@shared/api'
-import { IRest, IRepository } from '@shared/types/app'
+import { IRepository, IRest } from '@shared/types/app'
 import { IVariantOption } from '@modules/variant/types'
 
 interface IOptionsRepository extends IRepository {

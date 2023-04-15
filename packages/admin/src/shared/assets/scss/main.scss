@@ -14,7 +14,12 @@ body {
   font-family: 'Exo 2', sans-serif;
 }
 
-.modal-card-title {
-  font-family: 'Montserrat', sans-serif;
-  font-weight: 700;
+.modal-card {
+  border-radius: $border-radius;
+
+  &-title {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    justify-content: center;
+  }
 }

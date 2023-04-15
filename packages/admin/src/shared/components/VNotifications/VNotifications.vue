@@ -4,9 +4,9 @@
   import { Notify } from './types'
   import {
     InfoNotification,
+    SimpleNotification,
     SuccessNotification,
-    WarningNotification,
-    SimpleNotification
+    WarningNotification
   } from './components'
 
   const props = defineProps({

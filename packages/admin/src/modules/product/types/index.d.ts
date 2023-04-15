@@ -1,4 +1,8 @@
-import { IProduct, IProductQuery, IRequestParams } from '@ecommerce-platform/types'
+import {
+  IProduct,
+  IProductQuery,
+  IRequestParams
+} from '@ecommerce-platform/types'
 
 export interface IProductState {
   products: Maybe<IProduct[]>

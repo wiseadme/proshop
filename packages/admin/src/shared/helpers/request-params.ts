@@ -1,4 +1,9 @@
-import { IProductQuery, IRequestPagination, IRequestParams, IRequestSort } from '@ecommerce-platform/types'
+import {
+  IProductQuery,
+  IRequestPagination,
+  IRequestParams,
+  IRequestSort
+} from '@ecommerce-platform/types'
 import { unref } from 'vue'
 import { usePagination } from '@shared/composables/use-pagination'
 import { useSort } from '@shared/composables/use-sort'

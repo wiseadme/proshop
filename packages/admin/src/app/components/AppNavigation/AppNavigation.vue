@@ -1,6 +1,11 @@
 <script lang="ts">
-  import { defineComponent, ref, onMounted, watch } from 'vue'
-  import { useRouter, useRoute } from 'vue-router'
+  import {
+    defineComponent,
+    onMounted,
+    ref,
+    watch
+  } from 'vue'
+  import { useRoute, useRouter } from 'vue-router'
 
   export default defineComponent({
     setup(){

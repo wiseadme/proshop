@@ -1,4 +1,4 @@
-import { defineComponent, computed } from 'vue'
+import { computed, defineComponent } from 'vue'
 import { QuillEditor } from '@vueup/vue-quill'
 
 export const textEditor = defineComponent({

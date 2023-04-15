@@ -17,9 +17,11 @@
 
 </script>
 <template>
-  <v-row class="py-2 px-1 white elevation-2">
-    <v-col class="mb-4 primary--text">
-      <h2>Состояния товара</h2>
+  <v-row class="mt-2 pa-4 white elevation-2">
+    <v-col class="block-head pb-6 mb-8">
+      <h2 class="block-head__title">
+        Состояния товара
+      </h2>
     </v-col>
     <v-col
       xl="2"

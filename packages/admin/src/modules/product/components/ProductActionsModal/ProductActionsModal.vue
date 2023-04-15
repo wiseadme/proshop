@@ -1,5 +1,9 @@
 <script lang="ts">
-  import { computed, defineComponent, unref } from 'vue'
+  import {
+    computed,
+    defineComponent,
+    unref
+  } from 'vue'
   import { useProduct } from '@modules/product/composables/use-product'
   import { useProductsService } from '@modules/product/composables/use-products-service'
   import { useProductActionsModal } from '@modules/product/composables/use-product-actions-modal'
@@ -25,8 +29,8 @@
     },
     setup() {
       const {
-        model,
         isSaved,
+        model,
         isLoading,
         isEditMode,
         hasChanges,
@@ -77,15 +81,14 @@
     >
       <v-form v-slot="{validate}">
         <v-card
-          color="rgba(0,0,0,.4)"
+          color="white"
           width="100%"
-          class="elevation-5"
+          class="modal-card elevation-5"
         >
-          <v-card-title class="white--text text--base">
+          <v-card-title class="modal-card-title secondary--text py-4">
             <h3>{{ computedModalHeader }}</h3>
           </v-card-title>
           <v-card-content
-            class="grey lighten-3"
             width="100%"
             style="height: 80vh; max-height: 80vh; overflow: auto"
           >
@@ -110,6 +113,7 @@
               width="120"
               :disabled="!hasChanges && isEditMode"
               :loading="!isSaved"
+              rounded
               @click="onSubmit(validate)"
             >
               сохранить
@@ -119,6 +123,7 @@
               class="ml-4"
               width="120"
               elevation="3"
+              rounded
               :disabled="hasChanges"
               @click="closeModal"
             >
@@ -129,6 +134,7 @@
               class="ml-4"
               elevation="3"
               color="red darken-2"
+              rounded
               :disabled="!hasChanges"
               @click="onDiscardProductChanges"
             >

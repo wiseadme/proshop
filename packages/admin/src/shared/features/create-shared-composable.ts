@@ -1,4 +1,9 @@
-import {EffectScope, effectScope, onScopeDispose, getCurrentScope} from 'vue'
+import {
+  EffectScope,
+  effectScope,
+  getCurrentScope,
+  onScopeDispose
+} from 'vue'
 
 export function createSharedComposable<Fn extends () => any>(composable: Fn): Fn {
   let subscribers = 0

@@ -1,5 +1,10 @@
 <script lang="ts">
-  import { defineComponent, ref, unref, watch } from 'vue'
+  import {
+    defineComponent,
+    ref,
+    unref,
+    watch
+  } from 'vue'
   import { IVariant, IVariantOption } from '@ecommerce-platform/types'
   import { useProduct } from '@modules/product/composables/use-product'
   import { useProductVariants } from '@modules/product/composables/use-product-variants'
@@ -123,7 +128,7 @@
     class="mt-2 white elevation-2 pa-4"
   >
     <v-col class="block-head pb-6 mb-8">
-      <h2 class="primary--text">
+      <h2 class="block-head__title">
         Варианты
       </h2>
     </v-col>
@@ -150,7 +155,7 @@
       <v-chip
         v-for="option in currentVariant.options"
         :key="option._id"
-        :color="!option._id ?'grey': option === optionPattern ? 'primary lighten-3' : 'primary'"
+        :color="!option._id ?'grey': option === optionPattern ? 'primary' : 'blue lighten-3'"
         :class="['mr-2']"
         closable
         @click="setOptionForEditing(option)"

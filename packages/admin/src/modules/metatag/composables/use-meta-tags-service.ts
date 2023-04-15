@@ -1,4 +1,8 @@
-import { computed, ref, unref } from 'vue'
+import {
+  computed,
+  ref,
+  unref
+} from 'vue'
 import { createSharedComposable } from '@shared/features/create-shared-composable'
 import { useMetaTagsStore } from '@modules/metatag/store'
 import { IMetaTag, Maybe } from '@ecommerce-platform/types'

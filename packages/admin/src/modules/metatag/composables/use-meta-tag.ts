@@ -1,4 +1,8 @@
-import { computed, ref, unref } from 'vue'
+import {
+  computed,
+  ref,
+  unref
+} from 'vue'
 import { useMetaTagsService } from '@modules/metatag/composables/use-meta-tags-service'
 import { clone } from '@shared/helpers'
 import { descriptorToMetaTag } from '@shared/helpers/metatag'

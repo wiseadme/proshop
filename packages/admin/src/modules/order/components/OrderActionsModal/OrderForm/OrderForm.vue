@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { PropType } from 'vue'
-  import { IOrder, ICartItem } from '@ecommerce-platform/types'
+  import { ICartItem, IOrder } from '@ecommerce-platform/types'
 
   defineProps({
     orderId: {

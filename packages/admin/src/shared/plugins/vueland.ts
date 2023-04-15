@@ -2,7 +2,11 @@ import { createVueland } from 'vueland'
 
 import * as asyncComponents from 'vueland/lib/components/async-components'
 import * as directives from 'vueland/lib/directives'
-import { VList, VListItem, VApp } from 'vueland/lib/components'
+import {
+  VApp,
+  VList,
+  VListItem
+} from 'vueland/lib/components'
 
 import colors from 'vueland/lib/services/colors'
 

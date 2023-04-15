@@ -1,7 +1,7 @@
 import { Store } from 'nervue'
 import { useVariantsStore } from '@modules/variant/store'
 import { IVariant } from '@ecommerce-platform/types'
-import { IVariantState, IVariantActions } from '@modules/variant/types'
+import { IVariantActions, IVariantState } from '@modules/variant/types'
 
 class Service {
   private _store: Store<string, IVariantState, {}, {}, IVariantActions>

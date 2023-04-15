@@ -1,5 +1,5 @@
 import { rest } from '@shared/api'
-import { IRest, IRepository } from '@shared/types/app'
+import { IRepository, IRest } from '@shared/types/app'
 import { PRODUCTS_URL } from '@shared/constants/api'
 
 class Repository implements IRepository {

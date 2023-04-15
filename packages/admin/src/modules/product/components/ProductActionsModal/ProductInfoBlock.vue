@@ -1,5 +1,10 @@
 <script lang="ts">
-  import { defineComponent, ref, unref, watch } from 'vue'
+  import {
+    defineComponent,
+    ref,
+    unref,
+    watch
+  } from 'vue'
   import { TextEditor } from '@shared/components/TextEditor'
   import { useProduct } from '@modules/product/composables/use-product'
   import { IAsset } from '@ecommerce-platform/types'
@@ -84,7 +89,7 @@
 <template>
   <v-row class="white pa-4 elevation-2">
     <v-col class="block-head pb-6 mb-8">
-      <h2 class="primary--text">
+      <h2 class="block-head__title">
         Информация о товаре
       </h2>
     </v-col>

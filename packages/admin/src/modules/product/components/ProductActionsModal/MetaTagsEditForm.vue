@@ -1,5 +1,9 @@
 <script lang="ts">
-  import { computed, defineComponent, unref } from 'vue'
+  import {
+    computed,
+    defineComponent,
+    unref
+  } from 'vue'
   import { useProductMetaTags } from '@modules/product/composables/use-product-metatags'
 
   export default defineComponent({

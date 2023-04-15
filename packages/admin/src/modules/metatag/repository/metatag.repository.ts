@@ -1,5 +1,5 @@
 import { rest } from '@shared/api'
-import { IRest, IRepository } from '@shared/types/app'
+import { IRepository, IRest } from '@shared/types/app'
 
 class Repository implements IRepository {
   rest: IRest = rest

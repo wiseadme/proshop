@@ -1,5 +1,9 @@
 <script lang="ts">
-  import { defineComponent, unref, watch } from 'vue'
+  import {
+    defineComponent,
+    unref,
+    watch
+  } from 'vue'
   import { useProduct } from '@modules/product/composables/use-product'
   import { useProductsService } from '@modules/product/composables/use-products-service'
   import { useProductCategories } from '@modules/product/composables/use-product-categories'
@@ -51,7 +55,7 @@
 <template>
   <v-row class="white elevation-2 mt-2 pa-4">
     <v-col class="block-head pb-6 mb-8">
-      <h2 class="primary--text">
+      <h2 class="block-head__title">
         Категории
       </h2>
     </v-col>

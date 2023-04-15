@@ -1,5 +1,5 @@
 import { file, rest } from '@shared/api'
-import { IRest, IRepository } from '@shared/types/app'
+import { IRepository, IRest } from '@shared/types/app'
 import { IProductAsset } from '@modules/order/types'
 
 type CreateFileParams = {

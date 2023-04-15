@@ -1,5 +1,9 @@
 <script lang="ts">
-  import { defineComponent, unref, watch } from 'vue'
+  import {
+    defineComponent,
+    unref,
+    watch
+  } from 'vue'
   // Components
   import { ProductActionsModal } from '@modules/product/components/ProductActionsModal'
   import { ProductTable } from '@modules/product/components/ProductTable'

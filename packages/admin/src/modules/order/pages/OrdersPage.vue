@@ -5,7 +5,6 @@
   import { useOrdersService } from '@modules/order/composables/use-orders-service'
   import { useOrders } from '@modules/order/composables/use-orders'
   import { useOrderActionsModal } from '@modules/order/composables/use-order-actions-modal'
-
   export default defineComponent({
     name: 'orders-page',
     components: {

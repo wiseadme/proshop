@@ -1,4 +1,8 @@
-import { computed, ref, unref } from 'vue'
+import {
+  computed,
+  ref,
+  unref
+} from 'vue'
 import { createSharedComposable } from '@shared/features/create-shared-composable'
 import { useCategoriesStore } from '@modules/category/store'
 import { useFilesService } from '@shared/services/files.service'

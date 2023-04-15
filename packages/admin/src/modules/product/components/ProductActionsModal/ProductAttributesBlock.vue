@@ -36,7 +36,7 @@
 <template>
   <v-row class="white mt-2 pa-4 elevation-2">
     <v-col class="block-head pb-6 mb-8">
-      <h2 class="primary--text">
+      <h2 class="block-head__title">
         Атрибуты
       </h2>
     </v-col>

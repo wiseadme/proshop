@@ -1,5 +1,10 @@
 <script lang="ts">
-  import { defineComponent, ref, unref, watch } from 'vue'
+  import {
+    defineComponent,
+    ref,
+    unref,
+    watch
+  } from 'vue'
   import draggable from 'vuedraggable'
   import { useMetaTag } from '@modules/metatag/composables/use-meta-tag'
   import { useMetaTagsService } from '@modules/metatag/composables/use-meta-tags-service'

@@ -1,5 +1,10 @@
 <script lang="ts">
-  import { defineComponent, onMounted, onBeforeUnmount, watch } from 'vue'
+  import {
+    defineComponent,
+    onBeforeUnmount,
+    onMounted,
+    watch
+  } from 'vue'
   import { useRouter } from 'vue-router'
   import { usePolling } from '@shared/composables/use-polling'
   import { useNotifications } from '@shared/components/VNotifications/use-notifications'
@@ -9,7 +14,7 @@
   import { AppNavigation } from '@app/components/AppNavigation'
   import VNotifications from '@shared/components/VNotifications/VNotifications.vue'
   // Types
-  import { Maybe, IOrder } from '@ecommerce-platform/types'
+  import { IOrder, Maybe } from '@ecommerce-platform/types'
 
   export default defineComponent({
     components: {
