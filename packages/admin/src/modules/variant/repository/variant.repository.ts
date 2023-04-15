@@ -1,6 +1,6 @@
 import { rest } from '@shared/api'
 import { IRepository, IRest } from '@shared/types/app'
-import { IVariant } from '@modules/variant/types'
+import { IVariant } from '@ecommerce-platform/types'
 
 export class Repository implements IRepository {
   rest: IRest = rest
@@ -10,11 +10,11 @@ export class Repository implements IRepository {
     return this.rest.post(this.baseUrl, variant)
   }
 
-  read(id = ''){
-    return this.rest.get(this.baseUrl, { query: { id } })
+  read(params: Partial<IVariant>){
+    return this.rest.get(this.baseUrl, { query: params })
   }
 
-  update(updates): Promise<{ data: { data: Array<IVariant> } }>{
+  update(updates: Partial<IVariant>): Promise<{ data: { data: Array<IVariant> } }>{
     return this.rest.patch(this.baseUrl, updates)
   }
 

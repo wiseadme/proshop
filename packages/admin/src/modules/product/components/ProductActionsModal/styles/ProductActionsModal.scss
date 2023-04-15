@@ -25,11 +25,3 @@
   border-radius: $border-radius;
   overflow: hidden;
 }
-
-.block-head {
-  border-bottom: 2px solid var(--secondary);
-
-  &__title {
-    color: var(--primary);
-  }
-}

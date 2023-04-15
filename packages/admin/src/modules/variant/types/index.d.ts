@@ -1,9 +1,9 @@
-import { IVariant } from '@ecommerce-platform/types/index'
+import { IVariant } from '@ecommerce-platform/types'
 
 declare interface IVariantActions {
   create(variant: IVariant): Promise<IVariant>
 
-  read(id?: string): Promise<Array<IVariant>>
+  read(params?: Partial<IVariant>): Promise<Array<IVariant>>
 
   delete(id: string): Promise<boolean>
 }

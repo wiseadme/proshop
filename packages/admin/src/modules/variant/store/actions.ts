@@ -15,9 +15,9 @@ export const actions: IVariantActions = {
     }
   },
 
-  async read(id?: string): Promise<Array<IVariant>> {
+  async read(params: Partial<IVariant> = {}): Promise<Array<IVariant>> {
     try {
-      const { data } = await repository.read(id)
+      const { data } = await repository.read(params)
 
       this.$patch(state => {
         state.variants = data?.data

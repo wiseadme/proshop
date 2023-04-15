@@ -125,7 +125,7 @@
 <template>
   <v-row
     v-if="variantItems"
-    class="mt-2 white elevation-2 pa-4"
+    class="mt-2 elevation-2 pa-4"
   >
     <v-col class="block-head pb-6 mb-8">
       <h2 class="block-head__title">
@@ -140,7 +140,7 @@
         class="mr-2 mb-4"
         outlined
         rounded
-        :color="currentVariant._id === variant._id ? 'var(--primary)' : 'warning'"
+        :color="currentVariant._id === variant._id ? 'var(--primary)' : 'grey lighten-1'"
         :disabled="!isEditMode"
         @click="setCurrentVariant(variant)"
       >

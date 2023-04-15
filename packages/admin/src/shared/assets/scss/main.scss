@@ -18,8 +18,16 @@ body {
   border-radius: $border-radius;
 
   &-title {
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 700;
-    justify-content: center;
+    font-family: 'Exo 2', sans-serif;
+    font-weight: 800;
+  }
+}
+
+.block-head {
+  border-bottom: 2px solid var(--secondary);
+
+  &__title {
+    color: var(--primary);
+    font-size: 1.2rem;
   }
 }

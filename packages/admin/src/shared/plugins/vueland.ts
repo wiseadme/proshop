@@ -34,6 +34,6 @@ vueland.setTheme({
   content: colors.grey.darken3,
   error: colors.red.lighten2,
   success: 'rgb(7,187,59)',
-  warning: 'rgb(253,211,0)',
+  warning: 'rgb(253,143,0)',
   disabled: '#e6e6e6',
 })

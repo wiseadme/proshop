@@ -97,16 +97,14 @@
       <v-text-field
         v-model.trim="model.name"
         label="Наименование товара"
-        color="secondary"
-        text-color="content"
+        color="primary"
       />
     </v-col>
     <v-col xl="6">
       <v-text-field
         v-model.number="model.price"
         label="Цена"
-        color="#272727"
-        text-color="#272727"
+        color="primary"
         type="number"
       />
     </v-col>
@@ -114,9 +112,8 @@
       <v-text-field
         v-model.number="model.quantity"
         label="Количество"
-        color="#272727"
         type="number"
-        text-color="#272727"
+        color="primary"
       />
     </v-col>
     <v-col xl="6">
@@ -124,42 +121,42 @@
         v-model="model.unit"
         :items="unitItems"
         label="Единица измерения"
-        color="#272727"
+        color="primary"
         value-key="value"
-        active-class="green white--text"
-        text-color="#272727"
+        active-class="primary white--text"
+        text-color="var(--content)"
       />
     </v-col>
     <v-col xl="6">
       <v-text-field
         v-model="model.seo.title"
         label="SEO title"
-        color="#272727"
-        text-color="#272727"
+        color="primary"
+        text-color="content"
       />
     </v-col>
     <v-col xl="6">
       <v-text-field
         v-model="model.seo.description"
         label="SEO description"
-        color="#272727"
-        text-color="#272727"
+        color="primary"
+        text-color="content"
       />
     </v-col>
     <v-col xl="6">
       <v-text-field
         v-model="model.seo.keywords"
         label="SEO keywords"
-        color="#272727"
-        text-color="#272727"
+        color="primary"
+        text-color="content"
       />
     </v-col>
     <v-col xl="6">
       <v-text-field
         v-model.trim="model.url"
         label="URL товара"
-        color="#272727"
-        text-color="#272727"
+        color="primary"
+        text-color="content"
       />
     </v-col>
     <v-menu
@@ -207,8 +204,8 @@
       <v-file-input
         :value="productImages"
         :label="isEditMode ? 'Загрузить изображения' : 'Загрузить изображение можно только после создания продукта'"
-        color="#272727"
-        text-color="#272727"
+        color="primary"
+        text-color="content"
         :disabled="!isEditMode"
         @update:value="onLoadImage"
       />

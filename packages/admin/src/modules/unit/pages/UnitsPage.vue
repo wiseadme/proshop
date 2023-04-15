@@ -11,7 +11,15 @@
     },
     setup() {
       const { units, getUnits } = useUnitsService()
-      const { model, loading, clearUnitModel, onSaveUnit, onEditUnit, onDeleteUnit } = useUnit()
+
+      const {
+        model,
+        loading,
+        clearUnitModel,
+        onSaveUnit,
+        onEditUnit,
+        onDeleteUnit
+      } = useUnit()
 
       const onChange = () => {
       }
