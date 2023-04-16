@@ -35,7 +35,7 @@
         displayColor: 'primary'
       }
     }"
-    class="elevation-2"
+    class="elevation-2 app-border-radius"
     show-checkbox
     show-sequence
   >

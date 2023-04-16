@@ -15,7 +15,8 @@ export const TYPES = {
     IOptionService: Symbol.for('IOptionService'),
     IUserService: Symbol.for('IUserService'),
     ICustomerService: Symbol.for('ICustomerService'),
-    IMetaTagService: Symbol.for('IMetaTagService')
+    IMetaTagService: Symbol.for('IMetaTagService'),
+    ICurrencyService: Symbol.for('ICurrencyService')
   },
   CONTROLLERS: {
     IController: Symbol.for('IController'),
@@ -35,7 +36,8 @@ export const TYPES = {
     IOptionRepository: Symbol.for('IOptionRepository'),
     IUserRepository: Symbol.for('IUserRepository'),
     ICustomerRepository: Symbol.for('ICustomerRepository'),
-    IMetaTagRepository: Symbol.for('IMetaTagRepository')
+    IMetaTagRepository: Symbol.for('IMetaTagRepository'),
+    ICurrencyRepository: Symbol.for('ICurrencyRepository'),
   },
   MIDDLEWARES: {
     IMiddleware: Symbol.for('IMiddleware'),

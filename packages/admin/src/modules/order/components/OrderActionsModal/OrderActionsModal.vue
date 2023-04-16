@@ -41,6 +41,7 @@
       :is="currentComponent"
       :order="order"
       :users="users"
+      class="app-border-radius"
       @close="$emit('close')"
       @update:order="$emit('update:order', $event)"
     />

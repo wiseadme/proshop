@@ -53,7 +53,7 @@
   })
 </script>
 <template>
-  <v-row class="white elevation-2 mt-2 pa-4">
+  <v-row class="white elevation-2 mt-2 pa-4 app-border-radius">
     <v-col class="block-head pb-6 mb-8">
       <h2 class="block-head__title">
         Категории

@@ -11,7 +11,6 @@ import { IController } from '@/types'
 import { ILogger } from '@/types/utils'
 import { IVariant } from '@ecommerce-platform/types'
 import { IVariantService } from '../types/service'
-import { VariantQuery } from '../types/params'
 
 @injectable()
 export class VariantController extends BaseController implements IController {

@@ -1,16 +1,12 @@
 import { IVariantOption } from './variant'
 import { IProduct } from './product'
 import { Maybe } from './utils'
+import { ICurrency } from "./currency";
 
 interface ICartItem {
   product: IProduct
   variant?: { name: string, option: IVariantOption }
   quantity: number
-}
-
-interface ICurrency {
-  code: string
-  symbol: string
 }
 
 export interface ICart {

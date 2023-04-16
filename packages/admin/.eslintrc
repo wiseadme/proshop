@@ -29,6 +29,7 @@
     "import-newlines"
   ],
   "rules": {
+    "semi": ["error", "never"],
     "indent": ["error", 2],
     "vue/script-indent": [
       "error",

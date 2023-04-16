@@ -83,7 +83,7 @@
         <v-card
           color="white"
           width="100%"
-          class="modal-card elevation-5"
+          class="modal-card app-border-radius elevation-5"
         >
           <v-card-title class="modal-card-title secondary--text py-4">
             <h3>{{ computedModalHeader }}</h3>

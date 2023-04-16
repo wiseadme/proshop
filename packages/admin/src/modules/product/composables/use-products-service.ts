@@ -3,7 +3,9 @@ import {
   ref,
   unref
 } from 'vue'
+// Features
 import { createSharedComposable } from '@shared/features/create-shared-composable'
+
 // Stores
 import { useProductStore } from '@modules/product/store'
 import { useAttributesStore } from '@modules/attribute/store'
@@ -16,6 +18,7 @@ import { useRequestParams } from '@shared/composables/use-request-params'
 // Services
 import { useFilesService } from '@shared/services/files.service'
 import { useOptionsService } from '@shared/services/options.service'
+
 // Types
 import {
   IAsset,
@@ -30,6 +33,8 @@ import {
   IVariantOption,
   Maybe
 } from '@ecommerce-platform/types'
+
+// Helpers
 import { clone } from '@shared/helpers'
 
 export const useProductsService = createSharedComposable(() => {

@@ -5,14 +5,15 @@ import { IVariantOption } from '@ecommerce-platform/types'
 
 export const useProductVariants = () => {
   const { model } = useProduct()
+
   const {
     product,
     variantItems,
-    uploadProductVariantImage,
-    deleteProductVariantImage,
     createVariantOption,
     updateVariantOption,
     deleteVariantOption,
+    uploadProductVariantImage,
+    deleteProductVariantImage,
   } = useProductsService()
 
   const isVariantEditMode = ref(false)
@@ -27,12 +28,12 @@ export const useProductVariants = () => {
     assets: []
   })
 
-  const onUploadProductVariantImage = async ({ file, option }) => {
+  const onUploadProductVariantOptionImage = async ({ file, option }) => {
     const optionData = await uploadProductVariantImage(file, option)
     option.assets = optionData.assets
   }
 
-  const onDeleteProductVariantImage = ({ asset, option }) => {
+  const onDeleteProductVariantOptionImage = ({ asset, option }) => {
     deleteProductVariantImage({ asset, option })
       .then(() => {
         option.assets = option.assets.reduce((assets, it) => {
@@ -62,8 +63,8 @@ export const useProductVariants = () => {
     isVariantEditMode,
     variantItems,
     genVariantOptionPattern,
-    onUploadProductVariantImage,
-    onDeleteProductVariantImage,
+    onUploadProductVariantOptionImage,
+    onDeleteProductVariantOptionImage,
     onCreateProductVariantOption,
     onUpdateProductVariantOption,
     onDeleteProductVariantOption

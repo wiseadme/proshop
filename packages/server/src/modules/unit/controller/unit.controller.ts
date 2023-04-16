@@ -33,6 +33,7 @@ export class UnitController extends BaseController implements IController {
   async createUnit({ body, method }: Request<{}, {}, IUnit>, res: Response) {
     try {
       const unit = await this.service.create(body)
+
       this.send({
         response: res,
         data: unit,
@@ -67,7 +68,7 @@ export class UnitController extends BaseController implements IController {
     }
   }
 
-  async updateUnit({ body, method }: Request<{}, {}, {}>, res: Response) {
+  async updateUnit({ body, method }: Request<{}, {}, Partial<IUnit>>, res: Response) {
     try {
       const { updated } = await this.service.update(body)
 

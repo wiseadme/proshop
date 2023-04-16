@@ -2,7 +2,7 @@
   import { defineComponent } from 'vue'
   import draggable from 'vuedraggable'
   import { useUnitsService } from '@modules/unit/composables/use-units-service'
-  import { useUnit } from "@modules/unit/composables/use-unit";
+  import { useUnit } from "@modules/unit/composables/use-unit"
 
   export default defineComponent({
     name: 'units-page',

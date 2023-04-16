@@ -1,29 +1,30 @@
-<script setup lang="ts">
-  import { PropType } from 'vue'
-  import { IUser } from '@ecommerce-platform/types'
+<script lang="ts">
+  import { defineComponent } from 'vue'
+  import { useUsersTable } from "@modules/user/composables/use-users-table"
+  import { useUsersService } from "@modules/user/composables/use-users-service"
 
-  defineProps({
-    cols: {
-      type: Array,
-      required: true
-    },
-    rows: {
-      type: Array as PropType<Array<IUser>>,
-      default: () => []
+  export default defineComponent({
+    emits: [
+      'open:create-modal',
+      'open:edit-modal',
+      'delete:user'
+    ],
+    setup() {
+      const { cols } = useUsersTable()
+      const { users } = useUsersService()
+
+      return {
+        cols,
+        users
+      }
     }
   })
-
-  defineEmits([
-    'open:create-modal',
-    'open:edit-modal',
-    'delete:user'
-  ])
-
 </script>
+
 <template>
   <v-data-table
     :cols="cols"
-    :rows="rows"
+    :rows="users"
     :footer-options="{
       counts: {
         displayColor: 'primary',
@@ -34,7 +35,7 @@
         displayColor: 'primary'
       }
     }"
-    class="elevation-2"
+    class="elevation-2 app-border-radius"
     show-sequence
   >
     <template #toolbar>

@@ -90,6 +90,7 @@
       <v-card
         width="100%"
         color="rgba(0,0,0,.4)"
+        class="modal-card app-border-radius"
       >
         <v-card-title class="modal-card-title white--text">
           {{ computedModalHeader }}

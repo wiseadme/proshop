@@ -4,7 +4,7 @@ import { actions } from '@modules/product/store/actions'
 import { guards } from '@modules/product/store/guards'
 
 export const useProductStore = defineStore({
-  id: 'PRODUCT',
+  id: 'product',
   state,
   guards,
   actions,

@@ -17,7 +17,7 @@
 
 </script>
 <template>
-  <v-row class="mt-2 pa-4 white elevation-2">
+  <v-row class="mt-2 pa-4 white elevation-2 app-border-radius">
     <v-col class="block-head pb-6 mb-8">
       <h2 class="block-head__title">
         Состояния товара

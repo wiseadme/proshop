@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { useAuthService } from '@shared/services/auth.service'
   import { icons } from '@shared/enums/icons'
-  import ProductLogo from "@shared/components/ProductLogo.vue";
+  import ProductLogo from "@shared/components/ProductLogo.vue"
 
   const service = useAuthService()
 

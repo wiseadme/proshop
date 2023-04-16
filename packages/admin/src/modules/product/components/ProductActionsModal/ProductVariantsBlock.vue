@@ -18,8 +18,8 @@
         variantItems,
         isVariantEditMode,
         genVariantOptionPattern,
-        onUploadProductVariantImage,
-        onDeleteProductVariantImage,
+        onUploadProductVariantOptionImage,
+        onDeleteProductVariantOptionImage,
         onUpdateProductVariantOption,
         onCreateProductVariantOption,
         onDeleteProductVariantOption,
@@ -39,15 +39,15 @@
       }
 
       const createOption = async (validate) => {
-        validate().then(() => {
-          unref(optionPattern)!.variantId = unref(currentVariant)!._id!
+        await validate()
 
-          if (unref(isVariantEditMode)) {
-            onUpdateProductVariantOption(unref(optionPattern))
-          } else {
-            onCreateProductVariantOption(unref(optionPattern))
-          }
-        })
+        unref(optionPattern)!.variantId = unref(currentVariant)!._id!
+
+        if (unref(isVariantEditMode)) {
+          await onUpdateProductVariantOption(unref(optionPattern))
+        } else {
+          await onCreateProductVariantOption(unref(optionPattern))
+        }
       }
 
       const setCurrentVariant = (variant) => {
@@ -61,13 +61,13 @@
         optionPattern.value = option
       }
 
-      const onUploadVariantImage = ([ file ], option) => {
-        onUploadProductVariantImage({ file, option })
+      const onUploadVariantOptionImage = ([file], option) => {
+        onUploadProductVariantOptionImage({ file, option })
       }
 
       const onDeleteVariantImage = (asset) => {
         const option = unref(optionPattern)
-        onDeleteProductVariantImage({ asset, option })
+        onDeleteProductVariantOptionImage({ asset, option })
       }
 
       const clearVariantOptionForm = () => {
@@ -112,9 +112,9 @@
         setCurrentVariant,
         createOption,
         setOptionForEditing,
-        onUploadVariantImage,
+        onUploadVariantOptionImage,
         onDeleteProductVariantOption,
-        onUploadProductVariantImage,
+        onUploadProductVariantOptionImage,
         onDeleteVariantImage,
         clearVariantOptionForm
       }
@@ -220,7 +220,7 @@
               color="#272727"
               :disabled="!optionPattern._id"
               placeholder="salam"
-              @update:value="onUploadVariantImage($event, optionPattern)"
+              @update:value="onUploadVariantOptionImage($event, optionPattern)"
             />
           </v-col>
         </v-row>

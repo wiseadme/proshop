@@ -103,10 +103,9 @@
   >
     <v-form v-slot="{ validate }">
       <v-card
-        class="elevation-3"
+        class="modal-card app-border-radius elevation-3"
         width="100%"
         color="white"
-        style="border-radius: 22px; overflow: hidden"
       >
         <v-card-title class="modal-card-title secondary--text py-4">
           {{ modalHeader }}

@@ -4,14 +4,13 @@
     ref,
     unref
   } from 'vue'
-  // Service
   // Components
   import draggable from 'vuedraggable'
   // Types
   import { Attribute } from '@modules/attribute/model/attribute.model'
   // Helpers
-  import { IAttribute } from '@ecommerce-platform/types'
   import { useAttributesService } from '@modules/attribute/composables/use-attributes-service'
+  import { IAttribute } from '@ecommerce-platform/types'
 
   export default defineComponent({
     name: 'attributes-page',

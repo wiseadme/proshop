@@ -124,7 +124,7 @@
 
 </script>
 <template>
-  <v-row class="white pa-4 elevation-2">
+  <v-row class="white pa-4 elevation-2 app-border-radius">
     <v-col class="block-head pb-6 mb-8">
       <h2 class="block-head__title">
         Рекомендуемые товары

@@ -15,7 +15,7 @@
       draggable
     },
     setup() {
-      const {getVariants, createVariant, deleteVariant, variants} = useVariantsService()
+      const { getVariants, createVariant, deleteVariant, variants } = useVariantsService()
 
       const model = ref<IVariant>(Variant.create())
 

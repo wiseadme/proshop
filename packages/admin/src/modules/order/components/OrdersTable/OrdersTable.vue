@@ -45,7 +45,7 @@
         displayColor: 'primary',
       }
     }"
-    class="elevation-2"
+    class="elevation-2 app-border-radius"
     show-sequence
     @update:page="onUpdateTablePage"
     @update:rows-count="onUpdateTableRowsCount"
