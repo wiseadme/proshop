@@ -11,6 +11,7 @@ import { customerRoutes } from '@modules/customer/routes'
 import { configRoutes } from '@modules/config/routes'
 import { usersRoutes } from '@modules/user/routes'
 import { metaTagRoutes } from '@modules/metatag/routes'
+import { currencyRoutes } from '@modules/currency/routes'
 // import { elementRoutes } from '@modules/elements/routes'
 
 const baseUrl = process.env.NODE_ENV === 'development' ? '/' : '/admin'
@@ -31,7 +32,8 @@ export const routes = [
       ...customerRoutes,
       ...configRoutes,
       ...usersRoutes,
-      ...metaTagRoutes
+      ...metaTagRoutes,
+      ...currencyRoutes
       // ...elementRoutes
     ],
   },

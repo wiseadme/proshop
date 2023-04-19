@@ -1,33 +1,21 @@
-<script lang="ts">
-  import { defineComponent } from 'vue'
+<script lang="ts" setup>
   import { useOrderActionsModal } from '@modules/order/composables/use-order-actions-modal'
   import { useOrders } from '@modules/order/composables/use-orders'
   import { OrderDocument } from './OrderDocument'
+  import { IOrder, IUser } from '@ecommerce-platform/types'
 
-  export default defineComponent({
-    name: 'order-actions-modal',
-    props: {
-      users: {
-        type: Array,
-        default: () => []
-      }
-    },
-    emits: [ 'close', 'update:order' ],
-    setup() {
-      const { order } = useOrders()
-      const { showModal, openOrder, closeOrder } = useOrderActionsModal()
-      const currentComponent = OrderDocument
-
-      return {
-        OrderDocument,
-        currentComponent,
-        showModal,
-        order,
-        openOrder,
-        closeOrder,
-      }
-    }
+  withDefaults(defineProps<{ users: IUser[] }>(), {
+    users: () => []
   })
+
+  defineEmits<{
+    (e: 'close'): void
+    (e: 'update:order', order: IOrder): void
+  }>()
+
+  const { order } = useOrders()
+  const { showModal, closeOrder } = useOrderActionsModal()
+  const currentComponent = OrderDocument
 
 </script>
 <template>
@@ -42,7 +30,7 @@
       :order="order"
       :users="users"
       class="app-border-radius"
-      @close="$emit('close')"
+      @close="closeOrder"
       @update:order="$emit('update:order', $event)"
     />
   </v-modal>

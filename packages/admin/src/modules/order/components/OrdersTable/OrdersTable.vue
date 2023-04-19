@@ -1,34 +1,21 @@
-<script lang="ts">
-  import { defineComponent } from 'vue'
+<script lang="ts" setup>
   import { useOrders } from '@modules/order/composables/use-orders'
   import { useOrdersTable } from '@modules/order/composables/use-orders-table'
+  import { IOrder } from '@ecommerce-platform/types'
 
-  export default defineComponent({
-    name: 'orders-table',
-    emits: [ 'open:order' ],
-    setup() {
-      const {
-        orders,
-        onDeleteOrder
-      } = useOrders()
+  defineEmits<{ (e: 'open:order', row: IOrder) }>()
 
-      const {
-        cols,
-        onSort,
-        onUpdateTableRowsCount,
-        onUpdateTablePage
-      } = useOrdersTable()
+  const {
+    orders,
+    onDeleteOrder
+  } = useOrders()
 
-      return {
-        orders,
-        cols,
-        onDeleteOrder,
-        onSort,
-        onUpdateTableRowsCount,
-        onUpdateTablePage
-      }
-    }
-  })
+  const {
+    cols,
+    onUpdateTableRowsCount,
+    onUpdateTablePage
+  } = useOrdersTable()
+
 </script>
 <template>
   <v-data-table

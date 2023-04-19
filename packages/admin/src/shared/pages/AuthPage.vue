@@ -1,19 +1,24 @@
-<script setup lang="ts">
+<script lang="ts" setup>
+  import {
+    computed,
+    ref,
+    unref
+  } from 'vue'
   import { useAuthService } from '@shared/services/auth.service'
   import { icons } from '@shared/enums/icons'
-  import ProductLogo from "@shared/components/ProductLogo.vue"
+  import ProductLogo from '@shared/components/ProductLogo.vue'
 
   const service = useAuthService()
 
-  let username = $ref('')
-  let password = $ref('')
-  let isPasswordHidden = $ref(true)
+  const username = ref('')
+  const password = ref('')
+  const isPasswordHidden = ref(true)
 
-  const passwordFieldType = $computed(() => isPasswordHidden ? 'password' : 'text')
-  const passwordToggleIcon = $computed(() => isPasswordHidden ? icons.EYE_SLASH : icons.EYE)
+  const passwordFieldType = computed(() => unref(isPasswordHidden) ? 'password' : 'text')
+  const passwordToggleIcon = computed(() => unref(isPasswordHidden) ? icons.EYE_SLASH : icons.EYE)
 
   const loginUser = (validate) => {
-    validate().then(() => service.login({ username, password }))
+    validate().then(() => service.login({ username: unref(username), password: unref(password) }))
   }
 </script>
 <template>

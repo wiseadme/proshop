@@ -1,37 +1,20 @@
-<script lang="ts">
-  import { defineComponent } from 'vue'
+<script lang="ts" setup>
   import draggable from 'vuedraggable'
   import { useProductAttributes } from '@modules/product/composables/use-product-attributes'
   import { useProduct } from '@modules/product/composables/use-product'
 
-  export default defineComponent({
-    name: 'product-attributes-block',
-    components: { draggable },
-    setup() {
-      const { model } = useProduct()
+  const { model } = useProduct()
 
-      const {
-        availableAttributes,
-        onUpdateAttributes,
-        onDeleteAttribute
-      } = useProductAttributes()
+  const {
+    availableAttributes,
+    onUpdateAttributes,
+  } = useProductAttributes()
 
-      const pullFunction = () => {
-      }
+  const pullFunction = () => {
+  }
 
-      const onChange = () => {
-      }
-
-      return {
-        model,
-        availableAttributes,
-        onUpdateAttributes,
-        onDeleteAttribute,
-        pullFunction,
-        onChange,
-      }
-    }
-  })
+  const onChange = () => {
+  }
 </script>
 <template>
   <v-row class="white mt-2 pa-4 elevation-2 app-border-radius">

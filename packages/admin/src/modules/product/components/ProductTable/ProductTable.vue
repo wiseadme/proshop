@@ -1,29 +1,17 @@
-<script lang="ts">
-  import { defineComponent } from 'vue'
+<script lang="ts" setup>
   import { icons } from '@shared/enums/icons'
   import { useProductsService } from '@modules/product/composables/use-products-service'
   import { useProductsTable } from '@modules/product/composables/use-products-table'
+  import { IProduct } from '@ecommerce-platform/types'
 
-  export default defineComponent({
-    name: 'product-table',
-    emits: [
-      'delete:product',
-      'open:edit-modal',
-      'open:create-modal',
-      'sort:column'
-    ],
-    setup() {
-      const { products, totalLength } = useProductsService()
-      const { cols } = useProductsTable()
+  defineEmits<{
+    (e: 'delete:product', product: IProduct): void
+    (e: 'open:edit-modal'): void
+    (e: 'open:create-modal'): void
+  }>()
 
-      return {
-        icons,
-        cols,
-        products,
-        totalLength
-      }
-    }
-  })
+  const { products, totalLength } = useProductsService()
+  const { cols } = useProductsTable()
 
 </script>
 <template>

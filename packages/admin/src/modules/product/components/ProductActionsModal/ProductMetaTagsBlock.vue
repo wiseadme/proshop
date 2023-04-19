@@ -1,5 +1,4 @@
-<script lang="ts">
-  import { defineComponent } from 'vue'
+<script lang="ts" setup>
   import draggable from 'vuedraggable'
   import MetaTagEditForm from './MetaTagsEditForm.vue'
   import { useProductMetaTags } from '@modules/product/composables/use-product-metatags'
@@ -7,37 +6,17 @@
   // Helpers
   import { descriptorToMetaTag } from '@shared/helpers/metatag'
 
-  export default defineComponent({
-    name: 'product-meta-tags-block',
-    components: {
-      draggable,
-      MetaTagEditForm
-    },
-    emits: [ 'update:meta-tags' ],
-    setup() {
-      const { model } = useProduct()
-      const {
-        availableMetaTags,
-        metaTag,
-        editTag
-      } = useProductMetaTags()
+  const { model } = useProduct()
+  const {
+    availableMetaTags,
+    metaTag,
+    editTag
+  } = useProductMetaTags()
 
-      const onChange = () => {
-      }
-      const pullFunction = () => {
-      }
-
-      return {
-        model,
-        metaTag,
-        availableMetaTags,
-        editTag,
-        onChange,
-        pullFunction,
-        descriptorToMetaTag
-      }
-    }
-  })
+  const onChange = () => {
+  }
+  const pullFunction = () => {
+  }
 </script>
 <template>
   <v-row class="white elevation-2 mt-2 pa-4 app-border-radius">

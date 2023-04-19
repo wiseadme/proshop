@@ -1,54 +1,33 @@
-<script lang="ts">
-  import {
-    defineComponent,
-    ref,
-    unref
-  } from 'vue'
+<script lang="ts" setup>
+  import { ref, unref } from 'vue'
   import draggable from 'vuedraggable'
   import { useVariantsService } from '@modules/variant/composables/use-variants-service'
   import { Variant } from '@modules/variant/model/variant.model'
   import { IVariant } from '@ecommerce-platform/types'
 
-  export default defineComponent({
-    name: 'variants-page',
-    components: {
-      draggable
-    },
-    setup() {
-      const { getVariants, createVariant, deleteVariant, variants } = useVariantsService()
+  const { getVariants, createVariant, deleteVariant, variants } = useVariantsService()
 
-      const model = ref<IVariant>(Variant.create())
+  const model = ref<IVariant>(Variant.create())
 
-      const onCreate = (validate) => {
-        validate()
-          .then(() => createVariant(unref(model)))
-          .then(clearForm)
-      }
+  const onCreate = (validate) => {
+    validate()
+      .then(() => createVariant(unref(model)))
+      .then(clearForm)
+  }
 
-      const onDelete = (item) => {
-        return deleteVariant(item._id)
-      }
+  const onDelete = (item) => {
+    return deleteVariant(item._id)
+  }
 
-      const clearForm = () => {
-        model.value = Variant.create()
-      }
+  const clearForm = () => {
+    model.value = Variant.create()
+  }
 
-      const onChange = () => {
-        console.log('change')
-      }
+  const onChange = () => {
+    console.log('change')
+  }
 
-      getVariants()
-
-      return {
-        model,
-        variants,
-        onCreate,
-        onDelete,
-        onChange,
-        clearForm
-      }
-    }
-  })
+  getVariants()
 </script>
 <template>
   <v-layout column>

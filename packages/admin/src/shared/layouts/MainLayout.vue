@@ -1,6 +1,5 @@
-<script lang="ts">
+<script lang="ts" setup>
   import {
-    defineComponent,
     onBeforeUnmount,
     onMounted,
     watch
@@ -16,66 +15,54 @@
   // Types
   import { IOrder, Maybe } from '@ecommerce-platform/types'
 
-  export default defineComponent({
-    components: {
-      VNotifications,
-      AppHeader,
-      AppNavigation
-    },
-    setup() {
-      const router = useRouter()
-      const { newOrders, getNewOrders, getOrders } = useOrdersService()
-      const { notify, remove } = useNotifications()
+  const router = useRouter()
+  const { newOrders, getNewOrders, getOrders } = useOrdersService()
+  const { notify, remove } = useNotifications()
 
-      const { stopPolling, startPolling } = usePolling({
-        handler: () => getNewOrders(),
-        timeout: 5000
-      })
+  const { stopPolling, startPolling } = usePolling({
+    handler: () => getNewOrders(),
+    timeout: 5000
+  })
 
-      let notSeenCount = 0
-      let newOrdersNotifyId: Maybe<number> = null
+  let notSeenCount = 0
+  let newOrdersNotifyId: Maybe<number> = null
 
-      onMounted(() => startPolling())
-      onBeforeUnmount(() => stopPolling())
+  onMounted(() => startPolling())
+  onBeforeUnmount(() => stopPolling())
 
-      const onClick = () => {
+  const onClick = () => {
+    remove(newOrdersNotifyId)
+
+    newOrdersNotifyId = null
+    notSeenCount = 0
+
+    if (router.currentRoute.value.path.includes('/order')) {
+      getOrders()
+    }
+
+    router.replace({ name: 'order-table' })
+  }
+
+  watch(newOrders!, (newOrders: IOrder[]) => {
+    if (notSeenCount !== newOrders.length) {
+      if (newOrdersNotifyId) {
         remove(newOrdersNotifyId)
-
-        newOrdersNotifyId = null
-        notSeenCount = 0
-
-        if (router.currentRoute.value.path.includes('/order')) {
-          getOrders()
-        }
-
-        router.replace({ name: 'order-table' })
       }
 
-      watch(newOrders!, (newOrders: IOrder[]) => {
-        if (notSeenCount !== newOrders.length) {
-          if (newOrdersNotifyId) {
-            remove(newOrdersNotifyId)
-          }
+      notSeenCount = newOrders.length
 
-          notSeenCount = newOrders.length
-
-          if (notSeenCount) {
-            setTimeout(() => {
-              newOrdersNotifyId = notify({
-                title: 'Новые заказы',
-                text: `У вас ${ notSeenCount } новых не просмотренных заказа`,
-                type: 'success',
-                closeOnClick: false,
-                actions: {
-                  events: { onClick }
-                }
-              }) as number
-            }, 500)
-          }
-        }
-      })
-
-      return {
+      if (notSeenCount) {
+        setTimeout(() => {
+          newOrdersNotifyId = notify({
+            title: 'Новые заказы',
+            text: `У вас ${ notSeenCount } новых не просмотренных заказа`,
+            type: 'success',
+            closeOnClick: false,
+            actions: {
+              events: { onClick }
+            }
+          }) as number
+        }, 500)
       }
     }
   })

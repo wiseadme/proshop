@@ -2,7 +2,10 @@
 
 </script>
 <template>
-  <v-main style="position: relative">
+  <div
+    class="currency-layout"
+    style="position: relative"
+  >
     <router-view v-slot="{ Component }">
       <transition
         name="fade"
@@ -11,6 +14,6 @@
         <component :is="Component"/>
       </transition>
     </router-view>
-  </v-main>
+  </div>
 </template>
 

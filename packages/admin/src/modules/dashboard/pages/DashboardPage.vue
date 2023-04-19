@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
   import VueApexChart from 'vue3-apexcharts'
 
   const yearChartParams = {

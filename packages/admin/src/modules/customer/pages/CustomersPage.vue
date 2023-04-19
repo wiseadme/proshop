@@ -1,18 +1,6 @@
-<script lang="ts">
-  import { defineComponent } from 'vue'
+<script lang="ts" setup>
   import { CustomersTable } from '@modules/customer/components/CustomersTable'
 
-  export default defineComponent({
-    name: 'customer-page',
-    components: {
-      CustomersTable
-    },
-    setup() {
-
-
-      return {}
-    }
-  })
 </script>
 <template>
   <div class="customers-page">

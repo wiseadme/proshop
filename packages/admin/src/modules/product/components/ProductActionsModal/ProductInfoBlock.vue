@@ -1,6 +1,5 @@
-<script lang="ts">
+<script lang="ts" setup>
   import {
-    defineComponent,
     ref,
     unref,
     watch
@@ -12,79 +11,58 @@
   import { useProductActionsModal } from '@modules/product/composables/use-product-actions-modal'
   import { useProductsService } from '@modules/product/composables/use-products-service'
 
-  export default defineComponent({
-    name: 'product-info-block',
-    components: { TextEditor },
-    setup() {
-      const { unitItems } = useProductsService()
-      const {
-        model,
-        isEditMode,
-        hasChanges,
-        onUploadProductImage,
-        onDeleteProductImage,
-      } = useProduct()
+  const { unitItems } = useProductsService()
+  const {
+    model,
+    isEditMode,
+    hasChanges,
+    onUploadProductImage,
+    onDeleteProductImage,
+  } = useProduct()
 
-      const { showModal } = useProductActionsModal()
+  const { showModal } = useProductActionsModal()
 
-      const productImages = ref<Array<File>>([])
-      const currentImage = ref<Maybe<IAsset>>(null)
-      const textEditorRerenderKey = ref<string>('')
+  const productImages = ref<Array<File>>([])
+  const currentImage = ref<Maybe<IAsset>>(null)
+  const textEditorRerenderKey = ref<string>('')
 
-      const imagesContextMenu = ref({
-        show: false,
-        positionX: 0,
-        positionY: 0,
-      })
-
-      const onImageContextMenu = (event, asset) => {
-        unref(imagesContextMenu).show = true
-        unref(imagesContextMenu).positionX = event.clientX
-        unref(imagesContextMenu).positionY = event.clientY
-
-        currentImage.value = clone(asset)
-      }
-
-      const onLoadImage = ([ file ]) => {
-        if (!file) return
-
-        onUploadProductImage(file)
-        productImages.value = []
-      }
-
-      const setAsMainImage = () => {
-        unref(model).image = unref(currentImage)!.url
-
-        unref(model).assets = unref(model).assets.slice().map((it) => {
-          it.main = it._id === unref(currentImage)!._id
-
-          return it
-        })
-      }
-
-      const discardInfoChanges = () => {
-        textEditorRerenderKey.value = Date.now().toString()
-      }
-
-      watch(showModal, state => state && (textEditorRerenderKey.value = Date.now().toString()))
-      watch(hasChanges, state => !state && (textEditorRerenderKey.value = Date.now().toString()))
-
-      return {
-        model,
-        unitItems,
-        productImages,
-        currentImage,
-        imagesContextMenu,
-        isEditMode,
-        textEditorRerenderKey,
-        onImageContextMenu,
-        onDeleteProductImage,
-        onLoadImage,
-        setAsMainImage,
-        discardInfoChanges,
-      }
-    }
+  const imagesContextMenu = ref({
+    show: false,
+    positionX: 0,
+    positionY: 0,
   })
+
+  const onImageContextMenu = (event, asset) => {
+    unref(imagesContextMenu).show = true
+    unref(imagesContextMenu).positionX = event.clientX
+    unref(imagesContextMenu).positionY = event.clientY
+
+    currentImage.value = clone(asset)
+  }
+
+  const onLoadImage = ([ file ]) => {
+    if (!file) return
+
+    onUploadProductImage(file)
+    productImages.value = []
+  }
+
+  const setAsMainImage = () => {
+    unref(model).image = unref(currentImage)!.url
+
+    unref(model).assets = unref(model).assets.slice().map((it) => {
+      it.main = it._id === unref(currentImage)!._id
+
+      return it
+    })
+  }
+  // const discardInfoChanges = () => {
+  //   textEditorRerenderKey.value = Date.now().toString()
+  // }
+
+  watch(showModal, state => state && (textEditorRerenderKey.value = Date.now().toString()))
+  watch(hasChanges, state => !state && (textEditorRerenderKey.value = Date.now().toString()))
+
 </script>
 <template>
   <v-row class="white pa-4 elevation-2 app-border-radius">

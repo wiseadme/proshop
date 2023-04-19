@@ -1,76 +1,57 @@
-<script lang="ts">
-  import { defineComponent, unref } from 'vue'
+<script lang="ts" setup>
+  import { unref } from 'vue'
   import AddressMap from '@modules/order/components/OrderActionsModal/AddressMap/AddressMap.vue'
   import { OrderProcessStatuses, OrderStatuses } from '@modules/order/enums/status'
   import { useNotifications } from '@shared/components/VNotifications/use-notifications'
   import { useOrders } from '@modules/order/composables/use-orders'
-  import { ICartItem } from '@ecommerce-platform/types'
+  import { ICartItem, IUser } from '@ecommerce-platform/types'
 
-  export default defineComponent({
-    name: 'order-document',
-    components: { AddressMap },
-    props: {
-      users: {
-        type: Array,
-        default: null
-      }
-    },
-    emits: [ 'close', 'update:order' ],
-    setup(props, { emit }) {
-      const { model, order, onUpdateOrder } = useOrders()
-      const { notify } = useNotifications()
+  defineProps<{
+    users: IUser[]
+  }>()
 
-      const checkProcessStatusKey = (key: string) => (OrderProcessStatuses[key] && !unref(model).executor)
-      const getProductPrice = (item: ICartItem) => item.variant?.option?.price || item.product.price
+  const emit = defineEmits<{ (e: 'close'): void }>()
 
-      const changeOrderStatus = (statusKey) => {
-        const { status: statuses, executor } = unref(model)
+  const { model, onUpdateOrder } = useOrders()
+  const { notify } = useNotifications()
 
-        if (statuses[statusKey]) {
-          return notify({
-            title: 'Информация',
-            text: `Заказ уже имеет статус "${ OrderStatuses[statusKey] }"`,
-            type: 'warning',
-            closeOnClick: true,
-          })
-        }
+  const checkProcessStatusKey = (key: string) => (OrderProcessStatuses[key] && !unref(model).executor)
+  const getProductPrice = (item: ICartItem) => item.variant?.option?.price || item.product.price
 
-        if (checkProcessStatusKey(statusKey)) {
-          return notify({
-            title: 'Информация',
-            text: 'Необходимо выбрать исполнителя заказа',
-            type: 'warning',
-            closeOnClick: true,
-          })
-        }
+  const changeOrderStatus = (statusKey) => {
+    const { status: statuses, executor } = unref(model)
 
-        if (
-          statusKey === OrderProcessStatuses.ready && !statuses.inProcess
-          || statusKey === OrderProcessStatuses.completed && !statuses.ready
-        ) {
-          return
-        }
-
-        statuses[statusKey] = true
-
-        return onUpdateOrder(Object.assign({}, { status: statuses }, executor ? { executor } : {}))
-
-      }
-
-      const onClose = () => emit('close')
-
-      return {
-        model,
-        order,
-        OrderStatuses,
-        OrderProcessStatuses,
-        onClose,
-        changeOrderStatus,
-        getProductPrice,
-      }
+    if (statuses[statusKey]) {
+      return notify({
+        title: 'Информация',
+        text: `Заказ уже имеет статус "${ OrderStatuses[statusKey] }"`,
+        type: 'warning',
+        closeOnClick: true,
+      })
     }
-  })
 
+    if (checkProcessStatusKey(statusKey)) {
+      return notify({
+        title: 'Информация',
+        text: 'Необходимо выбрать исполнителя заказа',
+        type: 'warning',
+        closeOnClick: true,
+      })
+    }
+
+    if (
+      statusKey === OrderProcessStatuses.ready && !statuses.inProcess
+      || statusKey === OrderProcessStatuses.completed && !statuses.ready
+    ) {
+      return
+    }
+
+    statuses[statusKey] = true
+
+    return onUpdateOrder(Object.assign({}, { status: statuses }, executor ? { executor } : {}))
+  }
+
+  const onClose = () => emit('close')
 </script>
 <template>
   <v-card

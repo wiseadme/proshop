@@ -1,25 +1,16 @@
-<script lang="ts">
-  import { defineComponent } from 'vue'
+<script lang="ts" setup>
   import { useCategoriesService } from '@modules/category/composables/use-categories-service'
   import { useCategoriesTable } from '@modules/category/composables/use-categories-table'
+  import { ICategory } from '@ecommerce-platform/types'
 
-  export default defineComponent({
-    name: 'category-table',
-    emits: [
-      'open:create-modal',
-      'open:edit-modal',
-      'delete:category'
-    ],
-    setup() {
-      const { categories } = useCategoriesService()
-      const { cols } = useCategoriesTable()
+  defineEmits<{
+    (e: 'open:create-modal'): void
+    (e: 'open:edit-modal', row: ICategory): void
+    (e: 'delete:category', row: ICategory): void
+  }>()
 
-      return {
-        cols,
-        categories
-      }
-    }
-  })
+  const { categories } = useCategoriesService()
+  const { cols } = useCategoriesTable()
 </script>
 <template>
   <v-data-table

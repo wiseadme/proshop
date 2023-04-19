@@ -1,6 +1,5 @@
-<script lang="ts">
+<script lang="ts" setup>
   import {
-    defineComponent,
     ref,
     unref,
     watch
@@ -12,71 +11,46 @@
   import { descriptorToMetaTag } from '@shared/helpers/metatag'
   import { clone } from '@shared/helpers'
 
-  export default defineComponent({
-    name: 'meta-tags-page',
-    components: {
-      draggable
-    },
-    setup() {
-      const {
-        metaTags,
-        fetchMetaTags,
-        onDeleteMetaTag,
-        onUpdateMetaTag,
-        onCreateMetaTag,
-      } = useMetaTagsService()
+  const {
+    metaTags,
+    fetchMetaTags,
+    onDeleteMetaTag,
+    onUpdateMetaTag,
+    onCreateMetaTag,
+  } = useMetaTagsService()
 
-      const {
-        isEditMode,
-        displayMeta,
-        isDescriptorHasKeys,
-        saveBtnTitle,
-        metaProps,
-        metaPropertyPattern,
-        addPropsToMeta,
-        clearAll,
-        onEditMetaTag,
-      } = useMetaTag()
+  const {
+    isEditMode,
+    displayMeta,
+    isDescriptorHasKeys,
+    saveBtnTitle,
+    metaProps,
+    metaPropertyPattern,
+    addPropsToMeta,
+    clearAll,
+    onEditMetaTag,
+  } = useMetaTag()
 
-      const tags = ref<Maybe<IMetaTag[]>>([])
+  const tags = ref<Maybe<IMetaTag[]>>([])
 
-      const saveMetaTagDescriptor = async () => {
-        const meta = unref(metaProps)
+  const saveMetaTagDescriptor = async () => {
+    const meta = unref(metaProps)
 
-        if (unref(isEditMode)) {
-          await onUpdateMetaTag(meta)
-          isEditMode.value = false
-        } else {
-          await onCreateMetaTag(meta)
-        }
-
-        setTimeout(clearAll)
-      }
-
-      fetchMetaTags()
-
-      watch(metaTags, (newTags) => {
-        tags.value = clone(newTags)
-      })
-
-      return {
-        metaTags,
-        tags,
-        metaPropertyPattern,
-        metaProps,
-        displayMeta,
-        isDescriptorHasKeys,
-        saveBtnTitle,
-        addPropsToMeta,
-        clearAll,
-        saveMetaTagDescriptor,
-        descriptorToMetaTag,
-        onEditMetaTag,
-        onDeleteMetaTag,
-      }
+    if (unref(isEditMode)) {
+      await onUpdateMetaTag(meta)
+      isEditMode.value = false
+    } else {
+      await onCreateMetaTag(meta as IMetaTag)
     }
-  })
 
+    setTimeout(clearAll)
+  }
+
+  fetchMetaTags()
+
+  watch(metaTags, (newTags) => {
+    tags.value = clone(newTags)
+  })
 </script>
 <template>
   <div class="meta-tags-page">

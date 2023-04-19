@@ -1,6 +1,5 @@
-<script lang="ts">
+<script lang="ts" setup>
   import {
-    defineComponent,
     ref,
     unref,
     watch
@@ -11,116 +10,103 @@
   import { useProductActionsModal } from '@modules/product/composables/use-product-actions-modal'
   import { useProductsService } from '@modules/product/composables/use-products-service'
 
-  export default defineComponent({
-    name: 'product-related-block',
-    setup() {
-      const { model } = useProduct()
-      const { categoryItems } = useProductsService()
-      const { showModal } = useProductActionsModal()
-      const {
-        category,
-        related,
-        categoryProducts,
-        getProducts
-      } = useProductRelated()
+  const { model } = useProduct()
+  const { categoryItems } = useProductsService()
+  const { showModal } = useProductActionsModal()
+  const {
+    category,
+    related,
+    categoryProducts,
+    getProducts
+  } = useProductRelated()
 
-      const selects = ref<IProduct[]>([])
-      const productsMap: Record<string, Record<string, IProduct>> = {}
+  const selects = ref<IProduct[]>([])
+  const productsMap: Record<string, Record<string, IProduct>> = {}
 
-      let isCategoryChanged: boolean = false
+  let isCategoryChanged: boolean = false
 
-      const clearSelects = () => selects.value = []
+  const clearSelects = () => selects.value = []
 
-      const setToCategoryMap = (product: IProduct) => {
-        product.categories?.forEach((category: ICategory) => {
+  const setToCategoryMap = (product: IProduct) => {
+    product.categories?.forEach((category: ICategory) => {
 
-          const categoryMap = productsMap[unref(category).url!]
-          productsMap[unref(category).url!] = categoryMap || {}
+      const categoryMap = productsMap[unref(category).url!]
+      productsMap[unref(category).url!] = categoryMap || {}
 
-          productsMap[category!.url!][product._id] = product
-        })
-      }
+      productsMap[category!.url!][product._id] = product
+    })
+  }
 
-      const selectRelatedFromProducts = () => {
-        const categoryMap = productsMap[unref(category)!.url!]
+  const selectRelatedFromProducts = () => {
+    const categoryMap = productsMap[unref(category)!.url!]
 
-        unref(categoryProducts)!.forEach((it) => {
-          if (!categoryMap[it._id]) return
+    unref(categoryProducts)!.forEach((it) => {
+      if (!categoryMap[it._id]) return
 
-          selects.value.push(it)
-        })
-      }
+      selects.value.push(it)
+    })
+  }
 
-      const setRelatedProducts = async () => {
-        if (!unref(category)) return
+  const setRelatedProducts = async () => {
+    if (!unref(category)) return
 
-        clearSelects()
+    clearSelects()
 
-        isCategoryChanged = true
-        productsMap[unref(category).url!] = {} as Record<string, IProduct>
+    isCategoryChanged = true
+    productsMap[unref(category).url!] = {} as Record<string, IProduct>
 
-        await getProducts()
+    await getProducts()
 
-        unref(model).related?.forEach((pr) => setToCategoryMap(pr))
-        selectRelatedFromProducts()
+    unref(model).related?.forEach((pr) => setToCategoryMap(pr))
+    selectRelatedFromProducts()
 
-        isCategoryChanged = false
-      }
+    isCategoryChanged = false
+  }
 
-      const removeUnselectedProductsFromMap = (relatedProducts: IProduct[]) => {
-        const categoryMap = productsMap[unref(category)!.url!]
+  const removeUnselectedProductsFromMap = (relatedProducts: IProduct[]) => {
+    const categoryMap = productsMap[unref(category)!.url!]
 
-        /** Массив всех id продуктов замапенных по категории */
-        const categoryProductIds = Object.keys(categoryMap)
+    /** Массив всех id продуктов замапенных по категории */
+    const categoryProductIds = Object.keys(categoryMap)
 
-        for (const id of categoryProductIds) {
-          if (!relatedProducts.find(rel => rel._id === id)) {
-            delete categoryMap[id]
-            break
-          }
-        }
-      }
-
-      const onUpdateRelatedProductsArray = (newRelated, oldRelated) => {
-        /** если изменилась категория то пропускаем сброс выбранных ранее продуктов */
-        if (isCategoryChanged || !unref(category)) return
-
-        /** если удален продукт из рекомендуемых то удаляем его из мапы */
-        if (newRelated.length < oldRelated.length) {
-          removeUnselectedProductsFromMap(newRelated)
-        }
-
-        /** объект категории с рекомендованными продуктами по id ключу */
-        const categoryMap = productsMap[unref(category)!.url!]
-
-        /** массив всех категорий с рекомендованными продуктами по id ключу */
-        const categories = Object.values(productsMap)
-
-        unref(selects).forEach(it => {
-          if (!categoryMap?.[it._id!]) categoryMap[it._id!] = it
-        })
-
-        unref(model).related = categories.map(it => Object.keys(it)).flat()
-      }
-
-      const onShowModal = (state) => {
-        !state && clearSelects()
-      }
-
-      watch(category, setRelatedProducts)
-      watch(selects, onUpdateRelatedProductsArray)
-      watch(model, setRelatedProducts)
-      watch(showModal, onShowModal)
-
-      return {
-        category,
-        categoryItems,
-        related,
-        categoryProducts,
-        selects,
+    for (const id of categoryProductIds) {
+      if (!relatedProducts.find(rel => rel._id === id)) {
+        delete categoryMap[id]
+        break
       }
     }
-  })
+  }
+
+  const onUpdateRelatedProductsArray = (newRelated, oldRelated) => {
+    /** если изменилась категория то пропускаем сброс выбранных ранее продуктов */
+    if (isCategoryChanged || !unref(category)) return
+
+    /** если удален продукт из рекомендуемых то удаляем его из мапы */
+    if (newRelated.length < oldRelated.length) {
+      removeUnselectedProductsFromMap(newRelated)
+    }
+
+    /** объект категории с рекомендованными продуктами по id ключу */
+    const categoryMap = productsMap[unref(category)!.url!]
+
+    /** массив всех категорий с рекомендованными продуктами по id ключу */
+    const categories = Object.values(productsMap)
+
+    unref(selects).forEach(it => {
+      if (!categoryMap?.[it._id!]) categoryMap[it._id!] = it
+    })
+
+    unref(model).related = categories.map(it => Object.keys(it)).flat()
+  }
+
+  const onShowModal = (state) => {
+    !state && clearSelects()
+  }
+
+  watch(category, setRelatedProducts)
+  watch(selects, onUpdateRelatedProductsArray)
+  watch(model, setRelatedProducts)
+  watch(showModal, onShowModal)
 
 </script>
 <template>

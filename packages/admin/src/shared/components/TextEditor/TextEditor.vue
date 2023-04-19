@@ -1,8 +1,6 @@
 <script lang="ts" setup>
   import { QuillEditor } from '@vueup/vue-quill'
-  const {content} = defineProps({
-    content: String
-  })
+  const {content} = defineProps<{content: string}>()
 
   const emit = defineEmits(['update:content' ])
 

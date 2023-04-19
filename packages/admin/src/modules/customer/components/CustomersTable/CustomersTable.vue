@@ -1,27 +1,11 @@
-<script lang="ts">
-  import { defineComponent } from 'vue'
+<script lang="ts" setup>
   import { useCustomersTable } from '@modules/customer/composables/use-customers-table'
   import { useCustomers } from '@modules/customer/composables/use-customers'
 
-  export default defineComponent({
-    name: 'customers-table',
-    emits: [
-      'open:create-modal',
-      'open:edit-modal',
-      'delete:customer'
-    ],
-    setup() {
-      const { cols } = useCustomersTable()
-      const { customers, fetchCustomers } = useCustomers()
+  const { cols } = useCustomersTable()
+  const { customers, fetchCustomers } = useCustomers()
 
-      fetchCustomers()
-
-      return {
-        customers,
-        cols
-      }
-    }
-  })
+  fetchCustomers()
 
 </script>
 <template>

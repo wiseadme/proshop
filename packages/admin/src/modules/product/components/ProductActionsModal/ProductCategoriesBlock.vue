@@ -1,56 +1,42 @@
-<script lang="ts">
-  import {
-    defineComponent,
-    unref,
-    watch
-  } from 'vue'
+<script lang="ts" setup>
+  import { unref, watch } from 'vue'
   import { useProduct } from '@modules/product/composables/use-product'
   import { useProductsService } from '@modules/product/composables/use-products-service'
   import { useProductCategories } from '@modules/product/composables/use-product-categories'
   import { useProductActionsModal } from '@modules/product/composables/use-product-actions-modal'
 
-  export default defineComponent({
-    name: 'product-categories-block',
-    setup() {
-      const { isEditMode, model, hasChanges } = useProduct()
-      const { categoryItems } = useProductsService()
-      const { categoriesMap, toggleCategory } = useProductCategories()
-      const { showModal } = useProductActionsModal()
 
-      /**
-       * @description - при открытии модального окна
-       * сбрасываем все категории (снимаем все выделения)
-       */
-      watch(showModal, (state) => state && unref(categoriesMap).clear())
+  const { isEditMode, model, hasChanges } = useProduct()
+  const { categoryItems } = useProductsService()
+  const { categoriesMap, toggleCategory } = useProductCategories()
+  const { showModal } = useProductActionsModal()
 
-      watch(isEditMode, () => {
-        /**
-         * @description - в режиме редактирования выделяем
-         * все имеющиеся категории продукта
-         */
-        unref(model)!.categories.forEach(ctg => {
-          if (!unref(categoriesMap).get(ctg._id)) toggleCategory(ctg)
-        })
-      })
+  /**
+   * @description - при открытии модального окна
+   * сбрасываем все категории (снимаем все выделения)
+   */
+  watch(showModal, (state) => state && unref(categoriesMap).clear())
 
-      watch(hasChanges, (state) => {
-        if (state) return
-        /**
-         * @description - сбрасываем все категории и перерисовываем их
-         * если сбросили все изменения продукта
-         */
-        unref(categoriesMap).clear()
-        unref(model).categories?.forEach(toggleCategory)
-      })
-
-      return {
-        isEditMode,
-        categoryItems,
-        categoriesMap,
-        toggleCategory
-      }
-    }
+  watch(isEditMode, () => {
+    /**
+     * @description - в режиме редактирования выделяем
+     * все имеющиеся категории продукта
+     */
+    unref(model)!.categories.forEach(ctg => {
+      if (!unref(categoriesMap).get(ctg._id)) toggleCategory(ctg)
+    })
   })
+
+  watch(hasChanges, (state) => {
+    if (state) return
+    /**
+     * @description - сбрасываем все категории и перерисовываем их
+     * если сбросили все изменения продукта
+     */
+    unref(categoriesMap).clear()
+    unref(model).categories?.forEach(toggleCategory)
+  })
+
 </script>
 <template>
   <v-row class="white elevation-2 mt-2 pa-4 app-border-radius">

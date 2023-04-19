@@ -17,8 +17,6 @@ export class UserRepository implements IUserRepository {
       phone: params.phone,
       position: params.position,
       roles: params.roles,
-      accessToken: params.accessToken,
-      refreshToken: params.refreshToken,
       enabled: params.enabled,
     }) as IUser & Document
 

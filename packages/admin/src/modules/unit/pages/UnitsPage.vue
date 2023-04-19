@@ -1,43 +1,23 @@
-<script lang="ts">
-  import { defineComponent } from 'vue'
+<script lang="ts" setup>
   import draggable from 'vuedraggable'
   import { useUnitsService } from '@modules/unit/composables/use-units-service'
   import { useUnit } from "@modules/unit/composables/use-unit"
 
-  export default defineComponent({
-    name: 'units-page',
-    components: {
-      draggable
-    },
-    setup() {
-      const { units, getUnits } = useUnitsService()
+  const { units, getUnits } = useUnitsService()
 
-      const {
-        model,
-        loading,
-        clearUnitModel,
-        onSaveUnit,
-        onEditUnit,
-        onDeleteUnit
-      } = useUnit()
+  const {
+    model,
+    loading,
+    clearUnitModel,
+    onSaveUnit,
+    onEditUnit,
+    onDeleteUnit
+  } = useUnit()
 
-      const onChange = () => {
-      }
+  const onChange = () => {
+  }
 
-      getUnits()
-
-      return {
-        model,
-        units,
-        loading,
-        onDeleteUnit,
-        clearUnitModel,
-        onChange,
-        onEditUnit,
-        onSaveUnit,
-      }
-    }
-  })
+  getUnits()
 
 </script>
 <template>
@@ -53,7 +33,8 @@
           <v-card
             width="100%"
             elevation="2"
-            color="#ffffff"
+            color="white"
+            class="app-border-radius"
           >
             <v-card-title class="primary--text">
               <h3>Измерения</h3>
@@ -141,7 +122,7 @@
                   color="error"
                   elevation="2"
                   round
-                  @click="onDeleteUnit(element)"
+                  @click="onDeleteUnit(element._id)"
                 >
                   <v-icon>
                     fas fa-times

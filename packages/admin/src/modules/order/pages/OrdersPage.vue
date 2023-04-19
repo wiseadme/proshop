@@ -1,44 +1,25 @@
-<script lang="ts">
-  import { defineComponent } from 'vue'
+<script lang="ts" setup>
   import OrdersTable from '@modules/order/components/OrdersTable'
   import OrderActionsModal from '@modules/order/components/OrderActionsModal'
   import { useOrdersService } from '@modules/order/composables/use-orders-service'
   import { useOrders } from '@modules/order/composables/use-orders'
   import { useOrderActionsModal } from '@modules/order/composables/use-order-actions-modal'
-  export default defineComponent({
-    name: 'orders-page',
-    components: {
-      OrdersTable,
-      OrderActionsModal
-    },
-    async setup() {
-      const {
-        model,
-        orders,
-        onOpenOrder,
-      } = useOrders()
 
-      const { showModal } = useOrderActionsModal()
+  const {
+    orders,
+    onOpenOrder,
+  } = useOrders()
 
-      /** TODO - вынести в хук useOrders */
-      const {
-        order,
-        users,
-        getUsers
-      } = useOrdersService()
+  const { showModal } = useOrderActionsModal()
 
-      await getUsers()
+  /** TODO - вынести в хук useOrders */
+  const {
+    order,
+    users,
+    getUsers
+  } = useOrdersService()
 
-      return {
-        model,
-        orders,
-        order,
-        users,
-        showModal,
-        onOpenOrder,
-      }
-    }
-  })
+  await getUsers()
 
 </script>
 <template>

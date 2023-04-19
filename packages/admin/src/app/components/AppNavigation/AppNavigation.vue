@@ -1,103 +1,98 @@
-<script lang="ts">
+<script lang="ts" setup>
   import {
-    defineComponent,
     onMounted,
     ref,
     watch
   } from 'vue'
   import { useRoute, useRouter } from 'vue-router'
 
-  export default defineComponent({
-    setup(){
-      const $router = useRouter()
-      const $route = useRoute()
+  const router = useRouter()
+  const route = useRoute()
 
-      const items = [
-        {
-          title: 'Показатели',
-          icon: 'fas fa-chart-pie',
-          path: '/dashboard'
-        },
-        {
-          title: 'Категории',
-          icon: 'fas fa-cubes',
-          path: '/category'
-        },
-        {
-          title: 'Товары',
-          icon: 'fas fa-boxes',
-          path: '/product'
-        },
-        {
-          title: 'Заказы',
-          icon: 'fas fa-folder',
-          path: '/order'
-        },
-        {
-          title: 'Клиенты',
-          icon: 'fas fa-people-arrows',
-          path: '/customer'
-        },
-        {
-          title: 'Сотрудники',
-          icon: 'fas fa-user',
-          path: '/user'
-        },
-        {
-          title: 'Атрибуты',
-          icon: 'fab fa-buffer',
-          path: '/attribute'
-        },
-        {
-          title: 'Измерения',
-          icon: 'fab fa-unity',
-          path: '/unit'
-        },
-        {
-          title: 'Варианты',
-          icon: 'far fa-object-ungroup',
-          path: '/variant'
-        },
-        {
-          title: 'Мета теги',
-          icon: 'fas fa-code',
-          path: '/metatag'
-        },
-        {
-          title: 'Конфигурация',
-          icon: 'fas fa-cog',
-          path: '/config'
-        },
-        // {
-        //   title: 'Элементы',
-        //   icon: 'fas fa-newspaper',
-        //   path: '/elements'
-        // }
-      ]
+  const items = [
+    {
+      title: 'Показатели',
+      icon: 'fas fa-chart-pie',
+      path: '/dashboard'
+    },
+    {
+      title: 'Категории',
+      icon: 'fas fa-cubes',
+      path: '/category'
+    },
+    {
+      title: 'Товары',
+      icon: 'fas fa-boxes',
+      path: '/product'
+    },
+    {
+      title: 'Заказы',
+      icon: 'fas fa-folder',
+      path: '/order'
+    },
+    {
+      title: 'Клиенты',
+      icon: 'fas fa-people-arrows',
+      path: '/customer'
+    },
+    {
+      title: 'Сотрудники',
+      icon: 'fas fa-user',
+      path: '/user'
+    },
+    {
+      title: 'Атрибуты',
+      icon: 'fab fa-buffer',
+      path: '/attribute'
+    },
+    {
+      title: 'Валюты',
+      icon: 'fas fa-money-bill',
+      path: '/currency'
+    },
+    {
+      title: 'Измерения',
+      icon: 'fab fa-unity',
+      path: '/unit'
+    },
+    {
+      title: 'Варианты',
+      icon: 'far fa-object-ungroup',
+      path: '/variant'
+    },
+    {
+      title: 'Мета теги',
+      icon: 'fas fa-code',
+      path: '/metatag'
+    },
+    {
+      title: 'Конфигурация',
+      icon: 'fas fa-cog',
+      path: '/config'
+    },
+    // {
+    //   title: 'Элементы',
+    //   icon: 'fas fa-newspaper',
+    //   path: '/elements'
+    // }
+  ]
 
-      const current = ref<Maybe<number>>(null)
+  const current = ref<Maybe<number>>(null)
 
-      const onSelect = (it) => {
-        $router.push(it.path)
-      }
+  const onSelect = (it) => {
+    router.push(it.path)
+  }
 
-      onMounted(() => {
-        current.value = items.findIndex(it => {
-          return it.path === $router.currentRoute.value.path
-        })
-      })
-
-      watch(() => $route.path, (newPath) => {
-        current.value = items.findIndex(it => it.path === newPath)
-      })
-
-      return {
-        current,
-        items,
-        onSelect
-      }
-    }
+  onMounted(() => {
+    current.value = items.findIndex(it => {
+      return it.path === router.currentRoute.value.path
+    })
   })
+
+  watch(() => route.path, (newPath) => {
+    current.value = items.findIndex(it => it.path === newPath)
+  })
+
 </script>
 <template>
   <v-navigation

@@ -1,48 +1,37 @@
-<script setup lang="ts">
+<script lang="ts" setup>
+  import {
+    computed,
+    ref,
+    unref
+  } from 'vue'
   import { roles } from '@shared/constants/roles'
-  import { $computed } from 'vue/macros'
+  import { IOrder, IUser } from '@ecommerce-platform/types'
+  import { User } from '@modules/user/model/user.model'
 
   const {
     modelValue,
     isUpdate
-  } = defineProps({
-    modelValue: Boolean,
-    isUpdate: Boolean,
-    order: {
-      type: Object,
-      default: null
-    }
-  })
+  } = defineProps<{
+    modelValue: boolean
+    isUpdate?: boolean
+    order?: IOrder
+  }>()
 
-  const emit = defineEmits([
-    'create:user',
-    'update:user',
-    'update:modelValue'
-  ])
+  const emit = defineEmits<{
+    (e: 'create:user', user: IUser): void
+    (e: 'update:modelValue', val: boolean): void
+  }>()
 
-  let user = $ref({
-    _id: '',
-    firstName: null,
-    secondName: null,
-    password: null,
-    phone: null,
-    position: {
-      title: null,
-      department: null
-    },
-    roles: [],
-    username: null,
-    enabled: false,
-  })
+  const user = ref<IUser>(User.create())
 
-  let confirmPassword = $ref('')
+  const confirmPassword = ref('')
 
   const rules = {
-    firstName: [ val => !!val || 'Обязательное поле' ],
-    secondName: [ val => !!val || 'Обязательное поле' ],
-    phone: [ val => val && val.length === 9 || 'Не менее 9-ти символов' ],
-    password: [ val => val && val.length >= 8 || 'Не менее 8-ми символов' ],
-    confirmPassword: [ val => val === user.password || 'Пароли не совпадают' ]
+    firstName: [val => !!val || 'Обязательное поле'],
+    secondName: [val => !!val || 'Обязательное поле'],
+    phone: [val => val && val.length === 9 || 'Не менее 9-ти символов'],
+    password: [val => val && val.length >= 8 || 'Не менее 8-ми символов'],
+    confirmPassword: [val => val === unref(user).password || 'Пароли не совпадают']
   }
 
   const rolesInfo = {
@@ -51,9 +40,9 @@
     readonly: 'только чтение'
   }
 
-  const computedModalHeader = $computed(() => isUpdate ? 'Редактирование пользователя' : 'Создание пользователя')
+  const computedModalHeader = computed(() => isUpdate ? 'Редактирование пользователя' : 'Создание пользователя')
 
-  const computedShowModal = $computed({
+  const computedShowModal = computed({
     get: () => modelValue,
     set: (val) => {
       emit('update:modelValue', val)
@@ -63,18 +52,18 @@
   const createUser = (validate) => {
     validate().then(() => {
       if (!isUpdate) {
-        emit('create:user', user)
+        emit('create:user', unref(user))
       }
     })
   }
 
-  const toggleUserRole = (role) => {
-    const { roles } = user
+  const toggleUserRole = (role: any) => {
+    const { roles } = unref(user) as any
 
     if (roles.indexOf(role) > -1) {
-      user.roles = roles.filter(it => it !== role)
+      unref(user).roles = roles.filter(it => it !== role)
     } else {
-      user.roles.push(role)
+      unref(user).roles.push(role)
     }
   }
 

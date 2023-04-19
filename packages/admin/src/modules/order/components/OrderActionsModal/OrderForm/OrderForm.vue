@@ -1,28 +1,13 @@
-<script setup lang="ts">
-  import { PropType } from 'vue'
+<script lang="ts" setup>
   import { ICartItem, IOrder } from '@ecommerce-platform/types'
 
-  defineProps({
-    orderId: {
-      type: [ String, Number ],
-      default: null
-    },
-    client: {
-      type: Object as PropType<IOrder['client']>,
-      default: null
-    },
-    items: {
-      type: Array as PropType<ICartItem[]>,
-      default: null
-    },
-    status: {
-      type: Object as PropType<IOrder['status']>
-    },
-    qrcode: {
-      type: String,
-      default: null
-    }
-  })
+  defineProps<{
+    orderId: string | number
+    client: IOrder['customer']
+    items: ICartItem[]
+    status: IOrder['status']
+    qrcode: string
+  }>()
 
 </script>
 <template>

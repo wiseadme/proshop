@@ -1,19 +1,8 @@
-<script lang="ts">
-  import { defineComponent } from 'vue'
+<script lang="ts" setup>
   import { getProductConditionTitle } from '@modules/product/helpers'
   import { useProduct } from '@modules/product/composables/use-product'
 
-  export default defineComponent({
-    name: 'product-conditions-block',
-    setup() {
-      const { model } = useProduct()
-
-      return {
-        model,
-        getProductConditionTitle
-      }
-    }
-  })
+  const { model } = useProduct()
 
 </script>
 <template>

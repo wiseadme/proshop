@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
   import { onMounted } from 'vue'
   import { emitter } from './events'
   import { Notify } from './types'
@@ -9,15 +9,13 @@
     WarningNotification
   } from './components'
 
-  const props = defineProps({
-    transition: {
-      type: String,
-      default: 'fade'
-    },
-    position: {
-      type: String,
-      default: 'top right'
-    }
+
+  const props = withDefaults(defineProps<{
+    transition?: string
+    position?: string
+  }>(), {
+    transition: 'fade',
+    position: 'top right'
   })
 
   const positions = props.position.split(' ')
@@ -45,7 +43,6 @@
   }
 
   const onClick = (notify) => {
-    console.log(notify)
     if (!isClickable) {
       return
     }

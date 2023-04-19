@@ -1,17 +1,15 @@
-<script setup lang="ts">
-  import { PropType } from 'vue'
+<script lang="ts" setup>
   import { Notify } from '@shared/components/VNotifications/types'
 
-  const props = defineProps({
-    params: {
-      type: Object as PropType<Notify>,
-      default: () => ({})
-    }
+  const props = withDefaults(defineProps<{
+    params: Notify
+  }>(), {
+    params: () => ({})
   })
 
-  const emit = defineEmits([
-    'destroy'
-  ])
+  const emit = defineEmits<{
+    (e: 'destroy', params: Notify): void
+  }>()
 
   const onClick = () => {
     if (props.params.actions?.events?.onClick) {

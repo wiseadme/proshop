@@ -1,6 +1,5 @@
-<script lang="ts">
+<script lang="ts" setup>
   import {
-    defineComponent,
     ref,
     unref,
     watch
@@ -9,117 +8,96 @@
   import { useProduct } from '@modules/product/composables/use-product'
   import { useProductVariants } from '@modules/product/composables/use-product-variants'
 
-  export default defineComponent({
-    name: 'product-variants-block',
-    setup() {
-      const { model, isEditMode } = useProduct()
+  const { model, isEditMode } = useProduct()
 
-      const {
-        variantItems,
-        isVariantEditMode,
-        genVariantOptionPattern,
-        onUploadProductVariantOptionImage,
-        onDeleteProductVariantOptionImage,
-        onUpdateProductVariantOption,
-        onCreateProductVariantOption,
-        onDeleteProductVariantOption,
-      } = useProductVariants()
+  const {
+    variantItems,
+    isVariantEditMode,
+    genVariantOptionPattern,
+    onUploadProductVariantOptionImage,
+    onDeleteProductVariantOptionImage,
+    onUpdateProductVariantOption,
+    onCreateProductVariantOption,
+    onDeleteProductVariantOption,
+  } = useProductVariants()
 
-      const currentVariant = ref<Maybe<IVariant>>(null)
-      const existsVariants = ref<IVariant[]>([])
-      const optionPattern = ref<Maybe<IVariantOption>>(null)
+  const currentVariant = ref<Maybe<IVariant>>(null)
+  const existsVariants = ref<IVariant[]>([])
+  const optionPattern = ref<Maybe<IVariantOption>>(null)
 
-      const setExistsVariants = (variants) => {
-        const variantsMap = {}
+  const setExistsVariants = (variants) => {
+    const variantsMap = {}
 
-        unref(existsVariants).forEach((it) => variantsMap[it.group] = it)
-        variants?.forEach(v => variantsMap[v.group] = v)
+    unref(existsVariants).forEach((it) => variantsMap[it.group] = it)
+    variants?.forEach(v => variantsMap[v.group] = v)
 
-        existsVariants.value = Object.values(variantsMap)
-      }
+    existsVariants.value = Object.values(variantsMap)
+  }
 
-      const createOption = async (validate) => {
-        await validate()
+  const createOption = async (validate) => {
+    await validate()
 
-        unref(optionPattern)!.variantId = unref(currentVariant)!._id!
+    unref(optionPattern)!.variantId = unref(currentVariant)!._id!
 
-        if (unref(isVariantEditMode)) {
-          await onUpdateProductVariantOption(unref(optionPattern))
-        } else {
-          await onCreateProductVariantOption(unref(optionPattern))
-        }
-      }
-
-      const setCurrentVariant = (variant) => {
-        optionPattern.value = genVariantOptionPattern()
-        currentVariant.value = variant
-        isVariantEditMode.value = false
-      }
-
-      const setOptionForEditing = (option) => {
-        isVariantEditMode.value = true
-        optionPattern.value = option
-      }
-
-      const onUploadVariantOptionImage = ([file], option) => {
-        onUploadProductVariantOptionImage({ file, option })
-      }
-
-      const onDeleteVariantImage = (asset) => {
-        const option = unref(optionPattern)
-        onDeleteProductVariantOptionImage({ asset, option })
-      }
-
-      const clearVariantOptionForm = () => {
-        isVariantEditMode.value = false
-        optionPattern.value = genVariantOptionPattern()
-      }
-
-      watch(variantItems, (variants) => {
-        if (!variants) return
-
-        setExistsVariants(variants)
-
-        if (!unref(currentVariant)) {
-          setCurrentVariant(unref(existsVariants)[0])
-        }
-
-      }, { immediate: true })
-
-      /**
-       * @description Наблюдаем в режиме редактирования за вариантами продукта
-       * и перезаписываем мапу существующих вариантов для редактирования
-       */
-      watch(() => unref(model).variants, (variants) => {
-        setExistsVariants(variants.length ? variants : unref(variantItems))
-
-        if (unref(currentVariant)) {
-          setCurrentVariant(variants?.find(v => v._id === unref(currentVariant)!._id) || unref(existsVariants)?.[0])
-        } else {
-          currentVariant.value = variants?.[0] || unref(existsVariants)?.[0]!
-        }
-
-      }, { immediate: true })
-
-      optionPattern.value = genVariantOptionPattern()
-
-      return {
-        existsVariants,
-        currentVariant,
-        optionPattern,
-        variantItems,
-        isEditMode,
-        setCurrentVariant,
-        createOption,
-        setOptionForEditing,
-        onUploadVariantOptionImage,
-        onDeleteProductVariantOption,
-        onUploadProductVariantOptionImage,
-        onDeleteVariantImage,
-        clearVariantOptionForm
-      }
+    if (unref(isVariantEditMode)) {
+      await onUpdateProductVariantOption(unref(optionPattern))
+    } else {
+      await onCreateProductVariantOption(unref(optionPattern))
     }
-  })
+  }
+
+  const setCurrentVariant = (variant) => {
+    optionPattern.value = genVariantOptionPattern()
+    currentVariant.value = variant
+    isVariantEditMode.value = false
+  }
+
+  const setOptionForEditing = (option) => {
+    isVariantEditMode.value = true
+    optionPattern.value = option
+  }
+
+  const onUploadVariantOptionImage = ([file], option) => {
+    onUploadProductVariantOptionImage({ file, option })
+  }
+
+  const onDeleteVariantImage = (asset) => {
+    const option = unref(optionPattern)
+    onDeleteProductVariantOptionImage({ asset, option })
+  }
+
+  const clearVariantOptionForm = () => {
+    isVariantEditMode.value = false
+    optionPattern.value = genVariantOptionPattern()
+  }
+
+  watch(variantItems, (variants) => {
+    if (!variants) return
+
+    setExistsVariants(variants)
+
+    if (!unref(currentVariant)) {
+      setCurrentVariant(unref(existsVariants)[0])
+    }
+
+  }, { immediate: true })
+
+  /**
+   * @description Наблюдаем в режиме редактирования за вариантами продукта
+   * и перезаписываем мапу существующих вариантов для редактирования
+   */
+  watch(() => unref(model).variants, (variants) => {
+    setExistsVariants(variants.length ? variants : unref(variantItems))
+
+    if (unref(currentVariant)) {
+      setCurrentVariant(variants?.find(v => v._id === unref(currentVariant)!._id) || unref(existsVariants)?.[0])
+    } else {
+      currentVariant.value = variants?.[0] || unref(existsVariants)?.[0]!
+    }
+
+  }, { immediate: true })
+
+  optionPattern.value = genVariantOptionPattern()
 
 </script>
 <template>

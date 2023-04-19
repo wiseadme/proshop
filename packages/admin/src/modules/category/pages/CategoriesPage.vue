@@ -1,5 +1,4 @@
-<script lang="ts">
-  import { defineComponent } from 'vue'
+<script lang="ts" setup>
   import CategoryActionsModal from '@modules/category/components/CategoryActionsModal'
   import CategoryTable from '@modules/category/components/CategoriesTable'
   import { useCategory } from '@modules/category/composables/use-category'
@@ -7,51 +6,28 @@
   import { useCategoryActionsModal } from '@modules/category/composables/use-category-actions-modal'
   import { useCategoriesTable } from '@modules/category/composables/use-categories-table'
 
-  export default defineComponent({
-    name: 'categories-page',
-    components: {
-      CategoryActionsModal,
-      CategoryTable
-    },
-    setup() {
-      const {
-        categories,
-        getCategories
-      } = useCategoriesService()
+  const {
+    categories,
+    getCategories
+  } = useCategoriesService()
 
-      const {
-        model,
-        isEditMode,
-        onEdit,
-        onUploadCategoryImage,
-        onDeleteCategoryImage,
-        onDeleteCategory,
-        onCreateCategory,
-        onUpdateCategory,
-        onAddNew
-      } = useCategory()
+  const {
+    model,
+    isEditMode,
+    onEdit,
+    onUploadCategoryImage,
+    onDeleteCategoryImage,
+    onDeleteCategory,
+    onCreateCategory,
+    onUpdateCategory,
+    onAddNew
+  } = useCategory()
 
-      const { cols } = useCategoriesTable()
-      const { showModal } = useCategoryActionsModal()
+  const { cols } = useCategoriesTable()
+  const { showModal } = useCategoryActionsModal()
 
-      getCategories()
+  getCategories()
 
-      return {
-        cols,
-        categories,
-        model,
-        isEditMode,
-        showModal,
-        onAddNew,
-        onEdit,
-        onUploadCategoryImage,
-        onDeleteCategoryImage,
-        onDeleteCategory,
-        onCreateCategory,
-        onUpdateCategory,
-      }
-    }
-  })
 </script>
 <template>
   <v-layout

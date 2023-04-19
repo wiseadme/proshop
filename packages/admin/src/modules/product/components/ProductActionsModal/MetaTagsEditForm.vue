@@ -1,24 +1,10 @@
-<script lang="ts">
-  import {
-    computed,
-    defineComponent,
-    unref
-  } from 'vue'
+<script lang="ts" setup>
+  import { computed, unref } from 'vue'
   import { useProductMetaTags } from '@modules/product/composables/use-product-metatags'
 
-  export default defineComponent({
-    name: 'meta-tag-edit-form',
-    setup() {
-      const { metaTag } = useProductMetaTags()
+  const { metaTag } = useProductMetaTags()
 
-      const metaTagKeys = computed<string[]>(() => Object.keys(unref(metaTag)?.props!))
-
-      return {
-        metaTag,
-        metaTagKeys,
-      }
-    }
-  })
+  const metaTagKeys = computed<string[]>(() => Object.keys(unref(metaTag)?.props!))
 </script>
 <template>
   <v-row

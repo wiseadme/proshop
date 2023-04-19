@@ -1,7 +1,6 @@
-<script lang="ts">
+<script lang="ts" setup>
   import {
     computed,
-    defineComponent,
     ref,
     unref,
     watch
@@ -12,86 +11,65 @@
   import { useCategoryActionsModal } from '@modules/category/composables/use-category-actions-modal'
   import { CREATE_CATEGORY_TITLE, EDIT_CATEGORY_TITLE } from '@modules/category/constants'
 
-  export default defineComponent({
-    name: 'category-actions-modal',
-    setup() {
-      const { categories } = useCategoriesService()
-      const { showModal, closeActionsModal } = useCategoryActionsModal()
-      const {
-        model,
-        isEditMode,
-        onCreateCategory,
-        onUpdateCategory,
-        onDeleteCategoryImage,
-        onUploadCategoryImage
-      } = useCategory()
+  const { categories } = useCategoriesService()
+  const { showModal, closeActionsModal } = useCategoryActionsModal()
+  const {
+    model,
+    isEditMode,
+    onCreateCategory,
+    onUpdateCategory,
+    onDeleteCategoryImage,
+    onUploadCategoryImage
+  } = useCategory()
 
-      const files = ref<File[]>([])
+  const files = ref<File[]>([])
 
-      const modalHeader = computed<string>(() => unref(isEditMode) ? EDIT_CATEGORY_TITLE : CREATE_CATEGORY_TITLE)
+  const modalHeader = computed<string>(() => unref(isEditMode) ? EDIT_CATEGORY_TITLE : CREATE_CATEGORY_TITLE)
 
-      const getParent = () => {
-        const id = unref(isEditMode) ? (unref(model).parent as ICategory)?._id : unref(model).parent
+  const getParent = () => {
+    const id = unref(isEditMode) ? (unref(model).parent as ICategory)?._id : unref(model).parent
 
-        return unref(model).parent ? unref(categories).find(it => it._id === id)! : null
-      }
+    return unref(model).parent ? unref(categories).find(it => it._id === id)! : null
+  }
 
-      const setParent = (val: ICategory) => {
-        unref(model).parent = unref(isEditMode) ? val : val!._id
-      }
+  const setParent = (val: ICategory) => {
+    unref(model).parent = unref(isEditMode) ? val : val!._id
+  }
 
-      const computedParent = computed<Maybe<ICategory>>({
-        get: getParent,
-        set: setParent
-      })
-
-      const createCategory = (validate) => {
-        validate().then(() => onCreateCategory())
-      }
-
-      const updateCategory = (validate) => {
-        validate()
-          .then(() => onUpdateCategory())
-          .then(() => files.value = [])
-      }
-
-      const onSubmit = validate => {
-        if (!unref(isEditMode)) {
-          createCategory(validate)
-        } else {
-          updateCategory(validate)
-        }
-      }
-
-      const onDeleteImage = () => onDeleteCategoryImage(unref(model).image)
-
-      const onLoadImage = ([ file ]) => {
-        if (!file) {
-          return
-        }
-        onUploadCategoryImage(file)
-        files.value = []
-      }
-
-      watch(() => unref(model).image, () => files.value = [])
-
-      return {
-        model,
-        files,
-        categories,
-        isEditMode,
-        showModal,
-        modalHeader,
-        computedParent,
-        closeActionsModal,
-        onDeleteImage,
-        createCategory,
-        updateCategory,
-        onSubmit,
-        onLoadImage
-      }
-    }
+  const computedParent = computed<Maybe<ICategory>>({
+    get: getParent,
+    set: setParent
   })
+
+  const createCategory = (validate) => {
+    validate().then(() => onCreateCategory())
+  }
+
+  const updateCategory = (validate) => {
+    validate()
+      .then(() => onUpdateCategory())
+      .then(() => files.value = [])
+  }
+
+  const onSubmit = validate => {
+    if (!unref(isEditMode)) {
+      createCategory(validate)
+    } else {
+      updateCategory(validate)
+    }
+  }
+
+  const onDeleteImage = () => onDeleteCategoryImage(unref(model).image)
+
+  const onLoadImage = ([file]) => {
+    if (!file) {
+      return
+    }
+    onUploadCategoryImage(file)
+    files.value = []
+  }
+
+  watch(() => unref(model).image, () => files.value = [])
 </script>
 <template>
   <v-modal

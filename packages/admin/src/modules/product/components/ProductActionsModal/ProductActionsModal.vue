@@ -1,9 +1,5 @@
-<script lang="ts">
-  import {
-    computed,
-    defineComponent,
-    unref
-  } from 'vue'
+<script lang="ts" setup>
+  import { computed, unref } from 'vue'
   import { useProduct } from '@modules/product/composables/use-product'
   import { useProductsService } from '@modules/product/composables/use-products-service'
   import { useProductActionsModal } from '@modules/product/composables/use-product-actions-modal'
@@ -16,59 +12,30 @@
   import ProductInfoBlock from './ProductInfoBlock.vue'
   import ProductCategoriesBlock from './ProductCategoriesBlock.vue'
 
-  export default defineComponent({
-    name: 'product-actions-modal',
-    components: {
-      ProductAttributesBlock,
-      ProductVariantsBlock,
-      ProductConditionsBlock,
-      ProductMetaTagsBlock,
-      ProductRelatedBlock,
-      ProductCategoriesBlock,
-      ProductInfoBlock,
-    },
-    setup() {
-      const {
-        isSaved,
-        model,
-        isLoading,
-        isEditMode,
-        hasChanges,
-        onUpdateProduct,
-        onCreateProduct,
-        onCloseProductModal,
-        onDiscardProductChanges,
-      } = useProduct()
+  const {
+    isSaved,
+    model,
+    isEditMode,
+    hasChanges,
+    onUpdateProduct,
+    onCreateProduct,
+    onCloseProductModal,
+    onDiscardProductChanges,
+  } = useProduct()
 
-      const { categoryItems } = useProductsService()
-      const { showModal, closeActionsModal } = useProductActionsModal()
+  const { categoryItems } = useProductsService()
+  const { showModal, closeActionsModal } = useProductActionsModal()
 
-      const computedModalHeader = computed<string>(() => `${ (unref(isEditMode) ? 'Редактирование' : 'Создание') } продукта`)
+  const computedModalHeader = computed<string>(() => `${ (unref(isEditMode) ? 'Редактирование' : 'Создание') } продукта`)
 
-      const onSubmit = (validate) => {
-        validate().then(unref(isEditMode) ? onUpdateProduct : onCreateProduct)
-      }
+  const onSubmit = (validate) => {
+    validate().then(unref(isEditMode) ? onUpdateProduct : onCreateProduct)
+  }
 
-      const closeModal = () => {
-        onCloseProductModal()
-        closeActionsModal()
-      }
-
-      return {
-        model,
-        showModal,
-        computedModalHeader,
-        isEditMode,
-        hasChanges,
-        isLoading,
-        isSaved,
-        categoryItems,
-        onSubmit,
-        onDiscardProductChanges,
-        closeModal
-      }
-    }
-  })
+  const closeModal = () => {
+    onCloseProductModal()
+    closeActionsModal()
+  }
 
 </script>
 <template>
