@@ -1,7 +1,7 @@
 <script lang="ts" setup>
   import {
-    onMounted,
     ref,
+    unref,
     watch
   } from 'vue'
   import { useRoute, useRouter } from 'vue-router'
@@ -9,118 +9,167 @@
   const router = useRouter()
   const route = useRoute()
 
-  const items = [
-    {
+  const items = {
+    dashboard: {
       title: 'Показатели',
       icon: 'fas fa-chart-pie',
-      path: '/dashboard'
+      path:'/dashboard'
     },
-    {
+    categories: {
       title: 'Категории',
       icon: 'fas fa-cubes',
-      path: '/category'
+      path: '/categories'
     },
-    {
+    products: {
       title: 'Товары',
       icon: 'fas fa-boxes',
-      path: '/product'
+      path: '/products'
     },
-    {
+    orders: {
       title: 'Заказы',
       icon: 'fas fa-folder',
-      path: '/order'
+      path: '/orders'
     },
-    {
+    customers: {
       title: 'Клиенты',
-      icon: 'fas fa-people-arrows',
-      path: '/customer'
+      icon:'fas fa-people-arrows',
+      path: '/customers'
     },
-    {
+    users: {
       title: 'Сотрудники',
       icon: 'fas fa-user',
-      path: '/user'
+      path: '/users'
     },
-    {
+    attributes: {
       title: 'Атрибуты',
       icon: 'fab fa-buffer',
-      path: '/attribute'
+      path: '/attributes'
     },
-    {
-      title: 'Валюты',
-      icon: 'fas fa-money-bill',
-      path: '/currency'
-    },
-    {
+    units: {
       title: 'Измерения',
       icon: 'fab fa-unity',
-      path: '/unit'
+      path: '/units'
     },
-    {
+    variants: {
       title: 'Варианты',
       icon: 'far fa-object-ungroup',
-      path: '/variant'
+      path: '/variants'
     },
-    {
+    metatags: {
       title: 'Мета теги',
       icon: 'fas fa-code',
-      path: '/metatag'
+      path: '/metatags'
     },
-    {
+    settings: {
       title: 'Конфигурация',
       icon: 'fas fa-cog',
-      path: '/config'
-    },
-    // {
-    //   title: 'Элементы',
-    //   icon: 'fas fa-newspaper',
-    //   path: '/elements'
-    // }
-  ]
+      parent: 'settings',
+      children: {
+        merchant: {
+          title: 'Организация',
+          icon: 'fas fa-store-alt',
+          path: '/settings/merchant',
+        },
+        currencies: {
+          title: 'Валюты',
+          icon: 'fas fa-money-bill',
+          path: '/settings/currencies'
+        },
+      }
+    }
+  // {
+  //   title: 'Элементы',
+  //   icon: 'fas fa-newspaper',
+  //   path: '/elements'
+  // }
+  }
 
-  const current = ref<Maybe<number>>(null)
+  const current = ref<Maybe<any>>(null)
 
   const onSelect = (it) => {
     router.push(it.path)
   }
 
-  onMounted(() => {
-    current.value = items.findIndex(it => {
-      return it.path === router.currentRoute.value.path
-    })
-  })
+  const getCurrentItemIndexByRoutePath = (items, path) => {
+    const key = Object.keys(items).find((key) => path.includes(key))
+
+    return items[key!]
+  }
 
   watch(() => route.path, (newPath) => {
-    current.value = items.findIndex(it => it.path === newPath)
-  })
+    if (newPath === '/') return
+
+    current.value = getCurrentItemIndexByRoutePath(items, newPath)
+
+    if (unref(current)?.children) {
+      const parent = newPath.split('/').filter(it => !!it)[0]
+
+      current.value = getCurrentItemIndexByRoutePath(items[parent].children, newPath)
+    }
+
+
+  }, {immediate: true})
 
 </script>
 <template>
   <v-navigation
-    fixed
-    :on-hover="true"
-    offset-top="56"
     class="elevation-2"
+    expand
+    on-hover
   >
-    <v-list
-      v-model:value="current"
-      active-class="primary white--text text--base"
-      active
-    >
-      <v-list-item
+    <v-list>
+      <v-list-item class="mb-2"/>
+      <template
         v-for="it in items"
         :key="it.title"
-        class="pl-1"
-        @click="onSelect(it)"
       >
-        <v-list-item-icon>
-          <v-icon>{{ it.icon }}</v-icon>
-        </v-list-item-icon>
-        <v-list-item-content>
-          <v-list-item-title>
-            {{ it.title }}
-          </v-list-item-title>
-        </v-list-item-content>
-      </v-list-item>
+        <v-list-item
+          v-if="!it.children"
+          class="navigation-item pl-1"
+          :class="{'navigation-item--active': current && (it.path === current.path)}"
+          @click="onSelect(it)"
+        >
+          <v-list-item-icon>
+            <v-icon>{{ it.icon }}</v-icon>
+          </v-list-item-icon>
+          <v-list-item-content>
+            <v-list-item-title>
+              {{ it.title }}
+            </v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        <v-group
+          v-else
+          :prepend-icon="it.icon"
+          :title="it.title"
+          class="navigation-item__group"
+          :expand="current && Object.keys(it.children).some(key => current.path === it.children[key].path)"
+        >
+          <v-list>
+            <v-list-item
+              v-for="c in it.children"
+              :key="c.title"
+              class="navigation-item"
+              :class="{'navigation-item--active': current && (c.path === current.path)}"
+              @click="onSelect(c)"
+            >
+              <v-list-item-icon class="ml-1">
+                <v-icon
+                  size="12"
+                  color="grey lighten-2"
+                >
+                  {{ c.icon }}
+                </v-icon>
+              </v-list-item-icon>
+              <v-list-item-content>
+                <v-list-item-title>
+                  {{ c.title }}
+                </v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list>
+        </v-group>
+      </template>
     </v-list>
   </v-navigation>
 </template>

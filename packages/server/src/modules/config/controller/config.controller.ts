@@ -1,11 +1,11 @@
-import { Router, Request, Response } from 'express'
+import { Request, Response, Router } from 'express'
 import { injectable } from 'inversify'
 import { BaseController } from '@common/controller/base.controller'
 import { IController } from '@/types'
 
 @injectable()
 export class ConfigController extends BaseController implements IController {
-  public path = '/v1/config'
+  public path = '/v1/settings'
   public router = Router()
 
   constructor() {

@@ -8,10 +8,9 @@ import { orderRoutes } from '@modules/order/routes'
 import { authRoutes } from '@shared/routes/auth.routes'
 import { dashboardRoutes } from '@modules/dashboard/routes'
 import { customerRoutes } from '@modules/customer/routes'
-import { configRoutes } from '@modules/config/routes'
+import { settingsRoutes } from '@modules/settings/routes'
 import { usersRoutes } from '@modules/user/routes'
 import { metaTagRoutes } from '@modules/metatag/routes'
-import { currencyRoutes } from '@modules/currency/routes'
 // import { elementRoutes } from '@modules/elements/routes'
 
 const baseUrl = process.env.NODE_ENV === 'development' ? '/' : '/admin'
@@ -30,10 +29,9 @@ export const routes = [
       ...variantRoutes,
       ...orderRoutes,
       ...customerRoutes,
-      ...configRoutes,
+      ...settingsRoutes,
       ...usersRoutes,
       ...metaTagRoutes,
-      ...currencyRoutes
       // ...elementRoutes
     ],
   },

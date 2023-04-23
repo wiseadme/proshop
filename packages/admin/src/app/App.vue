@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
   import { onBeforeMount } from 'vue'
   import { useAuthService } from '@shared/services/auth.service'
 

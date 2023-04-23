@@ -1,6 +1,6 @@
 export const orderRoutes = [
   {
-    path: '/order',
+    path: '/orders',
     component: () => import('@modules/order/layouts/OrdersLayout.vue'),
     name: 'orders',
     children: [

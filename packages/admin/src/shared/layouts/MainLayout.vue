@@ -69,14 +69,16 @@
 
 </script>
 <template>
-  <app-header/>
-  <app-navigation/>
-  <v-main
-    class="main-layout"
-    style="padding: 66px 0 10px 56px"
-  >
-    <router-view/>
-  </v-main>
+  <v-layout>
+    <app-header/>
+    <app-navigation/>
+    <v-main
+      class="main-layout"
+      style="padding: 66px 10px 10px 10px; width: calc(100% - 237px)"
+    >
+      <router-view/>
+    </v-main>
+  </v-layout>
   <v-notifications position="bottom right"/>
 </template>
 <style lang="scss">

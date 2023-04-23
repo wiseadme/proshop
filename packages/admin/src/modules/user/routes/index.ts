@@ -1,6 +1,6 @@
 export const usersRoutes = [
   {
-    path: '/user',
+    path: '/users',
     component: () => import('@modules/user/layouts/UsersLayout.vue'),
     name: 'users',
     children: [

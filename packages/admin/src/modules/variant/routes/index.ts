@@ -1,6 +1,6 @@
 export const variantRoutes = [
   {
-    path: '/variant',
+    path: '/variants',
     component: () => import('@modules/variant/layouts/VariantsLayout.vue'),
     name: 'variants',
     children: [

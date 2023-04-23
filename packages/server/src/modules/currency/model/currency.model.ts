@@ -12,8 +12,8 @@ const CurrencySchema: Schema = new Schema<ICurrency & Document>({
     default: null
   },
   meta: {
-    type: Object,
-    default: {}
+    type: String,
+    default: null
   }
 }, {
   timestamps: true

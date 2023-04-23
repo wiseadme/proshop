@@ -1,8 +1,31 @@
+$hover-color: #ececec;
+
 .app-sidebar {
   width: 100%;
   height: 100%;
 }
 
-.nav-item {
+.navigation-item {
   cursor: pointer;
+  transition: background-color .2s linear;
+
+  &--active {
+    background-color: var(--primary);
+    color: white;
+  }
+
+  &:hover:not(.navigation-item--active) {
+    background-color: $hover-color;
+  }
+
+  &__group {
+    & >.v-group__header {
+      padding-left: 4px;
+      transition: background-color .2s linear;
+
+      &:hover {
+        background-color: $hover-color;
+      }
+    }
+  }
 }
