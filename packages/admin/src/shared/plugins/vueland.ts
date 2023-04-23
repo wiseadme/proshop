@@ -29,7 +29,7 @@ vueland.setIcons('fa')
 
 vueland.setTheme({
   base: colors.white.base,
-  primary: 'rgb(37,134,236)',
+  primary: 'rgb(29,180,180)',
   secondary: 'rgb(48,48,52)',
   content: colors.grey.darken3,
   error: colors.red.lighten2,

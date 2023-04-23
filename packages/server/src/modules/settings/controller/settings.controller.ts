@@ -1,14 +1,18 @@
 import { Request, Response, Router } from 'express'
-import { injectable } from 'inversify'
+import { inject, injectable } from 'inversify'
 import { BaseController } from '@common/controller/base.controller'
 import { IController } from '@/types'
+import { ILogger } from '@/types/utils'
+import { TYPES } from '@common/schemes/di-types'
 
 @injectable()
-export class ConfigController extends BaseController implements IController {
+export class SettingsController extends BaseController implements IController {
   public path = '/v1/settings'
   public router = Router()
 
-  constructor() {
+  constructor(
+    @inject(TYPES.UTILS.ILogger) private logger: ILogger,
+  ) {
     super()
     this.initRoutes()
   }

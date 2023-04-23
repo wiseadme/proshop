@@ -1,13 +1,22 @@
-interface ICompanyConfig {
-  orgName: string
-  name?: string
+import { ICurrency } from './currency'
+
+interface IMerchantLocations {
+  coords: number[]
+  address: string
+}
+interface IMerchant {
+  name: string
+  business: string
+  description: string
   logo: string
   address: string
   email?: string
   phone: string
+  currency: ICurrency
+  locations: IMerchantLocations[]
 }
 
-interface ISiteDesignColors {
+interface ISiteColors {
   base?: string
   content?: string
   primary?: string
@@ -19,7 +28,8 @@ interface ISiteDesignColors {
 }
 
 interface ISiteDesign {
-  colors: ISiteDesignColors
+  colors?: ISiteColors
+  layout?: string
 }
 
 interface ISiteAboutPage {
@@ -37,7 +47,7 @@ interface ISiteConfig {
   pages: ISitePages
 }
 
-export interface IConfig {
-  company: ICompanyConfig
-  site?: ISiteConfig
+export interface ISettings {
+  merchant: IMerchant
+  site: ISiteConfig
 }

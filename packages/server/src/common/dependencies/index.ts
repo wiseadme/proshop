@@ -19,7 +19,6 @@ import { OptionController } from '@modules/option/controller/option.controller'
 import { UserController } from '@modules/user/controller/user.controller'
 import { CustomerController } from '@modules/customer/controller/customer.controller'
 import { MetaTagController } from '@modules/metatag/controller/metatag.controller'
-import { CurrencyController } from '@modules/currency/controller/currency.controller'
 
 // Services
 import { LoggerService } from '../services/logger.service'
@@ -36,7 +35,6 @@ import { EventBusService } from '@common/services/event-bus.service'
 import { UserService } from '@modules/user/service/user.service'
 import { CustomerService } from '@modules/customer/service/customer.service'
 import { MetaTagService } from '@modules/metatag/service/metatag.service'
-import { CurrencyService } from '@modules/currency/service/currency.service'
 
 // Repositories
 import { CategoryRepository } from '@modules/category/repository/category.repository'
@@ -51,7 +49,6 @@ import { OptionRepository } from '@modules/option/repository/option.repository'
 import { UserRepository } from '@modules/user/repository/user.repository'
 import { CustomerRepository } from '@modules/customer/repository/customer.repository'
 import { MetaTagRepository } from '@modules/metatag/repository/metatag.repository'
-import { CurrencyRepository } from '@modules/currency/repository/currency.repository'
 
 // Middlewares
 import { JsonMiddleware } from '@common/middlewares/json.middleware'
@@ -62,7 +59,6 @@ import { FileLoaderMiddleware } from '@common/middlewares/fileloader.middleware'
 // import { SessionMiddleware } from '@common/middlewares/session.middleware'
 import { CookieMiddleware } from '@common/middlewares/cookie.middleware'
 // import { CorsMiddleware } from '@common/middlewares/cors.middleware'
-
 // Types
 import { ICategoryService } from '@modules/category/types/service'
 import { IProductService } from '@modules/product/types/service'
@@ -76,7 +72,6 @@ import { IOptionService } from '@modules/option/types/service'
 import { IUserService } from '@modules/user/types/service'
 import { ICustomerService } from '@modules/customer/types/service'
 import { IEventBusService } from '@/types/services'
-import { ICurrencyService } from '@modules/currency/types/service'
 import { ICategoryRepository } from '@modules/category/types/repository'
 import { IMetaTagService } from '@modules/metatag/types/service'
 import { IAssetsRepository } from '@modules/asset/types/repository'
@@ -90,15 +85,9 @@ import { ICartRepository } from '@modules/cart/types/repository'
 import { IOrderRepository } from '@modules/order/types/repository'
 import { IOptionRepository } from '@modules/option/types/repository'
 import { IMetaTagRepository } from '@modules/metatag/types/repository'
-import { ICurrencyRepository } from '@modules/currency/types/repository'
 import { ILogger } from '@/types/utils'
-import { IController, IConfig, IDb } from '@/types'
-import {
-  IMiddleware,
-  IErrorRouteMiddleware,
-  IExpressMiddleware,
-  IFileLoaderMiddleware,
-} from '@/types/middlewares'
+import { IConfig, IController, IDb } from '@/types'
+import { IErrorRouteMiddleware, IExpressMiddleware, IFileLoaderMiddleware, IMiddleware, } from '@/types/middlewares'
 import { AuthMiddleware } from '@common/middlewares/auth.middleware'
 
 export const container = new Container({ skipBaseClassChecks: true })
@@ -125,7 +114,6 @@ container.bind<IOptionService>(TYPES.SERVICES.IOptionService).to(OptionService)
 container.bind<IUserService>(TYPES.SERVICES.IUserService).to(UserService)
 container.bind<ICustomerService>(TYPES.SERVICES.ICustomerService).to(CustomerService)
 container.bind<IMetaTagService>(TYPES.SERVICES.IMetaTagService).to(MetaTagService)
-container.bind<ICurrencyService>(TYPES.SERVICES.ICurrencyService).to(CurrencyService)
 
 // Controllers
 container.bind<IController>(TYPES.CONTROLLERS.IController).to(SwaggerController)
@@ -141,7 +129,6 @@ container.bind<IController>(TYPES.CONTROLLERS.IController).to(OptionController)
 container.bind<IController>(TYPES.CONTROLLERS.IController).to(UserController)
 container.bind<IController>(TYPES.CONTROLLERS.IController).to(CustomerController)
 container.bind<IController>(TYPES.CONTROLLERS.IController).to(MetaTagController)
-container.bind<IController>(TYPES.CONTROLLERS.IController).to(CurrencyController)
 
 // Middlewares
 container.bind<IMiddleware>(TYPES.MIDDLEWARES.IMiddleware).to(LoggerMiddleware)
@@ -167,4 +154,3 @@ container.bind<IOptionRepository>(TYPES.REPOSITORIES.IOptionRepository).to(Optio
 container.bind<IUserRepository>(TYPES.REPOSITORIES.IUserRepository).to(UserRepository)
 container.bind<ICustomerRepository>(TYPES.REPOSITORIES.ICustomerRepository).to(CustomerRepository)
 container.bind<IMetaTagRepository>(TYPES.REPOSITORIES.IMetaTagRepository).to(MetaTagRepository)
-container.bind<ICurrencyRepository>(TYPES.REPOSITORIES.ICurrencyRepository).to(CurrencyRepository)

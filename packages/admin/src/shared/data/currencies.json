@@ -1,0 +1,26 @@
+[
+  {
+    "name": "сум",
+    "symbol": "",
+    "description": "Узбекский сум",
+    "code": "UZS",
+    "countryId": "UZ",
+    "country": "Uzbekistan"
+  },
+  {
+    "name": "рубль",
+    "symbol": "₽",
+    "description": "Российский рубль",
+    "code": "RUR",
+    "countryId": "RU",
+    "country": "Russia"
+  },
+  {
+    "name": "manat",
+    "symbol": "₼",
+    "description": "Azerbaycan manati",
+    "code": "AZN",
+    "countryId": "AZ",
+    "country": "Azerbaijan"
+  }
+]
