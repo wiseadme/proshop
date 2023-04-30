@@ -1,50 +1,20 @@
 import { Document, model, Schema } from 'mongoose'
-import { ICategory } from '@ecommerce-platform/types'
+import { ISettings } from '@ecommerce-platform/types'
 
-const CategorySchema: Schema = new Schema<ICategory & Document>({
+const SettingsSchema: Schema = new Schema<ISettings & Document>({
   _id: Schema.Types.ObjectId,
-  title: {
-    type: String,
-    required: true,
-    unique: true
-  },
-  url: {
-    type: String,
-    unique: true
-  },
-  image: String,
-  seo: {
-    title: String,
-    description: String,
-    keywords: String,
-    metatags: Array,
-    schema: Array
-  },
-  parent: {
+  merchant: {
     type: Schema.Types.ObjectId,
-    ref: 'Category',
-    default: null
-  },
-  order: {
-    type: Number,
-    default: 0
-  },
-  children: [ {
-    type: Schema.Types.ObjectId,
-    ref: 'Category',
-    default: null,
+    ref: 'Merchant',
     _id: false
-  } ],
-  conditions: {
-    visible: Boolean,
-    special: Boolean
   },
-  length: {
-    type: Number,
-    default: 0
-  }
+  site: {
+    type: Schema.Types.ObjectId,
+    ref: 'Site',
+    _id: false
+  },
 }, {
   timestamps: true
 })
 
-export const CategoryModel = model<ICategory>('Category', CategorySchema)
+export const SettingsModel = model<ISettings>('Settings', SettingsSchema)

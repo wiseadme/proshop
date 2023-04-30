@@ -62,7 +62,7 @@ export class ProductRepository extends RepositoryHelpers implements IProductRepo
     if (_id) {
       validateId(_id)
 
-      return ProductModel.find({ _id }).populate(this.preparePopulateParams())
+      return ProductModel.find({ _id }).populate(this.preparePopulateParams()).lean()
     }
 
     if (category) {
@@ -72,7 +72,7 @@ export class ProductRepository extends RepositoryHelpers implements IProductRepo
     }
 
     if (url) {
-      products = ProductModel.find({ url }, [], queryParams).populate(this.preparePopulateParams())
+      products = ProductModel.find({ url }, [], queryParams).populate(this.preparePopulateParams()).lean()
     }
 
     if (name) {
@@ -81,11 +81,11 @@ export class ProductRepository extends RepositoryHelpers implements IProductRepo
           '$regex': `.*${ name }*.`,
           '$options': 'i'
         }
-      }, queryParams).populate(this.preparePopulateParams())
+      }, queryParams).populate(this.preparePopulateParams()).lean()
     }
 
     if (!products) {
-      products = ProductModel.find({}, [], queryParams).populate(this.preparePopulateParams())
+      products = ProductModel.find({}, [], queryParams).populate(this.preparePopulateParams()).lean()
     }
 
     return products
@@ -107,10 +107,10 @@ export class ProductRepository extends RepositoryHelpers implements IProductRepo
   async delete(id) {
     validateId(id)
 
-    return !!await ProductModel.findOneAndDelete({ _id: id })
+    return !!await ProductModel.findOneAndDelete({ _id: id }).lean()
   }
 
   async getDocumentsCount() {
-    return ProductModel.countDocuments({})
+    return ProductModel.countDocuments()
   }
 }

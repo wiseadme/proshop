@@ -39,79 +39,77 @@
 
 </script>
 <template>
-  <div>
-    <v-modal
-      v-model="showModal"
-      transition="scale-in"
-      width="90%"
-      overlay
-    >
-      <v-form v-slot="{validate}">
-        <v-card
-          color="white"
+  <v-modal
+    v-model="showModal"
+    transition="scale-in"
+    width="90%"
+    overlay
+  >
+    <v-form v-slot="{validate}">
+      <v-card
+        color="white"
+        width="100%"
+        class="modal-card app-border-radius elevation-5"
+      >
+        <v-card-title class="modal-card-title secondary--text py-4">
+          <h3>{{ computedModalHeader }}</h3>
+        </v-card-title>
+        <v-card-content
           width="100%"
-          class="modal-card app-border-radius elevation-5"
+          style="height: 80vh; max-height: 80vh; overflow: auto"
         >
-          <v-card-title class="modal-card-title secondary--text py-4">
-            <h3>{{ computedModalHeader }}</h3>
-          </v-card-title>
-          <v-card-content
-            width="100%"
-            style="height: 80vh; max-height: 80vh; overflow: auto"
+          <product-info-block class="product-modal-block"/>
+          <product-categories-block class="product-modal-block mt-6"/>
+          <product-attributes-block class="product-modal-block mt-6"/>
+          <product-meta-tags-block class="product-modal-block mt-6"/>
+          <product-variants-block class="product-modal-block mt-6"/>
+          <product-related-block
+            v-if="categoryItems"
+            class="mt-2 product-modal-block mt-6"
+          />
+          <product-conditions-block
+            v-model:conditions="model.conditions"
+            class="mt-2 product-modal-block mt-6"
+          />
+        </v-card-content>
+        <v-card-actions>
+          <v-button
+            color="primary"
+            elevation="3"
+            width="120"
+            :disabled="!hasChanges && isEditMode"
+            :loading="!isSaved"
+            rounded
+            @click="onSubmit(validate)"
           >
-            <product-info-block class="product-modal-block"/>
-            <product-categories-block class="product-modal-block"/>
-            <product-attributes-block class="product-modal-block"/>
-            <product-meta-tags-block class="product-modal-block"/>
-            <product-variants-block class="product-modal-block"/>
-            <product-related-block
-              v-if="categoryItems"
-              class="mt-2 product-modal-block"
-            />
-            <product-conditions-block
-              v-model:conditions="model.conditions"
-              class="mt-2 product-modal-block"
-            />
-          </v-card-content>
-          <v-card-actions>
-            <v-button
-              color="primary"
-              elevation="3"
-              width="120"
-              :disabled="!hasChanges && isEditMode"
-              :loading="!isSaved"
-              rounded
-              @click="onSubmit(validate)"
-            >
-              сохранить
-            </v-button>
-            <v-button
-              color="warning"
-              class="ml-4"
-              width="120"
-              elevation="3"
-              rounded
-              :disabled="hasChanges"
-              @click="closeModal"
-            >
-              отмена
-            </v-button>
-            <v-button
-              v-if="isEditMode"
-              class="ml-4"
-              elevation="3"
-              color="red darken-2"
-              rounded
-              :disabled="!hasChanges"
-              @click="onDiscardProductChanges"
-            >
-              сбросить изменения
-            </v-button>
-          </v-card-actions>
-        </v-card>
-      </v-form>
-    </v-modal>
-  </div>
+            сохранить
+          </v-button>
+          <v-button
+            color="warning"
+            class="ml-4"
+            width="120"
+            elevation="3"
+            rounded
+            :disabled="hasChanges"
+            @click="closeModal"
+          >
+            отмена
+          </v-button>
+          <v-button
+            v-if="isEditMode"
+            class="ml-4"
+            elevation="3"
+            color="red darken-2"
+            rounded
+            :disabled="!hasChanges"
+            @click="onDiscardProductChanges"
+          >
+            сбросить изменения
+          </v-button>
+        </v-card-actions>
+      </v-card>
+    </v-form>
+  </v-modal>
 </template>
 <style lang="scss">
   @import "styles/ProductActionsModal";

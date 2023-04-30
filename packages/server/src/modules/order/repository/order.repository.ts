@@ -45,6 +45,7 @@ export class OrderRepository implements IOrderRepository {
           path: 'executor',
           select: 'firstName secondName roles phone'
         })
+        .lean()
 
     } else if (params.seen) {
       orders = await OrderModel
@@ -55,6 +56,7 @@ export class OrderRepository implements IOrderRepository {
           path: 'executor',
           select: 'firstName secondName roles phone'
         })
+        .lean()
     } else {
       const {
         page = DEFAULT_PAGE,
@@ -71,6 +73,7 @@ export class OrderRepository implements IOrderRepository {
           path: 'executor',
           select: 'firstName secondName roles phone'
         })
+        .lean()
     }
 
     return orders
@@ -88,7 +91,7 @@ export class OrderRepository implements IOrderRepository {
       .populate({
         path: 'executor',
         select: 'firstName secondName roles phone'
-      }) as Document & IOrder
+      }).lean() as Document & IOrder
 
     return { updated }
   }

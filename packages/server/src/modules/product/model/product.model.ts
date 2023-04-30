@@ -14,7 +14,8 @@ const ProductSchema = new Schema<IProduct>({
   },
   price: {
     type: Number,
-    default: 0
+    default: 0,
+    index: true
   },
   quantity: {
     type: Number,
@@ -36,7 +37,8 @@ const ProductSchema = new Schema<IProduct>({
       type: Schema.Types.ObjectId,
       ref: 'Category',
     } ],
-    required: true
+    required: true,
+    index: true
   },
   image: {
     type: String,

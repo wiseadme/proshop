@@ -1,9 +1,10 @@
 <script lang="ts" setup>
   import { ref, unref } from 'vue'
-  import draggable from 'vuedraggable'
   import { useVariantsService } from '@modules/variant/composables/use-variants-service'
   import { Variant } from '@modules/variant/model/variant.model'
   import { IVariant } from '@ecommerce-platform/types'
+  // @ts-ignore
+  import draggable from 'vuedraggable'
 
   const { getVariants, createVariant, deleteVariant, variants } = useVariantsService()
 
@@ -42,7 +43,8 @@
           <v-card
             width="100%"
             elevation="2"
-            color="#ffffff"
+            color="white"
+            class="app-border-radius"
           >
             <v-card-title class="primary--text">
               <h3>Группы вариантов</h3>

@@ -75,14 +75,14 @@
       <v-text-field
         v-model.trim="model.name"
         label="Наименование товара"
-        color="primary"
+        color=""
       />
     </v-col>
     <v-col xl="6">
       <v-text-field
         v-model.number="model.price"
         label="Цена"
-        color="primary"
+        color=""
         type="number"
       />
     </v-col>
@@ -91,7 +91,7 @@
         v-model.number="model.quantity"
         label="Количество"
         type="number"
-        color="primary"
+        color=""
       />
     </v-col>
     <v-col xl="6">
@@ -99,7 +99,7 @@
         v-model="model.unit"
         :items="unitItems"
         label="Единица измерения"
-        color="primary"
+        color=""
         value-key="value"
         active-class="primary white--text"
         text-color="var(--content)"
@@ -109,7 +109,7 @@
       <v-text-field
         v-model="model.seo.title"
         label="SEO title"
-        color="primary"
+        color=""
         text-color="content"
       />
     </v-col>
@@ -117,7 +117,7 @@
       <v-text-field
         v-model="model.seo.description"
         label="SEO description"
-        color="primary"
+        color=""
         text-color="content"
       />
     </v-col>
@@ -125,7 +125,7 @@
       <v-text-field
         v-model="model.seo.keywords"
         label="SEO keywords"
-        color="primary"
+        color=""
         text-color="content"
       />
     </v-col>
@@ -133,7 +133,7 @@
       <v-text-field
         v-model.trim="model.url"
         label="URL товара"
-        color="primary"
+        color=""
         text-color="content"
       />
     </v-col>
@@ -182,7 +182,7 @@
       <v-file-input
         :value="productImages"
         :label="isEditMode ? 'Загрузить изображения' : 'Загрузить изображение можно только после создания продукта'"
-        color="primary"
+        color=""
         text-color="content"
         :disabled="!isEditMode"
         @update:value="onLoadImage"
