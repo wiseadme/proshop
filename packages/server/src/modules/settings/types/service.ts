@@ -1,10 +1,10 @@
-import { Document } from 'mongoose'
+import { Document, LeanDocument } from 'mongoose'
 import { IMerchant } from '@ecommerce-platform/types'
 
 export interface IMerchantService {
   create(merchant: IMerchant): Promise<Document & IMerchant>
 
-  read(params: Partial<IMerchant>): Promise<Array<Document & IMerchant>>
+  read(): Promise<Array<LeanDocument<IMerchant>>>
 
   update(updates: Partial<IMerchant>): Promise<{ updated: Document & IMerchant }>
 

@@ -61,25 +61,19 @@
               <v-button
                 elevation="2"
                 color="primary"
+                width="100"
                 @click="onCreate(validate)"
               >
-                <v-icon
-                  size="14"
-                >
-                  fas fa-plus
-                </v-icon>
+                Сохранить
               </v-button>
               <v-button
                 elevation="2"
                 color="error"
                 class="ml-2"
+                width="100"
                 @click="clearForm"
               >
-                <v-icon
-                  size="14"
-                >
-                  fas fa-trash-alt
-                </v-icon>
+                Очистить
               </v-button>
             </v-card-actions>
           </v-card>

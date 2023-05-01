@@ -27,7 +27,6 @@
       }
     }"
     class="elevation-2 app-border-radius"
-    show-checkbox
     show-sequence
   >
     <template #toolbar>
