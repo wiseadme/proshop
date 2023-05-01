@@ -62,7 +62,7 @@ export class ProductRepository extends RepositoryHelpers implements IProductRepo
     if (_id) {
       validateId(_id)
 
-      return ProductModel.find({ _id }).populate(this.preparePopulateParams())
+      return ProductModel.find({ _id }).lean().populate(this.preparePopulateParams())
     }
 
     if (category) {
@@ -72,7 +72,7 @@ export class ProductRepository extends RepositoryHelpers implements IProductRepo
     }
 
     if (url) {
-      products = ProductModel.find({ url }, [], queryParams).populate(this.preparePopulateParams())
+      products = ProductModel.find({ url }, [], queryParams).lean().populate(this.preparePopulateParams())
     }
 
     if (name) {
@@ -81,11 +81,11 @@ export class ProductRepository extends RepositoryHelpers implements IProductRepo
           '$regex': `.*${ name }*.`,
           '$options': 'i'
         }
-      }, queryParams).populate(this.preparePopulateParams())
+      }, queryParams).lean().populate(this.preparePopulateParams())
     }
 
     if (!products) {
-      products = ProductModel.find({}, [], queryParams).populate(this.preparePopulateParams())
+      products = ProductModel.find({}, [], queryParams).lean().populate(this.preparePopulateParams())
     }
 
     return products
@@ -99,6 +99,7 @@ export class ProductRepository extends RepositoryHelpers implements IProductRepo
       { $set },
       { new: true }
     )
+      .lean()
       .populate(this.preparePopulateParams()) as Document & IProduct
 
     return { updated }
@@ -107,10 +108,10 @@ export class ProductRepository extends RepositoryHelpers implements IProductRepo
   async delete(id) {
     validateId(id)
 
-    return !!await ProductModel.findOneAndDelete({ _id: id })
+    return !!await ProductModel.findOneAndDelete({ _id: id }).lean()
   }
 
   async getDocumentsCount() {
-    return ProductModel.countDocuments({})
+    return ProductModel.countDocuments()
   }
 }

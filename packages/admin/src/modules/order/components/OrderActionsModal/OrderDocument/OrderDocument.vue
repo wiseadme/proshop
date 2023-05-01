@@ -56,16 +56,16 @@
 <template>
   <v-card
     v-if="model._id"
-    class="elevation-3"
+    class="elevation-2 app-border-radius"
     width="100%"
-    color="rgba(0,0,0,.4)"
+    color="white"
   >
-    <v-card-title class="card-title white--text text--base">
-      Заказ № {{ model.orderId }}
+    <v-card-title class="primary--text">
+      <h2>Заказ № {{ model.orderId }}</h2>
     </v-card-title>
     <v-card-content
       class="grey lighten-4"
-      style="max-height: 70vh; overflow: auto"
+      style="max-height: 70vh; overflow: auto; z-index: 1"
     >
       <v-row>
         <v-col
@@ -76,13 +76,12 @@
             v-if="model.qrcode"
             :src="model.qrcode"
             alt=""
-            style="width: 100%; max-width: 200px"
-            class="elevation-1"
+            style="width: 100%; max-width: 200px; z-index: 0"
           >
         </v-col>
         <v-col cols="9">
           <address-map
-            class="elevation-2"
+            class="app-border-radius"
             :coords="model.delivery.coords"
             :address="model.delivery.address"
           />
@@ -90,8 +89,8 @@
       </v-row>
       <v-row class="mt-2">
         <v-col>
-          <v-list class="elevation-1">
-            <v-list-item class="elevation-1 primary white--text">
+          <v-list class="app-border-radius">
+            <v-list-item class="primary white--text">
               <v-list-item-icon/>
               <v-list-item-content style="width: 250px">
                 <h4>Наименование</h4>
@@ -127,7 +126,7 @@
                 <span>{{ getProductPrice(it) * it.quantity }}</span>
               </v-list-item-content>
             </v-list-item>
-            <v-list-item class="elevation-1 grey lighten-2">
+            <v-list-item class="grey lighten-2">
               <v-list-item-icon/>
               <v-list-item-content>
                 <h4>Итого к оплате: {{ model.amount }}</h4>
@@ -138,7 +137,7 @@
       </v-row>
       <v-row class="mt-2">
         <v-col>
-          <v-list class="elevation-1">
+          <v-list class="app-border-radius">
             <v-list-item class="primary white--text">
               <v-list-item-icon/>
               <v-list-item-content style="width: 250px">
@@ -161,7 +160,7 @@
         </v-col>
       </v-row>
       <v-row
-        class="mt-4 mx-2 statuses white elevation-2"
+        class="mt-4 mx-2 statuses white app-border-radius"
         style="overflow: hidden"
       >
         <template
@@ -208,7 +207,7 @@
       <v-row class="mt-4 px-2">
         <v-col
           cols="6"
-          class="white elevation-2 pa-2 d-flex"
+          class="white pa-2 d-flex app-border-radius"
         >
           <v-select
             v-model="model.executor"

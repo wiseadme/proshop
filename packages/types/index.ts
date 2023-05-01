@@ -14,3 +14,13 @@ export type { Maybe } from './utils'
 export type { ICustomer } from './customer'
 export type { IMetaTag } from './metatag'
 export type { ICurrency, ICurrencyMeta } from './currency'
+export type {
+  ISettings,
+  IMerchant,
+  IMerchantStores,
+  ISiteConfig,
+  ISiteColors,
+  ISitePages,
+  ISiteAboutPage,
+  ISiteDesign
+} from './settings'

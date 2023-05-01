@@ -1,22 +1,25 @@
 import { ICurrency } from './currency'
+import { Maybe } from './utils'
 
-interface IMerchantLocations {
+export interface IMerchantStores {
   coords: number[]
   address: string
 }
-interface IMerchant {
-  name: string
-  business: string
-  description: string
-  logo: string
-  address: string
-  email?: string
-  phone: string
+export interface IMerchant {
+  _id: string
+  organization: string
+  name: Maybe<string>
+  description: Maybe<string>
+  logo: Maybe<string>
+  slogan: Maybe<string>
+  address: Maybe<string>
+  email: Maybe<string>
+  phone: Maybe<string>
   currency: ICurrency
-  locations: IMerchantLocations[]
+  stores: Maybe<IMerchantStores[]>
 }
 
-interface ISiteColors {
+export interface ISiteColors {
   base?: string
   content?: string
   primary?: string
@@ -27,22 +30,22 @@ interface ISiteColors {
   disabled?: string
 }
 
-interface ISiteDesign {
+export interface ISiteDesign {
   colors?: ISiteColors
   layout?: string
 }
 
-interface ISiteAboutPage {
+export interface ISiteAboutPage {
   text: string
   image: string
   layout: string
 }
 
-interface ISitePages {
+export interface ISitePages {
   about: ISiteAboutPage
 }
 
-interface ISiteConfig {
+export interface ISiteConfig {
   design: ISiteDesign
   pages: ISitePages
 }

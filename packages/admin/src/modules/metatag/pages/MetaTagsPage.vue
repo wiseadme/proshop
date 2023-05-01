@@ -4,12 +4,13 @@
     unref,
     watch
   } from 'vue'
-  import draggable from 'vuedraggable'
   import { useMetaTag } from '@modules/metatag/composables/use-meta-tag'
   import { useMetaTagsService } from '@modules/metatag/composables/use-meta-tags-service'
   import { IMetaTag } from '@ecommerce-platform/types'
   import { descriptorToMetaTag } from '@shared/helpers/metatag'
   import { clone } from '@shared/helpers'
+  // @ts-ignore
+  import draggable from 'vuedraggable'
 
   const {
     metaTags,
@@ -66,7 +67,7 @@
             <v-card
               color="white"
               width="100%"
-              class="elevation-2"
+              class="elevation-2 app-border-radius"
             >
               <v-card-title class="primary--text">
                 <h3>Свойства мета тега</h3>

@@ -3,6 +3,7 @@
     "name": "сум",
     "symbol": "",
     "description": "Узбекский сум",
+    "coin": "тийин",
     "code": "UZS",
     "countryId": "UZ",
     "country": "Uzbekistan"
@@ -11,6 +12,7 @@
     "name": "рубль",
     "symbol": "₽",
     "description": "Российский рубль",
+    "coin":  "копеек",
     "code": "RUR",
     "countryId": "RU",
     "country": "Russia"
@@ -19,6 +21,7 @@
     "name": "manat",
     "symbol": "₼",
     "description": "Azerbaycan manati",
+    "coin":  "gepik",
     "code": "AZN",
     "countryId": "AZ",
     "country": "Azerbaijan"
