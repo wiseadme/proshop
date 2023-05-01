@@ -1,38 +1,53 @@
 <script lang="ts" setup>
-  import { ref } from 'vue'
-  import { ColorPicker } from 'vue-color-kit'
+  import OrganizationBlock from '@modules/settings/components/merchant/OrganizationBlock.vue'
+  import CurrenciesBlock from '@modules/settings/components/merchant/CurrenciesBlock.vue'
+  import ContactsBlock from '@modules/settings/components/merchant/ContactsBlock.vue'
+  import { useMerchant } from '@modules/settings/composables/use-merchant'
 
-  const color = ref('#fa5a5a')
-  const suckerCanvas = ref(null)
-  const suckerArea = ref([])
-  const suckerHide = ref(false)
-
-  const onChange = (data) => {
-    color.value = data.hex
-  }
+  const { createNewMerchant } = useMerchant()
 
 </script>
 <template>
   <v-layout>
-    <v-row>
-      <v-col>
-        <div
-          class="color-picker-wrapper d-flex justify-center align-center"
-          :style="{height: '400px'}"
-        >
-          <color-picker
-            theme="light"
-            :color="color"
-            class="elevation-2"
-            style="width: 220px"
-            :sucker-hide="suckerHide"
-            :sucker-canvas="suckerCanvas"
-            :sucker-area="suckerArea"
-            @change-color="onChange"
-          />
-        </div>
-      </v-col>
-    </v-row>
+    <v-form
+      v-slot="{validate}"
+      style="width: 100%"
+    >
+      <v-card
+        elevation="2"
+        style="width: 100%"
+        color="white"
+        class="app-border-radius"
+      >
+        <v-card-content>
+          <v-row>
+            <v-col cols="6">
+              <OrganizationBlock/>
+            </v-col>
+            <v-col cols="4">
+              <CurrenciesBlock/>
+            </v-col>
+            <v-col
+              cols="6"
+              class="mt-4"
+            >
+              <ContactsBlock/>
+            </v-col>
+          </v-row>
+        </v-card-content>
+        <v-card-actions>
+          <v-button
+            color="primary"
+            class="ml-7 mb-7 px-4"
+            elevation="2"
+            rounded
+            @click="createNewMerchant(validate)"
+          >
+            Сохранить
+          </v-button>
+        </v-card-actions>
+      </v-card>
+    </v-form>
   </v-layout>
 </template>
 <style lang="scss">

@@ -17,7 +17,7 @@ export type { ICurrency, ICurrencyMeta } from './currency'
 export type {
   ISettings,
   IMerchant,
-  IMerchantLocations,
+  IMerchantStores,
   ISiteConfig,
   ISiteColors,
   ISitePages,

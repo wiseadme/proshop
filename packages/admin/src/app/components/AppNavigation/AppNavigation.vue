@@ -111,9 +111,8 @@
     class="elevation-2"
     expand
     on-hover
-    color="cyan darken-3"
   >
-    <v-list color="cyan darken-3">
+    <v-list color="white">
       <v-list-item class="mb-2"/>
       <template
         v-for="it in items"
@@ -121,7 +120,7 @@
       >
         <v-list-item
           v-if="!it.children"
-          class="navigation-item pl-1 white--text"
+          class="navigation-item pl-1"
           :class="{'navigation-item--active': current && (it.path === current.path)}"
           @click="onSelect(it)"
         >
@@ -138,10 +137,10 @@
           v-else
           :prepend-icon="it.icon"
           :title="it.title"
-          class="navigation-item__group white--text"
+          class="navigation-item__group"
           :expand="current && Object.keys(it.children).some(key => current.path === it.children[key].path)"
         >
-          <v-list color="cyan darken-3">
+          <v-list color="white">
             <v-list-item
               v-for="c in it.children"
               :key="c.title"

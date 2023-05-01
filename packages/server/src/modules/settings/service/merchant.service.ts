@@ -2,7 +2,6 @@ import { inject, injectable } from 'inversify'
 import { TYPES } from '@common/schemes/di-types'
 // Types
 import { ILogger } from '@/types/utils'
-// import { IUnitRepository } from '../types/repository'
 import { IMerchant } from '@ecommerce-platform/types'
 import { IMerchantRepository } from '@modules/settings/types/repository'
 import { IMerchantService } from '@modules/settings/types/service'
@@ -11,7 +10,7 @@ import { IMerchantService } from '@modules/settings/types/service'
 export class MerchantService implements IMerchantService {
   constructor(
     @inject(TYPES.UTILS.ILogger) private logger: ILogger,
-    @inject(TYPES.REPOSITORIES.IUnitRepository) private repository: IMerchantRepository
+    @inject(TYPES.REPOSITORIES.IMerchantRepository) private repository: IMerchantRepository
   ) {
   }
 
@@ -19,8 +18,8 @@ export class MerchantService implements IMerchantService {
     return this.repository.create(merchant)
   }
 
-  read(params: Partial<IMerchant>) {
-    return this.repository.read(params)
+  read() {
+    return this.repository.read()
   }
 
   update(updates: Partial<IMerchant>) {

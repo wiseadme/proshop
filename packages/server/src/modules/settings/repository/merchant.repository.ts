@@ -4,43 +4,50 @@ import { TYPES } from '@common/schemes/di-types'
 
 // Types
 import { ILogger } from '@/types/utils'
-import { IUnit } from '@ecommerce-platform/types'
-import { IUnitRepository } from '@modules/unit/types/repository'
+import { IMerchant } from '@ecommerce-platform/types'
+import { IMerchantRepository } from '@modules/settings/types/repository'
 import { validateId } from '@common/utils/mongoose-validate-id'
-import { UnitModel } from '@modules/unit/model/unit.model'
+import { MerchantModel } from '@modules/settings/model/merchant.model'
 
 @injectable()
-export class UnitRepository implements IUnitRepository {
+export class MerchantRepository implements IMerchantRepository {
   constructor(
     @inject(TYPES.UTILS.ILogger) private logger: ILogger
   ) {
   }
 
-  async create(unit: IUnit) {
-    return new UnitModel({
+  async create(merchant: IMerchant) {
+    return new MerchantModel({
       _id: new mongoose.Types.ObjectId(),
-      value: unit.value,
-      meta: unit.meta,
+      organization: merchant.organization,
+      name: merchant.name,
+      description: merchant.description,
+      logo: merchant.logo,
+      slogan: merchant.slogan,
+      address: merchant.address,
+      email: merchant.email,
+      phone: merchant.phone,
+      currency: merchant.currency,
+      stores: merchant.stores
     }).save()
   }
 
-  async read(params) {
-    return UnitModel.find(params)
+  async read() {
+    return MerchantModel.find().lean()
   }
-
-  async update(updates: Partial<IUnit>) {
+  async update(updates: Partial<IMerchant>) {
     validateId(updates._id)
 
-    const updated = await UnitModel.findByIdAndUpdate(
+    const updated = await MerchantModel.findByIdAndUpdate(
       { _id: updates._id },
       { $set: updates },
       { new: true }
-    ) as Document & IUnit
+    ) as Document & IMerchant
 
     return { updated }
   }
 
   async delete(id): Promise<boolean> {
-    return !!await UnitModel.findByIdAndDelete(id)
+    return !!await MerchantModel.findByIdAndDelete(id)
   }
 }

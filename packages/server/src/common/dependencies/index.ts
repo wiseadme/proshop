@@ -19,6 +19,7 @@ import { OptionController } from '@modules/option/controller/option.controller'
 import { UserController } from '@modules/user/controller/user.controller'
 import { CustomerController } from '@modules/customer/controller/customer.controller'
 import { MetaTagController } from '@modules/metatag/controller/metatag.controller'
+import { SettingsController } from '@modules/settings/controller/settings.controller'
 
 // Services
 import { LoggerService } from '../services/logger.service'
@@ -35,6 +36,7 @@ import { EventBusService } from '@common/services/event-bus.service'
 import { UserService } from '@modules/user/service/user.service'
 import { CustomerService } from '@modules/customer/service/customer.service'
 import { MetaTagService } from '@modules/metatag/service/metatag.service'
+import { MerchantService } from '@modules/settings/service/merchant.service'
 
 // Repositories
 import { CategoryRepository } from '@modules/category/repository/category.repository'
@@ -49,6 +51,7 @@ import { OptionRepository } from '@modules/option/repository/option.repository'
 import { UserRepository } from '@modules/user/repository/user.repository'
 import { CustomerRepository } from '@modules/customer/repository/customer.repository'
 import { MetaTagRepository } from '@modules/metatag/repository/metatag.repository'
+import { MerchantRepository } from '@modules/settings/repository/merchant.repository'
 
 // Middlewares
 import { JsonMiddleware } from '@common/middlewares/json.middleware'
@@ -89,6 +92,8 @@ import { ILogger } from '@/types/utils'
 import { IConfig, IController, IDb } from '@/types'
 import { IErrorRouteMiddleware, IExpressMiddleware, IFileLoaderMiddleware, IMiddleware, } from '@/types/middlewares'
 import { AuthMiddleware } from '@common/middlewares/auth.middleware'
+import { IMerchantService } from '@modules/settings/types/service'
+import { IMerchantRepository } from '@modules/settings/types/repository'
 
 export const container = new Container({ skipBaseClassChecks: true })
 
@@ -114,6 +119,7 @@ container.bind<IOptionService>(TYPES.SERVICES.IOptionService).to(OptionService)
 container.bind<IUserService>(TYPES.SERVICES.IUserService).to(UserService)
 container.bind<ICustomerService>(TYPES.SERVICES.ICustomerService).to(CustomerService)
 container.bind<IMetaTagService>(TYPES.SERVICES.IMetaTagService).to(MetaTagService)
+container.bind<IMerchantService>(TYPES.SERVICES.IMerchantService).to(MerchantService)
 
 // Controllers
 container.bind<IController>(TYPES.CONTROLLERS.IController).to(SwaggerController)
@@ -129,6 +135,7 @@ container.bind<IController>(TYPES.CONTROLLERS.IController).to(OptionController)
 container.bind<IController>(TYPES.CONTROLLERS.IController).to(UserController)
 container.bind<IController>(TYPES.CONTROLLERS.IController).to(CustomerController)
 container.bind<IController>(TYPES.CONTROLLERS.IController).to(MetaTagController)
+container.bind<IController>(TYPES.CONTROLLERS.IController).to(SettingsController)
 
 // Middlewares
 container.bind<IMiddleware>(TYPES.MIDDLEWARES.IMiddleware).to(LoggerMiddleware)
@@ -154,3 +161,4 @@ container.bind<IOptionRepository>(TYPES.REPOSITORIES.IOptionRepository).to(Optio
 container.bind<IUserRepository>(TYPES.REPOSITORIES.IUserRepository).to(UserRepository)
 container.bind<ICustomerRepository>(TYPES.REPOSITORIES.ICustomerRepository).to(CustomerRepository)
 container.bind<IMetaTagRepository>(TYPES.REPOSITORIES.IMetaTagRepository).to(MetaTagRepository)
+container.bind<IMerchantRepository>(TYPES.REPOSITORIES.IMerchantRepository).to(MerchantRepository)

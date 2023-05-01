@@ -67,7 +67,7 @@
         <v-icon>{{ icons.PEN }}</v-icon>
       </v-button>
       <v-button
-        class="ml-2"
+        class="ml-1"
         color="red darken-1"
         elevation="2"
         text

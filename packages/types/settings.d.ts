@@ -1,19 +1,22 @@
 import { ICurrency } from './currency'
+import { Maybe } from './utils'
 
-export interface IMerchantLocations {
+export interface IMerchantStores {
   coords: number[]
   address: string
 }
 export interface IMerchant {
-  name: string
-  business: string
-  description: string
-  logo: string
-  address: string
-  email?: string
-  phone: string
+  _id: string
+  organization: string
+  name: Maybe<string>
+  description: Maybe<string>
+  logo: Maybe<string>
+  slogan: Maybe<string>
+  address: Maybe<string>
+  email: Maybe<string>
+  phone: Maybe<string>
   currency: ICurrency
-  locations: IMerchantLocations[]
+  stores: Maybe<IMerchantStores[]>
 }
 
 export interface ISiteColors {
