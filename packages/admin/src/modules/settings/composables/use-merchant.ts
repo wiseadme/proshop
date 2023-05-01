@@ -1,4 +1,5 @@
 import {
+  computed,
   ref,
   unref,
   watch
@@ -13,9 +14,9 @@ export const useMerchant = createSharedComposable(() => {
 
   const model = ref<IMerchant>(Merchant.create())
 
-  const createNewMerchant = () => {
-    createMerchant(unref(model))
-  }
+  const isEditMode = computed(() => !!unref(merchant)?._id)
+
+  const createNewMerchant = (validate) => validate().then(() => createMerchant(unref(model)))
 
   watch(merchant, (data) => {
     model.value = Merchant.create(data!)
@@ -23,6 +24,7 @@ export const useMerchant = createSharedComposable(() => {
 
   return {
     model,
+    isEditMode,
     createNewMerchant
   }
 })

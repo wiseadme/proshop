@@ -22,10 +22,19 @@ export class SettingsController extends BaseController implements IController {
   }
 
   initRoutes() {
+    this.router.get('/', expressAsyncHandler(this.getSettings.bind(this)))
     this.router.post('/merchant', expressAsyncHandler(this.createMerchant.bind(this)))
     this.router.get('/merchant', expressAsyncHandler(this.getMerchant.bind(this)))
     this.router.patch('/merchant', expressAsyncHandler(this.updateMerchant.bind(this)))
     this.router.delete('/merchant', expressAsyncHandler(this.deleteMerchant.bind(this)))
+  }
+
+  async getSettings(req: Request, res: Response) {
+    try {
+      return this.getMerchant(req, res)
+    } catch (error) {
+
+    }
   }
 
   async createMerchant({ body, method, url }: Request<{}, {}, IMerchant>, res: Response) {
@@ -49,7 +58,7 @@ export class SettingsController extends BaseController implements IController {
 
   async getMerchant({ method, url }: Request<{}, {}, {}, Partial<IMerchant>>, res: Response) {
     try {
-      const merchant = await this.merchantService.read()
+      const [merchant] = await this.merchantService.read()
 
       this.send({
         response: res,
@@ -84,6 +93,7 @@ export class SettingsController extends BaseController implements IController {
       })
     }
   }
+
   async deleteMerchant({ query, method, url }: Request<{}, {}, {}, { id: string }>, res: Response) {
     try {
       await this.merchantService.delete(query.id)
