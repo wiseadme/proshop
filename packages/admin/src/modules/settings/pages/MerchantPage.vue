@@ -2,6 +2,7 @@
   import OrganizationBlock from '@modules/settings/components/merchant/OrganizationBlock.vue'
   import CurrenciesBlock from '@modules/settings/components/merchant/CurrenciesBlock.vue'
   import ContactsBlock from '@modules/settings/components/merchant/ContactsBlock.vue'
+  import SocialBlock from '@modules/settings/components/merchant/SocialBlock.vue'
   import { useMerchant } from '@modules/settings/composables/use-merchant'
 
   const {createNewMerchant} = useMerchant()
@@ -35,6 +36,7 @@
               class="mt-4"
             >
               <ContactsBlock/>
+              <SocialBlock/>
             </v-col>
           </v-row>
         </v-card-content>

@@ -12,6 +12,7 @@ export class Merchant implements IMerchant{
   private _phone: IMerchant['phone']
   private _currency: IMerchant['currency']
   private _stores: IMerchant['stores']
+  private _social: IMerchant['social']
 
   constructor({
     _id = '',
@@ -24,7 +25,8 @@ export class Merchant implements IMerchant{
     address = null,
     email = null,
     phone = null,
-    stores = []
+    stores = [],
+    social = null,
   }: IMerchant) {
     this.__id = _id
     this._organization = organization
@@ -38,6 +40,7 @@ export class Merchant implements IMerchant{
     this._email = email
     this._phone = phone
     this._stores = stores
+    this._social = social
   }
 
   get _id() {
@@ -81,6 +84,10 @@ export class Merchant implements IMerchant{
 
   get stores() {
     return this._stores
+  }
+
+  get social() {
+    return this._social
   }
 
   static create(merchant: IMerchant) {

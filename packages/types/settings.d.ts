@@ -5,6 +5,12 @@ export interface IMerchantStores {
   coords: number[]
   address: string
 }
+
+export interface IMerchantSocial {
+  vk?: string
+  facebook?: string
+  instagram?: string
+}
 export interface IMerchant {
   _id: string
   organization: string
@@ -17,6 +23,7 @@ export interface IMerchant {
   phone: Maybe<string>
   currency: ICurrency
   stores: Maybe<IMerchantStores[]>
+  social: Maybe<IMerchantSocial>
 }
 
 export interface ISiteColors {

@@ -1,6 +1,7 @@
 <script lang="ts" setup>
   import { ref, unref } from 'vue'
-  // Components
+  // @ts-ignore
+  import draggable from 'vuedraggable'
   // Types
   import { Attribute } from '@modules/attribute/model/attribute.model'
   // Helpers

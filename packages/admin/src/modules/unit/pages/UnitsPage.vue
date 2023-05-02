@@ -1,6 +1,8 @@
 <script lang="ts" setup>
   import { useUnitsService } from '@modules/unit/composables/use-units-service'
   import { useUnit } from '@modules/unit/composables/use-unit'
+  // @ts-ignore
+  import draggable from 'vuedraggable'
 
   const { units, getUnits } = useUnitsService()
 

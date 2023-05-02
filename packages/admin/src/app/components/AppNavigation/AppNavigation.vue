@@ -111,6 +111,7 @@
     class="elevation-2"
     expand
     on-hover
+    fixed
   >
     <v-list color="white">
       <v-list-item class="mb-2"/>
