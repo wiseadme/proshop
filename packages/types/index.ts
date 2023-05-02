@@ -22,5 +22,6 @@ export type {
   ISiteColors,
   ISitePages,
   ISiteAboutPage,
-  ISiteDesign
+  ISiteDesign,
+  IMerchantSocial
 } from './settings'
