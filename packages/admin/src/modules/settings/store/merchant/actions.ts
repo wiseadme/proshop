@@ -16,4 +16,16 @@ export const actions = {
       return Promise.reject(err)
     }
   },
+
+  async getMerchant() {
+    try {
+      const { data } = await repository.read()
+
+      this.$patch(state => state.merchant = data.data)
+
+      return data.data
+    } catch (err) {
+      return Promise.reject(err)
+    }
+  }
 }

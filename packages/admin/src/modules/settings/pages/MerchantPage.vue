@@ -5,8 +5,9 @@
   import SocialBlock from '@modules/settings/components/merchant/SocialBlock.vue'
   import { useMerchant } from '@modules/settings/composables/use-merchant'
 
-  const { createNewMerchant } = useMerchant()
+  const { createNewMerchant, getMerchant } = useMerchant()
 
+  getMerchant()
 </script>
 <template>
   <v-layout>

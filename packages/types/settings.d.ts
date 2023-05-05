@@ -58,6 +58,7 @@ export interface ISiteConfig {
 }
 
 export interface ISettings {
+  _id: string
   merchant: IMerchant
   site: ISiteConfig
 }

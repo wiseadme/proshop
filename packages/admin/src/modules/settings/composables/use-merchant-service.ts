@@ -1,4 +1,4 @@
-import { computed } from 'vue'
+import { computed, unref } from 'vue'
 import { createSharedComposable } from '@shared/features/create-shared-composable'
 import { useMerchantStore } from '@modules/settings/store/merchant'
 import { IMerchant } from '@ecommerce-platform/types'
@@ -12,8 +12,16 @@ export const useMerchantService = createSharedComposable(() => {
     return _store.createMerchant(merchant)
   }
 
+  const getMerchant = () => {
+    console.log(unref(merchant))
+    if (unref(merchant)) return
+
+    return _store.getMerchant()
+  }
+
   return {
     merchant,
-    createMerchant
+    createMerchant,
+    getMerchant
   }
 })
