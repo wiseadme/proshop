@@ -28,12 +28,14 @@ export class MerchantRepository implements IMerchantRepository {
       email: merchant.email,
       phone: merchant.phone,
       currency: merchant.currency,
-      stores: merchant.stores
+      stores: merchant.stores,
+      social: merchant.social
     }).save()
   }
 
   async read() {
-    return MerchantModel.find().lean()
+    const [merchant] = await MerchantModel.find().lean()
+    return merchant
   }
   async update(updates: Partial<IMerchant>) {
     validateId(updates._id)

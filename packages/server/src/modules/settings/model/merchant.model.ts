@@ -49,6 +49,14 @@ const MerchantSchema: Schema = new Schema<IMerchant & Document>({
   stores: {
     type: Array,
     default: null
+  },
+  social: {
+    type: {
+      vk: String,
+      facebook: String,
+      instagram: String,
+    },
+    default: null
   }
 }, {
   timestamps: true

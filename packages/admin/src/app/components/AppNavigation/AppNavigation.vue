@@ -70,6 +70,11 @@
           icon: 'fas fa-store-alt',
           path: '/settings/merchant',
         },
+        site: {
+          title: 'Сайт',
+          icon: 'fas fa-store-alt',
+          path: '/settings/site',
+        },
       }
     }
   // {
@@ -111,6 +116,7 @@
     class="elevation-2"
     expand
     on-hover
+    fixed
   >
     <v-list color="white">
       <v-list-item class="mb-2"/>
