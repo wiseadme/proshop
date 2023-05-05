@@ -5,11 +5,9 @@
   import SocialBlock from '@modules/settings/components/merchant/SocialBlock.vue'
   import { useMerchant } from '@modules/settings/composables/use-merchant'
 
-  const {createNewMerchant} = useMerchant()
-  const onCreate = (validate) => {
-    return validate().then(createNewMerchant)
-  }
+  const { createNewMerchant, getMerchant } = useMerchant()
 
+  getMerchant()
 </script>
 <template>
   <v-layout>
@@ -46,7 +44,7 @@
             class="ml-7 mb-7 px-4"
             elevation="2"
             rounded
-            @click="onCreate(validate)"
+            @click="createNewMerchant(validate)"
           >
             Сохранить
           </v-button>

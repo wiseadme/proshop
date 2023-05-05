@@ -54,3 +54,8 @@ body {
 .v-input__text-field {
   border-radius: $border-radius;
 }
+
+.v-menu__content {
+  border-radius: $border-radius;
+  overflow: hidden;
+}

@@ -34,7 +34,8 @@ export class MerchantRepository implements IMerchantRepository {
   }
 
   async read() {
-    return MerchantModel.find().lean()
+    const [merchant] = await MerchantModel.find().lean()
+    return merchant
   }
   async update(updates: Partial<IMerchant>) {
     validateId(updates._id)

@@ -10,7 +10,7 @@ import { useMerchantService } from '@modules/settings/composables/use-merchant-s
 import { createSharedComposable } from '@shared/features/create-shared-composable'
 
 export const useMerchant = createSharedComposable(() => {
-  const { merchant, createMerchant } = useMerchantService()
+  const { merchant, createMerchant, getMerchant } = useMerchantService()
 
   const model = ref<IMerchant>(Merchant.create())
 
@@ -19,12 +19,15 @@ export const useMerchant = createSharedComposable(() => {
   const createNewMerchant = (validate) => validate().then(() => createMerchant(unref(model)))
 
   watch(merchant, (data) => {
-    model.value = Merchant.create(data!)
-  })
+    if (data) {
+      model.value = Merchant.create(data!)
+    }
+  }, {immediate: true})
 
   return {
     model,
     isEditMode,
-    createNewMerchant
+    createNewMerchant,
+    getMerchant
   }
 })
