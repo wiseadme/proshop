@@ -5,23 +5,30 @@ import { IMerchant } from '@ecommerce-platform/types'
 
 export const useMerchantService = createSharedComposable(() => {
   const _store = useMerchantStore()
+  const {createMerchant, updateMerchant, getMerchant} = _store
 
   const merchant = computed<Maybe<IMerchant>>(() => _store.merchant)
 
-  const createMerchant = (merchant: IMerchant) => {
-    return _store.createMerchant(merchant)
+  const createMerchantSettings = (merchant: IMerchant) => {
+    return createMerchant(merchant)
   }
 
-  const getMerchant = () => {
-    console.log(unref(merchant))
+  const getMerchantSettings = () => {
     if (unref(merchant)) return
 
-    return _store.getMerchant()
+    return getMerchant()
+  }
+
+  const updateMerchantSettings = (updates: Partial<IMerchant>) => {
+    updates._id = unref(merchant)?._id
+
+    return updateMerchant(updates)
   }
 
   return {
     merchant,
-    createMerchant,
-    getMerchant
+    createMerchantSettings,
+    getMerchantSettings,
+    updateMerchantSettings
   }
 })
