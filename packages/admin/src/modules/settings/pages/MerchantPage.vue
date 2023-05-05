@@ -4,10 +4,25 @@
   import ContactsBlock from '@modules/settings/components/merchant/ContactsBlock.vue'
   import SocialBlock from '@modules/settings/components/merchant/SocialBlock.vue'
   import { useMerchant } from '@modules/settings/composables/use-merchant'
+  import { computed, unref } from 'vue'
 
-  const { createNewMerchant, getMerchant } = useMerchant()
+  const { createMerchant, getMerchantSettings, updateMerchant, isEditMode } = useMerchant()
 
-  getMerchant()
+  const buttonLabel = computed(() => unref(isEditMode) ? 'Сохранить' : 'Изменить')
+
+  const onSubmit = (validate) => {
+    console.log(unref(isEditMode))
+    validate()
+      .then(() => {
+        if (unref(isEditMode)) {
+          updateMerchant()
+        } else {
+          createMerchant()
+        }
+      })
+  }
+
+  getMerchantSettings()
 </script>
 <template>
   <v-layout>
@@ -44,9 +59,9 @@
             class="ml-7 mb-7 px-4"
             elevation="2"
             rounded
-            @click="createNewMerchant(validate)"
+            @click="onSubmit(validate)"
           >
-            Сохранить
+            {{ buttonLabel }}
           </v-button>
         </v-card-actions>
       </v-card>

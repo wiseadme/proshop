@@ -70,6 +70,11 @@
           icon: 'fas fa-store-alt',
           path: '/settings/merchant',
         },
+        site: {
+          title: 'Сайт',
+          icon: 'fas fa-store-alt',
+          path: '/settings/site',
+        },
       }
     }
   // {

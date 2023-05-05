@@ -3,9 +3,9 @@
   import { ColorPicker } from 'vue-color-kit'
 
   const color = ref('#fa5a5a')
-  const suckerCanvas = ref(null)
-  const suckerArea = ref([])
-  const suckerHide = ref(false)
+  // const suckerCanvas = ref(null)
+  // const suckerArea = ref([])
+  const suckerHide = ref(true)
   const onChange = (data) => {
     color.value = data.hex
   }
@@ -24,8 +24,6 @@
             class="elevation-2"
             style="width: 220px"
             :sucker-hide="suckerHide"
-            :sucker-canvas="suckerCanvas"
-            :sucker-area="suckerArea"
             @change-color="onChange"
           />
         </div>

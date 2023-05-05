@@ -104,12 +104,6 @@ export class SettingsController extends BaseController implements IController {
     try {
       const { updated } = await this.merchantService.update(body)
 
-      const settings = await this.settingsService.read()
-      
-      if (settings) {
-        await this.settingsService.update({ merchant: updated._id })
-      }
-
       this.send({
         response: res,
         data: updated,
