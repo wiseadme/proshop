@@ -11,7 +11,6 @@
   const buttonLabel = computed(() => unref(isEditMode) ? 'Сохранить' : 'Изменить')
 
   const onSubmit = (validate) => {
-    console.log(unref(isEditMode))
     validate()
       .then(() => {
         if (unref(isEditMode)) {

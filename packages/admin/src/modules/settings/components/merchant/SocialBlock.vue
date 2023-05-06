@@ -17,7 +17,7 @@
 
   watch(social, (to) => {
     unref(model).social = to
-  })
+  }, {deep: true})
 </script>
 <template>
   <v-card style="width: 100%">

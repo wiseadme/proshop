@@ -9,6 +9,8 @@ export const useOrders = createSharedComposable(() => {
   const {
     order,
     orders,
+    users,
+    getUsers,
     updateOrder,
     setAsCurrent,
     deleteOrder
@@ -24,12 +26,13 @@ export const useOrders = createSharedComposable(() => {
 
   const onOpenOrder = async (item: IOrder) => {
     setAsCurrent(item)
-    model.value = Order.create(unref(item)!)
 
     if (!item.status.seen) {
       item.status.seen = true
       const order = await updateOrder({ status: unref(item).status })
       model.value = Order.create(order!)
+    } else {
+      model.value = Order.create(unref(item)!)
     }
 
     openOrder()
@@ -41,6 +44,8 @@ export const useOrders = createSharedComposable(() => {
     model,
     order,
     orders,
+    users,
+    getUsers,
     onOpenOrder,
     onUpdateOrder,
     onDeleteOrder
