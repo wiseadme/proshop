@@ -4,8 +4,7 @@
   import { useProductsService } from '@modules/product/composables/use-products-service'
   import { useProductCategories } from '@modules/product/composables/use-product-categories'
   import { useProductActionsModal } from '@modules/product/composables/use-product-actions-modal'
-
-
+  
   const { isEditMode, model, hasChanges } = useProduct()
   const { categoryItems } = useProductsService()
   const { categoriesMap, toggleCategory } = useProductCategories()

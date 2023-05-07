@@ -223,7 +223,7 @@ export const useProductsService = createSharedComposable(() => {
     const assets = unref(product)!.assets?.filter(it => it._id !== asset._id)
     unref(product)!.assets = assets!
 
-    if (assets && assets.length && !assets?.find(it => it.main)) {
+    if (assets?.length && !assets?.find(it => it.main)) {
       assets[0] = await _filesService.updateFile({ _id: assets?.[0]._id, main: true })
     }
 

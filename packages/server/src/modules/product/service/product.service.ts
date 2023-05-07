@@ -64,7 +64,7 @@ export class ProductService implements IProductService {
   async update(updates: Partial<Document & IProduct>) {
     if (updates.assets) {
       updates.assets.forEach(it => this.events.emit(UPDATE_ASSETS_EVENT, it))
-      updates.image = updates.assets?.find(it => it.main)?.url || ''
+      updates.image = updates.assets?.find(it => it.main)?.url || null
     }
 
     let product, categories

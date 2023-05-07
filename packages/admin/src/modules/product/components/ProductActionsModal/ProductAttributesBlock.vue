@@ -13,7 +13,6 @@
 
   const pullFunction = () => {
   }
-
   const onChange = () => {
   }
 </script>
@@ -96,6 +95,7 @@
     border-radius: 10px;
     overflow: hidden !important;
   }
+
   .attribute {
     overflow: hidden;
     cursor: pointer;
