@@ -8,7 +8,7 @@
 
   const { createMerchant, getMerchantSettings, updateMerchant, isEditMode } = useMerchant()
 
-  const buttonLabel = computed(() => unref(isEditMode) ? 'Сохранить' : 'Изменить')
+  const buttonLabel = computed(() => unref(isEditMode) ? 'Изменить' : 'Сохранить')
 
   const onSubmit = (validate) => {
     validate()

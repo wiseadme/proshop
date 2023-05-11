@@ -26,7 +26,11 @@ export class Merchant implements IMerchant {
     phone = null,
     currency,
     stores = null,
-    social = null
+    social = {
+      vk: '',
+      facebook: '',
+      instagram: '',
+    },
   }: IMerchant) {
     this._id = _id
     this.organization = organization
