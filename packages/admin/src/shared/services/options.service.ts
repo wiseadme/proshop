@@ -5,27 +5,27 @@ export class Service {
   static instance: Service
 
   constructor(store){
-    this._store = store
+      this._store = store
   }
 
   async createOption(option){
-    return this._store.createOption(option)
+      return this._store.createOption(option)
   }
 
   async updateOption(updates){
-    return this._store.updateOption(updates)
+      return this._store.updateOption(updates)
   }
 
   async deleteOption(option){
-    return this._store.deleteOption(option._id)
+      return this._store.deleteOption(option._id)
   }
 
   static create(){
-    if (Service.instance) return Service.instance
+      if (Service.instance) return Service.instance
 
-    Service.instance = new Service(useOptionsStore())
+      Service.instance = new Service(useOptionsStore())
 
-    return Service.instance
+      return Service.instance
   }
 }
 

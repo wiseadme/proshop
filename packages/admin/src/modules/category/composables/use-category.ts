@@ -7,94 +7,94 @@ import { ICategory } from '@ecommerce-platform/types'
 import { clone, getDifferences } from '@shared/helpers'
 
 export const useCategory = createSharedComposable(() => {
-  const {
-    category,
-    setAsCurrent,
-    deleteCategory,
-    createCategory,
-    updateCategory,
-    uploadCategoryImage,
-    deleteCategoryImage
-  } = useCategoriesService()
+    const {
+        category,
+        setAsCurrent,
+        deleteCategory,
+        createCategory,
+        updateCategory,
+        uploadCategoryImage,
+        deleteCategoryImage,
+    } = useCategoriesService()
 
-  const {
-    closeActionsModal,
-    openActionsModal
-  } = useCategoryActionsModal()
+    const {
+        closeActionsModal,
+        openActionsModal,
+    } = useCategoryActionsModal()
 
-  const model = ref<ICategory>(Category.create())
-  const isEditMode = ref<boolean>(false)
-  const hasChanges = ref<boolean>(false)
+    const model = ref<ICategory>(Category.create())
+    const isEditMode = ref<boolean>(false)
+    const hasChanges = ref<boolean>(false)
 
-  const setEditModeState = (state) => isEditMode.value = state
+    const setEditModeState = (state) => isEditMode.value = state
 
-  const onEdit = (row) => {
-    model.value = Category.create(clone(row))
-    setAsCurrent(row)
-    setEditModeState(true)
-    openActionsModal()
-  }
-
-  const onUploadCategoryImage = async (file) => {
-    await uploadCategoryImage(file)
-    unref(model).image = unref(category)!.image
-  }
-
-  const onDeleteCategoryImage = async (url) => {
-    await deleteCategoryImage(url)
-
-    unref(model)!.image = null
-  }
-
-  const onDeleteCategory = (category) => {
-    return deleteCategory(category)
-  }
-
-  const onAddNew = () => {
-    openActionsModal()
-    setEditModeState(false)
-
-    setAsCurrent(null)
-    model.value = Category.create()
-  }
-
-  const onCreateCategory = async () => {
-    await createCategory(unref(model))
-
-    model.value = Category.create()
-    closeActionsModal()
-  }
-
-  const onUpdateCategory = async () => {
-    const updates = getDifferences(
-      unref(model),
-      unref(category)
-    ) as Maybe<Partial<ICategory>>
-
-    if (!updates) return
-
-    updates!._id = unref(category)!._id
-
-    if (updates!.parent) {
-      updates!.parent = (unref(model)?.parent as ICategory)?._id
+    const onEdit = (row) => {
+        model.value = Category.create(clone(row))
+        setAsCurrent(row)
+        setEditModeState(true)
+        openActionsModal()
     }
 
-    await updateCategory(updates!)
+    const onUploadCategoryImage = async (file) => {
+        await uploadCategoryImage(file)
+        unref(model).image = unref(category)!.image
+    }
 
-    closeActionsModal()
-    setEditModeState(false)
-  }
+    const onDeleteCategoryImage = async (url) => {
+        await deleteCategoryImage(url)
 
-  return {
-    model,
-    isEditMode,
-    hasChanges,
-    onEdit,
-    onAddNew,
-    onCreateCategory,
-    onUpdateCategory,
-    onUploadCategoryImage,
-    onDeleteCategoryImage,
-    onDeleteCategory
-  }
+        unref(model)!.image = null
+    }
+
+    const onDeleteCategory = (category) => {
+        return deleteCategory(category)
+    }
+
+    const onAddNew = () => {
+        openActionsModal()
+        setEditModeState(false)
+
+        setAsCurrent(null)
+        model.value = Category.create()
+    }
+
+    const onCreateCategory = async () => {
+        await createCategory(unref(model))
+
+        model.value = Category.create()
+        closeActionsModal()
+    }
+
+    const onUpdateCategory = async () => {
+        const updates = getDifferences(
+            unref(model),
+            unref(category),
+        ) as Maybe<Partial<ICategory>>
+
+        if (!updates) return
+
+        updates!._id = unref(category)!._id
+
+        if (updates!.parent) {
+            updates!.parent = (unref(model)?.parent as ICategory)?._id
+        }
+
+        await updateCategory(updates!)
+
+        closeActionsModal()
+        setEditModeState(false)
+    }
+
+    return {
+        model,
+        isEditMode,
+        hasChanges,
+        onEdit,
+        onAddNew,
+        onCreateCategory,
+        onUpdateCategory,
+        onUploadCategoryImage,
+        onDeleteCategoryImage,
+        onDeleteCategory,
+    }
 })

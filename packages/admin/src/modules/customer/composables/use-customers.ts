@@ -2,10 +2,10 @@
 import { useCustomersService } from '@modules/customer/composables/use-customers-service'
 
 export const useCustomers = () => {
-  const { customers, fetchCustomers } = useCustomersService()
+    const { customers, fetchCustomers } = useCustomersService()
   
-  return {
-    fetchCustomers,
-    customers
-  }
+    return {
+        fetchCustomers,
+        customers
+    }
 }

@@ -1,70 +1,70 @@
 import { useProductRepository } from '@modules/product/repository'
 import {
-  IProduct,
-  IProductQuery,
-  IRequestParams
+    IProduct,
+    IProductQuery,
+    IRequestParams
 } from '@ecommerce-platform/types'
 import { IProductActions } from '../types'
 
 const productRepository = useProductRepository()
 
 export const actions: IProductActions = {
-  async create(product: IProduct) {
-    try {
-      const { data } = await productRepository.create(product)
+    async create(product: IProduct) {
+        try {
+            const { data } = await productRepository.create(product)
 
-      this.products.push(data.data.items[0])
+            this.products.push(data.data.items[0])
 
-      return data.data.items[0]
-    } catch (err) {
-      return Promise.reject(err)
-    }
-  },
-
-  async read(params: IRequestParams<IProductQuery>) {
-    try {
-      const { data } = await productRepository.read(params)
-
-      this.$patch(state => {
-        if (params.category) {
-          state.categoryProducts = data.data.items
-        } else {
-          state.products = data.data?.items
-          state.totalLength = data.data?.total
+            return data.data.items[0]
+        } catch (err) {
+            return Promise.reject(err)
         }
-      })
+    },
 
-      return data.data?.items
-    } catch (err) {
-      return Promise.reject(err)
-    }
-  },
+    async read(params: IRequestParams<IProductQuery>) {
+        try {
+            const { data } = await productRepository.read(params)
 
-  async update(updates) {
-    try {
-      const { data } = await productRepository.update(updates)
+            this.$patch(state => {
+                if (params.category) {
+                    state.categoryProducts = data.data.items
+                } else {
+                    state.products = data.data?.items
+                    state.totalLength = data.data?.total
+                }
+            })
 
-      this.products = Array.from(this.products, (pr: IProduct) => {
-        if (pr._id === updates._id) {
-          return data.data
+            return data.data?.items
+        } catch (err) {
+            return Promise.reject(err)
         }
+    },
 
-        return pr
-      })
+    async update(updates) {
+        try {
+            const { data } = await productRepository.update(updates)
 
-      return data.data
-    } catch (err) {
-      return Promise.reject(err)
+            this.products = Array.from(this.products, (pr: IProduct) => {
+                if (pr._id === updates._id) {
+                    return data.data
+                }
+
+                return pr
+            })
+
+            return data.data
+        } catch (err) {
+            return Promise.reject(err)
+        }
+    },
+
+    async delete(product: IProduct) {
+        try {
+            const response = await productRepository.delete(product._id)
+            this.products = this.products.filter(it => it._id !== product._id)
+            return response?.data
+        } catch (err) {
+            return Promise.reject(err)
+        }
     }
-  },
-
-  async delete(product: IProduct) {
-    try {
-      const response = await productRepository.delete(product._id)
-      this.products = this.products.filter(it => it._id !== product._id)
-      return response?.data
-    } catch (err) {
-      return Promise.reject(err)
-    }
-  }
 }

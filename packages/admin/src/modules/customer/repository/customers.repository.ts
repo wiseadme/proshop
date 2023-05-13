@@ -6,19 +6,19 @@ class Repository implements IRepository {
   baseUrl: string = '/v1/customer'
 
   create(customer) {
-    return this.rest.post(this.baseUrl, customer)
+      return this.rest.post(this.baseUrl, customer)
   }
 
   read(params) {
-    return this.rest.get(this.baseUrl, { params })
+      return this.rest.get(this.baseUrl, { params })
   }
 
   update(updates) {
-    return this.rest.patch(this.baseUrl, updates)
+      return this.rest.patch(this.baseUrl, updates)
   }
 
   delete(id) {
-    return this.rest.delete(this.baseUrl, { params: { id } })
+      return this.rest.delete(this.baseUrl, { params: { id } })
   }
 }
 

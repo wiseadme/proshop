@@ -2,19 +2,19 @@ export const toString = obj => JSON.stringify(obj).trim()
 export const clone = obj => JSON.parse(toString(obj))
 
 export const getDifferences = (changed, origin) => {
-  if (!origin) return null
+    if (!origin) return null
 
-  const diffs = {}
+    const diffs = {}
 
-  for (const key in changed) {
-    if (changed[key] && changed.hasOwnProperty(key)) {
-      if (toString(changed[key]) !== toString(origin[key])) {
-        diffs[key] = changed[key]
-      }
+    for (const key in changed) {
+        if (changed[key] && changed.hasOwnProperty(key)) {
+            if (toString(changed[key]) !== toString(origin[key])) {
+                diffs[key] = changed[key]
+            }
+        }
     }
-  }
 
-  return Object.keys(diffs).length ? diffs : null
+    return Object.keys(diffs).length ? diffs : null
 }
 
 export const stringToSnakeUpperCase = (string) => string.replace(/([a-z]+)([A-Z])/g, '$1_$2').toUpperCase()

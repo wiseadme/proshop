@@ -1,96 +1,96 @@
 <script lang="ts" setup>
-  import { onMounted } from 'vue'
-  import { emitter } from './events'
-  import { Notify } from './types'
-  import {
-    InfoNotification,
-    SimpleNotification,
-    SuccessNotification,
-    WarningNotification
-  } from './components'
+    import { onMounted } from 'vue'
+    import { emitter } from './events'
+    import { Notify } from './types'
+    import {
+        InfoNotification,
+        SimpleNotification,
+        SuccessNotification,
+        WarningNotification
+    } from './components'
 
 
-  const props = withDefaults(defineProps<{
-    transition?: string
-    position?: string
-  }>(), {
-    transition: 'fade',
-    position: 'top right'
-  })
+    const props = withDefaults(defineProps<{
+        transition?: string
+        position?: string
+    }>(), {
+        transition: 'fade',
+        position: 'top right'
+    })
 
-  const positions = props.position.split(' ')
+    const positions = props.position.split(' ')
 
-  const notifyComponents = {
-    info: InfoNotification,
-    success: SuccessNotification,
-    warning: WarningNotification,
-    simple: SimpleNotification
-  }
-
-  let notifications = $ref<Notify[]>([])
-  let isClickable = false
-
-  const addNotification = (params: Notify) => {
-    notifications.push(params)
-  }
-
-  const removeNotification = (id) => {
-    notifications = notifications.filter(it => it.id !== id)
-  }
-
-  const clearAll = () => {
-    notifications = []
-  }
-
-  const onClick = (notify) => {
-    if (!isClickable) {
-      return
+    const notifyComponents = {
+        info: InfoNotification,
+        success: SuccessNotification,
+        warning: WarningNotification,
+        simple: SimpleNotification
     }
 
-    removeNotification(notify.id)
-  }
+    let notifications = $ref<Notify[]>([])
+    let isClickable = false
 
-  const styles = $computed(() => positions.reduce((acc, pos) => {
-    if (pos === 'center') {
-      acc['left'] = '50%'
-      acc['transform'] = 'translateX(-50%)'
-    } else {
-      acc[pos] = '10px'
+    const addNotification = (params: Notify) => {
+        notifications.push(params)
     }
 
-    return acc
-  }, {}))
+    const removeNotification = (id) => {
+        notifications = notifications.filter(it => it.id !== id)
+    }
 
-  onMounted(() => {
-    emitter.on('add', addNotification)
-    emitter.on('remove', removeNotification)
-    emitter.on('add-listener',() => isClickable = true)
-    emitter.on('clear', clearAll)
-  })
+    const clearAll = () => {
+        notifications = []
+    }
+
+    const onClick = (notify) => {
+        if (!isClickable) {
+            return
+        }
+
+        removeNotification(notify.id)
+    }
+
+    const styles = $computed(() => positions.reduce((acc, pos) => {
+        if (pos === 'center') {
+            acc['left'] = '50%'
+            acc['transform'] = 'translateX(-50%)'
+        } else {
+            acc[pos] = '10px'
+        }
+
+        return acc
+    }, {}))
+
+    onMounted(() => {
+        emitter.on('add', addNotification)
+        emitter.on('remove', removeNotification)
+        emitter.on('add-listener',() => isClickable = true)
+        emitter.on('clear', clearAll)
+    })
 
 </script>
 <template>
-  <div
-    class="v-notifications"
-    :style="styles"
-  >
-    <transition-group
-      :name="props.transition"
-      :move-class="props.transition"
-      tag="div"
+    <div
+        class="v-notifications"
+        :style="styles"
     >
-      <component
-        :is="notifyComponents[notify.type]"
-        v-for="notify in notifications"
-        :key="notify.id"
-        :params="notify"
-        class="my-1"
-        @click="onClick(notify)"
-        @destroy="removeNotification"
-      >
-      </component>
-    </transition-group>
-  </div>
+        <transition-group
+            :name="props.transition"
+            :move-class="props.transition"
+            tag="div"
+        >
+            <component
+                :is="notifyComponents[notify.type]"
+                v-for="notify in notifications"
+                :key="notify.id"
+                :params="notify"
+                class="my-1"
+                @click="onClick(notify)"
+                @destroy="removeNotification"
+            >
+            </component>
+        </transition-group>
+    </div>
 </template>
 <style lang="scss">
   .v-notifications {

@@ -4,6 +4,6 @@ import { actions } from './actions'
 const id = 'FILES'
 
 export const useFilesStore = defineStore({
-  id,
-  actions
+    id,
+    actions
 })

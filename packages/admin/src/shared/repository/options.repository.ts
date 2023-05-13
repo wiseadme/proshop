@@ -14,24 +14,24 @@ class Repository implements IOptionsRepository {
   private _baseUrl: string
 
   constructor(rest, baseUrl){
-    this._rest = rest
-    this._baseUrl = baseUrl
+      this._rest = rest
+      this._baseUrl = baseUrl
   }
 
   create(option: IVariantOption){
-    return this._rest.post(this._baseUrl, option)
+      return this._rest.post(this._baseUrl, option)
   }
 
   delete(id: string){
-    return this._rest.delete(this._baseUrl, { params: { id } })
+      return this._rest.delete(this._baseUrl, { params: { id } })
   }
 
   update(updates: Partial<IVariantOption>){
-    return this._rest.patch(this._baseUrl, updates)
+      return this._rest.patch(this._baseUrl, updates)
   }
 
   read(id?: string){
-    return this._rest.get(this._baseUrl, { params: { id } })
+      return this._rest.get(this._baseUrl, { params: { id } })
   }
 }
 

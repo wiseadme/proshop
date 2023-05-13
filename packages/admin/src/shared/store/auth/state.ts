@@ -15,7 +15,7 @@ interface State {
 }
 
 export const state = (): State => ({
-  user: null,
-  isAuthenticated: false,
-  isChecked: false
+    user: null,
+    isAuthenticated: false,
+    isChecked: false
 })

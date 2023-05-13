@@ -4,8 +4,8 @@ import { actions } from '@modules/attribute/store/actions'
 import { guards } from '@modules/attribute/store/guards'
 
 export const useAttributesStore = defineStore({
-  id: 'attributes',
-  state,
-  guards,
-  actions,
+    id: 'attributes',
+    state,
+    guards,
+    actions,
 })

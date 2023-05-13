@@ -1,34 +1,34 @@
 import {
-  computed,
-  ref,
-  unref
+    computed,
+    ref,
+    unref
 } from 'vue'
 
 export const useSort = () => {
-  const desc = ref(false)
-  const asc = ref(false)
-  const sortKey = ref('')
+    const desc = ref(false)
+    const asc = ref(false)
+    const sortKey = ref('')
 
-  const isNeedToBeSorted = computed<boolean>(() => unref(desc) || unref(asc))
+    const isNeedToBeSorted = computed<boolean>(() => unref(desc) || unref(asc))
 
-  const setDesc = (key) => {
-    desc.value = true
-    asc.value = false
-    sortKey.value = key
-  }
+    const setDesc = (key) => {
+        desc.value = true
+        asc.value = false
+        sortKey.value = key
+    }
 
-  const setAsc = (key) => {
-    desc.value = false
-    asc.value = true
-    sortKey.value = key
-  }
+    const setAsc = (key) => {
+        desc.value = false
+        asc.value = true
+        sortKey.value = key
+    }
 
-  return {
-    desc,
-    asc,
-    sortKey,
-    isNeedToBeSorted,
-    setAsc,
-    setDesc
-  }
+    return {
+        desc,
+        asc,
+        sortKey,
+        isNeedToBeSorted,
+        setAsc,
+        setDesc
+    }
 }

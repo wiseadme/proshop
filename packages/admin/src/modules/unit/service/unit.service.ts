@@ -9,45 +9,45 @@ class Service {
   static instance: Service
 
   constructor(store) {
-    this._store = store
-    this._unit = null
+      this._store = store
+      this._unit = null
   }
 
   get units() {
-    return this._store.units
+      return this._store.units
   }
 
   setAsCurrent(unit: IUnit) {
-    this._unit = unit
+      this._unit = unit
   }
 
   createUnit(unit: IUnit) {
-    return this._store.create(unit)
+      return this._store.create(unit)
   }
 
   updateUnit(updates) {
-    updates._id = this._unit!._id
-    return this._store.update(updates)
+      updates._id = this._unit!._id
+      return this._store.update(updates)
   }
 
   deleteUnit(id) {
-    return this._store.delete(id)
+      return this._store.delete(id)
   }
 
   getUnits(params?: Partial<IUnit>) {
-    return this._store.read(params as any)
+      return this._store.read(params as any)
   }
 
   onGetUnits() {
-    if (this._store.units) return this._store.units
+      if (this._store.units) return this._store.units
 
-    return this.getUnits()
+      return this.getUnits()
   }
 
   static create() {
-    if (Service.instance) return Service.instance
-    Service.instance = new Service(useUnitsStore())
-    return Service.instance
+      if (Service.instance) return Service.instance
+      Service.instance = new Service(useUnitsStore())
+      return Service.instance
   }
 }
 

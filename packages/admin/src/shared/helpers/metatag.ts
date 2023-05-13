@@ -1,12 +1,12 @@
 export const descriptorToMetaTag = (descriptor) => {
-  let tag = '<meta'
-  let tagEnd = '/>'
+    let tag = '<meta'
+    let tagEnd = '/>'
 
-  Object.keys(descriptor).forEach((it) => {
-    tag += ` ${ it }="${ descriptor[it] }"`
-  })
+    Object.keys(descriptor).forEach((it) => {
+        tag += ` ${ it }="${ descriptor[it] }"`
+    })
 
-  tag += tagEnd
+    tag += tagEnd
 
-  return tag
+    return tag
 }

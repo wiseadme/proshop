@@ -1,42 +1,42 @@
 import {
-  EffectScope,
-  effectScope,
-  getCurrentScope,
-  onScopeDispose
+    EffectScope,
+    effectScope,
+    getCurrentScope,
+    onScopeDispose
 } from 'vue'
 
 export function createSharedComposable<Fn extends () => any>(composable: Fn): Fn {
-  let subscribers = 0
-  let state: ReturnType<Fn> | undefined
-  let scope: EffectScope | undefined
+    let subscribers = 0
+    let state: ReturnType<Fn> | undefined
+    let scope: EffectScope | undefined
 
-  const dispose = () => {
-    subscribers -= 1
-    if (scope && subscribers <= 0) {
-      scope.stop()
-      state = undefined
-      scope = undefined
-    }
-  }
-
-  const tryOnScopeDispose = (fn) => {
-    if (getCurrentScope()) {
-      onScopeDispose(fn)
-      return true
+    const dispose = () => {
+        subscribers -= 1
+        if (scope && subscribers <= 0) {
+            scope.stop()
+            state = undefined
+            scope = undefined
+        }
     }
 
-    return false
-  }
+    const tryOnScopeDispose = (fn) => {
+        if (getCurrentScope()) {
+            onScopeDispose(fn)
+            return true
+        }
 
-  return <Fn>((...args) => {
-    subscribers += 1
-    if (!state) {
-      scope = effectScope(true)
-      state = scope.run(() => composable(...args))
+        return false
     }
 
-    tryOnScopeDispose(dispose)
+    return <Fn>((...args) => {
+        subscribers += 1
+        if (!state) {
+            scope = effectScope(true)
+            state = scope.run(() => composable(...args))
+        }
 
-    return state
-  })
+        tryOnScopeDispose(dispose)
+
+        return state
+    })
 }

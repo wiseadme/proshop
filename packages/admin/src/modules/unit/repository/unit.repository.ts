@@ -7,21 +7,21 @@ export class Repository implements IRepository {
   baseUrl: string = '/v1/unit'
 
   create(unit: IUnit): Promise<{ data: { data: IUnit } }> {
-    return this.rest.post(this.baseUrl, unit)
+      return this.rest.post(this.baseUrl, unit)
   }
 
   read(params: Partial<IUnit>) {
-    return this.rest.get(this.baseUrl, { query: params })
+      return this.rest.get(this.baseUrl, { query: params })
   }
 
   update(updates): Promise<{ data: { data: IUnit } }> {
-    return this.rest.patch(this.baseUrl, updates)
+      return this.rest.patch(this.baseUrl, updates)
   }
 
   delete(id) {
-    return this.rest.delete(this.baseUrl, { params: { id } })
+      return this.rest.delete(this.baseUrl, { params: { id } })
   }
 }
 
 export const
-  useUnitRepository = () => new Repository()
+    useUnitRepository = () => new Repository()

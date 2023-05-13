@@ -6,19 +6,19 @@ class Repository implements IRepository {
   baseUrl: string = '/v1/settings'
 
   async create() {
-    return { data: null }
+      return { data: null }
   }
 
   async read() {
-    return rest.get(this.baseUrl)
+      return rest.get(this.baseUrl)
   }
 
   async update() {
-    return { data: null }
+      return { data: null }
   }
 
   async delete(id: string) {
-    return this.rest.delete(this.baseUrl, { params: { id } })
+      return this.rest.delete(this.baseUrl, { params: { id } })
   }
 }
 

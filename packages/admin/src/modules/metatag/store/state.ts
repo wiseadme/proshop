@@ -1,3 +1,3 @@
 export const state = () => ({
-  metaTags: null
+    metaTags: null
 })

@@ -7,152 +7,161 @@ import { createSharedComposable } from '@shared/features/create-shared-composabl
 import { IProduct, Maybe } from '@ecommerce-platform/types'
 
 export const useProduct = createSharedComposable(() => {
-  const {
-    product,
-    products,
-    getUnits,
-    getAttributes,
-    getProducts,
-    getCategories,
-    getMetaTags,
-    getVariants,
-    setAsCurrent,
-    createProduct,
-    updateProduct,
-    uploadProductImage,
-    deleteProductImage,
-    deleteProduct,
-  } = useProductsService()
+    const {
+        product,
+        products,
+        getUnits,
+        getAttributes,
+        getProducts,
+        getCategories,
+        getMetaTags,
+        getVariants,
+        setAsCurrent,
+        createProduct,
+        updateProduct,
+        uploadProductImage,
+        deleteProductImage,
+        deleteProduct,
+    } = useProductsService()
 
-  const {
-    openActionsModal,
-    closeActionsModal
-  } = useProductActionsModal()
+    const {
+        openActionsModal,
+        closeActionsModal,
+    } = useProductActionsModal()
 
-  const model = ref(Product.create())
-  const hasChanges = ref(false)
-  const isEditMode = ref(false)
-  const isLoading = ref(false)
-  const isSaved = ref(true)
+    const model = ref(Product.create())
+    const hasChanges = ref(false)
+    const isEditMode = ref(false)
+    const isLoading = ref(false)
+    const isSaved = ref(true)
 
-  const notUpdatableKeys = [ 'assets', 'variants' ]
+    const notUpdatableKeys = ['assets', 'variants']
 
-  const onOpenCreateProductModal = () => {
-    openActionsModal()
-    isEditMode.value = false
-    model.value = Product.create()
-    setAsCurrent(null)
-  }
+    const setProductAsModel = () => model.value = Product.create(clone(unref(product)!))
 
-  const onOpenEditProductModal = (row) => {
-    setAsCurrent(row)
-    model.value = Product.create(clone(row))!
-    isEditMode.value = true
-    openActionsModal()
-  }
+    const onOpenCreateProductModal = () => {
+        openActionsModal()
 
-  const checkDiffs = (): Maybe<Partial<IProduct>> => getDifferences(unref(model), unref(product))
+        isEditMode.value = false
+        model.value = Product.create()
 
-  const setProductAsModel = () => model.value = Product.create(clone(unref(product)!))
+        setAsCurrent(null)
+    }
 
-  const onCreateProduct = async () => {
-    isSaved.value = false
+    const onOpenEditProductModal = (row) => {
+        setAsCurrent(row)
 
-    await createProduct(unref(model))
+        setProductAsModel()
+        isEditMode.value = true
 
-    closeActionsModal()
-    model.value = Product.create()
-    isSaved.value = true
-  }
+        openActionsModal()
+    }
 
-  const onUpdateProduct = async () => {
-    const updates = checkDiffs()
-    hasChanges.value = !!updates
+    const checkDiffs = (): Maybe<Partial<IProduct>> => getDifferences(unref(model), unref(product))
 
-    if (!unref(hasChanges)) return
+    const onCreateProduct = async () => {
+        isSaved.value = false
 
-    updates!._id = model.value._id
-    isSaved.value = false
+        await createProduct(unref(model))
 
-    await updateProduct(updates)
+        closeActionsModal()
 
-    isSaved.value = true
-    hasChanges.value = false
-    isLoading.value = false
-    setProductAsModel()
-  }
+        model.value = Product.create()
+        isSaved.value = true
+    }
 
-  const onUploadProductImage = async (image) => {
-    await uploadProductImage(image)
+    const onUpdateProduct = async () => {
+        const updates = checkDiffs()
 
-    unref(model).image = unref(product)!.image
-    unref(model).assets = unref(product)!.assets
-  }
+        hasChanges.value = !!updates
 
-  const onDeleteProductImage = async (asset) => {
-    await deleteProductImage(asset)
+        if (!unref(hasChanges)) return
 
-    unref(model).image = unref(product)?.image!
-    unref(model).assets = unref(product)?.assets!
-  }
+        updates!._id = model.value._id
+        isSaved.value = false
 
-  const onDeleteProduct = (product: IProduct) => deleteProduct(product)
+        await updateProduct(updates)
 
-  const onCloseProductModal = () => {
-    if (unref(hasChanges)) return
+        isSaved.value = true
+        hasChanges.value = false
+        isLoading.value = false
 
-    isEditMode.value = false
+        setProductAsModel()
+    }
 
-    closeActionsModal()
-  }
+    const onUploadProductImage = async (image) => {
+        await uploadProductImage(image)
 
-  const onDiscardProductChanges = () => {
-    setProductAsModel()
-    hasChanges.value = false
-  }
+        unref(model).image = unref(product)!.image
+        unref(model).assets = clone(unref(product)!.assets)
+    }
 
-  const getProductUpdates = () => {
-    const diffs = checkDiffs()!
+    const onDeleteProductImage = async (asset) => {
+        await deleteProductImage(asset)
 
-    notUpdatableKeys.forEach(key => diffs && diffs[key] && (delete diffs[key]))
-    const keys = diffs ? Object.keys(diffs) : null
+        unref(model).image = unref(product)?.image!
+        unref(model).assets = clone(unref(product)?.assets!)
+    }
 
-    if (!keys || !keys.length) return null
+    const onDeleteProduct = (product: IProduct) => deleteProduct(product)
 
-    return diffs
-  }
+    const onCloseProductModal = () => {
+        if (unref(hasChanges)) return
 
-  const onInit = async () => {
-    await Promise.all([
-      getCategories(),
-      getAttributes(),
-      getProducts(),
-      getUnits(),
-      getVariants(),
-      getMetaTags()
-    ])
+        isEditMode.value = false
 
-    isLoading.value = false
-  }
+        closeActionsModal()
+    }
 
-  return {
-    model,
-    isEditMode,
-    isLoading,
-    isSaved,
-    hasChanges,
-    notUpdatableKeys,
-    products,
-    onInit,
-    getProductUpdates,
-    onCreateProduct,
-    onUpdateProduct,
-    onDeleteProduct,
-    onUploadProductImage,
-    onDeleteProductImage,
-    onOpenEditProductModal,
-    onOpenCreateProductModal,
-    onCloseProductModal,
-    onDiscardProductChanges,
-  }
+    const onDiscardProductChanges = () => {
+        setProductAsModel()
+        hasChanges.value = false
+    }
+
+    const getProductUpdates = () => {
+        const diffs = checkDiffs()!
+
+        // notUpdatableKeys.forEach(key => diffs && diffs[key] && (delete diffs[key]))
+        const keys = diffs ? Object.keys(diffs) : null
+
+        if (!keys || !keys.length) return null
+
+        return diffs
+    }
+
+    const onInit = async () => {
+        await Promise.all([
+            getCategories(),
+            getAttributes(),
+            getProducts(),
+            getUnits(),
+            getVariants(),
+            getMetaTags(),
+        ])
+
+        isLoading.value = false
+    }
+
+    return {
+        model,
+        isEditMode,
+        isLoading,
+        isSaved,
+        hasChanges,
+        notUpdatableKeys,
+        products,
+        product,
+        onInit,
+        setProductAsModel,
+        getProductUpdates,
+        onCreateProduct,
+        onUpdateProduct,
+        onDeleteProduct,
+        onUploadProductImage,
+        onDeleteProductImage,
+        onOpenEditProductModal,
+        onOpenCreateProductModal,
+        onCloseProductModal,
+        onDiscardProductChanges,
+    }
 })

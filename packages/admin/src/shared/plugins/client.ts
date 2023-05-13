@@ -4,22 +4,22 @@ export class Client {
   client: IRest
 
   constructor(client){
-    this.client = client
+      this.client = client
   }
 
   get(url: string, params?: any){
-    return this.client.get(url, params)
+      return this.client.get(url, params)
   }
 
   post(url: string, body: any){
-    return this.client.post(url, body)
+      return this.client.post(url, body)
   }
 
   patch(url: string, params?: any){
-    return this.client.patch(url, params)
+      return this.client.patch(url, params)
   }
 
   delete(url: string, params?: any){
-    return this.client.delete(url, params)
+      return this.client.delete(url, params)
   }
 }

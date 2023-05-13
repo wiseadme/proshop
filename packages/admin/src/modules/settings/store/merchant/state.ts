@@ -1,3 +1,3 @@
 export const state = () => ({
-  merchant: null
+    merchant: null
 })

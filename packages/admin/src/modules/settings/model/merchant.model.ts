@@ -15,35 +15,39 @@ export class Merchant implements IMerchant {
   public social: IMerchant['social']
 
   constructor({
-    _id = '',
-    organization,
-    name = null,
-    description = null,
-    logo = null,
-    slogan = null,
-    address = null,
-    email = null,
-    phone = null,
-    currency,
-    stores = null,
-    social = null
+      _id = '',
+      organization,
+      name = null,
+      description = null,
+      logo = null,
+      slogan = null,
+      address = null,
+      email = null,
+      phone = null,
+      currency,
+      stores = null,
+      social = {
+          vk: '',
+          facebook: '',
+          instagram: '',
+      },
   }: IMerchant) {
-    this._id = _id
-    this.organization = organization
-    this.name = name
-    this.description = description
-    this.logo = logo
-    this.slogan = slogan
-    this.address = address
-    this.email = email
-    this.phone = phone
-    this.currency = currency
-    this.stores = stores
-    this.social = social
+      this._id = _id
+      this.organization = organization
+      this.name = name
+      this.description = description
+      this.logo = logo
+      this.slogan = slogan
+      this.address = address
+      this.email = email
+      this.phone = phone
+      this.currency = currency
+      this.stores = stores
+      this.social = social
   }
 
   static create(merchant = {} as IMerchant) {
-    return new Merchant(merchant)
+      return new Merchant(merchant)
   }
 }
 

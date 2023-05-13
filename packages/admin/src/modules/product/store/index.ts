@@ -4,8 +4,8 @@ import { actions } from '@modules/product/store/actions'
 import { guards } from '@modules/product/store/guards'
 
 export const useProductStore = defineStore({
-  id: 'product',
-  state,
-  guards,
-  actions,
+    id: 'product',
+    state,
+    guards,
+    actions,
 })

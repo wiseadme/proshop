@@ -16,36 +16,36 @@ import { metaTagRoutes } from '@modules/metatag/routes'
 const baseUrl = process.env.NODE_ENV === 'development' ? '/' : '/admin'
 
 export const routes = [
-  {
-    path: '/',
-    component: () => import('@shared/layouts/MainLayout.vue'),
-    name: 'main',
-    children: [
-      ...dashboardRoutes,
-      ...categoryRoutes,
-      ...productRoutes,
-      ...attributeRoutes,
-      ...unitRoutes,
-      ...variantRoutes,
-      ...orderRoutes,
-      ...customerRoutes,
-      ...settingsRoutes,
-      ...usersRoutes,
-      ...metaTagRoutes,
-      // ...elementRoutes
-    ],
-  },
-  {
-    path: '/auth',
-    component: () => import('@shared/layouts/AuthLayout.vue'),
-    name: 'auth',
-    children: [
-      ...authRoutes,
-    ]
-  }
+    {
+        path: '/',
+        component: () => import('@shared/layouts/MainLayout.vue'),
+        name: 'main',
+        children: [
+            ...dashboardRoutes,
+            ...categoryRoutes,
+            ...productRoutes,
+            ...attributeRoutes,
+            ...unitRoutes,
+            ...variantRoutes,
+            ...orderRoutes,
+            ...customerRoutes,
+            ...settingsRoutes,
+            ...usersRoutes,
+            ...metaTagRoutes,
+            // ...elementRoutes
+        ],
+    },
+    {
+        path: '/auth',
+        component: () => import('@shared/layouts/AuthLayout.vue'),
+        name: 'auth',
+        children: [
+            ...authRoutes,
+        ]
+    }
 ]
 
 export const router = createRouter({
-  history: createWebHistory(baseUrl),
-  routes
+    history: createWebHistory(baseUrl),
+    routes
 })
