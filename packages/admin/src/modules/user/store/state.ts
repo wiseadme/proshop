@@ -1,3 +1,3 @@
 export const state = () => ({
-  users: null
+    users: null
 })

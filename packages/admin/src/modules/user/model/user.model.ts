@@ -12,31 +12,31 @@ export class User implements IUser {
   enabled: IUser['enabled']
 
   constructor({
-    _id = '',
-    firstName = '',
-    secondName = '',
-    password = '',
-    phone = '',
-    roles = [],
-    username = '',
-    enabled = false,
-    position = {
-      title: '',
-      department: ''
-    }
+      _id = '',
+      firstName = '',
+      secondName = '',
+      password = '',
+      phone = '',
+      roles = [],
+      username = '',
+      enabled = false,
+      position = {
+          title: '',
+          department: ''
+      }
   }: IUser) {
-    this._id = _id
-    this.firstName = firstName
-    this.secondName = secondName
-    this.password = password
-    this.phone = phone
-    this.position = position
-    this.roles = roles
-    this.username = username
-    this.enabled = enabled
+      this._id = _id
+      this.firstName = firstName
+      this.secondName = secondName
+      this.password = password
+      this.phone = phone
+      this.position = position
+      this.roles = roles
+      this.username = username
+      this.enabled = enabled
   }
 
   static create(user = {} as IUser) {
-    return new User(user)
+      return new User(user)
   }
 }

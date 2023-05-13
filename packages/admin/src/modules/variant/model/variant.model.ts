@@ -5,14 +5,14 @@ export class Variant implements IVariant {
   group: string
 
   constructor({
-    _id = '',
-    group = '',
+      _id = '',
+      group = '',
   }){
-    this._id = _id
-    this.group = group
+      this._id = _id
+      this.group = group
   }
 
   static create(unit = {}){
-    return new Variant(unit)
+      return new Variant(unit)
   }
 }

@@ -7,19 +7,19 @@ export class Repository implements IRepository {
   baseUrl: string = '/v1/attribute'
 
   create(attribute){
-    return this.rest.post(this.baseUrl, attribute)
+      return this.rest.post(this.baseUrl, attribute)
   }
 
   read(id = ''){
-    return this.rest.get(this.baseUrl, { query: { id } })
+      return this.rest.get(this.baseUrl, { query: { id } })
   }
 
   update(updates): Promise<{ data: { data: Array<IAttribute> } }>{
-    return this.rest.patch(this.baseUrl, updates)
+      return this.rest.patch(this.baseUrl, updates)
   }
 
   delete(id){
-    return this.rest.delete(this.baseUrl, { params: { id } })
+      return this.rest.delete(this.baseUrl, { params: { id } })
   }
 }
 

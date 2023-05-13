@@ -2,24 +2,24 @@ import { rest } from '@shared/api'
 import { IRepository, IRest } from '@shared/types/app'
 
 class Repository implements IRepository {
-  rest: IRest = rest
-  baseUrl: string = '/v1/category'
+    rest: IRest = rest
+    baseUrl: string = '/v1/category'
 
-  create(category){
-    return this.rest.post(this.baseUrl, category)
-  }
+    create(category) {
+        return this.rest.post(this.baseUrl, category)
+    }
 
-  read(params){
-    return this.rest.get(this.baseUrl, { query: params })
-  }
+    read(params) {
+        return this.rest.get(this.baseUrl, { query: params })
+    }
 
-  update(updates){
-    return this.rest.patch(this.baseUrl, updates)
-  }
+    update(updates) {
+        return this.rest.patch(this.baseUrl, updates)
+    }
 
-  delete(id){
-    return this.rest.delete(this.baseUrl, { params: { id } })
-  }
+    delete(id) {
+        return this.rest.delete(this.baseUrl, { params: { id } })
+    }
 }
 
 export const useCategoryRepository = () => new Repository()

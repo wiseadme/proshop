@@ -3,7 +3,7 @@ import { state } from './state'
 import { actions } from './actions'
 
 export const useVariantsStore = defineStore({
-  id: 'variants',
-  state,
-  actions,
+    id: 'variants',
+    state,
+    actions,
 })

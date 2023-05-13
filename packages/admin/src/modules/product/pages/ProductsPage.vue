@@ -1,66 +1,66 @@
 <script lang="ts" setup>
-  import { unref, watch } from 'vue'
-  // Components
-  import { ProductActionsModal } from '@modules/product/components/ProductActionsModal'
-  import { ProductTable } from '@modules/product/components/ProductTable'
-  import SkeletonPreloader from '@shared/components/Preloader/SkeletonPreloader.vue'
-  // Types
-  import { useProduct } from '@modules/product/composables/use-product'
-  import { useProductsTable } from '@modules/product/composables/use-products-table'
+    import { unref, watch } from 'vue'
+    // Components
+    import { ProductActionsModal } from '@modules/product/components/ProductActionsModal'
+    import { ProductTable } from '@modules/product/components/ProductTable'
+    import SkeletonPreloader from '@shared/components/Preloader/SkeletonPreloader.vue'
+    // Types
+    import { useProduct } from '@modules/product/composables/use-product'
+    import { useProductsTable } from '@modules/product/composables/use-products-table'
 
-  const {
-    model,
-    hasChanges,
-    isEditMode,
-    isLoading,
-    onOpenCreateProductModal,
-    onOpenEditProductModal,
-    onDeleteProduct,
-    getProductUpdates,
-    onInit
-  } = useProduct()
+    const {
+        model,
+        hasChanges,
+        isEditMode,
+        isLoading,
+        onOpenCreateProductModal,
+        onOpenEditProductModal,
+        onDeleteProduct,
+        getProductUpdates,
+        onInit,
+    } = useProduct()
 
-  const {
-    onUpdateTablePage,
-    onUpdateTableRowsCount,
-    onSortColumn
-  } = useProductsTable()
+    const {
+        onUpdateTablePage,
+        onUpdateTableRowsCount,
+        onSortColumn,
+    } = useProductsTable()
 
-  let stopWatching
+    let stopWatching
 
-  const startWatching = () => watch(model, () => {
-    if (!unref(isEditMode) || unref(hasChanges)) return
+    const startWatching = () => watch(model, () => {
+        if (!unref(isEditMode) || unref(hasChanges)) return
 
-    hasChanges.value = !!getProductUpdates()
-  }, { deep: true })
+        hasChanges.value = !!getProductUpdates()
+    }, { deep: true })
 
-  /**
-   * @description запускаем watch за изменениями продукта,
-   * только если он в режиме редактирования
-   */
-  watch(isEditMode, (state) => {
-    state ? (stopWatching = startWatching()) : stopWatching()
-  })
+    /**
+     * @description запускаем watch за изменениями продукта,
+     * только если он в режиме редактирования
+     */
+    watch(isEditMode, (state) => {
+        state ? (stopWatching = startWatching()) : stopWatching()
+    })
 
-  onInit()
+    onInit()
 
 </script>
 <template>
-  <v-layout column>
-    <v-row>
-      <v-col cols="12">
-        <skeleton-preloader v-if="isLoading"/>
-        <product-table
-          v-else
-          @open:create-modal="onOpenCreateProductModal"
-          @open:edit-modal="onOpenEditProductModal"
-          @delete:product="onDeleteProduct"
-          @sort:column="onSortColumn"
-          @update:page="onUpdateTablePage"
-          @update:rows-count="onUpdateTableRowsCount"
-        />
-      </v-col>
-      <product-actions-modal/>
-    </v-row>
-  </v-layout>
+    <v-layout column>
+        <v-row>
+            <v-col cols="12">
+                <skeleton-preloader v-if="isLoading"/>
+                <product-table
+                    v-else
+                    @open:create-modal="onOpenCreateProductModal"
+                    @open:edit-modal="onOpenEditProductModal"
+                    @delete:product="onDeleteProduct"
+                    @sort:column="onSortColumn"
+                    @update:page="onUpdateTablePage"
+                    @update:rows-count="onUpdateTableRowsCount"
+                />
+            </v-col>
+            <product-actions-modal/>
+        </v-row>
+    </v-layout>
 </template>

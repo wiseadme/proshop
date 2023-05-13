@@ -1,15 +1,15 @@
-import { IAttribute } from '@ecommerce-platform/types/index'
+import { IAttribute } from '@ecommerce-platform/types'
 
 export interface IAttributeState {
-  attributes: Maybe<Array<IAttribute>>
+    attributes: Maybe<Array<IAttribute>>
 }
 
 export interface IAttributeActions {
-  create(attribute: IAttribute): Promise<IAttribute>
+    create(attribute: IAttribute): Promise<IAttribute>
 
-  read(id?: string): Promise<Array<IAttribute>>
+    read(id?: string): Promise<Array<IAttribute>>
 
-  update(updates: Array<IAttribute>): Promise<Array<IAttribute>>
+    update(updates: Array<IAttribute>): Promise<Array<IAttribute>>
 
-  delete(id: string): Promise<boolean>
+    delete(id: string): Promise<boolean>
 }

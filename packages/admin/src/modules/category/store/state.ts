@@ -1,4 +1,4 @@
 export const state = () => ({
-  categories: null,
-  category: null
+    categories: null,
+    category: null
 })

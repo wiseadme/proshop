@@ -1,105 +1,118 @@
 {
-  "root": true,
-  "parser": "vue-eslint-parser",
-  "parserOptions": {
-    "parser": "@typescript-eslint/parser",
-    "ecmaVersion": 2020,
-    "sourceType": "module"
-  },
-  "extends": [
-    "plugin:vue/vue3-recommended",
-    "plugin:import/recommended",
-    "plugin:import/typescript"
-  ],
-  "settings": {
-    "import/resolver": {
-      "typescript": {}
-    }
-  },
-  "env": {
-    "node": true,
-    "browser": true,
-    "es6": true
-  },
-  "globals": {
-    "ymaps": "readonly"
-  },
-  "plugins": [
-    "@typescript-eslint/eslint-plugin",
-    "import-newlines"
-  ],
-  "rules": {
-    "semi": ["error", "never"],
-    "indent": ["error", 2],
-    "vue/script-indent": [
-      "error",
-      2,
-      {
-        "baseIndent": 1,
-        "switchCase": 1
-      }
+    "root": true,
+    "parser": "vue-eslint-parser",
+    "parserOptions": {
+        "parser": "@typescript-eslint/parser",
+        "ecmaVersion": 2020,
+        "sourceType": "module"
+    },
+    "extends": [
+        "plugin:vue/vue3-recommended",
+        "plugin:import/recommended",
+        "plugin:import/typescript"
     ],
-    "no-multiple-empty-lines": "error",
-    "no-console": "off",
-    "no-debugger": "error",
-    "no-unused-vars": "off",
-    "import/no-named-as-default": "off",
-    "vue/html-quotes": "error",
-    "vue/html-self-closing": "off",
-    "vue/html-closing-bracket-spacing": "off",
-    "vue/attribute-hyphenation": "error",
-    "vue/require-default-prop": "off",
-    "vue/component-definition-name-casing": [
-      "error",
-      "kebab-case"
+    "settings": {
+        "import/resolver": {
+            "typescript": {}
+        }
+    },
+    "env": {
+        "node": true,
+        "browser": true,
+        "es6": true
+    },
+    "globals": {
+        "ymaps": "readonly"
+    },
+    "plugins": [
+        "@typescript-eslint/eslint-plugin",
+        "import-newlines"
     ],
-    "vue/no-setup-props-destructure": "off",
-    "vue/no-mutating-props": "off",
-    "vue/one-component-per-file": "off",
-    "vue/max-attributes-per-line": [
-      "error",
-      {
-        "singleline": 1,
-        "multiline": 1
-      }
-    ],
-    "vue/html-indent": [
-      "error",
-      2,
-      {
-        "baseIndent": 1,
-        "switchCase": 1,
-        "ignores": []
-      }
-    ],
-    "@typescript-eslint/no-unused-vars": [
-      "error"
-    ],
-    "sort-imports": [
-      "error",
-      {
-        "ignoreCase": false,
-        "ignoreDeclarationSort": true,
-        "ignoreMemberSort": false,
-        "memberSyntaxSortOrder": ["none", "all", "multiple", "single"],
-        "allowSeparatedGroups": true
-      }
-    ],
-    "import-newlines/enforce": [
-      "error",
-      {
-        "items": 2,
-        "max-len": 100,
-        "semi": false
-      }
+    "rules": {
+        "semi": [
+            "error",
+            "never"
+        ],
+        "indent": [
+            "error",
+            4
+        ],
+        "vue/script-indent": [
+            "error",
+            4,
+            {
+                "baseIndent": 1,
+                "switchCase": 1
+            }
+        ],
+        "no-multiple-empty-lines": "error",
+        "no-console": "off",
+        "no-debugger": "error",
+        "no-unused-vars": "off",
+        "import/no-named-as-default": "off",
+        "vue/html-quotes": "error",
+        "vue/html-self-closing": "off",
+        "vue/html-closing-bracket-spacing": "off",
+        "vue/attribute-hyphenation": "error",
+        "vue/require-default-prop": "off",
+        "vue/component-definition-name-casing": [
+            "error",
+            "kebab-case"
+        ],
+        "vue/no-setup-props-destructure": "off",
+        "vue/no-mutating-props": "off",
+        "vue/one-component-per-file": "off",
+        "vue/max-attributes-per-line": [
+            "error",
+            {
+                "singleline": 1,
+                "multiline": 1
+            }
+        ],
+        "vue/html-indent": [
+            "error",
+            4,
+            {
+                "baseIndent": 1,
+                "switchCase": 1,
+                "ignores": []
+            }
+        ],
+        "@typescript-eslint/no-unused-vars": [
+            "error"
+        ],
+        "sort-imports": [
+            "error",
+            {
+                "ignoreCase": false,
+                "ignoreDeclarationSort": true,
+                "ignoreMemberSort": false,
+                "memberSyntaxSortOrder": [
+                    "none",
+                    "all",
+                    "multiple",
+                    "single"
+                ],
+                "allowSeparatedGroups": true
+            }
+        ],
+        "import-newlines/enforce": [
+            "error",
+            {
+                "items": 2,
+                "max-len": 100,
+                "semi": false
+            }
+        ]
+    },
+    "overrides": [
+        {
+            "files": [
+                "*.vue"
+            ],
+            "rules": {
+                "indent": "off"
+            }
+        }
     ]
-  },
-  "overrides": [
-    {
-      "files": ["*.vue"],
-      "rules": {
-        "indent": "off"
-      }
-    }
-  ]
 }

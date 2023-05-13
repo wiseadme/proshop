@@ -1,7 +1,7 @@
 import {
-  IProduct,
-  IProductQuery,
-  IRequestParams
+    IProduct,
+    IProductQuery,
+    IRequestParams
 } from '@ecommerce-platform/types'
 
 export interface IProductState {

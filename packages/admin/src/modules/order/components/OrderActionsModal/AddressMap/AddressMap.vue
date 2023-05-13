@@ -1,80 +1,80 @@
 <script lang="ts" setup>
-  import { watch } from 'vue'
-  import { useYandexMaps } from '@shared/composables/use-yandex-maps'
+    import { watch } from 'vue'
+    import { useYandexMaps } from '@shared/composables/use-yandex-maps'
 
-  const props = withDefaults(defineProps<{
-    coords: number[]
-    address: string
-  }>(), {
-    coords: () => [55.87, 37.66],
-    address: ''
-  })
-
-  const { addYmapsScript } = useYandexMaps()
-
-  let yandexMaps: any = null
-  let map: any = null
-  let marker: any = null
-
-  addYmapsScript()
-
-  const getYmaps = () => new Promise(resolve => {
-    const tryGetYmaps = () => {
-      const { ymaps } = window as any
-
-      if (ymaps && typeof ymaps.Map === 'function') {
-        yandexMaps = ymaps
-
-        return resolve(ymaps)
-      }
-
-      setTimeout(tryGetYmaps)
-    }
-
-    tryGetYmaps()
-  })
-  const setAddressMarker = () => {
-    if (marker) {
-      map.geoObjects.remove(marker)
-    }
-
-    if (!yandexMaps) {
-      return
-    }
-
-    marker = new yandexMaps.Placemark(props.coords, {}, {
-      preset: 'islands#icon',
-      iconColor: '#0095b6'
+    const props = withDefaults(defineProps<{
+        coords: number[]
+        address: string
+    }>(), {
+        coords: () => [55.87, 37.66],
+        address: ''
     })
 
-    map.setCenter(props.coords)
+    const { addYmapsScript } = useYandexMaps()
 
-    map.geoObjects.add(marker)
-  }
+    let yandexMaps: any = null
+    let map: any = null
+    let marker: any = null
 
-  const init = () => {
-    map = new yandexMaps.Map('map', {
-      center: props.coords,
-      zoom: 16,
-      controls: []
+    addYmapsScript()
+
+    const getYmaps = () => new Promise(resolve => {
+        const tryGetYmaps = () => {
+            const { ymaps } = window as any
+
+            if (ymaps && typeof ymaps.Map === 'function') {
+                yandexMaps = ymaps
+
+                return resolve(ymaps)
+            }
+
+            setTimeout(tryGetYmaps)
+        }
+
+        tryGetYmaps()
     })
-  }
+    const setAddressMarker = () => {
+        if (marker) {
+            map.geoObjects.remove(marker)
+        }
 
-  watch(() => props.coords, setAddressMarker)
+        if (!yandexMaps) {
+            return
+        }
 
-  getYmaps().then(() => {
-    init()
-    setAddressMarker()
-  })
+        marker = new yandexMaps.Placemark(props.coords, {}, {
+            preset: 'islands#icon',
+            iconColor: '#0095b6'
+        })
+
+        map.setCenter(props.coords)
+
+        map.geoObjects.add(marker)
+    }
+
+    const init = () => {
+        map = new yandexMaps.Map('map', {
+            center: props.coords,
+            zoom: 16,
+            controls: []
+        })
+    }
+
+    watch(() => props.coords, setAddressMarker)
+
+    getYmaps().then(() => {
+        init()
+        setAddressMarker()
+    })
 
 </script>
 <template>
-  <div class="map-service">
-    <div class="map-service__address elevation-2">
-      <h3>{{ address }}</h3>
+    <div class="map-service">
+        <div class="map-service__address elevation-2">
+            <h3>{{ address }}</h3>
+        </div>
+        <div id="map"></div>
     </div>
-    <div id="map"></div>
-  </div>
 </template>
 <style lang="scss">
   .map-service {

@@ -1,22 +1,23 @@
 {
-  "name": "ecommerce-platform",
-  "version": "1.0.0",
-  "description": "ecommerce platform project",
-  "scripts": {
-    "dev": "lerna run dev",
-    "bootstrap": "lerna bootstrap --hoist",
-    "setup": "npm ci && npm run bootstrap",
-    "build": "lerna run build",
-    "publish": "lerna publish --conventional-commits",
-    "docker:build": "lerna run build && docker-compose build"
-  },
-  "workspaces": [
-    "packages/*"
-  ],
-  "keywords": [],
-  "author": "Anar Allakhverdiev <wiseadme@gmail.com>",
-  "license": "ISC",
-  "devDependencies": {
-    "lerna": "^5.0.0"
-  }
+    "name": "ecommerce-platform",
+    "version": "1.0.0",
+    "description": "ecommerce platform project",
+    "scripts": {
+        "dev": "lerna run dev",
+        "bootstrap": "lerna bootstrap --hoist",
+        "setup": "npm ci && npm run bootstrap",
+        "build": "lerna run build",
+        "publish": "lerna publish --conventional-commits",
+        "docker:build": "lerna run build && docker-compose build",
+        "lint:fix": "lerna run lint:fix"
+    },
+    "workspaces": [
+        "packages/*"
+    ],
+    "keywords": [],
+    "author": "Anar Allakhverdiev <wiseadme@gmail.com>",
+    "license": "ISC",
+    "devDependencies": {
+        "lerna": "^5.0.0"
+    }
 }

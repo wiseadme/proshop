@@ -4,18 +4,18 @@ class Service {
   private _store: ReturnType<typeof useCustomersStore>
 
   constructor({ store }) {
-    this._store = store
+      this._store = store
   }
 
   get customers() {
-    return this._store.customers
+      return this._store.customers
   }
 
   fetchCustomers() {
-    return this._store.getCustomers()
+      return this._store.getCustomers()
   }
 }
 
 export const useCustomersService = () => new Service({
-  store: useCustomersStore()
+    store: useCustomersStore()
 })

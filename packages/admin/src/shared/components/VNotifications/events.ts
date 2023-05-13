@@ -2,23 +2,23 @@ class EventEmitter {
   events: Record<string, Function[]>
 
   constructor(){
-    this.events = {}
+      this.events = {}
   }
 
   on(event, fn){
-    if (!this.events[event]) {
-      this.events[event] = []
-    }
+      if (!this.events[event]) {
+          this.events[event] = []
+      }
 
-    this.events[event].push(fn)
+      this.events[event].push(fn)
   }
 
   off(event, fn){
-    this.events[event].filter(cb => cb !== fn)
+      this.events[event].filter(cb => cb !== fn)
   }
 
   emit(event, ...args){
-    this.events[event].forEach(fn => fn(...args))
+      this.events[event].forEach(fn => fn(...args))
   }
 }
 

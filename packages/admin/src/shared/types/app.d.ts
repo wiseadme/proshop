@@ -1,9 +1,9 @@
 /// <reference types="vue/macros-global" />
 import {
-  IAttribute,
-  ICategory,
-  IUnit,
-  IVariant
+    IAttribute,
+    ICategory,
+    IUnit,
+    IVariant
 } from '@ecommerce-platform/types'
 
 export interface IRest {

@@ -4,27 +4,27 @@ import { useAttributesStore } from '@modules/attribute/store'
 import { IAttribute } from '@ecommerce-platform/types'
 
 export const useAttributesService = createSharedComposable(() => {
-  const _store = useAttributesStore()
+    const _store = useAttributesStore()
 
-  const attributes = ref<IAttribute[]>([])
+    const attributes = ref<IAttribute[]>([])
 
-  const updateAttribute = (updates) => _store.update(updates)
+    const updateAttribute = (updates) => _store.update(updates)
 
-  const createAttribute = (attribute) => _store.create(attribute)
+    const createAttribute = (attribute) => _store.create(attribute)
 
-  const deleteAttribute = (id) => _store.delete(id)
+    const deleteAttribute = (id) => _store.delete(id)
 
-  const getAttributes = () => _store.read()
+    const getAttributes = () => _store.read()
 
-  watch(() => _store.attributes, (newAttributes) => {
-    attributes.value = newAttributes ?? []
-  }, { immediate: true })
+    watch(() => _store.attributes, (newAttributes) => {
+        attributes.value = newAttributes ?? []
+    }, { immediate: true })
 
-  return {
-    attributes,
-    getAttributes,
-    createAttribute,
-    updateAttribute,
-    deleteAttribute
-  }
+    return {
+        attributes,
+        getAttributes,
+        createAttribute,
+        updateAttribute,
+        deleteAttribute
+    }
 })

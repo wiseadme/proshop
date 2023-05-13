@@ -2,5 +2,5 @@
 
 </script>
 <template>
-  <div class="attribute-form"></div>
+    <div class="attribute-form"></div>
 </template>

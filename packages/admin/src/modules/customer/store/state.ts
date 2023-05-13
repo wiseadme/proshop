@@ -1,3 +1,3 @@
 export const state = () => ({
-  customers: null
+    customers: null
 })

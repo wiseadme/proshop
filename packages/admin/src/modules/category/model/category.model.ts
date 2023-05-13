@@ -13,39 +13,39 @@ export class Category implements ICategory {
   conditions: ICategory['conditions']
 
   constructor({
-    _id = '',
-    title = '',
-    url = '',
-    image = null,
-    parent = null,
-    children = null,
-    order = 0,
-    length = 0,
-    conditions = {
-      visible: true,
-      special: false
-    },
-    seo = {
-      title: null,
-      description: null,
-      keywords: null,
-      metatags: [],
-      schema: []
-    }
+      _id = '',
+      title = '',
+      url = '',
+      image = null,
+      parent = null,
+      children = null,
+      order = 0,
+      length = 0,
+      conditions = {
+          visible: true,
+          special: false
+      },
+      seo = {
+          title: null,
+          description: null,
+          keywords: null,
+          metatags: [],
+          schema: []
+      }
   } = {}){
-    this._id = _id
-    this.title = title
-    this.url = url
-    this.image = image
-    this.parent = parent
-    this.children = children
-    this.order = order
-    this.seo = seo
-    this.length = length
-    this.conditions = conditions
+      this._id = _id
+      this.title = title
+      this.url = url
+      this.image = image
+      this.parent = parent
+      this.children = children
+      this.order = order
+      this.seo = seo
+      this.length = length
+      this.conditions = conditions
   }
 
   static create(category = {}){
-    return new Category(category)
+      return new Category(category)
   }
 }

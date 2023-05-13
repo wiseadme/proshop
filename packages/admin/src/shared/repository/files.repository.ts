@@ -25,21 +25,21 @@ class Repository implements IFilesRepository {
   private _baseUrl: string
 
   constructor(file, rest, baseUrl){
-    this._file = file
-    this._rest = rest
-    this._baseUrl = baseUrl
+      this._file = file
+      this._rest = rest
+      this._baseUrl = baseUrl
   }
 
   create({ ownerId, fileName, formData }){
-    return this._file.post(`${ this._baseUrl }?id=${ ownerId }&&fileName=${ fileName }`, formData)
+      return this._file.post(`${ this._baseUrl }?id=${ ownerId }&&fileName=${ fileName }`, formData)
   }
 
   update(updates){
-    return this._rest.patch(this._baseUrl, updates)
+      return this._rest.patch(this._baseUrl, updates)
   }
 
   delete(asset){
-    return this._file.delete(this._baseUrl, { params: { ...asset } })
+      return this._file.delete(this._baseUrl, { params: { ...asset } })
   }
 }
 
