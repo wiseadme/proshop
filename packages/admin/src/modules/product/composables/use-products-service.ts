@@ -46,10 +46,10 @@ export const useProductsService = createSharedComposable(() => {
     const _metaTagsStore = useMetaTagsStore()
 
     const {
-        pagination,
         sort,
-        getPaginationParams,
-        getSortParams
+        pagination,
+        getSortParams,
+        getPaginationParams
     } = useRequestParams()
 
     const _filesService = useFilesService()
@@ -97,10 +97,12 @@ export const useProductsService = createSharedComposable(() => {
         return _metaTagsStore.read()
     }
 
-    const getProducts = (params: IProductQuery = {}) => {
-        const query = assign(params, getPaginationParams(), getSortParams())
-
-        return _productsStore.read(query)
+    const getProducts = (params?: IProductQuery) => {
+        return _productsStore.read({
+            ...(params || {}),
+            ...getPaginationParams(),
+            ...getSortParams()
+        })
     }
 
     const getCategoryProducts = (category: ICategory) => {

@@ -5,11 +5,13 @@ import { useOrdersService } from '@modules/order/composables/use-orders-service'
 export const useOrdersTable = () => {
     const {
         pagination,
+        sort,
         getOrders,
     } = useOrdersService()
 
     const onUpdateTablePage = (page) => {
-        console.log(page)
+        pagination.setPage(page)
+        return getOrders()
     }
 
     const onUpdateTableRowsCount = (count) => {
@@ -18,8 +20,11 @@ export const useOrdersTable = () => {
         return getOrders()
     }
 
-    const onSort = (col) => {
-        console.log(col)
+    const onSortColumn = (col) => {
+        const { sorted } = col
+        sorted ? sort.setAsc(col.key) : sort.setDesc(col.key)
+
+        return getOrders()
     }
 
     const cols = ref([
@@ -37,7 +42,7 @@ export const useOrdersTable = () => {
             sortable: true,
             filterable: true,
             format: (row) => new Date(row.createdAt).toLocaleString(),
-            emit: true
+            onSort: (col) => onSortColumn(col)
         },
         {
             key: 'orderId',
@@ -46,7 +51,8 @@ export const useOrdersTable = () => {
             resizeable: true,
             sortable: true,
             filterable: true,
-            format: (row) => row.orderId
+            format: (row) => row.orderId,
+            onSort: (col) => onSortColumn(col)
         },
         {
             key: 'amount',
@@ -65,7 +71,8 @@ export const useOrdersTable = () => {
             resizeable: true,
             sortable: true,
             filterable: true,
-            format: (row) => getOrderStatusName(row.status)
+            format: (row) => getOrderStatusName(row.status),
+            onSort: (col) => onSortColumn(col)
         },
         {
             key: 'qrcode',
@@ -83,6 +90,6 @@ export const useOrdersTable = () => {
         cols,
         onUpdateTablePage,
         onUpdateTableRowsCount,
-        onSort
+        onSortColumn
     }
 }

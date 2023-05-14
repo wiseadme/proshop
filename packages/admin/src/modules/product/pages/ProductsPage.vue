@@ -6,25 +6,15 @@
     import SkeletonPreloader from '@shared/components/Preloader/SkeletonPreloader.vue'
     // Types
     import { useProduct } from '@modules/product/composables/use-product'
-    import { useProductsTable } from '@modules/product/composables/use-products-table'
 
     const {
         model,
         hasChanges,
         isEditMode,
         isLoading,
-        onOpenCreateProductModal,
-        onOpenEditProductModal,
-        onDeleteProduct,
         getProductUpdates,
         onInit,
     } = useProduct()
-
-    const {
-        onUpdateTablePage,
-        onUpdateTableRowsCount,
-        onSortColumn,
-    } = useProductsTable()
 
     let stopWatching
 
@@ -50,15 +40,7 @@
         <v-row>
             <v-col cols="12">
                 <skeleton-preloader v-if="isLoading"/>
-                <product-table
-                    v-else
-                    @open:create-modal="onOpenCreateProductModal"
-                    @open:edit-modal="onOpenEditProductModal"
-                    @delete:product="onDeleteProduct"
-                    @sort:column="onSortColumn"
-                    @update:page="onUpdateTablePage"
-                    @update:rows-count="onUpdateTableRowsCount"
-                />
+                <product-table v-else/>
             </v-col>
             <product-actions-modal/>
         </v-row>

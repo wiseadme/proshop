@@ -2,11 +2,17 @@ import { ref } from 'vue'
 import { useProductsService } from '@modules/product/composables/use-products-service'
 
 export const useProductsTable = () => {
-    const { pagination, sort, getProducts } = useProductsService()
+    const {
+        pagination,
+        sort,
+        totalLength,
+        products,
+        getProducts } = useProductsService()
 
     const onUpdateTablePage = async (page) => {
         pagination.setPage(page)
-        await getProducts({})
+
+        return getProducts({})
     }
 
     const onUpdateTableRowsCount = async (count) => {
@@ -63,7 +69,8 @@ export const useProductsTable = () => {
             resizeable: true,
             sortable: true,
             filterable: true,
-            format: (row) => row.quantity
+            format: (row) => row.quantity,
+            onSort: (col) => onSortColumn(col)
         },
         {
             key: 'summary',
@@ -72,6 +79,7 @@ export const useProductsTable = () => {
             resizeable: true,
             sortable: true,
             filterable: true,
+            onSort: (col) => onSortColumn(col)
         },
         {
             key: 'image',
@@ -108,6 +116,8 @@ export const useProductsTable = () => {
 
     return {
         cols,
+        totalLength,
+        products,
         onSortColumn,
         onUpdateTablePage,
         onUpdateTableRowsCount

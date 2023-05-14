@@ -1,8 +1,8 @@
 <script lang="ts" setup>
     import { icons } from '@shared/enums/icons'
-    import { useProductsService } from '@modules/product/composables/use-products-service'
     import { useProductsTable } from '@modules/product/composables/use-products-table'
     import { IProduct } from '@ecommerce-platform/types'
+    import { useProduct } from '@modules/product/composables/use-product'
 
     defineEmits<{
         (e: 'delete:product', product: IProduct): void
@@ -10,8 +10,20 @@
         (e: 'open:create-modal'): void
     }>()
 
-    const { products, totalLength } = useProductsService()
-    const { cols } = useProductsTable()
+    const {
+        onOpenCreateProductModal,
+        onOpenEditProductModal,
+        onDeleteProduct,
+    } = useProduct()
+
+    const {
+        cols,
+        totalLength,
+        products,
+        // onSortColumn,
+        onUpdateTablePage,
+        onUpdateTableRowsCount
+    } = useProductsTable()
 
 </script>
 <template>
@@ -32,6 +44,8 @@
             }
         }"
         show-sequence
+        @update:page="onUpdateTablePage"
+        @update:rows-count="onUpdateTableRowsCount"
     >
         <template #toolbar>
             <v-toolbar>
@@ -41,7 +55,7 @@
                     <v-button
                         color="primary"
                         elevation="5"
-                        @click="$emit('open:create-modal')"
+                        @click="onOpenCreateProductModal"
                     >
                         <v-icon
                             size="14"
@@ -62,7 +76,7 @@
                 elevation="2"
                 text
                 style="z-index: 0"
-                @click="$emit('open:edit-modal', row)"
+                @click="onOpenEditProductModal(row)"
             >
                 <v-icon>{{ icons.PEN }}</v-icon>
             </v-button>
@@ -72,7 +86,7 @@
                 elevation="2"
                 text
                 style="z-index: 0"
-                @click="$emit('delete:product', row)"
+                @click="onDeleteProduct(row)"
             >
                 <v-icon>{{ icons.TRASH }}</v-icon>
             </v-button>

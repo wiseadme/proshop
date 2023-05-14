@@ -44,7 +44,7 @@
         })
     }
 
-    const setRelatedProducts = async () => {
+    const setCategoryRelatedProducts = async () => {
         if (!unref(category)) return
 
         clearSelects()
@@ -102,9 +102,9 @@
         !state && clearSelects()
     }
 
-    watch(category, setRelatedProducts)
+    watch(category, setCategoryRelatedProducts)
+    watch(model, setCategoryRelatedProducts)
     watch(selects, onUpdateRelatedProductsArray)
-    watch(model, setRelatedProducts)
     watch(showModal, onShowModal)
 
 </script>
