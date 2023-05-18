@@ -5,15 +5,15 @@ import { IErrorRouteMiddleware } from '@/types/middlewares'
 
 @injectable()
 export class ErrorRouteMiddleware implements IErrorRouteMiddleware {
-  public bind: boolean
+    public bind: boolean
 
-  constructor(
-    @inject(TYPES.UTILS.ILogger) private logger: ILogger
-  ){
-    this.bind = true
-  }
+    constructor(
+        @inject(TYPES.UTILS.ILogger) private logger: ILogger,
+    ) {
+        this.bind = true
+    }
 
-  execute(err, req, res, next){
-    res?.status(err.status || 500).json(err)
-  }
+    execute(err, req, res, next) {
+        res?.status(err.status || 500).json(err)
+    }
 }

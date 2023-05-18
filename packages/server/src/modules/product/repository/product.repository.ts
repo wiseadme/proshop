@@ -14,104 +14,111 @@ import { DEFAULT_ITEMS_COUNT, DEFAULT_PAGE } from '@common/constants/counts'
 
 @injectable()
 export class ProductRepository extends RepositoryHelpers implements IProductRepository {
-  constructor(@inject(TYPES.UTILS.ILogger) private logger: ILogger) {
-    super()
-  }
-
-  async create(product: IProduct) {
-    return await (await new ProductModel({
-      _id: new mongoose.Types.ObjectId(),
-      name: product.name,
-      price: product.price,
-      description: product.description,
-      image: product.image,
-      url: product.url,
-      count: product.quantity,
-      categories: product.categories,
-      variants: product.variants,
-      attributes: product.attributes,
-      unit: product.unit,
-      assets: product.assets,
-      seo: product.seo,
-      conditions: product.conditions,
-      related: product.related,
-    })
-      .save())
-      .populate(this.preparePopulateParams()) as Document & IProduct
-  }
-
-  async read({
-    _id,
-    name,
-    category,
-    url,
-    desc,
-    asc,
-    key,
-    page = DEFAULT_PAGE,
-    count = DEFAULT_ITEMS_COUNT
-  }: IRequestParams<IProductQuery>) {
-
-    let products
-
-    const queryParams = {
-      ...this.preparePaginationParams({ page, count }),
-      ...this.prepareSortParams({ desc, asc, key })
+    constructor(@inject(TYPES.UTILS.ILogger) private logger: ILogger) {
+        super()
     }
 
-    if (_id) {
-      validateId(_id)
-
-      return ProductModel.find({ _id }).lean().populate(this.preparePopulateParams())
+    async create(product: IProduct) {
+        return await (await new ProductModel({
+            _id: new mongoose.Types.ObjectId(),
+            name: product.name,
+            price: product.price,
+            description: product.description,
+            image: product.image,
+            url: product.url,
+            count: product.quantity,
+            categories: product.categories,
+            variants: product.variants,
+            attributes: product.attributes,
+            unit: product.unit,
+            assets: product.assets,
+            seo: product.seo,
+            conditions: product.conditions,
+            related: product.related,
+        })
+            .save())
+            .populate(this.preparePopulateParams()) as Document & IProduct
     }
 
-    if (category) {
-      products = await ProductModel.aggregate(this.prepareAggregateParams({ count, page, category, desc, asc, key })).exec()
+    async read({
+        _id,
+        name,
+        category,
+        url,
+        desc,
+        asc,
+        key,
+        page = DEFAULT_PAGE,
+        count = DEFAULT_ITEMS_COUNT,
+    }: IRequestParams<IProductQuery>) {
 
-      await ProductModel.populate(products, {path: 'related'})
-    }
+        let products
 
-    if (url) {
-      products = ProductModel.find({ url }, [], queryParams).lean().populate(this.preparePopulateParams())
-    }
-
-    if (name) {
-      products = ProductModel.find({
-        'name': {
-          '$regex': `.*${ name }*.`,
-          '$options': 'i'
+        const queryParams = {
+            ...this.preparePaginationParams({ page, count }),
+            ...this.prepareSortParams({ desc, asc, key }),
         }
-      }, queryParams).lean().populate(this.preparePopulateParams())
+
+        if (_id) {
+            validateId(_id)
+
+            return ProductModel.find({ _id }).lean().populate(this.preparePopulateParams())
+        }
+
+        if (category) {
+            products = await ProductModel.aggregate(this.prepareAggregateParams({
+                count,
+                page,
+                category,
+                desc,
+                asc,
+                key,
+            })).exec()
+
+            await ProductModel.populate(products, { path: 'related' })
+        }
+
+        if (url) {
+            products = ProductModel.find({ url }, [], queryParams).lean().populate(this.preparePopulateParams())
+        }
+
+        if (name) {
+            products = ProductModel.find({
+                'name': {
+                    '$regex': `.*${name}*.`,
+                    '$options': 'i',
+                },
+            }, queryParams).lean().populate(this.preparePopulateParams())
+        }
+
+        if (!products) {
+            products = ProductModel.find({}, [], queryParams).lean().populate(this.preparePopulateParams())
+        }
+
+        return products
     }
 
-    if (!products) {
-      products = ProductModel.find({}, [], queryParams).lean().populate(this.preparePopulateParams())
+    async update($set: Partial<IProduct>) {
+        validateId($set._id)
+
+        const updated = await ProductModel.findByIdAndUpdate(
+            { _id: $set._id },
+            { $set },
+            { new: true },
+        )
+            .lean()
+            .populate(this.preparePopulateParams()) as Document & IProduct
+
+        return { updated }
     }
 
-    return products
-  }
+    async delete(id) {
+        validateId(id)
 
-  async update($set: Partial<IProduct>) {
-    validateId($set._id)
+        return !!await ProductModel.findOneAndDelete({ _id: id }).lean()
+    }
 
-    const updated = await ProductModel.findByIdAndUpdate(
-      { _id: $set._id },
-      { $set },
-      { new: true }
-    )
-      .lean()
-      .populate(this.preparePopulateParams()) as Document & IProduct
-
-    return { updated }
-  }
-
-  async delete(id) {
-    validateId(id)
-
-    return !!await ProductModel.findOneAndDelete({ _id: id }).lean()
-  }
-
-  async getDocumentsCount() {
-    return ProductModel.countDocuments()
-  }
+    async getDocumentsCount() {
+        return ProductModel.countDocuments()
+    }
 }

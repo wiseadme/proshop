@@ -7,40 +7,40 @@ import { ICustomer } from '@ecommerce-platform/types'
 
 @injectable()
 export class CustomerRepository implements ICustomerRepository {
-  async create(params): Promise<ICustomer & Document> {
+    async create(params): Promise<ICustomer & Document> {
 
-    const customer = new CustomerModel({
-      _id: new mongoose.Types.ObjectId(),
-      name: params.name,
-      phone: params.phone,
-    })
+        const customer = new CustomerModel({
+            _id: new mongoose.Types.ObjectId(),
+            name: params.name,
+            phone: params.phone,
+        })
 
-    await customer.save()
+        await customer.save()
 
-    return customer
-  }
+        return customer
+    }
 
-  async read(params: Partial<ICustomer>) {
-    return CustomerModel.find(params)
-  }
+    async read(params: Partial<ICustomer>) {
+        return CustomerModel.find(params)
+    }
 
-  async update(updates: Partial<ICustomer>) {
-    validateId(updates._id)
+    async update(updates: Partial<ICustomer>) {
+        validateId(updates._id)
 
-    const updated = await CustomerModel.findByIdAndUpdate(
-      { _id: updates._id },
-      { $set: updates },
-      { new: true }
-    ) as ICustomer & Document
+        const updated = await CustomerModel.findByIdAndUpdate(
+            { _id: updates._id },
+            { $set: updates },
+            { new: true },
+        ) as ICustomer & Document
 
-    return { updated }
-  }
+        return { updated }
+    }
 
-  async delete(id) {
-    validateId(id)
+    async delete(id) {
+        validateId(id)
 
-    await CustomerModel.findByIdAndDelete(id)
+        await CustomerModel.findByIdAndDelete(id)
 
-    return true
-  }
+        return true
+    }
 }

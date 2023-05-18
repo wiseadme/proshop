@@ -13,44 +13,47 @@ import { DELETE_CART_EVENT } from '@common/constants/events'
 
 @injectable()
 export class OrderService implements IOrderService {
-  constructor(
-    @inject(TYPES.UTILS.ILogger) private logger: ILogger,
-    @inject(TYPES.REPOSITORIES.IOrderRepository) private repository: IOrderRepository,
-    @inject(TYPES.SERVICES.IEventBusService) private events: IEventBusService
-  ) {
-  }
-
-  async create(order: IOrder) {
-    order.orderId = `T-${ new Date().toISOString().replace(/\D/g, '') }`
-    order.qrcode = await QRCode.toDataURL(order.orderId)
-
-    const created = await this.repository.create(Order.create(order))
-
-    await this.events.emit(DELETE_CART_EVENT, order.cart)
-
-    return created
-  }
-
-  async read(query: IRequestParams<Partial<IOrder>> = {}) {
-    let items = await this.repository.read(query) as (Document & IOrder)[]
-    let total = 0
-
-    if (query._id) {
-      return { items, total }
+    constructor(
+        @inject(TYPES.UTILS.ILogger) private logger: ILogger,
+        @inject(TYPES.REPOSITORIES.IOrderRepository) private repository: IOrderRepository,
+        @inject(TYPES.SERVICES.IEventBusService) private events: IEventBusService,
+    ) {
     }
 
-    if (query.length) {
-      total = await this.repository.getDocumentsCount()
+    async create(order: IOrder) {
+        order.orderId = `T-${new Date().toISOString().replace(/\D/g, '')}`
+
+        /**
+         * @description - внутри метода используется метод render, для отрисвоки qrcode,
+         * который возвращает promise, поэтому await не убираем
+         * */
+        order.qrcode = await QRCode.toDataURL(order.orderId)
+
+        const created = await this.repository.create(Order.create(order))
+
+        await this.events.emit(DELETE_CART_EVENT, order.cart)
+
+        return created
     }
 
-    return { items, total }
-  }
+    async read(query: IRequestParams<Partial<IOrder>> = {}) {
+        let items = await this.repository.read(query) as (Document & IOrder)[]
+        let total = 0
 
-  async update(updates: IOrder): Promise<{ updated: Document & IOrder }> {
-    return await this.repository.update(updates)
-  }
+        if (query._id) return { items, total }
 
-  async delete(id: string): Promise<boolean> {
-    return await this.repository.delete(id)
-  }
+        if (query.length) {
+            total = await this.repository.getDocumentsCount()
+        }
+
+        return { items, total }
+    }
+
+    async update(updates: IOrder): Promise<{ updated: Document & IOrder }> {
+        return await this.repository.update(updates)
+    }
+
+    async delete(id: string): Promise<boolean> {
+        return await this.repository.delete(id)
+    }
 }

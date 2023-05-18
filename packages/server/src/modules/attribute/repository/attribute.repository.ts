@@ -10,40 +10,42 @@ import { IAttributeRepository } from '../types/repository'
 
 @injectable()
 export class AttributeRepository implements IAttributeRepository {
-  constructor(
-    @inject(TYPES.UTILS.ILogger) private logger: ILogger
-  ){
-  }
+    constructor(
+        @inject(TYPES.UTILS.ILogger) private logger: ILogger,
+    ) {
+    }
 
-  async create(attribute: IAttribute): Promise<IAttribute & Document>{
-    return new AttributeModel({
-      _id: new mongoose.Types.ObjectId(),
-      key: attribute.key,
-      value: attribute.value,
-      meta: attribute.meta,
-      order: attribute.order
-    }).save()
-  }
+    async create(attribute: IAttribute): Promise<IAttribute & Document> {
+        return new AttributeModel({
+            _id: new mongoose.Types.ObjectId(),
+            key: attribute.key,
+            value: attribute.value,
+            meta: attribute.meta,
+            order: attribute.order,
+        }).save()
+    }
 
-  async read(id?: string): Promise<Array<IAttribute & Document>>{
-    const attrs = await AttributeModel.find(id ? { _id: id } : {})
+    async read(id?: string): Promise<Array<IAttribute & Document>> {
+        const attrs = await AttributeModel.find(id ? { _id: id } : {})
 
-    return attrs as Array<IAttribute & Document>
-  }
+        return attrs as Array<IAttribute & Document>
+    }
 
-  async update(updates: Partial<IAttribute> & Required<{_id: string}>): Promise<{ updated: IAttribute & Document }>{
-    validateId(updates._id)
+    async update(updates: Partial<IAttribute> & Required<{ _id: string }>): Promise<{
+        updated: IAttribute & Document
+    }> {
+        validateId(updates._id)
 
-    const updated = await AttributeModel.findByIdAndUpdate(
-      { _id: updates._id },
-      { $set: updates },
-      { new: true }
-    ) as IAttribute & Document
+        const updated = await AttributeModel.findByIdAndUpdate(
+            { _id: updates._id },
+            { $set: updates },
+            { new: true },
+        ) as IAttribute & Document
 
-    return { updated }
-  }
+        return { updated }
+    }
 
-  async delete(id){
-    return !!await AttributeModel.findByIdAndDelete(id)
-  }
+    async delete(id) {
+        return !!await AttributeModel.findByIdAndDelete(id)
+    }
 }

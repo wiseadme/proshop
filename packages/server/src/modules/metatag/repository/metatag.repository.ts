@@ -7,40 +7,40 @@ import { IMetaTag } from '@ecommerce-platform/types'
 
 @injectable()
 export class MetaTagRepository implements IMetaTagRepository {
-  async create(params): Promise<IMetaTag & Document> {
+    async create(params): Promise<IMetaTag & Document> {
 
-    const metaTag = new MetaTagModel({
-      _id: new mongoose.Types.ObjectId(),
-      props: params.props,
-      order: params.order
-    })
+        const metaTag = new MetaTagModel({
+            _id: new mongoose.Types.ObjectId(),
+            props: params.props,
+            order: params.order,
+        })
 
-    await metaTag.save()
+        await metaTag.save()
 
-    return metaTag
-  }
+        return metaTag
+    }
 
-  async read(params) {
-    return MetaTagModel.find(params)
-  }
+    async read(params) {
+        return MetaTagModel.find(params)
+    }
 
-  async update(updates: Partial<IMetaTag>) {
-    validateId(updates._id)
+    async update(updates: Partial<IMetaTag>) {
+        validateId(updates._id)
 
-    const updated = await MetaTagModel.findByIdAndUpdate(
-      { _id: updates._id },
-      { $set: updates },
-      { new: true }
-    ) as IMetaTag & Document
+        const updated = await MetaTagModel.findByIdAndUpdate(
+            { _id: updates._id },
+            { $set: updates },
+            { new: true },
+        ) as IMetaTag & Document
 
-    return { updated }
-  }
+        return { updated }
+    }
 
-  async delete(id) {
-    validateId(id)
+    async delete(id) {
+        validateId(id)
 
-    await MetaTagModel.findByIdAndDelete(id)
+        await MetaTagModel.findByIdAndDelete(id)
 
-    return true
-  }
+        return true
+    }
 }

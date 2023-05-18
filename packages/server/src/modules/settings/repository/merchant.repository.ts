@@ -11,45 +11,46 @@ import { MerchantModel } from '@modules/settings/model/merchant.model'
 
 @injectable()
 export class MerchantRepository implements IMerchantRepository {
-  constructor(
-    @inject(TYPES.UTILS.ILogger) private logger: ILogger
-  ) {
-  }
+    constructor(
+        @inject(TYPES.UTILS.ILogger) private logger: ILogger,
+    ) {
+    }
 
-  async create(merchant: IMerchant) {
-    return new MerchantModel({
-      _id: new mongoose.Types.ObjectId(),
-      organization: merchant.organization,
-      name: merchant.name,
-      description: merchant.description,
-      logo: merchant.logo,
-      slogan: merchant.slogan,
-      address: merchant.address,
-      email: merchant.email,
-      phone: merchant.phone,
-      currency: merchant.currency,
-      stores: merchant.stores,
-      social: merchant.social
-    }).save()
-  }
+    async create(merchant: IMerchant) {
+        return new MerchantModel({
+            _id: new mongoose.Types.ObjectId(),
+            organization: merchant.organization,
+            name: merchant.name,
+            description: merchant.description,
+            logo: merchant.logo,
+            slogan: merchant.slogan,
+            address: merchant.address,
+            email: merchant.email,
+            phone: merchant.phone,
+            currency: merchant.currency,
+            stores: merchant.stores,
+            social: merchant.social,
+        }).save()
+    }
 
-  async read() {
-    const [merchant] = await MerchantModel.find().lean()
-    return merchant
-  }
-  async update(updates: Partial<IMerchant>) {
-    validateId(updates._id)
+    async read() {
+        const [merchant] = await MerchantModel.find().lean()
+        return merchant
+    }
 
-    const updated = await MerchantModel.findByIdAndUpdate(
-      { _id: updates._id },
-      { $set: updates },
-      { new: true }
-    ) as Document & IMerchant
+    async update(updates: Partial<IMerchant>) {
+        validateId(updates._id)
 
-    return { updated }
-  }
+        const updated = await MerchantModel.findByIdAndUpdate(
+            { _id: updates._id },
+            { $set: updates },
+            { new: true },
+        ) as Document & IMerchant
 
-  async delete(id): Promise<boolean> {
-    return !!await MerchantModel.findByIdAndDelete(id)
-  }
+        return { updated }
+    }
+
+    async delete(id): Promise<boolean> {
+        return !!await MerchantModel.findByIdAndDelete(id)
+    }
 }

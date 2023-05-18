@@ -5,10 +5,10 @@ import { IMiddleware } from '@/types/middlewares'
 
 @injectable()
 export class SessionMiddleware implements IMiddleware {
-  public bind: true
-  public execute: ReturnType<typeof session> = session({
-    secret: config.accessSecret,
-    resave: false,
-    saveUninitialized: true,
-  })
+    public bind: true
+    public execute: ReturnType<typeof session> = session({
+        secret: config.accessSecret,
+        resave: false,
+        saveUninitialized: true,
+    })
 }

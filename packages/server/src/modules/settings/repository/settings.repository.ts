@@ -9,35 +9,35 @@ import { MerchantModel } from '@modules/settings/model/merchant.model'
 
 @injectable()
 export class SettingsRepository implements ISettingsRepository {
-  async create(settings: Partial<ISettings>) {
-    return (await (new SettingsModel({
-      _id: new mongoose.Types.ObjectId(),
-      merchant: settings.merchant,
-      site: settings.site
-    }).save())).populate(['merchant', 'site'])
-  }
+    async create(settings: Partial<ISettings>) {
+        return (await (new SettingsModel({
+            _id: new mongoose.Types.ObjectId(),
+            merchant: settings.merchant,
+            site: settings.site,
+        }).save())).populate(['merchant', 'site'])
+    }
 
-  async read(): Promise<LeanDocument<ISettings>> {
-    const [settings] = await SettingsModel.find().lean().populate(['merchant', 'site'])
+    async read(): Promise<LeanDocument<ISettings>> {
+        const [settings] = await SettingsModel.find().lean().populate(['merchant', 'site'])
 
-    return settings
-  }
+        return settings
+    }
 
-  async update(updates: Partial<ISettings>) {
-    validateId(updates._id)
+    async update(updates: Partial<ISettings>) {
+        validateId(updates._id)
 
-    const updated = await MerchantModel.findByIdAndUpdate(
-      { _id: updates._id },
-      { $set: updates },
-      { new: true }
-    ) as Document & ISettings
+        const updated = await MerchantModel.findByIdAndUpdate(
+            { _id: updates._id },
+            { $set: updates },
+            { new: true },
+        ) as Document & ISettings
 
-    return { updated }
-  }
+        return { updated }
+    }
 
-  async delete(id): Promise<boolean> {
-    await SettingsModel.deleteOne({ _id: id })
+    async delete(id): Promise<boolean> {
+        await SettingsModel.deleteOne({ _id: id })
 
-    return true
-  }
+        return true
+    }
 }

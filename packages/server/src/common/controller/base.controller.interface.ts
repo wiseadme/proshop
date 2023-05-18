@@ -1,6 +1,6 @@
-import { SendOptions, ErrorOptions } from '@/types'
+import { ErrorOptions, SendOptions } from '@/types'
 
 export interface IBaseController {
-  send: (options: SendOptions) => void,
-  error: (options: ErrorOptions) => Promise<any>
+    send: (options: SendOptions) => void,
+    error: (options: ErrorOptions) => Promise<any>
 }

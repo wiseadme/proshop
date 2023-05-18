@@ -2,11 +2,11 @@ import { IMetaTag } from '@ecommerce-platform/types'
 import { Document } from 'mongoose'
 
 export interface IMetaTagRepository {
-  create(metaTag: IMetaTag): Promise<IMetaTag & Document>
+    create(metaTag: IMetaTag): Promise<IMetaTag & Document>
 
-  read(params: Partial<IMetaTag>): Promise<(IMetaTag & Document)[]>
+    read(params: Partial<IMetaTag>): Promise<(IMetaTag & Document)[]>
 
-  update(updates: Partial<IMetaTag>): Promise<{ updated: IMetaTag & Document }>
+    update(updates: Partial<IMetaTag>): Promise<{ updated: IMetaTag & Document }>
 
-  delete(id: string): Promise<boolean>
+    delete(id: string): Promise<boolean>
 }
