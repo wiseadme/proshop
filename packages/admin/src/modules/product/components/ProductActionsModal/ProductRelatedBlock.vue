@@ -21,7 +21,7 @@
     } = useProductRelated()
 
     const selects = ref<IProduct[]>([])
-    const productsMap: Record<string, Record<string, IProduct>> = {}
+    let productsMap: Record<string, Record<string, IProduct>> = {}
 
     let isCategoryChanged: boolean = false
 
@@ -29,10 +29,7 @@
 
     const setToCategoryMap = (product: IProduct) => {
         product.categories?.forEach((category: ICategory) => {
-
-            const categoryMap = productsMap[unref(category).url!]
-            productsMap[unref(category).url!] = categoryMap || {}
-
+            productsMap[unref(category).url!] ??= {}
             productsMap[category!.url!][product._id] = product
         })
     }
@@ -47,12 +44,14 @@
         })
     }
 
-    const setRelatedProducts = async () => {
+    const setCategoryRelatedProducts = async () => {
         if (!unref(category)) return
 
         clearSelects()
 
         isCategoryChanged = true
+        /** Очищаем мапу */
+        productsMap = {}
         productsMap[unref(category).url!] = {} as Record<string, IProduct>
 
         await getProducts()
@@ -103,9 +102,9 @@
         !state && clearSelects()
     }
 
-    watch(category, setRelatedProducts)
+    watch(category, setCategoryRelatedProducts)
+    watch(model, setCategoryRelatedProducts)
     watch(selects, onUpdateRelatedProductsArray)
-    watch(model, setRelatedProducts)
     watch(showModal, onShowModal)
 
 </script>

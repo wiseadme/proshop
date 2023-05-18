@@ -10,45 +10,46 @@ import { IOptionRepository } from '../types/repository'
 
 @injectable()
 export class OptionRepository implements IOptionRepository {
-  constructor(
-    @inject(TYPES.UTILS.ILogger) private logger: ILogger
-  ){
-  }
+    constructor(
+        @inject(TYPES.UTILS.ILogger) private logger: ILogger,
+    ) {
+    }
 
-  async create(option: IOption): Promise<Document & IOption>{
-    return (await new OptionModel({
-      _id: new mongoose.Types.ObjectId(),
-      name: option.name,
-      variantId: option.variantId,
-      price: option.price,
-      quantity: option.quantity,
-      description: option.description,
-      assets: option.assets
-    }).save() as any).populate('assets')
-  }
+    async create(option: IOption): Promise<Document & IOption> {
+        return (await new OptionModel({
+            _id: new mongoose.Types.ObjectId(),
+            name: option.name,
+            variantId: option.variantId,
+            price: option.price,
+            quantity: option.quantity,
+            description: option.description,
+            assets: option.assets,
+        }).save() as any).populate('assets')
+    }
 
-  async read(id?: string): Promise<Array<Document & IOption>>{
-    id && validateId(id)
-    const options = await OptionModel.find(id ? { _id: id } : {}).populate('assets')
+    async read(id?: string): Promise<Array<Document & IOption>> {
+        id && validateId(id)
 
-    return options as Array<Document & IOption>
-  }
+        const options = await OptionModel.find(id ? { _id: id } : {}).populate('assets')
 
-  async update(updates: Partial<IOption>): Promise<{ updated: Document & IOption }>{
-    validateId(updates._id)
+        return options as Array<Document & IOption>
+    }
 
-    const option = await OptionModel.findByIdAndUpdate(
-      { _id: updates._id },
-      { $set: updates },
-      { new: true }
-    ).populate('assets') as Document & IOption
+    async update(updates: Partial<IOption>): Promise<{ updated: Document & IOption }> {
+        validateId(updates._id)
 
-    return { updated: option }
-  }
+        const option = await OptionModel.findByIdAndUpdate(
+            { _id: updates._id },
+            { $set: updates },
+            { new: true },
+        ).populate('assets') as Document & IOption
 
-  async delete(id){
-    validateId(id)
+        return { updated: option }
+    }
 
-    return !!await OptionModel.findByIdAndDelete(id)
-  }
+    async delete(id) {
+        validateId(id)
+
+        return !!await OptionModel.findByIdAndDelete(id)
+    }
 }

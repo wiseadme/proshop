@@ -9,25 +9,25 @@ import { IVariantRepository } from '../types/repository'
 
 @injectable()
 export class VariantService implements IVariantService {
-  constructor(
-    @inject(TYPES.UTILS.ILogger) private logger: ILogger,
-    @inject(TYPES.REPOSITORIES.IVariantRepository) private repository: IVariantRepository
-  ){
-  }
+    constructor(
+        @inject(TYPES.UTILS.ILogger) private logger: ILogger,
+        @inject(TYPES.REPOSITORIES.IVariantRepository) private repository: IVariantRepository,
+    ) {
+    }
 
-  async create(variant: IVariant){
-    return await this.repository.create(variant)
-  }
+    async create(variant: IVariant) {
+        return await this.repository.create(variant)
+    }
 
-  async read(){
-    return await this.repository.read()
-  }
+    async read() {
+        return await this.repository.read()
+    }
 
-  async update(updates: Partial<IVariant & Document>){
-    return this.repository.update(updates)
-  }
+    async update(updates: Partial<IVariant & Document>) {
+        return this.repository.update(updates)
+    }
 
-  async delete(id: string){
-    return await this.repository.delete(id)
-  }
+    async delete(id: string) {
+        return await this.repository.delete(id)
+    }
 }

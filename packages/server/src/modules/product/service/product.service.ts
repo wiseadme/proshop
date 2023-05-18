@@ -17,97 +17,97 @@ import { DELETE_PRODUCT_EVENT, UPDATE_ASSETS_EVENT, UPDATE_CATEGORY_EVENT } from
 
 @injectable()
 export class ProductService implements IProductService {
-  constructor(
-    @inject(TYPES.UTILS.ILogger) private logger: ILogger,
-    @inject(TYPES.REPOSITORIES.IProductRepository) private repository: IProductRepository,
-    @inject(TYPES.SERVICES.IEventBusService) private events: IEventBusService
-  ) {
-  }
-
-  async create(product: IProduct) {
-    const item = await this.repository.create(Product.create(product)) as Document & IProduct
-
-    if (product.categories) {
-      for (const category of product.categories) {
-        await this.events.emit(
-          UPDATE_CATEGORY_EVENT,
-          { _id: category._id, length: true },
-          true
-        )
-      }
+    constructor(
+        @inject(TYPES.UTILS.ILogger) private logger: ILogger,
+        @inject(TYPES.REPOSITORIES.IProductRepository) private repository: IProductRepository,
+        @inject(TYPES.SERVICES.IEventBusService) private events: IEventBusService,
+    ) {
     }
 
-    return {
-      items: [ item ],
-      total: await this.repository.getDocumentsCount()
-    }
-  }
+    async create(product: IProduct) {
+        const item = await this.repository.create(Product.create(product)) as Document & IProduct
 
-  async read(query: IRequestParams<Partial<IProduct>>) {
-    let items = await this.repository.read(query) as (Document & IProduct)[]
-    let total = 0
+        if (product.categories) {
+            for await (const category of product.categories) {
+                await this.events.emit(
+                    UPDATE_CATEGORY_EVENT,
+                    { _id: category._id, length: true },
+                    true,
+                )
+            }
+        }
 
-    if (query._id) {
-      return { items, total }
-    }
-
-    if (query.length) {
-      total = await this.repository.getDocumentsCount() as number
-    }
-
-    return {
-      items,
-      total
-    }
-  }
-
-  async update(updates: Partial<Document & IProduct>) {
-    if (updates.assets) {
-      updates.assets.forEach(it => this.events.emit(UPDATE_ASSETS_EVENT, it))
-      updates.image = updates.assets?.find(it => it.main)?.url || null
+        return {
+            items: [item],
+            total: await this.repository.getDocumentsCount(),
+        }
     }
 
-    let product, categories
+    async read(query: IRequestParams<Partial<IProduct>>) {
+        let items = await this.repository.read(query) as (Document & IProduct)[]
+        let total = 0
 
-    if (updates.categories) {
-      product = await this.repository.read(updates._id)
-      categories = product[0].categories
+        if (query._id) {
+            return { items, total }
+        }
+
+        if (query.length) {
+            total = await this.repository.getDocumentsCount() as number
+        }
+
+        return {
+            items,
+            total,
+        }
     }
 
-    const { updated } = await this.repository.update(Product.update(updates))
+    async update(updates: Partial<Document & IProduct>) {
+        if (updates.assets) {
+            updates.assets.forEach(it => this.events.emit(UPDATE_ASSETS_EVENT, it))
+            updates.image = updates.assets?.find(it => it.main)?.url || null
+        }
 
-    if (categories) {
-      /* TODO - необходимо оптимизировать так как есть повторные апдейт категории здесь */
-      if (updates.categories?.length) {
-        categories = categories.concat((updated as any).categories)
-      }
+        let product, categories
 
-      for (const category of categories) {
-        await this.events.emit(
-          UPDATE_CATEGORY_EVENT,
-          { _id: category._id, length: true },
-          true
-        )
-      }
+        if (updates.categories) {
+            product = await this.repository.read(updates._id)
+            categories = product[0].categories
+        }
+
+        const { updated } = await this.repository.update(Product.update(updates))
+
+        if (categories) {
+            /* TODO - необходимо оптимизировать так как есть повторные апдейт категории здесь */
+            if (updates.categories?.length) {
+                categories = categories.concat((updated as any).categories)
+            }
+
+            for (const category of categories) {
+                await this.events.emit(
+                    UPDATE_CATEGORY_EVENT,
+                    { _id: category._id, length: true },
+                    true,
+                )
+            }
+        }
+
+        return { updated }
     }
 
-    return { updated }
-  }
+    async delete(id) {
+        const [product] = await this.repository.read(id)
 
-  async delete(id) {
-    const [ product ] = await this.repository.read(id)
+        const res = await this.repository.delete(id)
 
-    const res = await this.repository.delete(id)
+        for (const category of product.categories) {
+            await this.events.emit(UPDATE_CATEGORY_EVENT, {
+                _id: category._id,
+                length: true,
+            })
+        }
 
-    for (const category of product.categories) {
-      await this.events.emit(UPDATE_CATEGORY_EVENT, {
-        _id: category._id,
-        length: true
-      })
+        await this.events.emit(DELETE_PRODUCT_EVENT, id)
+
+        return res
     }
-
-    await this.events.emit(DELETE_PRODUCT_EVENT, id)
-
-    return res
-  }
 }

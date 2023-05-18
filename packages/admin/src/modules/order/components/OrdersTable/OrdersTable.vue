@@ -7,11 +7,13 @@
 
     const {
         orders,
+        totalLength,
         onDeleteOrder,
     } = useOrders()
 
     const {
         cols,
+        onSort,
         onUpdateTableRowsCount,
         onUpdateTablePage,
     } = useOrdersTable()
@@ -21,19 +23,21 @@
     <v-data-table
         :cols="cols"
         :rows="orders"
+        class="elevation-2 app-border-radius"
         :footer-options="{
             counts: {
                 displayColor: 'primary',
                 rowsPerPageText: 'кол-во строк',
-                rowsPerPageOptions: [ 20, 40, 60, 80 ]
+                rowsPerPageOptions: [ 20, 40, 60, 80 ],
+                totalRows: totalLength,
             },
             pagination: {
                 buttonsColor: 'primary',
                 displayColor: 'primary',
             }
         }"
-        class="elevation-2 app-border-radius"
         show-sequence
+        @sort:column="onSort"
         @update:page="onUpdateTablePage"
         @update:rows-count="onUpdateTableRowsCount"
     >

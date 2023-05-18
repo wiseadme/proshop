@@ -5,19 +5,19 @@ import { IMiddleware } from '@/types/middlewares'
 
 @injectable()
 export class AuthMiddleware implements IMiddleware {
-  execute(req: Request, res: Response, next: NextFunction) {
-    const { auth } = req.cookies
+    execute(req: Request, res: Response, next: NextFunction) {
+        const { auth } = req.cookies
 
-    // console.log(req.headers)
+        // console.log(req.headers)
 
-    if (!auth || isExpired(auth)) {
-      // throw ({
-      //   ok: false,
-      //   status: 403,
-      //   message: 'Forbidden for you asshole'
-      // })
+        if (!auth || isExpired(auth)) {
+            // throw ({
+            //   ok: false,
+            //   status: 403,
+            //   message: 'Forbidden for you asshole'
+            // })
+        }
+
+        next()
     }
-
-    next()
-  }
 }

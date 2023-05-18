@@ -29,10 +29,11 @@ export const useOrdersService = createSharedComposable(() => {
     const orders = computed<Maybe<IOrder[]>>(() => _store.orders)
     const newOrders = computed<Maybe<IOrder[]>>(() => _store.newOrders)
     const users = computed<Maybe<IUser[]>>(() => _usersStore.users)
+    const totalLength = computed(() => _store.totalLength)
 
     const getUsers = () => unref(users) ? unref(users) : _usersStore.fetchUsers()
     const setAsCurrent = (item: IOrder) => order.value = item
-    const createOrder = (order: IOrder) => _store.create(order)
+    // const createOrder = (order: IOrder) => _store.create(order)
     const getOrders = (params: Partial<IOrder> = {}) => _store.read({
         ...params,
         ...getSortParams(),
@@ -59,9 +60,10 @@ export const useOrdersService = createSharedComposable(() => {
         sort,
         newOrders,
         pagination,
+        totalLength,
         getUsers,
         getOrders,
-        createOrder,
+        // createOrder,
         setAsCurrent,
         getNewOrders,
         updateOrder,

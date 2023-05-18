@@ -12,27 +12,27 @@ import { DELETE_OPTION_EVENT } from '@common/constants/events'
 
 @injectable()
 export class OptionService implements IOptionService {
-  constructor(
-    @inject(TYPES.UTILS.ILogger) private logger: ILogger,
-    @inject(TYPES.REPOSITORIES.IOptionRepository) private repository: IOptionRepository,
-    @inject(TYPES.SERVICES.IEventBusService) private events: IEventBusService
-  ){
-  }
+    constructor(
+        @inject(TYPES.UTILS.ILogger) private logger: ILogger,
+        @inject(TYPES.REPOSITORIES.IOptionRepository) private repository: IOptionRepository,
+        @inject(TYPES.SERVICES.IEventBusService) private events: IEventBusService,
+    ) {
+    }
 
-  create(option: IOption): Promise<Document & IOption>{
-    return this.repository.create(option)
-  }
+    create(option: IOption): Promise<Document & IOption> {
+        return this.repository.create(option)
+    }
 
-  read(id?: string): Promise<Array<Document & IOption>>{
-    return this.repository.read(id)
-  }
+    read(id?: string): Promise<Array<Document & IOption>> {
+        return this.repository.read(id)
+    }
 
-  update(updates: Partial<IOption>): Promise<{ updated: Document & IOption }>{
-    return this.repository.update(updates)
-  }
+    update(updates: Partial<IOption>): Promise<{ updated: Document & IOption }> {
+        return this.repository.update(updates)
+    }
 
-  delete(id: string): Promise<boolean>{
-    this.events.emit(DELETE_OPTION_EVENT, id)
-    return this.repository.delete(id)
-  }
+    delete(id: string): Promise<boolean> {
+        this.events.emit(DELETE_OPTION_EVENT, id)
+        return this.repository.delete(id)
+    }
 }

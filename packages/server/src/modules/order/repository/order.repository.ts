@@ -13,94 +13,94 @@ import { DEFAULT_ITEMS_COUNT, DEFAULT_PAGE } from '@common/constants/counts'
 
 @injectable()
 export class OrderRepository implements IOrderRepository {
-  constructor(
-    @inject(TYPES.UTILS.ILogger) private logger: ILogger
-  ) {
-  }
-
-  async create(order: IOrder): Promise<Document & IOrder> {
-    return new OrderModel({
-      _id: new Types.ObjectId(),
-      items: order.items,
-      customer: order.customer,
-      delivery: order.delivery,
-      amount: order.amount,
-      qrcode: order.qrcode,
-      orderId: order.orderId,
-      status: order.status,
-      payment: order.payment,
-    }).save()
-  }
-
-  async read(params: IRequestParams<Partial<IOrder>> & { seen?: boolean }): Promise<Array<Document & IOrder>> {
-    let orders
-
-    if (params?._id) {
-      validateId(params._id)
-
-      orders = await OrderModel
-        .find({ _id: params._id })
-        .populate('customer')
-        .populate({
-          path: 'executor',
-          select: 'firstName secondName roles phone'
-        })
-        .lean()
-
-    } else if (params.seen) {
-      orders = await OrderModel
-        .find({ 'status.seen': params.seen })
-        .sort({ createdAt: -1 })
-        .populate('customer')
-        .populate({
-          path: 'executor',
-          select: 'firstName secondName roles phone'
-        })
-        .lean()
-    } else {
-      const {
-        page = DEFAULT_PAGE,
-        count = DEFAULT_ITEMS_COUNT
-      } = params
-
-      orders = await OrderModel
-        .find()
-        .skip((page * count) - count)
-        .limit(count)
-        .sort({ createdAt: -1 })
-        .populate('customer')
-        .populate({
-          path: 'executor',
-          select: 'firstName secondName roles phone'
-        })
-        .lean()
+    constructor(
+        @inject(TYPES.UTILS.ILogger) private logger: ILogger,
+    ) {
     }
 
-    return orders
-  }
+    async create(order: IOrder): Promise<Document & IOrder> {
+        return new OrderModel({
+            _id: new Types.ObjectId(),
+            items: order.items,
+            customer: order.customer,
+            delivery: order.delivery,
+            amount: order.amount,
+            qrcode: order.qrcode,
+            orderId: order.orderId,
+            status: order.status,
+            payment: order.payment,
+        }).save()
+    }
 
-  async update(updates: IOrder & Document): Promise<{ updated: Document & IOrder }> {
-    validateId(updates._id)
+    async read(params: IRequestParams<Partial<IOrder>> & { seen?: boolean }): Promise<Array<Document & IOrder>> {
+        let orders
 
-    const updated = await OrderModel.findByIdAndUpdate(
-      { _id: updates._id },
-      { $set: updates },
-      { new: true }
-    )
-      .populate('customer')
-      .populate({
-        path: 'executor',
-        select: 'firstName secondName roles phone'
-      }).lean() as Document & IOrder
+        if (params?._id) {
+            validateId(params._id)
 
-    return { updated }
-  }
+            orders = await OrderModel
+                .find({ _id: params._id })
+                .populate('customer')
+                .populate({
+                    path: 'executor',
+                    select: 'firstName secondName roles phone',
+                })
+                .lean()
 
-  async delete(id) {
-    return !!await OrderModel.findByIdAndDelete(id)
-  }
+        } else if (params.seen) {
+            orders = await OrderModel
+                .find({ 'status.seen': params.seen })
+                .sort({ createdAt: -1 })
+                .populate('customer')
+                .populate({
+                    path: 'executor',
+                    select: 'firstName secondName roles phone',
+                })
+                .lean()
+        } else {
+            const {
+                page = DEFAULT_PAGE,
+                count = DEFAULT_ITEMS_COUNT,
+            } = params
 
-  async getDocumentsCount() {
-    return OrderModel.countDocuments({})
-  }
+            orders = await OrderModel
+                .find()
+                .skip((page * count) - count)
+                .limit(count)
+                .sort({ createdAt: -1 })
+                .populate('customer')
+                .populate({
+                    path: 'executor',
+                    select: 'firstName secondName roles phone',
+                })
+                .lean()
+        }
+
+        return orders
+    }
+
+    async update(updates: IOrder & Document): Promise<{ updated: Document & IOrder }> {
+        validateId(updates._id)
+
+        const updated = await OrderModel.findByIdAndUpdate(
+            { _id: updates._id },
+            { $set: updates },
+            { new: true },
+        )
+            .populate('customer')
+            .populate({
+                path: 'executor',
+                select: 'firstName secondName roles phone',
+            }).lean() as Document & IOrder
+
+        return { updated }
+    }
+
+    async delete(id) {
+        return !!await OrderModel.findByIdAndDelete(id)
+    }
+
+    async getDocumentsCount() {
+        return OrderModel.countDocuments({})
+    }
 }

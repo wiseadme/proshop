@@ -95,9 +95,8 @@ import { IMetaTagRepository } from '@modules/metatag/types/repository'
 import { IMerchantRepository, ISettingsRepository } from '@modules/settings/types/repository'
 import { ILogger } from '@/types/utils'
 import { IConfig, IController, IDb } from '@/types'
-import { IErrorRouteMiddleware, IExpressMiddleware, IFileLoaderMiddleware, IMiddleware, } from '@/types/middlewares'
+import { IErrorRouteMiddleware, IExpressMiddleware, IFileLoaderMiddleware, IMiddleware } from '@/types/middlewares'
 import { AuthMiddleware } from '@common/middlewares/auth.middleware'
-
 
 export const container = new Container({ skipBaseClassChecks: true })
 

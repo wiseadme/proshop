@@ -4,16 +4,16 @@ import { IOrder, IOrderStatuses } from '@ecommerce-platform/types'
 const orderRepository = useOrderRepository()
 
 export const actions = {
-    async create(order: IOrder) {
-        try {
-            const { data } = await orderRepository.create(order)
-            this.orders = data.data
-
-            return data
-        } catch (err) {
-            return Promise.reject(err)
-        }
-    },
+    // async create(order: IOrder) {
+    //     try {
+    //         const { data } = await orderRepository.create(order)
+    //         this.orders = data.data
+    //
+    //         return data.data
+    //     } catch (err) {
+    //         return Promise.reject(err)
+    //     }
+    // },
 
     async read(params?: Maybe<Partial<IOrder | IOrderStatuses>>) {
         try {
@@ -22,6 +22,7 @@ export const actions = {
             this.$patch(state => {
                 if (!Object.keys(params!).includes('seen')) {
                     state.orders = data?.data.items
+                    state.totalLength = data.data.total
                 } else {
                     state.newOrders = data?.data.items
                 }
