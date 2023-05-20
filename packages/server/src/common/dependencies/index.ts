@@ -1,6 +1,7 @@
 import 'reflect-metadata'
 import App from '@app/app'
 import { DB } from '@app/db'
+import { RedisClient } from '@app/redis'
 import { Config } from '@app/config'
 import { TYPES } from '../schemes/di-types'
 import { Container } from 'inversify'
@@ -94,7 +95,7 @@ import { IOptionRepository } from '@modules/option/types/repository'
 import { IMetaTagRepository } from '@modules/metatag/types/repository'
 import { IMerchantRepository, ISettingsRepository } from '@modules/settings/types/repository'
 import { ILogger } from '@/types/utils'
-import { IConfig, IController, IDb } from '@/types'
+import { IConfig, IController, IDb, IRedis } from '@/types'
 import { IErrorRouteMiddleware, IExpressMiddleware, IFileLoaderMiddleware, IMiddleware } from '@/types/middlewares'
 import { AuthMiddleware } from '@common/middlewares/auth.middleware'
 
@@ -103,6 +104,7 @@ export const container = new Container({ skipBaseClassChecks: true })
 // Globals
 container.bind<App>(TYPES.APPLICATION).to(App)
 container.bind<IDb>(TYPES.DB).to(DB)
+container.bind<IRedis>(TYPES.REDIS).to(RedisClient)
 container.bind<IConfig>(TYPES.CONFIG).to(Config)
 
 // Utils

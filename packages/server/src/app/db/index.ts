@@ -17,6 +17,10 @@ export class DB implements IDb {
             useNewUrlParser: true,
         } as MongooseOptions)
 
+        this.addListeners()
+    }
+
+    addListeners() {
         this.onConnect()
         this.onError()
         this.onClose()

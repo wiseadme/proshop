@@ -1,8 +1,7 @@
 import express, { Application } from 'express'
 import { inject, injectable, multiInject } from 'inversify'
-import { DB } from './db'
 import { TYPES } from '@common/schemes/di-types'
-import { IController } from '@/types'
+import { IController, IDb, IRedis } from '@/types'
 import { IErrorRouteMiddleware, IMiddleware } from '@/types/middlewares'
 import { ILogger } from '@/types/utils'
 import config from './config'
@@ -13,7 +12,8 @@ class App {
     public port: number
 
     constructor(
-        @inject(TYPES.DB) private db: DB,
+        @inject(TYPES.DB) private db: IDb,
+        @inject(TYPES.REDIS) private redis: IRedis,
         @inject(TYPES.UTILS.ILogger) private logger: ILogger,
         @inject(TYPES.MIDDLEWARES.IErrorRouteMiddleware) private errorRouteMiddleware: IErrorRouteMiddleware,
         @multiInject(TYPES.CONTROLLERS.IController) private controllers: IController[],
@@ -25,6 +25,8 @@ class App {
         this.middleWares(middlewares)
         this.routes(controllers)
         this.db.connect()
+        this.redis.create()
+        this.redis.connect()
     }
 
     private middleWares(middleWares: Array<any>) {
@@ -39,6 +41,7 @@ class App {
 
     private routes(controllers: Array<IController>) {
         controllers.forEach(controller => this.app.use(controller.path, controller.router))
+
         this.app.use(this.errorRouteMiddleware.execute as any)
     }
 
