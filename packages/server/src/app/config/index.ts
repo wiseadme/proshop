@@ -1,6 +1,7 @@
 import dotenv from 'dotenv'
 import path from 'path'
 import { IConfig } from '@/types'
+import * as process from 'process'
 
 const root = path.join.bind(this, __dirname)
 
@@ -14,6 +15,7 @@ export class Config implements IConfig {
     accessSecret = process.env.ACCESS_TOKEN_SECRET_KEY!
     refreshSecret = process.env.REFRESH_TOKEN_SECRET_KEY!
     uploadsDir = `/home/${process.env.USER}/www/uploads`!
+    redisUrl = process.env.REDIS_URL
 }
 
-export default new Config()
+export const config = new Config()

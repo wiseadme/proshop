@@ -44,7 +44,6 @@ export interface IDb {
 
 export interface IRedis {
     client: any
-    create: () => any
     connect: () => any
     onConnect: () => void
     onError: () => void

@@ -4,7 +4,7 @@ import { TYPES } from '@common/schemes/di-types'
 import { IController, IDb, IRedis } from '@/types'
 import { IErrorRouteMiddleware, IMiddleware } from '@/types/middlewares'
 import { ILogger } from '@/types/utils'
-import config from './config'
+import { config } from './config'
 
 @injectable()
 class App {
@@ -25,7 +25,6 @@ class App {
         this.middleWares(middlewares)
         this.routes(controllers)
         this.db.connect()
-        this.redis.create()
         this.redis.connect()
     }
 

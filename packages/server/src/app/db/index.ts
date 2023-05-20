@@ -3,7 +3,7 @@ import { inject, injectable } from 'inversify'
 import { TYPES } from '@common/schemes/di-types'
 import { ILogger } from '@/types/utils'
 import { IDb } from '@/types'
-import config from '../config'
+import { config } from '../config'
 
 @injectable()
 export class DB implements IDb {

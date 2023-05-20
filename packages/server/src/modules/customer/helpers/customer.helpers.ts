@@ -1,5 +1,5 @@
 import { genJWToken } from '@common/helpers'
-import config from '@app/config'
+import { config } from '@app/config'
 import { CUSTOMER_ACCESS_TOKEN_EXP } from '@common/constants/counts'
 
 export class CustomerHelpers {

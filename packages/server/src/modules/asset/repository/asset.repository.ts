@@ -6,7 +6,7 @@ import { validateId } from '@common/utils/mongoose-validate-id'
 
 import { TYPES } from '@common/schemes/di-types'
 import { AssetModel } from '@modules/asset/model/asset.model'
-import config from '@app/config'
+import { config } from '@app/config'
 // Types
 import { Request, Response } from 'express'
 import { IAsset } from '@ecommerce-platform/types'

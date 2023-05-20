@@ -5,7 +5,7 @@ import bcrypt from 'bcryptjs'
 import { IUserService } from '@modules/user/types/service'
 import { TYPES } from '@common/schemes/di-types'
 import { IUserRepository } from '@modules/user/types/repository'
-import config from '@app/config'
+import { config } from '@app/config'
 
 import { genJWToken, isExpired } from '@common/helpers'
 

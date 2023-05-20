@@ -5,29 +5,32 @@ services:
     container_name: server
     command: npm run start
     restart: unless-stopped
-#    tags:
-#      - "wiseadme/ecommerce:server"
-#    ports:
-#      - "5001:5001"
     environment:
       - PORT=5001
       - USER=wiseadme
       - MONGO_URI=mongodb://mongo1,mongo2,mongo3:27017/commerce
       - ACCESS_TOKEN_SECRET_KEY=menesilazerbaijanliyam
       - REFRESH_TOKEN_SECRET_KEY=esilsozmenasibudur
+      - REDIS_URL=redis://redis_cache:6379
     volumes:
       - uploads:/home/wiseadme/www/uploads/
     depends_on:
       - mongo-setup
+      - redis_cache
     networks:
       - ecommerce
       - mongoNet
 
+  redis_cache:
+    image: redis:alpine
+    container_name: redis
+    ports: [ "127.0.0.1:6379:6379" ]
+    networks:
+      - ecommerce
+
   mongo1:
     image: mongo:5.0.14
     container_name: mongo1
-#    ports:
-#      - "30001:27017"
     volumes:
       - mongo_primary:/data/db
     networks:
@@ -37,8 +40,6 @@ services:
   mongo2:
     image: mongo:5.0.14
     container_name: mongo2
-#    ports:
-#      - "30002:27017"
     volumes:
       - mongo_secondary:/data/db
     networks:
@@ -50,8 +51,6 @@ services:
   mongo3:
     image: mongo:5.0.14
     container_name: mongo3
-#    ports:
-#      - "30003:27017"
     volumes:
       - mongo_seed:/data/db
     networks:
@@ -79,8 +78,6 @@ services:
     container_name: admin
     command: nginx -g "daemon off;"
     restart: unless-stopped
-#    ports:
-#      - "3000:3000"
     depends_on:
       - server
     networks:
@@ -91,8 +88,6 @@ services:
     container_name: shop-app
     restart: unless-stopped
     command: npm run preview
-#    ports:
-#      - "3001:3001"
     depends_on:
       - server
     networks:
