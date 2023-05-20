@@ -1,16 +1,8 @@
-import { createClient } from 'redis'
 import { inject, injectable } from 'inversify'
 import { TYPES } from '@common/schemes/di-types'
 import { ILogger } from '@/types/utils'
 import { IRedis } from '@/types'
-import * as process from 'process'
-import { config } from '@app/config'
-
-const url = process.env.NODE_ENV === 'development' ? '' : config.redisUrl
-
-const client = createClient({
-    url,
-})
+import { redisClient } from '@app/redis/client'
 
 @injectable()
 export class RedisClient implements IRedis {
@@ -19,7 +11,7 @@ export class RedisClient implements IRedis {
     constructor(
         @inject(TYPES.UTILS.ILogger) private logger: ILogger,
     ) {
-        this.client = client
+        this.client = redisClient
     }
 
     connect() {

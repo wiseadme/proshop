@@ -13,5 +13,16 @@ services:
     volumes:
       - mongo_seed:/data/db
 
+  nginx:
+    image: nginx:stable-alpine
+    container_name: nginx
+    command: nginx -g "daemon off;"
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.dev.conf:/etc/nginx/nginx.conf
+      - uploads:/var/lib/docker/volumes/ecommerceplatform_uploads/_data
+
 volumes:
   mongo_seed:
+  uploads:
