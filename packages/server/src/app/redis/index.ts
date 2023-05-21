@@ -3,17 +3,15 @@ import { TYPES } from '@common/schemes/di-types'
 import { ILogger } from '@/types/utils'
 import { IRedis } from '@/types'
 import { redisClient } from '@app/redis/client'
+import { RedisClientType, RedisFunctions, RedisModules, RedisScripts } from 'redis'
 
 @injectable()
-export class RedisClient implements IRedis {
-    client: any
+export class RedisDb implements IRedis {
+    client: RedisClientType<RedisModules, RedisFunctions, RedisScripts> = redisClient
 
     constructor(
-        @inject(TYPES.UTILS.ILogger) private logger: ILogger,
-    ) {
-        this.client = redisClient
-    }
-
+        @inject(TYPES.UTILS.ILogger) private logger: ILogger
+    ) {}
     connect() {
         this.client.connect()
         this.client.flushDb()
