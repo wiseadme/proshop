@@ -10,6 +10,7 @@ import { IOrder, IRequestParams } from '@ecommerce-platform/types'
 import { Order } from '@modules/order/entity/order.entity'
 import { IEventBusService } from '@/types/services'
 import { DELETE_CART_EVENT } from '@common/constants/events'
+import customId from 'custom-id'
 
 @injectable()
 export class OrderService implements IOrderService {
@@ -21,7 +22,11 @@ export class OrderService implements IOrderService {
     }
 
     async create(order: IOrder) {
-        order.orderId = `T-${new Date().toISOString().replace(/\D/g, '')}`
+        order.orderId = customId({
+            name: order.customer.name,
+            email: order.customer.phone,
+            randomLength: 2
+        })
 
         /**
          * @description - внутри метода используется метод render, для отрисвоки qrcode,
