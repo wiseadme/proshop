@@ -10,11 +10,11 @@ const autocannon = require('autocannon')
 // async/await
 async function foo () {
     const result = await autocannon({
-        url: 'http://localhost/v1/order',
-        connections: 1, //default
+        url: 'http://localhost:5001/v1/order',
+        connections: 100, //default
         pipelining: 1, // default
         duration: 10, // default,
-        workers: 8,
+        // workers: 8,
         method: 'POST',
         body: JSON.stringify({
             "amount": 44000,

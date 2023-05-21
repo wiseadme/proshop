@@ -1,6 +1,6 @@
 import session from 'express-session'
 import { injectable } from 'inversify'
-import config from '@app/config'
+import { config } from '@app/config'
 import { IMiddleware } from '@/types/middlewares'
 
 @injectable()

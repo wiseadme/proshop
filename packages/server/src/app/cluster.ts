@@ -20,12 +20,7 @@ class Cluster {
     }
 
     initClusters() {
-        /**
-         * @description - 1 ядро оставляем свободным всегда
-         */
-        const cpus = this.cCPUs > 1 ? this.cCPUs - 1 : this.cCPUs
-
-        for (let i = 0; i < cpus; i += 1) {
+        for (let i = 0; i < this.cCPUs; i += 1) {
             cluster.fork()
         }
 

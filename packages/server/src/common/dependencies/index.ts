@@ -1,7 +1,7 @@
 import 'reflect-metadata'
 import App from '@app/app'
 import { DB } from '@app/db'
-import { RedisClient } from '@app/redis'
+import { RedisDb } from '@app/redis'
 import { Config } from '@app/config'
 import { TYPES } from '../schemes/di-types'
 import { Container } from 'inversify'
@@ -104,7 +104,7 @@ export const container = new Container({ skipBaseClassChecks: true })
 // Globals
 container.bind<App>(TYPES.APPLICATION).to(App)
 container.bind<IDb>(TYPES.DB).to(DB)
-container.bind<IRedis>(TYPES.REDIS).to(RedisClient)
+container.bind<IRedis>(TYPES.REDIS).to(RedisDb)
 container.bind<IConfig>(TYPES.CONFIG).to(Config)
 
 // Utils
