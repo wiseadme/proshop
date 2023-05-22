@@ -24,7 +24,7 @@
         if (statuses[statusKey]) {
             return notify({
                 title: 'Информация',
-                text: `Заказ уже имеет статус "${ OrderStatuses[statusKey] }"`,
+                text: `Заказ уже имеет статус "${OrderStatuses[statusKey]}"`,
                 type: 'warning',
                 closeOnClick: true,
             })
@@ -232,39 +232,39 @@
     </v-card>
 </template>
 <style lang="scss">
-  .statuses__step {
-    position: relative;
+    .statuses__step {
+        position: relative;
 
-    &--done {
-      &-before {
-        &:before {
-          content: "";
-          position: absolute;
-          width: 50%;
-          height: 2px;
-          background-color: var(--primary);
-          top: 68%;
-          left: 0;
-          transform: translateY(-50%);
-        }
-      }
+        &--done {
+            &-before {
+                &:before {
+                    content: "";
+                    position: absolute;
+                    width: 50%;
+                    height: 2px;
+                    background-color: var(--primary);
+                    top: 68%;
+                    left: 0;
+                    transform: translateY(-50%);
+                }
+            }
 
-      &-after {
-        &:after {
-          content: "";
-          position: absolute;
-          width: 50%;
-          height: 2px;
-          background-color: var(--primary);
-          top: 68%;
-          left: 50%;
-          transform: translateY(-50%);
+            &-after {
+                &:after {
+                    content: "";
+                    position: absolute;
+                    width: 50%;
+                    height: 2px;
+                    background-color: var(--primary);
+                    top: 68%;
+                    left: 50%;
+                    transform: translateY(-50%);
+                }
+            }
         }
-      }
     }
-  }
 
-  .v-button {
-    z-index: 1;
-  }
+    .v-button {
+        z-index: 1;
+    }
 </style>
