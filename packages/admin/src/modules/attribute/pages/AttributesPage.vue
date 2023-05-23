@@ -113,7 +113,7 @@
                         @change="onChange"
                     >
                         <template #item="{element}">
-                            <div class="d-flex justify-start align-center elevation-2 my-1 py-2 px-3 attribute-item white">
+                            <div class="d-flex justify-start align-center elevation-2 my-1 py-2 px-3 attribute-item white app-border-radius">
                                 <v-icon
                                     class="mr-3"
                                     color="grey lighten-2"
@@ -124,16 +124,14 @@
                                     {{ element.key }}
                                 </span>
                                 <v-spacer></v-spacer>
-                                <v-button
+
+                                <v-icon
                                     color="error"
-                                    elevation="2"
-                                    round
+                                    clickable
                                     @click="onDelete(element)"
                                 >
-                                    <v-icon>
-                                        fas fa-times
-                                    </v-icon>
-                                </v-button>
+                                    fas fa-times
+                                </v-icon>
                             </div>
                         </template>
                     </draggable>

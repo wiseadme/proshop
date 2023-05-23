@@ -136,9 +136,7 @@
                             item-key="_id"
                         >
                             <template #item="{element}">
-                                <div
-                                    class="d-flex justify-start align-center elevation-2 my-1 py-2 px-3 meta-tag-item white"
-                                >
+                                <div class="mata-tag-item d-flex justify-start align-center elevation-2 my-1 py-2 px-3 meta-tag-item white app-border-radius">
                                     <v-icon
                                         class="mr-3"
                                         color="grey lighten-2"
@@ -149,27 +147,23 @@
                                         {{ descriptorToMetaTag(element.props) }}
                                     </span>
                                     <v-spacer></v-spacer>
-                                    <v-button
-                                        round
+                                    <v-icon
                                         color="primary"
-                                        elevation="2"
+                                        clickable
                                         class="mr-2"
                                         @click="onEditMetaTag(element)"
                                     >
-                                        <v-icon>
-                                            fas fa-pen
-                                        </v-icon>
-                                    </v-button>
-                                    <v-button
-                                        round
+                                        fas fa-pen
+                                    </v-icon>
+
+
+                                    <v-icon
                                         color="error"
-                                        elevation="2"
+                                        clickable
                                         @click="onDeleteMetaTag(element._id)"
                                     >
-                                        <v-icon>
-                                            fas fa-times
-                                        </v-icon>
-                                    </v-button>
+                                        fas fa-times
+                                    </v-icon>
                                 </div>
                             </template>
                         </draggable>
@@ -180,11 +174,12 @@
     </div>
 </template>
 <style lang="scss">
-  .meta-tag-item {
-    cursor: pointer;
-    //
-    //&:active {
-    //  box-shadow: none !important;
-    //}
-  }
+    .meta-tag-item {
+        cursor: pointer;
+        min-height: 50px;
+        //
+        //&:active {
+        //  box-shadow: none !important;
+        //}
+    }
 </style>

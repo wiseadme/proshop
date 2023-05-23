@@ -54,6 +54,7 @@ export const useProductsService = createSharedComposable(() => {
 
     const _filesService = useFilesService()
     const _optionsService = useOptionsService()
+
     const product = ref<Maybe<IProduct>>(null)
 
     const products = computed<Maybe<IProduct[]>>(() => _productsStore.products)
