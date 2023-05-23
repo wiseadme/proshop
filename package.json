@@ -21,5 +21,6 @@
     "license": "ISC",
     "devDependencies": {
         "lerna": "^5.0.0"
-    }
+    },
+    "private": true
 }
