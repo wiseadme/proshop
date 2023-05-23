@@ -21,8 +21,8 @@
     } = useProductRelated()
 
     const selects = ref<IProduct[]>([])
-    let productsMap: Record<string, Record<string, IProduct>> = {}
 
+    let productsMap: Record<string, Record<string, IProduct>> = {}
     let isCategoryChanged: boolean = false
 
     const clearSelects = () => selects.value = []
@@ -146,12 +146,13 @@
                             :key="it._id"
                             cols="2"
                         >
-                            <div class="related-item elevation-2 pa-2 d-flex">
+                            <div class="related-item elevation-2 pa-2 d-flex align-center app-border-radius">
                                 <div class="related-item__image">
                                     <img
                                         :src="it.image"
                                         alt=""
-                                        style="width: 100px; height: 100px; object-fit: cover"
+                                        class="elevation-2"
+                                        style="width: 100px; height: 100px; object-fit: cover; border-radius: 50%"
                                     >
                                 </div>
                                 <div class="related-item__content px-1">

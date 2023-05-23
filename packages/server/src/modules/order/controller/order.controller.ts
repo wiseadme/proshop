@@ -31,6 +31,7 @@ export class OrderController extends BaseController implements IController {
     }
 
     async createOrder({ body, method }: Request<{}, {}, IOrder>, res: Response) {
+        console.log(body)
         try {
             const order = await this.service.create(body)
 
