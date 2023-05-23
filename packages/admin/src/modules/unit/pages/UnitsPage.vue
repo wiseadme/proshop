@@ -12,7 +12,7 @@
         clearUnitModel,
         onSaveUnit,
         onEditUnit,
-        onDeleteUnit
+        onDeleteUnit,
     } = useUnit()
 
     const onChange = () => {
@@ -89,9 +89,7 @@
                         @change="onChange"
                     >
                         <template #item="{element}">
-                            <div
-                                class="d-flex justify-start align-center elevation-2 my-1 py-2 px-3 white"
-                            >
+                            <div class="d-flex justify-start align-center elevation-2 my-1 py-2 px-3 white app-border-radius">
                                 <v-icon
                                     class="mr-3"
                                     color="grey lighten-2"
