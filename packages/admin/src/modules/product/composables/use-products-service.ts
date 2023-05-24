@@ -49,7 +49,7 @@ export const useProductsService = createSharedComposable(() => {
         sort,
         pagination,
         getSortParams,
-        getPaginationParams
+        getPaginationParams,
     } = useRequestParams()
 
     const _filesService = useFilesService()
@@ -102,7 +102,7 @@ export const useProductsService = createSharedComposable(() => {
         return _productsStore.read({
             ...(params || {}),
             ...getPaginationParams(),
-            ...getSortParams()
+            ...getSortParams(),
         })
     }
 
@@ -187,7 +187,7 @@ export const useProductsService = createSharedComposable(() => {
 
         return _optionsService.updateOption({
             _id: option._id,
-            assets: option.assets.map(asset => asset._id)
+            assets: option.assets.map(asset => asset._id),
         })
     }
 
@@ -196,7 +196,7 @@ export const useProductsService = createSharedComposable(() => {
 
         return _optionsService.updateOption({
             _id: option._id,
-            assets: option.assets.filter(a => a._id !== asset._id)
+            assets: option.assets.filter(a => a._id !== asset._id),
         })
     }
 
@@ -225,13 +225,14 @@ export const useProductsService = createSharedComposable(() => {
         await _filesService.deleteFile(asset)
 
         const assets = unref(product)!.assets?.filter(it => it._id !== asset._id)
-    unref(product)!.assets = clone(assets)!
 
-    if (assets?.length && !assets?.find(it => it.main)) {
-        assets[0] = await _filesService.updateFile({ _id: assets?.[0]._id, main: true })
-    }
+        unref(product)!.assets = clone(assets)!
 
-    return updateProduct({ _id: asset.ownerId, assets })
+        if (assets?.length && !assets?.find(it => it.main)) {
+            assets[0] = await _filesService.updateFile({ _id: assets?.[0]._id, main: true })
+        }
+
+        return updateProduct({ _id: asset.ownerId, assets })
     }
 
     return {
@@ -264,6 +265,6 @@ export const useProductsService = createSharedComposable(() => {
         updateVariantOption,
         deleteVariantOption,
         uploadProductImage,
-        deleteProductImage
+        deleteProductImage,
     }
 })

@@ -12,6 +12,7 @@ services:
       - ACCESS_TOKEN_SECRET_KEY=menesilazerbaijanliyam
       - REFRESH_TOKEN_SECRET_KEY=esilsozmenasibudur
       - REDIS_URL=redis://redis_cache:6379
+      - UPLOADS_DIR=/home/wiseadme/www/uploads
     volumes:
       - uploads:/home/wiseadme/www/uploads/
     depends_on:
