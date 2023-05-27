@@ -11,7 +11,7 @@ export class CustomerRepository implements ICustomerRepository {
 
         const customer = new CustomerModel({
             _id: new mongoose.Types.ObjectId(),
-            name: params.name,
+            name: params.name ?? '',
             phone: params.phone,
         })
 
