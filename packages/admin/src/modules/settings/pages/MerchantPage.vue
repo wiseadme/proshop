@@ -25,46 +25,50 @@
 </script>
 <template>
     <v-layout>
-        <v-form
-            v-slot="{validate}"
-            style="width: 100%"
-        >
-            <v-card
-                elevation="2"
-                style="width: 100%"
-                color="white"
-                class="app-border-radius"
-            >
-                <v-card-content>
-                    <v-row>
-                        <v-col cols="6">
-                            <OrganizationBlock/>
-                        </v-col>
-                        <v-col cols="4">
-                            <CurrenciesBlock/>
-                        </v-col>
-                        <v-col
-                            cols="6"
-                            class="mt-4"
-                        >
-                            <ContactsBlock/>
-                            <SocialBlock/>
-                        </v-col>
-                    </v-row>
-                </v-card-content>
-                <v-card-actions>
-                    <v-button
-                        color="primary"
-                        class="ml-7 mb-7 px-4"
+        <v-row>
+            <v-col>
+                <v-form
+                    v-slot="{validate}"
+                    style="width: 100%"
+                >
+                    <v-card
                         elevation="2"
-                        rounded
-                        @click="onSubmit(validate)"
+                        style="width: 100%"
+                        color="white"
+                        class="app-border-radius"
                     >
-                        {{ buttonLabel }}
-                    </v-button>
-                </v-card-actions>
-            </v-card>
-        </v-form>
+                        <v-card-content>
+                            <v-row>
+                                <v-col cols="6">
+                                    <OrganizationBlock/>
+                                </v-col>
+                                <v-col cols="4">
+                                    <CurrenciesBlock/>
+                                </v-col>
+                                <v-col
+                                    cols="6"
+                                    class="mt-4"
+                                >
+                                    <ContactsBlock/>
+                                    <SocialBlock/>
+                                </v-col>
+                            </v-row>
+                        </v-card-content>
+                        <v-card-actions>
+                            <v-button
+                                color="primary"
+                                class="ml-7 mb-7 px-4"
+                                elevation="2"
+                                rounded
+                                @click="onSubmit(validate)"
+                            >
+                                {{ buttonLabel }}
+                            </v-button>
+                        </v-card-actions>
+                    </v-card>
+                </v-form>
+            </v-col>
+        </v-row>
     </v-layout>
 </template>
 <style lang="scss">

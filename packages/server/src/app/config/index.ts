@@ -14,7 +14,7 @@ export class Config implements IConfig {
     dbUri = process.env.MONGO_URI!
     accessSecret = process.env.ACCESS_TOKEN_SECRET_KEY!
     refreshSecret = process.env.REFRESH_TOKEN_SECRET_KEY!
-    uploadsDir = `/home/${process.env.USER}/www/uploads`!
+    uploadsDir = process.env.UPLOADS_DIR!
     redisUrl = process.env.REDIS_URL
 }
 

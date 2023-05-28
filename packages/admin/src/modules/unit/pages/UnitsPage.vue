@@ -86,10 +86,13 @@
                     <draggable
                         v-model="units"
                         item-key="_id"
+                        class="units"
                         @change="onChange"
                     >
                         <template #item="{element}">
-                            <div class="d-flex justify-start align-center elevation-2 my-1 py-2 px-3 white app-border-radius">
+                            <div
+                                class="units__item d-flex justify-start align-center elevation-2 my-1 py-2 px-3 white app-border-radius"
+                            >
                                 <v-icon
                                     class="mr-3"
                                     color="grey lighten-2"
@@ -100,27 +103,22 @@
                                     {{ element.value }}
                                 </span>
                                 <v-spacer></v-spacer>
-                                <v-button
-                                    round
+
+                                <v-icon
                                     color="primary"
-                                    elevation="2"
                                     class="mr-2"
+                                    clickable
                                     @click="onEditUnit(element)"
                                 >
-                                    <v-icon>
-                                        fas fa-pen
-                                    </v-icon>
-                                </v-button>
-                                <v-button
+                                    fas fa-pen
+                                </v-icon>
+                                <v-icon
                                     color="error"
-                                    elevation="2"
-                                    round
+                                    clickable
                                     @click="onDeleteUnit(element._id)"
                                 >
-                                    <v-icon>
-                                        fas fa-times
-                                    </v-icon>
-                                </v-button>
+                                    fas fa-times
+                                </v-icon>
                             </div>
                         </template>
                     </draggable>
@@ -129,3 +127,10 @@
         </v-row>
     </v-layout>
 </template>
+<style lang="scss">
+    .units {
+        &__item {
+            height: 50px;
+        }
+    }
+</style>

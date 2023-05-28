@@ -5,7 +5,7 @@ const CustomerSchema: Schema = new Schema<ICustomer & Document>({
     _id: Schema.Types.ObjectId,
     name: {
         type: String,
-        required: true,
+        default: ''
     },
     phone: {
         type: String,
