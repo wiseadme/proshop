@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "> TODO: description",
   "author": "Anar Allakhverdiev <wiseadme@gmail.com>",
-  "homepage": "https://github.com/wiseadme/ecommerce-platform#readme",
+  "homepage": "https://github.com/wiseadme/proshop#readme",
   "license": "ISC",
   "main": "src/app/bootstrap.ts",
   "files": [
@@ -14,7 +14,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/wiseadme/ecommerce-platform.git"
+    "url": "git+ssh://git@github.com/wiseadme/proshop.git"
   },
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack serve --hot --config build/webpack.dev.config.js",
@@ -27,7 +27,7 @@
     "test:e2e": "cypress run-ct"
   },
   "bugs": {
-    "url": "https://github.com/wiseadme/ecommerce-platform/issues"
+    "url": "https://github.com/wiseadme/proshop/issues"
   },
   "devDependencies": {
     "@babel/core": "^7.17.5",
