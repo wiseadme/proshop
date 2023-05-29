@@ -8,7 +8,7 @@ import { Document } from 'mongoose'
 import { ILogger } from '@/types/utils'
 import { IController } from '@/types'
 import { IOrderService } from '../types/service'
-import { IOrder } from '@ecommerce-platform/types'
+import { IOrder } from '@proshop/types'
 
 @injectable()
 export class OrderController extends BaseController implements IController {

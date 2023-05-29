@@ -1,5 +1,5 @@
 import { useVariantRepository } from '../repository/variant.repository'
-import { IVariant } from '@ecommerce-platform/types'
+import { IVariant } from '@proshop/types'
 import { IVariantActions } from '@modules/variant/types'
 
 const repository = useVariantRepository()

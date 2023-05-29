@@ -3,7 +3,7 @@ import { createSharedComposable } from '@shared/features/create-shared-composabl
 import { useCategoriesService } from '@modules/category/composables/use-categories-service'
 import { useCategoryActionsModal } from '@modules/category/composables/use-category-actions-modal'
 import { Category } from '@modules/category/model/category.model'
-import { ICategory } from '@ecommerce-platform/types'
+import { ICategory } from '@proshop/types'
 import { clone, getDifferences } from '@shared/helpers'
 
 export const useCategory = createSharedComposable(() => {

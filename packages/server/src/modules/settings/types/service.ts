@@ -1,5 +1,5 @@
 import { Document, LeanDocument } from 'mongoose'
-import { IMerchant, ISettings } from '@ecommerce-platform/types'
+import { IMerchant, ISettings } from '@proshop/types'
 
 export interface IMerchantService {
     create(merchant: IMerchant): Promise<Document & IMerchant>

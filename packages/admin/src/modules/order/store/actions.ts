@@ -1,5 +1,5 @@
 import { useOrderRepository } from '@modules/order/repository'
-import { IOrder, IOrderStatuses } from '@ecommerce-platform/types'
+import { IOrder, IOrderStatuses } from '@proshop/types'
 
 const orderRepository = useOrderRepository()
 

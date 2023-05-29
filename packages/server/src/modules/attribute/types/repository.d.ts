@@ -1,5 +1,5 @@
 import { Document } from 'mongoose'
-import { IAttribute } from '@ecommerce-platform/types'
+import { IAttribute } from '@proshop/types'
 
 export interface IAttributeRepository {
     create(attribute: IAttribute): Promise<Document & IAttribute>

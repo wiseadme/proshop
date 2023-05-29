@@ -1,6 +1,6 @@
-import { useVariantsStore } from "@modules/variant/store"
-import { computed } from "vue"
-import { IVariant } from "@ecommerce-platform/types"
+import { useVariantsStore } from '@modules/variant/store'
+import { computed } from 'vue'
+import { IVariant } from '@proshop/types'
 
 export const useVariantsService = () => {
     const _store = useVariantsStore()

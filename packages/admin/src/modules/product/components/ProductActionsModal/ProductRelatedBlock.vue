@@ -4,7 +4,7 @@
         unref,
         watch
     } from 'vue'
-    import { ICategory, IProduct } from '@ecommerce-platform/types'
+    import { ICategory, IProduct } from '@proshop/types'
     import { useProductRelated } from '@modules/product/composables/use-product-related'
     import { useProduct } from '@modules/product/composables/use-product'
     import { useProductActionsModal } from '@modules/product/composables/use-product-actions-modal'

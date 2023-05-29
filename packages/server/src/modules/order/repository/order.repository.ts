@@ -5,7 +5,7 @@ import { validateId } from '@common/utils/mongoose-validate-id'
 // Types
 import { ILogger } from '@/types/utils'
 import { IOrderRepository } from '../types/repository'
-import { IOrder, IRequestParams } from '@ecommerce-platform/types'
+import { IOrder, IRequestParams } from '@proshop/types'
 import { OrderModel } from '@modules/order/model/order.model'
 
 // Constants
@@ -19,7 +19,7 @@ export class OrderRepository implements IOrderRepository {
     }
 
     async create(order: IOrder): Promise<Document & IOrder> {
-        return new OrderModel({
+        return (await new OrderModel({
             _id: new Types.ObjectId(),
             items: order.items,
             customer: order.customer,
@@ -29,7 +29,7 @@ export class OrderRepository implements IOrderRepository {
             orderId: order.orderId,
             status: order.status,
             payment: order.payment,
-        }).save()
+        }).save()) as Document & IOrder
     }
 
     async read(params: IRequestParams<Partial<IOrder>> & { seen?: boolean }): Promise<Array<Document & IOrder>> {

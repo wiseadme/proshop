@@ -5,7 +5,7 @@ import { ProductModel } from '@modules/product/model/product.model'
 import { validateId } from '@common/utils/mongoose-validate-id'
 // Types
 import { IProductRepository } from '../types/repository'
-import { IProduct, IProductQuery, IRequestParams } from '@ecommerce-platform/types'
+import { IProduct, IProductQuery, IRequestParams } from '@proshop/types'
 import { ILogger } from '@/types/utils'
 import { RepositoryHelpers } from '@modules/product/helpers/repository.helpers'
 

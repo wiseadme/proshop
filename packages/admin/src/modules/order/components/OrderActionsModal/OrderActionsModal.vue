@@ -2,7 +2,7 @@
     import { useOrderActionsModal } from '@modules/order/composables/use-order-actions-modal'
     import { useOrders } from '@modules/order/composables/use-orders'
     import { OrderDocument } from './OrderDocument'
-    import { IOrder, IUser } from '@ecommerce-platform/types'
+    import { IOrder, IUser } from '@proshop/types'
 
     withDefaults(defineProps<{ users: IUser[] }>(), {
         users: () => []

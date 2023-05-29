@@ -1,4 +1,4 @@
-import { ICategory } from '@ecommerce-platform/types'
+import { ICategory } from '@proshop/types'
 
 export class Category implements ICategory {
   _id: ICategory['_id']

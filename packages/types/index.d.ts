@@ -13,7 +13,7 @@ import type { IUser } from './user'
 import type { Maybe } from './utils'
 import type { IMetaTag } from './metatag'
 
-declare module '@ecommerce-platform/types' {
+declare module '@proshop/types' {
   export type {
     IAsset,
     IAttribute,

@@ -1,4 +1,4 @@
-import { IUser, IUserPosition, Maybe } from '@ecommerce-platform/types'
+import { IUser, IUserPosition, Maybe } from '@proshop/types'
 
 export class User implements IUser {
     public _id: string

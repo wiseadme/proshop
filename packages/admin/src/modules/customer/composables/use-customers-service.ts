@@ -1,7 +1,7 @@
 import { computed } from 'vue'
 import { createSharedComposable } from '@shared/features/create-shared-composable'
 import { useCustomersStore } from '@modules/customer/store'
-import { ICustomer, Maybe } from '@ecommerce-platform/types'
+import { ICustomer, Maybe } from '@proshop/types'
 
 export const useCustomersService = createSharedComposable(() => {
     const _store = useCustomersStore()

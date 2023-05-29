@@ -1,4 +1,4 @@
-import { IMerchant } from '@ecommerce-platform/types'
+import { IMerchant } from '@proshop/types'
 import { useMerchantRepository } from '@modules/settings/repository/merchant.repository'
 
 const repository = useMerchantRepository()

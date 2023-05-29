@@ -1,5 +1,5 @@
 import { Document, model, Schema } from 'mongoose'
-import { ICustomer } from '@ecommerce-platform/types'
+import { ICustomer } from '@proshop/types'
 
 const CustomerSchema: Schema = new Schema<ICustomer & Document>({
     _id: Schema.Types.ObjectId,

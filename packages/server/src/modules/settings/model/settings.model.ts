@@ -1,5 +1,5 @@
 import { Document, model, Schema } from 'mongoose'
-import { ISettings } from '@ecommerce-platform/types'
+import { ISettings } from '@proshop/types'
 
 const SettingsSchema: Schema = new Schema<ISettings & Document>({
     _id: Schema.Types.ObjectId,

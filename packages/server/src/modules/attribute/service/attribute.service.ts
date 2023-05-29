@@ -5,7 +5,7 @@ import { TYPES } from '@common/schemes/di-types'
 import { ILogger } from '@/types/utils'
 import { IAttributeService } from '../types/service'
 import { IAttributeRepository } from '../types/repository'
-import { IAttribute } from '@ecommerce-platform/types'
+import { IAttribute } from '@proshop/types'
 
 @injectable()
 export class AttributeService implements IAttributeService {

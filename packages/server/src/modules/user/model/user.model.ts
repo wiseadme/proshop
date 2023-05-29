@@ -1,5 +1,5 @@
 import { Document, model, Schema } from 'mongoose'
-import { IUser } from '@ecommerce-platform/types'
+import { IUser } from '@proshop/types'
 
 const UserSchema = new Schema<Document & IUser>({
     _id: Schema.Types.ObjectId,

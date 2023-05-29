@@ -8,7 +8,7 @@ import { Category } from '../entity/category.entity'
 import { TYPES } from '@common/schemes/di-types'
 
 // Types
-import { ICategory } from '@ecommerce-platform/types'
+import { ICategory } from '@proshop/types'
 import { ICategoryService } from '../types/service'
 import { ICategoryRepository } from '../types/repository'
 import { IEventBusService } from '@/types/services'

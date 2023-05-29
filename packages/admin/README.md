@@ -1,11 +1,11 @@
-# `@ecommerce-platform/client`
+# `@proshop/admin`
 
 > TODO: description
 
 ## Usage
 
 ```
-const client = require('@ecommerce-platform/client');
+const client = require('@proshop/admin');
 
 // TODO: DEMONSTRATE API
 ```

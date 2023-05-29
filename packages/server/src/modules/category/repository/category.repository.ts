@@ -5,7 +5,7 @@ import { ProductModel } from '@modules/product/model/product.model'
 import { TYPES } from '@common/schemes/di-types'
 import { validateId } from '@common/utils/mongoose-validate-id'
 // Types
-import { ICategory } from '@ecommerce-platform/types'
+import { ICategory } from '@proshop/types'
 import { ICategoryRepository } from '../types/repository'
 import { ILogger } from '@/types/utils'
 

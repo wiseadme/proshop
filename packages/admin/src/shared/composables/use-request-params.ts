@@ -5,7 +5,7 @@ import {
     IRequestPagination,
     IRequestParams,
     IRequestSort
-} from '@ecommerce-platform/types'
+} from '@proshop/types'
 import { unref } from 'vue'
 
 export const useRequestParams = () => {

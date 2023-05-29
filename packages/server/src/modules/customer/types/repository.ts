@@ -1,4 +1,4 @@
-import { ICustomer } from '@ecommerce-platform/types'
+import { ICustomer } from '@proshop/types'
 import { Document } from 'mongoose'
 
 export interface ICustomerRepository {

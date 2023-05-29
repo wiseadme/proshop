@@ -1,4 +1,4 @@
-import { IAttribute } from '@ecommerce-platform/types'
+import { IAttribute } from '@proshop/types'
 
 export interface IAttributeState {
     attributes: Maybe<Array<IAttribute>>

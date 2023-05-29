@@ -1,5 +1,5 @@
 import { Document } from 'mongoose'
-import { IVariant } from '@ecommerce-platform/types'
+import { IVariant } from '@proshop/types'
 
 export interface IVariantRepository {
     create(variant: IVariant): Promise<Document>

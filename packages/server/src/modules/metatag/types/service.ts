@@ -1,5 +1,5 @@
 import { Document } from 'mongoose'
-import { IMetaTag } from '@ecommerce-platform/types'
+import { IMetaTag } from '@proshop/types'
 
 export interface IMetaTagService {
     create(metatag: IMetaTag): Promise<IMetaTag & Document>

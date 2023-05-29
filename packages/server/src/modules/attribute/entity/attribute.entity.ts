@@ -1,4 +1,4 @@
-import { IAttribute } from '@ecommerce-platform/types'
+import { IAttribute } from '@proshop/types'
 
 export class Attribute implements IAttribute {
     private __id: string
@@ -6,7 +6,7 @@ export class Attribute implements IAttribute {
     private _value: string
     private _meta: string
     private _order: number
-    
+
     constructor({
         _id = '',
         key,

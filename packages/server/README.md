@@ -1,11 +1,11 @@
-# `@ecommerce-platform/server`
+# `@proshop/server`
 
 > TODO: description
 
 ## Usage
 
 ```
-const server = require('@ecommerce-platform/server');
+const server = require('@proshop/server');
 
 // TODO: DEMONSTRATE API
 ```

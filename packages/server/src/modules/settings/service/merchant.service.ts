@@ -2,7 +2,7 @@ import { inject, injectable } from 'inversify'
 import { TYPES } from '@common/schemes/di-types'
 // Types
 import { ILogger } from '@/types/utils'
-import { IMerchant } from '@ecommerce-platform/types'
+import { IMerchant } from '@proshop/types'
 import { IMerchantRepository } from '@modules/settings/types/repository'
 import { IMerchantService } from '@modules/settings/types/service'
 

@@ -1,5 +1,5 @@
 import { Document } from 'mongoose'
-import { IUnit } from '@ecommerce-platform/types'
+import { IUnit } from '@proshop/types'
 
 export interface IUnitService {
     create(unit: IUnit): Promise<Document & IUnit>

@@ -3,7 +3,7 @@ import {
     IProduct,
     IProductQuery,
     IRequestParams
-} from '@ecommerce-platform/types'
+} from '@proshop/types'
 import { IProductActions } from '../types'
 
 const productRepository = useProductRepository()

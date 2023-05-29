@@ -4,7 +4,7 @@ import { TYPES } from '@common/schemes/di-types'
 
 // Types
 import { ILogger } from '@/types/utils'
-import { IMerchant } from '@ecommerce-platform/types'
+import { IMerchant } from '@proshop/types'
 import { IMerchantRepository } from '@modules/settings/types/repository'
 import { validateId } from '@common/utils/mongoose-validate-id'
 import { MerchantModel } from '@modules/settings/model/merchant.model'

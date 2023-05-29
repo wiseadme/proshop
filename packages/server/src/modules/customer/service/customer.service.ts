@@ -7,7 +7,7 @@ import { Customer } from '@modules/customer/entity/customer.entity'
 import { ILogger } from '@/types/utils'
 import { ICustomerService } from '../types/service'
 import { ICustomerRepository } from '../types/repository'
-import { ICustomer } from '@ecommerce-platform/types'
+import { ICustomer } from '@proshop/types'
 import { IEventBusService } from '@/types/services'
 // Helpers
 import { CustomerHelpers } from '@modules/customer/helpers/customer.helpers'

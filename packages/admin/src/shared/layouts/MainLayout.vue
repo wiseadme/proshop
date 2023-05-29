@@ -13,7 +13,7 @@
     import { AppNavigation } from '@app/components/AppNavigation'
     import VNotifications from '@shared/components/VNotifications/VNotifications.vue'
     // Types
-    import { IOrder, Maybe } from '@ecommerce-platform/types'
+    import { IOrder, Maybe } from '@proshop/types'
 
     const router = useRouter()
     const { newOrders, getNewOrders, getOrders } = useOrdersService()

@@ -4,7 +4,7 @@ import { TYPES } from '@common/schemes/di-types'
 import { ILogger } from '@/types/utils'
 import { IUnitService } from '../types/service'
 import { IUnitRepository } from '../types/repository'
-import { IUnit } from '@ecommerce-platform/types'
+import { IUnit } from '@proshop/types'
 
 @injectable()
 export class UnitService implements IUnitService {

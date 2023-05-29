@@ -4,7 +4,7 @@ import { useProductActionsModal } from '@modules/product/composables/use-product
 import { Product } from '@modules/product/model/product.model'
 import { clone, getDifferences } from '@shared/helpers'
 import { createSharedComposable } from '@shared/features/create-shared-composable'
-import { IProduct, Maybe } from '@ecommerce-platform/types'
+import { IProduct, Maybe } from '@proshop/types'
 
 export const useProduct = createSharedComposable(() => {
     const {

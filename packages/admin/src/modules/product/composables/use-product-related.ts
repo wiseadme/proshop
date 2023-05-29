@@ -4,7 +4,7 @@ import {
     unref
 } from 'vue'
 import { useProductsService } from '@modules/product/composables/use-products-service'
-import { ICategory, IProduct } from '@ecommerce-platform/types'
+import { ICategory, IProduct } from '@proshop/types'
 
 export const useProductRelated = () => {
     const {

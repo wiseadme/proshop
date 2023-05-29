@@ -6,7 +6,7 @@ import { TYPES } from '@common/schemes/di-types'
 import { ILogger } from '@/types/utils'
 import { BaseController } from '@common/controller/base.controller'
 import { IController } from '@/types'
-import { IUnit } from '@ecommerce-platform/types'
+import { IUnit } from '@proshop/types'
 import { IUnitService } from '@modules/unit/types/service'
 
 @injectable()

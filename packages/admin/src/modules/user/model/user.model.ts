@@ -1,4 +1,4 @@
-import { IUser } from '@ecommerce-platform/types'
+import { IUser } from '@proshop/types'
 
 export class User implements IUser {
   _id: IUser['_id']

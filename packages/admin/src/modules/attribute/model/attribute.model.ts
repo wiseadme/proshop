@@ -1,4 +1,4 @@
-import { IAttribute } from '@ecommerce-platform/types/index'
+import { IAttribute } from '@proshop/types'
 
 export class Attribute implements IAttribute {
   _id: IAttribute['_id']

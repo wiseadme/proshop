@@ -6,7 +6,7 @@
     } from 'vue'
     import { TextEditor } from '@shared/components/TextEditor'
     import { useProduct } from '@modules/product/composables/use-product'
-    import { IAsset } from '@ecommerce-platform/types'
+    import { IAsset } from '@proshop/types'
     import { clone } from '@shared/helpers'
     import { useProductActionsModal } from '@modules/product/composables/use-product-actions-modal'
     import { useProductsService } from '@modules/product/composables/use-products-service'

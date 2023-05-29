@@ -5,7 +5,7 @@
         unref
     } from 'vue'
     import { roles } from '@shared/constants/roles'
-    import { IOrder, IUser } from '@ecommerce-platform/types'
+    import { IOrder, IUser } from '@proshop/types'
     import { User } from '@modules/user/model/user.model'
 
     const {

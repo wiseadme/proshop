@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { IAsset } from '@ecommerce-platform/types'
+import { IAsset } from '@proshop/types'
 import { AssetsResponse } from './params'
 
 export interface IAssetsRepository {

@@ -1,4 +1,4 @@
-import { IVariant } from '@ecommerce-platform/types/index'
+import { IVariant } from '@proshop/types'
 
 export class Variant implements IVariant {
   _id: string

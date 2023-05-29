@@ -1,5 +1,5 @@
 import { Document, model, Schema } from 'mongoose'
-import { IMerchant } from '@ecommerce-platform/types'
+import { IMerchant } from '@proshop/types'
 
 const MerchantSchema: Schema = new Schema<IMerchant & Document>({
     _id: Schema.Types.ObjectId,

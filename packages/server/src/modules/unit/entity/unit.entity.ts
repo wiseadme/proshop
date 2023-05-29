@@ -1,4 +1,4 @@
-import { IUnit } from '@ecommerce-platform/types'
+import { IUnit } from '@proshop/types'
 
 export class Unit implements IUnit {
     private _value: IUnit['value']

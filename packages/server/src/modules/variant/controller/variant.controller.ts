@@ -8,7 +8,7 @@ import { BaseController } from '@common/controller/base.controller'
 import { Variant } from '../entity/variant.entity'
 import { IController } from '@/types'
 import { ILogger } from '@/types/utils'
-import { IVariant } from '@ecommerce-platform/types'
+import { IVariant } from '@proshop/types'
 import { IVariantService } from '../types/service'
 
 @injectable()

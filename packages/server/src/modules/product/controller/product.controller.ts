@@ -9,7 +9,7 @@ import { ProductDTO } from '@modules/product/dto/product.dto'
 // Types
 import { ILogger } from '@/types/utils'
 import { IController } from '@/types'
-import { IProduct } from '@ecommerce-platform/types'
+import { IProduct } from '@proshop/types'
 import { IProductService } from '../types/service'
 
 // Helpers

@@ -1,4 +1,4 @@
-import { ICategory } from '@ecommerce-platform/types'
+import { ICategory } from '@proshop/types'
 import { Document } from 'mongoose'
 
 export interface ICategoryService {

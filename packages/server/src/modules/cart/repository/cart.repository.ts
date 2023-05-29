@@ -5,7 +5,7 @@ import { validateId } from '@common/utils/mongoose-validate-id'
 // Types
 import { ILogger } from '@/types/utils'
 import { ICartRepository } from '../types/repository'
-import { ICart } from '@ecommerce-platform/types'
+import { ICart } from '@proshop/types'
 import { CartModel } from '@modules/cart/model/cart.model'
 
 @injectable()

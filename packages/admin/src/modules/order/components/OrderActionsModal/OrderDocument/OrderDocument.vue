@@ -4,7 +4,7 @@
     import { OrderProcessStatuses, OrderStatuses } from '@modules/order/enums/status'
     import { useNotifications } from '@shared/components/VNotifications/use-notifications'
     import { useOrders } from '@modules/order/composables/use-orders'
-    import { ICartItem, IUser } from '@ecommerce-platform/types'
+    import { ICartItem, IUser } from '@proshop/types'
 
     defineProps<{
         users: IUser[]

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-    import { ICartItem, IOrder } from '@ecommerce-platform/types'
+    import { ICartItem, IOrder } from '@proshop/types'
 
     defineProps<{
         orderId: string | number

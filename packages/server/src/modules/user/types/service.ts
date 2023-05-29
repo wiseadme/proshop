@@ -1,6 +1,6 @@
 import { Document } from 'mongoose'
 import { Response } from 'express'
-import { IUser } from '@ecommerce-platform/types'
+import { IUser } from '@proshop/types'
 
 type RegistrationAccessResponse = {
     access_token: string

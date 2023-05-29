@@ -1,7 +1,7 @@
 <script lang="ts" setup>
     import { useCategoriesService } from '@modules/category/composables/use-categories-service'
     import { useCategoriesTable } from '@modules/category/composables/use-categories-table'
-    import { ICategory } from '@ecommerce-platform/types'
+    import { ICategory } from '@proshop/types'
 
     defineEmits<{
         (e: 'open:create-modal'): void
