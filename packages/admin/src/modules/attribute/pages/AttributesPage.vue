@@ -6,7 +6,7 @@
     import { Attribute } from '@modules/attribute/model/attribute.model'
     // Helpers
     import { useAttributesService } from '@modules/attribute/composables/use-attributes-service'
-    import { IAttribute } from '@ecommerce-platform/types'
+    import { IAttribute } from '@proshop/types'
 
     const {
         attributes,

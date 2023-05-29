@@ -1,4 +1,4 @@
-import { IMerchant } from '@ecommerce-platform/types'
+import { IMerchant } from '@proshop/types'
 
 export class Merchant implements IMerchant {
     private __id: IMerchant['_id']

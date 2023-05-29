@@ -5,7 +5,7 @@ import { BaseController } from '@common/controller/base.controller'
 import expressAsyncHandler from 'express-async-handler'
 // Types
 import { Document } from 'mongoose'
-import { IAsset } from '@ecommerce-platform/types'
+import { IAsset } from '@proshop/types'
 import { ILogger } from '@/types/utils'
 import { IController } from '@/types'
 import { IAssetsService } from '../types/service'

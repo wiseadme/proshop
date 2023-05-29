@@ -5,7 +5,7 @@ import { UnitModel } from '../model/unit.model'
 
 // Types
 import { ILogger } from '@/types/utils'
-import { IUnit } from '@ecommerce-platform/types'
+import { IUnit } from '@proshop/types'
 import { IUnitRepository } from '@modules/unit/types/repository'
 import { validateId } from '@common/utils/mongoose-validate-id'
 

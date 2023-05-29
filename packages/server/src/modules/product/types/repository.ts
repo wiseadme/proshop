@@ -1,5 +1,5 @@
 import { Document, LeanDocument } from 'mongoose'
-import { IProduct } from '@ecommerce-platform/types'
+import { IProduct } from '@proshop/types'
 
 // import { ProductQuery } from './params'
 

@@ -1,5 +1,5 @@
-import { model, Schema, Document } from 'mongoose'
-import { IOption } from '@ecommerce-platform/types'
+import { Document, model, Schema } from 'mongoose'
+import { IOption } from '@proshop/types'
 
 const OptionSchema = new Schema<Document & IOption>({
   _id: Schema.Types.ObjectId,

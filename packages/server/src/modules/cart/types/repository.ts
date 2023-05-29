@@ -1,5 +1,5 @@
 import { Document } from 'mongoose'
-import { ICart } from '@ecommerce-platform/types'
+import { ICart } from '@proshop/types'
 
 export interface ICartRepository {
     create(cart: ICart): Promise<Document & ICart>

@@ -1,4 +1,4 @@
-import { IOrder } from '@ecommerce-platform/types'
+import { IOrder } from '@proshop/types'
 
 export class Order implements IOrder {
     _id: IOrder['_id']

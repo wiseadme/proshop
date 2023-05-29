@@ -5,7 +5,7 @@ import { VariantModel } from '@modules/variant/model/variant.model'
 import { Document, Types } from 'mongoose'
 import { validateId } from '@common/utils/mongoose-validate-id'
 import { ILogger } from '@/types/utils'
-import { IVariant } from '@ecommerce-platform/types'
+import { IVariant } from '@proshop/types'
 import { IVariantRepository } from '../types/repository'
 
 @injectable()

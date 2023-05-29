@@ -1,7 +1,7 @@
 import { ref, unref } from 'vue'
 import { useProductsService } from '@modules/product/composables/use-products-service'
 import { useProduct } from '@modules/product/composables/use-product'
-import { IVariantOption } from '@ecommerce-platform/types'
+import { IVariantOption } from '@proshop/types'
 
 export const useProductVariants = () => {
     const { model } = useProduct()

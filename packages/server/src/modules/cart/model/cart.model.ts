@@ -1,5 +1,5 @@
 import { Document, model, Schema } from 'mongoose'
-import { ICart } from '@ecommerce-platform/types'
+import { ICart } from '@proshop/types'
 
 const CartSchema = new Schema<ICart & Document>({
     _id: Schema.Types.ObjectId,

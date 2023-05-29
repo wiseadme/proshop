@@ -1,5 +1,5 @@
 import { Document } from 'mongoose'
-import { IOrder } from '@ecommerce-platform/types'
+import { IOrder } from '@proshop/types'
 
 export interface IOrderRepository {
     create(order: IOrder): Promise<Document & IOrder>

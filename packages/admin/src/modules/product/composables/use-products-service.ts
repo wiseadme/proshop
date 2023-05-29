@@ -32,7 +32,7 @@ import {
     IVariant,
     IVariantOption,
     Maybe,
-} from '@ecommerce-platform/types'
+} from '@proshop/types'
 
 // Helpers
 import { clone } from '@shared/helpers'

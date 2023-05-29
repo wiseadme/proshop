@@ -8,7 +8,7 @@ import { Document } from 'mongoose'
 import { ILogger } from '@/types/utils'
 import { IController } from '@/types'
 import { ICartService } from '../types/service'
-import { ICart } from '@ecommerce-platform/types'
+import { ICart } from '@proshop/types'
 import { Cart } from '@modules/cart/entity/cart.entity'
 
 @injectable()

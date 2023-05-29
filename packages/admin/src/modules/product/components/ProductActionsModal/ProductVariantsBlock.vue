@@ -4,7 +4,7 @@
         unref,
         watch
     } from 'vue'
-    import { IVariant, IVariantOption } from '@ecommerce-platform/types'
+    import { IVariant, IVariantOption } from '@proshop/types'
     import { useProduct } from '@modules/product/composables/use-product'
     import { useProductVariants } from '@modules/product/composables/use-product-variants'
 

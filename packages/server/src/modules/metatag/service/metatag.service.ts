@@ -4,7 +4,7 @@ import { TYPES } from '@common/schemes/di-types'
 import { ILogger } from '@/types/utils'
 import { IMetaTagService } from '../types/service'
 import { IMetaTagRepository } from '../types/repository'
-import { IMetaTag } from '@ecommerce-platform/types'
+import { IMetaTag } from '@proshop/types'
 import { IEventBusService } from '@/types/services'
 
 @injectable()

@@ -1,8 +1,8 @@
-import { ref, unref } from "vue"
-import { IUnit } from "@ecommerce-platform/types"
-import { Unit } from "@modules/unit/model/unit.model"
-import { useUnitsService } from "@modules/unit/composables/use-units-service"
-import { useLoadingState } from "@shared/composables/use-loading-state"
+import { ref, unref } from 'vue'
+import { IUnit } from '@proshop/types'
+import { Unit } from '@modules/unit/model/unit.model'
+import { useUnitsService } from '@modules/unit/composables/use-units-service'
+import { useLoadingState } from '@shared/composables/use-loading-state'
 
 export const useUnit = () => {
     const { updateUnit, createUnit, deleteUnit, setAsCurrent } = useUnitsService()

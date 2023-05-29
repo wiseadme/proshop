@@ -2,7 +2,7 @@
     import { ref, unref } from 'vue'
     import { useVariantsService } from '@modules/variant/composables/use-variants-service'
     import { Variant } from '@modules/variant/model/variant.model'
-    import { IVariant } from '@ecommerce-platform/types'
+    import { IVariant } from '@proshop/types'
     // @ts-ignore
     import draggable from 'vuedraggable'
 

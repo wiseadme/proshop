@@ -5,7 +5,7 @@ import {
 } from 'vue'
 import { useProductsService } from '@modules/product/composables/use-products-service'
 import { useProduct } from '@modules/product/composables/use-product'
-import { IAttribute } from '@ecommerce-platform/types'
+import { IAttribute } from '@proshop/types'
 
 export const useProductAttributes = () => {
     const { attributeItems } = useProductsService()

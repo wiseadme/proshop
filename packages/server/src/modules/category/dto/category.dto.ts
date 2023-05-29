@@ -1,4 +1,4 @@
-import { ICategory, ICategoryConditions } from '@ecommerce-platform/types'
+import { ICategory, ICategoryConditions } from '@proshop/types'
 
 export class CategoryDTO {
     url: string

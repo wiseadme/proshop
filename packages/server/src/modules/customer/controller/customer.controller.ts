@@ -8,7 +8,7 @@ import { BaseController } from '@common/controller/base.controller'
 // Types
 import { IController } from '@/types'
 import { ILogger } from '@/types/utils'
-import { ICustomer } from '@ecommerce-platform/types'
+import { ICustomer } from '@proshop/types'
 import { ICustomerService } from '../types/service'
 
 // Schemes

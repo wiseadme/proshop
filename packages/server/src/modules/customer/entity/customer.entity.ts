@@ -1,4 +1,4 @@
-import { ICustomer } from '@ecommerce-platform/types'
+import { ICustomer } from '@proshop/types'
 
 export class Customer implements ICustomer {
     public _id: string

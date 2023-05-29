@@ -1,6 +1,6 @@
 import { ref, unref } from 'vue'
 import { useProduct } from '@modules/product/composables/use-product'
-import { ICategory } from '@ecommerce-platform/types'
+import { ICategory } from '@proshop/types'
 import { createSharedComposable } from '@shared/features/create-shared-composable'
 
 export const useProductCategories = createSharedComposable(() => {

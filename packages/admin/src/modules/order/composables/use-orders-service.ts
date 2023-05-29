@@ -7,7 +7,7 @@ import {
     IOrder,
     IUser,
     Maybe
-} from '@ecommerce-platform/types'
+} from '@proshop/types'
 import { createSharedComposable } from '@shared/features/create-shared-composable'
 import { useRequestParams } from '@shared/composables/use-request-params'
 // Stores

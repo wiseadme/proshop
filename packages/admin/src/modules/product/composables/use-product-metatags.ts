@@ -5,7 +5,7 @@ import {
 } from 'vue'
 import { useProductsService } from '@modules/product/composables/use-products-service'
 import { useProduct } from '@modules/product/composables/use-product'
-import { IMetaTag, Maybe } from '@ecommerce-platform/types'
+import { IMetaTag, Maybe } from '@proshop/types'
 import { createSharedComposable } from '@shared/features/create-shared-composable'
 
 export const useProductMetaTags = createSharedComposable(() => {

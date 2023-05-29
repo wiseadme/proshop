@@ -1,4 +1,4 @@
-import { ICart } from '@ecommerce-platform/types'
+import { ICart } from '@proshop/types'
 
 export class Cart implements ICart {
     private __id: string

@@ -4,7 +4,7 @@ import {
     ICategory,
     IUnit,
     IVariant
-} from '@ecommerce-platform/types'
+} from '@proshop/types'
 
 export interface IRest {
   get: (url: string, ...args: any) => Promise<{ data: any }>
@@ -28,6 +28,6 @@ declare type AppState = {
   progress: number
 }
 
-declare module '@ecommerce-platform/type' {
+declare module '@proshop/type' {
   export const content: any
 }

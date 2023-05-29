@@ -1,4 +1,4 @@
-import { IMerchant } from '@ecommerce-platform/types'
+import { IMerchant } from '@proshop/types'
 
 export class Merchant implements IMerchant {
   public readonly _id: IMerchant['_id']

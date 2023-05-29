@@ -1,7 +1,7 @@
 {
-  "name": "@ecommerce-platform/types",
+  "name": "@proshop/types",
   "version": "1.0.0",
-  "description": "ecommerce platform types",
+  "description": "Proshop platform types",
   "author": "Anar Allakhverdiev <wiseadme@gmail.com>",
   "main": "index.ts",
   "module": "index.ts",

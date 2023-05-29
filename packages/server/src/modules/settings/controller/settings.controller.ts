@@ -6,7 +6,7 @@ import { IController } from '@/types'
 import { ILogger } from '@/types/utils'
 import { TYPES } from '@common/schemes/di-types'
 import { IMerchantService, ISettingsService } from '@modules/settings/types/service'
-import { IMerchant } from '@ecommerce-platform/types'
+import { IMerchant } from '@proshop/types'
 
 @injectable()
 export class SettingsController extends BaseController implements IController {

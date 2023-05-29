@@ -6,7 +6,7 @@
     } from 'vue'
     import { useMetaTag } from '@modules/metatag/composables/use-meta-tag'
     import { useMetaTagsService } from '@modules/metatag/composables/use-meta-tags-service'
-    import { IMetaTag } from '@ecommerce-platform/types'
+    import { IMetaTag } from '@proshop/types'
     import { descriptorToMetaTag } from '@shared/helpers/metatag'
     import { clone } from '@shared/helpers'
     // @ts-ignore

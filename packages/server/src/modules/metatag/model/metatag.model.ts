@@ -1,5 +1,5 @@
 import { Document, model, Schema } from 'mongoose'
-import { IMetaTag } from '@ecommerce-platform/types'
+import { IMetaTag } from '@proshop/types'
 
 const MetaTagSchema: Schema = new Schema<IMetaTag & Document>({
     _id: Schema.Types.ObjectId,

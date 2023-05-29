@@ -5,7 +5,7 @@ import { TYPES } from '@common/schemes/di-types'
 import { ILogger } from '@/types/utils'
 import { IOptionService } from '../types/service'
 import { IOptionRepository } from '../types/repository'
-import { IOption } from '@ecommerce-platform/types'
+import { IOption } from '@proshop/types'
 import { IEventBusService } from '@/types/services'
 // Constants
 import { DELETE_OPTION_EVENT } from '@common/constants/events'

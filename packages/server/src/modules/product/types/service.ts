@@ -1,5 +1,5 @@
 import { Document, LeanDocument } from 'mongoose'
-import { IProduct, IRequestParams } from '@ecommerce-platform/types'
+import { IProduct, IRequestParams } from '@proshop/types'
 
 export interface IProductService {
     create(product: IProduct): Promise<{ items: (Document & IProduct)[], total?: number }>

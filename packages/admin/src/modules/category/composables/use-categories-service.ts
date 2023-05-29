@@ -6,7 +6,7 @@ import {
 import { createSharedComposable } from '@shared/features/create-shared-composable'
 import { useCategoriesStore } from '@modules/category/store'
 import { useFilesService } from '@shared/services/files.service'
-import { ICategory, Maybe } from '@ecommerce-platform/types'
+import { ICategory, Maybe } from '@proshop/types'
 
 export const useCategoriesService = createSharedComposable(() => {
     const _store = useCategoriesStore()
@@ -53,7 +53,7 @@ export const useCategoriesService = createSharedComposable(() => {
     const uploadCategoryImage = async (file) => {
         const { formData, fileName } = _filesService.createFormData(file)
         const ownerId = unref(category)!._id
-    
+
         const asset = await _filesService.uploadFile({ ownerId, fileName, formData })
 
         if (asset && asset.url) {

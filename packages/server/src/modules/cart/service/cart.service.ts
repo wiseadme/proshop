@@ -5,7 +5,7 @@ import { TYPES } from '@common/schemes/di-types'
 import { ILogger } from '@/types/utils'
 import { ICartService } from '../types/service'
 import { ICartRepository } from '../types/repository'
-import { ICart } from '@ecommerce-platform/types'
+import { ICart } from '@proshop/types'
 import { IEventBusService } from '@/types/services'
 import { DELETE_CART_EVENT } from '@common/constants/events'
 

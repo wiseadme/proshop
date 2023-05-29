@@ -1,7 +1,7 @@
 <script lang="ts" setup>
     import { icons } from '@shared/enums/icons'
     import { useProductsTable } from '@modules/product/composables/use-products-table'
-    import { IProduct } from '@ecommerce-platform/types'
+    import { IProduct } from '@proshop/types'
     import { useProduct } from '@modules/product/composables/use-product'
 
     defineEmits<{

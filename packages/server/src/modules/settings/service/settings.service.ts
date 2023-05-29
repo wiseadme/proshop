@@ -4,7 +4,7 @@ import { TYPES } from '@common/schemes/di-types'
 import { ILogger } from '@/types/utils'
 import { ISettingsService } from '@modules/settings/types/service'
 import { ISettingsRepository } from '@modules/settings/types/repository'
-import { ISettings } from '@ecommerce-platform/types'
+import { ISettings } from '@proshop/types'
 
 @injectable()
 export class SettingsService implements ISettingsService {

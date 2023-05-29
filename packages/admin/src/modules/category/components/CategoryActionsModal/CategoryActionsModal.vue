@@ -5,7 +5,7 @@
         unref,
         watch
     } from 'vue'
-    import { ICategory } from '@ecommerce-platform/types'
+    import { ICategory } from '@proshop/types'
     import { useCategoriesService } from '@modules/category/composables/use-categories-service'
     import { useCategory } from '@modules/category/composables/use-category'
     import { useCategoryActionsModal } from '@modules/category/composables/use-category-actions-modal'

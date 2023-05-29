@@ -1,4 +1,4 @@
-import { IMetaTag } from '@ecommerce-platform/types'
+import { IMetaTag } from '@proshop/types'
 import { Document } from 'mongoose'
 
 export interface IMetaTagRepository {

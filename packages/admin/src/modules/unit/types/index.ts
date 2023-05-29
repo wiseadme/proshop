@@ -1,4 +1,4 @@
-import { IUnit, Maybe } from '@ecommerce-platform/types'
+import { IUnit, Maybe } from '@proshop/types'
 
 export interface IUnitActions {
   create(unit: IUnit): Promise<IUnit>

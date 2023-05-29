@@ -9,7 +9,7 @@ import { AssetModel } from '@modules/asset/model/asset.model'
 import { config } from '@app/config'
 // Types
 import { Request, Response } from 'express'
-import { IAsset } from '@ecommerce-platform/types'
+import { IAsset } from '@proshop/types'
 import { IAssetsRepository } from '../types/repository'
 import { AssetsResponse } from '../types/params'
 import { IFileLoaderMiddleware } from '@/types/middlewares'

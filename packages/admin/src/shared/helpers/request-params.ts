@@ -3,7 +3,7 @@ import {
     IRequestPagination,
     IRequestParams,
     IRequestSort
-} from '@ecommerce-platform/types'
+} from '@proshop/types'
 import { unref } from 'vue'
 import { usePagination } from '@shared/composables/use-pagination'
 import { useSort } from '@shared/composables/use-sort'

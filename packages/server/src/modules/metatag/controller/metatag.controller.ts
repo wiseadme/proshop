@@ -7,7 +7,7 @@ import { TYPES } from '@common/schemes/di-types'
 import { Document } from 'mongoose'
 import { ILogger } from '@/types/utils'
 import { IController } from '@/types'
-import { IMetaTag } from '@ecommerce-platform/types'
+import { IMetaTag } from '@proshop/types'
 
 @injectable()
 export class MetaTagController extends BaseController implements IController {

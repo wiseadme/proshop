@@ -1,7 +1,7 @@
 <script lang="ts" setup>
     import { useOrders } from '@modules/order/composables/use-orders'
     import { useOrdersTable } from '@modules/order/composables/use-orders-table'
-    import { IOrder } from '@ecommerce-platform/types'
+    import { IOrder } from '@proshop/types'
 
     defineEmits<{ (e: 'open:order', row: IOrder) }>()
 

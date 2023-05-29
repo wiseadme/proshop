@@ -1,4 +1,4 @@
-import { ICartItem, IOrder } from '@ecommerce-platform/types'
+import { ICartItem, IOrder } from '@proshop/types'
 
 export class Order implements IOrder {
     private _items: IOrder['items']

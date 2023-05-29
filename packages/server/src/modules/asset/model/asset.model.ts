@@ -1,5 +1,5 @@
 import { Document, model, Schema } from 'mongoose'
-import { IAsset } from '@ecommerce-platform/types'
+import { IAsset } from '@proshop/types'
 
 const AssetSchema: Schema = new Schema<IAsset & Document>({
     _id: Schema.Types.ObjectId,

@@ -165,7 +165,7 @@ module.exports = (env = {}) => {
                 chunkFilename: `css/chunk.[name].css`
             }),
             new HtmlWebpackPlugin({
-                title: 'ecommerce-admin',
+                title: 'proshop-admin',
                 hash: false,
                 template: PATH.public + 'index.html',
                 filename: 'index.html',

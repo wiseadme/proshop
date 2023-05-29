@@ -3,7 +3,7 @@ import { IUserRepository } from '@modules/user/types/repository'
 import { UserModel } from '@modules/user/model/user.model'
 import mongoose, { Document } from 'mongoose'
 import { validateId } from '@common/utils/mongoose-validate-id'
-import { IUser } from '@ecommerce-platform/types'
+import { IUser } from '@proshop/types'
 
 @injectable()
 export class UserRepository implements IUserRepository {

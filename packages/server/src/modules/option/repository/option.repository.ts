@@ -5,7 +5,7 @@ import { OptionModel } from '@modules/option/model/option.model'
 import { validateId } from '@common/utils/mongoose-validate-id'
 // Types
 import { ILogger } from '@/types/utils'
-import { IOption } from '@ecommerce-platform/types'
+import { IOption } from '@proshop/types'
 import { IOptionRepository } from '../types/repository'
 
 @injectable()

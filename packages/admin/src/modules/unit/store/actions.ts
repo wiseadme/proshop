@@ -1,5 +1,5 @@
 import { useUnitRepository } from '../repository/unit.repository'
-import { IUnit } from '@ecommerce-platform/types'
+import { IUnit } from '@proshop/types'
 import { IUnitActions } from '@modules/unit/types'
 
 const repository = useUnitRepository()
