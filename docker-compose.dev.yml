@@ -21,7 +21,7 @@ services:
       - "80:80"
     volumes:
       - ./nginx.dev.conf:/etc/nginx/nginx.conf
-      - uploads:/var/lib/docker/volumes/ecommerceplatform_uploads/_data
+      - uploads:/var/lib/docker/volumes/proshop_uploads/_data
 
 volumes:
   mongo_seed:

@@ -1,12 +1,12 @@
 export const attributeRoutes = [
     {
         path: '/attributes',
-        component: () => import('@modules/attribute/layouts/AttributesLayout.vue'),
+        component: () => import(/* webpackChunkName: "Page.Proshop" */ '@modules/attribute/layouts/AttributesLayout.vue'),
         name: 'attribute',
         children: [
             {
                 path: '',
-                component: () => import('@modules/attribute/pages/AttributesPage.vue'),
+                component: () => import(/* webpackChunkName: "Page.Proshop" */ '@modules/attribute/pages/AttributesPage.vue'),
                 name: 'attributes-table',
             },
         ],
