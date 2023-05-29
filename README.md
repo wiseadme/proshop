@@ -1,1 +1,2 @@
-# e-commerce shop platform
+# proshop
+### e-commerce platform
