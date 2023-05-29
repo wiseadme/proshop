@@ -7,7 +7,7 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPl
 const {VueLoaderPlugin} = require('vue-loader')
 // const ModuleFederationPlugin = require('webpack/lib/container/ModuleFederationPlugin')
 // const deps = require('../package.json').dependencies
-const dotenv = require('dotenv') // see https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
+const dotenv = require('dotenv')
 dotenv.config()
 
 const resolve = pathStr => path.resolve(__dirname, pathStr)

@@ -1,12 +1,12 @@
 export const unitRoutes = [
     {
         path: '/units',
-        component: () => import('@modules/unit/layouts/UnitsLayout.vue'),
+        component: () => import(/* webpackChunkName: "Page.Proshop" */ '@modules/unit/layouts/UnitsLayout.vue'),
         name: 'units',
         children: [
             {
                 path: '',
-                component: () => import('@modules/unit/pages/UnitsPage.vue'),
+                component: () => import(/* webpackChunkName: "Page.Proshop" */ '@modules/unit/pages/UnitsPage.vue'),
                 name: 'units-table',
             },
         ],

@@ -1,12 +1,12 @@
 export const usersRoutes = [
     {
         path: '/users',
-        component: () => import('@modules/user/layouts/UsersLayout.vue'),
+        component: () => import(/* webpackChunkName: "Page.Proshop" */ '@modules/user/layouts/UsersLayout.vue'),
         name: 'users',
         children: [
             {
                 path: '',
-                component: () => import('@modules/user/pages/UsersPage.vue'),
+                component: () => import(/* webpackChunkName: "Page.Proshop" */ '@modules/user/pages/UsersPage.vue'),
                 name: 'user-table'
             }
         ]
