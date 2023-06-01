@@ -1,16 +1,10 @@
+import {Document} from 'mongoose'
 import { IUser } from '@proshop/types'
 import { isExpired, parseJWToken } from '@common/helpers'
 
 export class UserHelpers {
-    prepareUserResponseData(user: IUser) {
-        if (!user) {
-            return Promise.reject({
-                status: 401,
-                message: 'Unauthorized',
-            })
-        }
-
-        const userData: any = {
+    prepareUserResponseData(user: IUser): IUser & Document {
+        const userData: Partial<IUser> = {
             _id: user._id,
             firstName: user.firstName,
             secondName: user.secondName,
@@ -18,6 +12,7 @@ export class UserHelpers {
             roles: user.roles,
             phone: user.phone,
             position: user.position,
+            enabled: user.enabled
         }
 
         if (user.accessToken && !isExpired(user.accessToken)) {
@@ -26,6 +21,6 @@ export class UserHelpers {
             delete userData.exp
         }
 
-        return userData
+        return userData as IUser & Document
     }
 }

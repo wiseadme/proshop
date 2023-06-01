@@ -51,6 +51,13 @@ export class UserService extends UserHelpers implements IUserService {
                     refreshToken,
                 })
 
+                if (!updated) {
+                    return Promise.reject({
+                        status: 401,
+                        message: 'Unauthorized',
+                    })
+                }
+
                 res.cookie('auth', accessToken, {
                     sameSite: true,
                     httpOnly: true,

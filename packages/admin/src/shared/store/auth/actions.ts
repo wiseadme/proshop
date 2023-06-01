@@ -1,9 +1,10 @@
 import { IAuthRepository, useAuthRepository } from '@shared/repository/auth.repository'
+import { IUser } from '@proshop/types'
 
 const repository: IAuthRepository = useAuthRepository()
 
 export const actions = {
-    async loginUser(user){
+    async loginUser(user: IUser){
         try {
             const { data } = await repository.login(user)
 
@@ -15,6 +16,22 @@ export const actions = {
             return data.data
         } catch (error) {
             return Promise.reject(error)
+        }
+    },
+
+    async logoutUser(){
+        try {
+            if (this.user) await repository.logout()
+
+            this.$patch(state => {
+                state.isAuthenticated = false
+                state.user = null
+                state.isChecked = true
+            })
+
+            return true
+        } catch (err) {
+            return Promise.reject(err)
         }
     },
 
@@ -32,24 +49,6 @@ export const actions = {
         } catch (err) {
             this.isChecked = true
 
-            return Promise.reject(err)
-        }
-    },
-
-    async logout(){
-        try {
-            if (this.user) {
-                await repository.logout()
-            }
-
-            this.$patch(state => {
-                state.isAuthenticated = false
-                state.user = null
-                state.isChecked = true
-            })
-
-            return true
-        } catch (err) {
             return Promise.reject(err)
         }
     },
