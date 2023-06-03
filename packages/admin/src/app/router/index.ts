@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import {RouteNames} from '@shared/constants/route-names'
 import { productRoutes } from '@modules/product/routes'
 import { categoryRoutes } from '@modules/category/routes'
 import { attributeRoutes } from '@modules/attribute/routes'
@@ -18,8 +19,8 @@ const baseUrl = process.env.NODE_ENV === 'development' ? '/' : '/admin'
 export const routes = [
     {
         path: '/',
-        component: () => import('@shared/layouts/MainLayout.vue'),
-        name: 'main',
+        component: () => import(/* webpackChunkName: "Main.Page.Proshop" */ '@shared/layouts/MainLayout.vue'),
+        name: RouteNames.MAIN,
         children: [
             ...dashboardRoutes,
             ...categoryRoutes,

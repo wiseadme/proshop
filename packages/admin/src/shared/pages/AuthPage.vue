@@ -4,7 +4,7 @@
         ref,
         unref
     } from 'vue'
-    import { useAuthService } from '@shared/services/auth.service'
+    import { useAuthService } from '@shared/composables/use-auth-service'
     import { icons } from '@shared/enums/icons'
     import ProductLogo from '@shared/components/ProductLogo.vue'
 

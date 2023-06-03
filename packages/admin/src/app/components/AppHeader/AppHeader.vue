@@ -1,10 +1,9 @@
 <script setup lang="ts">
-    import { useAuthService } from '@shared/services/auth.service'
+    import { useAuthService } from '@shared/composables/use-auth-service'
     import ProductLogo from '@shared/components/ProductLogo.vue'
 
-    const authService = useAuthService()
+    const { logout, user } = useAuthService()
 
-    const logout = () => authService.logout()
 </script>
 <template>
     <v-toolbar
@@ -18,7 +17,7 @@
         <v-spacer/>
         <v-toolbar-items class="px-3">
             <div
-                v-if="authService.user"
+                v-if="user"
                 class="d-flex justify-center align-center"
             >
                 <v-icon
@@ -28,7 +27,7 @@
                     color="white"
                 />
                 <h4 class="pb-1 white--text">
-                    {{ authService.user.username }}
+                    {{ user.username }}
                 </h4>
             </div>
             <div>
@@ -45,5 +44,5 @@
     </v-toolbar>
 </template>
 <style lang="scss">
-  @import 'AppHeader';
+    @import 'AppHeader';
 </style>

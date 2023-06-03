@@ -7,34 +7,34 @@ import { IVariant } from './variant'
 import { IAttribute } from './attribute'
 
 export interface IProductQuery {
-  _id?: string,
-  category?: string
-  name?: string
-  url?: string
+    _id?: string,
+    category?: string
+    name?: string
+    url?: string
 }
 
 export interface IProductConditions {
-  visible: boolean
-  countable: boolean
-  exists: boolean
-  hasDiscounts: boolean
-  hasActions: boolean
+    visible: boolean
+    countable: boolean
+    exists: boolean
+    hasDiscounts: boolean
+    hasActions: boolean
 }
 
 export interface IProduct {
-  _id: string
-  name: string
-  description: string
-  price: number
-  quantity: number
-  image: Maybe<string>
-  url: string
-  seo: ISEOType
-  unit: Maybe<IUnit>
-  categories: ICategory[]
-  assets: IAsset[]
-  variants: IVariant[]
-  attributes: IAttribute[]
-  conditions: IProductConditions
-  related: IProduct[] | string[]
+    _id: string
+    name: string
+    description: string
+    price: number
+    quantity: number
+    image: Maybe<string>
+    url: string
+    seo: ISEOType
+    unit: Maybe<IUnit>
+    categories: ICategory[]
+    assets: IAsset[]
+    variants: IVariant[]
+    attributes: IAttribute[]
+    conditions: IProductConditions
+    related: IProduct[] | string[]
 }

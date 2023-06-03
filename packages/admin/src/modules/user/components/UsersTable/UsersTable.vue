@@ -63,7 +63,7 @@
         </template>
         <template #actions="{row}">
             <v-button
-                color="var(--warning)"
+                color="var(--primary)"
                 elevation="2"
                 text
                 @click="$emit('open:edit-modal', row)"

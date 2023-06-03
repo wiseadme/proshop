@@ -83,15 +83,17 @@
                                 elevation="2"
                                 color="primary"
                                 width="100"
+                                rounded
                                 @click="onCreate(validate)"
                             >
                                 Сохранить
                             </v-button>
                             <v-button
                                 elevation="2"
-                                color="error"
+                                color="warning"
                                 class="ml-2"
                                 width="100"
+                                rounded
                                 @click="clearForm"
                             >
                                 Очистить

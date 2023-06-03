@@ -72,7 +72,7 @@
         </template>
         <template #actions="{row}">
             <v-button
-                color="orange"
+                color="var(--primary)"
                 elevation="2"
                 text
                 style="z-index: 0"
@@ -82,7 +82,7 @@
             </v-button>
             <v-button
                 class="ml-1"
-                color="red darken-1"
+                color="var(--error)"
                 elevation="2"
                 text
                 style="z-index: 0"

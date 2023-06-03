@@ -1,13 +1,15 @@
 import AuthPage from '@shared/pages/AuthPage.vue'
+import { RouteNames } from '@shared/constants/route-names'
+
 export const authRoutes = [
     {
         path: '',
         redirect: '/auth/login',
-        name: 'auth-r',
+        name: RouteNames.AUTH,
     },
     {
         path: 'login',
         component: AuthPage,
-        name: 'login',
-    }
+        name: RouteNames.LOGIN,
+    },
 ]

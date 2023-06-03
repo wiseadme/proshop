@@ -1,6 +1,6 @@
 <script lang="ts" setup>
     import { onBeforeMount } from 'vue'
-    import { useAuthService } from '@shared/services/auth.service'
+    import { useAuthService } from '@shared/composables/use-auth-service'
 
     const authService = useAuthService()
 
