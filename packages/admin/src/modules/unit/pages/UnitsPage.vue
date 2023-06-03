@@ -59,15 +59,17 @@
                                 color="primary"
                                 :loading="loading"
                                 width="100"
+                                rounded
                                 @click="onSaveUnit(validate)"
                             >
                                 Сохранить
                             </v-button>
                             <v-button
                                 elevation="2"
-                                color="error"
+                                color="warning"
                                 class="ml-2"
                                 width="100"
+                                rounded
                                 @click="clearUnitModel"
                             >
                                 Очистить

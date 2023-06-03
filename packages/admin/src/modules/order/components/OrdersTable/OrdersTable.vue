@@ -3,7 +3,9 @@
     import { useOrdersTable } from '@modules/order/composables/use-orders-table'
     import { IOrder } from '@proshop/types'
 
-    defineEmits<{ (e: 'open:order', row: IOrder) }>()
+    defineEmits<{
+        (e: 'open:order', row: IOrder): void
+    }>()
 
     const {
         orders,
@@ -13,7 +15,6 @@
 
     const {
         cols,
-        onSort,
         onUpdateTableRowsCount,
         onUpdateTablePage,
     } = useOrdersTable()
@@ -37,7 +38,6 @@
             }
         }"
         show-sequence
-        @sort:column="onSort"
         @update:page="onUpdateTablePage"
         @update:rows-count="onUpdateTableRowsCount"
     >
@@ -46,7 +46,7 @@
         </template>
         <template #actions="{row}">
             <v-button
-                color="blue"
+                color="var(--primary)"
                 elevation="2"
                 text
                 @click="$emit('open:order', row)"
@@ -55,7 +55,7 @@
             </v-button>
             <v-button
                 class="ml-1"
-                color="red darken-1"
+                color="var(--error)"
                 elevation="2"
                 text
                 :disabled="row.status && !row.status.seen"
