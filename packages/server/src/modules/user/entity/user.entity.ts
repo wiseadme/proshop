@@ -9,8 +9,8 @@ export class User implements IUser {
     private _phone: string
     private _roles: string[]
     private _position: Maybe<IUserPosition>
-    private _accessToken?: Maybe<string>
-    private _refreshToken?: Maybe<string>
+    private _accessToken?: string
+    private _refreshToken?: string
     private _enabled: boolean
 
     constructor({
@@ -22,8 +22,8 @@ export class User implements IUser {
         phone,
         roles = [],
         position = null,
-        accessToken = null,
-        refreshToken = null,
+        accessToken,
+        refreshToken,
         enabled = false,
     }) {
         this._id = _id

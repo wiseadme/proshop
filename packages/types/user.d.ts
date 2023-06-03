@@ -4,7 +4,6 @@ export interface IUserPosition {
     title: string
     department: string
 }
-
 export interface IUser {
     _id: string
     firstName: string
