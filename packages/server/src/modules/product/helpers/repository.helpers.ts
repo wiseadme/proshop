@@ -40,6 +40,11 @@ export class RepositoryHelpers {
                     path: 'categories',
                 },
             },
+            {
+                path: 'currency',
+                select: 'currency',
+                transform: (doc) => doc.currency
+            }
         ]
     }
 

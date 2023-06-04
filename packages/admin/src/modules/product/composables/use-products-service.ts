@@ -5,6 +5,7 @@ import {
 } from 'vue'
 // Features
 import { createSharedComposable } from '@shared/features/create-shared-composable'
+import { useRequestParams } from '@shared/composables/use-request-params'
 
 // Stores
 import { useProductStore } from '@modules/product/store'
@@ -13,7 +14,7 @@ import { useCategoriesStore } from '@modules/category/store'
 import { useVariantsStore } from '@modules/variant/store'
 import { useUnitsStore } from '@modules/unit/store'
 import { useMetaTagsStore } from '@modules/metatag/store'
-import { useRequestParams } from '@shared/composables/use-request-params'
+import { useMerchantStore } from '@modules/settings/store/merchant'
 
 // Services
 import { useFilesService } from '@shared/services/files.service'
@@ -37,6 +38,7 @@ import {
 // Helpers
 import { clone } from '@shared/helpers'
 
+
 export const useProductsService = createSharedComposable(() => {
     const _productsStore = useProductStore()
     const _attributesStore = useAttributesStore()
@@ -44,6 +46,7 @@ export const useProductsService = createSharedComposable(() => {
     const _variantsStore = useVariantsStore()
     const _unitsStore = useUnitsStore()
     const _metaTagsStore = useMetaTagsStore()
+    const _merchantStore = useMerchantStore()
 
     const {
         sort,
@@ -65,8 +68,15 @@ export const useProductsService = createSharedComposable(() => {
     const unitItems = computed<Maybe<IUnit[]>>(() => _unitsStore.units)
     const metaTagItems = computed<Maybe<IMetaTag[]>>(() => _metaTagsStore.metaTags)
     const totalLength = computed<number>(() => _productsStore.totalLength)
+    const merchantId = computed<Maybe<string>>(() => (_merchantStore.merchant as any)?._id)
 
     const { assign } = Object
+
+    const getMerchant = () => {
+        if (unref(merchantId)) return
+
+        return _merchantStore.getMerchant()
+    }
 
     const getAttributes = () => {
         if (unref(attributeItems)) return
@@ -117,6 +127,10 @@ export const useProductsService = createSharedComposable(() => {
     }
 
     const createProduct = (product: IProduct) => {
+        if (!unref(merchantId)) return
+
+        product.currency = unref(merchantId)
+
         return _productsStore.create(product).catch(err => console.log(err))
     }
 
@@ -247,6 +261,7 @@ export const useProductsService = createSharedComposable(() => {
         totalLength,
         pagination,
         sort,
+        getMerchant,
         getAttributes,
         getUnits,
         getCategories,

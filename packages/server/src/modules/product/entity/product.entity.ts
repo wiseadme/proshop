@@ -17,6 +17,7 @@ export class Product implements IProduct {
     private readonly _attributes: IProduct['attributes']
     private readonly _conditions: IProduct['conditions']
     private readonly _related: IProduct['related']
+    private readonly _currency: IProduct['currency']
 
     constructor({
         _id = '',
@@ -34,6 +35,7 @@ export class Product implements IProduct {
         attributes,
         conditions,
         related,
+        currency = null
     }: IProduct) {
         this.__id = _id
         this._name = name
@@ -50,6 +52,7 @@ export class Product implements IProduct {
         this._attributes = attributes
         this._conditions = conditions
         this._related = related
+        this._currency = currency
     }
 
     get _id() {
@@ -62,6 +65,10 @@ export class Product implements IProduct {
 
     get price() {
         return this._price
+    }
+
+    get currency() {
+        return this._currency
     }
 
     get quantity() {

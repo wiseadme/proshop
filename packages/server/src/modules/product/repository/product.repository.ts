@@ -23,6 +23,7 @@ export class ProductRepository extends RepositoryHelpers implements IProductRepo
             _id: new mongoose.Types.ObjectId(),
             name: product.name,
             price: product.price,
+            currency: product.currency,
             description: product.description,
             image: product.image,
             url: product.url,
