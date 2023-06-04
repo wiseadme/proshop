@@ -56,8 +56,8 @@ export class ProductRepository extends RepositoryHelpers implements IProductRepo
         let products
 
         const queryParams = {
-            ...this.preparePaginationParams({ page, count }),
-            ...this.prepareSortParams({ desc, asc, key }),
+            ...this.getPaginationParams({ page, count }),
+            ...this.getSortParams({ desc, asc, key }),
         }
 
         if (_id) {
@@ -76,7 +76,10 @@ export class ProductRepository extends RepositoryHelpers implements IProductRepo
                 key,
             })).exec()
 
-            await ProductModel.populate(products, { path: 'related' })
+            await Promise.all([
+                ProductModel.populate(products, this.getRelatedPopulateParams()),
+                ProductModel.populate(products, this.getCurrencyPopulateParams()),
+            ])
         }
 
         if (url) {
