@@ -19,6 +19,17 @@
         onUpdateTablePage,
     } = useOrdersTable()
 
+
+    const getOrderStatusClasses =  (row) => ({
+        'primary': row.status.created && !row.status.seen,
+        'blue lighten-1': row.status.seen && !row.status.confirmed,
+        'teal accent-3': row.status.confirmed && !row.status.inProcess,
+        'lime': row.status.inProcess && !row.status.ready,
+        'purple': row.status.ready && !row.status.inDelivery,
+        'pink lighten-3': row.status.inDelivery && !row.status.completed,
+        'disabled': row.status.seen && row.status.completed
+    })
+
 </script>
 <template>
     <v-data-table
@@ -79,7 +90,7 @@
         <template #status="{ row, format }">
             <div
                 class="d-flex justify-center align-center py-2 white--text"
-                :class="row.status && row.status.created && !row.status.seen ? 'primary' : 'success'"
+                :class="getOrderStatusClasses(row)"
                 style="width: 100%; height: 100%; border-radius: 10px"
             >
                 {{ format(row) }}
