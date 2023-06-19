@@ -11,6 +11,7 @@ import { RepositoryHelpers } from '@modules/product/helpers/repository.helpers'
 
 // Constants
 import { DEFAULT_ITEMS_COUNT, DEFAULT_PAGE } from '@common/constants/counts'
+import { CategoryModel } from '@modules/category/model/category.model'
 
 @injectable()
 export class ProductRepository extends RepositoryHelpers implements IProductRepository {
@@ -122,7 +123,13 @@ export class ProductRepository extends RepositoryHelpers implements IProductRepo
         return !!await ProductModel.findOneAndDelete({ _id: id }).lean()
     }
 
-    async getDocumentsCount() {
-        return ProductModel.countDocuments()
+    async getDocumentsCount(params: any = {}) {
+        if (params.category) {
+            const category = await CategoryModel.find({url: params.category})
+
+            return category.length
+        }
+
+        return ProductModel.countDocuments(params)
     }
 }

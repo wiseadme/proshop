@@ -52,7 +52,12 @@ export class ProductService implements IProductService {
         }
 
         if (query.length) {
-            total = await this.repository.getDocumentsCount() as number
+            const category = query.category || ''
+
+            /* TODO нужно кэшировать значение total чтоб не запрашивать категорию каждый раз при запросе по категории */
+            total = await this.repository.getDocumentsCount({
+            ...(category ? {category} : {} )
+            }) as number
         }
 
         return {

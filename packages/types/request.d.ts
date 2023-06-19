@@ -10,4 +10,8 @@ export interface IRequestSort {
     key?: string
 }
 
-export type IRequestParams<T> = T & IRequestPagination & IRequestSort
+export interface IRequestCategory {
+    category?: string
+}
+
+export type IRequestParams<T> = T & IRequestPagination & IRequestSort & IRequestCategory
