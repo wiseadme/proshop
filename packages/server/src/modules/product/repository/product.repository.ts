@@ -125,7 +125,7 @@ export class ProductRepository extends RepositoryHelpers implements IProductRepo
 
     async getDocumentsCount(params: any = {}) {
         if (params.category) {
-            const category = await CategoryModel.find({url: params.category})
+            const [category] = await CategoryModel.find({url: params.category})
 
             return category.length
         }

@@ -65,7 +65,6 @@ export class ProductService implements IProductService {
             total,
         }
     }
-
     async update(updates: Partial<Document & IProduct>) {
         if (updates.assets) {
             updates.assets.forEach(it => this.events.emit(UPDATE_ASSETS_EVENT, it))

@@ -23,8 +23,8 @@ export class OrderService implements IOrderService {
 
     async create(order: IOrder) {
         order.orderId = customId({
-            name: order.customer.name,
-            email: order.customer.phone,
+            name: order.customer!.name,
+            email: order.customer!.phone,
             randomLength: 2
         })
 

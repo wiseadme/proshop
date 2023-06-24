@@ -53,7 +53,7 @@ export class Order implements IOrder {
         return this._amount!
     }
 
-    get cartId() {
+    get cart() {
         return this._cart
     }
 
