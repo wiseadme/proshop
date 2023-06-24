@@ -31,14 +31,14 @@ export interface IOrderDelivery {
 
 export interface IOrder {
     _id?: string
-    items: ICartItem[]
+    items: Maybe<ICartItem[]>
     delivery: Maybe<IOrderDelivery>
     amount: number
-    customer: IOrderCustomer
-    cart?: string | ICart
-    orderId?: Maybe<string>
-    qrcode?: Maybe<string>
+    customer: Maybe<IOrderCustomer>
+    cart: Maybe<string | ICart>
+    orderId: Maybe<string>
+    qrcode: Maybe<string>
     status: IOrderStatuses
-    payment?: Maybe<number>
+    payment: Maybe<number>
     executor: Maybe<IUser>
 }
