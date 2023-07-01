@@ -20,7 +20,7 @@ export class Category implements ICategory {
         order = 0,
         image = null,
         parent = null,
-        children,
+        children = [],
         conditions = {
             visible: true,
             special: false,

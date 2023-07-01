@@ -9,7 +9,6 @@ import { ICategory } from '@proshop/types'
 import { ICategoryRepository } from '../types/repository'
 import { ILogger } from '@/types/utils'
 
-type ReadParams = Partial<ICategory>
 type UpdateParams = Partial<ICategory>
 
 @injectable()
@@ -25,8 +24,8 @@ export class CategoryRepository implements ICategoryRepository {
             order: category.order,
             seo: category.seo,
             image: category.image,
-            parent: category.parent || null,
-            children: category.children || [],
+            parent: category.parent,
+            children: category.children,
             length: category.length,
             conditions: category.conditions,
         }).save()

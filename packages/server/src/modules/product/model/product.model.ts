@@ -36,6 +36,7 @@ const ProductSchema = new Schema<IProduct>({
     url: {
         type: String,
         unique: true,
+        index: true
     },
     categories: {
         type: [{
