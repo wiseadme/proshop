@@ -97,7 +97,7 @@ export class AssetRepository implements IAssetsRepository {
             const ownerDir = id.slice(-4)
             const dirPath = `${config.uploadsDir}/${ownerDir}`
 
-            for (const data of assets) {
+            for await (const data of assets) {
                 await data.deleteOne()
             }
 

@@ -12,26 +12,24 @@ import { IProductService } from '../types/service'
 import { IProduct, IRequestParams } from '@proshop/types'
 import { IEventBusService } from '@/types/services'
 import { IProductGatewayService } from '@modules/product/gateway/gateway.service'
+import { ServiceHelpers } from '@modules/product/helpers/service.helpers'
 
 @injectable()
-export class ProductService implements IProductService {
+export class ProductService extends ServiceHelpers implements IProductService {
     constructor(
         @inject(TYPES.UTILS.ILogger) private logger: ILogger,
         @inject(TYPES.REPOSITORIES.IProductRepository) private repository: IProductRepository,
         @inject(TYPES.SERVICES.IEventBusService) private events: IEventBusService,
         @inject(TYPES.SERVICES.IProductGatewayService) private gateway: IProductGatewayService,
     ) {
+        super()
     }
 
     async create(product: IProduct) {
         const item = await this.repository.create(Product.create(product)) as Document & IProduct
 
-        if (product.categories) {
+        if (product.categories.length) {
             for await (const category of product.categories) {
-                /**
-                 * @description - пердаем флаг length числом как true значение
-                 * для апдейта кол-ва товаров в категории
-                 */
                 await this.gateway.category.update({ _id: category._id, length: 1 })
             }
         }
@@ -44,11 +42,16 @@ export class ProductService implements IProductService {
 
     async read(query: IRequestParams<Partial<Omit<IProduct, 'categories'>>>) {
         const { _id, url, category } = query
-        const hasSearchProductParams = _id || url
+        const hasSearchProductParams = _id || url || category
 
         const data = {
             items: await this.repository.read(query) as (Document & IProduct)[],
             total: 1,
+        }
+
+        if (category) {
+            const [found] = await this.gateway.category.read({ url: category })
+            data.total = found.length
         }
 
         /**
@@ -57,12 +60,13 @@ export class ProductService implements IProductService {
          * документов в total
          */
         if (!hasSearchProductParams) {
+
             /**
              * TODO нужно кэшировать значение total
              * чтоб не запрашивать категорию каждый
              * раз при запросе по категории
              */
-            data.total = await this.repository.getDocumentsCount(category ? { category } : {}) as number
+            data.total = await this.repository.getDocumentsCount() as number
         }
 
         return data
@@ -74,46 +78,44 @@ export class ProductService implements IProductService {
             updates.image = updates.assets?.find(it => it.main)?.url || null
         }
 
-        const categoriesMap = {}
-
         if (updates.categories) {
-            const [product] = await this.repository.read(updates._id)
+            const [product] = await this.repository.read({ _id: updates._id })
             /**
-             * Сохраняем текущие категории в мапу
+             * Сохраняем текущие категории и апдейты категорий в мапу
              * для дальнейшего апдейта кол-ва товаров в категориях
              */
-            product.categories.forEach(it => categoriesMap[it._id] = it)
-            updates.categories.forEach(it => categoriesMap[it._id] = it)
-        }
+            const updateCategoriesMap = this.getCategoriesMap(updates.categories)
+            const productCategoriesMap = this.getCategoriesMap(product.categories)
 
-        const { updated } = await this.repository.update(Product.update(updates))
+            for await (const { _id } of product.categories) {
+                if (_id && !updateCategoriesMap[_id]) {
+                    await this.gateway.category.update({ _id, length: -1 })
+                }
+            }
 
-        const categoryKeys = Object.keys(categoriesMap)
-
-        if (categoryKeys.length) {
-            for await (const key of categoryKeys) {
-                /**
-                 * @description - пердаем флаг length числом как true значение
-                 * для апдейта кол-ва товаров в категории
-                 */
-                await this.gateway.category.update({ _id: key, length: 1 })
+            for await (const { _id } of updates.categories) {
+                if (_id && !productCategoriesMap[_id]) {
+                    await this.gateway.category.update({ _id, length: 1 })
+                }
             }
         }
 
-        return { updated }
+        return await this.repository.update(Product.update(updates))
     }
 
     async delete(id) {
         const [product] = await this.repository.read(id)
-        const res = await this.repository.delete(id)
+        const result = await this.repository.delete(id)
 
-        for (const category of product.categories) {
+        await this.gateway.asset.deleteFiles(product._id)
+
+        for await (const category of product.categories) {
             await Promise.all([
-                this.gateway.category.update({ _id: category._id, length: 1 }),
+                this.gateway.category.update({ _id: category._id, length: -1 }),
                 this.gateway.asset.deleteFiles(category._id),
             ])
         }
 
-        return res
+        return result
     }
 }

@@ -1,7 +1,6 @@
 import mongoose, { Document } from 'mongoose'
 import { inject, injectable } from 'inversify'
 import { CategoryModel } from '../model/category.model'
-import { ProductModel } from '@modules/product/model/product.model'
 import { TYPES } from '@common/schemes/di-types'
 import { validateId } from '@common/utils/mongoose-validate-id'
 // Types
@@ -57,7 +56,7 @@ export class CategoryRepository implements ICategoryRepository {
         if (updates.length) {
             updated = CategoryModel.findByIdAndUpdate(
                 { _id: updates._id },
-                { $set: { length: await ProductModel.countDocuments({ categories: { $in: updates._id } }) } },
+                { $set: { length: updates.length } },
                 { new: true },
             )
         } else {
