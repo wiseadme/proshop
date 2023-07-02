@@ -11,18 +11,18 @@ services:
       - MONGO_URI=mongodb://mongo1,mongo2,mongo3:27017/commerce
       - ACCESS_TOKEN_SECRET_KEY=menesilazerbaijanliyam
       - REFRESH_TOKEN_SECRET_KEY=esilsozmenasibudur
-      - REDIS_URL=redis://redis_cache:6379
+      - REDIS_URL=redis://redis-cache:6379
       - UPLOADS_DIR=/home/wiseadme/www/uploads
     volumes:
       - uploads:/home/wiseadme/www/uploads/
     depends_on:
       - mongo-setup
-      - redis_cache
+      - redis-cache
     networks:
       - ecommerce
       - mongoNet
 
-  redis_cache:
+  redis-cache:
     image: redis:alpine
     container_name: redis
     ports: [ "127.0.0.1:6379:6379" ]
@@ -89,6 +89,8 @@ services:
     container_name: shop-app
     restart: unless-stopped
     command: npm run preview
+    volumes:
+      - shop:/usr/src/app
     depends_on:
       - server
     networks:
@@ -102,7 +104,10 @@ services:
       - "80:80"
     volumes:
       - ./nginx.prod.conf:/etc/nginx/nginx.conf
+      - ./nginx.shop.conf:/etc/nginx/conf.d/nginx.shop.conf
       - uploads:/var/lib/docker/volumes/proshop_uploads/_data
+      - shop:/var/lib/docker/volumes/proshop_shop/_data/.output/public/_nuxt
+      - cache:/usr/share/nginx/www
     depends_on:
       - admin
     networks:
@@ -111,6 +116,8 @@ services:
 volumes:
   ecommerce:
   uploads:
+  shop:
+  cache:
   mongo_primary:
   mongo_secondary:
   mongo_seed:

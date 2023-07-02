@@ -12,5 +12,5 @@ export interface IProductRepository {
 
     delete(id: string): Promise<boolean>
 
-    getDocumentsCount(): Promise<number>
+    getDocumentsCount(params?: any): Promise<number>
 }

@@ -8,7 +8,6 @@ import { IEventBusService } from '@/types/services'
 import {
     DELETE_CATEGORY_EVENT,
     DELETE_OPTION_EVENT,
-    DELETE_PRODUCT_EVENT,
     UPDATE_ASSETS_EVENT,
 } from '@common/constants/events'
 
@@ -40,7 +39,6 @@ export class AssetService implements IAssetsService {
     addEventListeners() {
         this.events.on(UPDATE_ASSETS_EVENT, this.updateFile.bind(this))
         this.events.on(DELETE_OPTION_EVENT, this.deleteFiles.bind(this))
-        this.events.on(DELETE_PRODUCT_EVENT, this.deleteFiles.bind(this))
         this.events.on(DELETE_CATEGORY_EVENT, this.deleteFiles.bind(this))
     }
 }

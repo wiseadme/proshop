@@ -17,6 +17,11 @@ const ProductSchema = new Schema<IProduct>({
         default: 0,
         index: true,
     },
+    currency: {
+        type: Schema.Types.ObjectId,
+        ref: 'Merchant',
+        default: null,
+    },
     quantity: {
         type: Number,
         default: 0,
@@ -31,6 +36,7 @@ const ProductSchema = new Schema<IProduct>({
     url: {
         type: String,
         unique: true,
+        index: true
     },
     categories: {
         type: [{

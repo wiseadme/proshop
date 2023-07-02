@@ -13,7 +13,10 @@ export const actions: IProductActions = {
         try {
             const { data } = await productRepository.create(product)
 
-            this.products.push(data.data.items[0])
+            this.$patch(state => {
+                state.products.push(data.data.items[0])
+                state.totalLength = data.data.total
+            })
 
             return data.data.items[0]
         } catch (err) {
@@ -62,6 +65,8 @@ export const actions: IProductActions = {
         try {
             const response = await productRepository.delete(product._id)
             this.products = this.products.filter(it => it._id !== product._id)
+            this.totalLength -= 1
+
             return response?.data
         } catch (err) {
             return Promise.reject(err)

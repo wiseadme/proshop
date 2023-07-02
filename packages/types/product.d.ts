@@ -5,6 +5,7 @@ import { ICategory } from './category'
 import { IAsset } from './asset'
 import { IVariant } from './variant'
 import { IAttribute } from './attribute'
+import { ICurrency } from './currency'
 
 export interface IProductQuery {
     _id?: string,
@@ -26,6 +27,7 @@ export interface IProduct {
     name: string
     description: string
     price: number
+    currency: Maybe<ICurrency | string>
     quantity: number
     image: Maybe<string>
     url: string

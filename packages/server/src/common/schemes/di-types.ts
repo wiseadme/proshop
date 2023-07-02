@@ -1,3 +1,5 @@
+import { IProductGatewayService } from '@modules/product/gateway/gateway.service'
+
 export const TYPES = {
     APPLICATION: Symbol.for('App'),
     DB: Symbol.for('DB'),
@@ -19,6 +21,7 @@ export const TYPES = {
         IMetaTagService: Symbol.for('IMetaTagService'),
         IMerchantService: Symbol.for('IMerchantService'),
         ISettingsService: Symbol.for('ISettingsService'),
+        IProductGatewayService: Symbol.for('IProductGatewayService')
     },
     CONTROLLERS: {
         IController: Symbol.for('IController'),

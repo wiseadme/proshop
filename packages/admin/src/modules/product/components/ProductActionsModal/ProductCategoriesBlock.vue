@@ -71,7 +71,7 @@
                     </v-list>
                 </v-group>
                 <v-list
-                    v-else-if="!it.parent && !it.children.length"
+                    v-else-if="!it.parent && !it.children || !it.children.length"
                     class="elevation-2"
                 >
                     <v-list-item

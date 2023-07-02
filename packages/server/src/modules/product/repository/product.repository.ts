@@ -23,6 +23,7 @@ export class ProductRepository extends RepositoryHelpers implements IProductRepo
             _id: new mongoose.Types.ObjectId(),
             name: product.name,
             price: product.price,
+            currency: product.currency,
             description: product.description,
             image: product.image,
             url: product.url,
@@ -55,8 +56,8 @@ export class ProductRepository extends RepositoryHelpers implements IProductRepo
         let products
 
         const queryParams = {
-            ...this.preparePaginationParams({ page, count }),
-            ...this.prepareSortParams({ desc, asc, key }),
+            ...this.getPaginationParams({ page, count }),
+            ...this.getSortParams({ desc, asc, key }),
         }
 
         if (_id) {
@@ -75,7 +76,10 @@ export class ProductRepository extends RepositoryHelpers implements IProductRepo
                 key,
             })).exec()
 
-            await ProductModel.populate(products, { path: 'related' })
+            await Promise.all([
+                ProductModel.populate(products, this.getRelatedPopulateParams()),
+                ProductModel.populate(products, this.getCurrencyPopulateParams()),
+            ])
         }
 
         if (url) {
@@ -118,7 +122,7 @@ export class ProductRepository extends RepositoryHelpers implements IProductRepo
         return !!await ProductModel.findOneAndDelete({ _id: id }).lean()
     }
 
-    async getDocumentsCount() {
-        return ProductModel.countDocuments()
+    async getDocumentsCount(params: any = {}) {
+        return ProductModel.countDocuments(params)
     }
 }

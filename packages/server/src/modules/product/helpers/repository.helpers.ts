@@ -1,12 +1,12 @@
 export class RepositoryHelpers {
-    preparePaginationParams({ page, count }) {
+    getPaginationParams({ page, count }) {
         return {
             skip: (Number(page) * Number(count)) - Number(count),
             limit: Number(count),
         }
     }
 
-    prepareSortParams({ desc, asc, key, aggregate = false }) {
+    getSortParams({ desc, asc, key, aggregate = false }) {
         const isDesc = desc === 'true'
         const isAsc = asc === 'true'
 
@@ -17,29 +17,56 @@ export class RepositoryHelpers {
         } : {}
     }
 
+    getAssetsPopulateParams() {
+        return {
+            path: 'assets',
+        }
+    }
+
+    getCategoriesPopulateParams() {
+        return {
+            path: 'categories',
+            select: 'title url order',
+        }
+    }
+
+    getVariantsPopulateParams() {
+        return {
+            path: 'variants',
+            populate: {
+                path: 'options',
+                populate: {
+                    path: 'assets',
+                },
+            },
+        }
+    }
+
+    getCurrencyPopulateParams() {
+        return {
+            path: 'currency',
+            select: 'currency',
+            transform: (doc) => doc.currency,
+        }
+    }
+    getRelatedPopulateParams() {
+        return {
+            path: 'related',
+            select: 'name price url image categories currency',
+            populate: [
+                this.getCategoriesPopulateParams(),
+                this.getCurrencyPopulateParams()
+            ],
+        }
+    }
+
     preparePopulateParams() {
         return [
-            'assets',
-            {
-                path: 'categories',
-                select: 'title url order',
-            },
-            {
-                path: 'variants',
-                populate: {
-                    path: 'options',
-                    populate: {
-                        path: 'assets',
-                    },
-                },
-            },
-            {
-                path: 'related',
-                select: 'name price url image categories',
-                populate: {
-                    path: 'categories',
-                },
-            },
+            this.getAssetsPopulateParams(),
+            this.getCategoriesPopulateParams(),
+            this.getVariantsPopulateParams(),
+            this.getRelatedPopulateParams(),
+            this.getCurrencyPopulateParams(),
         ]
     }
 
@@ -59,12 +86,12 @@ export class RepositoryHelpers {
             //   $unwind: '$categories'
             // },
             { '$match': { 'categories.url': category } },
-            { '$skip': this.preparePaginationParams({ page, count }).skip },
+            { '$skip': this.getPaginationParams({ page, count }).skip },
             { '$limit': Number(count) },
         ] as any
 
         if (isNeedToBeSorted) {
-            aggregateParams.push(this.prepareSortParams({ desc, asc, key, aggregate: true }))
+            aggregateParams.push(this.getSortParams({ desc, asc, key, aggregate: true }))
         }
 
         return aggregateParams

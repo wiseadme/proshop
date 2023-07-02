@@ -39,6 +39,7 @@ import { CustomerService } from '@modules/customer/service/customer.service'
 import { MetaTagService } from '@modules/metatag/service/metatag.service'
 import { MerchantService } from '@modules/settings/service/merchant.service'
 import { SettingsService } from '@modules/settings/service/settings.service'
+import { GatewayService as ProductGateway, IProductGatewayService } from '@modules/product/gateway/gateway.service'
 
 // Repositories
 import { CategoryRepository } from '@modules/category/repository/category.repository'
@@ -126,6 +127,7 @@ container.bind<ICustomerService>(TYPES.SERVICES.ICustomerService).to(CustomerSer
 container.bind<IMetaTagService>(TYPES.SERVICES.IMetaTagService).to(MetaTagService)
 container.bind<IMerchantService>(TYPES.SERVICES.IMerchantService).to(MerchantService)
 container.bind<ISettingsService>(TYPES.SERVICES.ISettingsService).to(SettingsService)
+container.bind<IProductGatewayService>(TYPES.SERVICES.IProductGatewayService).to(ProductGateway)
 
 // Controllers
 container.bind<IController>(TYPES.CONTROLLERS.IController).to(SwaggerController)

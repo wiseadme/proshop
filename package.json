@@ -1,26 +1,26 @@
 {
-    "name": "proshop",
-    "version": "1.0.0",
-    "description": "Proshop platform project",
-    "scripts": {
-        "dev": "lerna run dev",
-        "docker-start": "docker-compose -f docker-compose.dev.yml up -d",
-        "docker-stop": "docker-compose -f docker-compose.dev.yml down",
-        "bootstrap": "lerna bootstrap --hoist",
-        "setup": "npm ci && npm run bootstrap",
-        "build": "lerna run build",
-        "publish": "lerna publish --conventional-commits",
-        "docker:build": "lerna run build && docker-compose build",
-        "lint:fix": "lerna run lint:fix"
-    },
-    "workspaces": [
-        "packages/*"
-    ],
-    "keywords": [],
-    "author": "Anar Allakhverdiev <wiseadme@gmail.com>",
-    "license": "ISC",
-    "devDependencies": {
-        "lerna": "^5.0.0"
-    },
-    "private": true
+  "name": "proshop",
+  "version": "1.0.0",
+  "description": "Proshop platform project",
+  "scripts": {
+    "dev": "lerna run dev",
+    "docker-start": "docker-compose -f docker-compose.dev.yml up -d",
+    "docker-stop": "docker-compose -f docker-compose.dev.yml down",
+    "bootstrap": "lerna bootstrap --hoist",
+    "setup": "npm ci && npm run bootstrap",
+    "build": "lerna run build",
+    "publish": "lerna publish --conventional-commits",
+    "docker:build": "lerna run build && docker-compose build",
+    "lint:fix": "lerna run lint:fix"
+  },
+  "workspaces": [
+    "packages/*"
+  ],
+  "keywords": [],
+  "author": "Anar Allakhverdiev <wiseadme@gmail.com>",
+  "license": "ISC",
+  "devDependencies": {
+    "lerna": "^5.0.0"
+  },
+  "private": true
 }

@@ -10,6 +10,7 @@ export const useProduct = createSharedComposable(() => {
     const {
         product,
         products,
+        getMerchant,
         getUnits,
         getAttributes,
         getProducts,
@@ -137,6 +138,7 @@ export const useProduct = createSharedComposable(() => {
             getUnits(),
             getVariants(),
             getMetaTags(),
+            getMerchant()
         ])
 
         isLoading.value = false
