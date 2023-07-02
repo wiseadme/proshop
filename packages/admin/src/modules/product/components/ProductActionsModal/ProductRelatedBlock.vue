@@ -103,7 +103,8 @@
     }
 
     watch(category, setCategoryRelatedProducts)
-    watch(model, setCategoryRelatedProducts)
+    watch(showModal, to => to && setCategoryRelatedProducts())
+    // watch(model, setCategoryRelatedProducts)
     watch(selects, onUpdateRelatedProductsArray)
     watch(showModal, onShowModal)
 

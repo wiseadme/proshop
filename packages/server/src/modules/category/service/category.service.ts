@@ -48,6 +48,10 @@ export class CategoryService implements ICategoryService {
 
         updates = Category.update(updates)
 
+        if (updates.length) {
+            updates.length = category.length + updates.length
+        }
+
         if (updates.parent) {
             if (category.parent) {
                 const [prevParent] = await this.repository.read({ _id: category.parent } as Partial<ICategory>)

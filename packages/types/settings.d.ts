@@ -38,9 +38,10 @@ export interface ISiteColors {
     disabled?: string
 }
 
-export interface ISiteDesign {
+export interface ISite {
     colors?: ISiteColors
     layout?: string
+    components?: any
 }
 
 export interface ISiteAboutPage {
@@ -53,13 +54,8 @@ export interface ISitePages {
     about: ISiteAboutPage
 }
 
-export interface ISiteConfig {
-    design: ISiteDesign
-    pages: ISitePages
-}
-
 export interface ISettings {
     _id: string
     merchant: IMerchant
-    site: ISiteConfig
+    site: ISite
 }

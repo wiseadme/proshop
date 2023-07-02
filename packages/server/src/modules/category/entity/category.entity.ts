@@ -18,6 +18,7 @@ export class Category implements ICategory {
         title,
         url,
         order = 0,
+        length = 0,
         image = null,
         parent = null,
         children = [],
@@ -42,7 +43,7 @@ export class Category implements ICategory {
         this._conditions = conditions
         this._seo = seo
         this._url = url || translator(this._title).toLowerCase()
-        this._length = 0
+        this._length = length
     }
 
     get _id() {

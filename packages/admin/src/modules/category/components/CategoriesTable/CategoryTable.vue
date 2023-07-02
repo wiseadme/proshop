@@ -19,7 +19,8 @@
         :footer-options="{
             counts: {
                 displayColor: 'primary',
-                rowsPerPageText: 'кол-во строк'
+                rowsPerPageText: 'кол-во строк',
+                rowsPerPageOptions: [20, 40, 60, 80]
             },
             pagination: {
                 buttonsColor: 'primary',
