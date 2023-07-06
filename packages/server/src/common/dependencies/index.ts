@@ -39,6 +39,7 @@ import { CustomerService } from '@modules/customer/service/customer.service'
 import { MetaTagService } from '@modules/metatag/service/metatag.service'
 import { MerchantService } from '@modules/settings/service/merchant.service'
 import { SettingsService } from '@modules/settings/service/settings.service'
+import { SiteService } from '@modules/settings/service/site.service'
 import { GatewayService as ProductGateway, IProductGatewayService } from '@modules/product/gateway/gateway.service'
 
 // Repositories
@@ -55,6 +56,7 @@ import { UserRepository } from '@modules/user/repository/user.repository'
 import { CustomerRepository } from '@modules/customer/repository/customer.repository'
 import { MetaTagRepository } from '@modules/metatag/repository/metatag.repository'
 import { MerchantRepository } from '@modules/settings/repository/merchant.repository'
+import { SiteRepository } from '@modules/settings/repository/site.repository'
 import { SettingsRepository } from '@modules/settings/repository/settings.repository'
 
 // Middlewares
@@ -79,10 +81,10 @@ import { IOptionService } from '@modules/option/types/service'
 import { IUserService } from '@modules/user/types/service'
 import { ICustomerService } from '@modules/customer/types/service'
 import { IEventBusService } from '@/types/services'
-import { ICategoryRepository } from '@modules/category/types/repository'
+import { IMerchantService, ISettingsService, ISiteService } from '@modules/settings/types/service'
 import { IMetaTagService } from '@modules/metatag/types/service'
-import { IMerchantService, ISettingsService } from '@modules/settings/types/service'
 
+import { ICategoryRepository } from '@modules/category/types/repository'
 import { IAssetsRepository } from '@modules/asset/types/repository'
 import { IProductRepository } from '@modules/product/types/repository'
 import { IVariantRepository } from '@modules/variant/types/repository'
@@ -94,7 +96,7 @@ import { ICartRepository } from '@modules/cart/types/repository'
 import { IOrderRepository } from '@modules/order/types/repository'
 import { IOptionRepository } from '@modules/option/types/repository'
 import { IMetaTagRepository } from '@modules/metatag/types/repository'
-import { IMerchantRepository, ISettingsRepository } from '@modules/settings/types/repository'
+import { IMerchantRepository, ISettingsRepository, ISiteRepository } from '@modules/settings/types/repository'
 import { ILogger } from '@/types/utils'
 import { IConfig, IController, IDb, IRedis } from '@/types'
 import { IErrorRouteMiddleware, IExpressMiddleware, IFileLoaderMiddleware, IMiddleware } from '@/types/middlewares'
@@ -127,6 +129,7 @@ container.bind<ICustomerService>(TYPES.SERVICES.ICustomerService).to(CustomerSer
 container.bind<IMetaTagService>(TYPES.SERVICES.IMetaTagService).to(MetaTagService)
 container.bind<IMerchantService>(TYPES.SERVICES.IMerchantService).to(MerchantService)
 container.bind<ISettingsService>(TYPES.SERVICES.ISettingsService).to(SettingsService)
+container.bind<ISiteService>(TYPES.SERVICES.ISiteService).to(SiteService)
 container.bind<IProductGatewayService>(TYPES.SERVICES.IProductGatewayService).to(ProductGateway)
 
 // Controllers
@@ -171,3 +174,4 @@ container.bind<ICustomerRepository>(TYPES.REPOSITORIES.ICustomerRepository).to(C
 container.bind<IMetaTagRepository>(TYPES.REPOSITORIES.IMetaTagRepository).to(MetaTagRepository)
 container.bind<IMerchantRepository>(TYPES.REPOSITORIES.IMerchantRepository).to(MerchantRepository)
 container.bind<ISettingsRepository>(TYPES.REPOSITORIES.ISettingsRepository).to(SettingsRepository)
+container.bind<ISiteRepository>(TYPES.REPOSITORIES.ISiteRepository).to(SiteRepository)

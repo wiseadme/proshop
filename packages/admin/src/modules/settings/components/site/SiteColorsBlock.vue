@@ -1,15 +1,28 @@
 <script lang="ts" setup>
-    import { ref } from 'vue'
+    import {
+        computed,
+        ref,
+        unref
+    } from 'vue'
     import { ColorPicker } from 'vue-color-kit'
+    import { useSite } from '@modules/settings/composables/use-site'
+    import { ISiteColors } from '@proshop/types'
 
+    type PaletteItem = {
+        color: string
+        name: string
+        type: keyof ISiteColors
+    }
+
+    const { model, getSite, createSite } = useSite()
     const showColorPicker = ref(false)
     const positionX = ref(0)
     const positionY = ref(0)
 
-    const selected = ref<any>({})
+    const selected = ref<Partial<PaletteItem>>({})
     const suckerHide = ref(true)
     const onChange = (data) => {
-        selected.value.color = data.hex
+        unref(model).colors![unref(selected).type!] = data.hex
     }
 
     const onContextMenu = (e, item) => {
@@ -21,18 +34,21 @@
         showColorPicker.value = true
     }
 
-    const palette = ref([
+    const palette = computed<PaletteItem[]>(() =>[
         {
-            color: '#00003b',
+            color: unref(model).colors!.primary || '#00003b',
             name: 'Primary цвет',
             type: 'primary',
         },
         {
-            color: '#18bee3',
+            color: unref(model).colors!.secondary || '#18bee3',
             name: 'Secondary цвет',
             type: 'secondary',
         },
     ])
+
+    getSite()
+
 </script>
 <template>
     <v-menu
@@ -85,6 +101,13 @@
                 </div>
             </div>
         </v-card-content>
+        <v-card-actions>
+            <v-button
+                @click="createSite(model)"
+            >
+                сохранить
+            </v-button>
+        </v-card-actions>
     </v-card>
 </template>
 <style lang="scss" scoped>

@@ -1,5 +1,5 @@
 import { Document, LeanDocument } from 'mongoose'
-import { IMerchant, ISettings } from '@proshop/types'
+import { IMerchant, ISettings, ISite } from '@proshop/types'
 
 export interface IMerchantRepository {
     create(merchant: IMerchant): Promise<Document & IMerchant>
@@ -17,6 +17,15 @@ export interface ISettingsRepository {
     read(): Promise<LeanDocument<ISettings>>
 
     update(updates: Partial<ISettings>): Promise<{ updated: Document & ISettings }>
+
+    delete(id): Promise<boolean>
+}
+export interface ISiteRepository {
+    create(siteConfig: Partial<ISite>): Promise<Document & ISite>
+
+    read(): Promise<LeanDocument<ISite>>
+
+    update(updates: Partial<ISite>): Promise<{ updated: Document & ISite }>
 
     delete(id): Promise<boolean>
 }

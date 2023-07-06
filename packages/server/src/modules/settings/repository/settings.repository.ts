@@ -5,7 +5,6 @@ import { ISettings } from '@proshop/types'
 import { SettingsModel } from '@modules/settings/model/settings.model'
 import { injectable } from 'inversify'
 import { validateId } from '@common/utils/mongoose-validate-id'
-import { MerchantModel } from '@modules/settings/model/merchant.model'
 
 @injectable()
 export class SettingsRepository implements ISettingsRepository {
@@ -24,10 +23,13 @@ export class SettingsRepository implements ISettingsRepository {
     }
 
     async update(updates: Partial<ISettings>) {
-        validateId(updates._id)
+        const { _id } = updates
+        validateId(_id)
 
-        const updated = await MerchantModel.findByIdAndUpdate(
-            { _id: updates._id },
+        delete updates._id
+
+        const updated = await SettingsModel.findByIdAndUpdate(
+            { _id },
             { $set: updates },
             { new: true },
         ) as Document & ISettings

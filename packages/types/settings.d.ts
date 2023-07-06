@@ -39,6 +39,7 @@ export interface ISiteColors {
 }
 
 export interface ISite {
+    _id: string
     colors?: ISiteColors
     layout?: string
     components?: any

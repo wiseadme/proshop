@@ -49,6 +49,8 @@ export class ProductService extends ServiceHelpers implements IProductService {
             total: 1,
         }
 
+        console.log('data', data)
+
         if (category) {
             const [found] = await this.gateway.category.read({ url: category })
             data.total = found.length
