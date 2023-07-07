@@ -14,7 +14,7 @@
         type: keyof ISiteColors
     }
 
-    const { model, getSite, createSite } = useSite()
+    const { site, model, getSite, createSite, updateSite } = useSite()
     const showColorPicker = ref(false)
     const positionX = ref(0)
     const positionY = ref(0)
@@ -23,6 +23,14 @@
     const suckerHide = ref(true)
     const onChange = (data) => {
         unref(model).colors![unref(selected).type!] = data.hex
+    }
+
+    const onSave = (model) => {
+        if (unref(site)) {
+            updateSite(model)
+        } else {
+            createSite(model)
+        }
     }
 
     const onContextMenu = (e, item) => {
@@ -103,7 +111,7 @@
         </v-card-content>
         <v-card-actions>
             <v-button
-                @click="createSite(model)"
+                @click="onSave(model)"
             >
                 сохранить
             </v-button>

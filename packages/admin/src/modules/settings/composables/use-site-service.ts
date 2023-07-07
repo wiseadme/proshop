@@ -6,7 +6,8 @@ export const useSiteService = () => {
     const _store = useSiteStore()
     const {
         createSiteConfig,
-        getSiteConfig
+        getSiteConfig,
+        updateSiteConfig
     } = _store
 
     const site = computed(() => _store.site)
@@ -17,9 +18,12 @@ export const useSiteService = () => {
 
     const getSite = () => getSiteConfig()
 
+    const updateSite = (updates) => updateSiteConfig(updates)
+
     return {
         site,
         getSite,
+        updateSite,
         createSite
     }
 }

@@ -8,7 +8,8 @@ export const useSite = createSharedComposable(() => {
     const {
         site,
         createSite,
-        getSite
+        getSite,
+        updateSite
     } = useSiteService()
     const model = ref<ISite>(Site.create())
 
@@ -18,7 +19,9 @@ export const useSite = createSharedComposable(() => {
 
     return {
         model,
+        site,
         getSite,
+        updateSite,
         createSite
     }
 })

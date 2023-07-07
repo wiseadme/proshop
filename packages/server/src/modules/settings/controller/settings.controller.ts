@@ -32,6 +32,7 @@ export class SettingsController extends BaseController implements IController {
         this.router.delete('/merchant', expressAsyncHandler(this.deleteMerchant.bind(this)))
         this.router.post('/site', expressAsyncHandler(this.createSite.bind(this)))
         this.router.get('/site', expressAsyncHandler(this.getSite.bind(this)))
+        this.router.patch('/site', expressAsyncHandler(this.updateSite.bind(this)))
     }
 
     async getSettings({ method }: Request, res: Response) {
@@ -163,7 +164,7 @@ export class SettingsController extends BaseController implements IController {
             return this.error({
                 error: err,
                 url: this.path + url,
-                method
+                method,
             })
         }
     }
@@ -175,6 +176,25 @@ export class SettingsController extends BaseController implements IController {
             this.send({
                 response: res,
                 data: siteConfig,
+                url: this.path + url,
+                method,
+            })
+        } catch (err) {
+            return this.error({
+                error: err,
+                url: this.path + url,
+                method,
+            })
+        }
+    }
+
+    async updateSite({ body, method, url }: Request<{}, {}, {}, Partial<ISite>>, res: Response) {
+        try {
+            const { updated } = await this.siteService.update(body)
+
+            this.send({
+                response: res,
+                data: updated,
                 url: this.path + url,
                 method,
             })
