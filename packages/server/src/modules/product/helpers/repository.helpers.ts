@@ -60,7 +60,7 @@ export class RepositoryHelpers {
         }
     }
 
-    preparePopulateParams() {
+    getPopulateParams() {
         return [
             this.getAssetsPopulateParams(),
             this.getCategoriesPopulateParams(),

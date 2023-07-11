@@ -88,7 +88,7 @@ services:
     image: wiseadme/ecommerce:shop
     container_name: shop-app
     restart: unless-stopped
-    command: npm run preview
+    command: pm2-runtime ".output/server/index.mjs"
     volumes:
       - shop:/usr/src/app
     depends_on:
