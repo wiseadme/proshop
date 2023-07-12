@@ -46,7 +46,7 @@ export class RepositoryHelpers {
         return {
             path: 'currency',
             select: 'currency',
-            transform: (doc) => doc.currency,
+            transform: (doc) => doc?.currency,
         }
     }
     getRelatedPopulateParams() {
@@ -60,7 +60,7 @@ export class RepositoryHelpers {
         }
     }
 
-    preparePopulateParams() {
+    getPopulateParams() {
         return [
             this.getAssetsPopulateParams(),
             this.getCategoriesPopulateParams(),

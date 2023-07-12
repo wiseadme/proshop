@@ -38,7 +38,7 @@ export class ProductRepository extends RepositoryHelpers implements IProductRepo
             related: product.related,
         })
             .save())
-            .populate(this.preparePopulateParams()) as Document & IProduct
+            .populate(this.getPopulateParams()) as Document & IProduct
     }
 
     async read({
@@ -63,7 +63,7 @@ export class ProductRepository extends RepositoryHelpers implements IProductRepo
         if (_id) {
             validateId(_id)
 
-            return ProductModel.find({ _id }).lean().populate(this.preparePopulateParams())
+            return ProductModel.find({ _id }).lean().populate(this.getPopulateParams())
         }
 
         if (category) {
@@ -83,7 +83,7 @@ export class ProductRepository extends RepositoryHelpers implements IProductRepo
         }
 
         if (url) {
-            products = ProductModel.find({ url }, [], queryParams).lean().populate(this.preparePopulateParams())
+            products = ProductModel.find({ url }, [], queryParams).lean().populate(this.getPopulateParams())
         }
 
         if (name) {
@@ -92,11 +92,14 @@ export class ProductRepository extends RepositoryHelpers implements IProductRepo
                     '$regex': `.*${name}*.`,
                     '$options': 'i',
                 },
-            }, queryParams).lean().populate(this.preparePopulateParams())
+            }, queryParams).lean().populate(this.getPopulateParams())
         }
 
         if (!products) {
-            products = ProductModel.find({}, [], queryParams).lean().populate(this.preparePopulateParams())
+            products = ProductModel
+                .find({}, [], queryParams)
+                .lean()
+                .populate(this.getPopulateParams())
         }
 
         return products
@@ -111,7 +114,7 @@ export class ProductRepository extends RepositoryHelpers implements IProductRepo
             { new: true },
         )
             .lean()
-            .populate(this.preparePopulateParams()) as Document & IProduct
+            .populate(this.getPopulateParams()) as Document & IProduct
 
         return { updated }
     }

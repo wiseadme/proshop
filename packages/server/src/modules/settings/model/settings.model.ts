@@ -7,11 +7,13 @@ const SettingsSchema: Schema = new Schema<ISettings & Document>({
         type: Schema.Types.ObjectId,
         ref: 'Merchant',
         _id: false,
+        default: '' as any
     },
     site: {
         type: Schema.Types.ObjectId,
         ref: 'Site',
         _id: false,
+        default: '' as any
     },
 }, {
     timestamps: true,

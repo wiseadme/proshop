@@ -5,8 +5,8 @@ import { BaseController } from '@common/controller/base.controller'
 import { IController } from '@/types'
 import { ILogger } from '@/types/utils'
 import { TYPES } from '@common/schemes/di-types'
-import { IMerchantService, ISettingsService } from '@modules/settings/types/service'
-import { IMerchant } from '@proshop/types'
+import { IMerchantService, ISettingsService, ISiteService } from '@modules/settings/types/service'
+import { IMerchant, ISite } from '@proshop/types'
 
 @injectable()
 export class SettingsController extends BaseController implements IController {
@@ -16,6 +16,7 @@ export class SettingsController extends BaseController implements IController {
     constructor(
         @inject(TYPES.UTILS.ILogger) private logger: ILogger,
         @inject(TYPES.SERVICES.IMerchantService) private merchantService: IMerchantService,
+        @inject(TYPES.SERVICES.ISiteService) private siteService: ISiteService,
         @inject(TYPES.SERVICES.ISettingsService) private settingsService: ISettingsService,
     ) {
         super()
@@ -29,6 +30,9 @@ export class SettingsController extends BaseController implements IController {
         this.router.get('/merchant', expressAsyncHandler(this.getMerchant.bind(this)))
         this.router.patch('/merchant', expressAsyncHandler(this.updateMerchant.bind(this)))
         this.router.delete('/merchant', expressAsyncHandler(this.deleteMerchant.bind(this)))
+        this.router.post('/site', expressAsyncHandler(this.createSite.bind(this)))
+        this.router.get('/site', expressAsyncHandler(this.getSite.bind(this)))
+        this.router.patch('/site', expressAsyncHandler(this.updateSite.bind(this)))
     }
 
     async getSettings({ method }: Request, res: Response) {
@@ -63,7 +67,7 @@ export class SettingsController extends BaseController implements IController {
             if (!settings) {
                 await this.settingsService.create({ merchant: merchant._id })
             } else {
-                await this.settingsService.update({ merchant: merchant._id })
+                await this.settingsService.update({ _id: settings._id, merchant: merchant._id })
             }
 
             this.send({
@@ -126,6 +130,71 @@ export class SettingsController extends BaseController implements IController {
             this.send({
                 response: res,
                 data: null,
+                url: this.path + url,
+                method,
+            })
+        } catch (err) {
+            return this.error({
+                error: err,
+                url: this.path + url,
+                method,
+            })
+        }
+    }
+
+    async createSite({ body, method, url }: Request<{}, {}, ISite>, res: Response) {
+        try {
+            const siteConfig = await this.siteService.create(body)
+
+            const settings = await this.settingsService.read()
+
+            if (!settings) {
+                await this.settingsService.create({ site: siteConfig._id })
+            } else {
+                await this.settingsService.update({ _id: settings._id, site: siteConfig._id })
+            }
+
+            this.send({
+                response: res,
+                data: siteConfig,
+                url: this.path + url,
+                method,
+            })
+        } catch (err) {
+            return this.error({
+                error: err,
+                url: this.path + url,
+                method,
+            })
+        }
+    }
+
+    async getSite({ method, url }: Request<{}, {}, {}, Partial<ISite>>, res: Response) {
+        try {
+            const siteConfig = await this.siteService.read()
+
+            this.send({
+                response: res,
+                data: siteConfig,
+                url: this.path + url,
+                method,
+            })
+        } catch (err) {
+            return this.error({
+                error: err,
+                url: this.path + url,
+                method,
+            })
+        }
+    }
+
+    async updateSite({ body, method, url }: Request<{}, {}, {}, Partial<ISite>>, res: Response) {
+        try {
+            const { updated } = await this.siteService.update(body)
+
+            this.send({
+                response: res,
+                data: updated,
                 url: this.path + url,
                 method,
             })

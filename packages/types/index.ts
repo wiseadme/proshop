@@ -18,10 +18,9 @@ export type {
   ISettings,
   IMerchant,
   IMerchantStores,
-  ISiteConfig,
   ISiteColors,
   ISitePages,
   ISiteAboutPage,
-  ISiteDesign,
+  ISite,
   IMerchantSocial
 } from './settings'

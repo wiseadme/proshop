@@ -21,6 +21,7 @@ const MerchantSchema: Schema = new Schema<IMerchant & Document>({
             code: String,
         },
         required: true,
+        _id: false
     },
     description: {
         type: String,
@@ -57,6 +58,7 @@ const MerchantSchema: Schema = new Schema<IMerchant & Document>({
             instagram: String,
         },
         default: null,
+        _id: false
     },
 }, {
     timestamps: true,
