@@ -5,6 +5,7 @@ import { Product } from '@modules/product/model/product.model'
 import { clone, getDifferences } from '@shared/helpers'
 import { createSharedComposable } from '@shared/features/create-shared-composable'
 import { IProduct, Maybe } from '@proshop/types'
+import { NotUpdatableKeysMap } from '@modules/product/constants'
 
 export const useProduct = createSharedComposable(() => {
     const {
@@ -121,13 +122,21 @@ export const useProduct = createSharedComposable(() => {
 
     const getProductUpdates = () => {
         const diffs = checkDiffs()!
+        let keys = Object.keys(diffs || {})
 
-        // notUpdatableKeys.forEach(key => diffs && diffs[key] && (delete diffs[key]))
-        const keys = diffs ? Object.keys(diffs) : null
+        if (keys.length) {
+            keys = keys.reduce((acc, key) => {
+                if (NotUpdatableKeysMap[key]) {
+                    delete diffs[key]
+                } else {
+                    acc.push(key)
+                }
 
-        if (!keys || !keys.length) return null
+                return acc
+            }, [] as string[])
+        }
 
-        return diffs
+        return keys.length ? diffs : null
     }
 
     const onInit = async () => {
@@ -138,7 +147,7 @@ export const useProduct = createSharedComposable(() => {
             getUnits(),
             getVariants(),
             getMetaTags(),
-            getMerchant()
+            getMerchant(),
         ])
 
         isLoading.value = false

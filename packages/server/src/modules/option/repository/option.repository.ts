@@ -21,6 +21,7 @@ export class OptionRepository implements IOptionRepository {
             name: option.name,
             variantId: option.variantId,
             price: option.price,
+            url: option.url,
             quantity: option.quantity,
             description: option.description,
             assets: option.assets,

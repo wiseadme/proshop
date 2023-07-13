@@ -3,7 +3,7 @@ import { IRest } from '@shared/types/app'
 import { IUser } from '@proshop/types'
 
 export interface IAuthRepository {
-    login(user: IUser): Promise<{ data: { data: IUser, ok: boolean } }>
+    login(user: { username: string, password: string }): Promise<{ data: { data: IUser, ok: boolean } }>
 
     logout(): Promise<{ data: { data: boolean, ok: boolean } }>
 
@@ -21,7 +21,7 @@ class Repository implements IAuthRepository {
         this.rest = rest
     }
 
-    async login(user) {
+    async login(user: { username: string, password: string }) {
         return this.rest.post('/v1/user/login', user)
     }
 
