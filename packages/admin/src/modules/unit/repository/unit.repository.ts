@@ -3,8 +3,8 @@ import { IRepository, IRest } from '@shared/types/app'
 import { IUnit } from '@proshop/types'
 
 export class Repository implements IRepository {
-    client: IRest = rest
-    path: string = '/api/v1/unit'
+    client: IRest
+    path: string
 
     constructor({ client, path }) {
         this.client = client
