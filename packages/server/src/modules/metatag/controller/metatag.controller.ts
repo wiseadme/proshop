@@ -11,7 +11,7 @@ import { IMetaTag } from '@proshop/types'
 
 @injectable()
 export class MetaTagController extends BaseController implements IController {
-    public path = '/v1/metatag'
+    public path = '/api/v1/metatag'
     public router = Router()
 
     constructor(

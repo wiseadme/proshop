@@ -2,7 +2,7 @@
     import {
         onBeforeUnmount,
         onMounted,
-        watch
+        watch,
     } from 'vue'
     import { useRouter } from 'vue-router'
     import { usePolling } from '@shared/composables/use-polling'
@@ -14,19 +14,20 @@
     import VNotifications from '@shared/components/VNotifications/VNotifications.vue'
     // Types
     import { IOrder, Maybe } from '@proshop/types'
+    import { useAuthService } from '@shared/composables/use-auth-service'
 
     const router = useRouter()
     const { newOrders, getNewOrders, getOrders } = useOrdersService()
     const { notify, remove } = useNotifications()
+    const { user } = useAuthService()
 
     const { stopPolling, startPolling } = usePolling({
         handler: () => getNewOrders(),
-        timeout: 5000
+        timeout: 5000,
     })
-
     let notSeenCount = 0
-    let newOrdersNotifyId: Maybe<number> = null
 
+    let newOrdersNotifyId: Maybe<number> = null
     onMounted(() => startPolling())
     onBeforeUnmount(() => stopPolling())
 
@@ -55,12 +56,12 @@
                 setTimeout(() => {
                     newOrdersNotifyId = notify({
                         title: 'Новые заказы',
-                        text: `У вас ${ notSeenCount } новых не просмотренных заказа`,
+                        text: `У вас ${notSeenCount} новых не просмотренных заказа`,
                         type: 'success',
                         closeOnClick: false,
                         actions: {
-                            events: { onClick }
-                        }
+                            events: { onClick },
+                        },
                     }) as number
                 }, 500)
             }
@@ -69,7 +70,7 @@
 
 </script>
 <template>
-    <v-layout>
+    <v-layout v-if="user">
         <app-header/>
         <app-navigation/>
         <v-main

@@ -1,10 +1,10 @@
 <script lang="ts" setup>
+    import { computed, unref } from 'vue'
     import OrganizationBlock from '@modules/settings/components/merchant/OrganizationBlock.vue'
     import CurrenciesBlock from '@modules/settings/components/merchant/CurrenciesBlock.vue'
     import ContactsBlock from '@modules/settings/components/merchant/ContactsBlock.vue'
     import SocialBlock from '@modules/settings/components/merchant/SocialBlock.vue'
     import { useMerchant } from '@modules/settings/composables/use-merchant'
-    import { computed, unref } from 'vue'
 
     const { createMerchant, getMerchantSettings, updateMerchant, isEditMode } = useMerchant()
 
@@ -57,9 +57,8 @@
                         <v-card-actions>
                             <v-button
                                 color="primary"
-                                class="ml-7 mb-7 px-4"
+                                class="ml-7 mb-7 px-4 app-border-radius"
                                 elevation="2"
-                                rounded
                                 @click="onSubmit(validate)"
                             >
                                 {{ buttonLabel }}
@@ -72,5 +71,5 @@
     </v-layout>
 </template>
 <style lang="scss">
-  @import "vue-color-kit/dist/vue-color-kit.css";
+    @import "vue-color-kit/dist/vue-color-kit.css";
 </style>

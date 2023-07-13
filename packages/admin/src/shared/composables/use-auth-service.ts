@@ -18,7 +18,10 @@ export const useAuthService = () => {
     const isAuthenticated = computed(() => _store.isAuthenticated)
     const isChecked = computed(() => _store.isChecked)
 
-    const login = async (user: IUser) => loginUser(user).then(() => router.push({ name: RouteNames.MAIN }))
+    const login = async (user: {
+        username: string,
+        password: string
+    }) => loginUser(user).then(() => router.push({ name: RouteNames.MAIN }))
     const logout = async () => logoutUser().then(() => router.push({ name: RouteNames.LOGIN }))
     const check = async () => whoAmI()
         .then(() => {

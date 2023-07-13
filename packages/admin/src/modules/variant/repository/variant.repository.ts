@@ -3,24 +3,32 @@ import { IRepository, IRest } from '@shared/types/app'
 import { IVariant } from '@proshop/types'
 
 export class Repository implements IRepository {
-  rest: IRest = rest
-  baseUrl: string = '/v1/variant'
+    client: IRest
+    path: string
 
-  create(variant: IVariant): Promise<{ data: { data: IVariant } }>{
-      return this.rest.post(this.baseUrl, variant)
-  }
+    constructor({ client, path }) {
+        this.client = client
+        this.path = path
+    }
 
-  read(params: Partial<IVariant>){
-      return this.rest.get(this.baseUrl, { query: params })
-  }
+    create(variant: IVariant): Promise<{ data: { data: IVariant } }>{
+        return this.client.post(this.path, variant)
+    }
 
-  update(updates: Partial<IVariant>): Promise<{ data: { data: Array<IVariant> } }>{
-      return this.rest.patch(this.baseUrl, updates)
-  }
+    read(params: Partial<IVariant>){
+        return this.client.get(this.path, { query: params })
+    }
 
-  delete(id){
-      return this.rest.delete(this.baseUrl, { params: { id } })
-  }
+    update(updates: Partial<IVariant>): Promise<{ data: { data: Array<IVariant> } }>{
+        return this.client.patch(this.path, updates)
+    }
+
+    delete(id){
+        return this.client.delete(this.path, { params: { id } })
+    }
 }
 
-export const useVariantRepository = () => new Repository()
+export const useVariantRepository = () => new Repository({
+    client: rest,
+    path: '/api/v1/variant'
+})

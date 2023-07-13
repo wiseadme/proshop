@@ -5,7 +5,7 @@ import { IController } from '@/types'
 
 @injectable()
 export class RatingController extends BaseController implements IController {
-    public path = '/v1/rating'
+    public path = '/api/v1/rating'
     public router = Router()
 
     constructor() {

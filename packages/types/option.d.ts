@@ -6,6 +6,7 @@ export interface IOption {
     variantId: string
     price?: number,
     quantity?: number,
+    url?: string
     description?: Maybe<string>,
     assets?: string[],
 }

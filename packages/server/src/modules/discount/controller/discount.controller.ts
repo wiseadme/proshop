@@ -5,7 +5,7 @@ import { IController } from '@/types'
 
 @injectable()
 export class DiscountController extends BaseController implements IController {
-    public path = '/v1/discount'
+    public path = '/api/v1/discount'
     public router = Router()
 
     constructor() {

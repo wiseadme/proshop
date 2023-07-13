@@ -4,7 +4,7 @@
         unref,
         watch
     } from 'vue'
-    import { IVariant, IVariantOption } from '@proshop/types'
+    import { IOption, IVariant } from '@proshop/types'
     import { useProduct } from '@modules/product/composables/use-product'
     import { useProductVariants } from '@modules/product/composables/use-product-variants'
 
@@ -23,7 +23,7 @@
 
     const currentVariant = ref<Maybe<IVariant>>(null)
     const existsVariants = ref<IVariant[]>([])
-    const optionPattern = ref<Maybe<IVariantOption>>(null)
+    const optionPattern = ref<IOption>(genVariantOptionPattern())
 
     const setExistsVariants = (variants) => {
         const variantsMap = {}
@@ -191,6 +191,16 @@
                             label="описание"
                         />
                     </v-col>
+                    <v-col
+                        cols="6"
+                    >
+                        <v-text-field
+                            v-model.trim="optionPattern.url"
+                            color="#272727"
+                            :disabled="!isEditMode"
+                            label="url"
+                        />
+                    </v-col>
                     <v-col>
                         <v-file-input
                             v-model="optionPattern.assets"
@@ -234,7 +244,7 @@
                                             style="position: absolute; top: 5px; right: 5px;"
                                             icon="fas fa-times"
                                             clickable
-                                            @click="onDeleteVariantImage(asset, variant)"
+                                            @click="onDeleteVariantImage(asset)"
                                         />
                                         <img
                                             :src="asset.url"

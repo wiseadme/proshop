@@ -13,7 +13,7 @@ import { Cart } from '@modules/cart/entity/cart.entity'
 
 @injectable()
 export class CartController extends BaseController implements IController {
-    public path = '/v1/cart'
+    public path = '/api/v1/cart'
     public router = Router()
 
     constructor(

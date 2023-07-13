@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import {RouteNames} from '@shared/constants/route-names'
+import { RouteNames } from '@shared/constants/route-names'
 import { productRoutes } from '@modules/product/routes'
 import { categoryRoutes } from '@modules/category/routes'
 import { attributeRoutes } from '@modules/attribute/routes'
@@ -42,11 +42,11 @@ export const routes = [
         name: 'auth',
         children: [
             ...authRoutes,
-        ]
-    }
+        ],
+    },
 ]
 
 export const router = createRouter({
     history: createWebHistory(baseUrl),
-    routes
+    routes,
 })

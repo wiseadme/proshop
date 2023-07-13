@@ -1,7 +1,7 @@
 import { ref, unref } from 'vue'
 import { useProductsService } from '@modules/product/composables/use-products-service'
 import { useProduct } from '@modules/product/composables/use-product'
-import { IVariantOption } from '@proshop/types'
+import { IOption } from '@proshop/types'
 
 export const useProductVariants = () => {
     const { model } = useProduct()
@@ -18,13 +18,14 @@ export const useProductVariants = () => {
 
     const isVariantEditMode = ref(false)
 
-    const genVariantOptionPattern = (): IVariantOption => ({
+    const genVariantOptionPattern = (): IOption => ({
         _id: '',
         variantId: '',
         name: '',
         quantity: 0,
         price: 0,
         description: null,
+        url: '',
         assets: []
     })
 

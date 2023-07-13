@@ -1,6 +1,6 @@
 import { file, rest } from '@shared/api'
 import { IRepository, IRest } from '@shared/types/app'
-import { IProductAsset } from '@modules/order/types'
+import { IAsset } from '@proshop/types'
 
 type CreateFileParams = {
   ownerId: string,
@@ -15,32 +15,36 @@ type DeleteFileParams = {
 
 interface IFilesRepository extends Omit<() => IRepository, 'read' | 'update'> {
   create: (params: CreateFileParams) => Promise<{ data: { data: any } }>
-  update: (updates: Partial<IProductAsset>) => Promise<{ data: { data: IProductAsset } }>
+  update: (updates: Partial<IAsset>) => Promise<{ data: { data: IAsset } }>
   delete: (params: DeleteFileParams) => Promise<{ data: { data: boolean } }>
 }
 
 class Repository implements IFilesRepository {
-  private _file: IRest
-  private _rest: IRest
-  private _baseUrl: string
+  filesClient: IRest
+  client: IRest
+  path: string
 
-  constructor(file, rest, baseUrl){
-      this._file = file
-      this._rest = rest
-      this._baseUrl = baseUrl
+  constructor({ filesClient, client, path }){
+      this.filesClient = filesClient
+      this.client = client
+      this.path = path
   }
 
   create({ ownerId, fileName, formData }){
-      return this._file.post(`${ this._baseUrl }?id=${ ownerId }&&fileName=${ fileName }`, formData)
+      return this.filesClient.post(`${ this.path }?id=${ ownerId }&&fileName=${ fileName }`, formData)
   }
 
   update(updates){
-      return this._rest.patch(this._baseUrl, updates)
+      return this.client.patch(this.path, updates)
   }
 
   delete(asset){
-      return this._file.delete(this._baseUrl, { params: { ...asset } })
+      return this.client.delete(this.path, { params: { ...asset } })
   }
 }
 
-export const useFilesRepository = () => new Repository(file, rest, '/v1/assets') as IFilesRepository
+export const useFilesRepository = () => new Repository({
+    filesClient: file,
+    client: rest,
+    path: '/api/v1/assets'
+}) as IFilesRepository

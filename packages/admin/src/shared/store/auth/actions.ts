@@ -1,10 +1,9 @@
 import { IAuthRepository, useAuthRepository } from '@shared/repository/auth.repository'
-import { IUser } from '@proshop/types'
 
 const repository: IAuthRepository = useAuthRepository()
 
 export const actions = {
-    async loginUser(user: IUser){
+    async loginUser(user: {username: string, password: string}){
         try {
             const { data } = await repository.login(user)
 

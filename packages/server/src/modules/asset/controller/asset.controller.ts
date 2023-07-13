@@ -14,7 +14,7 @@ import { IAssetsService } from '../types/service'
 
 @injectable()
 export class AssetController extends BaseController implements IController {
-    path = '/v1/assets'
+    path = '/api/v1/assets'
     router = Router()
 
     constructor(

@@ -1,6 +1,5 @@
 import { rest } from '@shared/api'
 import { IRepository, IRest } from '@shared/types/app'
-import { PRODUCTS_URL } from '@shared/constants/api'
 
 class Repository implements IRepository {
   rest: IRest
@@ -28,4 +27,4 @@ class Repository implements IRepository {
   }
 }
 
-export const useProductRepository = () => new Repository(rest, PRODUCTS_URL)
+export const useProductRepository = () => new Repository(rest, '/api/v1/product')

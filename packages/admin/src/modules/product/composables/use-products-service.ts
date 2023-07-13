@@ -250,6 +250,8 @@ export const useProductsService = createSharedComposable(() => {
     }
 
     return {
+        sort,
+        pagination,
         product,
         products,
         categoryProducts,
@@ -259,8 +261,6 @@ export const useProductsService = createSharedComposable(() => {
         unitItems,
         metaTagItems,
         totalLength,
-        pagination,
-        sort,
         getMerchant,
         getAttributes,
         getUnits,

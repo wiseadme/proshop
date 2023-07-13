@@ -8,7 +8,7 @@
     import { icons } from '@shared/enums/icons'
     import ProductLogo from '@shared/components/ProductLogo.vue'
 
-    const service = useAuthService()
+    const {login} = useAuthService()
 
     const username = ref('')
     const password = ref('')
@@ -18,7 +18,7 @@
     const passwordToggleIcon = computed(() => unref(isPasswordHidden) ? icons.EYE_SLASH : icons.EYE)
 
     const loginUser = (validate) => {
-        validate().then(() => service.login({ username: unref(username), password: unref(password) }))
+        validate().then(() => login({ username: unref(username), password: unref(password) }))
     }
 </script>
 <template>
@@ -41,6 +41,7 @@
                         label="логин"
                         :rules="[v => !!v || 'Необходимо заполнить']"
                         :prepend-icon="icons.AT"
+                        tabindex="1"
                         placeholder="введите почту"
                         autocomplete="new-password"
                     />
@@ -50,6 +51,7 @@
                         :rules="[v => !!v || 'Необходимо заполнить']"
                         :prepend-icon="icons.LOCK"
                         :type="passwordFieldType"
+                        tabindex="2"
                         placeholder="введите пароль"
                         autocomplete="new-password"
                     >
@@ -64,10 +66,10 @@
                 </v-card-content>
                 <v-card-actions>
                     <v-button
-                        class="elevation-1 my-3"
+                        class="elevation-1 my-3 app-border-radius"
                         color="primary"
                         width="120"
-                        rounded
+                        tabindex="3"
                         @click="loginUser(validate)"
                     >
                         войти
