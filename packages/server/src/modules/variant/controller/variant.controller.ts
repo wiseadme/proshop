@@ -13,7 +13,7 @@ import { IVariantService } from '../types/service'
 
 @injectable()
 export class VariantController extends BaseController implements IController {
-    public path = '/v1/variant'
+    public path = '/api/v1/variant'
     public router = Router()
 
     constructor(

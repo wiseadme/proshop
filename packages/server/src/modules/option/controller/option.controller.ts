@@ -15,7 +15,7 @@ import { OptionDTO } from '@modules/option/dto/option.dto'
 
 @injectable()
 export class OptionController extends BaseController implements IController {
-    public path = '/v1/options'
+    public path = '/api/v1/options'
     public router = Router()
 
     constructor(

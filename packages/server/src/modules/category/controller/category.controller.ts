@@ -17,7 +17,7 @@ import { Document } from 'mongoose'
 
 @injectable()
 export class CategoryController extends BaseController implements IController {
-    public path = '/v1/category'
+    public path = '/api/v1/category'
     public router = Router()
 
     constructor(

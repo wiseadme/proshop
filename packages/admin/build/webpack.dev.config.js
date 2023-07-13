@@ -10,7 +10,7 @@ const devConfig = (env = {}) => merge(baseConfig(env), {
         watchFiles: path.resolve(__dirname, '../src/'),
         allowedHosts: 'all',
         proxy: {
-            '/v1': {
+            '/api/v1': {
                 target: 'http://localhost:5001',
                 // target: 'http://45.95.234.205/',
                 ws: false,

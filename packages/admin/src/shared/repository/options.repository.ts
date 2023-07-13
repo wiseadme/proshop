@@ -1,38 +1,41 @@
 import { rest } from '@shared/api'
 import { IRepository, IRest } from '@shared/types/app'
-import { IVariantOption } from '@modules/variant/types'
+import { IOption } from '@proshop/types'
 
 interface IOptionsRepository extends IRepository {
-  create: (option: IVariantOption) => Promise<{ data: { data: IVariantOption } }>
-  read: (id?: string) => Promise<{ data: { data: IVariantOption[] } }>
-  update: (updates: Partial<IVariantOption>) => Promise<{ data: { data: IVariantOption } }>
-  delete: (id: string) => Promise<{ data: { data: boolean } }>
+    create: (option: IOption) => Promise<{ data: { data: IOption } }>
+    read: (id?: string) => Promise<{ data: { data: IOption[] } }>
+    update: (updates: Partial<IOption>) => Promise<{ data: { data: IOption } }>
+    delete: (id: string) => Promise<{ data: { data: boolean } }>
 }
 
 class Repository implements IOptionsRepository {
-  private _rest: IRest
-  private _baseUrl: string
+    client: IRest
+    path: string
 
-  constructor(rest, baseUrl){
-      this._rest = rest
-      this._baseUrl = baseUrl
-  }
+    constructor({ client, path }) {
+        this.client = client
+        this.path = path
+    }
 
-  create(option: IVariantOption){
-      return this._rest.post(this._baseUrl, option)
-  }
+    create(option: IOption) {
+        return this.client.post(this.path, option)
+    }
 
-  delete(id: string){
-      return this._rest.delete(this._baseUrl, { params: { id } })
-  }
+    delete(id: string) {
+        return this.client.delete(this.path, { params: { id } })
+    }
 
-  update(updates: Partial<IVariantOption>){
-      return this._rest.patch(this._baseUrl, updates)
-  }
+    update(updates: Partial<IOption>) {
+        return this.client.patch(this.path, updates)
+    }
 
-  read(id?: string){
-      return this._rest.get(this._baseUrl, { params: { id } })
-  }
+    read(id?: string) {
+        return this.client.get(this.path, { params: { id } })
+    }
 }
 
-export const useOptionsRepository = () => new Repository(rest, '/v1/options')
+export const useOptionsRepository = () => new Repository({
+    client: rest,
+    path: '/api/v1/options',
+})

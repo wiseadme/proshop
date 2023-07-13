@@ -3,24 +3,32 @@ import { IRepository, IRest } from '@shared/types/app'
 import { ISite } from '@proshop/types'
 
 class Repository implements IRepository {
-    rest: IRest = rest
-    baseUrl: string = '/v1/settings/site'
+    client: IRest
+    path: string
+
+    constructor({ client, path }) {
+        this.client = client
+        this.path = path
+    }
 
     create(siteConfig: ISite){
-        return rest.post(this.baseUrl, siteConfig)
+        return this.client.post(this.path, siteConfig)
     }
 
     read(){
-        return rest.get(this.baseUrl)
+        return this.client.get(this.path)
     }
 
     update(updates: Partial<ISite>){
-        return this.rest.patch(this.baseUrl, updates)
+        return this.client.patch(this.path, updates)
     }
 
     delete(id: string){
-        return this.rest.delete(this.baseUrl, { params: { id } })
+        return this.client.delete(this.path, { params: { id } })
     }
 }
 
-export const useSiteRepository = () => new Repository()
+export const useSiteRepository = () => new Repository({
+    client: rest,
+    path: '/api/v1/settings/site'
+})

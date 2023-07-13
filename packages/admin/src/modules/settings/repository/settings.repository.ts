@@ -2,24 +2,32 @@ import { rest } from '@shared/api'
 import { IRepository, IRest } from '@shared/types/app'
 
 class Repository implements IRepository {
-  rest: IRest = rest
-  baseUrl: string = '/v1/settings'
+    client: IRest
+    path: string
 
-  async create() {
-      return { data: null }
-  }
+    constructor({ client, path }) {
+        this.client = client
+        this.path = path
+    }
 
-  async read() {
-      return rest.get(this.baseUrl)
-  }
+    async create() {
+        return { data: null }
+    }
 
-  async update() {
-      return { data: null }
-  }
+    async read() {
+        return this.client.get(this.path)
+    }
 
-  async delete(id: string) {
-      return this.rest.delete(this.baseUrl, { params: { id } })
-  }
+    async update() {
+        return { data: null }
+    }
+
+    async delete(id: string) {
+        return this.client.delete(this.path, { params: { id } })
+    }
 }
 
-export const useSettingsRepository = () => new Repository()
+export const useSettingsRepository = () => new Repository({
+    client: rest,
+    path: '/api/v1/settings'
+})

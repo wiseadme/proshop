@@ -12,7 +12,7 @@ import { IOrder } from '@proshop/types'
 
 @injectable()
 export class OrderController extends BaseController implements IController {
-    public path = '/v1/order'
+    public path = '/api/v1/order'
     public router = Router()
 
     constructor(

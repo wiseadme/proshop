@@ -3,24 +3,32 @@ import { IRepository, IRest } from '@shared/types/app'
 import { IMerchant } from '@proshop/types'
 
 class Repository implements IRepository {
-  rest: IRest = rest
-  baseUrl: string = '/v1/settings/merchant'
+    client: IRest
+    path: string
 
-  create(merchant: IMerchant){
-      return rest.post(this.baseUrl, merchant)
-  }
+    constructor({ client, path }) {
+        this.client = client
+        this.path = path
+    }
 
-  read(){
-      return rest.get(this.baseUrl)
-  }
+    create(merchant: IMerchant) {
+        return this.client.post(this.path, merchant)
+    }
 
-  update(updates: Partial<IMerchant>){
-      return this.rest.patch(this.baseUrl, updates)
-  }
+    read() {
+        return this.client.get(this.path)
+    }
 
-  delete(id: string){
-      return this.rest.delete(this.baseUrl, { params: { id } })
-  }
+    update(updates: Partial<IMerchant>) {
+        return this.client.patch(this.path, updates)
+    }
+
+    delete(id: string) {
+        return this.client.delete(this.path, { params: { id } })
+    }
 }
 
-export const useMerchantRepository = () => new Repository()
+export const useMerchantRepository = () => new Repository({
+    client: rest,
+    path: '/api/v1/settings/merchant',
+})

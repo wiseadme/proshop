@@ -15,31 +15,36 @@ export interface IAuthRepository {
 }
 
 class Repository implements IAuthRepository {
-    rest: IRest
+    client: IRest
+    path: string
 
-    constructor(rest) {
-        this.rest = rest
+    constructor({ client, path }) {
+        this.client = client
+        this.path = path
     }
 
     async login(user: { username: string, password: string }) {
-        return this.rest.post('/v1/user/login', user)
+        return this.client.post(`${this.path}/login`, user)
     }
 
     async logout() {
-        return this.rest.get('/v1/user/logout')
+        return this.client.get(`${this.path}/logout`)
     }
 
     async create(user) {
-        return this.rest.post('/v1/user/create', user)
+        return this.client.post(`${this.path}/create`, user)
     }
 
     async refresh() {
-        return this.rest.get('/v1/user/refresh')
+        return this.client.get(`${this.path}/refresh`)
     }
 
     async whoAmI() {
-        return this.rest.get('/v1/user/whoami')
+        return this.client.get(`${this.path}/whoami`)
     }
 }
 
-export const useAuthRepository = () => new Repository(auth)
+export const useAuthRepository = () => new Repository({
+    client: auth,
+    path: '/api/v1/user',
+})
