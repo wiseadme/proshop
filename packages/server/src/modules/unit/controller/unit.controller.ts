@@ -11,7 +11,7 @@ import { IUnitService } from '@modules/unit/types/service'
 
 @injectable()
 export class UnitController extends BaseController implements IController {
-    path = '/v1/unit'
+    path = '/api/v1/unit'
     router = Router()
 
     constructor(

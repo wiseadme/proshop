@@ -10,7 +10,7 @@ import { IMerchant, ISite } from '@proshop/types'
 
 @injectable()
 export class SettingsController extends BaseController implements IController {
-    public path = '/v1/settings'
+    public path = '/api/v1/settings'
     public router = Router()
 
     constructor(

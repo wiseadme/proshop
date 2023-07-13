@@ -17,7 +17,7 @@ import { setMiddlewares } from '@common/helpers'
 
 @injectable()
 export class ProductController extends BaseController implements IController {
-    public path: string = '/v1/product'
+    public path: string = '/api/v1/product'
     public router: Router = Router()
 
     constructor(
