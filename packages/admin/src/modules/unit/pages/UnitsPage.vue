@@ -1,7 +1,6 @@
 <script lang="ts" setup>
     import { useUnitsService } from '@modules/unit/composables/use-units-service'
     import { useUnit } from '@modules/unit/composables/use-unit'
-    // @ts-ignore
     import draggable from 'vuedraggable'
 
     const { units, getUnits } = useUnitsService()
@@ -56,10 +55,10 @@
                         <v-card-actions class="">
                             <v-button
                                 elevation="2"
+                                class="app-border-radius"
                                 color="primary"
                                 :loading="loading"
-                                width="100"
-                                rounded
+                                width="120"
                                 @click="onSaveUnit(validate)"
                             >
                                 Сохранить
@@ -67,9 +66,8 @@
                             <v-button
                                 elevation="2"
                                 color="warning"
-                                class="ml-2"
-                                width="100"
-                                rounded
+                                class="ml-2 app-border-radius"
+                                width="120"
                                 @click="clearUnitModel"
                             >
                                 Очистить

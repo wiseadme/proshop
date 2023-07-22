@@ -27,29 +27,28 @@
 
     const onSave = (model) => {
         if (unref(site)) {
-            updateSite(model)
-        } else {
-            createSite(model)
+            return updateSite(model)
         }
+
+        return createSite(model)
+
     }
 
     const onContextMenu = (e, item) => {
         selected.value = item
-
         positionX.value = e.clientX
         positionY.value = e.clientY
-
         showColorPicker.value = true
     }
 
     const palette = computed<PaletteItem[]>(() =>[
         {
-            color: unref(model).colors!.primary || '#00003b',
+            color: unref(model).colors!.primary || '',
             name: 'Primary цвет',
             type: 'primary',
         },
         {
-            color: unref(model).colors!.secondary || '#18bee3',
+            color: unref(model).colors!.secondary || '',
             name: 'Secondary цвет',
             type: 'secondary',
         },
@@ -83,6 +82,7 @@
     <v-card
         color="white"
         elevation="2"
+        class="app-border-radius"
         width="600"
     >
         <v-card-title class="primary--text">
@@ -99,18 +99,25 @@
                         {{ item.name }}
                     </div>
                     <v-spacer/>
-                    <div
-                        class="colors__color white--text d-flex align-center justify-center px-2"
-                        :style="{backgroundColor: item.color, width: '75px', height: '30px', cursor: 'pointer', pointerEvents: 'auto'}"
+                    <v-button
+                        class="colors__color app-border-radius"
+                        :style="{backgroundColor: item.color, cursor: 'pointer', pointerEvents: 'auto'}"
+                        width="100"
+                        elevation="2"
+                        :color="item.color"
                         @contextmenu.prevent="onContextMenu($event, item)"
                     >
                         {{ item.color }}
-                    </div>
+                    </v-button>
                 </div>
             </div>
         </v-card-content>
         <v-card-actions>
             <v-button
+                color="primary"
+                width="120"
+                class="app-border-radius"
+                elevation="2"
                 @click="onSave(model)"
             >
                 сохранить

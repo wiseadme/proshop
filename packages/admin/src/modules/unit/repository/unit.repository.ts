@@ -2,8 +2,8 @@ import { rest } from '@shared/api'
 import { IRepository, IRest } from '@shared/types/app'
 import { IUnit } from '@proshop/types'
 
-export class Repository implements IRepository {
-    client: IRest
+export class Repository implements IRepository<IUnit> {
+    client: IRest<IUnit>
     path: string
 
     constructor({ client, path }) {
@@ -11,7 +11,7 @@ export class Repository implements IRepository {
         this.path = path
     }
 
-    create(unit: IUnit): Promise<{ data: { data: IUnit } }> {
+    create(unit: IUnit) {
         return this.client.post(this.path, unit)
     }
 
@@ -19,7 +19,7 @@ export class Repository implements IRepository {
         return this.client.get(this.path, { query: params })
     }
 
-    update(updates): Promise<{ data: { data: IUnit } }> {
+    update(updates){
         return this.client.patch(this.path, updates)
     }
 

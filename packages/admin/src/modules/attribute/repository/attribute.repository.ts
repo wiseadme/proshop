@@ -2,8 +2,8 @@ import { rest } from '@shared/api'
 import { IRepository, IRest } from '@shared/types/app'
 import { IAttribute } from '@proshop/types'
 
-export class Repository implements IRepository {
-    client: IRest
+export class Repository implements IRepository<IAttribute> {
+    client: IRest<IAttribute>
     path: string
 
     constructor({ client, path }) {
@@ -19,7 +19,7 @@ export class Repository implements IRepository {
         return this.client.get(this.path, { query: { id } })
     }
 
-    update(updates): Promise<{ data: { data: Array<IAttribute> } }>{
+    update(updates){
         return this.client.patch(this.path, updates)
     }
 

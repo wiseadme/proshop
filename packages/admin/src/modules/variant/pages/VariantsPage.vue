@@ -61,8 +61,8 @@
                             <v-button
                                 elevation="2"
                                 color="primary"
-                                width="100"
-                                rounded
+                                class="app-border-radius"
+                                width="120"
                                 @click="onCreate(validate)"
                             >
                                 Сохранить
@@ -70,8 +70,8 @@
                             <v-button
                                 elevation="2"
                                 color="warning"
-                                class="ml-2"
-                                width="100"
+                                class="ml-2 app-border-radius"
+                                width="120"
                                 rounded
                                 @click="clearForm"
                             >

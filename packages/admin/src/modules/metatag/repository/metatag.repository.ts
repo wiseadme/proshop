@@ -1,8 +1,9 @@
 import { rest } from '@shared/api'
 import { IRepository, IRest } from '@shared/types/app'
+import { IMetaTag } from '@proshop/types'
 
-class Repository implements IRepository {
-    client: IRest
+class Repository implements IRepository<IMetaTag> {
+    client: IRest<IMetaTag>
     path: string
 
     constructor({ client, path }) {

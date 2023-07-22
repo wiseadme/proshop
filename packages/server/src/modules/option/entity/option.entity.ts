@@ -1,5 +1,5 @@
-import { IOption, Maybe } from '@proshop/types'
-import { translator } from '@common/utils/translator'
+import { IOption, IOptionProduct, Maybe } from '@proshop/types'
+
 export class Option implements IOption {
     private _name: string
     private _variantId: string
@@ -7,7 +7,6 @@ export class Option implements IOption {
     private _quantity?: number
     private _description?: Maybe<string>
     private _assets?: string[]
-    private _url?: string
 
     constructor({
         name = '',
@@ -16,7 +15,6 @@ export class Option implements IOption {
         description = null,
         assets = [],
         variantId = '',
-        url = ''
     }: IOption) {
         this._name = name
         this._price = price
@@ -24,7 +22,6 @@ export class Option implements IOption {
         this._description = description
         this._assets = assets
         this._variantId = variantId
-        this._url = url ? translator(url.toLowerCase()) : undefined
     }
 
     get name() {
@@ -49,10 +46,6 @@ export class Option implements IOption {
 
     get assets() {
         return this._assets
-    }
-
-    get url() {
-        return this._url
     }
 
     static create(option: IOption): IOption {

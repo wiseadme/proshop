@@ -32,7 +32,7 @@
         },
         customers: {
             title: 'Клиенты',
-            icon:'fas fa-people-arrows',
+            icon: 'fas fa-people-arrows',
             path: '/customers'
         },
         users: {
@@ -44,6 +44,22 @@
             title: 'Атрибуты',
             icon: 'fab fa-buffer',
             path: '/attributes'
+        },
+        filter: {
+            title: 'Фильтры',
+            icon: 'fas fa-list',
+            children: {
+                groups: {
+                    title: 'Группы фильтров',
+                    icon: 'far fa-object-group',
+                    path: '/filter/groups'
+                },
+                items: {
+                    title: 'Коллекции фильтров',
+                    icon: 'far fa-object-group',
+                    path: '/filter/items'
+                }
+            }
         },
         units: {
             title: 'Измерения',
@@ -63,7 +79,6 @@
         settings: {
             title: 'Конфигурация',
             icon: 'fas fa-cog',
-            parent: 'settings',
             children: {
                 merchant: {
                     title: 'Организация',

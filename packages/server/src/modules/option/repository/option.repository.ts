@@ -21,17 +21,20 @@ export class OptionRepository implements IOptionRepository {
             name: option.name,
             variantId: option.variantId,
             price: option.price,
-            url: option.url,
             quantity: option.quantity,
             description: option.description,
             assets: option.assets,
-        }).save() as any).populate('assets')
+        })
+            .save() as any)
+            .populate('assets')
     }
 
     async read(id?: string): Promise<Array<Document & IOption>> {
         id && validateId(id)
 
-        const options = await OptionModel.find(id ? { _id: id } : {}).populate('assets')
+        const options = await OptionModel
+            .find(id ? { _id: id } : {})
+            .populate('assets')
 
         return options as Array<Document & IOption>
     }
@@ -39,11 +42,13 @@ export class OptionRepository implements IOptionRepository {
     async update(updates: Partial<IOption>): Promise<{ updated: Document & IOption }> {
         validateId(updates._id)
 
-        const option = await OptionModel.findByIdAndUpdate(
+        const option = await OptionModel
+            .findByIdAndUpdate(
             { _id: updates._id },
             { $set: updates },
             { new: true },
-        ).populate('assets') as Document & IOption
+        )
+            .populate('assets') as Document & IOption
 
         return { updated: option }
     }

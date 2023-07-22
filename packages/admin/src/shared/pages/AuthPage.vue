@@ -57,7 +57,6 @@
                     >
                         <template #append-icon>
                             <v-icon
-                                clickable
                                 :icon="passwordToggleIcon"
                                 @click="isPasswordHidden = !isPasswordHidden"
                             />

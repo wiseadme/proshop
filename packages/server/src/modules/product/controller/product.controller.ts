@@ -46,7 +46,7 @@ export class ProductController extends BaseController implements IController {
         )
         this.router.delete(
             '/',
-            setMiddlewares({ protect: true, roles: ['root'] }),
+            setMiddlewares({ roles: ['root'] }),
             expressAsyncHandler(this.deleteProduct.bind(this)),
         )
     }

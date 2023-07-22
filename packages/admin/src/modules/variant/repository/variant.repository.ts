@@ -2,8 +2,8 @@ import { rest } from '@shared/api'
 import { IRepository, IRest } from '@shared/types/app'
 import { IVariant } from '@proshop/types'
 
-export class Repository implements IRepository {
-    client: IRest
+export class Repository implements IRepository<IVariant> {
+    client: IRest<IVariant>
     path: string
 
     constructor({ client, path }) {
@@ -11,7 +11,7 @@ export class Repository implements IRepository {
         this.path = path
     }
 
-    create(variant: IVariant): Promise<{ data: { data: IVariant } }>{
+    create(variant: IVariant){
         return this.client.post(this.path, variant)
     }
 
@@ -19,7 +19,7 @@ export class Repository implements IRepository {
         return this.client.get(this.path, { query: params })
     }
 
-    update(updates: Partial<IVariant>): Promise<{ data: { data: Array<IVariant> } }>{
+    update(updates: Partial<IVariant>){
         return this.client.patch(this.path, updates)
     }
 

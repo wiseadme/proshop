@@ -2,13 +2,13 @@
     import { watch } from 'vue'
     import { useYandexMaps } from '@shared/composables/use-yandex-maps'
 
-    const props = withDefaults(defineProps<{
+    const {
+        coords = [55.87, 37.66],
+        address = ''
+    } = defineProps<{
         coords: number[]
         address: string
-    }>(), {
-        coords: () => [55.87, 37.66],
-        address: ''
-    })
+    }>()
 
     const { addYmapsScript } = useYandexMaps()
 
@@ -42,25 +42,25 @@
             return
         }
 
-        marker = new yandexMaps.Placemark(props.coords, {}, {
+        marker = new yandexMaps.Placemark(coords, {}, {
             preset: 'islands#icon',
-            iconColor: '#0095b6'
+            iconColor: '#0095b6',
         })
 
-        map.setCenter(props.coords)
+        map.setCenter(coords)
 
         map.geoObjects.add(marker)
     }
 
     const init = () => {
         map = new yandexMaps.Map('map', {
-            center: props.coords,
+            center: coords,
             zoom: 16,
-            controls: []
+            controls: [],
         })
     }
 
-    watch(() => props.coords, setAddressMarker)
+    watch(() => coords, setAddressMarker)
 
     getYmaps().then(() => {
         init()
@@ -77,22 +77,22 @@
     </div>
 </template>
 <style lang="scss">
-  .map-service {
-    height: 400px;
-    position: relative;
+    .map-service {
+        height: 400px;
+        position: relative;
 
-    &__address {
-      position: absolute;
-      top: 20px;
-      left: 20px;
-      padding: 5px 8px;
-      z-index: 1;
-      background: #ffffff;
-      border-radius: 10px;
+        &__address {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            padding: 5px 8px;
+            z-index: 1;
+            background: #ffffff;
+            border-radius: 10px;
+        }
     }
-  }
 
-  #map {
-    height: 100%;
-  }
+    #map {
+        height: 100%;
+    }
 </style>

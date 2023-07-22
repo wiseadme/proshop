@@ -6,6 +6,7 @@ const AttributeSchema = new Schema<Document & IAttribute>({
     key: {
         type: String,
         required: true,
+        unique: true
     },
     value: {
         type: String,

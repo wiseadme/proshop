@@ -1,8 +1,9 @@
 import { rest } from '@shared/api'
 import { IRepository, IRest } from '@shared/types/app'
+import { IProduct } from '@proshop/types'
 
-class Repository implements IRepository {
-  rest: IRest
+class Repository implements IRepository<IProduct> {
+  rest: IRest<IProduct>
   baseUrl: string
 
   constructor(rest, baseUrl){

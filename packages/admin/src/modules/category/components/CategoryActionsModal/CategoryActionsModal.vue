@@ -62,9 +62,8 @@
     const onDeleteImage = () => onDeleteCategoryImage(unref(model).image)
 
     const onLoadImage = ([file]) => {
-        if (!file) {
-            return
-        }
+        if (!file) return
+
         onUploadCategoryImage(file)
         files.value = []
     }

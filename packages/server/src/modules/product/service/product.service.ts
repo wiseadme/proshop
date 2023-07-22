@@ -19,14 +19,13 @@ export class ProductService extends ServiceHelpers implements IProductService {
     constructor(
         @inject(TYPES.UTILS.ILogger) private logger: ILogger,
         @inject(TYPES.REPOSITORIES.IProductRepository) private repository: IProductRepository,
-        @inject(TYPES.SERVICES.IEventBusService) private events: IEventBusService,
         @inject(TYPES.SERVICES.IProductGatewayService) private gateway: IProductGatewayService,
     ) {
         super()
     }
 
     async create(product: IProduct) {
-        const item = await this.repository.create(Product.create(product)) as Document & IProduct
+        const item = await this.repository.create(Product.create(product)) as IProduct
 
         if (product.categories.length) {
             for await (const category of product.categories) {
@@ -55,7 +54,7 @@ export class ProductService extends ServiceHelpers implements IProductService {
         }
 
         /**
-         * @description - если отсутствует параметры
+         * @description - если отсутствуют параметры
          * конкретного товара то получаем кол - во
          * документов в total
          */
@@ -81,7 +80,7 @@ export class ProductService extends ServiceHelpers implements IProductService {
         if (updates.categories) {
             const [product] = await this.repository.read({ _id: updates._id })
             /**
-             * Сохраняем текущие категории и апдейты категорий в мапу
+             * @description - Сохраняем текущие категории и апдейты категорий в мапу
              * для дальнейшего апдейта кол-ва товаров в категориях
              */
             const updateCategoriesMap = this.getCategoriesMap(updates.categories)
@@ -107,12 +106,17 @@ export class ProductService extends ServiceHelpers implements IProductService {
         const [product] = await this.repository.read(id)
         const result = await this.repository.delete(id)
 
+        /**
+         * @description - Удаляем всю статику связанную с товаром
+         */
         await this.gateway.asset.deleteFiles(product._id)
-
+        /**
+         * @description - Удаляем товар из категории
+         */
         for await (const category of product.categories) {
             await Promise.all([
                 this.gateway.category.update({ _id: category._id, length: -1 }),
-                this.gateway.asset.deleteFiles(category._id),
+                // this.gateway.asset.deleteFiles(category._id),
             ])
         }
 

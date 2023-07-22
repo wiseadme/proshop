@@ -224,6 +224,8 @@
             <v-button
                 color="orange"
                 elevation="2"
+                class="app-border-radius"
+                width="120"
                 @click="onClose"
             >
                 закрыть

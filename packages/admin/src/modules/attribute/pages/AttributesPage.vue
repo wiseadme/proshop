@@ -1,11 +1,10 @@
 <script lang="ts" setup>
     import { ref, unref } from 'vue'
-    // @ts-ignore
     import draggable from 'vuedraggable'
-    // Types
     import { Attribute } from '@modules/attribute/model/attribute.model'
-    // Helpers
+    // Composables
     import { useAttributesService } from '@modules/attribute/composables/use-attributes-service'
+    // Types
     import { IAttribute } from '@proshop/types'
 
     const {
@@ -82,7 +81,8 @@
                             <v-button
                                 elevation="2"
                                 color="primary"
-                                width="100"
+                                class="app-border-radius"
+                                width="120"
                                 rounded
                                 @click="onCreate(validate)"
                             >
@@ -91,9 +91,8 @@
                             <v-button
                                 elevation="2"
                                 color="warning"
-                                class="ml-2"
-                                width="100"
-                                rounded
+                                class="ml-2 app-border-radius"
+                                width="120"
                                 @click="clearForm"
                             >
                                 Очистить

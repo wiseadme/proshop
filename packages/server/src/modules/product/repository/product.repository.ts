@@ -38,7 +38,7 @@ export class ProductRepository extends RepositoryHelpers implements IProductRepo
             related: product.related,
         })
             .save())
-            .populate(this.getPopulateParams()) as Document & IProduct
+            .populate(this.getPopulateParams()) as IProduct
     }
 
     async read({

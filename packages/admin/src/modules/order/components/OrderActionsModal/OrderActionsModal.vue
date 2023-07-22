@@ -4,9 +4,7 @@
     import { OrderDocument } from './OrderDocument'
     import { IOrder, IUser } from '@proshop/types'
 
-    withDefaults(defineProps<{ users: IUser[] }>(), {
-        users: () => []
-    })
+    const { users = [] } = defineProps<{ users: IUser[] }>()
 
     defineEmits<{
         (e: 'close'): void
@@ -15,6 +13,7 @@
 
     const { order } = useOrders()
     const { showModal, closeOrder } = useOrderActionsModal()
+
     const currentComponent = OrderDocument
 
 </script>

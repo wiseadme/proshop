@@ -92,7 +92,7 @@
         if (unref(currentVariant)) {
             setCurrentVariant(variants?.find(v => v._id === unref(currentVariant)!._id) || unref(existsVariants)?.[0])
         } else {
-            currentVariant.value = variants?.[0] || unref(existsVariants)?.[0]!
+            currentVariant.value = variants?.[0] || unref(existsVariants)?.[0]
         }
 
     }, { immediate: true })
@@ -148,9 +148,7 @@
         >
             <v-form v-slot="{validate}">
                 <v-row>
-                    <v-col
-                        cols="6"
-                    >
+                    <v-col cols="6">
                         <v-text-field
                             v-model.trim="optionPattern.name"
                             color="#272727"
@@ -159,9 +157,7 @@
                             :disabled="!isEditMode"
                         />
                     </v-col>
-                    <v-col
-                        cols="6"
-                    >
+                    <v-col cols="6">
                         <v-text-field
                             v-model.number="optionPattern.quantity"
                             color="#272727"
@@ -170,9 +166,7 @@
                             :disabled="!isEditMode"
                         />
                     </v-col>
-                    <v-col
-                        cols="6"
-                    >
+                    <v-col cols="6">
                         <v-text-field
                             v-model.number="optionPattern.price"
                             color="#272727"
@@ -181,9 +175,7 @@
                             :disabled="!isEditMode"
                         />
                     </v-col>
-                    <v-col
-                        cols="6"
-                    >
+                    <v-col cols="6">
                         <v-text-field
                             v-model.trim="optionPattern.description"
                             color="#272727"
@@ -191,9 +183,7 @@
                             label="описание"
                         />
                     </v-col>
-                    <v-col
-                        cols="6"
-                    >
+                    <v-col cols="6">
                         <v-text-field
                             v-model.trim="optionPattern.url"
                             color="#272727"
