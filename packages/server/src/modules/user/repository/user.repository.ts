@@ -3,42 +3,40 @@ import { IUserRepository } from '@modules/user/types/repository'
 import { UserModel } from '@modules/user/model/user.model'
 import mongoose, { Document } from 'mongoose'
 import { validateId } from '@common/utils/mongoose-validate-id'
-import { IUser } from '@proshop/types'
+import { IUser, IUserMongoModel } from '@proshop/types'
+import { UserMapper } from '@modules/user/mappers/user.mapper'
 
 @injectable()
 export class UserRepository implements IUserRepository {
-    async create(params): Promise<IUser & Document> {
-        const user = new UserModel({
+    async create(user: IUser): Promise<IUser> {
+        const userData = await new UserModel({
+            ...UserMapper.toMongoModelData(user),
             _id: new mongoose.Types.ObjectId(),
-            firstName: params.firstName,
-            secondName: params.secondName,
-            username: params.username,
-            password: params.password,
-            phone: params.phone,
-            position: params.position,
-            roles: params.roles,
-            enabled: params.enabled,
-        }) as IUser & Document
+        })
+            .save()
 
-        await user.save()
-
-        return user
+        return UserMapper.toDomain(userData.toObject())
     }
 
-    async read(params): Promise<(IUser & Document)[]> {
-        return UserModel.find(params)
+    async find(params): Promise<IUser[]> {
+        const users = await UserModel
+            .find(params)
+            .lean() as IUserMongoModel[]
+
+        return users.map(user => UserMapper.toDomain(user))
     }
 
     async update(updates: any) {
-        validateId(updates._id)
+        validateId(updates.id)
 
         const updated = await UserModel.findByIdAndUpdate(
-            { _id: updates._id },
+            { _id: updates.id },
             { $set: updates },
             { new: true },
-        ) as IUser & Document
+        )
+            .lean() as IUserMongoModel
 
-        return { updated }
+        return { updated: UserMapper.toDomain(updated) }
     }
 
     async delete(id) {

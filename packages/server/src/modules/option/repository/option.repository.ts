@@ -5,8 +5,9 @@ import { OptionModel } from '@modules/option/model/option.model'
 import { validateId } from '@common/utils/mongoose-validate-id'
 // Types
 import { ILogger } from '@/types/utils'
-import { IOption } from '@proshop/types'
+import { IOption, IOptionMongoModel } from '@proshop/types'
 import { IOptionRepository } from '../types/repository'
+import { OptionMapper } from '@modules/option/mappers/option.mapper'
 
 @injectable()
 export class OptionRepository implements IOptionRepository {
@@ -15,42 +16,49 @@ export class OptionRepository implements IOptionRepository {
     ) {
     }
 
-    async create(option: IOption): Promise<Document & IOption> {
-        return (await new OptionModel({
+    async create(option: IOption): Promise<IOption> {
+        const optionData = await new OptionModel({
+            ...OptionMapper.toMongoModelData(option),
             _id: new mongoose.Types.ObjectId(),
-            name: option.name,
-            variantId: option.variantId,
-            price: option.price,
-            quantity: option.quantity,
-            description: option.description,
-            assets: option.assets,
         })
-            .save() as any)
-            .populate('assets')
+            .save()
+
+        await optionData.populate('assets')
+
+        return OptionMapper.toDomain(optionData.toObject())
     }
 
-    async read(id?: string): Promise<Array<Document & IOption>> {
-        id && validateId(id)
-
+    async find(): Promise<IOption[]> {
         const options = await OptionModel
-            .find(id ? { _id: id } : {})
-            .populate('assets')
+            .find({})
+            .lean()
+            .populate('assets') as IOptionMongoModel[]
 
-        return options as Array<Document & IOption>
+        return options.map(option => OptionMapper.toDomain(option))
     }
 
-    async update(updates: Partial<IOption>): Promise<{ updated: Document & IOption }> {
-        validateId(updates._id)
+    async findById(id: string) {
+        const option = await OptionModel
+            .findById(id)
+            .lean()
+            .populate('assets') as IOptionMongoModel
+
+        return OptionMapper.toDomain(option)
+    }
+
+    async update(updates: Partial<IOption>): Promise<{ updated: IOption }> {
+        validateId(updates.id)
 
         const option = await OptionModel
             .findByIdAndUpdate(
-            { _id: updates._id },
-            { $set: updates },
-            { new: true },
-        )
-            .populate('assets') as Document & IOption
+                { _id: updates.id },
+                { $set: updates },
+                { new: true },
+            )
+            .lean()
+            .populate('assets') as IOptionMongoModel
 
-        return { updated: option }
+        return { updated: OptionMapper.toDomain(option) }
     }
 
     async delete(id) {

@@ -1,37 +1,22 @@
 import { IFilterGroup } from '@proshop/types'
-export class FilterGroup implements IFilterGroup{
-    private __id: string
-    private _name: string
-    private _attributeName: string
-    private _associate?: string
+
+export class FilterGroup implements IFilterGroup {
+    readonly id: string
+    readonly name: string
+    readonly attributeName: string
+    readonly associate?: string
 
     constructor({
-        _id = '',
+        id = '',
         name = '',
         attributeName = '',
-        associate = undefined
+        associate = undefined,
     }) {
-        this.__id = ''
-        this._name = name
-        this._attributeName = attributeName
-        this._associate = associate
+        this.id = id
+        this.name = name
+        this.attributeName = attributeName
+        this.associate = associate
     }
-    get _id() {
-        return this.__id
-    }
-
-    get name() {
-        return this._name
-    }
-
-    get attributeName() {
-        return this._attributeName
-    }
-
-    get associate() {
-        return this._associate
-    }
-
     static create(filterGroup) {
         return new FilterGroup(filterGroup)
     }

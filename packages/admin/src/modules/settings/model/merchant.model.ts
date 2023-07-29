@@ -1,7 +1,7 @@
 import { IMerchant } from '@proshop/types'
 
 export class Merchant implements IMerchant {
-  public readonly _id: IMerchant['_id']
+  public readonly id: IMerchant['id']
   public organization: IMerchant['organization']
   public name: IMerchant['name']
   public description: IMerchant['description']
@@ -15,7 +15,7 @@ export class Merchant implements IMerchant {
   public social: IMerchant['social']
 
   constructor({
-      _id = '',
+      id = '',
       organization,
       name = null,
       description = null,
@@ -32,7 +32,7 @@ export class Merchant implements IMerchant {
           instagram: '',
       },
   }: IMerchant) {
-      this._id = _id
+      this.id = id
       this.organization = organization
       this.name = name
       this.description = description

@@ -10,7 +10,6 @@ import { IController } from '@/types'
 import { IOptionService } from '../types/service'
 import { IOption } from '@proshop/types'
 import { ValidateMiddleware } from '@common/middlewares/validate.middleware'
-import { Option } from '@modules/option/entity/option.entity'
 import { OptionDTO } from '@modules/option/dto/option.dto'
 
 @injectable()
@@ -35,7 +34,7 @@ export class OptionController extends BaseController implements IController {
 
     async createOption({ body, method }: Request<{}, {}, IOption>, res: Response) {
         try {
-            const option = await this.service.create(Option.create(body))
+            const option = await this.service.create(body)
 
             this.send({
                 response: res,

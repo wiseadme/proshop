@@ -55,7 +55,7 @@
 </script>
 <template>
     <v-card
-        v-if="model._id"
+        v-if="model.id"
         class="elevation-2 app-border-radius"
         width="100%"
         color="white"
@@ -107,7 +107,7 @@
                         </v-list-item>
                         <v-list-item
                             v-for="(it, i) in model.items"
-                            :key="it.product._id"
+                            :key="it.product.id"
                             style="border-bottom: 1px solid #dcdcdc"
                         >
                             <v-list-item-icon>

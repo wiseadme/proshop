@@ -160,7 +160,7 @@
                                     <v-icon
                                         color="error"
                                         clickable
-                                        @click="onDeleteMetaTag(element._id)"
+                                        @click="onDeleteMetaTag(element.id)"
                                     >
                                         fas fa-times
                                     </v-icon>

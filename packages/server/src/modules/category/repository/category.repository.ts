@@ -4,11 +4,11 @@ import { CategoryModel } from '../model/category.model'
 import { TYPES } from '@common/schemes/di-types'
 import { validateId } from '@common/utils/mongoose-validate-id'
 // Types
-import { ICategory } from '@proshop/types'
+import { ICategory, ICategoryMongoModel } from '@proshop/types'
 import { ICategoryRepository } from '../types/repository'
 import { ILogger } from '@/types/utils'
 
-type UpdateParams = Partial<ICategory>
+import { CategoryMapper } from '@modules/category/mappers/category.mapper'
 
 @injectable()
 export class CategoryRepository implements ICategoryRepository {
@@ -17,61 +17,51 @@ export class CategoryRepository implements ICategoryRepository {
 
     async create(category: ICategory) {
         const created = await new CategoryModel({
+            ...CategoryMapper.toMongoModelData(category),
             _id: new mongoose.Types.ObjectId(),
-            title: category.title,
-            url: category.url,
-            order: category.order,
-            seo: category.seo,
-            image: category.image,
-            parent: category.parent,
-            children: category.children,
-            length: category.length,
-            conditions: category.conditions,
-        }).save()
+        })
+            .save()
 
         await Promise.all([
             created.populate('parent'),
             created.populate('children'),
         ])
 
-        return created
+        return CategoryMapper.toDomain(created.toObject())
     }
 
-    async read(params: Partial<ICategory>): Promise<Array<Document & ICategory>> {
-        params._id && validateId(params._id)
+    async read(params: Partial<ICategory>): Promise<ICategory[]> {
+        params.id && validateId(params.id)
 
         const categories = await CategoryModel
-            .find(params)
-            .populate('parent', ['title', 'url', 'children'])
-            .populate('children', ['title', 'url', 'children'])
+            .find(params.id ? { _id: params.id } : params)
+            .lean()
+            .populate('parent', ['_id', 'title', 'url', 'children'])
+            .populate('children', ['_id', 'title', 'url', 'children'])
 
-        return categories as Array<Document & ICategory>
+        return categories.map(ctg => CategoryMapper.toDomain(ctg))
     }
 
-    async update(updates: UpdateParams) {
-        validateId(updates._id)
+    async update(updates: Partial<ICategory>) {
+        validateId(updates.id)
 
-        let updated
+        const children = updates.children?.map(ctg => ctg.id) || null
 
-        if (updates.length) {
-            updated = CategoryModel.findByIdAndUpdate(
-                { _id: updates._id },
-                { $set: { length: updates.length } },
-                { new: true },
-            )
-        } else {
-            updated = CategoryModel.findByIdAndUpdate(
-                { _id: updates._id },
-                { $set: updates },
-                { new: true },
-            )
-        }
+        const updated = await CategoryModel.findByIdAndUpdate(
+            { _id: updates.id },
+            {
+                $set: {
+                    ...updates,
+                    ...(children ? { children } : {}),
+                },
+            },
+            { new: true },
+        )
+            .lean()
+            .populate('parent', ['_id', 'title', 'url'])
+            .populate('children', ['_id', 'title', 'url']) as ICategoryMongoModel
 
-        updated = await updated
-            .populate('parent', ['title', 'url'])
-            .populate('children', ['title', 'url']) as Document & ICategory
-
-        return { updated }
+        return { updated: CategoryMapper.toDomain(updated) }
     }
 
     async delete(id) {

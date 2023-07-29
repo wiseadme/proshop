@@ -7,6 +7,7 @@ import { validateId } from '@common/utils/mongoose-validate-id'
 import { ILogger } from '@/types/utils'
 import { IAttribute } from '@proshop/types'
 import { IAttributeRepository } from '../types/repository'
+import { AttributeMapper } from '@modules/attribute/mappers/attribute.mapper'
 
 @injectable()
 export class AttributeRepository implements IAttributeRepository {
@@ -15,29 +16,28 @@ export class AttributeRepository implements IAttributeRepository {
     ) {
     }
 
-    async create(attribute: IAttribute): Promise<IAttribute & Document> {
-        return new AttributeModel({
+    async create(attribute: IAttribute): Promise<IAttribute> {
+        const attributeData =  await new AttributeModel({
+            ...AttributeMapper.toMongoModelData(attribute),
             _id: new mongoose.Types.ObjectId(),
-            key: attribute.key,
-            value: attribute.value,
-            meta: attribute.meta,
-            order: attribute.order,
         }).save()
+
+        return AttributeMapper.toDomain(attributeData.toObject())
     }
 
-    async read(id?: string): Promise<Array<IAttribute & Document>> {
-        const attrs = await AttributeModel.find(id ? { _id: id } : {})
+    async read(id?: string): Promise<IAttribute[]> {
+        const attrs = await AttributeModel.find(id ? { _id: id } : {}).lean()
 
-        return attrs as Array<IAttribute & Document>
+        return attrs.map(attribute => AttributeMapper.toDomain(attribute))
     }
 
-    async update(updates: Partial<IAttribute> & Required<{ _id: string }>): Promise<{
-        updated: IAttribute & Document
+    async update(updates: Partial<IAttribute>): Promise<{
+        updated: IAttribute
     }> {
-        validateId(updates._id)
+        validateId(updates.id)
 
         const updated = await AttributeModel.findByIdAndUpdate(
-            { _id: updates._id },
+            { _id: updates.id },
             { $set: updates },
             { new: true },
         ) as IAttribute & Document

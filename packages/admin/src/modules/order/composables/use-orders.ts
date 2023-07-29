@@ -41,7 +41,7 @@ export const useOrders = createSharedComposable(() => {
         openOrder()
     }
 
-    const onDeleteOrder = (order) => deleteOrder(order._id)
+    const onDeleteOrder = (order) => deleteOrder(order.id)
 
     return {
         model,

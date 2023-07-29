@@ -34,7 +34,7 @@ export const actions: IVariantActions = {
             const { data } = await repository.delete(id)
 
             this.$patch(state => {
-                state.variants = state.variants.filter(it => it._id !== id)
+                state.variants = state.variants.filter(it => it.id !== id)
             })
 
             return data.data as boolean

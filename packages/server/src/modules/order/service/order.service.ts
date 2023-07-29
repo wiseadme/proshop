@@ -41,20 +41,36 @@ export class OrderService implements IOrderService {
         return created
     }
 
-    async read(query: IRequestParams<Partial<IOrder>> = {}) {
-        let items = await this.repository.read(query) as (Document & IOrder)[]
-        let total = 0
-
-        if (query._id) return { items, total }
-
-        if (query.length) {
-            total = await this.repository.getDocumentsCount()
+    async read(query: IRequestParams<Partial<IOrder> & {seen?: boolean}> = {}) {
+        const data = {
+            items: [] as IOrder[],
+            total: 1
         }
 
-        return { items, total }
+        if (query.length) {
+            data.total = await this.repository.getDocumentsCount()
+        }
+
+        if (query.seen !== undefined) {
+            data.items = await this.repository.findBySeen(query.seen)
+            data.total = data.items.length
+
+            return data
+        }
+
+        if (query.id) {
+            const order = await this.repository.findById(query.id)
+            data.items = [order]
+
+            return data
+        }
+
+        data.items = await this.repository.find(query)
+
+        return data
     }
 
-    async update(updates: IOrder): Promise<{ updated: Document & IOrder }> {
+    async update(updates: IOrder): Promise<{ updated: IOrder }> {
         return await this.repository.update(updates)
     }
 

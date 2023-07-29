@@ -26,9 +26,8 @@
     }
 
     const onSave = (model) => {
-        if (unref(site)) {
-            return updateSite(model)
-        }
+        console.log(unref(site))
+        if (unref(site)) return updateSite(model)
 
         return createSite(model)
 

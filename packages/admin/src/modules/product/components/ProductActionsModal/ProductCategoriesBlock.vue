@@ -4,6 +4,7 @@
     import { useProductsService } from '@modules/product/composables/use-products-service'
     import { useProductCategories } from '@modules/product/composables/use-product-categories'
     import { useProductActionsModal } from '@modules/product/composables/use-product-actions-modal'
+    import { ICategory } from '@proshop/types'
 
     const { isEditMode, model, hasChanges } = useProduct()
     const { categoryItems } = useProductsService()
@@ -21,8 +22,10 @@
          * @description - в режиме редактирования выделяем
          * все имеющиеся категории продукта
          */
-        unref(model)!.categories.forEach(ctg => {
-            if (!unref(categoriesMap).get(ctg._id)) toggleCategory(ctg)
+        const categories = unref(model).categories as ICategory[]
+
+        categories.forEach(ctg => {
+            if (!unref(categoriesMap).get(ctg.id)) toggleCategory(ctg)
         })
     })
 
@@ -32,8 +35,12 @@
          * @description - сбрасываем все категории и перерисовываем их
          * если сбросили все изменения продукта
          */
+
         unref(categoriesMap).clear()
-        unref(model).categories?.forEach(toggleCategory)
+
+        const categories = unref(model).categories as ICategory[]
+
+        categories?.forEach(toggleCategory)
     })
 
 </script>
@@ -47,7 +54,7 @@
         <v-col xl="12">
             <template
                 v-for="it in categoryItems"
-                :key="it._id"
+                :key="it.id"
             >
                 <v-group
                     v-if="it.children && it.children.length"
@@ -57,10 +64,10 @@
                 >
                     <v-list>
                         <v-list-item
-                            v-for="child in it.children"
-                            :key="child._id"
-                            :class="[{'primary white--text text--base': categoriesMap.get(child._id)}]"
-                            @click="toggleCategory(child)"
+                            v-for="(child) in it.children as ICategory[]"
+                            :key="child.id"
+                            :class="[{'primary white--text text--base': categoriesMap.get(child.id)}]"
+                            @click="toggleCategory(child as ICategory)"
                         >
                             <v-list-item-content>
                                 <v-list-item-title>
@@ -71,11 +78,11 @@
                     </v-list>
                 </v-group>
                 <v-list
-                    v-else-if="!it.parent && !it.children || !it.children.length"
+                    v-else-if="!it.parent && !it.children || it.children && !it.children.length"
                     class="elevation-2"
                 >
                     <v-list-item
-                        :class="[{'primary white--text text--base': categoriesMap.get(it._id)}]"
+                        :class="[{'primary white--text text--base': categoriesMap.get(it.id)}]"
                         @click="toggleCategory(it)"
                     >
                         <v-list-item-content>

@@ -36,7 +36,7 @@ export const actions = {
 
             this.$patch(state => {
                 state.metaTags = state.metaTags.reduce((acc, it) => {
-                    const isUpdatedItem = it._id === data.data._id
+                    const isUpdatedItem = it.id === data.data.id
 
                     isUpdatedItem ? acc.push(data.data) : acc.push(it)
 
@@ -55,7 +55,7 @@ export const actions = {
             await repository.delete(id)
 
             this.$patch(state => {
-                state.metaTags = state.metaTags.filter((it) => it._id !== id)
+                state.metaTags = state.metaTags.filter((it) => it.id !== id)
             })
 
             return true

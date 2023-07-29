@@ -26,9 +26,10 @@
     const { categoryItems } = useProductsService()
     const { showModal, closeActionsModal } = useProductActionsModal()
 
-    const computedModalHeader = computed<string>(() => `${ (unref(isEditMode) ? 'Редактирование' : 'Создание') } продукта`)
+    const modalHeader = computed<string>(() => `${ (unref(isEditMode) ? 'Редактирование' : 'Создание') } продукта`)
 
     const onSubmit = (validate) => {
+        console.log('submit', unref(isEditMode))
         validate().then(unref(isEditMode) ? onUpdateProduct : onCreateProduct)
     }
 
@@ -52,7 +53,7 @@
                 class="modal-card app-border-radius elevation-5"
             >
                 <v-card-title class="modal-card-title secondary--text py-4">
-                    <h3>{{ computedModalHeader }}</h3>
+                    <h3>{{ modalHeader }}</h3>
                 </v-card-title>
                 <v-card-content
                     width="100%"

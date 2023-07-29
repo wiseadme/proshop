@@ -1,14 +1,14 @@
 import { IVariant } from '@proshop/types'
 
 export class Variant implements IVariant {
-  _id: string
+  id: string
   group: string
 
   constructor({
-      _id = '',
+      id = '',
       group = '',
   }){
-      this._id = _id
+      this.id = id
       this.group = group
   }
 

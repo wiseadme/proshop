@@ -7,14 +7,20 @@ export interface ICategoryConditions {
 }
 
 export interface ICategory {
-    _id: string
+    id: string
     title: string
     image: Maybe<string>
     seo?: ISEOType
     url: string
     parent: Maybe<string | ICategory>
     order?: number
-    children?: Maybe<ICategory[] | string[]>
+    children: Maybe<string[] | ICategory[]>
     length: number
     conditions: ICategoryConditions
+}
+
+export interface ICategoryMongoModel extends Omit<ICategory, 'id' | 'children' | 'parent'>{
+    _id: string
+    children: Maybe<string[] | ICategoryMongoModel[]>
+    parent: Maybe<string | ICategoryMongoModel>
 }

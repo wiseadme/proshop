@@ -1,7 +1,7 @@
 import { Document, model, Schema } from 'mongoose'
-import { ISettings } from '@proshop/types'
+import { ISettingsMongoModel } from '@proshop/types'
 
-const SettingsSchema: Schema = new Schema<ISettings & Document>({
+const SettingsSchema: Schema = new Schema<ISettingsMongoModel & Document>({
     _id: Schema.Types.ObjectId,
     merchant: {
         type: Schema.Types.ObjectId,
@@ -19,4 +19,4 @@ const SettingsSchema: Schema = new Schema<ISettings & Document>({
     timestamps: true,
 })
 
-export const SettingsModel = model<ISettings>('Settings', SettingsSchema)
+export const SettingsModel = model<ISettingsMongoModel>('Settings', SettingsSchema)

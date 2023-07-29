@@ -1,7 +1,7 @@
 import { Document, model, Schema } from 'mongoose'
-import { ICategory } from '@proshop/types'
+import { ICategory, ICategoryMongoModel } from '@proshop/types'
 
-const CategorySchema: Schema = new Schema<ICategory & Document>({
+const CategorySchema: Schema = new Schema<ICategoryMongoModel>({
     _id: Schema.Types.ObjectId,
     title: {
         type: String,
@@ -47,4 +47,4 @@ const CategorySchema: Schema = new Schema<ICategory & Document>({
     timestamps: true,
 })
 
-export const CategoryModel = model<ICategory>('Category', CategorySchema)
+export const CategoryModel = model<ICategoryMongoModel>('Category', CategorySchema)

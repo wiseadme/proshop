@@ -2,11 +2,11 @@ import { Document } from 'mongoose'
 import { IVariant } from '@proshop/types'
 
 export interface IVariantRepository {
-    create(variant: IVariant): Promise<Document>
+    create(variant: IVariant): Promise<IVariant>
 
-    read(): Promise<Array<Document>>
+    read(): Promise<IVariant[]>
 
-    update(updates: Partial<IVariant & Document>): Promise<{ updated: Document<IVariant> }>
+    update(updates: Partial<IVariant>): Promise<{ updated: IVariant }>
 
     delete(id: string): Promise<boolean>
 }

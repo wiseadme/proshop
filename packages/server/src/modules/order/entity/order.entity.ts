@@ -1,18 +1,20 @@
 import { ICartItem, IOrder } from '@proshop/types'
 
 export class Order implements IOrder {
-    private _items: IOrder['items']
-    private _amount: IOrder['amount']
-    private _cart: IOrder['cart']
-    private _orderId: IOrder['orderId']
-    private _delivery: IOrder['delivery']
-    private _customer: IOrder['customer']
-    private _qrcode: IOrder['qrcode']
-    private _status: IOrder['status']
-    private _payment: IOrder['payment']
-    private _executor: IOrder['executor']
+    readonly id: IOrder['id']
+    readonly items: IOrder['items']
+    readonly amount: IOrder['amount']
+    readonly cart: IOrder['cart']
+    readonly orderId: IOrder['orderId']
+    readonly delivery: IOrder['delivery']
+    readonly customer: IOrder['customer']
+    readonly qrcode: IOrder['qrcode']
+    readonly status: IOrder['status']
+    readonly payment: IOrder['payment']
+    readonly executor: IOrder['executor']
 
     constructor({
+        id = '',
         items = [],
         amount = 0,
         customer,
@@ -33,56 +35,17 @@ export class Order implements IOrder {
             cancelled: false,
         },
     }: IOrder) {
-        this._items = items
-        this._amount = amount
-        this._orderId = orderId
-        this._delivery = delivery
-        this._customer = customer
-        this._qrcode = qrcode
-        this._status = status
-        this._cart = cart
-        this._payment = payment
-        this._executor = executor
-    }
-
-    get items() {
-        return this._items as ICartItem[]
-    }
-
-    get amount() {
-        return this._amount!
-    }
-
-    get cart() {
-        return this._cart
-    }
-
-    get orderId() {
-        return this._orderId
-    }
-
-    get delivery() {
-        return this._delivery
-    }
-
-    get customer() {
-        return this._customer
-    }
-
-    get qrcode() {
-        return this._qrcode
-    }
-
-    get status() {
-        return this._status
-    }
-
-    get payment() {
-        return this._payment
-    }
-
-    get executor() {
-        return this._executor
+        this.id = id
+        this.items = items
+        this.amount = amount
+        this.orderId = orderId
+        this.delivery = delivery
+        this.customer = customer
+        this.qrcode = qrcode
+        this.status = status
+        this.cart = cart
+        this.payment = payment
+        this.executor = executor
     }
 
     static create(order: IOrder) {

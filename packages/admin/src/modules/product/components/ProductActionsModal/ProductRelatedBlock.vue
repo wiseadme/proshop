@@ -30,7 +30,7 @@
     const setToCategoryMap = (product: IProduct) => {
         product.categories?.forEach((category: ICategory) => {
             productsMap[unref(category).url!] ??= {}
-            productsMap[category!.url!][product._id] = product
+            productsMap[category!.url!][product.id] = product
         })
     }
 
@@ -38,7 +38,7 @@
         const categoryMap = productsMap[unref(category)!.url!]
 
         unref(categoryProducts)!.forEach((it) => {
-            if (!categoryMap[it._id]) return
+            if (!categoryMap[it.id]) return
 
             selects.value.push(it)
         })
@@ -69,7 +69,7 @@
         const categoryProductIds = Object.keys(categoryMap)
 
         for (const id of categoryProductIds) {
-            if (!relatedProducts.find(rel => rel._id === id)) {
+            if (!relatedProducts.find(rel => rel.id === id)) {
                 delete categoryMap[id]
                 break
             }
@@ -92,7 +92,7 @@
         const categories = Object.values(productsMap)
 
         unref(selects).forEach(it => {
-            if (!categoryMap?.[it._id!]) categoryMap[it._id!] = it
+            if (!categoryMap?.[it.id!]) categoryMap[it.id!] = it
         })
 
         unref(model).related = categories.map(it => Object.keys(it)).flat()
@@ -144,7 +144,7 @@
                     <v-row class="mt-4">
                         <v-col
                             v-for="it in related"
-                            :key="it._id"
+                            :key="it.id"
                             cols="2"
                         >
                             <div class="related-item elevation-2 pa-2 d-flex align-center app-border-radius">

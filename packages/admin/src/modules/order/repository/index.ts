@@ -1,8 +1,8 @@
 import { rest } from '@shared/api'
-import { IRepository, IRest } from '@shared/types/app'
+import { IItemsRepository, IRest } from '@shared/types/app'
 import { IOrder } from '@proshop/types'
 
-class Repository implements IRepository<IOrder> {
+class Repository implements IItemsRepository<IOrder> {
     client: IRest<IOrder>
     path: string
 
@@ -30,5 +30,5 @@ class Repository implements IRepository<IOrder> {
 
 export const useOrderRepository = () => new Repository({
     client: rest,
-    path: '/api/v1/order'
+    path: '/api/v1/order',
 })

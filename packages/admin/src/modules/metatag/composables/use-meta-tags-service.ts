@@ -23,7 +23,7 @@ export const useMetaTagsService = createSharedComposable(() => {
     }
 
     const onUpdateMetaTag = (updates: Partial<IMetaTag>) => {
-        updates._id = unref(metaTag)!._id
+        updates.id = unref(metaTag)!.id
 
         return _store.update(updates)
     }

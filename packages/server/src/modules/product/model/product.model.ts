@@ -1,7 +1,7 @@
 import { model, Schema } from 'mongoose'
-import { IProduct } from '@proshop/types'
+import { IProductMongoModel } from '@proshop/types'
 
-const ProductSchema = new Schema<IProduct>({
+const ProductSchema = new Schema<IProductMongoModel>({
     _id: Schema.Types.ObjectId,
     name: {
         type: String,

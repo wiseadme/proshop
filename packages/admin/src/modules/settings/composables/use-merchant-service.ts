@@ -20,7 +20,7 @@ export const useMerchantService = createSharedComposable(() => {
     }
 
     const updateMerchantSettings = (updates: Partial<IMerchant>) => {
-        updates._id = unref(merchant)?._id
+        updates.id = unref(merchant)?.id
 
         return updateMerchant(updates)
     }

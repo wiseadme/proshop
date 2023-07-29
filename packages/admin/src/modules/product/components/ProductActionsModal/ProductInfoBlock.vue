@@ -51,7 +51,7 @@
         unref(model).image = unref(currentImage)!.url
 
         unref(model).assets = unref(model).assets.map((it) => {
-            it.main = it._id === unref(currentImage)!._id
+            it.main = it.id === unref(currentImage)!.id
 
             return it
         })
@@ -191,7 +191,7 @@
         <v-row class="pa-2">
             <v-col
                 v-for="it in model.assets"
-                :key="it._id"
+                :key="it.id"
                 xl="2"
                 lg="4"
                 md="6"

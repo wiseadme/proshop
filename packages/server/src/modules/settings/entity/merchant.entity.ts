@@ -1,21 +1,21 @@
 import { IMerchant } from '@proshop/types'
 
 export class Merchant implements IMerchant {
-    private __id: IMerchant['_id']
-    private _organization: IMerchant['organization']
-    private _name: IMerchant['name']
-    private _description: IMerchant['description']
-    private _logo: IMerchant['logo']
-    private _slogan: IMerchant['slogan']
-    private _address: IMerchant['address']
-    private _email: IMerchant['email']
-    private _phone: IMerchant['phone']
-    private _currency: IMerchant['currency']
-    private _stores: IMerchant['stores']
-    private _social: IMerchant['social']
+    readonly id: IMerchant['id']
+    readonly organization: IMerchant['organization']
+    readonly name: IMerchant['name']
+    readonly description: IMerchant['description']
+    readonly logo: IMerchant['logo']
+    readonly slogan: IMerchant['slogan']
+    readonly address: IMerchant['address']
+    readonly email: IMerchant['email']
+    readonly phone: IMerchant['phone']
+    readonly currency: IMerchant['currency']
+    readonly stores: IMerchant['stores']
+    readonly social: IMerchant['social']
 
     constructor({
-        _id = '',
+        id = '',
         organization,
         name,
         currency,
@@ -28,67 +28,19 @@ export class Merchant implements IMerchant {
         stores = [],
         social = null,
     }: IMerchant) {
-        this.__id = _id
-        this._organization = organization
-        this._name = name
-        this._currency = currency
-        this._description = description
-        this._logo = logo
-        this._slogan = slogan
-        this._address = address
-        this._email = email
-        this._email = email
-        this._phone = phone
-        this._stores = stores
-        this._social = social
-    }
-
-    get _id() {
-        return this.__id
-    }
-
-    get organization() {
-        return this._organization
-    }
-
-    get name() {
-        return this._name
-    }
-
-    get currency() {
-        return this._currency
-    }
-
-    get description() {
-        return this._description
-    }
-
-    get logo() {
-        return this._logo
-    }
-
-    get slogan() {
-        return this._slogan
-    }
-
-    get address() {
-        return this._address
-    }
-
-    get email() {
-        return this._email
-    }
-
-    get phone() {
-        return this._phone
-    }
-
-    get stores() {
-        return this._stores
-    }
-
-    get social() {
-        return this._social
+        this.id = id
+        this.organization = organization
+        this.name = name
+        this.currency = currency
+        this.description = description
+        this.logo = logo
+        this.slogan = slogan
+        this.address = address
+        this.email = email
+        this.email = email
+        this.phone = phone
+        this.stores = stores
+        this.social = social
     }
 
     static create(merchant: IMerchant) {

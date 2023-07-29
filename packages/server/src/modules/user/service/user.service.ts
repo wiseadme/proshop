@@ -23,7 +23,7 @@ export class UserService extends UserHelpers implements IUserService {
     async login(user, res) {
         const { password, username } = user
 
-        const [candidate] = await this.repository.read({ username })
+        const [candidate] = await this.repository.find({ username })
 
         if (candidate) {
             const isPasswordValid = await bcrypt.compareSync(password, candidate.password)
@@ -46,7 +46,7 @@ export class UserService extends UserHelpers implements IUserService {
                 })
 
                 const { updated } = await this.repository.update({
-                    _id: candidate._id,
+                    id: candidate.id,
                     accessToken,
                     refreshToken,
                 })
@@ -81,12 +81,12 @@ export class UserService extends UserHelpers implements IUserService {
     }
 
     async logout(cookies, res) {
-        const [user] = await this.repository.read({
+        const [user] = await this.repository.find({
             accessToken: cookies.auth,
         })
 
         await this.repository.update({
-            _id: user._id,
+            id: user.id,
             accessToken: null,
             refreshToken: null,
         })
@@ -97,7 +97,7 @@ export class UserService extends UserHelpers implements IUserService {
     }
 
     async create(user) {
-        const [checkedUser] = await this.repository.read({
+        const [checkedUser] = await this.repository.find({
             phone: user.phone,
         })
 
@@ -115,13 +115,13 @@ export class UserService extends UserHelpers implements IUserService {
     }
 
     async getUsers(params) {
-        const users = await this.repository.read(params)
+        const users = await this.repository.find(params)
 
         return users.map(user => this.prepareUserResponseData(user))
     }
 
     async refresh(cookies, res) {
-        const [user] = await this.repository.read({
+        const [user] = await this.repository.find({
             accessToken: cookies.auth,
         })
 
@@ -143,7 +143,7 @@ export class UserService extends UserHelpers implements IUserService {
             })
 
             const { updated } = await this.repository.update({
-                _id: user._id,
+                id: user.id,
                 accessToken,
                 refreshToken,
             })
@@ -172,7 +172,7 @@ export class UserService extends UserHelpers implements IUserService {
             })
         }
 
-        const [user] = await this.repository.read({
+        const [user] = await this.repository.find({
             accessToken: cookies.auth,
         })
 

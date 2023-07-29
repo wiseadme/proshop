@@ -42,9 +42,12 @@ export const useOrdersService = createSharedComposable(() => {
 
     const getNewOrders = () => _store.read({ seen: false })
 
-    const updateOrder = async (updates) => {
+    const updateOrder = async (updates: Partial<IOrder>) => {
+        if (updates.executor) {
+            updates.executor = (updates.executor as IUser).id
+        }
         order.value = await _store.update({
-            _id: unref(order)!._id,
+            id: unref(order)!.id,
             ...updates
         })
 

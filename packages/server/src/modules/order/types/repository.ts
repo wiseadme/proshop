@@ -2,11 +2,15 @@ import { Document } from 'mongoose'
 import { IOrder } from '@proshop/types'
 
 export interface IOrderRepository {
-    create(order: IOrder): Promise<Document & IOrder>
+    create(order: IOrder): Promise<IOrder>
 
-    read(params?: any): Promise<Array<Document & IOrder>>
+    find(params?: any): Promise<IOrder[]>
 
-    update(updates: IOrder): Promise<{ updated: Document & IOrder }>
+    findById(id: string): Promise<IOrder>
+
+    findBySeen(seen: boolean): Promise<IOrder[]>
+
+    update(updates: IOrder): Promise<{ updated: IOrder }>
 
     delete(id: string): Promise<boolean>
 

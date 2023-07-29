@@ -1,7 +1,7 @@
 import { Document, model, Schema } from 'mongoose'
-import { IAttribute } from '@proshop/types'
+import { IAttributeMongoModel } from '@proshop/types'
 
-const AttributeSchema = new Schema<Document & IAttribute>({
+const AttributeSchema = new Schema<IAttributeMongoModel>({
     _id: Schema.Types.ObjectId,
     key: {
         type: String,
@@ -24,4 +24,4 @@ const AttributeSchema = new Schema<Document & IAttribute>({
     timestamps: true,
 })
 
-export const AttributeModel = model('Attribute', AttributeSchema)
+export const AttributeModel = model<IAttributeMongoModel>('Attribute', AttributeSchema)

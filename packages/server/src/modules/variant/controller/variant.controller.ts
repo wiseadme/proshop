@@ -33,7 +33,7 @@ export class VariantController extends BaseController implements IController {
 
     async createVariant({ body, method }: Request<{}, {}, IVariant>, res: Response) {
         try {
-            const variant = await this.service.create(Variant.create(body))
+            const variant = await this.service.create(body)
 
             this.send({
                 response: res,

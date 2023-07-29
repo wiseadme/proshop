@@ -2,11 +2,11 @@ import { Document } from 'mongoose'
 import { IAttribute } from '@proshop/types'
 
 export interface IAttributeRepository {
-    create(attribute: IAttribute): Promise<Document & IAttribute>
+    create(attribute: IAttribute): Promise<IAttribute>
 
-    read(id?: string): Promise<Array<Document & IAttribute>>
+    read(id?: string): Promise<IAttribute[]>
 
-    update(updates: Partial<IAttribute>): Promise<{ updated: Document & IAttribute }>
+    update(updates: Partial<IAttribute>): Promise<{ updated: IAttribute }>
 
     delete(id: string): Promise<boolean>
 }

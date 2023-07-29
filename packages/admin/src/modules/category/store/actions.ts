@@ -44,6 +44,10 @@ export const actions = {
         try {
             const { data } = await categoryRepository.delete(id)
 
+            this.$patch(state => {
+                state.categories = state.categories.filter()
+            })
+
             return data.data
         } catch (err) {
             return Promise.reject(err)

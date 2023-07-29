@@ -19,7 +19,7 @@ export const useProductVariants = () => {
     const isVariantEditMode = ref(false)
 
     const genVariantOptionPattern = (): IOption => ({
-        _id: '',
+        id: '',
         variantId: '',
         name: '',
         quantity: 0,
@@ -37,7 +37,7 @@ export const useProductVariants = () => {
         deleteProductVariantImage({ asset, option })
             .then(() => {
                 option.assets = option.assets.reduce((assets, it) => {
-                    if (it._id !== asset._id) assets.push(it)
+                    if (it.id !== asset.id) assets.push(it)
 
                     return assets
                 }, [])

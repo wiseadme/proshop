@@ -5,7 +5,7 @@ export interface IUserPosition {
     department: string
 }
 export interface IUser {
-    _id: string
+    id: string
     firstName: string
     secondName: string
     username?: string
@@ -17,4 +17,8 @@ export interface IUser {
     refreshToken?: string,
     enabled: boolean
     exp?: number
+}
+
+export interface IUserMongoModel extends Omit<IUser, 'id'>{
+    _id: string
 }

@@ -31,7 +31,7 @@
     }
 
     const onDelete = (attribute: IAttribute) => {
-        deleteAttribute(attribute._id)
+        deleteAttribute(attribute.id)
     }
 
     getAttributes()

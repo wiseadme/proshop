@@ -1,35 +1,39 @@
-import mongoose, { Document, LeanDocument } from 'mongoose'
+import mongoose from 'mongoose'
 import { injectable } from 'inversify'
 import { validateId } from '@common/utils/mongoose-validate-id'
 import { ISiteRepository } from '@modules/settings/types/repository'
-import { ISite } from '@proshop/types'
+import { ISite, ISiteMongoModel, Maybe } from '@proshop/types'
 import { SiteModel } from '@modules/settings/model/site.model'
+import { SiteMapper } from '@modules/settings/mappers/site.mapper'
 
 @injectable()
 export class SiteRepository implements ISiteRepository {
     async create(siteConfig: Partial<ISite>) {
-        return (await (new SiteModel({
+        const siteData = await new SiteModel({
+            ...SiteMapper.toMongoModelData(siteConfig),
             _id: new mongoose.Types.ObjectId(),
-            colors: siteConfig.colors,
-        }).save()))
+        }).save()
+
+        return SiteMapper.toDomain(siteData.toObject())!
     }
 
-    async read(): Promise<LeanDocument<ISite>> {
-        const [settings] = await SiteModel.find().lean()
+    async read(): Promise<Maybe<ISite>> {
+        const [site] = await SiteModel.find().lean()
 
-        return settings
+        return SiteMapper.toDomain(site)
     }
 
     async update(updates: Partial<ISite>) {
-        validateId(updates._id)
+        validateId(updates.id)
 
         const updated = await SiteModel.findByIdAndUpdate(
-            { _id: updates._id },
+            { _id: updates.id },
             { $set: updates },
             { new: true },
-        ) as Document & ISite
+        )
+            .lean() as ISiteMongoModel
 
-        return { updated }
+        return { updated: SiteMapper.toDomain(updated)! }
     }
 
     async delete(id): Promise<boolean> {

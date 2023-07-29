@@ -37,7 +37,7 @@
     const createOption = async (validate) => {
         await validate()
 
-        unref(optionPattern)!.variantId = unref(currentVariant)!._id!
+        unref(optionPattern)!.variantId = unref(currentVariant)!.id!
 
         if (unref(isVariantEditMode)) {
             await onUpdateProductVariantOption(unref(optionPattern))
@@ -90,7 +90,7 @@
         setExistsVariants(variants.length ? variants : unref(variantItems))
 
         if (unref(currentVariant)) {
-            setCurrentVariant(variants?.find(v => v._id === unref(currentVariant)!._id) || unref(existsVariants)?.[0])
+            setCurrentVariant(variants?.find(v => v.id === unref(currentVariant)!.id) || unref(existsVariants)?.[0])
         } else {
             currentVariant.value = variants?.[0] || unref(existsVariants)?.[0]
         }
@@ -113,12 +113,12 @@
         <v-col v-if="variantItems.length">
             <v-button
                 v-for="variant in existsVariants"
-                :key="variant._id"
+                :key="variant.id"
                 :label="variant?.group"
                 class="mr-2 mb-4"
                 outlined
                 rounded
-                :color="currentVariant._id === variant._id ? 'var(--primary)' : 'grey lighten-1'"
+                :color="currentVariant.id === variant.id ? 'var(--primary)' : 'grey lighten-1'"
                 :disabled="!isEditMode"
                 @click="setCurrentVariant(variant)"
             >
@@ -132,8 +132,8 @@
         >
             <v-chip
                 v-for="option in currentVariant.options"
-                :key="option._id"
-                :color="!option._id ?'grey': option === optionPattern ? 'primary' : 'blue lighten-3'"
+                :key="option.id"
+                :color="!option.id ?'grey': option === optionPattern ? 'primary' : 'blue lighten-3'"
                 :class="['mr-2']"
                 closable
                 @click="setOptionForEditing(option)"
@@ -194,9 +194,9 @@
                     <v-col>
                         <v-file-input
                             v-model="optionPattern.assets"
-                            :label="!optionPattern._id ? 'только после сохранения варианта *': 'загрузить изображения'"
+                            :label="!optionPattern.id ? 'только после сохранения варианта *': 'загрузить изображения'"
                             color="#272727"
-                            :disabled="!optionPattern._id"
+                            :disabled="!optionPattern.id"
                             placeholder="salam"
                             @update:value="onUploadVariantOptionImage($event, optionPattern)"
                         />
@@ -225,7 +225,7 @@
                                 <v-row>
                                     <v-col
                                         v-for="asset in optionPattern.assets"
-                                        :key="asset._id"
+                                        :key="asset.id"
                                         cols="2"
                                         style="height: 130px; position: relative"
                                         class="d-flex align-center justify-center elevation-2"
@@ -253,7 +253,7 @@
                         :disabled="!isEditMode"
                         @click="createOption(validate)"
                     >
-                        {{ optionPattern._id ? 'изменить' : 'добавить' }}
+                        {{ optionPattern.id ? 'изменить' : 'добавить' }}
                     </v-button>
                     <v-button
                         class="ml-2"

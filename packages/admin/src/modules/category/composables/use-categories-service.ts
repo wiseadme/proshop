@@ -52,23 +52,23 @@ export const useCategoriesService = createSharedComposable(() => {
 
     const uploadCategoryImage = async (file) => {
         const { formData, fileName } = _filesService.createFormData(file)
-        const ownerId = unref(category)!._id
+        const ownerId = unref(category)!.id
 
         const asset = await _filesService.uploadFile({ ownerId, fileName, formData })
 
         if (asset && asset.url) {
-            category.value = await updateCategory({ _id: ownerId, image: asset.url })
+            category.value = await updateCategory({ id: ownerId, image: asset.url })
         }
     }
 
     const deleteCategoryImage = async (url) => {
-        const ownerId = unref(category)!._id
-        const _id = extractAssetIdFromFileName(url)
+        const ownerId = unref(category)!.id
+        const id = extractAssetIdFromFileName(url)
 
-        await _filesService.deleteFile({ ownerId, url, _id })
+        await _filesService.deleteFile({ ownerId, url, id })
 
         category.value = await updateCategory({
-            _id: ownerId,
+            id: ownerId,
             image: null
         })
     }

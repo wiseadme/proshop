@@ -79,7 +79,7 @@ export const useProduct = createSharedComposable(() => {
 
         if (!unref(hasChanges)) return
 
-        updates!._id = model.value._id
+        updates!.id = model.value.id
         isSaved.value = false
 
         await updateProduct(updates)
@@ -125,15 +125,10 @@ export const useProduct = createSharedComposable(() => {
         let keys = Object.keys(diffs || {})
 
         if (keys.length) {
-            keys = keys.reduce((acc, key) => {
-                if (NotUpdatableKeysMap[key]) {
-                    delete diffs[key]
-                } else {
-                    acc.push(key)
-                }
+            const forDelete = keys.filter(key => NotUpdatableKeysMap[key])
+            keys = keys.filter(key => !NotUpdatableKeysMap[key])
 
-                return acc
-            }, [] as string[])
+            forDelete.forEach(key => delete diffs[key])
         }
 
         return keys.length ? diffs : null

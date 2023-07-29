@@ -8,7 +8,7 @@ import { IAttribute } from './attribute'
 import { ICurrency } from './currency'
 
 export interface IProductQuery {
-    _id?: string,
+    id?: string,
     category?: string
     name?: string
     url?: string
@@ -23,7 +23,7 @@ export interface IProductConditions {
 }
 
 export interface IProduct {
-    _id: string
+    id: string
     name: string
     description: string
     price: number
@@ -33,10 +33,16 @@ export interface IProduct {
     url: string
     seo: ISEOType
     unit: Maybe<IUnit>
-    categories: ICategory[]
+    categories: string[] | ICategory[]
     assets: IAsset[]
     variants: IVariant[]
     attributes: IAttribute[]
     conditions: IProductConditions
     related: IProduct[] | string[]
+}
+
+export interface IProductMongoModel extends Omit<IProduct, 'id' | 'assets' | 'variants'>{
+    _id: string
+    assets?: string[] | IAsset[]
+    variants?: string[] | IVariant[]
 }

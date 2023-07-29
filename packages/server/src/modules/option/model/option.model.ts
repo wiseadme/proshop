@@ -1,7 +1,7 @@
 import { model, Schema } from 'mongoose'
-import { IOption } from '@proshop/types'
+import { IOptionMongoModel } from '@proshop/types'
 
-const OptionSchema = new Schema<IOption>({
+const OptionSchema = new Schema<IOptionMongoModel>({
     _id: Schema.Types.ObjectId,
     name: {
         type: String,
@@ -22,4 +22,4 @@ const OptionSchema = new Schema<IOption>({
     timestamps: true,
 })
 
-export const OptionModel = model<IOption>('Option', OptionSchema)
+export const OptionModel = model<IOptionMongoModel>('Option', OptionSchema)

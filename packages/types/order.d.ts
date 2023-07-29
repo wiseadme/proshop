@@ -30,7 +30,7 @@ export interface IOrderDelivery {
 }
 
 export interface IOrder {
-    _id?: string
+    id: string
     items: Maybe<ICartItem[]>
     delivery: Maybe<IOrderDelivery>
     amount: number
@@ -40,5 +40,9 @@ export interface IOrder {
     qrcode: Maybe<string>
     status: IOrderStatuses
     payment: Maybe<number>
-    executor: Maybe<IUser>
+    executor: Maybe<IUser | string>
+}
+
+export interface IOrderMongoModel extends Omit<IOrder, 'id'>{
+    _id: string
 }

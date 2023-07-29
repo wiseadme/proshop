@@ -3,37 +3,40 @@ import { injectable } from 'inversify'
 import { MetaTagModel } from '@modules/metatag/model/metatag.model'
 import { validateId } from '@common/utils/mongoose-validate-id'
 import { IMetaTagRepository } from '@modules/metatag/types/repository'
-import { IMetaTag } from '@proshop/types'
+import { IMetaTag, IMetaTagMongoModel } from '@proshop/types'
+import { MetatagMapper } from '@modules/metatag/mappers/metatag.mapper'
 
 @injectable()
 export class MetaTagRepository implements IMetaTagRepository {
-    async create(params): Promise<IMetaTag & Document> {
-
-        const metaTag = new MetaTagModel({
+    async create(metaTag: IMetaTag): Promise<IMetaTag> {
+        const metaTagData = await new MetaTagModel({
+            ...MetatagMapper.toMongoModelData(metaTag),
             _id: new mongoose.Types.ObjectId(),
-            props: params.props,
-            order: params.order,
         })
+            .save()
 
-        await metaTag.save()
-
-        return metaTag
+        return MetatagMapper.toDomain(metaTagData.toObject())
     }
 
     async read(params) {
-        return MetaTagModel.find(params)
+        const metaTags = await MetaTagModel
+            .find(params)
+            .lean() as IMetaTagMongoModel[]
+
+        return metaTags.map(metaTag => MetatagMapper.toDomain(metaTag))
     }
 
     async update(updates: Partial<IMetaTag>) {
-        validateId(updates._id)
+        validateId(updates.id)
 
         const updated = await MetaTagModel.findByIdAndUpdate(
-            { _id: updates._id },
+            { _id: updates.id },
             { $set: updates },
             { new: true },
-        ) as IMetaTag & Document
+        )
+            .lean() as IMetaTagMongoModel
 
-        return { updated }
+        return { updated: MetatagMapper.toDomain(updated) }
     }
 
     async delete(id) {

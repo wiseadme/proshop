@@ -48,7 +48,7 @@ export const actions: IAttributeActions = {
             const { data } = await repository.delete(id)
 
             this.$patch(state => {
-                state.attributes = state.attributes.filter(it => it._id !== id)
+                state.attributes = state.attributes.filter(it => it.id !== id)
             })
 
             return data.data

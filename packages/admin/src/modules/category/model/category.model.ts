@@ -1,7 +1,7 @@
 import { ICategory } from '@proshop/types'
 
 export class Category implements ICategory {
-  _id: ICategory['_id']
+  id: ICategory['id']
   title: ICategory['title']
   url: ICategory['url']
   image: ICategory['image']
@@ -13,7 +13,7 @@ export class Category implements ICategory {
   conditions: ICategory['conditions']
 
   constructor({
-      _id = '',
+      id = '',
       title = '',
       url = '',
       image = null,
@@ -33,7 +33,7 @@ export class Category implements ICategory {
           schema: []
       }
   } = {}){
-      this._id = _id
+      this.id = id
       this.title = title
       this.url = url
       this.image = image

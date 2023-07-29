@@ -1,7 +1,7 @@
-import { Document, model, Schema } from 'mongoose'
-import { ICustomer } from '@proshop/types'
+import { model, Schema } from 'mongoose'
+import { ICustomerMongoModel } from '@proshop/types'
 
-const CustomerSchema: Schema = new Schema<ICustomer & Document>({
+const CustomerSchema: Schema = new Schema<ICustomerMongoModel>({
     _id: Schema.Types.ObjectId,
     name: {
         type: String,
@@ -16,4 +16,4 @@ const CustomerSchema: Schema = new Schema<ICustomer & Document>({
     timestamps: true,
 })
 
-export const CustomerModel = model<ICustomer>('Customer', CustomerSchema)
+export const CustomerModel = model<ICustomerMongoModel>('Customer', CustomerSchema)

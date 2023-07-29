@@ -16,15 +16,15 @@ export class FilterGroupService implements IFilterGroupService {
     ) {
     }
 
-    create(filterGroup: IFilterGroup): Promise<Document & IFilterGroup> {
+    create(filterGroup: IFilterGroup): Promise<IFilterGroup> {
         return this.repository.create(FilterGroup.create(filterGroup))
     }
 
-    read(id?: string): Promise<Array<Document & IFilterGroup>> {
+    read(id?: string): Promise<IFilterGroup[]> {
         return this.repository.read(id)
     }
 
-    update(updates: Partial<IFilterGroup>): Promise<{ updated: Document & IFilterGroup }> {
+    update(updates: Partial<IFilterGroup>): Promise<{ updated: IFilterGroup }> {
         return this.repository.update(updates)
     }
 

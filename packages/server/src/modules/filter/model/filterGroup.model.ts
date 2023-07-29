@@ -1,7 +1,7 @@
 import { model, Schema } from 'mongoose'
-import { IFilterGroup } from '@proshop/types'
+import { IFilterGroupMongoModel } from '@proshop/types'
 
-const FilterGroupSchema = new Schema<IFilterGroup>({
+const FilterGroupSchema = new Schema<IFilterGroupMongoModel>({
     _id: Schema.Types.ObjectId,
     name: {
         type: String,
@@ -20,4 +20,4 @@ const FilterGroupSchema = new Schema<IFilterGroup>({
     timestamps: true,
 })
 
-export const FilterGroupModel = model<IFilterGroup>('FilterGroup', FilterGroupSchema)
+export const FilterGroupModel = model<IFilterGroupMongoModel>('FilterGroup', FilterGroupSchema)

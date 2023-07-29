@@ -1,10 +1,10 @@
 import { IAsset } from './asset'
-import {IOption} from './option'
+import { IOption } from './option'
 import { Maybe } from './utils'
 
 export interface IVariantOption {
     _id?: string
-    assets?: Array<IAsset>
+    assets?: IAsset[]
     quantity?: number
     description?: Maybe<string>
     price?: number
@@ -14,7 +14,11 @@ export interface IVariantOption {
 }
 
 export interface IVariant {
-    _id?: string
+    id: string
     group: string,
-    options?: Array<IOption>
+    options?: IOption[]
+}
+
+export interface IVariantMongoModel extends Omit<IVariant, 'id'> {
+    _id: string
 }

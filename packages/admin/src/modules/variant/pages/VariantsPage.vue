@@ -17,7 +17,7 @@
     }
 
     const onDelete = (item) => {
-        return deleteVariant(item._id)
+        return deleteVariant(item.id)
     }
 
     const clearForm = () => {

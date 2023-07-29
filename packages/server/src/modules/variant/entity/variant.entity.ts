@@ -1,20 +1,14 @@
 import { IVariant } from '@proshop/types'
 
 export class Variant {
-    private readonly _group: IVariant['group']
-    private _options: IVariant['options']
+    readonly id: string
+    readonly group: IVariant['group']
+    readonly options: IVariant['options']
 
-    constructor({ group, options = [] }: IVariant) {
-        this._group = group
-        this._options = options
-    }
-
-    get group() {
-        return this._group
-    }
-
-    get options() {
-        return this._options
+    constructor({ id, group, options = [] }: IVariant) {
+        this.id = id
+        this.group = group
+        this.options = options
     }
 
     static create(variant: IVariant) {

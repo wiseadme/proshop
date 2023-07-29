@@ -19,13 +19,11 @@ export class AttributeService implements IAttributeService {
         return this.repository.create(attribute)
     }
 
-    read(id?: string): Promise<Array<IAttribute & Document>> {
+    read(id?: string): Promise<IAttribute[]> {
         return this.repository.read(id)
     }
 
-    async update(updates: Partial<IAttribute>): Promise<{
-        updated: IAttribute & Document | (IAttribute & Document)[]
-    }> {
+    async update(updates: Partial<IAttribute>): Promise<{ updated: IAttribute | IAttribute[] }> {
         let data: any
 
         if (Array.isArray(updates)) {

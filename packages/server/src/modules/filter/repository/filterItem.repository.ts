@@ -32,10 +32,10 @@ export class FilterItemRepository implements IFilterItemRepository {
     }
 
     async update(updates: Partial<IFilterItem>): Promise<{ updated: Document & IFilterItem }> {
-        validateId(updates._id)
+        validateId(updates.id)
 
         const option = await FilterItemModel.findByIdAndUpdate(
-            { _id: updates._id },
+            { _id: updates.id },
             { $set: updates },
             { new: true },
         ).populate('assets') as Document & IFilterItem

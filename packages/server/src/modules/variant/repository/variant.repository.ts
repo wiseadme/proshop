@@ -2,11 +2,12 @@ import { inject, injectable } from 'inversify'
 import { TYPES } from '@common/schemes/di-types'
 import { VariantModel } from '@modules/variant/model/variant.model'
 // Types
-import { Document, Types } from 'mongoose'
+import { Types } from 'mongoose'
 import { validateId } from '@common/utils/mongoose-validate-id'
 import { ILogger } from '@/types/utils'
-import { IVariant } from '@proshop/types'
+import { IVariant, IVariantMongoModel } from '@proshop/types'
 import { IVariantRepository } from '../types/repository'
+import { VariantMapper } from '@modules/variant/mappers/variant.mapper'
 
 @injectable()
 export class VariantRepository implements IVariantRepository {
@@ -14,26 +15,35 @@ export class VariantRepository implements IVariantRepository {
     }
 
     async create({ group }: IVariant) {
-        return new VariantModel({
+        const variant = await new VariantModel({
             _id: new Types.ObjectId(),
             group,
-        }).save()
+        })
+            .save()
+
+        return VariantMapper.toDomain(variant.toObject())
     }
 
     async read() {
-        return VariantModel.find({})
+        const variants = await VariantModel
+            .find({})
+            .lean()
+
+        return variants.map(variant => VariantMapper.toDomain(variant))
     }
 
-    async update($set: Partial<Document<IVariant>>) {
+    async update($set: Partial<IVariant>) {
+
         validateId($set.id)
 
         const updated = await VariantModel.findByIdAndUpdate(
-            { _id: $set._id },
+            { _id: $set.id },
             { $set },
             { new: true },
-        ) as Document<IVariant>
+        )
+            .lean() as IVariantMongoModel
 
-        return { updated }
+        return { updated: VariantMapper.toDomain(updated) }
     }
 
     async delete(id: string) {

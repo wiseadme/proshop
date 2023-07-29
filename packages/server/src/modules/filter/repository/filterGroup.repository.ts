@@ -1,12 +1,13 @@
-import mongoose, { Document } from 'mongoose'
+import mongoose from 'mongoose'
 import { inject, injectable } from 'inversify'
 import { TYPES } from '@common/schemes/di-types'
 import { FilterGroupModel } from '@modules/filter/model/filterGroup.model'
 import { validateId } from '@common/utils/mongoose-validate-id'
 // Types
 import { ILogger } from '@/types/utils'
-import { IFilterGroup } from '@proshop/types'
+import { IFilterGroup, IFilterGroupMongoModel } from '@proshop/types'
 import { IFilterGroupRepository } from '../types/repository'
+import { FilterGroupMapper } from '@modules/filter/mappers/filterGroup.mapper'
 
 @injectable()
 export class FilterGroupRepository implements IFilterGroupRepository {
@@ -15,34 +16,36 @@ export class FilterGroupRepository implements IFilterGroupRepository {
     ) {
     }
 
-    async create(filterGroup: IFilterGroup): Promise<Document & IFilterGroup> {
-        return (await new FilterGroupModel({
+    async create(filterGroup: IFilterGroup): Promise<IFilterGroup> {
+
+        const filterGroupData = await new FilterGroupModel({
+            ...FilterGroupMapper.toMongoModelData(filterGroup),
             _id: new mongoose.Types.ObjectId(),
-            name: filterGroup.name,
-            attributeName: filterGroup.attributeName,
-            associate: filterGroup.associate
         })
-            .save() as any)
+            .save()
+
+        return FilterGroupMapper.toDomain(filterGroupData.toObject())
     }
 
-    async read(id?: string): Promise<Array<Document & IFilterGroup>> {
+    async read(id?: string): Promise<IFilterGroup[]> {
         id && validateId(id)
 
-        const filters = await FilterGroupModel.find(id ? { _id: id } : {})
+        const filterGroups = await FilterGroupModel.find(id ? { _id: id } : {}).lean()
 
-        return filters as Array<Document & IFilterGroup>
+        return filterGroups.map(filterGroup => FilterGroupMapper.toDomain(filterGroup)) as IFilterGroup[]
     }
 
-    async update(updates: Partial<IFilterGroup>): Promise<{ updated: Document & IFilterGroup }> {
-        validateId(updates._id)
+    async update(updates: Partial<IFilterGroup>): Promise<{ updated: IFilterGroup }> {
+        validateId(updates.id)
 
-        const option = await FilterGroupModel.findByIdAndUpdate(
-            { _id: updates._id },
+        const filterGroup = await FilterGroupModel.findByIdAndUpdate(
+            { _id: updates.id },
             { $set: updates },
             { new: true },
-        ).populate('assets') as Document & IFilterGroup
+        )
+            .lean() as IFilterGroupMongoModel
 
-        return { updated: option }
+        return { updated: FilterGroupMapper.toDomain(filterGroup) }
     }
 
     async delete(id) {

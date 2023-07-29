@@ -9,10 +9,10 @@ export const useProductCategories = createSharedComposable(() => {
     const categoriesMap = ref<Map<string, ICategory>>(new Map())
 
     const toggleCategory = (ctg: ICategory) => {
-        if (unref(categoriesMap).get(ctg._id)) {
-            unref(categoriesMap).delete(ctg._id)
+        if (unref(categoriesMap).get(ctg.id)) {
+            unref(categoriesMap).delete(ctg.id)
         } else {
-            unref(categoriesMap).set(ctg._id, ctg)
+            unref(categoriesMap).set(ctg.id, ctg)
         }
 
         unref(model).categories = Array.from(unref(categoriesMap).values())

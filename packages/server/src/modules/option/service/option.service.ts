@@ -9,6 +9,7 @@ import { IOption } from '@proshop/types'
 import { IEventBusService } from '@/types/services'
 // Constants
 import { DELETE_OPTION_EVENT } from '@common/constants/events'
+import { Option } from '@modules/option/entity/option.entity'
 
 @injectable()
 export class OptionService implements IOptionService {
@@ -19,15 +20,19 @@ export class OptionService implements IOptionService {
     ) {
     }
 
-    create(option: IOption): Promise<Document & IOption> {
-        return this.repository.create(option)
+    create(option: IOption): Promise<IOption> {
+        return this.repository.create(Option.create(option))
     }
 
-    read(id?: string): Promise<Array<Document & IOption>> {
-        return this.repository.read(id)
+    read(id?: string): Promise<IOption[] | IOption> {
+        if (id) {
+            return this.repository.findById(id)
+        }
+
+        return this.repository.find()
     }
 
-    update(updates: Partial<IOption>): Promise<{ updated: Document & IOption }> {
+    update(updates: Partial<IOption>): Promise<{ updated: IOption }> {
         return this.repository.update(updates)
     }
 

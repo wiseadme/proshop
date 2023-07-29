@@ -1,20 +1,20 @@
 import { IFilterItem } from '@proshop/types'
 export class FilterItem implements IFilterItem{
-    private __id: string
+    private _id: string
     private _value: string
     private _groupId: string
 
     constructor({
-        _id = '',
+        id = '',
         value = '',
         groupId = '',
     }) {
-        this.__id = _id
+        this._id = id
         this._value = value
         this._groupId = groupId
     }
-    get _id() {
-        return this.__id
+    get id() {
+        return this._id
     }
 
     get value() {

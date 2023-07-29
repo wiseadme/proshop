@@ -1,12 +1,12 @@
 import { ISite } from '@proshop/types'
 
 export class Site implements ISite {
-    public _id: ISite['_id']
+    public id: ISite['id']
     public colors: ISite['colors']
     public layout: ISite['layout']
     public components: ISite['components']
     constructor({
-        _id,
+        id,
         colors = {
             primary: '',
             secondary: '',
@@ -20,7 +20,7 @@ export class Site implements ISite {
         layout,
         components,
     }: ISite) {
-        this._id = _id
+        this.id = id
         this.colors = colors
         this.layout = layout
         this.components = components

@@ -48,7 +48,7 @@ export const actions: IProductActions = {
             const { data } = await productRepository.update(updates)
 
             this.products = Array.from(this.products, (pr: IProduct) => {
-                if (pr._id === updates._id) {
+                if (pr.id === updates.id) {
                     return data.data
                 }
 
@@ -63,11 +63,11 @@ export const actions: IProductActions = {
 
     async delete(product: IProduct) {
         try {
-            const response = await productRepository.delete(product._id)
-            this.products = this.products.filter(it => it._id !== product._id)
+            const response = await productRepository.delete(product.id)
+            this.products = this.products.filter(it => it.id !== product.id)
             this.totalLength -= 1
 
-            return response?.data
+            return response?.data.data
         } catch (err) {
             return Promise.reject(err)
         }

@@ -1,12 +1,11 @@
 import { ICustomer } from '@proshop/types'
-import { Document } from 'mongoose'
 
 export interface ICustomerRepository {
-    create(customer: ICustomer): Promise<ICustomer & Document>
+    create(customer: ICustomer): Promise<ICustomer>
 
-    read(params: Partial<ICustomer>): Promise<(ICustomer & Document)[]>
+    read(params: Partial<ICustomer>): Promise<ICustomer[]>
 
-    update(updates: Partial<ICustomer>): Promise<{ updated: ICustomer & Document }>
+    update(updates: Partial<ICustomer>): Promise<{ updated: ICustomer }>
 
     delete(id: string): Promise<boolean>
 }

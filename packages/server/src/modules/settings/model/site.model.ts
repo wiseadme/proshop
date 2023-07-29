@@ -1,7 +1,7 @@
 import { Document, model, Schema } from 'mongoose'
-import { ISite } from '@proshop/types'
+import { ISiteMongoModel } from '@proshop/types'
 
-const SiteSchema: Schema = new Schema<ISite & Document>({
+const SiteSchema: Schema = new Schema<ISiteMongoModel>({
     _id: Schema.Types.ObjectId,
     colors: {
         primary: String,
@@ -13,4 +13,4 @@ const SiteSchema: Schema = new Schema<ISite & Document>({
     timestamps: true,
 })
 
-export const SiteModel = model<ISite>('Site', SiteSchema)
+export const SiteModel = model<ISiteMongoModel>('Site', SiteSchema)

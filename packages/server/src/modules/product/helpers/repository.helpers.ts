@@ -20,6 +20,9 @@ export class RepositoryHelpers {
     getAssetsPopulateParams() {
         return {
             path: 'assets',
+            options: {
+                lean: true
+            }
         }
     }
 
@@ -27,6 +30,9 @@ export class RepositoryHelpers {
         return {
             path: 'categories',
             select: 'title url order',
+            options: {
+                lean: true
+            }
         }
     }
 
@@ -37,6 +43,12 @@ export class RepositoryHelpers {
                 path: 'options',
                 populate: {
                     path: 'assets',
+                    options: {
+                        lean: true
+                    }
+                },
+                options: {
+                    lean: true,
                 },
             },
         }
@@ -49,13 +61,14 @@ export class RepositoryHelpers {
             transform: (doc) => doc?.currency,
         }
     }
+
     getRelatedPopulateParams() {
         return {
             path: 'related',
             select: 'name price url image categories currency',
             populate: [
                 this.getCategoriesPopulateParams(),
-                this.getCurrencyPopulateParams()
+                this.getCurrencyPopulateParams(),
             ],
         }
     }

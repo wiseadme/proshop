@@ -5,8 +5,9 @@ import { validateId } from '@common/utils/mongoose-validate-id'
 // Types
 import { ILogger } from '@/types/utils'
 import { IOrderRepository } from '../types/repository'
-import { IOrder, IRequestParams } from '@proshop/types'
+import { IOrder, IOrderMongoModel, IRequestParams } from '@proshop/types'
 import { OrderModel } from '@modules/order/model/order.model'
+import { OrderMapper } from '@modules/order/mappers/order.mapper'
 
 // Constants
 import { DEFAULT_ITEMS_COUNT, DEFAULT_PAGE } from '@common/constants/counts'
@@ -18,72 +19,71 @@ export class OrderRepository implements IOrderRepository {
     ) {
     }
 
-    async create(order: IOrder): Promise<Document & IOrder> {
-        return (await new OrderModel({
+    async create(order: IOrder): Promise<IOrder> {
+        const orderData = await new OrderModel({
+            ...OrderMapper.toMongoModelData(order),
             _id: new Types.ObjectId(),
-            items: order.items,
-            customer: order.customer,
-            delivery: order.delivery,
-            amount: order.amount,
-            qrcode: order.qrcode,
-            orderId: order.orderId,
-            status: order.status,
-            payment: order.payment,
-        }).save()) as Document & IOrder
+        }).save() as IOrderMongoModel
+
+        return OrderMapper.toDomain(orderData)
     }
 
-    async read(params: IRequestParams<Partial<IOrder>> & { seen?: boolean }): Promise<Array<Document & IOrder>> {
-        let orders
+    async findById(id: string): Promise<IOrder> {
+        const [order] = await OrderModel
+            .find({ _id: id })
+            .populate('customer')
+            .populate({
+                path: 'executor',
+                select: 'firstName secondName roles phone',
+                options: {
+                    lean: true,
+                },
+            })
+            .lean() as IOrderMongoModel[]
 
-        if (params?._id) {
-            validateId(params._id)
-
-            orders = await OrderModel
-                .find({ _id: params._id })
-                .populate('customer')
-                .populate({
-                    path: 'executor',
-                    select: 'firstName secondName roles phone',
-                })
-                .lean()
-
-        } else if (params.seen) {
-            orders = await OrderModel
-                .find({ 'status.seen': params.seen })
-                .sort({ createdAt: -1 })
-                .populate('customer')
-                .populate({
-                    path: 'executor',
-                    select: 'firstName secondName roles phone',
-                })
-                .lean()
-        } else {
-            const {
-                page = DEFAULT_PAGE,
-                count = DEFAULT_ITEMS_COUNT,
-            } = params
-
-            orders = await OrderModel
-                .find()
-                .skip((page * count) - count)
-                .limit(count)
-                .sort({ createdAt: -1 })
-                .populate('customer')
-                .populate({
-                    path: 'executor',
-                    select: 'firstName secondName roles phone',
-                })
-                .lean()
-        }
-
-        return orders
+        return OrderMapper.toDomain(order)
     }
 
-    async update(updates: IOrder & Document): Promise<{ updated: Document & IOrder }> {
-        validateId(updates._id)
+    async findBySeen(seen: boolean): Promise<IOrder[]> {
+        const orders = await OrderModel
+            .find({ 'status.seen': seen })
+            .sort({ createdAt: -1 })
+            .populate('customer')
+            .populate({
+                path: 'executor',
+                select: 'firstName secondName roles phone',
+            })
+            .lean() as IOrderMongoModel[]
+
+        return orders.map(order => OrderMapper.toDomain(order))
+    }
+
+    async find(params: IRequestParams<Partial<IOrder>> & { seen?: boolean }): Promise<IOrder[]> {
+        const {
+            page = DEFAULT_PAGE,
+            count = DEFAULT_ITEMS_COUNT,
+        } = params
+
+        const orders = await OrderModel
+            .find()
+            .skip((page * count) - count)
+            .limit(count)
+            .sort({ createdAt: -1 })
+            .populate('customer')
+            .populate({
+                path: 'executor',
+                select: 'firstName secondName roles phone',
+            })
+            .lean() as IOrderMongoModel[]
+
+        return orders.map(order => OrderMapper.toDomain(order))
+    }
+
+    async update(updates: IOrder & Document): Promise<{ updated: IOrder }> {
+        validateId(updates.id)
 
         const updated = await OrderModel.findByIdAndUpdate(
-            { _id: updates._id },
+            { _id: updates.id },
             { $set: updates },
             { new: true },
         )
@@ -91,9 +91,9 @@ export class OrderRepository implements IOrderRepository {
             .populate({
                 path: 'executor',
                 select: 'firstName secondName roles phone',
-            }).lean() as Document & IOrder
+            }).lean() as IOrderMongoModel
 
-        return { updated }
+        return { updated: OrderMapper.toDomain(updated) }
     }
 
     async delete(id) {

@@ -4,10 +4,11 @@ import { TYPES } from '@common/schemes/di-types'
 
 // Types
 import { ILogger } from '@/types/utils'
-import { IMerchant } from '@proshop/types'
+import { IMerchant, IMerchantMongoModel } from '@proshop/types'
 import { IMerchantRepository } from '@modules/settings/types/repository'
 import { validateId } from '@common/utils/mongoose-validate-id'
 import { MerchantModel } from '@modules/settings/model/merchant.model'
+import {MerchantMapper} from '@modules/settings/mappers/merchant.mapper'
 
 @injectable()
 export class MerchantRepository implements IMerchantRepository {
@@ -17,37 +18,30 @@ export class MerchantRepository implements IMerchantRepository {
     }
 
     async create(merchant: IMerchant) {
-        return new MerchantModel({
+        const merchantData = await new MerchantModel({
+            ...MerchantMapper.toMongoModelData(merchant),
             _id: new mongoose.Types.ObjectId(),
-            organization: merchant.organization,
-            name: merchant.name,
-            description: merchant.description,
-            logo: merchant.logo,
-            slogan: merchant.slogan,
-            address: merchant.address,
-            email: merchant.email,
-            phone: merchant.phone,
-            currency: merchant.currency,
-            stores: merchant.stores,
-            social: merchant.social,
         }).save()
+
+        return MerchantMapper.toDomain(merchantData.toObject())!
     }
 
     async read() {
         const [merchant] = await MerchantModel.find().lean()
-        return merchant
+        return MerchantMapper.toDomain(merchant)
     }
 
     async update(updates: Partial<IMerchant>) {
-        validateId(updates._id)
+        validateId(updates.id)
 
         const updated = await MerchantModel.findByIdAndUpdate(
-            { _id: updates._id },
+            { _id: updates.id },
             { $set: updates },
             { new: true },
-        ) as Document & IMerchant
+        )
+            .lean() as IMerchantMongoModel
 
-        return { updated }
+        return { updated: MerchantMapper.toDomain(updated)! }
     }
 
     async delete(id): Promise<boolean> {

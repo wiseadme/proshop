@@ -1,40 +1,46 @@
 import mongoose, { Document, LeanDocument } from 'mongoose'
 import { ISettingsRepository } from '@modules/settings/types/repository'
-import { ISettings } from '@proshop/types'
+import { ISettings, ISettingsMongoModel, Maybe } from '@proshop/types'
 
 import { SettingsModel } from '@modules/settings/model/settings.model'
 import { injectable } from 'inversify'
 import { validateId } from '@common/utils/mongoose-validate-id'
+import { SettingsMapper } from '@modules/settings/mappers/settings.mapper'
 
 @injectable()
 export class SettingsRepository implements ISettingsRepository {
     async create(settings: Partial<ISettings>) {
-        return (await (new SettingsModel({
+
+        const settingsData = await new SettingsModel({
+            ...SettingsMapper.toMongoModelData(settings),
             _id: new mongoose.Types.ObjectId(),
-            merchant: settings.merchant,
-            site: settings.site,
-        }).save())).populate(['merchant', 'site'])
+        })
+            .save()
+
+        await settingsData.populate(['merchant', 'site'])
+
+        return SettingsMapper.toDomain(settingsData.toObject())!
     }
 
-    async read(): Promise<LeanDocument<ISettings>> {
-        const [settings] = await SettingsModel.find().lean().populate(['merchant', 'site'])
+    async read(): Promise<Maybe<ISettings>> {
+        const [settings] = await SettingsModel
+            .find()
+            .lean()
+            .populate(['merchant', 'site'])
 
-        return settings
+        return SettingsMapper.toDomain(settings)
     }
 
     async update(updates: Partial<ISettings>) {
-        const { _id } = updates
-        validateId(_id)
-
-        delete updates._id
+        validateId(updates.id)
 
         const updated = await SettingsModel.findByIdAndUpdate(
-            { _id },
+            { _id: updates.id },
             { $set: updates },
             { new: true },
-        ) as Document & ISettings
+        ) as ISettingsMongoModel
 
-        return { updated }
+        return { updated: SettingsMapper.toDomain(updated)! }
     }
 
     async delete(id): Promise<boolean> {
