@@ -15,4 +15,4 @@ const FilterItemSchema = new Schema<IFilterItemMongoModel>({
     timestamps: true,
 })
 
-export const FilterItemModel = model<IFilterItemMongoModel>('FilterGroup', FilterItemSchema)
+export const FilterItemModel = model<IFilterItemMongoModel>('FilterItem', FilterItemSchema)

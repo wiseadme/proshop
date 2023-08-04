@@ -6,10 +6,10 @@
     } from 'vue'
     import { TextEditor } from '@shared/components/TextEditor'
     import { useProduct } from '@modules/product/composables/use-product'
-    import { IAsset } from '@proshop/types'
-    import { clone } from '@shared/helpers'
     import { useProductActionsModal } from '@modules/product/composables/use-product-actions-modal'
     import { useProductsService } from '@modules/product/composables/use-products-service'
+    import { clone } from '@shared/helpers'
+    import { IAsset } from '@proshop/types'
 
     const { unitItems } = useProductsService()
     const {
@@ -56,9 +56,6 @@
             return it
         })
     }
-    // const discardInfoChanges = () => {
-    //   textEditorRerenderKey.value = Date.now().toString()
-    // }
 
     watch(showModal, state => state && (textEditorRerenderKey.value = Date.now().toString()))
     watch(hasChanges, state => !state && (textEditorRerenderKey.value = Date.now().toString()))

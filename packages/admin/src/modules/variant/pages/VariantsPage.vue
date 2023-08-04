@@ -2,9 +2,8 @@
     import { ref, unref } from 'vue'
     import { useVariantsService } from '@modules/variant/composables/use-variants-service'
     import { Variant } from '@modules/variant/model/variant.model'
+    import ItemsList from '@shared/components/ItemsList'
     import { IVariant } from '@proshop/types'
-    // @ts-ignore
-    import draggable from 'vuedraggable'
 
     const { getVariants, createVariant, deleteVariant, variants } = useVariantsService()
 
@@ -22,10 +21,6 @@
 
     const clearForm = () => {
         model.value = Variant.create()
-    }
-
-    const onChange = () => {
-        console.log('change')
     }
 
     getVariants()
@@ -88,33 +83,14 @@
                 sm="12"
             >
                 <template v-if="variants">
-                    <draggable
-                        v-model="variants"
-                        item-key="_id"
-                        @change="onChange"
+                    <items-list
+                        :items="variants"
+                        @delete="onDelete"
                     >
-                        <template #item="{element}">
-                            <div class="variant-item d-flex justify-start align-center elevation-2 my-1 py-2 px-3 white app-border-radius">
-                                <v-icon
-                                    class="mr-3"
-                                    color="grey lighten-2"
-                                >
-                                    fas fa-grip-vertical
-                                </v-icon>
-                                <span>
-                                    {{ element.group }}
-                                </span>
-                                <v-spacer></v-spacer>
-                                <v-icon
-                                    color="error"
-                                    clickable
-                                    @click="onDelete(element)"
-                                >
-                                    fas fa-times
-                                </v-icon>
-                            </div>
+                        <template #title="{item}">
+                            <span>{{ item.group }}</span>
                         </template>
-                    </draggable>
+                    </items-list>
                 </template>
             </v-col>
         </v-row>

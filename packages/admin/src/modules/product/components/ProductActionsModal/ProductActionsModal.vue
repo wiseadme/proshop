@@ -29,7 +29,6 @@
     const modalHeader = computed<string>(() => `${ (unref(isEditMode) ? 'Редактирование' : 'Создание') } продукта`)
 
     const onSubmit = (validate) => {
-        console.log('submit', unref(isEditMode))
         validate().then(unref(isEditMode) ? onUpdateProduct : onCreateProduct)
     }
 
@@ -76,21 +75,20 @@
                 <v-card-actions>
                     <v-button
                         color="primary"
+                        class="app-border-radius"
                         elevation="3"
                         width="120"
                         :disabled="!hasChanges && isEditMode"
                         :loading="!isSaved"
-                        rounded
                         @click="onSubmit(validate)"
                     >
                         сохранить
                     </v-button>
                     <v-button
                         color="warning"
-                        class="ml-4"
+                        class="ml-4 app-border-radius"
                         width="120"
                         elevation="3"
-                        rounded
                         :disabled="hasChanges"
                         @click="closeModal"
                     >
@@ -98,10 +96,9 @@
                     </v-button>
                     <v-button
                         v-if="isEditMode"
-                        class="ml-4"
+                        class="ml-4 app-border-radius"
                         elevation="3"
                         color="red darken-2"
-                        rounded
                         :disabled="!hasChanges"
                         @click="onDiscardProductChanges"
                     >

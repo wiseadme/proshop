@@ -28,8 +28,8 @@ export const useMetaTagsService = createSharedComposable(() => {
         return _store.update(updates)
     }
 
-    const onDeleteMetaTag = (id: string) => {
-        return _store.delete(id)
+    const onDeleteMetaTag = (metaTag: IMetaTag) => {
+        return _store.delete(metaTag.id)
     }
 
     const fetchMetaTags = (params = {}) => {

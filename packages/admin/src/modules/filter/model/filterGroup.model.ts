@@ -1,17 +1,17 @@
 import { IFilterGroup } from '@proshop/types'
 
 export class FilterGroup {
-    public _id: string
+    public id: string
     public name: string
     public attributeName: string
     public associate: string
     constructor({
-        _id = '',
+        id = '',
         name = '',
         attributeName = '',
         associate = ''
     }: IFilterGroup) {
-        this._id = _id
+        this.id = id
         this.name = name
         this.attributeName = attributeName
         this.associate = associate

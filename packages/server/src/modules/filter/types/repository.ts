@@ -1,4 +1,3 @@
-import { Document } from 'mongoose'
 import { IFilterGroup, IFilterItem } from '@proshop/types'
 
 export interface IFilterGroupRepository {
@@ -12,9 +11,9 @@ export interface IFilterGroupRepository {
 }
 
 export interface IFilterItemRepository {
-    create(filterItem: IFilterItem): Promise<Document & IFilterItem>
+    create(filterItem: IFilterItem): Promise<IFilterItem>
 
-    read(id?: string): Promise<Array<Document & IFilterItem>>
+    read(params: Partial<IFilterItem>): Promise<IFilterItem[]>
 
     update(updates: Partial<IFilterItem>): Promise<{ updated: IFilterItem }>
 

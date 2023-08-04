@@ -1,14 +1,7 @@
-
-interface IFilterItemMongoModel {
-    _id: string
-    groupId: string
-    value: string
-}
-
 export interface IFilterItem {
     id: string
     groupId: string
-    value: string
+    value: string | number
 }
 
 export interface IFilterGroup {
@@ -18,6 +11,10 @@ export interface IFilterGroup {
     associate?: string
 }
 
-interface IFilterGroupMongoModel extends Omit<IFilterGroup, 'id'>{
+export interface IFilterGroupMongoModel extends Omit<IFilterGroup, 'id'> {
+    _id: string
+}
+
+export interface IFilterItemMongoModel extends Omit<IFilterItem, 'id'> {
     _id: string
 }

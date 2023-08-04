@@ -37,7 +37,7 @@
     const createOption = async (validate) => {
         await validate()
 
-        unref(optionPattern)!.variantId = unref(currentVariant)!.id!
+        unref(optionPattern)!.variantId = unref(currentVariant)!.id
 
         if (unref(isVariantEditMode)) {
             await onUpdateProductVariantOption(unref(optionPattern))
@@ -90,7 +90,8 @@
         setExistsVariants(variants.length ? variants : unref(variantItems))
 
         if (unref(currentVariant)) {
-            setCurrentVariant(variants?.find(v => v.id === unref(currentVariant)!.id) || unref(existsVariants)?.[0])
+            const variant = variants?.find(v => v.id === unref(currentVariant)!.id)
+            setCurrentVariant(variant || unref(existsVariants)?.[0])
         } else {
             currentVariant.value = variants?.[0] || unref(existsVariants)?.[0]
         }
@@ -181,14 +182,6 @@
                             color="#272727"
                             :disabled="!isEditMode"
                             label="описание"
-                        />
-                    </v-col>
-                    <v-col cols="6">
-                        <v-text-field
-                            v-model.trim="optionPattern.url"
-                            color="#272727"
-                            :disabled="!isEditMode"
-                            label="url"
                         />
                     </v-col>
                     <v-col>

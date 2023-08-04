@@ -41,6 +41,7 @@ import { MerchantService } from '@modules/settings/service/merchant.service'
 import { SettingsService } from '@modules/settings/service/settings.service'
 import { SiteService } from '@modules/settings/service/site.service'
 import { FilterGroupService } from '@modules/filter/service/filterGroup.service'
+import { FilterItemService } from '@modules/filter/service/filterItem.service'
 
 import { GatewayService as ProductGateway, IProductGatewayService } from '@modules/product/gateway/gateway.service'
 
@@ -61,6 +62,7 @@ import { MerchantRepository } from '@modules/settings/repository/merchant.reposi
 import { SiteRepository } from '@modules/settings/repository/site.repository'
 import { SettingsRepository } from '@modules/settings/repository/settings.repository'
 import { FilterGroupRepository } from '@modules/filter/repository/filterGroup.repository'
+import { FilterItemRepository } from '@modules/filter/repository/filterItem.repository'
 // Middlewares
 import { JsonMiddleware } from '@common/middlewares/json.middleware'
 import { UrlEncodedMiddleware } from '@common/middlewares/urlencoded.middleware'
@@ -86,6 +88,7 @@ import { IEventBusService } from '@/types/services'
 import { IMerchantService, ISettingsService, ISiteService } from '@modules/settings/types/service'
 import { IMetaTagService } from '@modules/metatag/types/service'
 import { IFilterGroupService } from '@modules/filter/types/service'
+import { IFilterItemService } from '@modules/filter/types/service'
 
 import { ICategoryRepository } from '@modules/category/types/repository'
 import { IAssetsRepository } from '@modules/asset/types/repository'
@@ -101,6 +104,7 @@ import { IOptionRepository } from '@modules/option/types/repository'
 import { IMetaTagRepository } from '@modules/metatag/types/repository'
 import { IMerchantRepository, ISettingsRepository, ISiteRepository } from '@modules/settings/types/repository'
 import { IFilterGroupRepository } from '@modules/filter/types/repository'
+import { IFilterItemRepository } from '@modules/filter/types/repository'
 // Utils Types
 import { ILogger } from '@/types/utils'
 import { IConfig, IController, IDb, IRedis } from '@/types'
@@ -137,6 +141,7 @@ container.bind<IMerchantService>(TYPES.SERVICES.IMerchantService).to(MerchantSer
 container.bind<ISettingsService>(TYPES.SERVICES.ISettingsService).to(SettingsService)
 container.bind<ISiteService>(TYPES.SERVICES.ISiteService).to(SiteService)
 container.bind<IFilterGroupService>(TYPES.SERVICES.IFilterGroupService).to(FilterGroupService)
+container.bind<IFilterItemService>(TYPES.SERVICES.IFilterItemService).to(FilterItemService)
 container.bind<IProductGatewayService>(TYPES.SERVICES.IProductGatewayService).to(ProductGateway)
 
 // Controllers
@@ -184,3 +189,4 @@ container.bind<IMerchantRepository>(TYPES.REPOSITORIES.IMerchantRepository).to(M
 container.bind<ISettingsRepository>(TYPES.REPOSITORIES.ISettingsRepository).to(SettingsRepository)
 container.bind<ISiteRepository>(TYPES.REPOSITORIES.ISiteRepository).to(SiteRepository)
 container.bind<IFilterGroupRepository>(TYPES.REPOSITORIES.IFilterGroupRepository).to(FilterGroupRepository)
+container.bind<IFilterItemRepository>(TYPES.REPOSITORIES.IFilterItemRepository).to(FilterItemRepository)

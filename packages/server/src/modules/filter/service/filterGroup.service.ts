@@ -1,4 +1,3 @@
-import { Document } from 'mongoose'
 import { inject, injectable } from 'inversify'
 import { TYPES } from '@common/schemes/di-types'
 import {FilterGroup} from '@modules/filter/entity/filterGroup.entity'

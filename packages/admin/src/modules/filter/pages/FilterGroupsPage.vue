@@ -15,7 +15,7 @@
                 <filter-group-form/>
             </v-col>
             <v-col cols="8">
-                <filter-groups-list/>
+                <filter-groups-list />
             </v-col>
         </v-row>
     </v-layout>

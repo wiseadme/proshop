@@ -1,6 +1,6 @@
 <script lang="ts" setup>
     import { ref, unref } from 'vue'
-    import draggable from 'vuedraggable'
+    import DraggableItemsList from '@shared/components/DraggableItemsList/DraggableItemsList.vue'
     import { Attribute } from '@modules/attribute/model/attribute.model'
     // Composables
     import { useAttributesService } from '@modules/attribute/composables/use-attributes-service'
@@ -12,7 +12,7 @@
         updateAttribute,
         deleteAttribute,
         createAttribute,
-        getAttributes
+        getAttributes,
     } = useAttributesService()
 
     const attributePattern = ref<IAttribute>(Attribute.create())
@@ -108,39 +108,21 @@
                 sm="12"
             >
                 <template v-if="attributes">
-                    <draggable
+                    <draggable-items-list
                         v-model="attributes"
-                        item-key="_id"
+                        :items="attributes"
+                        @delete="onDelete"
                         @change="onChange"
                     >
-                        <template #item="{element}">
-                            <div class="d-flex justify-start align-center elevation-2 my-1 py-2 px-3 attribute-item white app-border-radius">
-                                <v-icon
-                                    class="mr-3"
-                                    color="grey lighten-2"
-                                >
-                                    fas fa-grip-vertical
-                                </v-icon>
-                                <span>
-                                    {{ element.key }}
-                                </span>
-                                <v-spacer></v-spacer>
-
-                                <v-icon
-                                    color="error"
-                                    clickable
-                                    @click="onDelete(element)"
-                                >
-                                    fas fa-times
-                                </v-icon>
-                            </div>
+                        <template #title="{item}">
+                            {{ item.key }}
                         </template>
-                    </draggable>
+                    </draggable-items-list>
                 </template>
             </v-col>
         </v-row>
     </v-layout>
 </template>
 <style lang="scss">
-  @import "./AttributePage";
+    @import "./AttributePage";
 </style>

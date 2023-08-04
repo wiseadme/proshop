@@ -1,8 +1,8 @@
 import { ref, unref } from 'vue'
-import { IUnit } from '@proshop/types'
 import { Unit } from '@modules/unit/model/unit.model'
 import { useUnitsService } from '@modules/unit/composables/use-units-service'
 import { useLoadingState } from '@shared/composables/use-loading-state'
+import { IUnit } from '@proshop/types'
 
 export const useUnit = () => {
     const { updateUnit, createUnit, deleteUnit, setAsCurrent } = useUnitsService()
@@ -36,8 +36,8 @@ export const useUnit = () => {
         model.value = Unit.create(item)
     }
 
-    const onDeleteUnit = (id) => {
-        return deleteUnit(id)
+    const onDeleteUnit = (unit: IUnit) => {
+        return deleteUnit(unit.id)
     }
 
     return {

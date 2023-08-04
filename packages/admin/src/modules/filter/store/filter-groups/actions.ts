@@ -1,4 +1,4 @@
-import { useFilterGroupsRepository } from '@modules/filter/repository/filterGroup.repository'
+import { useFilterGroupsRepository } from '@modules/filter/repository/filter-groups.repository'
 import { IFilterGroup } from '@proshop/types'
 
 const repository = useFilterGroupsRepository()
@@ -23,6 +23,20 @@ export const actions = {
 
             this.$patch(state => {
                 state.filterGroups = data.data
+            })
+
+            return data.data
+        } catch (err) {
+            return Promise.reject(err)
+        }
+    },
+
+    async deleteFilterGroup(id: string) {
+        try {
+            const { data } = await repository.delete(id)
+
+            this.$patch(state => {
+                state.filterGroups = state.filterGroups.filter(group => group.id !== id)
             })
 
             return data.data

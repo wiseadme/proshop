@@ -7,7 +7,7 @@ import { TYPES } from '@common/schemes/di-types'
 import { Document } from 'mongoose'
 import { ILogger } from '@/types/utils'
 import { IController } from '@/types'
-import { IFilterGroupService } from '../types/service'
+import { IFilterGroupService, IFilterItemService } from '../types/service'
 import { IFilterGroup, IFilterItem } from '@proshop/types'
 
 @injectable()
@@ -17,7 +17,8 @@ export class FilterController extends BaseController implements IController {
 
     constructor(
         @inject(TYPES.UTILS.ILogger) private logger: ILogger,
-        @inject(TYPES.SERVICES.IFilterGroupService) private service: IFilterGroupService,
+        @inject(TYPES.SERVICES.IFilterGroupService) private filterGroupService: IFilterGroupService,
+        @inject(TYPES.SERVICES.IFilterItemService) private filterItemService: IFilterItemService,
     ) {
         super()
         this.initRoutes()
@@ -29,11 +30,12 @@ export class FilterController extends BaseController implements IController {
         this.router.get('/groups', expressAsyncHandler(this.getFilterGroups.bind(this)))
         this.router.delete('/groups', expressAsyncHandler(this.deleteFilterGroup.bind(this)))
         this.router.post('/items', expressAsyncHandler(this.createFilterItem.bind(this)))
+        this.router.get('/items', expressAsyncHandler(this.getFilterItems.bind(this)))
     }
 
     async createFilterGroup({ body, method }: Request<{}, {}, IFilterGroup>, res: Response) {
         try {
-            const filterGroup = await this.service.create(body)
+            const filterGroup = await this.filterGroupService.create(body)
 
             this.send({
                 response: res,
@@ -52,7 +54,7 @@ export class FilterController extends BaseController implements IController {
 
     async getFilterGroups({ query, method }: Request<{}, {}, {}, { id?: string }>, res: Response) {
         try {
-            const filterGroups = await this.service.read(query?.id)
+            const filterGroups = await this.filterGroupService.read(query?.id)
 
             this.send({
                 response: res,
@@ -71,7 +73,7 @@ export class FilterController extends BaseController implements IController {
 
     async updateFilterGroup({ body, method }: Request<{}, {}, IFilterGroup & Document>, res: Response) {
         try {
-            const { updated } = await this.service.update(body)
+            const { updated } = await this.filterGroupService.update(body)
 
             this.send({
                 response: res,
@@ -90,7 +92,7 @@ export class FilterController extends BaseController implements IController {
 
     async deleteFilterGroup({ query, method }: Request<{}, {}, {}, { id: string }>, res: Response) {
         try {
-            await this.service.delete(query.id)
+            await this.filterGroupService.delete(query.id)
 
             this.send({
                 response: res,
@@ -109,14 +111,33 @@ export class FilterController extends BaseController implements IController {
 
     async createFilterItem({ body, method }: Request<{}, {}, IFilterItem>, res: Response) {
         try {
-            // const filterGroup = await this.service.create(body)
-            //
-            // this.send({
-            //     response: res,
-            //     data: filterGroup,
-            //     url: this.path,
-            //     method,
-            // })
+            const filterItem = await this.filterItemService.create(body)
+
+            this.send({
+                response: res,
+                data: filterItem,
+                url: this.path,
+                method,
+            })
+        } catch (err) {
+            return this.error({
+                error: err,
+                url: this.path,
+                method,
+            })
+        }
+    }
+
+    async getFilterItems({ query, method }: Request<{}, {}, {}, Partial<IFilterItem> & { id?: string }>, res: Response) {
+        try {
+            const filterItems = await this.filterItemService.read(query)
+
+            this.send({
+                response: res,
+                data: filterItems,
+                url: this.path,
+                method,
+            })
         } catch (err) {
             return this.error({
                 error: err,

@@ -45,7 +45,7 @@ export const actions = {
             const { data } = await categoryRepository.delete(id)
 
             this.$patch(state => {
-                state.categories = state.categories.filter()
+                state.categories = state.categories.filter(ctg => ctg.id !== id)
             })
 
             return data.data

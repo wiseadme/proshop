@@ -1,19 +1,16 @@
 import { computed, unref } from 'vue'
 import { useAttributesStore } from '@modules/attribute/store'
-import { useFiltersStore } from '@modules/filter/store'
+import { useFilterGroupsStore } from '@modules/filter/store/filter-groups'
+import { IFilterGroup } from '@proshop/types'
 
 export const useFilterGroupService = () => {
-    const _filtersStore = useFiltersStore()
+    const _filterGroupsStore = useFilterGroupsStore()
     const _attributesStore = useAttributesStore()
 
-    const { createFilterGroup, getFilterGroups } = _filtersStore
+    const { createFilterGroup, getFilterGroups, deleteFilterGroup } = _filterGroupsStore
 
     const attributes = computed(() => _attributesStore.attributes)
-    const filterGroups = computed(() => _filtersStore.filterGroups)
-
-    const createFilterGroupItem = (filter) => {
-        return createFilterGroup(filter)
-    }
+    const filterGroups = computed(() => _filterGroupsStore.filterGroups)
 
     const getFilterGroupAttributes = () => {
         if (unref(attributes)) return
@@ -21,9 +18,9 @@ export const useFilterGroupService = () => {
         return _attributesStore.read()
     }
 
-    const getFilterGroupItems = (params = {}) => {
-        return getFilterGroups(params)
-    }
+    const createFilterGroupItem = (filterGroup: IFilterGroup) => createFilterGroup(filterGroup)
+    const getFilterGroupItems = (params = {}) => getFilterGroups(params)
+    const deleteFilterGroupItem = (id: string) => deleteFilterGroup(id)
 
     return {
         attributes,
@@ -31,5 +28,6 @@ export const useFilterGroupService = () => {
         getFilterGroupAttributes,
         createFilterGroupItem,
         getFilterGroupItems,
+        deleteFilterGroupItem,
     }
 }

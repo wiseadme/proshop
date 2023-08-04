@@ -2,15 +2,14 @@
     import {
         ref,
         unref,
-        watch
+        watch,
     } from 'vue'
     import { useMetaTag } from '@modules/metatag/composables/use-meta-tag'
     import { useMetaTagsService } from '@modules/metatag/composables/use-meta-tags-service'
     import { IMetaTag } from '@proshop/types'
     import { descriptorToMetaTag } from '@shared/helpers/metatag'
     import { clone } from '@shared/helpers'
-    // @ts-ignore
-    import draggable from 'vuedraggable'
+    import DraggableItemsList from '@shared/components/DraggableItemsList/DraggableItemsList.vue'
 
     const {
         metaTags,
@@ -131,42 +130,16 @@
                     sm="12"
                 >
                     <template v-if="metaTags">
-                        <draggable
-                            v-model="tags"
-                            item-key="_id"
+                        <draggable-items-list
+                            :items="metaTags"
+                            editable
+                            @edit="onEditMetaTag"
+                            @delete="onDeleteMetaTag"
                         >
-                            <template #item="{element}">
-                                <div class="mata-tag-item d-flex justify-start align-center elevation-2 my-1 py-2 px-3 meta-tag-item white app-border-radius">
-                                    <v-icon
-                                        class="mr-3"
-                                        color="grey lighten-2"
-                                    >
-                                        fas fa-grip-vertical
-                                    </v-icon>
-                                    <span>
-                                        {{ descriptorToMetaTag(element.props) }}
-                                    </span>
-                                    <v-spacer></v-spacer>
-                                    <v-icon
-                                        color="primary"
-                                        clickable
-                                        class="mr-2"
-                                        @click="onEditMetaTag(element)"
-                                    >
-                                        fas fa-pen
-                                    </v-icon>
-
-
-                                    <v-icon
-                                        color="error"
-                                        clickable
-                                        @click="onDeleteMetaTag(element.id)"
-                                    >
-                                        fas fa-times
-                                    </v-icon>
-                                </div>
+                            <template #title="{item}">
+                                {{ descriptorToMetaTag(item.props) }}
                             </template>
-                        </draggable>
+                        </draggable-items-list>
                     </template>
                 </v-col>
             </v-row>

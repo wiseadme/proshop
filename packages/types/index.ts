@@ -1,6 +1,6 @@
 export type { IAsset, IAssetMongoModel } from './asset'
 export type { IAttribute, IAttributeMongoModel } from './attribute'
-export type { IUnit } from './unit'
+export type { IUnit, IUnitMongoModel } from './unit'
 export type { ICart, ICartItem } from './cart'
 export type { ICategory, ICategoryConditions, ICategoryMongoModel } from './category'
 export type { ISEOType } from './common'

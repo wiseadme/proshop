@@ -1,7 +1,7 @@
 <script lang="ts" setup>
     import { useUnitsService } from '@modules/unit/composables/use-units-service'
     import { useUnit } from '@modules/unit/composables/use-unit'
-    import draggable from 'vuedraggable'
+    import ItemsList from '@shared/components/ItemsList'
 
     const { units, getUnits } = useUnitsService()
 
@@ -13,9 +13,6 @@
         onEditUnit,
         onDeleteUnit,
     } = useUnit()
-
-    const onChange = () => {
-    }
 
     getUnits()
 
@@ -83,45 +80,15 @@
                 sm="12"
             >
                 <template v-if="units">
-                    <draggable
-                        v-model="units"
-                        item-key="_id"
-                        class="units"
-                        @change="onChange"
+                    <items-list
+                        :items="units"
+                        @delete="onDeleteUnit"
+                        @edit="onEditUnit"
                     >
-                        <template #item="{element}">
-                            <div
-                                class="units__item d-flex justify-start align-center elevation-2 my-1 py-2 px-3 white app-border-radius"
-                            >
-                                <v-icon
-                                    class="mr-3"
-                                    color="grey lighten-2"
-                                >
-                                    fas fa-grip-vertical
-                                </v-icon>
-                                <span>
-                                    {{ element.value }}
-                                </span>
-                                <v-spacer></v-spacer>
-
-                                <v-icon
-                                    color="primary"
-                                    class="mr-2"
-                                    clickable
-                                    @click="onEditUnit(element)"
-                                >
-                                    fas fa-pen
-                                </v-icon>
-                                <v-icon
-                                    color="error"
-                                    clickable
-                                    @click="onDeleteUnit(element._id)"
-                                >
-                                    fas fa-times
-                                </v-icon>
-                            </div>
+                        <template #title="{item}">
+                            {{ item.value }}
                         </template>
-                    </draggable>
+                    </items-list>
                 </template>
             </v-col>
         </v-row>

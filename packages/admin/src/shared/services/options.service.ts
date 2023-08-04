@@ -17,7 +17,7 @@ export class Service {
   }
 
   async deleteOption(option){
-      return this._store.deleteOption(option._id)
+      return this._store.deleteOption(option.id)
   }
 
   static create(){

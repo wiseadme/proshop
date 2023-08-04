@@ -5,8 +5,9 @@ import { FilterItemModel } from '@modules/filter/model/filterItem.model'
 import { validateId } from '@common/utils/mongoose-validate-id'
 // Types
 import { ILogger } from '@/types/utils'
-import { IFilterItem } from '@proshop/types'
+import { IFilterItem, IFilterItemMongoModel } from '@proshop/types'
 import { IFilterItemRepository } from '../types/repository'
+import { FilterItemMapper } from '@modules/filter/mappers/filterItem.mapper'
 
 @injectable()
 export class FilterItemRepository implements IFilterItemRepository {
@@ -15,32 +16,37 @@ export class FilterItemRepository implements IFilterItemRepository {
     ) {
     }
 
-    async create(filterItem: IFilterItem): Promise<Document & IFilterItem> {
-        return (await new FilterItemModel({
+    async create(filterItem: IFilterItem): Promise<IFilterItem> {
+        const itemData = await new FilterItemModel({
+            ...FilterItemMapper.toMongoModelData(filterItem),
             _id: new mongoose.Types.ObjectId(),
-            value: filterItem.value,
-            groupId: filterItem.groupId,
-        }).save() as any)
+        })
+            .save()
+
+        return FilterItemMapper.toDomain(itemData.toObject())
     }
 
-    async read(id?: string): Promise<Array<Document & IFilterItem>> {
-        id && validateId(id)
+    async read(params: Partial<IFilterItem> = {}): Promise<IFilterItem[]> {
+        params.id && validateId(params.id)
 
-        const filters = await FilterItemModel.find(id ? { _id: id } : {})
+        const filters = await FilterItemModel
+            .find(params.id ? { _id: params.id } : params)
+            .lean()
 
-        return filters as Array<Document & IFilterItem>
+        return filters.map(filter => FilterItemMapper.toDomain(filter))
     }
 
-    async update(updates: Partial<IFilterItem>): Promise<{ updated: Document & IFilterItem }> {
+    async update(updates: Partial<IFilterItem>): Promise<{ updated: IFilterItem }> {
         validateId(updates.id)
 
         const option = await FilterItemModel.findByIdAndUpdate(
             { _id: updates.id },
             { $set: updates },
             { new: true },
-        ).populate('assets') as Document & IFilterItem
+        )
+            .lean() as IFilterItemMongoModel
 
-        return { updated: option }
+        return { updated: FilterItemMapper.toDomain(option) }
     }
 
     async delete(id) {

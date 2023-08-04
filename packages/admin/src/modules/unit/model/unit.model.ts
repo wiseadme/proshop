@@ -1,16 +1,16 @@
 import { IUnit } from '@proshop/types'
 
 export class Unit implements IUnit {
-  _id: string
+  id: string
   value: string
   meta: string
 
   constructor({
-      _id = '',
+      id = '',
       value = '',
       meta = ''
   }){
-      this._id = _id
+      this.id = id
       this.value = value
       this.meta = meta
   }
