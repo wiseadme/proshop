@@ -253,9 +253,12 @@ export const useProductsService = createSharedComposable(() => {
 
         unref(product)!.assets = clone(assets)!
 
-        if (assets?.length && !assets?.find(it => it.main)) {
+        const mainImage = assets?.find(it => it.main)
+
+        if (assets?.length && !mainImage) {
             assets[0] = await _filesService.updateFile({ id: assets?.[0].id, main: true })
         }
+
 
         return updateProduct({ id: asset.ownerId, assets })
     }

@@ -82,6 +82,6 @@
     "vue-router": "^4.0.15",
     "vue3-apexcharts": "^1.4.1",
     "vuedraggable": "^4.1.0",
-    "vueland": "^0.0.41"
+    "vueland": "^0.0.42"
   }
 }

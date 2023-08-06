@@ -51,7 +51,7 @@
                 Категории
             </h2>
         </v-col>
-        <v-col xl="12">
+        <v-col cols="4">
             <template
                 v-for="it in categoryItems"
                 :key="it.id"

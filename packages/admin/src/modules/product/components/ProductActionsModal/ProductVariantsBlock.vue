@@ -116,9 +116,7 @@
                 v-for="variant in existsVariants"
                 :key="variant.id"
                 :label="variant?.group"
-                class="mr-2 mb-4"
-                outlined
-                rounded
+                class="app-border-radius mr-2 mb-4"
                 :color="currentVariant.id === variant.id ? 'var(--primary)' : 'grey lighten-1'"
                 :disabled="!isEditMode"
                 @click="setCurrentVariant(variant)"
@@ -242,15 +240,18 @@
                 <v-row class="mt-4 ml-2">
                     <v-button
                         color="primary"
+                        class="app-border-radius"
                         elevation="2"
+                        width="120"
                         :disabled="!isEditMode"
                         @click="createOption(validate)"
                     >
-                        {{ optionPattern.id ? 'изменить' : 'добавить' }}
+                        {{ optionPattern.id ? 'изменить' : 'сохранить' }}
                     </v-button>
                     <v-button
-                        class="ml-2"
-                        color="error"
+                        class="ml-2 app-border-radius"
+                        color="warning"
+                        width="120"
                         elevation="2"
                         :disabled="!isEditMode"
                         @click="clearVariantOptionForm"

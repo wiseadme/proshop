@@ -108,7 +108,7 @@
                         <v-list-item
                             v-for="(it, i) in model.items"
                             :key="it.product.id"
-                            style="border-bottom: 1px solid #dcdcdc"
+                            style="border-bottom: 1px solid #dcdcdc; height: 80px"
                         >
                             <v-list-item-icon>
                                 <span>{{ i + 1 }}</span>
@@ -146,14 +146,20 @@
                             <v-list-item-content style="width: 180px">
                                 <h4>Телефон</h4>
                             </v-list-item-content>
+                            <v-list-item-content style="width: 180px">
+                                <h4>Адрес</h4>
+                            </v-list-item-content>
                         </v-list-item>
-                        <v-list-item>
+                        <v-list-item style="height: 80px">
                             <v-list-item-icon/>
                             <v-list-item-content style="width: 250px">
                                 {{ model.customer.name }}
                             </v-list-item-content>
                             <v-list-item-content style="width: 180px">
                                 {{ model.customer.phone }}
+                            </v-list-item-content>
+                            <v-list-item-content style="width: 180px">
+                                {{ model.delivery.address }}
                             </v-list-item-content>
                         </v-list-item>
                     </v-list>

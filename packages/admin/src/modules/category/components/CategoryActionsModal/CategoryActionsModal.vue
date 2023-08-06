@@ -219,19 +219,18 @@
                 <v-card-actions>
                     <v-button
                         color="primary"
-                        elevation="3"
+                        class="app-border-radius"
+                        elevation="2"
                         width="120"
-                        rounded
                         @click="onSubmit(validate)"
                     >
                         сохранить
                     </v-button>
                     <v-button
                         color="warning"
-                        class="ml-2"
+                        class="ml-2 app-border-radius"
                         width="120"
                         elevation="3"
-                        rounded
                         @click="closeActionsModal"
                     >
                         отмена

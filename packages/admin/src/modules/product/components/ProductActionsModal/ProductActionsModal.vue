@@ -48,7 +48,7 @@
         <v-form v-slot="{validate}">
             <v-card
                 color="white"
-                width="100%"
+                style="width: 100%"
                 class="modal-card app-border-radius elevation-5"
             >
                 <v-card-title class="modal-card-title secondary--text py-4">
@@ -86,7 +86,7 @@
                     </v-button>
                     <v-button
                         color="warning"
-                        class="ml-4 app-border-radius"
+                        class="ml-2 app-border-radius"
                         width="120"
                         elevation="3"
                         :disabled="hasChanges"
@@ -96,7 +96,7 @@
                     </v-button>
                     <v-button
                         v-if="isEditMode"
-                        class="ml-4 app-border-radius"
+                        class="ml-2 app-border-radius"
                         elevation="3"
                         color="red darken-2"
                         :disabled="!hasChanges"
