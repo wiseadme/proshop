@@ -17,6 +17,7 @@ export interface IVariant {
     id: string
     group: string,
     options?: IOption[]
+    attribute: string
 }
 
 export interface IVariantMongoModel extends Omit<IVariant, 'id'> {

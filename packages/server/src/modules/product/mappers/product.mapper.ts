@@ -1,4 +1,4 @@
-import { IProduct, IProductMongoModel } from '@proshop/types'
+import { IProduct, IProductMongoModel, IVariant } from '@proshop/types'
 import { CategoryMapper } from '@modules/category/mappers/category.mapper'
 import { AssetMapper } from '@modules/asset/mappers/asset.mapper'
 import { VariantMapper } from '@modules/variant/mappers/variant.mapper'
@@ -30,7 +30,8 @@ export class ProductMapper {
         return {
             _id: id,
             ...map,
-            assets: map.assets?.map(asset => asset.id) || []
+            assets: map.assets?.map(asset => asset.id) || [],
+            variants: map.variants?.map(variant => VariantMapper.toMongoModelData(variant))
         } as IProductMongoModel
     }
 }

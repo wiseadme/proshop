@@ -8,7 +8,7 @@ const FilterGroupSchema = new Schema<IFilterGroupMongoModel>({
         required: true,
         unique: true
     },
-    attributeName: {
+    attribute: {
         type: String,
         required: true,
     },

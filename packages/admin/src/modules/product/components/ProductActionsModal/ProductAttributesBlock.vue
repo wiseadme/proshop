@@ -136,7 +136,7 @@
                                     <v-select
                                         v-model="attributesMap[element.key].group"
                                         label="Группа фильтров"
-                                        :items="filterGroups.filter(group => group.attributeName === element.key)"
+                                        :items="filterGroups.filter(group => group.attribute === element.key)"
                                         value-key="name"
                                         @focus="onFocusGroupSelect"
                                     />

@@ -25,11 +25,11 @@ export const useProductVariants = () => {
         quantity: 0,
         price: 0,
         description: null,
-        assets: []
+        assets: [],
     })
 
     const onUploadProductVariantOptionImage = async ({ file, option }) => {
-        const optionData = await uploadProductVariantImage(file, option)
+        const optionData = await uploadProductVariantImage({ file, option })
         option.assets = optionData.assets
     }
 
@@ -67,6 +67,6 @@ export const useProductVariants = () => {
         onDeleteProductVariantOptionImage,
         onCreateProductVariantOption,
         onUpdateProductVariantOption,
-        onDeleteProductVariantOption
+        onDeleteProductVariantOption,
     }
 }

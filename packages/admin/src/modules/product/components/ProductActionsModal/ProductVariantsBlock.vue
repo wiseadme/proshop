@@ -2,7 +2,7 @@
     import {
         ref,
         unref,
-        watch
+        watch,
     } from 'vue'
     import { IOption, IVariant } from '@proshop/types'
     import { useProduct } from '@modules/product/composables/use-product'
@@ -89,12 +89,9 @@
     watch(() => unref(model).variants, (variants) => {
         setExistsVariants(variants.length ? variants : unref(variantItems))
 
-        if (unref(currentVariant)) {
-            const variant = variants?.find(v => v.id === unref(currentVariant)!.id)
-            setCurrentVariant(variant || unref(existsVariants)?.[0])
-        } else {
-            currentVariant.value = variants?.[0] || unref(existsVariants)?.[0]
-        }
+        const variant = variants?.find(v => v.id === unref(currentVariant)!.id)
+
+        setCurrentVariant(variant || unref(currentVariant))
 
     }, { immediate: true })
 
@@ -117,6 +114,7 @@
                 :key="variant.id"
                 :label="variant?.group"
                 class="app-border-radius mr-2 mb-4"
+                elevation="2"
                 :color="currentVariant.id === variant.id ? 'var(--primary)' : 'grey lighten-1'"
                 :disabled="!isEditMode"
                 @click="setCurrentVariant(variant)"

@@ -14,7 +14,7 @@ export const useFilterGroups = () => {
     const model = ref<IFilterGroup>(FilterGroup.create({}))
 
     const onSelectAttribute = (attribute) => {
-        unref(model).attributeName = attribute.key
+        unref(model).attribute = attribute.key
     }
 
     const onCreateGroup = (validate) => {

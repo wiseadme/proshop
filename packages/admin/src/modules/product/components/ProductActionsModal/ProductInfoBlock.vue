@@ -12,6 +12,7 @@
     import { IAsset } from '@proshop/types'
 
     const { unitItems } = useProductsService()
+
     const {
         model,
         isEditMode,

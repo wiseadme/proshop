@@ -1,7 +1,7 @@
 import {
     computed,
     ref,
-    unref
+    unref,
 } from 'vue'
 // Features
 import { createSharedComposable } from '@shared/features/create-shared-composable'
@@ -32,13 +32,12 @@ import {
     IProductQuery,
     IUnit,
     IVariant,
-    Maybe
+    Maybe,
 } from '@proshop/types'
 
 // Helpers
 import { clone } from '@shared/helpers'
 import { getCategoriesIds } from '@modules/product/helpers'
-
 
 export const useProductsService = createSharedComposable(() => {
     const _productsStore = useProductStore()
@@ -52,8 +51,8 @@ export const useProductsService = createSharedComposable(() => {
     const {
         sort,
         pagination,
-        getSortParams,
         getPaginationParams,
+        getRequestParams,
     } = useRequestParams()
 
     const _filesService = useFilesService()
@@ -110,11 +109,7 @@ export const useProductsService = createSharedComposable(() => {
     }
 
     const getProducts = (params?: IProductQuery) => {
-        return _productsStore.read({
-            ...(params || {}),
-            ...getPaginationParams(),
-            ...getSortParams(),
-        })
+        return _productsStore.read(getRequestParams(params))
     }
 
     const getCategoryProducts = (category: ICategory) => {
@@ -151,6 +146,14 @@ export const useProductsService = createSharedComposable(() => {
         return updated
     }
 
+    const getVariantsWithOptionsIds = (variants) => {
+        return variants.map((v) => {
+            v.options = v.options!.map(o => o.id) as []
+
+            return v
+        })
+    }
+
     const createVariantOption = async (option: IOption) => {
         const createdOption = await _optionsService.createOption(option)
         const { variants } = unref(product)!
@@ -162,36 +165,52 @@ export const useProductsService = createSharedComposable(() => {
             variants.push(variant)
         }
 
-        const optionIds = variant.options?.map(o => o.id) || []
-        optionIds?.push(createdOption.id)
+        variant.options ??= []
+        variant.options.push(createdOption)
 
-        variant.options = optionIds as any
-
-        await updateProduct({ id: unref(product)!.id, variants })
+        await updateProduct({
+            id: unref(product)!.id,
+            variants: getVariantsWithOptionsIds(variants),
+        })
 
         variant.options = []
     }
 
-    const createAsset = async (file, ownerId) => {
+    const createAsset = async ({
+        file,
+        ownerId,
+    }: {
+        file: File
+        ownerId: string
+    }) => {
         const { formData, fileName } = _filesService.createFormData(file)
 
         return _filesService.uploadFile({ ownerId, fileName, formData })
     }
 
-    const updateVariantOption = async (option) => {
+    const updateVariantOption = async (option: IOption) => {
         const updated = await _optionsService.updateOption(option)
-
         const { variants } = unref(product)!
-        const varInd = variants.findIndex(v => v.id === option.variantId)!
 
-        const optInd = variants[varInd].options?.findIndex(it => it.id === option.id)
+        const variant = variants.find(v => v.id === option.variantId)!
+        const { options } = variant
 
-        variants[varInd].options?.splice(optInd!, 1, updated)
+        variant.options = options?.map(opt => opt.id === option.id ? updated : opt)
 
-        return updateProduct({ id: unref(product)!.id, variants })
+        return updateProduct({
+            id: unref(product)!.id,
+            variants: getVariantsWithOptionsIds(variants),
+        })
     }
 
-    const deleteVariantOption = async ({ option, variant }) => {
+    const deleteVariantOption = async ({
+        option,
+        variant,
+    }: {
+        option: IOption
+        variant: IVariant
+    }): Promise<IProduct> => {
+
         await _optionsService.deleteOption(option)
 
         let { variants } = unref(product)!
@@ -202,25 +221,42 @@ export const useProductsService = createSharedComposable(() => {
             variants = variants.filter(v => v.id !== variant.id)
         }
 
-        return updateProduct({ id: unref(product)!.id, variants })
-    }
-
-    const uploadProductVariantImage = async (file, option): Promise<IOption> => {
-        const optionAsset = await createAsset(file, option.id)
-        option.assets.push(optionAsset)
-
-        return _optionsService.updateOption({
-            id: option.id,
-            assets: option.assets.map(asset => asset.id),
+        return updateProduct({
+            id: unref(product)!.id,
+            variants: getVariantsWithOptionsIds(variants),
         })
     }
 
-    const deleteProductVariantImage = async ({ asset, option }): Promise<IOption> => {
+    const uploadProductVariantImage = async ({
+        file,
+        option,
+    }: {
+        file: File,
+        option: IOption
+    }): Promise<IOption> => {
+
+        const optionAsset = await createAsset({ file, ownerId: option.id })
+
+        option.assets!.push(optionAsset)
+
+        return _optionsService.updateOption({
+            id: option.id,
+            assets: option.assets!.map(asset => asset.id),
+        })
+    }
+
+    const deleteProductVariantImage = async ({
+        asset,
+        option,
+    }: {
+        asset: IAsset
+        option: IOption
+    }): Promise<IOption> => {
         await _filesService.deleteFile(asset)
 
         return _optionsService.updateOption({
             id: option.id,
-            assets: option.assets.filter(a => a.id !== asset.id),
+            assets: option.assets!.filter(a => a.id !== asset.id),
         })
     }
 
@@ -228,17 +264,19 @@ export const useProductsService = createSharedComposable(() => {
         _productsStore.delete(product).catch(err => console.log(err))
     }
 
-    const uploadProductImage = async (file) => {
+    const uploadProductImage = async (file: File) => {
         if (!file) return
 
-        const asset: IAsset = await createAsset(file, unref(product)?.id)
-
+        const asset: IAsset = await createAsset({ file, ownerId: unref(product)!.id })
         const { assets = [] } = unref(product)!
 
         asset.main = asset.main || !assets.length
 
         if (asset.main) {
-            await _filesService.updateFile({ id: asset.id, main: true })
+            await _filesService.updateFile({
+                id: asset.id,
+                main: true,
+            })
         }
 
         assets.push(asset)
@@ -250,15 +288,13 @@ export const useProductsService = createSharedComposable(() => {
         await _filesService.deleteFile(asset)
 
         const assets = unref(product)!.assets?.filter(it => it.id !== asset.id)
+        const mainImage = assets?.find(it => it.main)
 
         unref(product)!.assets = clone(assets)!
 
-        const mainImage = assets?.find(it => it.main)
-
         if (assets?.length && !mainImage) {
-            assets[0] = await _filesService.updateFile({ id: assets?.[0].id, main: true })
+            assets[0] = await _filesService.updateFile({ id: assets[0].id, main: true })
         }
-
 
         return updateProduct({ id: asset.ownerId, assets })
     }

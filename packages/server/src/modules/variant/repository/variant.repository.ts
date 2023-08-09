@@ -14,14 +14,14 @@ export class VariantRepository implements IVariantRepository {
     constructor(@inject(TYPES.UTILS.ILogger) private logger: ILogger) {
     }
 
-    async create({ group }: IVariant) {
-        const variant = await new VariantModel({
+    async create(variant: IVariant) {
+        const variantData = await new VariantModel({
+            ...VariantMapper.toMongoModelData(variant),
             _id: new Types.ObjectId(),
-            group,
         })
             .save()
 
-        return VariantMapper.toDomain(variant.toObject())
+        return VariantMapper.toDomain(variantData.toObject())
     }
 
     async read() {

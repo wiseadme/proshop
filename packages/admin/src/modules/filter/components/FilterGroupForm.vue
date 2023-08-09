@@ -24,7 +24,7 @@
             </v-card-title>
             <v-card-content>
                 <v-select
-                    v-model="model.attributeName"
+                    v-model="model.attribute"
                     label="Аттрибут привязки *"
                     :items="attributes"
                     :rules="[v => !!v || 'Обязательное поле']"

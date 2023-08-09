@@ -1,29 +1,54 @@
 <script lang="ts" setup>
     import { ref, unref } from 'vue'
     import { useVariantsService } from '@modules/variant/composables/use-variants-service'
+    import { useAttributesService } from '@modules/attribute/composables/use-attributes-service'
     import { Variant } from '@modules/variant/model/variant.model'
     import ItemsList from '@shared/components/ItemsList'
-    import { IVariant } from '@proshop/types'
+    import { IAttribute, IVariant } from '@proshop/types'
 
-    const { getVariants, createVariant, deleteVariant, variants } = useVariantsService()
+    const {
+        variants,
+        getVariants,
+        createVariant,
+        deleteVariant
+    } = useVariantsService()
+
+    const {
+        attributes,
+        getAttributes
+    } = useAttributesService()
 
     const model = ref<IVariant>(Variant.create())
+    const isEditMode = ref(false)
+    const selectedAttribute = ref<Maybe<IAttribute>>(null)
 
-    const onCreate = (validate) => {
-        validate()
-            .then(() => createVariant(unref(model)))
-            .then(clearForm)
+    const onCreate = async (validate) => {
+        await validate()
+        await createVariant(unref(model))
+        
+        clearForm()
     }
 
-    const onDelete = (item) => {
-        return deleteVariant(item.id)
+    const onDelete = (item) => deleteVariant(item.id)
+
+    const onEdit = (item: IVariant) => {
+        isEditMode.value = true
+        model.value = Variant.create(item)
+        selectedAttribute.value = unref(attributes).find(attr => attr.key === item.attribute)!
+    }
+
+    const onSelectAttribute = (attribute: IAttribute) => {
+        unref(model).attribute = attribute.key
     }
 
     const clearForm = () => {
+        isEditMode.value = false
+        selectedAttribute.value = null
         model.value = Variant.create()
     }
 
     getVariants()
+    getAttributes()
 </script>
 <template>
     <v-layout column>
@@ -50,6 +75,13 @@
                                 label="Название группы"
                                 color="content"
                                 :rules="[val => !!val || 'Обязательное поле']"
+                            />
+                            <v-select
+                                v-model="selectedAttribute"
+                                :items="attributes"
+                                label="Аттрибут привязки"
+                                value-key="key"
+                                @select="onSelectAttribute"
                             />
                         </v-card-content>
                         <v-card-actions class="">
@@ -86,6 +118,7 @@
                     <items-list
                         :items="variants"
                         @delete="onDelete"
+                        @edit="onEdit"
                     >
                         <template #title="{item}">
                             <span>{{ item.group }}</span>

@@ -1,7 +1,7 @@
 <script lang="ts" setup>
     import { useMerchant } from '@modules/settings/composables/use-merchant'
 
-    const {model} = useMerchant()
+    const { model } = useMerchant()
 </script>
 <template>
     <v-card style="width: 100%">

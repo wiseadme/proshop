@@ -23,13 +23,13 @@ export const useProductMetaTags = createSharedComposable(() => {
 
     watch(() => unref(model).seo.metatags, (metaTags) => {
         const map = metaTags.reduce((acc, it) => {
-            acc[it._id] = true
+            acc[it.id] = true
 
             return acc
         }, {})
 
-        availableMetaTags.value = unref(metaTagItems)?.filter(it => !map[it._id]) || []
-        usedMetaTags.value = unref(metaTagItems)?.filter(it => map[it._id]) || []
+        availableMetaTags.value = unref(metaTagItems)?.filter(it => !map[it.id]) || []
+        usedMetaTags.value = unref(metaTagItems)?.filter(it => map[it.id]) || []
     }, { immediate: true })
 
     return {

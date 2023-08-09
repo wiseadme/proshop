@@ -36,7 +36,7 @@
                 </h3>
                 <draggable
                     :list="model.seo.metatags"
-                    item-key="_id"
+                    item-key="id"
                     group="metaTags"
                     class="draggable-container exists-tags"
                     @change="onChange"
@@ -73,7 +73,7 @@
                 </h3>
                 <draggable
                     :list="availableMetaTags"
-                    item-key="_id"
+                    item-key="id"
                     :group="{ name: 'metaTags', pull: pullFunction }"
                     class="draggable-container"
                     @dragend="onChange"

@@ -33,7 +33,7 @@ export interface IProduct {
     url: string
     seo: ISEOType
     unit: Maybe<IUnit>
-    categories: string[] | ICategory[]
+    categories: ICategory[] | string[]
     assets: IAsset[]
     variants: IVariant[]
     attributes: IAttribute[]
@@ -41,7 +41,7 @@ export interface IProduct {
     related: IProduct[] | string[]
 }
 
-export interface IProductMongoModel extends Omit<IProduct, 'id' | 'assets' | 'variants'>{
+export interface IProductMongoModel extends Omit<IProduct, 'id' | 'assets' | 'variants'> {
     _id: string
     assets?: string[] | IAsset[]
     variants?: string[] | IVariant[]

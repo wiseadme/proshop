@@ -12,9 +12,9 @@ export const useRequestParams = () => {
     const pagination = usePagination()
     const sort = useSort()
 
-    const makeRequestParams = (params: Maybe<IProductQuery> = null): IRequestParams<IProductQuery> => {
+    const getRequestParams = (params: Maybe<IProductQuery> = null): IRequestParams<IProductQuery> => {
         return {
-            ...(params ? params : {}),
+            ...(params || {}),
             ...getPaginationParams(),
             ...getSortParams(),
         }
@@ -39,7 +39,7 @@ export const useRequestParams = () => {
     return {
         sort,
         pagination,
-        makeRequestParams,
+        getRequestParams,
         getPaginationParams,
         getSortParams
     }

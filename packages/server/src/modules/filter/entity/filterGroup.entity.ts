@@ -3,18 +3,18 @@ import { IFilterGroup } from '@proshop/types'
 export class FilterGroup implements IFilterGroup {
     readonly id: string
     readonly name: string
-    readonly attributeName: string
+    readonly attribute: string
     readonly associate?: string
 
     constructor({
         id = '',
         name = '',
-        attributeName = '',
+        attribute = '',
         associate = undefined,
     }) {
         this.id = id
         this.name = name
-        this.attributeName = attributeName
+        this.attribute = attribute
         this.associate = associate
     }
     static create(filterGroup) {

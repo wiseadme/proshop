@@ -2,10 +2,13 @@
     import ItemsList from '@shared/components/ItemsList'
     import { useFilterItemsService } from '@modules/filter/composables/use-filter-items-service'
 
-    const { filterItems } = useFilterItemsService()
+    const { filterItems, deleteFilterItem } = useFilterItemsService()
 </script>
 <template>
-    <items-list :items="filterItems">
+    <items-list
+        :items="filterItems"
+        @delete="deleteFilterItem"
+    >
         <template #title="{item}">
             <span>{{ item.value }}</span>
         </template>
