@@ -18,6 +18,7 @@ export type ErrorOptions = {
     method: string
     error: any
     url: string
+    status?: number
 }
 
 export interface IController {

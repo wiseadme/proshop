@@ -6,7 +6,7 @@ export interface IOrderService {
 
     read(params?: Partial<IOrder>): Promise<{ items: Array<IOrder>, total: number }>,
 
-    update(updates: IOrder): Promise<{ updated: IOrder }>
+    update(updates: Partial<IOrder>): Promise<{ updated: IOrder }>
 
     delete(id: string): Promise<boolean>
 }

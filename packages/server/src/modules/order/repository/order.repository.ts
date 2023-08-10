@@ -23,9 +23,10 @@ export class OrderRepository implements IOrderRepository {
         const orderData = await new OrderModel({
             ...OrderMapper.toMongoModelData(order),
             _id: new Types.ObjectId(),
-        }).save() as IOrderMongoModel
+        })
+            .save()
 
-        return OrderMapper.toDomain(orderData)
+        return OrderMapper.toDomain(orderData.toObject())
     }
 
     async findById(id: string): Promise<IOrder> {

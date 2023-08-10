@@ -2,11 +2,11 @@ import { Document } from 'mongoose'
 import { ICart } from '@proshop/types'
 
 export interface ICartService {
-    create(cart: ICart): Promise<Document<ICart>>
+    create(cart: ICart): Promise<ICart>
 
-    read(params: Partial<ICart>): Promise<Document<ICart>>,
+    read(params: Partial<ICart>): Promise<ICart>,
 
-    update(updates: ICart & Document): Promise<{ updated: Document<ICart> }>
+    update(updates: Partial<ICart>): Promise<{ updated: ICart }>
 
     delete(id: string): Promise<boolean>
 }

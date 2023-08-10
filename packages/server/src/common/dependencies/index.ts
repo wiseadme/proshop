@@ -44,6 +44,8 @@ import { FilterGroupService } from '@modules/filter/service/filterGroup.service'
 import { FilterItemService } from '@modules/filter/service/filterItem.service'
 
 import { GatewayService as ProductGateway, IProductGatewayService } from '@modules/product/gateway/gateway.service'
+import { GatewayService as CartGateway, ICartGatewayService } from '@modules/cart/gateway/gateway.service'
+import { GatewayService as OrderGateway, IOrderGatewayService } from '@modules/order/gateway/gateway.service'
 
 // Repositories
 import { CategoryRepository } from '@modules/category/repository/category.repository'
@@ -142,7 +144,11 @@ container.bind<ISettingsService>(TYPES.SERVICES.ISettingsService).to(SettingsSer
 container.bind<ISiteService>(TYPES.SERVICES.ISiteService).to(SiteService)
 container.bind<IFilterGroupService>(TYPES.SERVICES.IFilterGroupService).to(FilterGroupService)
 container.bind<IFilterItemService>(TYPES.SERVICES.IFilterItemService).to(FilterItemService)
-container.bind<IProductGatewayService>(TYPES.SERVICES.IProductGatewayService).to(ProductGateway)
+
+// Gateways
+container.bind<IProductGatewayService>(TYPES.GATEWAYS.IProductGatewayService).to(ProductGateway)
+container.bind<ICartGatewayService>(TYPES.GATEWAYS.ICartGatewayService).to(CartGateway)
+container.bind<IOrderGatewayService>(TYPES.GATEWAYS.IOrderGatewayService).to(OrderGateway)
 
 // Controllers
 container.bind<IController>(TYPES.CONTROLLERS.IController).to(SwaggerController)

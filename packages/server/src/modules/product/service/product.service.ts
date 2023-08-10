@@ -19,7 +19,7 @@ export class ProductService extends ServiceHelpers implements IProductService {
     constructor(
         @inject(TYPES.UTILS.ILogger) private logger: ILogger,
         @inject(TYPES.REPOSITORIES.IProductRepository) private repository: IProductRepository,
-        @inject(TYPES.SERVICES.IProductGatewayService) private gateway: IProductGatewayService,
+        @inject(TYPES.GATEWAYS.IProductGatewayService) private gateway: IProductGatewayService,
     ) {
         super()
     }

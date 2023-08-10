@@ -1,12 +1,11 @@
-import { computed } from 'vue'
+import { ref, watch } from 'vue'
 import { createSharedComposable } from '@shared/features/create-shared-composable'
 import { useAttributesStore } from '@modules/attribute/store'
 import { IAttribute } from '@proshop/types'
 
 export const useAttributesService = createSharedComposable(() => {
     const _store = useAttributesStore()
-
-    const attributes = computed<IAttribute[]>(() => _store.attributes || [])
+    const attributes = ref<IAttribute[]>([])
 
     const updateAttribute = (updates) => _store.update(updates)
 
@@ -15,6 +14,10 @@ export const useAttributesService = createSharedComposable(() => {
     const deleteAttribute = (id) => _store.delete(id)
 
     const getAttributes = () => _store.read()
+
+    watch(() => _store.attributes, (items) => {
+        attributes.value = items!
+    }, { immediate: true })
 
     return {
         attributes,

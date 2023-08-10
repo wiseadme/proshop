@@ -4,12 +4,10 @@ import { Request, Response, Router } from 'express'
 import { inject, injectable } from 'inversify'
 import { TYPES } from '@common/schemes/di-types'
 // Types
-import { Document } from 'mongoose'
 import { ILogger } from '@/types/utils'
 import { IController } from '@/types'
 import { ICartService } from '../types/service'
 import { ICart } from '@proshop/types'
-import { Cart } from '@modules/cart/entity/cart.entity'
 
 @injectable()
 export class CartController extends BaseController implements IController {
@@ -33,7 +31,7 @@ export class CartController extends BaseController implements IController {
 
     async createCart({ body, method }: Request<{}, {}, ICart>, res: Response) {
         try {
-            const cart = await this.service.create(Cart.create(body))
+            const cart = await this.service.create(body)
 
             this.send({
                 response: res,
@@ -50,7 +48,7 @@ export class CartController extends BaseController implements IController {
         }
     }
 
-    async getCart({ query, method }: Request<{}, {}, {}, { _id?: string }>, res: Response) {
+    async getCart({ query, method }: Request<{}, {}, {}, { id?: string }>, res: Response) {
         try {
             const cart = await this.service.read(query)
 
@@ -69,7 +67,7 @@ export class CartController extends BaseController implements IController {
         }
     }
 
-    async updateCart({ body, method }: Request<{}, {}, ICart & Document>, res: Response) {
+    async updateCart({ body, method }: Request<{}, {}, ICart>, res: Response) {
         try {
             const { updated } = await this.service.update(body)
 

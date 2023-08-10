@@ -8,6 +8,8 @@ import { ICartRepository } from '../types/repository'
 import { ICart } from '@proshop/types'
 import { IEventBusService } from '@/types/services'
 import { DELETE_CART_EVENT } from '@common/constants/events'
+import { Cart } from '@modules/cart/entity/cart.entity'
+import { ICartGatewayService } from '@modules/cart/gateway/gateway.service'
 
 @injectable()
 export class CartService implements ICartService {
@@ -20,14 +22,25 @@ export class CartService implements ICartService {
     }
 
     async create(cart) {
-        return await this.repository.create(cart)
+        return await this.repository.create(Cart.create(cart))
     }
 
-    async read(params: Partial<ICart>): Promise<Document & ICart> {
+    async read(params: Partial<ICart>): Promise<ICart> {
+        if (params.ownerId) {
+            const data = await this.repository.findByOwnerId(params.ownerId)
+
+            if (data) return data
+
+            return Promise.reject({
+                message: 'Not found',
+                status: 404,
+            })
+        }
+
         return await this.repository.read(params)
     }
 
-    async update(updates: ICart & Document): Promise<{ updated: Document<ICart> }> {
+    async update(updates: Partial<ICart>): Promise<{ updated: ICart }> {
         if (updates.items) {
 
             updates.amount = 0
@@ -37,13 +50,15 @@ export class CartService implements ICartService {
             updates.totalUniqueItems = updates.items.length
 
             updates.items.forEach(it => {
+                it.amount = it.quantity * it.product.price
+
                 if (it.variant && it.variant.option.price) {
-                    updates.amount += it.variant.option.price * it.quantity
+                    updates.amount! += it.variant.option.price * it.quantity
                 } else {
-                    updates.amount += it.product.price * it.quantity
+                    updates.amount! += it.product.price * it.quantity
                 }
 
-                updates.totalItems += it.quantity
+                updates.totalItems! += it.quantity
             })
         }
 

@@ -8,8 +8,7 @@ import { IOrderService } from '../types/service'
 import { IOrderRepository } from '../types/repository'
 import { IOrder, IRequestParams } from '@proshop/types'
 import { Order } from '@modules/order/entity/order.entity'
-import { IEventBusService } from '@/types/services'
-import { DELETE_CART_EVENT } from '@common/constants/events'
+import { IOrderGatewayService } from '@modules/order/gateway/gateway.service'
 import customId from 'custom-id'
 
 @injectable()
@@ -17,7 +16,7 @@ export class OrderService implements IOrderService {
     constructor(
         @inject(TYPES.UTILS.ILogger) private logger: ILogger,
         @inject(TYPES.REPOSITORIES.IOrderRepository) private repository: IOrderRepository,
-        @inject(TYPES.SERVICES.IEventBusService) private events: IEventBusService,
+        @inject(TYPES.GATEWAYS.IOrderGatewayService) private gateway: IOrderGatewayService,
     ) {
     }
 
@@ -25,7 +24,7 @@ export class OrderService implements IOrderService {
         order.orderId = customId({
             name: order.customer!.name,
             email: order.customer!.phone,
-            randomLength: 2
+            randomLength: 2,
         })
 
         /**
@@ -36,15 +35,15 @@ export class OrderService implements IOrderService {
 
         const created = await this.repository.create(Order.create(order))
 
-        await this.events.emit(DELETE_CART_EVENT, order.cart)
+        await this.gateway.cart.update({ id: created.cart!, orderId: created.orderId })
 
         return created
     }
 
-    async read(query: IRequestParams<Partial<IOrder> & {seen?: boolean}> = {}) {
+    async read(query: IRequestParams<Partial<IOrder> & { seen?: boolean }> = {}) {
         const data = {
             items: [] as IOrder[],
-            total: 1
+            total: 1,
         }
 
         if (query.length) {
@@ -71,7 +70,13 @@ export class OrderService implements IOrderService {
     }
 
     async update(updates: IOrder): Promise<{ updated: IOrder }> {
-        return await this.repository.update(updates)
+        const { updated } = await this.repository.update(updates)
+
+        if (updated.status.cancelled || updated.status.completed) {
+            await this.gateway.cart.delete(updated.cart!)
+        }
+
+        return { updated }
     }
 
     async delete(id: string): Promise<boolean> {

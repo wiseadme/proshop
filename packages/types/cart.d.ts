@@ -7,15 +7,21 @@ interface ICartItem {
     product: IProduct
     variant?: { name: string, option: IVariantOption }
     quantity: number
+    amount?: number
 }
 
 export interface ICart {
-    _id: string
+    id: string
     items: Array<ICartItem>
     ownerId: Maybe<string>
     totalItems: number
     totalUniqueItems: number
     amount: number
+    orderId?: Maybe<string>
     currency: Maybe<ICurrency>
     expireAt?: Maybe<number>
+}
+
+export interface ICartMongoModel extends Omit<ICart, 'id'> {
+    _id: string
 }

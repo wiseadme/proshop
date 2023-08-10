@@ -30,7 +30,11 @@ export const TYPES = {
         ISiteService: Symbol.for('ISiteService'),
         IFilterGroupService: Symbol.for('IFilterGroupService'),
         IFilterItemService: Symbol.for('IFilterItemService'),
-        IProductGatewayService: Symbol.for('IProductGatewayService')
+    },
+    GATEWAYS: {
+        IProductGatewayService: Symbol.for('IProductGatewayService'),
+        ICartGatewayService: Symbol.for('ICartGatewayService'),
+        IOrderGatewayService: Symbol.for('IOrderGatewayService'),
     },
     REPOSITORIES: {
         ICategoryRepository: Symbol.for('ICategoryRepository'),
