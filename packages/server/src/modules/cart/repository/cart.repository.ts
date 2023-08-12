@@ -1,4 +1,4 @@
-import mongoose, { Document } from 'mongoose'
+import mongoose from 'mongoose'
 import { inject, injectable } from 'inversify'
 import { TYPES } from '@common/schemes/di-types'
 import { validateId } from '@common/utils/mongoose-validate-id'
