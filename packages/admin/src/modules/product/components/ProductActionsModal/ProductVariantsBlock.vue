@@ -1,5 +1,6 @@
 <script lang="ts" setup>
     import {
+        onBeforeMount,
         ref,
         unref,
         watch,
@@ -7,6 +8,8 @@
     import { IOption, IVariant } from '@proshop/types'
     import { useProduct } from '@modules/product/composables/use-product'
     import { useProductVariants } from '@modules/product/composables/use-product-variants'
+    import { useFilterGroupService } from '@modules/filter/composables/use-filter-group-service'
+    import { useFilterItemsService } from '@modules/filter/composables/use-filter-items-service'
 
     const { model, isEditMode } = useProduct()
 
@@ -20,6 +23,9 @@
         onCreateProductVariantOption,
         onDeleteProductVariantOption,
     } = useProductVariants()
+
+    const { filterItems, getFilterItems } = useFilterItemsService()
+    const { filterGroups, getFilterGroupItems } = useFilterGroupService()
 
     const currentVariant = ref<Maybe<IVariant>>(null)
     const existsVariants = ref<IVariant[]>([])
@@ -57,8 +63,14 @@
         optionPattern.value = option
     }
 
-    const onUploadVariantOptionImage = ([file], option) => {
-        onUploadProductVariantOptionImage({ file, option })
+    const onUploadVariantOptionImage = ({
+        files,
+        option,
+    }: {
+        files: File[]
+        option: IOption
+    }) => {
+        onUploadProductVariantOptionImage({ file: files[0], option })
     }
 
     const onDeleteVariantImage = (asset) => {
@@ -95,7 +107,11 @@
 
     }, { immediate: true })
 
-    optionPattern.value = genVariantOptionPattern()
+    onBeforeMount(() => {
+        getFilterGroupItems()
+        getFilterItems()
+        optionPattern.value = genVariantOptionPattern()
+    })
 
 </script>
 <template>
@@ -108,29 +124,27 @@
                 Варианты
             </h2>
         </v-col>
-        <v-col v-if="variantItems.length">
-            <v-button
-                v-for="variant in existsVariants"
-                :key="variant.id"
-                :label="variant?.group"
-                class="app-border-radius mr-2 mb-4"
-                elevation="2"
-                :color="currentVariant.id === variant.id ? 'var(--primary)' : 'grey lighten-1'"
-                :disabled="!isEditMode"
-                @click="setCurrentVariant(variant)"
-            >
-                {{ variant.group }}
-            </v-button>
+        <v-col
+            v-if="variantItems.length"
+            cols="4"
+        >
+            <v-select
+                v-model="currentVariant"
+                label="Варианты"
+                :items="existsVariants"
+                value-key="group"
+                @select="setCurrentVariant"
+            />
         </v-col>
         <v-col
             v-if="currentVariant && currentVariant.options"
-            style="border-radius: 5px;"
-            class="pa-2 elevation-2"
+            class="pa-2"
+            cols="12"
         >
             <v-chip
                 v-for="option in currentVariant.options"
                 :key="option.id"
-                :color="!option.id ?'grey': option === optionPattern ? 'primary' : 'blue lighten-3'"
+                :color="!option.id ? 'grey': option === optionPattern ? 'primary' : 'secondary'"
                 :class="['mr-2']"
                 closable
                 @click="setOptionForEditing(option)"
@@ -144,8 +158,11 @@
             class="py-4 mt-2"
         >
             <v-form v-slot="{validate}">
-                <v-row>
-                    <v-col cols="6">
+                <v-row no-gutter>
+                    <v-col
+                        cols="6"
+                        class="pr-2"
+                    >
                         <v-text-field
                             v-model.trim="optionPattern.name"
                             color="#272727"
@@ -154,7 +171,10 @@
                             :disabled="!isEditMode"
                         />
                     </v-col>
-                    <v-col cols="6">
+                    <v-col
+                        cols="6"
+                        class="pl-2"
+                    >
                         <v-text-field
                             v-model.number="optionPattern.quantity"
                             color="#272727"
@@ -163,7 +183,10 @@
                             :disabled="!isEditMode"
                         />
                     </v-col>
-                    <v-col cols="6">
+                    <v-col
+                        cols="6"
+                        class="pr-2"
+                    >
                         <v-text-field
                             v-model.number="optionPattern.price"
                             color="#272727"
@@ -172,7 +195,10 @@
                             :disabled="!isEditMode"
                         />
                     </v-col>
-                    <v-col cols="6">
+                    <v-col
+                        cols="6"
+                        class="pl-2"
+                    >
                         <v-text-field
                             v-model.trim="optionPattern.description"
                             color="#272727"
@@ -187,11 +213,11 @@
                             color="#272727"
                             :disabled="!optionPattern.id"
                             placeholder="salam"
-                            @update:value="onUploadVariantOptionImage($event, optionPattern)"
+                            @update:value="onUploadVariantOptionImage({files: $event, option: optionPattern})"
                         />
                     </v-col>
                 </v-row>
-                <v-row class="px-2 pt-2">
+                <v-row class="pt-2">
                     <div
                         class="variant-images pa-2"
                         style="width: 100%; min-height: 200px; border: 1px dotted #272727; border-radius: 5px;"

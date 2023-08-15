@@ -1,21 +1,21 @@
 <script lang="ts" setup>
     import { ref, unref } from 'vue'
+    import ItemsList from '@shared/components/ItemsList'
     import { useVariantsService } from '@modules/variant/composables/use-variants-service'
     import { useAttributesService } from '@modules/attribute/composables/use-attributes-service'
     import { Variant } from '@modules/variant/model/variant.model'
-    import ItemsList from '@shared/components/ItemsList'
     import { IAttribute, IVariant } from '@proshop/types'
 
     const {
         variants,
         getVariants,
         createVariant,
-        deleteVariant
+        deleteVariant,
     } = useVariantsService()
 
     const {
         attributes,
-        getAttributes
+        getAttributes,
     } = useAttributesService()
 
     const model = ref<IVariant>(Variant.create())
@@ -25,7 +25,7 @@
     const onCreate = async (validate) => {
         await validate()
         await createVariant(unref(model))
-        
+
         clearForm()
     }
 

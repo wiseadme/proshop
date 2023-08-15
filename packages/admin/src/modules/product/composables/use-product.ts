@@ -37,8 +37,6 @@ export const useProduct = createSharedComposable(() => {
     const isLoading = ref(false)
     const isSaved = ref(true)
 
-    const notUpdatableKeys = ['assets', 'variants']
-
     const setProductAsModel = () => model.value = Product.create(clone(unref(product)!))
 
     const onOpenCreateProductModal = () => {
@@ -139,10 +137,10 @@ export const useProduct = createSharedComposable(() => {
             getCategories(),
             getAttributes(),
             getProducts(),
-            getUnits(),
             getVariants(),
             getMetaTags(),
             getMerchant(),
+            getUnits(),
         ])
 
         isLoading.value = false
@@ -154,7 +152,6 @@ export const useProduct = createSharedComposable(() => {
         isLoading,
         isSaved,
         hasChanges,
-        notUpdatableKeys,
         products,
         product,
         onInit,
