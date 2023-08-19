@@ -5,7 +5,7 @@ import { ProductModel } from '@modules/product/model/product.model'
 import { validateId } from '@common/utils/mongoose-validate-id'
 // Types
 import { IProductRepository } from '../types/repository'
-import { IProduct, IProductMongoModel, IProductQuery, IRequestParams } from '@proshop/types'
+import { IProduct, IProductMongoModel, IProductQuery, IRequestParams, IVariant } from '@proshop/types'
 import { ILogger } from '@/types/utils'
 import { RepositoryHelpers } from '@modules/product/helpers/repository.helpers'
 
@@ -61,12 +61,7 @@ export class ProductRepository extends RepositoryHelpers implements IProductRepo
 
     async findByQueryString(queryString: string) {
         const products = await ProductModel
-            .find({
-                'name': {
-                    '$regex': `.*${queryString}*.`,
-                    '$options': 'i',
-                },
-            })
+            .find({ name: new RegExp(queryString, 'i') })
             .lean()
             .populate(this.getPopulateParams()) as IProductMongoModel[]
 

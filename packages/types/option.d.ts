@@ -1,5 +1,6 @@
 import { Maybe } from './utils'
 import { IAsset } from './asset'
+import { IAttribute } from './attribute'
 
 export interface IOptionProduct {
     url: string
@@ -16,6 +17,7 @@ export interface IOption {
     url?: string
     description?: Maybe<string>
     assets?: IAsset[]
+    modelAttribute: Maybe<IAttribute>
     products?: IOptionProduct[]
 }
 

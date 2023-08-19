@@ -7,7 +7,7 @@ export interface IFilterItem {
 export interface IFilterGroup {
     id: string
     name: string
-    attribute: string
+    attributeId: string
     associate?: string
 }
 

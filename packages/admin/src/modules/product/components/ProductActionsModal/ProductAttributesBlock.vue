@@ -33,27 +33,27 @@
         getFilterGroupItems()
     }
 
-    const onFocusFilter = (key) => {
-        const group = unref(attributesMap)[key].group as IFilterGroup
+    const onFocusFilter = (attrId) => {
+        const group = unref(attributesMap)[attrId].group as IFilterGroup
         getFilterItems({ groupId: group.id })
     }
 
-    const onBlurFilter = (key) => {
-        if (!unref(attributesMap)[key].item) return
+    const onBlurFilter = (attrId) => {
+        if (!unref(attributesMap)[attrId].item) return
 
-        const attribute = unref(model).attributes.find(attr => attr.key === key)
+        const attribute = unref(model).attributes.find(attr => attr.id === attrId)
 
-        attribute!.value = unref(attributesMap)[key].item.value
+        attribute!.value = unref(attributesMap)[attrId].item.value
     }
 
     const toggleAttribute = (attribute) => {
-        const { isFilter } = unref(attributesMap)[attribute.key]
-        unref(attributesMap)[attribute.key].isFilter = !isFilter
+        const { isFilter } = unref(attributesMap)[attribute.id]
+        unref(attributesMap)[attribute.id].isFilter = !isFilter
     }
 
     watch(availableAttributes, (attrs) => {
         attrs.reduce((map, it) => {
-            map[it.key] = {
+            map[it.id] = {
                 isFilter: false,
                 group: null,
                 item: null,
@@ -96,7 +96,7 @@
                                     fas fa-grip-vertical
                                 </v-icon>
                                 <v-tooltip
-                                    :key="attributesMap[element.key].isFilter"
+                                    :key="attributesMap[element.id].isFilter"
                                     color="secondary"
                                     offset-y="-12"
                                     min-width="120"
@@ -105,9 +105,9 @@
                                 >
                                     <template #activator="{on}">
                                         <v-button
-                                            :elevation="attributesMap[element.key].isFilter ? 0 : 2"
+                                            :elevation="attributesMap[element.id].isFilter ? 0 : 2"
                                             color="var(--primary)"
-                                            :outlined="attributesMap[element.key].isFilter"
+                                            :outlined="attributesMap[element.id].isFilter"
                                             @click="toggleAttribute(element)"
                                             v-on="on"
                                         >
@@ -116,12 +116,12 @@
                                             </v-icon>
                                         </v-button>
                                     </template>
-                                    <span v-if="!attributesMap[element.key].isFilter">Переключить на фильтры</span>
+                                    <span v-if="!attributesMap[element.id].isFilter">Переключить на фильтры</span>
                                     <span v-else>Вернуться к свободному вводу</span>
                                 </v-tooltip>
                             </v-col>
                             <v-col
-                                v-if="!attributesMap[element.key].isFilter"
+                                v-if="!attributesMap[element.id].isFilter"
                                 cols="11"
                                 class="d-flex"
                             >
@@ -134,23 +134,23 @@
                             <template v-else>
                                 <v-col cols="4">
                                     <v-select
-                                        v-model="attributesMap[element.key].group"
+                                        v-model="attributesMap[element.id].group"
                                         label="Группа фильтров"
-                                        :items="filterGroups.filter(group => group.attribute === element.key)"
+                                        :items="filterGroups.filter(group => group.attributeId === element.id)"
                                         value-key="name"
                                         @focus="onFocusGroupSelect"
                                     />
                                 </v-col>
                                 <v-col cols="7">
                                     <v-select
-                                        v-model="attributesMap[element.key].item"
+                                        v-model="attributesMap[element.id].item"
                                         :items="filterItems"
                                         label="Фильтры"
                                         value-key="value"
-                                        :disabled="!attributesMap[element.key].group"
-                                        @focus="onFocusFilter(element.key)"
-                                        @blur="onBlurFilter(element.key)"
-                                        @select="onBlurFilter(element.key)"
+                                        :disabled="!attributesMap[element.id].group"
+                                        @focus="onFocusFilter(element.id)"
+                                        @blur="onBlurFilter(element.id)"
+                                        @select="onBlurFilter(element.id)"
                                     />
                                 </v-col>
                             </template>

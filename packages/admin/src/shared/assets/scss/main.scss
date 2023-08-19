@@ -66,3 +66,9 @@ html {
 .v-menu__content {
   border-radius: $border-radius;
 }
+
+.v-data-table__inner {
+  &::-webkit-scrollbar {
+    height: 5px;
+  }
+}

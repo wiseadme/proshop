@@ -13,6 +13,7 @@ import { ICategory, IProduct, IProductQuery, IRequestParams } from '@proshop/typ
 import { IEventBusService } from '@/types/services'
 import { IProductGatewayService } from '@modules/product/gateway/gateway.service'
 import { ServiceHelpers } from '@modules/product/helpers/service.helpers'
+import { ATTR_QUERY_KEY, OPTION_QUERY_KEY } from '@modules/product/constants'
 
 @injectable()
 export class ProductService extends ServiceHelpers implements IProductService {
@@ -42,6 +43,9 @@ export class ProductService extends ServiceHelpers implements IProductService {
     async read(query: IRequestParams<IProductQuery>) {
         const { id, url, category, name, page, count, desc, asc } = query
 
+        const attrQueries = Object.keys(query).filter((key) => key.includes(ATTR_QUERY_KEY))
+        const optionQueries = Object.keys(query).filter((key) => key.includes(OPTION_QUERY_KEY))
+
         const data: { items: IProduct[], total: number } = {
             items: [],
             total: 1,
@@ -59,6 +63,13 @@ export class ProductService extends ServiceHelpers implements IProductService {
             data.total = data.items.length
 
             return data
+        }
+
+        if (attrQueries.length) {
+            const options = await this.gateway.option.findMany(optionQueries.map(key => query[key]))
+
+
+            console.log('found', options)
         }
 
         if (url) {
@@ -88,14 +99,14 @@ export class ProductService extends ServiceHelpers implements IProductService {
         return data
     }
 
-    async update(updates: Partial<Document & IProduct>) {
+    async update(updates: Partial<IProduct>) {
         if (updates.assets) {
             updates.assets.forEach(it => this.gateway.asset.updateFile(it))
             updates.image = updates.assets?.find(it => it.main)?.url || null
         }
 
         if (updates.categories) {
-            const product = await this.repository.findById(updates.id)
+            const product = await this.repository.findById(updates.id!)
             const currentCategories = product.categories?.map(ctg => ctg.id)
             /**
              * @description - Сохраняем текущие категории и апдейты категорий в мапу

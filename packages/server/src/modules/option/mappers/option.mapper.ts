@@ -4,7 +4,7 @@ import { AssetMapper } from '@modules/asset/mappers/asset.mapper'
 export class OptionMapper {
     static toDomain(entity: IOptionMongoModel): IOption {
         const { _id } = entity
-        const map: Partial<IOptionMongoModel> = entity
+        const map: Partial<IOptionMongoModel> = { ...entity }
 
         map.assets = map.assets?.map(asset => AssetMapper.toDomain(asset))
 

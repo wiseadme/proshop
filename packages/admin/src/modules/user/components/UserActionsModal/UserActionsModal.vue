@@ -1,8 +1,9 @@
 <script lang="ts" setup>
     import {
         computed,
+        markRaw,
         ref,
-        unref
+        unref,
     } from 'vue'
     import { roles } from '@shared/constants/roles'
     import { IOrder, IUser } from '@proshop/types'
@@ -10,7 +11,7 @@
 
     const {
         modelValue,
-        isUpdate
+        isUpdate,
     } = defineProps<{
         modelValue: boolean
         isUpdate?: boolean
@@ -23,22 +24,21 @@
     }>()
 
     const user = ref<IUser>(User.create())
-
     const confirmPassword = ref('')
 
-    const rules = {
+    const rules = markRaw({
         firstName: [val => !!val || 'Обязательное поле'],
         secondName: [val => !!val || 'Обязательное поле'],
         phone: [val => val && val.length === 9 || 'Не менее 9-ти символов'],
         password: [val => val && val.length >= 8 || 'Не менее 8-ми символов'],
-        confirmPassword: [val => val === unref(user).password || 'Пароли не совпадают']
-    }
+        confirmPassword: [val => val === unref(user).password || 'Пароли не совпадают'],
+    })
 
-    const rolesInfo = {
+    const rolesInfo = markRaw({
         root: 'создание, редактирование и удаление записей',
         user: 'создание и редактирование записей',
-        readonly: 'только чтение'
-    }
+        readonly: 'только чтение',
+    })
 
     const computedModalHeader = computed(() => isUpdate ? 'Редактирование пользователя' : 'Создание пользователя')
 
@@ -46,15 +46,16 @@
         get: () => modelValue,
         set: (val) => {
             emit('update:modelValue', val)
-        }
+        },
     })
 
     const createUser = (validate) => {
-        validate().then(() => {
-            if (!isUpdate) {
-                emit('create:user', unref(user))
-            }
-        })
+        validate()
+            .then(() => {
+                if (!isUpdate) {
+                    emit('create:user', unref(user))
+                }
+            })
     }
 
     const toggleUserRole = (role: any) => {
@@ -152,9 +153,8 @@
                                 >
                                     <v-tooltip
                                         color="rgba(0,0,0,.7)"
-                                        right
-                                        offset-y="0"
-                                        offset-x="10"
+                                        top
+                                        offset-y="-10"
                                         min-width="250"
                                         elevation="4"
                                     >
@@ -220,25 +220,25 @@
     </v-modal>
 </template>
 <style lang="scss">
-  .roles {
-    width: 100%;
-    height: calc(100% - 40px);
+    .roles {
+        width: 100%;
+        height: calc(100% - 40px);
 
-    &__item {
-      width: 33.3%;
+        &__item {
+            width: 33.3%;
+        }
     }
-  }
 
-  .head {
-    position: relative;
+    .head {
+        position: relative;
 
-    &:before {
-      content: "";
-      width: 100%;
-      height: 1px;
-      background-color: var(--primary);
-      position: absolute;
-      bottom: 0;
+        &:before {
+            content: "";
+            width: 100%;
+            height: 1px;
+            background-color: var(--primary);
+            position: absolute;
+            bottom: 0;
+        }
     }
-  }
 </style>

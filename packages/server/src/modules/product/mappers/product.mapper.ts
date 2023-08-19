@@ -2,11 +2,12 @@ import { IProduct, IProductMongoModel, IVariant } from '@proshop/types'
 import { CategoryMapper } from '@modules/category/mappers/category.mapper'
 import { AssetMapper } from '@modules/asset/mappers/asset.mapper'
 import { VariantMapper } from '@modules/variant/mappers/variant.mapper'
+import { AttributeMapper } from '@modules/attribute/mappers/attribute.mapper'
 
 export class ProductMapper {
     static toDomain(entity: IProductMongoModel): IProduct {
         const { _id } = entity
-        const map: Partial<IProductMongoModel> = entity
+        const map: Partial<IProductMongoModel> = { ...entity }
 
         map.related = map.related?.map(pr => ProductMapper.toDomain(pr)) || entity.related
         map.categories = map.categories?.map(ctg => CategoryMapper.toDomain(ctg))

@@ -18,6 +18,11 @@ const OptionSchema = new Schema<IOptionMongoModel>({
         type: Schema.Types.ObjectId,
         ref: 'Asset',
     }],
+    modelAttribute: {
+        type: Object,
+        default: null,
+        _id: false
+    }
 }, {
     timestamps: true,
 })

@@ -2,7 +2,7 @@
     import {
         ref,
         unref,
-        watch
+        watch,
     } from 'vue'
     import { useFilterGroupService } from '@modules/filter/composables/use-filter-group-service'
     import { useFilterItemForm } from '@modules/filter/composables/use-filter-item-form'
@@ -10,7 +10,7 @@
     import { useFilterItemsService } from '@modules/filter/composables/use-filter-items-service'
 
     const { filterGroups, getFilterGroupItems } = useFilterGroupService()
-    const { filterItems, createFilterItem, getFilterItems } = useFilterItemsService()
+    const { createFilterItem, getFilterItems } = useFilterItemsService()
     const { model } = useFilterItemForm()
 
     const selectedGroup = ref<Maybe<IFilterGroup>>(null)
@@ -25,17 +25,16 @@
 
     const onSelectGroup = (group: IFilterGroup) => {
         unref(model).groupId = group.id
-    }
-
-    if (!unref(filterItems).length) {
-        // getFilterItems()
-    }
-
-    watch(selectedGroup, (group: IFilterGroup) => {
         getFilterItems({ groupId: group.id })
-    })
+    }
 
-    console.log(unref(filterGroups))
+    watch(filterGroups, (groups) => {
+        if (!groups.length) return
+
+        selectedGroup.value = unref(filterGroups)[0]
+        onSelectGroup(unref(selectedGroup)!)
+    }, { immediate: true })
+
 </script>
 <template>
     <v-form v-slot="{validate}">

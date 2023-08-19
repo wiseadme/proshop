@@ -4,7 +4,9 @@ import { IOption } from '@proshop/types'
 export interface IOptionService {
     create(option: IOption): Promise<IOption>
 
-    read(id?: string): Promise<IOption[] | IOption>,
+    find(id?: string): Promise<IOption[] | IOption>,
+
+    findMany(ids: string[]): Promise<IOption[]>
 
     update(updates: Partial<IOption>): Promise<{ updated: IOption }>
 

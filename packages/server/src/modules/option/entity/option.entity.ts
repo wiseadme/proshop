@@ -1,13 +1,14 @@
-import { IAsset, IOption, Maybe } from '@proshop/types'
+import { IAsset, IAttribute, IOption, Maybe } from '@proshop/types'
 
 export class Option implements IOption {
     readonly id: string
     readonly name: string
     readonly variantId: string
-    readonly price?: number
-    readonly quantity?: number
-    readonly description?: Maybe<string>
+    readonly price: number
+    readonly quantity: number
+    readonly description: Maybe<string>
     readonly assets?: IAsset[]
+    readonly modelAttribute: Maybe<IAttribute>
 
     constructor({
         id = '',
@@ -17,6 +18,7 @@ export class Option implements IOption {
         description = null,
         assets = [],
         variantId = '',
+        modelAttribute
     }: IOption) {
         this.id = id
         this.name = name
@@ -25,6 +27,7 @@ export class Option implements IOption {
         this.description = description
         this.assets = assets
         this.variantId = variantId
+        this.modelAttribute = modelAttribute
     }
 
     static create(option: IOption): IOption {

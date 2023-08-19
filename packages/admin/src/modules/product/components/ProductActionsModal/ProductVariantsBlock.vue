@@ -5,18 +5,26 @@
         unref,
         watch,
     } from 'vue'
-    import { IOption, IVariant } from '@proshop/types'
+    import {
+        IFilterGroup,
+        IFilterItem,
+        IOption,
+        IProduct,
+        IVariant,
+    } from '@proshop/types'
     import { useProduct } from '@modules/product/composables/use-product'
     import { useProductVariants } from '@modules/product/composables/use-product-variants'
     import { useFilterGroupService } from '@modules/filter/composables/use-filter-group-service'
     import { useFilterItemsService } from '@modules/filter/composables/use-filter-items-service'
+    import { useProductsService } from '@modules/product/composables/use-products-service'
 
-    const { model, isEditMode } = useProduct()
+    const { model, isEditMode, products } = useProduct()
 
     const {
         variantItems,
         isVariantEditMode,
         genVariantOptionPattern,
+        onSelectParentProduct,
         onUploadProductVariantOptionImage,
         onDeleteProductVariantOptionImage,
         onUpdateProductVariantOption,
@@ -24,12 +32,17 @@
         onDeleteProductVariantOption,
     } = useProductVariants()
 
+    const { getProducts } = useProductsService()
+
     const { filterItems, getFilterItems } = useFilterItemsService()
     const { filterGroups, getFilterGroupItems } = useFilterGroupService()
 
     const currentVariant = ref<Maybe<IVariant>>(null)
+    const currentOption = ref<Maybe<IOption>>(null)
+    const filterGroup = ref<Maybe<IFilterGroup>>(null)
     const existsVariants = ref<IVariant[]>([])
     const optionPattern = ref<IOption>(genVariantOptionPattern())
+    const parentProduct = ref(null)
 
     const setExistsVariants = (variants) => {
         const variantsMap = {}
@@ -55,6 +68,7 @@
     const setCurrentVariant = (variant) => {
         optionPattern.value = genVariantOptionPattern()
         currentVariant.value = variant
+        currentOption.value = null
         isVariantEditMode.value = false
     }
 
@@ -83,6 +97,10 @@
         optionPattern.value = genVariantOptionPattern()
     }
 
+    const onSelectFilterItem = (item: IFilterItem) => {
+        unref(optionPattern).name = item.value as string
+    }
+
     watch(variantItems, (variants) => {
         if (!variants) return
 
@@ -93,6 +111,10 @@
         }
 
     }, { immediate: true })
+
+    watch(parentProduct, (to: IProduct) => {
+        unref(model).variants = to.variants
+    })
 
     /**
      * @description Наблюдаем в режиме редактирования за вариантами продукта
@@ -108,8 +130,6 @@
     }, { immediate: true })
 
     onBeforeMount(() => {
-        getFilterGroupItems()
-        getFilterItems()
         optionPattern.value = genVariantOptionPattern()
     })
 
@@ -126,15 +146,69 @@
         </v-col>
         <v-col
             v-if="variantItems.length"
-            cols="4"
+            cols="12"
         >
-            <v-select
-                v-model="currentVariant"
-                label="Варианты"
-                :items="existsVariants"
-                value-key="group"
-                @select="setCurrentVariant"
-            />
+            <v-row no-gutter>
+                <v-col
+                    cols="4"
+                    class="pr-2"
+                >
+                    <v-select
+                        v-model="currentVariant"
+                        label="Варианты"
+                        :items="existsVariants"
+                        value-key="group"
+                        @select="setCurrentVariant"
+                    />
+                </v-col>
+                <v-col
+                    cols="4"
+                    class="pl-2 pr-2"
+                >
+                    <v-autocomplete
+                        v-model="parentProduct"
+                        label="Унаследовать варианты от"
+                        :items="products"
+                        value-key="name"
+                        typeable
+                        @input="getProducts({name: $event})"
+                        @select="onSelectParentProduct"
+                    />
+                </v-col>
+                <v-col
+                    cols="4"
+                    class="pl-2"
+                >
+                    <v-select
+                        v-model="filterGroup"
+                        label="Группа фильтров"
+                        value-key="name"
+                        @focus="getFilterGroupItems"
+                    >
+                        <template #select-list="{onSelect}">
+                            <v-list
+                                active
+                                active-class="primary white--text"
+                            >
+                                <v-list-item @click="filterGroup = null">
+                                    <v-list-item-title>
+                                        не выбрано
+                                    </v-list-item-title>
+                                </v-list-item>
+                                <v-list-item
+                                    v-for="item in filterGroups.filter((group) => group.attributeId === currentVariant.attributeId)"
+                                    :key="item.id"
+                                    @click="onSelect(item)"
+                                >
+                                    <v-list-item-title>
+                                        {{ item.name }}
+                                    </v-list-item-title>
+                                </v-list-item>
+                            </v-list>
+                        </template>
+                    </v-select>
+                </v-col>
+            </v-row>
         </v-col>
         <v-col
             v-if="currentVariant && currentVariant.options"
@@ -164,11 +238,22 @@
                         class="pr-2"
                     >
                         <v-text-field
+                            v-if="!filterGroup"
                             v-model.trim="optionPattern.name"
                             color="#272727"
-                            label="значение *"
+                            label="Значение *"
                             :rules="[val => !!val || 'Обязательное поле']"
                             :disabled="!isEditMode"
+                        />
+                        <v-select
+                            v-else
+                            v-model="optionPattern.name"
+                            label="Фильтр *"
+                            :items="filterItems"
+                            value-key="value"
+                            :rules="[val => !!val || 'Обязательное поле']"
+                            @focus="getFilterItems({groupId: filterGroup.id})"
+                            @select="onSelectFilterItem"
                         />
                     </v-col>
                     <v-col
@@ -178,7 +263,7 @@
                         <v-text-field
                             v-model.number="optionPattern.quantity"
                             color="#272727"
-                            label="количество"
+                            label="Количество"
                             type="number"
                             :disabled="!isEditMode"
                         />
@@ -190,7 +275,7 @@
                         <v-text-field
                             v-model.number="optionPattern.price"
                             color="#272727"
-                            label="цена"
+                            label="Цена"
                             type="number"
                             :disabled="!isEditMode"
                         />
@@ -203,16 +288,29 @@
                             v-model.trim="optionPattern.description"
                             color="#272727"
                             :disabled="!isEditMode"
-                            label="описание"
+                            label="Описание"
                         />
                     </v-col>
-                    <v-col>
+                    <v-col
+                        cols="6"
+                        class="pr-2"
+                    >
+                        <v-select
+                            v-model="optionPattern.modelAttribute"
+                            label="Уникальный общий атрибут"
+                            :items="model.attributes"
+                            value-key="key"
+                        />
+                    </v-col>
+                    <v-col
+                        cols="6"
+                        class="pl-2"
+                    >
                         <v-file-input
                             v-model="optionPattern.assets"
                             :label="!optionPattern.id ? 'только после сохранения варианта *': 'загрузить изображения'"
                             color="#272727"
                             :disabled="!optionPattern.id"
-                            placeholder="salam"
                             @update:value="onUploadVariantOptionImage({files: $event, option: optionPattern})"
                         />
                     </v-col>

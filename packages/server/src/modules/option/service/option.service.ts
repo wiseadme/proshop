@@ -24,12 +24,16 @@ export class OptionService implements IOptionService {
         return this.repository.create(Option.create(option))
     }
 
-    read(id?: string): Promise<IOption[] | IOption> {
+    find(id?: string): Promise<IOption[] | IOption> {
         if (id) {
             return this.repository.findById(id)
         }
 
         return this.repository.find()
+    }
+
+    findMany(ids: string[]): Promise<IOption[]> {
+        return this.repository.findMany(ids)
     }
 
     update(updates: Partial<IOption>): Promise<{ updated: IOption }> {

@@ -12,8 +12,5 @@
         <template #title="{item}">
             <span>{{ item.name }}</span>
         </template>
-        <template #subtitle="{item}">
-            <span>{{ item.attributeName }}</span>
-        </template>
     </items-list>
 </template>

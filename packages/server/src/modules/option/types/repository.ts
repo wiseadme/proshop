@@ -8,6 +8,8 @@ export interface IOptionRepository {
 
     findById(id: string): Promise<IOption>
 
+    findMany(ids: string[]): Promise<IOption[]>
+
     update(updates: Partial<IOption>): Promise<{ updated: IOption }>
 
     delete(id: string): Promise<boolean>

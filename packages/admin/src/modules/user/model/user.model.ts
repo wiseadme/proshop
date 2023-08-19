@@ -1,7 +1,7 @@
 import { IUser } from '@proshop/types'
 
 export class User implements IUser {
-  _id: IUser['_id']
+  id: IUser['id']
   firstName: IUser['firstName']
   secondName: IUser['secondName']
   password: IUser['password']
@@ -12,7 +12,7 @@ export class User implements IUser {
   enabled: IUser['enabled']
 
   constructor({
-      _id = '',
+      id = '',
       firstName = '',
       secondName = '',
       password = '',
@@ -25,7 +25,7 @@ export class User implements IUser {
           department: ''
       }
   }: IUser) {
-      this._id = _id
+      this.id = id
       this.firstName = firstName
       this.secondName = secondName
       this.password = password

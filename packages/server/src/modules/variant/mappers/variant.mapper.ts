@@ -4,7 +4,7 @@ import { OptionMapper } from '@modules/option/mappers/option.mapper'
 export class VariantMapper {
     static toDomain(entity: IVariantMongoModel): IVariant {
         const { _id } = entity
-        const map: Partial<IVariantMongoModel> = entity
+        const map: Partial<IVariantMongoModel> = { ...entity }
 
         map.options = map.options?.map((option) => OptionMapper.toDomain(option as any))
 

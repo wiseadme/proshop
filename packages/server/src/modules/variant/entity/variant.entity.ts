@@ -4,13 +4,13 @@ export class Variant {
     readonly id: string
     readonly group: IVariant['group']
     readonly options: IVariant['options']
-    readonly attribute: string
+    readonly attributeId: string
 
-    constructor({ id, group, options = [], attribute }: IVariant) {
+    constructor({ id, group, options = [], attributeId }: IVariant) {
         this.id = id
         this.group = group
         this.options = options
-        this.attribute = attribute
+        this.attributeId = attributeId
     }
 
     static create(variant: IVariant) {

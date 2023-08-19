@@ -31,6 +31,7 @@ export class FilterController extends BaseController implements IController {
         this.router.delete('/groups', expressAsyncHandler(this.deleteFilterGroup.bind(this)))
         this.router.post('/items', expressAsyncHandler(this.createFilterItem.bind(this)))
         this.router.get('/items', expressAsyncHandler(this.getFilterItems.bind(this)))
+        this.router.delete('/items', expressAsyncHandler(this.deleteFilterItem.bind(this)))
     }
 
     async createFilterGroup({ body, method }: Request<{}, {}, IFilterGroup>, res: Response) {
@@ -139,6 +140,25 @@ export class FilterController extends BaseController implements IController {
                 method,
             })
         } catch (err) {
+            return this.error({
+                error: err,
+                url: this.path,
+                method,
+            })
+        }
+    }
+
+    async deleteFilterItem({ query, method }: Request<{}, {}, {}, { id: string }>, res: Response) {
+        try {
+            await this.filterItemService.delete(query.id)
+
+            this.send({
+                response: res,
+                data: true,
+                url: this.path,
+                method,
+            })
+        } catch (err: any) {
             return this.error({
                 error: err,
                 url: this.path,

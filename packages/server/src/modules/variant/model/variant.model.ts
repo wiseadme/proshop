@@ -8,7 +8,7 @@ const VariantSchema = new Schema<IVariantMongoModel>({
         required: true,
         unique: true
     },
-    attribute: {
+    attributeId: {
         type: String,
         default: null
     }

@@ -1,5 +1,7 @@
 <script lang="ts" setup>
+    import { ref } from 'vue'
     import { useFilterGroups } from '@modules/filter/composables/use-filter-groups'
+    import { IAttribute } from '@proshop/types'
 
     const {
         attributes,
@@ -7,6 +9,8 @@
         onCreateGroup,
         onSelectAttribute,
     } = useFilterGroups()
+
+    const selectedAttribute = ref<Maybe<IAttribute>>(null)
 
 </script>
 <template>
@@ -24,7 +28,7 @@
             </v-card-title>
             <v-card-content>
                 <v-select
-                    v-model="model.attribute"
+                    v-model="selectedAttribute"
                     label="Аттрибут привязки *"
                     :items="attributes"
                     :rules="[v => !!v || 'Обязательное поле']"

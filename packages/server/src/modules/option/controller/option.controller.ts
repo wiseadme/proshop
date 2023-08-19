@@ -53,7 +53,7 @@ export class OptionController extends BaseController implements IController {
 
     async getOptions({ query, method }: Request<{}, {}, {}, { id?: string }>, res: Response) {
         try {
-            const options = await this.service.read(query?.id)
+            const options = await this.service.find(query?.id)
 
             this.send({
                 response: res,

@@ -34,11 +34,11 @@
     const onEdit = (item: IVariant) => {
         isEditMode.value = true
         model.value = Variant.create(item)
-        selectedAttribute.value = unref(attributes).find(attr => attr.key === item.attribute)!
+        selectedAttribute.value = unref(attributes).find(attr => attr.id === item.attributeId)!
     }
 
     const onSelectAttribute = (attribute: IAttribute) => {
-        unref(model).attribute = attribute.key
+        unref(model).attributeId = attribute.id
     }
 
     const clearForm = () => {

@@ -63,6 +63,7 @@ const ProductSchema = new Schema<IProductMongoModel>({
             key: String,
             value: String,
             order: Number,
+            id: String,
             _id: false,
         }],
         default: [],
@@ -78,7 +79,7 @@ const ProductSchema = new Schema<IProductMongoModel>({
         type: [
             {
                 group: String,
-                attribute: String,
+                attributeId: String,
                 _id: String,
                 options: [{
                     type: Schema.Types.ObjectId,
