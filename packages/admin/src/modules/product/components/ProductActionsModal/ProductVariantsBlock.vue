@@ -43,6 +43,7 @@
     const existsVariants = ref<IVariant[]>([])
     const optionPattern = ref<IOption>(genVariantOptionPattern())
     const parentProduct = ref(null)
+    const optionLinkedProduct = ref(null)
 
     const setExistsVariants = (variants) => {
         const variantsMap = {}
@@ -99,6 +100,13 @@
 
     const onSelectFilterItem = (item: IFilterItem) => {
         unref(optionPattern).name = item.value as string
+    }
+
+    const onSelectOptionLinkedProduct = (product: IProduct) => {
+        unref(optionPattern).url = product.url
+        unref(optionPattern).price = product.price
+        unref(optionPattern).assets = product.assets
+        unref(optionPattern).quantity = product.quantity
     }
 
     watch(variantItems, (variants) => {
@@ -295,11 +303,14 @@
                         cols="6"
                         class="pr-2"
                     >
-                        <v-select
-                            v-model="optionPattern.modelAttribute"
-                            label="Уникальный общий атрибут"
-                            :items="model.attributes"
-                            value-key="key"
+                        <v-autocomplete
+                            v-model="optionLinkedProduct"
+                            label="Выбрать товар для опии"
+                            :items="products"
+                            value-key="name"
+                            typeable
+                            @input="getProducts({name: $event})"
+                            @select="onSelectOptionLinkedProduct"
                         />
                     </v-col>
                     <v-col

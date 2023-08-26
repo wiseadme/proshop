@@ -27,7 +27,7 @@ export const useProductVariants = () => {
         quantity: 0,
         price: 0,
         description: null,
-        modelAttribute: null,
+        url: null,
         assets: [],
     })
 

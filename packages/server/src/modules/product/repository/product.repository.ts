@@ -77,6 +77,16 @@ export class ProductRepository extends RepositoryHelpers implements IProductRepo
         return ProductMapper.toDomain(product)
     }
 
+    async findByVariantOptions(options: string[]): Promise<IProduct[]> {
+        const products = await ProductModel.find({
+            $and: options.map(option => ({ 'attributes.value': option })),
+        })
+            .lean()
+            .populate(this.getPopulateParams())
+
+        return products.map(product => ProductMapper.toDomain(product))
+    }
+
     async findByCategory({
         category,
         desc,

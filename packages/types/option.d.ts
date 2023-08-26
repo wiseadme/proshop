@@ -14,10 +14,9 @@ export interface IOption {
     variantId: string
     price?: number
     quantity?: number
-    url?: string
+    url: Maybe<string>
     description?: Maybe<string>
     assets?: IAsset[]
-    modelAttribute: Maybe<IAttribute>
     products?: IOptionProduct[]
 }
 

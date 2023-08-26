@@ -5,15 +5,13 @@ import { TYPES } from '@common/schemes/di-types'
 import { Product } from '@modules/product/entity/product.entity'
 
 // Types
-import { Document } from 'mongoose'
 import { ILogger } from '@/types/utils'
 import { IProductRepository } from '../types/repository'
 import { IProductService } from '../types/service'
 import { ICategory, IProduct, IProductQuery, IRequestParams } from '@proshop/types'
-import { IEventBusService } from '@/types/services'
 import { IProductGatewayService } from '@modules/product/gateway/gateway.service'
 import { ServiceHelpers } from '@modules/product/helpers/service.helpers'
-import { ATTR_QUERY_KEY, OPTION_QUERY_KEY } from '@modules/product/constants'
+
 
 @injectable()
 export class ProductService extends ServiceHelpers implements IProductService {
@@ -43,9 +41,6 @@ export class ProductService extends ServiceHelpers implements IProductService {
     async read(query: IRequestParams<IProductQuery>) {
         const { id, url, category, name, page, count, desc, asc } = query
 
-        const attrQueries = Object.keys(query).filter((key) => key.includes(ATTR_QUERY_KEY))
-        const optionQueries = Object.keys(query).filter((key) => key.includes(OPTION_QUERY_KEY))
-
         const data: { items: IProduct[], total: number } = {
             items: [],
             total: 1,
@@ -65,12 +60,15 @@ export class ProductService extends ServiceHelpers implements IProductService {
             return data
         }
 
-        if (attrQueries.length) {
-            const options = await this.gateway.option.findMany(optionQueries.map(key => query[key]))
-
-
-            console.log('found', options)
-        }
+        // if (attrQueries.length) {
+        //     const options = await this.gateway.option.findMany(optionQueries.map(key => query[key]))
+        //     const products = await this.repository.findByVariantOptions(options.map(option => option.name))
+        //
+        //     data.items = products
+        //     data.total = products.length
+        //
+        //     return data
+        // }
 
         if (url) {
             const product = await this.repository.findByUrl(url)

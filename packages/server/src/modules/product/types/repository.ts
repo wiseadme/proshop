@@ -16,6 +16,8 @@ export interface IProductRepository {
 
     findByCategory(params: IRequestParams<IProductQuery>): Promise<IProduct[]>
 
+    findByVariantOptions(options: string[]): Promise<IProduct[]>
+
     update(updates: Partial<IProduct>): Promise<{ updated: IProduct }>
 
     delete(id: string): Promise<boolean>

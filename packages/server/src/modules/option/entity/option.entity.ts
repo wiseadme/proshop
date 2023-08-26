@@ -9,6 +9,7 @@ export class Option implements IOption {
     readonly description: Maybe<string>
     readonly assets?: IAsset[]
     readonly modelAttribute: Maybe<IAttribute>
+    readonly url: Maybe<string>
 
     constructor({
         id = '',
@@ -16,9 +17,9 @@ export class Option implements IOption {
         price = 0,
         quantity = 0,
         description = null,
+        url = null,
         assets = [],
         variantId = '',
-        modelAttribute
     }: IOption) {
         this.id = id
         this.name = name
@@ -27,7 +28,7 @@ export class Option implements IOption {
         this.description = description
         this.assets = assets
         this.variantId = variantId
-        this.modelAttribute = modelAttribute
+        this.url = url
     }
 
     static create(option: IOption): IOption {

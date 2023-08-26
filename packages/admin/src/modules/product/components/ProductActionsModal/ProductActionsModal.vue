@@ -52,7 +52,7 @@
                 class="modal-card app-border-radius elevation-5"
             >
                 <v-card-title class="modal-card-title secondary--text py-4">
-                    <h3>{{ modalHeader }}</h3>
+                    <h5>{{ modalHeader }} - {{ model.name }}</h5>
                 </v-card-title>
                 <v-card-content
                     width="100%"
