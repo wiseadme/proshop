@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-    import { unref, watch } from 'vue'
+    // import { unref, watch } from 'vue'
     // Components
     import { ProductActionsModal } from '@modules/product/components/ProductActionsModal'
     import { ProductTable } from '@modules/product/components/ProductTable'
@@ -8,29 +8,29 @@
     import { useProduct } from '@modules/product/composables/use-product'
 
     const {
-        model,
-        hasChanges,
-        isEditMode,
+        // model,
+        // hasChanges,
+        // isEditMode,
         isLoading,
-        getProductUpdates,
+        // getProductUpdates,
         onInit,
     } = useProduct()
 
-    let stopWatching
-
-    const startWatching = () => watch(model, () => {
-        if (!unref(isEditMode) || unref(hasChanges)) return
-
-        hasChanges.value = !!getProductUpdates()
-    }, { deep: true })
+    // let stopWatching
+    //
+    // const startWatching = () => watch(model, () => {
+    //     if (!unref(isEditMode) || unref(hasChanges)) return
+    //
+    //     hasChanges.value = !!getProductUpdates()
+    // }, { deep: true })
 
     /**
      * @description запускаем watch за изменениями продукта,
      * только если он в режиме редактирования
      */
-    watch(isEditMode, (state) => {
-        state ? (stopWatching = startWatching()) : stopWatching()
-    })
+    // watch(isEditMode, (state) => {
+    //     state ? (stopWatching = startWatching()) : stopWatching()
+    // })
 
     onInit()
 
@@ -42,7 +42,7 @@
                 <skeleton-preloader v-if="isLoading"/>
                 <product-table v-else/>
             </v-col>
-            <product-actions-modal/>
         </v-row>
+        <product-actions-modal/>
     </v-layout>
 </template>

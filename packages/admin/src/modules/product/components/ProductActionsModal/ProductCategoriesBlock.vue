@@ -15,7 +15,11 @@
      * @description - при открытии модального окна
      * сбрасываем все категории (снимаем все выделения)
      */
-    watch(showModal, (state) => state && unref(categoriesMap).clear())
+    watch(showModal, (state) => {
+        if (state) {
+            categoriesMap.value = {}
+        }
+    })
 
     watch(isEditMode, () => {
         /**
@@ -25,7 +29,9 @@
         const categories = unref(model).categories as ICategory[]
 
         categories.forEach(ctg => {
-            if (!unref(categoriesMap).get(ctg.id)) toggleCategory(ctg)
+            if (!unref(categoriesMap)[ctg.id]) {
+                toggleCategory(ctg)
+            }
         })
     })
 
@@ -36,7 +42,7 @@
          * если сбросили все изменения продукта
          */
 
-        unref(categoriesMap).clear()
+        categoriesMap.value = {}
 
         const categories = unref(model).categories as ICategory[]
 
@@ -45,12 +51,7 @@
 
 </script>
 <template>
-    <v-row class="white elevation-2 pa-4 app-border-radius">
-        <v-col class="block-head pb-6 mb-8">
-            <h2 class="block-head__title">
-                Категории
-            </h2>
-        </v-col>
+    <v-row class="pa-4 app-border-radius">
         <v-col cols="4">
             <template
                 v-for="it in categoryItems"
@@ -66,7 +67,7 @@
                         <v-list-item
                             v-for="(child) in it.children as ICategory[]"
                             :key="child.id"
-                            :class="[{'primary white--text text--base': categoriesMap.get(child.id)}]"
+                            :class="[{'primary white--text text--base': categoriesMap[child.id]}]"
                             @click="toggleCategory(child as ICategory)"
                         >
                             <v-list-item-content>
@@ -82,7 +83,7 @@
                     class="elevation-2"
                 >
                     <v-list-item
-                        :class="[{'primary white--text text--base': categoriesMap.get(it.id)}]"
+                        :class="[{'primary white--text text--base': categoriesMap[it.id]}]"
                         @click="toggleCategory(it)"
                     >
                         <v-list-item-content>

@@ -20,12 +20,7 @@
     }
 </script>
 <template>
-    <v-row class="elevation-2 pa-4 app-border-radius">
-        <v-col class="block-head pb-6 mb-8">
-            <h2 class="block-head__title">
-                Мета теги
-            </h2>
-        </v-col>
+    <v-row class="pa-4 app-border-radius">
         <v-col
             cols="6"
             class="px-2"

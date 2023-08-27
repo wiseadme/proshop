@@ -5,21 +5,20 @@ import { createSharedComposable } from '@shared/features/create-shared-composabl
 
 export const useProductCategories = createSharedComposable(() => {
     const { model } = useProduct()
-
-    const categoriesMap = ref<Map<string, ICategory>>(new Map())
+    const categoriesMap = ref({})
 
     const toggleCategory = (ctg: ICategory) => {
-        if (unref(categoriesMap).get(ctg.id)) {
-            unref(categoriesMap).delete(ctg.id)
+        if (unref(categoriesMap)[ctg.id]) {
+            delete unref(categoriesMap)[ctg.id]
         } else {
-            unref(categoriesMap).set(ctg.id, ctg)
+            unref(categoriesMap)[ctg.id] = ctg
         }
 
-        unref(model).categories = Array.from(unref(categoriesMap).values())
+        unref(model).categories = Object.values(categoriesMap)
     }
 
     return {
         categoriesMap,
-        toggleCategory
+        toggleCategory,
     }
 })

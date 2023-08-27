@@ -43,7 +43,7 @@
     const existsVariants = ref<IVariant[]>([])
     const optionPattern = ref<IOption>(genVariantOptionPattern())
     const parentProduct = ref(null)
-    const optionLinkedProduct = ref(null)
+    const optionProductLink = ref(null)
 
     const setExistsVariants = (variants) => {
         const variantsMap = {}
@@ -64,6 +64,8 @@
         } else {
             await onCreateProductVariantOption(unref(optionPattern))
         }
+
+        optionProductLink.value = null
     }
 
     const setCurrentVariant = (variant) => {
@@ -147,11 +149,6 @@
         v-if="variantItems"
         class="elevation-2 pa-4 app-border-radius"
     >
-        <v-col class="block-head pb-6 mb-8">
-            <h2 class="block-head__title">
-                Варианты
-            </h2>
-        </v-col>
         <v-col
             v-if="variantItems.length"
             cols="12"
@@ -304,8 +301,8 @@
                         class="pr-2"
                     >
                         <v-autocomplete
-                            v-model="optionLinkedProduct"
-                            label="Выбрать товар для опии"
+                            v-model="optionProductLink"
+                            label="Ссылка на товар"
                             :items="products"
                             value-key="name"
                             typeable

@@ -63,12 +63,7 @@
 
 </script>
 <template>
-    <v-row class="white pa-4 elevation-2 app-border-radius">
-        <v-col class="block-head pb-6 mb-8">
-            <h2 class="block-head__title">
-                Информация о товаре
-            </h2>
-        </v-col>
+    <v-row class="px-4">
         <v-col xl="6">
             <v-text-field
                 v-model.trim="model.name"
