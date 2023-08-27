@@ -6,6 +6,7 @@ import { clone, getDifferences } from '@shared/helpers'
 import { createSharedComposable } from '@shared/features/create-shared-composable'
 import { IProduct, Maybe } from '@proshop/types'
 import { NotUpdatableKeysMap } from '@modules/product/constants'
+import { useAppNotifications } from '@shared/composables/use-app-notifications'
 
 export const useProduct = createSharedComposable(() => {
     const {
@@ -30,6 +31,8 @@ export const useProduct = createSharedComposable(() => {
         openActionsModal,
         closeActionsModal,
     } = useProductActionsModal()
+
+    const { noChangesNotification, changesSavedNotification } = useAppNotifications()
 
     const model = ref(Product.create())
     const hasChanges = ref(false)
@@ -75,9 +78,10 @@ export const useProduct = createSharedComposable(() => {
 
         hasChanges.value = !!updates
 
-        if (!unref(hasChanges)) return
+        if (!unref(hasChanges)) {
+            return noChangesNotification()
+        }
 
-        updates!.id = model.value.id
         isSaved.value = false
 
         await updateProduct(updates)
@@ -87,6 +91,8 @@ export const useProduct = createSharedComposable(() => {
         isLoading.value = false
 
         setProductAsModel()
+
+        return changesSavedNotification()
     }
 
     const onUploadProductImage = async (image) => {

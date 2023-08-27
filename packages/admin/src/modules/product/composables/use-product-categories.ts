@@ -14,7 +14,7 @@ export const useProductCategories = createSharedComposable(() => {
             unref(categoriesMap)[ctg.id] = ctg
         }
 
-        unref(model).categories = Object.values(categoriesMap)
+        unref(model).categories = Object.values(unref(categoriesMap)) as ICategory[]
     }
 
     return {

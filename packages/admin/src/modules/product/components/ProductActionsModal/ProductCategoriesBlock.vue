@@ -1,99 +1,62 @@
 <script lang="ts" setup>
-    import { unref, watch } from 'vue'
+    import {
+        computed,
+        unref,
+        watch,
+    } from 'vue'
     import { useProduct } from '@modules/product/composables/use-product'
     import { useProductsService } from '@modules/product/composables/use-products-service'
     import { useProductCategories } from '@modules/product/composables/use-product-categories'
-    import { useProductActionsModal } from '@modules/product/composables/use-product-actions-modal'
     import { ICategory } from '@proshop/types'
 
-    const { isEditMode, model, hasChanges } = useProduct()
-    const { categoryItems } = useProductsService()
+    const { model } = useProduct()
+    const { categoryItems, product } = useProductsService()
     const { categoriesMap, toggleCategory } = useProductCategories()
-    const { showModal } = useProductActionsModal()
 
     /**
      * @description - при открытии модального окна
      * сбрасываем все категории (снимаем все выделения)
      */
-    watch(showModal, (state) => {
-        if (state) {
-            categoriesMap.value = {}
-        }
-    })
 
-    watch(isEditMode, () => {
+    const categories = computed<ICategory[]>(() => unref(categoryItems)?.filter(it => !it.children?.length) || [])
+    const productCategories = computed<ICategory[]>(() => unref(product)?.categories as ICategory[])
+
+    watch(productCategories, (items) => {
         /**
          * @description - в режиме редактирования выделяем
          * все имеющиеся категории продукта
          */
-        const categories = unref(model).categories as ICategory[]
 
-        categories.forEach(ctg => {
+        items.forEach(ctg => {
             if (!unref(categoriesMap)[ctg.id]) {
                 toggleCategory(ctg)
             }
         })
-    })
-
-    watch(hasChanges, (state) => {
-        if (state) return
-        /**
-         * @description - сбрасываем все категории и перерисовываем их
-         * если сбросили все изменения продукта
-         */
-
-        categoriesMap.value = {}
-
-        const categories = unref(model).categories as ICategory[]
-
-        categories?.forEach(toggleCategory)
-    })
+    }, { immediate: true })
 
 </script>
 <template>
     <v-row class="pa-4 app-border-radius">
         <v-col cols="4">
-            <template
-                v-for="it in categoryItems"
-                :key="it.id"
+            <v-card
+                color="white"
+                style="width: 100%"
+                class="app-border-radius"
+                elevation="2"
             >
-                <v-group
-                    v-if="it.children && it.children.length"
-                    :title="it.title"
-                    class="elevation-2"
-                    :expand="isEditMode"
-                >
-                    <v-list>
-                        <v-list-item
-                            v-for="(child) in it.children as ICategory[]"
-                            :key="child.id"
-                            :class="[{'primary white--text text--base': categoriesMap[child.id]}]"
-                            @click="toggleCategory(child as ICategory)"
-                        >
-                            <v-list-item-content>
-                                <v-list-item-title>
-                                    {{ child.title }}
-                                </v-list-item-title>
-                            </v-list-item-content>
-                        </v-list-item>
-                    </v-list>
-                </v-group>
-                <v-list
-                    v-else-if="!it.parent && !it.children || it.children && !it.children.length"
-                    class="elevation-2"
-                >
-                    <v-list-item
-                        :class="[{'primary white--text text--base': categoriesMap[it.id]}]"
+                <v-card-content>
+                    <v-button
+                        v-for="it in categories"
+                        :key="it.id"
+                        class="mr-2 mb-2"
+                        :color="categoriesMap[it.id] ? 'primary' : 'secondary'"
+                        elevation="2"
                         @click="toggleCategory(it)"
                     >
-                        <v-list-item-content>
-                            <v-list-item-title>
-                                {{ it.title }}
-                            </v-list-item-title>
-                        </v-list-item-content>
-                    </v-list-item>
-                </v-list>
-            </template>
+                        {{ it.title }}
+                    </v-button>
+                </v-card-content>
+            </v-card>
         </v-col>
     </v-row>
 </template>

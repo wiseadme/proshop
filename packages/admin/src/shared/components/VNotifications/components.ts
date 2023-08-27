@@ -28,3 +28,10 @@ export const SimpleNotification = defineComponent({
         return () => h(Notification, { color: 'blue darken-2' })
     }
 })
+
+export const ErrorNotification = defineComponent({
+    name: 'v-notification-error',
+    setup(){
+        return () => h(Notification, { color: 'red darken-1' })
+    }
+})

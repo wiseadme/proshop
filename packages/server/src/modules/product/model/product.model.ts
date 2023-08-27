@@ -6,16 +6,16 @@ const ProductSchema = new Schema<IProductMongoModel>({
     name: {
         type: String,
         required: true,
+        unique: true,
         index: true,
     },
     description: {
         type: String,
-        required: true,
+        default: ''
     },
     price: {
         type: Number,
-        default: 0,
-        index: true,
+        required: true
     },
     currency: {
         type: Schema.Types.ObjectId,

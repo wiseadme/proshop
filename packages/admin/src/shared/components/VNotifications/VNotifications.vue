@@ -1,8 +1,9 @@
 <script lang="ts" setup>
-    import { onMounted } from 'vue'
+    import { computed, onMounted } from 'vue'
     import { emitter } from './events'
     import { Notify } from './types'
     import {
+        ErrorNotification,
         InfoNotification,
         SimpleNotification,
         SuccessNotification,
@@ -24,7 +25,8 @@
         info: InfoNotification,
         success: SuccessNotification,
         warning: WarningNotification,
-        simple: SimpleNotification
+        simple: SimpleNotification,
+        error: ErrorNotification
     }
 
     let notifications = $ref<Notify[]>([])
@@ -50,7 +52,7 @@
         removeNotification(notify.id)
     }
 
-    const styles = $computed(() => positions.reduce((acc, pos) => {
+    const styles = computed(() => positions.reduce((acc, pos) => {
         if (pos === 'center') {
             acc['left'] = '50%'
             acc['transform'] = 'translateX(-50%)'

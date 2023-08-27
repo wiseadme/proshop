@@ -135,6 +135,8 @@ export const useProductsService = createSharedComposable(() => {
     }
 
     const updateProduct = async (updates) => {
+        updates.id = unref(product)!.id
+
         if (updates.categories?.length) {
             updates.categories = getCategoriesIds(updates)
         }
@@ -169,7 +171,6 @@ export const useProductsService = createSharedComposable(() => {
         variant.options.push(createdOption)
 
         await updateProduct({
-            id: unref(product)!.id,
             variants: getVariantsWithOptionsIds(variants),
         })
 
@@ -198,7 +199,6 @@ export const useProductsService = createSharedComposable(() => {
         variant.options = options?.map(opt => opt.id === option.id ? updated : opt)
 
         return updateProduct({
-            id: unref(product)!.id,
             variants: getVariantsWithOptionsIds(variants),
         })
     }
@@ -222,7 +222,6 @@ export const useProductsService = createSharedComposable(() => {
         }
 
         return updateProduct({
-            id: unref(product)!.id,
             variants: getVariantsWithOptionsIds(variants),
         })
     }
@@ -281,7 +280,7 @@ export const useProductsService = createSharedComposable(() => {
 
         assets.push(asset)
 
-        return updateProduct({ id: unref(product)?.id, assets })
+        return updateProduct({ assets })
     }
 
     const deleteProductImage = async (asset: IAsset) => {
