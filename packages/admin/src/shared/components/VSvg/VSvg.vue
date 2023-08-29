@@ -4,8 +4,8 @@
     const { path, viewBox = '0 0 512 512', color = 'white', width = 34 } = defineProps<{
         path: string
         viewBox?: string
-        color: string
-        width: number
+        color?: string
+        width?: number | string
     }>()
 
     const classes = computed(() => ({}))

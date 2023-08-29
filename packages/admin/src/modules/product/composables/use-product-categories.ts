@@ -7,18 +7,32 @@ export const useProductCategories = createSharedComposable(() => {
     const { model } = useProduct()
     const categoriesMap = ref({})
 
+    const select = (ctg: ICategory) => {
+        unref(categoriesMap)[ctg.id] = ctg
+    }
+
+    const unSelect = (ctg: ICategory) => {
+        delete unref(categoriesMap)[ctg.id]
+    }
+
+    const updateModelCategories = () => {
+        unref(model).categories = Object.values(unref(categoriesMap)) as ICategory[]
+    }
+
     const toggleCategory = (ctg: ICategory) => {
         if (unref(categoriesMap)[ctg.id]) {
-            delete unref(categoriesMap)[ctg.id]
+            unSelect(ctg)
         } else {
-            unref(categoriesMap)[ctg.id] = ctg
+            select(ctg)
         }
 
-        unref(model).categories = Object.values(unref(categoriesMap)) as ICategory[]
+        updateModelCategories()
     }
 
     return {
         categoriesMap,
+        select,
+        unSelect,
         toggleCategory,
     }
 })

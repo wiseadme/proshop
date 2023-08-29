@@ -14,7 +14,8 @@
         </v-card-title>
         <v-card-subtitle
             v-if="$slots.subtitle"
-            style="font-size: .7rem; padding: 0; min-height: 32px"
+            class="form-card__subtitle"
+            style=""
         >
             <div class="px-3 mt-2">
                 <slot name="subtitle"/>
@@ -45,6 +46,12 @@
                 top: -10px;
                 border-radius: $border-radius;
             }
+        }
+
+        &__subtitle {
+            font-size: .7rem;
+            padding: 0;
+            min-height: 32px;
         }
     }
 </style>

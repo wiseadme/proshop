@@ -10,7 +10,7 @@ import { config } from '@app/config'
 import { genJWToken, isExpired } from '@common/helpers'
 
 const REFRESH_TOKEN_EXP = 60 * 60 * 12
-const ACCESS_TOKEN_EXP = 60
+const ACCESS_TOKEN_EXP = 60 * 60
 
 @injectable()
 export class UserService extends UserHelpers implements IUserService {

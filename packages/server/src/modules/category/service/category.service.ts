@@ -1,4 +1,3 @@
-import { Document } from 'mongoose'
 import { inject, injectable } from 'inversify'
 
 // Entity
@@ -19,7 +18,6 @@ import { DELETE_CATEGORY_EVENT, UPDATE_CATEGORY_EVENT } from '@common/constants/
 
 @injectable()
 export class CategoryService implements ICategoryService {
-
     constructor(
         @inject(TYPES.UTILS.ILogger) private logger: ILogger,
         @inject(TYPES.REPOSITORIES.ICategoryRepository) private repository: ICategoryRepository,
@@ -33,7 +31,7 @@ export class CategoryService implements ICategoryService {
 
         if (category.parent) {
             const [parent] = await this.repository.read({ id: category.parent } as Partial<ICategory>)
-            const children = [...parent!.children!, ctg] as ICategory[]
+            const children = [...(parent?.children || [])!, ctg] as ICategory[]
 
             await this.repository.update({ id: parent.id, children })
         }
@@ -59,10 +57,10 @@ export class CategoryService implements ICategoryService {
                 children && await this.repository.update({ id: prevParent.id, children })
             }
 
-            const [currentParent] = await this.repository.read({ id: updates.parent } as Partial<ICategory>)
-            const children = [...(currentParent!.children || []), category] as ICategory[]
+            const [newParent] = await this.repository.read({ id: updates.parent } as Partial<ICategory>)
+            const children = [...(newParent?.children || []), category] as ICategory[]
 
-            await this.repository.update({ children, id: currentParent.id })
+            await this.repository.update({ children, id: newParent.id })
         }
 
         return this.repository.update(updates)
@@ -79,7 +77,7 @@ export class CategoryService implements ICategoryService {
         // Если удаляем категорию и если у категории есть
         // родитель, то удаляем его и в родителе
         if (category.parent) {
-            const [parent] = await this.repository.read({ id: category.parent } as Partial<ICategory>)
+            const [parent] = await this.repository.read({ id: (category.parent as ICategory).id } as Partial<ICategory>)
 
             // @ts-ignore
             const children = parent!.children!.filter((it: ICategory) => it.id.toString() !== category.id)
