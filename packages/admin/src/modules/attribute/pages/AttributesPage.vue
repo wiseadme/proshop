@@ -1,6 +1,6 @@
 <script lang="ts" setup>
     import { ref, unref } from 'vue'
-    import DraggableItemsList from '@shared/components/DraggableItemsList/DraggableItemsList.vue'
+    import { DraggableItemsList } from '@shared/components/DraggableItemsList'
     import { Attribute } from '@modules/attribute/model/attribute.model'
     // Composables
     import { useAttributesService } from '@modules/attribute/composables/use-attributes-service'

@@ -1,7 +1,7 @@
 <script lang="ts" setup>
     import { useUnitsService } from '@modules/unit/composables/use-units-service'
     import { useUnit } from '@modules/unit/composables/use-unit'
-    import ItemsList from '@shared/components/ItemsList'
+    import { ItemsList } from '@shared/components/ItemsList'
 
     const { units, getUnits } = useUnitsService()
 

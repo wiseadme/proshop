@@ -4,12 +4,15 @@
         unref,
         watch,
     } from 'vue'
-    import { useProduct } from '@modules/product/composables/use-product'
+    // import { useProduct } from '@modules/product/composables/use-product'
     import { useProductsService } from '@modules/product/composables/use-products-service'
     import { useProductCategories } from '@modules/product/composables/use-product-categories'
     import { ICategory } from '@proshop/types'
+    import { FormCard } from '@shared/components/FormCard'
+    import { VSvg } from '@shared/components/VSvg'
+    import { SvgPaths } from '@shared/enums/svg-paths'
 
-    const { model } = useProduct()
+    // const { model } = useProduct()
     const { categoryItems, product } = useProductsService()
     const { categoriesMap, toggleCategory } = useProductCategories()
 
@@ -38,13 +41,18 @@
 <template>
     <v-row class="pa-4 app-border-radius">
         <v-col cols="4">
-            <v-card
-                color="white"
-                style="width: 100%"
-                class="app-border-radius"
-                elevation="2"
-            >
-                <v-card-content>
+            <form-card>
+                <template #title>
+                    <v-svg
+                        viewBox="-30 0 512 512"
+                        :path="SvgPaths.DIAGRAM_NESTED"
+                    />
+                </template>
+                <template #body>
+                    <v-select
+                        label="Выбрать категории"
+                        color="primary"
+                    />
                     <v-button
                         v-for="it in categories"
                         :key="it.id"
@@ -55,8 +63,8 @@
                     >
                         {{ it.title }}
                     </v-button>
-                </v-card-content>
-            </v-card>
+                </template>
+            </form-card>
         </v-col>
     </v-row>
 </template>

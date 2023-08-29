@@ -1,8 +1,8 @@
 <script lang="ts" setup>
     import { ref, unref } from 'vue'
-    import ItemsList from '@shared/components/ItemsList'
     import { useVariantsService } from '@modules/variant/composables/use-variants-service'
     import { useAttributesService } from '@modules/attribute/composables/use-attributes-service'
+    import { ItemsList } from '@shared/components/ItemsList'
     import { Variant } from '@modules/variant/model/variant.model'
     import { IAttribute, IVariant } from '@proshop/types'
 

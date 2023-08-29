@@ -1,3 +1,1 @@
-import ItemsList from './ItemsList.vue'
-
-export default ItemsList
+export { default as ItemsList } from './ItemsList.vue'

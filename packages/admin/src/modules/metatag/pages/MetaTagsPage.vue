@@ -6,10 +6,10 @@
     } from 'vue'
     import { useMetaTag } from '@modules/metatag/composables/use-meta-tag'
     import { useMetaTagsService } from '@modules/metatag/composables/use-meta-tags-service'
-    import { IMetaTag } from '@proshop/types'
-    import { descriptorToMetaTag } from '@shared/helpers/metatag'
+    import { DraggableItemsList } from '@shared/components/DraggableItemsList'
     import { clone } from '@shared/helpers'
-    import DraggableItemsList from '@shared/components/DraggableItemsList/DraggableItemsList.vue'
+    import { descriptorToMetaTag } from '@shared/helpers/metatag'
+    import { IMetaTag } from '@proshop/types'
 
     const {
         metaTags,

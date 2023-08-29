@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-    import ItemsList from '@shared/components/ItemsList'
+    import { ItemsList } from '@shared/components/ItemsList'
     import { useFilterItemsService } from '@modules/filter/composables/use-filter-items-service'
 
     const { filterItems, deleteFilterItem } = useFilterItemsService()

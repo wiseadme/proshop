@@ -3,6 +3,9 @@
     import { IAsset } from '@proshop/types'
     import { clone } from '@shared/helpers'
     import { useProduct } from '@modules/product/composables/use-product'
+    import { FormCard } from '@shared/components/FormCard'
+    import { VSvg } from '@shared/components/VSvg'
+    import { SvgPaths } from '@shared/enums/svg-paths'
 
     const {
         model,
@@ -47,48 +50,47 @@
 <template>
     <v-row class="pa-4">
         <v-col xl="6">
-            <v-card
-                color="white"
-                elevation="2"
-                style="width: 100%"
-                class="app-border-radius"
-            >
-                <v-card-content>
+            <form-card>
+                <template #title>
+                    <!--                    <span class="mr-2">Форма загрузки изображений</span>-->
+                    <v-svg :path="SvgPaths.CAMERA"/>
+                </template>
+                <template #body>
                     <v-file-input
+                        label="Загрузите изображение"
                         :value="productImages"
-                        label="Загрузить изображения"
                         color="primary"
                         text-color="content"
                         @update:value="onLoadImage"
                     />
-                </v-card-content>
-                <v-card-content class="d-flex justify-start flex-wrap">
-                    <div
-                        v-for="it in model.assets"
-                        :key="it.id"
-                        class="image mr-2 white elevation-2"
-                        :class="{'product-image--main': it.main}"
-                        style="height: 150px; width: 150px; overflow: hidden; position: relative; border-radius: 10px; padding: 0"
-                        @contextmenu.prevent="onImageContextMenu($event, it)"
-                    >
-                        <img
-                            style="height: 150px; width: 100%; object-fit: cover"
-                            :src="it.url"
+                    <div class="images-container d-flex flex-wrap">
+                        <div
+                            v-for="it in model.assets"
+                            :key="it.id"
+                            class="image mr-2 mb-2 white elevation-2"
+                            :class="{'product-image--main': it.main}"
+                            style="height: 150px; width: 150px; overflow: hidden; position: relative; border-radius: 10px; padding: 0"
+                            @contextmenu.prevent="onImageContextMenu($event, it)"
                         >
-                        <v-button
-                            style="position: absolute; top: 5px; right: 5px"
-                            round
-                            color="white"
-                            elevation="2"
-                            @click="onDeleteProductImage(it)"
-                        >
-                            <v-icon color="grey darken-4">
-                                fas fa-times
-                            </v-icon>
-                        </v-button>
+                            <img
+                                style="height: 150px; width: 100%; object-fit: cover"
+                                :src="it.url"
+                            >
+                            <v-button
+                                style="position: absolute; top: 5px; right: 5px"
+                                round
+                                color="white"
+                                elevation="2"
+                                @click="onDeleteProductImage(it)"
+                            >
+                                <v-icon color="grey darken-4">
+                                    fas fa-times
+                                </v-icon>
+                            </v-button>
+                        </div>
                     </div>
-                </v-card-content>
-            </v-card>
+                </template>
+            </form-card>
         </v-col>
     </v-row>
     <v-menu

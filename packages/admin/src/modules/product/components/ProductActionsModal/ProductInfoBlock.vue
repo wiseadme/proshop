@@ -1,35 +1,29 @@
 <script lang="ts" setup>
-    import { ref, watch } from 'vue'
+    import { ref } from 'vue'
     import { TextEditor } from '@shared/components/TextEditor'
     import { useProduct } from '@modules/product/composables/use-product'
-    import { useProductActionsModal } from '@modules/product/composables/use-product-actions-modal'
     import { useProductsService } from '@modules/product/composables/use-products-service'
+    import { FormCard } from '@shared/components/FormCard'
+    import { VSvg } from '@shared/components/VSvg'
+    import { SvgPaths } from '@shared/enums/svg-paths'
 
     const { unitItems } = useProductsService()
-
-    const {
-        model,
-        hasChanges,
-    } = useProduct()
-
-    const { showModal } = useProductActionsModal()
+    const { model } = useProduct()
 
     const textEditorRerenderKey = ref<string>('')
-
-    watch(showModal, state => state && (textEditorRerenderKey.value = Date.now().toString()))
-    watch(hasChanges, state => !state && (textEditorRerenderKey.value = Date.now().toString()))
 
 </script>
 <template>
     <v-row class="pa-4">
         <v-col xl="6">
-            <v-card
-                elevation="2"
-                style="width: 100%"
-                color="white"
-                class="app-border-radius"
-            >
-                <v-card-content>
+            <form-card>
+                <template #title>
+                    <v-svg
+                        viewBox="-55 0 512 512"
+                        :path="SvgPaths.FILE_LINES"
+                    />
+                </template>
+                <template #body>
                     <v-text-field
                         v-model.trim="model.name"
                         label="Наименование товара *"
@@ -58,17 +52,18 @@
                         active-class="primary white--text"
                         text-color="var(--content)"
                     />
-                </v-card-content>
-            </v-card>
+                </template>
+            </form-card>
         </v-col>
         <v-col xl="6">
-            <v-card
-                elevation="2"
-                style="width: 100%"
-                color="white"
-                class="app-border-radius"
-            >
-                <v-card-content>
+            <form-card>
+                <template #title>
+                    <v-svg
+                        :path="SvgPaths.SHARE_NODES"
+                        width="35"
+                    />
+                </template>
+                <template #body>
                     <v-text-field
                         v-model="model.seo.title"
                         label="SEO title"
@@ -93,20 +88,15 @@
                         color="primary"
                         text-color="content"
                     />
-                </v-card-content>
-            </v-card>
+                </template>
+            </form-card>
         </v-col>
-        <v-col class="pt-2">
-            <v-card
-                elevation="2"
-                style="width: 100%"
-                color="white"
-                class="app-border-radius"
-            >
-                <v-card-title class="primary--text">
-                    <h5>Описание товара *</h5>
-                </v-card-title>
-                <v-card-content>
+        <v-col class="pt-4">
+            <form-card>
+                <template #title>
+                    <v-svg :path="SvgPaths.NEWSPAPER"/>
+                </template>
+                <template #body>
                     <text-editor
                         :key="textEditorRerenderKey"
                         v-model:content="model.description"
@@ -116,8 +106,8 @@
                             placeholder: 'введите описание товара'
                         }"
                     />
-                </v-card-content>
-            </v-card>
+                </template>
+            </form-card>
         </v-col>
     </v-row>
 </template>

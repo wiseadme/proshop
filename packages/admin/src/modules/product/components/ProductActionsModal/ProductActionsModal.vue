@@ -5,12 +5,15 @@
         markRaw,
         ref,
         unref,
-        watch
+        watch,
     } from 'vue'
+    // Composables
     import { useProduct } from '@modules/product/composables/use-product'
     import { useProductsService } from '@modules/product/composables/use-products-service'
     import { useProductActionsModal } from '@modules/product/composables/use-product-actions-modal'
     // Components
+    import { ActionsModalWrapper } from '@shared/components/Modals'
+    // Lazy Components
     const ProductAttributesBlock = markRaw(defineAsyncComponent(() => import('./ProductAttributesBlock.vue')))
     const ProductConditionsBlock = markRaw(defineAsyncComponent(() => import( './ProductConditionsBlock.vue')))
     const ProductVariantsBlock = markRaw(defineAsyncComponent(() => import('./ProductVariantsBlock.vue')))
@@ -24,7 +27,6 @@
         isSaved,
         model,
         isEditMode,
-        // hasChanges,
         onUpdateProduct,
         onCreateProduct,
         onCloseProductModal,
@@ -40,7 +42,7 @@
             title: 'Информация о товаре',
             isActive: true,
             disabled: false,
-            independent: false
+            independent: false,
         },
         {
             component: ProductImagesBlock,
@@ -54,50 +56,51 @@
             title: 'Категории товара',
             isActive: false,
             disabled: !unref(model).id,
-            independent: false
+            independent: false,
         },
         {
             component: ProductAttributesBlock,
             title: 'Атрибуты товара',
             isActive: false,
             disabled: !unref(model).id,
-            independent: false
+            independent: false,
         },
         {
             component: ProductMetaTagsBlock,
             title: 'Метатеги товара',
             isActive: false,
             disabled: !unref(model).id,
-            independent: false
+            independent: false,
         },
         {
             component: ProductVariantsBlock,
             title: 'Варианты товара',
             isActive: false,
             disabled: !unref(model).id,
-            independent: true
+            independent: true,
         },
         {
             component: ProductRelatedBlock,
             title: 'Рекомендуемые товары',
             isActive: false,
             disabled: !unref(model).id || !unref(categoryItems)?.length,
-            independent: false
+            independent: false,
         },
         {
             component: ProductConditionsBlock,
             title: 'Состояние товара',
             isActive: false,
             disabled: !unref(model).id,
-            independent: false
+            independent: false,
         },
     ])
     const currentTab = ref(0)
 
-    const modalHeader = computed<string>(() => `${ (unref(isEditMode) ? 'Редактирование' : 'Создание') } продукта`)
+    const modalHeader = computed<string>(() => `${(unref(isEditMode) ? 'Редактирование' : 'Создание')} продукта`)
 
-    const onSubmit = (validate) => {
-        validate().then(unref(isEditMode) ? onUpdateProduct : onCreateProduct)
+    const onSubmit = (validate: () => Promise<boolean>) => {
+        const handler = unref(isEditMode) ? onUpdateProduct : onCreateProduct
+        validate().then(handler as () => Promise<void>)
     }
 
     const setTab = (index: number) => {
@@ -136,109 +139,77 @@
         overlay
     >
         <v-form v-slot="{validate}">
-            <div
-                class="app-border-radius grey lighten-3"
-                style="overflow: hidden"
-            >
-                <v-row
-                    no-gutter
-                    style="height: 90vh"
-                >
-                    <v-col
-                        cols="2"
-                        class="white secondary--text elevation-5 d-flex flex-column justify-start"
+            <actions-modal-wrapper>
+                <template #header>
+                    <h5>{{ modalHeader }} {{ model.name }}</h5>
+                </template>
+                <template #navigation>
+                    <v-list
+                        v-model:value="currentTab"
+                        active-class="secondary white--text"
+                        color="white"
                     >
-                        <v-row
-                            class="mb-3 pa-2"
-                            style="flex-basis: 60px"
+                        <v-list-item
+                            v-for="(tab, i) in tabs"
+                            v-slot="{active}"
+                            :key="tab.title"
+                            class="secondary--text"
+                            @click="setTab(i)"
                         >
-                            <v-col
-                                style="height: 60px;"
-                                class="primary white--text d-flex align-center justify-start align-self-start pl-4 app-border-radius elevation-2"
-                            >
-                                <h5>{{ modalHeader }} {{ model.name }}</h5>
-                            </v-col>
-                        </v-row>
-                        <v-row no-gutter>
-                            <v-col>
-                                <v-list
-                                    v-model:value="currentTab"
-                                    active-class="primary white--text"
-                                    color="white"
+                            <v-list-item-icon>
+                                <v-icon
+                                    v-if="tab.disabled"
+                                    size="12"
                                 >
-                                    <v-list-item
-                                        v-for="(tab, i) in tabs"
-                                        v-slot="{active}"
-                                        :key="tab.title"
-                                        class="secondary--text"
-                                        @click="setTab(i)"
-                                    >
-                                        <v-list-item-icon>
-                                            <v-icon
-                                                v-if="tab.disabled"
-                                                size="12"
-                                            >
-                                                fas fa-lock
-                                            </v-icon>
-                                            <v-icon
-                                                v-else
-                                                size="12"
-                                            >
-                                                {{ active.value ? 'fas fa-check' : 'fas fa-circle' }}
-                                            </v-icon>
-                                        </v-list-item-icon>
-                                        <v-list-item-content>
-                                            <v-list-item-title>
-                                                {{ tab.title }}
-                                            </v-list-item-title>
-                                            <v-list-item-subtitle v-if="tab.disabled">
-                                                Сначала создайте товар
-                                            </v-list-item-subtitle>
-                                        </v-list-item-content>
-                                    </v-list-item>
-                                </v-list>
-                            </v-col>
-                        </v-row>
-                        <v-row>
-                            <v-col
-                                class="py-4 pl-4"
-                                style="align-self: end"
-                            >
-                                <v-button
-                                    color="primary"
-                                    class="app-border-radius"
-                                    elevation="3"
-                                    width="120"
-                                    :disabled="tabs[currentTab].independent"
-                                    :loading="!isSaved"
-                                    @click="onSubmit(validate)"
+                                    fas fa-lock
+                                </v-icon>
+                                <v-icon
+                                    v-else
+                                    size="12"
                                 >
-                                    сохранить
-                                </v-button>
-                                <v-button
-                                    color="warning"
-                                    class="ml-2 app-border-radius"
-                                    width="120"
-                                    elevation="3"
-                                    @click="closeModal"
-                                >
-                                    отмена
-                                </v-button>
-                            </v-col>
-                        </v-row>
-                    </v-col>
-                    <v-col cols="10">
-                        <v-row no-gutter>
-                            <v-col style="overflow-y: auto; overflow-x: hidden; max-height: 90vh">
-                                <component :is="tabs[currentTab].component"/>
-                            </v-col>
-                        </v-row>
-                    </v-col>
-                </v-row>
-            </div>
+                                    {{ active.value ? 'fas fa-check' : 'fas fa-circle' }}
+                                </v-icon>
+                            </v-list-item-icon>
+                            <v-list-item-content>
+                                <v-list-item-title>
+                                    {{ tab.title }}
+                                </v-list-item-title>
+                                <v-list-item-subtitle v-if="tab.disabled">
+                                    Сначала создайте товар
+                                </v-list-item-subtitle>
+                            </v-list-item-content>
+                        </v-list-item>
+                    </v-list>
+                </template>
+                <template #actions>
+                    <v-button
+                        color="primary"
+                        class="app-border-radius"
+                        elevation="3"
+                        width="120"
+                        :disabled="tabs[currentTab].independent"
+                        :loading="!isSaved"
+                        @click="onSubmit(validate)"
+                    >
+                        сохранить
+                    </v-button>
+                    <v-button
+                        color="secondary"
+                        class="ml-2 app-border-radius"
+                        width="120"
+                        elevation="3"
+                        @click="closeModal"
+                    >
+                        отмена
+                    </v-button>
+                </template>
+                <template #content>
+                    <component :is="tabs[currentTab].component"/>
+                </template>
+            </actions-modal-wrapper>
         </v-form>
     </v-modal>
 </template>
 <style lang="scss">
-  @import "styles/ProductActionsModal";
+    @import "styles/ProductActionsModal";
 </style>

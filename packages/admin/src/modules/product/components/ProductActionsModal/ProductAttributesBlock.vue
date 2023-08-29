@@ -3,7 +3,7 @@
         computed,
         ref,
         unref,
-        watch
+        watch,
     } from 'vue'
     import draggable from 'vuedraggable'
     import { useProductAttributes } from '@modules/product/composables/use-product-attributes'
@@ -11,6 +11,9 @@
     import { useFilterGroupService } from '@modules/filter/composables/use-filter-group-service'
     import { useFilterItemsService } from '@modules/filter/composables/use-filter-items-service'
     import { IAttribute, IFilterGroup } from '@proshop/types'
+    import { FormCard } from '@shared/components/FormCard'
+    import VSvg from '@shared/components/VSvg/VSvg.vue'
+    import { SvgPaths } from '@shared/enums/svg-paths'
 
     const { model } = useProduct()
     const groupSymbol = Symbol.for('group')
@@ -69,127 +72,134 @@
     }, { immediate: true })
 </script>
 <template>
-    <v-row>
+    <v-row class="pa-4">
         <v-col
             cols="6"
             class="used-attributes app-border-radius"
-            style="border: 1px solid #666"
         >
-            <h3 class="grey--text text--lighten-1">
-                Текущие атрибуты
-            </h3>
-            <draggable
-                :list="model.attributes"
-                item-key="key"
-                :group="groupSymbol"
-                class="draggable-container"
-            >
-                <template #item="{element}">
-                    <v-row
-                        class="my-2 pa-2 attribute app-border-radius"
-                    >
-                        <v-col
-                            cols="1"
-                            class="d-flex justify-center align-center"
-                        >
-                            <v-icon
-                                class="mr-3"
-                                color="primary"
-                            >
-                                fas fa-grip-vertical
-                            </v-icon>
-                            <v-tooltip
-                                :key="attributesMap[element.id]?.isFilter"
-                                color="secondary"
-                                offset-y="-12"
-                                min-width="120"
-                                elevation="2"
-                                top
-                            >
-                                <template #activator="{on}">
-                                    <v-button
-                                        :elevation="attributesMap[element.id]?.isFilter ? 0 : 2"
-                                        color="var(--primary)"
-                                        :outlined="attributesMap[element.id]?.isFilter"
-                                        @click="toggleAttribute(element)"
-                                        v-on="on"
-                                    >
-                                        <v-icon>
-                                            fas fa-sitemap
-                                        </v-icon>
-                                    </v-button>
-                                </template>
-                                <span v-if="!attributesMap[element.id]?.isFilter">Переключить на фильтры</span>
-                                <span v-else>Вернуться к свободному вводу</span>
-                            </v-tooltip>
-                        </v-col>
-                        <v-col
-                            v-if="!attributesMap[element.id]?.isFilter"
-                            cols="11"
-                            class="d-flex"
-                        >
-                            <v-text-field
-                                v-model="element.value"
-                                :label="element.key"
-                                @input="onUpdateAttributes"
-                            />
-                        </v-col>
-                        <template v-else>
-                            <v-col cols="4">
-                                <v-select
-                                    v-model="attributesMap[element.id].group"
-                                    label="Группа фильтров"
-                                    :items="filterGroups.filter(group => group.attributeId === element.id)"
-                                    value-key="name"
-                                    @focus="onFocusGroupSelect"
-                                />
-                            </v-col>
-                            <v-col cols="7">
-                                <v-select
-                                    v-model="attributesMap[element.id].item"
-                                    :items="filterItems"
-                                    label="Фильтры"
-                                    value-key="value"
-                                    :disabled="!attributesMap[element.id].group"
-                                    @focus="onFocusFilter(element.id)"
-                                    @blur="onBlurFilter(element.id)"
-                                    @select="onBlurFilter(element.id)"
-                                />
-                            </v-col>
-                        </template>
-                    </v-row>
+            <form-card>
+                <template #title>
+                    <v-svg :path="SvgPaths.INBOX_IN"/>
                 </template>
-            </draggable>
+                <template #body>
+                    <draggable
+                        :list="model.attributes"
+                        item-key="key"
+                        :group="groupSymbol"
+                        class="draggable-container"
+                    >
+                        <template #item="{element}">
+                            <v-row
+                                class="my-2 pa-2 attribute app-border-radius"
+                            >
+                                <v-col
+                                    cols="1"
+                                    class="d-flex justify-center align-center"
+                                >
+                                    <v-icon
+                                        class="mr-3"
+                                        color="primary"
+                                    >
+                                        fas fa-grip-vertical
+                                    </v-icon>
+                                    <v-tooltip
+                                        :key="attributesMap[element.id]?.isFilter"
+                                        color="secondary"
+                                        offset-y="-12"
+                                        min-width="120"
+                                        elevation="2"
+                                        top
+                                    >
+                                        <template #activator="{on}">
+                                            <v-button
+                                                :elevation="attributesMap[element.id]?.isFilter ? 0 : 2"
+                                                color="var(--primary)"
+                                                :outlined="attributesMap[element.id]?.isFilter"
+                                                @click="toggleAttribute(element)"
+                                                v-on="on"
+                                            >
+                                                <v-icon>
+                                                    fas fa-sitemap
+                                                </v-icon>
+                                            </v-button>
+                                        </template>
+                                        <span v-if="!attributesMap[element.id]?.isFilter">Переключить на фильтры</span>
+                                        <span v-else>Вернуться к свободному вводу</span>
+                                    </v-tooltip>
+                                </v-col>
+                                <v-col
+                                    v-if="!attributesMap[element.id]?.isFilter"
+                                    cols="11"
+                                    class="d-flex"
+                                >
+                                    <v-text-field
+                                        v-model="element.value"
+                                        :label="element.key"
+                                        @input="onUpdateAttributes"
+                                    />
+                                </v-col>
+                                <template v-else>
+                                    <v-col cols="4">
+                                        <v-select
+                                            v-model="attributesMap[element.id].group"
+                                            label="Группа фильтров"
+                                            :items="filterGroups.filter(group => group.attributeId === element.id)"
+                                            value-key="name"
+                                            @focus="onFocusGroupSelect"
+                                        />
+                                    </v-col>
+                                    <v-col cols="7">
+                                        <v-select
+                                            v-model="attributesMap[element.id].item"
+                                            :items="filterItems"
+                                            label="Фильтры"
+                                            value-key="value"
+                                            :disabled="!attributesMap[element.id].group"
+                                            @focus="onFocusFilter(element.id)"
+                                            @blur="onBlurFilter(element.id)"
+                                            @select="onBlurFilter(element.id)"
+                                        />
+                                    </v-col>
+                                </template>
+                            </v-row>
+                        </template>
+                    </draggable>
+                </template>
+            </form-card>
         </v-col>
         <v-col cols="6">
             <div class="attributes-list">
-                <h3 class="grey--text text--lighten-1">
-                    Список атрибутов
-                </h3>
-                <draggable
-                    :list="availableAttributes"
-                    item-key="key"
-                    :group="{ name: groupSymbol, pull: pullFunction }"
-                    class="draggable-container"
-                >
-                    <template #item="{element}">
-                        <v-row class="my-2 pa-2 attribute app-border-radius">
-                            <v-col class="d-flex">
-                                <v-icon
-                                    class="mr-3"
-                                    color="grey lighten-2"
-                                >
-                                    fas fa-grip-vertical
-                                </v-icon>
-                                <v-text-field
-                                    v-model="element.value"
-                                    :label="element.key"
-                                    @input="onUpdateAttributes"
-                                />
-                            </v-col>
-                        </v-row>
+                <form-card>
+                    <template #title>
+                        <v-svg :path="SvgPaths.INBOX_OUT"/>
                     </template>
-                </draggable>
+                    <template #body>
+                        <draggable
+                            :list="availableAttributes"
+                            item-key="key"
+                            :group="{ name: groupSymbol, pull: pullFunction }"
+                            class="draggable-container"
+                        >
+                            <template #item="{element}">
+                                <v-row class="my-2 pa-2 attribute app-border-radius">
+                                    <v-col class="d-flex">
+                                        <v-icon
+                                            class="mr-3"
+                                            color="grey lighten-2"
+                                        >
+                                            fas fa-grip-vertical
+                                        </v-icon>
+                                        <v-text-field
+                                            v-model="element.value"
+                                            :label="element.key"
+                                            @input="onUpdateAttributes"
+                                        />
+                                    </v-col>
+                                </v-row>
+                            </template>
+                        </draggable>
+                    </template>
+                </form-card>
             </div>
         </v-col>
     </v-row>
@@ -203,7 +213,6 @@
 
     .attribute {
         cursor: pointer;
-        border: 1px dotted #dcdcdc !important;
     }
 
     .sortable-ghost {

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-    import ItemsList from '@shared/components/ItemsList'
+    import { ItemsList } from '@shared/components/ItemsList'
     import { useFilterGroups } from '@modules/filter/composables/use-filter-groups'
 
     const { filterGroups, onDeleteGroup } = useFilterGroups()
