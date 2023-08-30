@@ -46,7 +46,7 @@ export const useCategory = createSharedComposable(() => {
         unref(model)!.image = null
     }
 
-    const onDeleteCategory = (category) => deleteCategory(category)
+    const onDeleteCategory = (category: ICategory) => deleteCategory(category)
 
     const onAddNew = () => {
         openActionsModal()
@@ -72,10 +72,6 @@ export const useCategory = createSharedComposable(() => {
         if (!updates) return
 
         updates!.id = unref(category)!.id
-
-        if (updates!.parent) {
-            updates!.parent = (unref(model)?.parent as ICategory)?.id
-        }
 
         await updateCategory(updates!)
 

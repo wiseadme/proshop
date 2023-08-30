@@ -20,7 +20,7 @@ const CategorySchema: Schema = new Schema<ICategoryMongoModel>({
         metatags: Array,
         schema: Array,
     },
-    parent: {
+    parentId: {
         type: Schema.Types.ObjectId,
         ref: 'Category',
         default: null,
@@ -29,12 +29,6 @@ const CategorySchema: Schema = new Schema<ICategoryMongoModel>({
         type: Number,
         default: 0,
     },
-    children: [{
-        type: Schema.Types.ObjectId,
-        ref: 'Category',
-        default: null,
-        _id: false,
-    }],
     conditions: {
         visible: Boolean,
         special: Boolean,

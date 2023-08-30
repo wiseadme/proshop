@@ -1,7 +1,11 @@
-import { ref } from 'vue'
-// import { useCategoriesService } from '@modules/category/composables/use-categories-service'
+import { ref, unref } from 'vue'
+import { useCategoriesService } from '@modules/category/composables/use-categories-service'
+import { ICategory } from '@proshop/types'
+
 
 export const useCategoriesTable = () => {
+    const {categories} = useCategoriesService()
+
     const cols = ref([
         {
             key: 'actions',
@@ -15,7 +19,7 @@ export const useCategoriesTable = () => {
             resizeable: true,
             sortable: true,
             filterable: true,
-            format: (row) => row.title
+            format: (row: ICategory) => row.title
         },
         {
             key: 'url',
@@ -24,7 +28,7 @@ export const useCategoriesTable = () => {
             resizeable: true,
             sortable: true,
             filterable: true,
-            format: (row) => row.url
+            format: (row: ICategory) => row.url
         },
         {
             key: 'image',
@@ -35,13 +39,20 @@ export const useCategoriesTable = () => {
             filterable: true
         },
         {
-            key: 'parent',
+            key: 'parentId',
             title: 'Родительская категория',
             width: '250',
             resizeable: true,
             sortable: true,
             filterable: true,
-            format: (row) => row.parent?.title
+            format: (row: ICategory) => {
+                if (row.parentId) {
+                    return unref(categories).find(it => it.id === row.parentId)?.title
+                }
+
+                return ''
+            }
+
         },
         {
             key: 'length',
@@ -50,7 +61,7 @@ export const useCategoriesTable = () => {
             resizeable: true,
             sortable: true,
             filterable: true,
-            format: (row) => row.length
+            format: (row: ICategory) => row.length
         },
         {
             key: 'seo',
@@ -59,7 +70,7 @@ export const useCategoriesTable = () => {
             resizeable: true,
             sortable: true,
             filterable: true,
-            format: (row) => row.seo.title
+            format: (row: ICategory) => row.seo?.title
         },
         {
             key: 'order',

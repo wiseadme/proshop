@@ -198,6 +198,7 @@
                             <v-button
                                 class="elevation-2 my-1"
                                 :color="!model.status[it] ? 'grey lighten-2' : 'primary'"
+                                style="z-index: 1"
                                 round
                                 @click="changeOrderStatus(it)"
                             >
@@ -270,9 +271,5 @@
                 }
             }
         }
-    }
-
-    .v-button {
-        z-index: 1;
     }
 </style>

@@ -20,7 +20,6 @@
         cols,
         totalLength,
         products,
-        // onSortColumn,
         onUpdateTablePage,
         onUpdateTableRowsCount
     } = useProductsTable()
@@ -75,7 +74,6 @@
                 color="var(--primary)"
                 elevation="2"
                 text
-                style="z-index: 0"
                 @click="onOpenEditProductModal(row)"
             >
                 <v-icon>{{ icons.PEN }}</v-icon>
@@ -85,7 +83,6 @@
                 color="var(--error)"
                 elevation="2"
                 text
-                style="z-index: 0"
                 @click="onDeleteProduct(row)"
             >
                 <v-icon>{{ icons.TRASH }}</v-icon>

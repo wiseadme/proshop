@@ -21,7 +21,7 @@
                 <slot name="subtitle"/>
             </div>
         </v-card-subtitle>
-        <v-card-content>
+        <v-card-content class="form-card__body">
             <slot name="body"/>
         </v-card-content>
         <v-card-actions v-if="$slots.actions">
@@ -46,6 +46,10 @@
                 top: -10px;
                 border-radius: $border-radius;
             }
+        }
+
+        &__body {
+            overflow-x: auto;
         }
 
         &__subtitle {

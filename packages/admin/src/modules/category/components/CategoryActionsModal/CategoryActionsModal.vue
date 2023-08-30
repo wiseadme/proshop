@@ -27,13 +27,12 @@
     const modalHeader = computed<string>(() => unref(isEditMode) ? EDIT_CATEGORY_TITLE : CREATE_CATEGORY_TITLE)
 
     const getParent = () => {
-        const id = unref(isEditMode) ? (unref(model).parent as ICategory)?.id : unref(model).parent
-
-        return unref(model).parent ? unref(categories).find(it => it.id === id)! : null
+        const id = unref(model).parentId
+        return id ? unref(categories).find(it => it.id === id)! : null
     }
 
-    const setParent = (val: ICategory) => {
-        unref(model).parent = unref(isEditMode) ? val : val!.id
+    const setParent = (category: ICategory) => {
+        unref(model).parentId = category.id
     }
 
     const computedParent = computed<Maybe<ICategory>>({

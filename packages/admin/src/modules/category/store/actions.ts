@@ -7,6 +7,9 @@ export const actions = {
     async create(category: ICategory) {
         try {
             const { data } = await categoryRepository.create(category)
+
+            this.$patch((state) => state.categories.push(data.data))
+
             return data.data
         } catch (err) {
             return Promise.reject(err)
@@ -16,6 +19,15 @@ export const actions = {
     async update(updates) {
         try {
             const { data } = await categoryRepository.update(updates)
+
+            this.$patch(state => {
+                state.categories = state.categories.map((it) => {
+                    if (it.id === data.data.id) return data.data
+
+                    return it
+                })
+            })
+
             return data.data
         } catch (err) {
             return Promise.reject(err)

@@ -27,21 +27,15 @@ export const useCategoriesService = createSharedComposable(() => {
     }
 
     const createCategory = async (model) => {
-        await _store.create(model)
-
-        return getCategories()
+        return _store.create(model)
     }
 
     const getCategories = () => {
         return _store.read()
     }
 
-    const updateCategory = async (updates) => {
-        const updated = await _store.update(updates)
-
-        await getCategories()
-
-        return updated
+    const updateCategory = (updates) => {
+        return _store.update(updates)
     }
 
     const deleteCategory = async (id) => {

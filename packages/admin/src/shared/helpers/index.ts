@@ -17,4 +17,22 @@ export const getDifferences = (changed, origin) => {
     return Object.keys(diffs).length ? diffs : null
 }
 
-export const stringToSnakeUpperCase = (string) => string.replace(/([a-z]+)([A-Z])/g, '$1_$2').toUpperCase()
+export const stringToSnakeUpperCase = (value: string) => value.replace(/([a-z]+)([A-Z])/g, '$1_$2').toUpperCase()
+
+export type TreeItem<T> = T & { id: string, title: string, parentId: string, children: T[] }
+export const buildTreeItems = <T>(items: TreeItem<T>[]): TreeItem<T>[] => {
+    const list: TreeItem<T>[] = []
+
+    items.forEach((item) => {
+        if (item.parentId) {
+            const parent = items.find(it => it.id === item.parentId)! as TreeItem<T>
+
+            parent.children ??= []
+            parent.children.push(item)
+        } else {
+            list.push(item as TreeItem<T>)
+        }
+    })
+
+    return list
+}
