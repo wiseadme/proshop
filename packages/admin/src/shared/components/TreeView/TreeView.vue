@@ -1,6 +1,4 @@
 <script lang="ts" setup generic="T extends {id: string, title: string, parentId: string, children: T[]}">
-    import { computed } from 'vue'
-
     const { items, value = {} } = defineProps<{
         value?: Record<string, any>
         items: T[]
@@ -11,10 +9,6 @@
         (e: 'toggle', val: T)
     }>()
 
-    const treeItemStyles = computed(() => ({
-        width: `25vh`,
-    }))
-
 </script>
 <template>
     <div class="tree">
@@ -23,10 +17,7 @@
             :key="item.id"
         >
             <div class="tree-item d-flex">
-                <div
-                    class="tree-item__cell d-flex justify-center"
-                    :style="treeItemStyles"
-                >
+                <div class="tree-item__cell d-flex justify-center">
                     <v-button
                         width="200"
                         :color="value[item.id] ? 'primary' : 'secondary'"
@@ -49,7 +40,7 @@
                     v-if="item.parentId"
                     class="tree-item--parent-line"
                 ></div>
-                <template v-if="item.children">
+                <template v-if="item.children?.length">
                     <tree-view
                         :value="value"
                         :items="item.children"
@@ -61,7 +52,7 @@
     </div>
 </template>
 <style lang="scss">
-    $tree-item-width: 25vh;
+    $tree-item-width: 20vw;
     $margin-bottom: 20px;
     $button-height: 40px;
     $button-width: 200px;
@@ -81,6 +72,7 @@
             }
 
             &__cell {
+                width: 20vw;
                 position: relative;
             }
 

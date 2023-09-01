@@ -6,18 +6,13 @@ import {
 import { useProduct } from '@modules/product/composables/use-product'
 import { ICategory } from '@proshop/types'
 import { useProductsService } from '@modules/product/composables/use-products-service'
-import {
-    TreeItem,
-    buildTreeItems,
-    clone
-} from '@shared/helpers'
 
 export const useProductCategories = () => {
     const { model } = useProduct()
+
     const { categoryItems } = useProductsService()
     const selectsMap = ref({})
 
-    const categoriesTree = computed<TreeItem<ICategory>[]>(() => buildTreeItems(clone(unref(categoryItems)) || []))
     const categoriesMap = computed(() => unref(categoryItems)?.reduce((map, it) => {
         map[it.id] = it
 
@@ -47,7 +42,6 @@ export const useProductCategories = () => {
     }
 
     return {
-        categoriesTree,
         categoriesMap,
         selectsMap,
         select,

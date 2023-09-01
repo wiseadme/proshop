@@ -11,7 +11,10 @@
             style="height: 90vh"
         >
             <v-col
-                cols="2"
+                xl="2"
+                lg="3"
+                md="3"
+                sm="4"
                 class="white secondary--text elevation-5 d-flex flex-column justify-start"
             >
                 <v-row
@@ -39,7 +42,12 @@
                     </v-col>
                 </v-row>
             </v-col>
-            <v-col cols="10">
+            <v-col
+                xl="10"
+                lg="9"
+                md="9"
+                sm="8"
+            >
                 <v-row no-gutter>
                     <v-col style="overflow-y: auto; overflow-x: hidden; max-height: 90vh">
                         <slot name="content"/>

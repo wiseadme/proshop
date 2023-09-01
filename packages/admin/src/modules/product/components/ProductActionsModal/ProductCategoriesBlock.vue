@@ -1,6 +1,7 @@
 <script lang="ts" setup>
     import {
         computed,
+        onMounted,
         unref,
         watch,
     } from 'vue'
@@ -11,11 +12,16 @@
     import { ICategory } from '@proshop/types'
     import { SvgPaths } from '@shared/enums/svg-paths'
     import { TreeView } from '@shared/components/TreeView'
+    import { useTreeView } from '@shared/composables/use-tree-view'
+    import { clone } from '@shared/helpers'
 
-    const { product } = useProductsService()
-    const { toggleCategory, select, categoriesTree, selectsMap } = useProductCategories()
+    const { product, categoryItems } = useProductsService()
+    const { toggleCategory, select, selectsMap } = useProductCategories()
+    const { treeItems, buildTreeItems } = useTreeView()
 
     const productCategories = computed<ICategory[]>(() => unref(product)?.categories as ICategory[])
+
+    onMounted(() => buildTreeItems(clone(unref(categoryItems))))
 
     watch(productCategories, (items: ICategory[]) => {
         items.forEach((ctg) => select(ctg))
@@ -35,7 +41,7 @@
                 <template #body>
                     <tree-view
                         :value="selectsMap"
-                        :items="categoriesTree"
+                        :items="treeItems"
                         class="mt-4"
                         @toggle="toggleCategory"
                     />
