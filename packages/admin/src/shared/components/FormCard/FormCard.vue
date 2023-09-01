@@ -1,9 +1,16 @@
 <script setup lang="ts">
+    const {
+        width = '100%',
+        height = '100%',
+    } = defineProps<{
+        height?: string
+        width?: string
+    }>()
 </script>
 <template>
     <v-card
         elevation="2"
-        style="width: 100%"
+        :style="{width, height}"
         color="white"
         class="form-card"
     >

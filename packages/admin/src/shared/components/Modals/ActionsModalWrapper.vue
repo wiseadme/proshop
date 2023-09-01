@@ -1,4 +1,4 @@
-<script>
+<script lang="ts" setup>
 
 </script>
 <template>
@@ -16,6 +16,7 @@
                 md="3"
                 sm="4"
                 class="white secondary--text elevation-5 d-flex flex-column justify-start"
+                style="z-index: 2"
             >
                 <v-row
                     class="mb-3 pa-2"
@@ -49,6 +50,9 @@
                 sm="8"
             >
                 <v-row no-gutter>
+                    <v-col>
+                        <slot name="top"/>
+                    </v-col>
                     <v-col style="overflow-y: auto; overflow-x: hidden; max-height: 90vh">
                         <slot name="content"/>
                     </v-col>

@@ -2,7 +2,7 @@ import { computed } from 'vue'
 import { useAuthStore } from '@shared/store/auth'
 import { IUser, Maybe } from '@proshop/types'
 import { router } from '@app/router'
-import { RouteNames } from '@shared/constants/route-names'
+import { RouteNames } from '@shared/enums/route-names'
 
 export const useAuthService = () => {
     const _store = useAuthStore()

@@ -1,0 +1,19 @@
+<script lang="ts" setup>
+    import { useFilterGroupService } from '@modules/filters/composables/use-filter-group-service'
+
+    const { getFilterGroupItems, filterGroups } = useFilterGroupService()
+
+    getFilterGroupItems()
+</script>
+<template>
+    <div class="filters">
+        <v-select
+            label="Группа фильтров"
+            :items="filterGroups"
+        />
+        <v-select
+            :items="[]"
+            label="Фильтры"
+        />
+    </div>
+</template>

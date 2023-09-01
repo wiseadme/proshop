@@ -91,11 +91,11 @@
                     path: '/settings/site',
                 },
             }
-        }
-        // {
-        //   title: 'Элементы',
-        //   icon: 'fas fa-newspaper',
-        //   path: '/elements'
+        },
+        // elements: {
+        //     title: 'Элементы',
+        //     icon: 'fas fa-newspaper',
+        //     path: '/elements'
         // }
     }
 
@@ -133,16 +133,16 @@
         on-hover
         fixed
     >
-        <v-list color="white">
-            <v-list-item class="mb-2"/>
+        <v-list color="white px-2 py-1">
+            <v-list-item class="mb-2 pt-15"/>
             <template
                 v-for="it in items"
                 :key="it.title"
             >
                 <v-list-item
                     v-if="!it.children"
-                    class="navigation-item pl-1"
-                    :class="{'navigation-item--active': current && (it.path === current.path)}"
+                    class="navigation-item pl-1 app-border-radius mb-1"
+                    :class="{'navigation-item--active elevation-2': current && (it.path === current.path)}"
                     @click="onSelect(it)"
                 >
                     <v-list-item-icon>
@@ -158,32 +158,30 @@
                     v-else
                     :prepend-icon="it.icon"
                     :title="it.title"
-                    class="navigation-item__group"
+                    class="navigation-item__group app-border-radius mb-1"
                     :expand="current && Object.keys(it.children).some(key => current.path === it.children[key].path)"
                 >
-                    <v-list color="white">
-                        <v-list-item
-                            v-for="c in it.children"
-                            :key="c.title"
-                            class="navigation-item"
-                            :class="{'navigation-item--active': current && (c.path === current.path)}"
-                            @click="onSelect(c)"
-                        >
-                            <v-list-item-icon class="ml-1">
-                                <v-icon
-                                    size="12"
-                                    color="grey lighten-2"
-                                >
-                                    {{ c.icon }}
-                                </v-icon>
-                            </v-list-item-icon>
-                            <v-list-item-content>
-                                <v-list-item-title>
-                                    {{ c.title }}
-                                </v-list-item-title>
-                            </v-list-item-content>
-                        </v-list-item>
-                    </v-list>
+                    <v-list-item
+                        v-for="child in it.children"
+                        :key="child.title"
+                        class="navigation-item app-border-radius mb-1"
+                        :class="{'navigation-item--active elevation-2': current && (child.path === current.path)}"
+                        @click="onSelect(child)"
+                    >
+                        <v-list-item-icon class="ml-1">
+                            <v-icon
+                                size="12"
+                                color="grey lighten-2"
+                            >
+                                {{ child.icon }}
+                            </v-icon>
+                        </v-list-item-icon>
+                        <v-list-item-content>
+                            <v-list-item-title>
+                                {{ child.title }}
+                            </v-list-item-title>
+                        </v-list-item-content>
+                    </v-list-item>
                 </v-group>
             </template>
         </v-list>

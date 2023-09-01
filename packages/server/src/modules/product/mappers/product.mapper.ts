@@ -31,8 +31,8 @@ export class ProductMapper {
         return {
             _id: id,
             ...map,
-            assets: map.assets?.map(asset => asset.id) || [],
-            variants: map.variants?.map(variant => VariantMapper.toMongoModelData(variant))
+            ...(map.assets ? { assets: map.assets?.map(asset => asset.id) || [] } : {}),
+            ...(map.variants ? { variants: map.variants?.map(variant => VariantMapper.toMongoModelData(variant)) } : {})
         } as IProductMongoModel
     }
 }
