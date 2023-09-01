@@ -10,6 +10,9 @@
     import { clone } from '@shared/helpers'
     import { descriptorToMetaTag } from '@shared/helpers/metatag'
     import { IMetaTag } from '@proshop/types'
+    import FormCard from '@shared/components/FormCard/FormCard.vue'
+    import VSvg from '@shared/components/VSvg/VSvg.vue'
+    import { SvgPaths } from '@shared/enums/svg-paths'
 
     const {
         metaTags,
@@ -63,6 +66,11 @@
                     sm="12"
                 >
                     <v-form v-slot="{validate}">
+                        <form-card>
+                            <template #title>
+                                <v-svg :path="SvgPaths.SHARE_NODES"/>
+                            </template>
+                        </form-card>
                         <v-card
                             color="white"
                             width="100%"

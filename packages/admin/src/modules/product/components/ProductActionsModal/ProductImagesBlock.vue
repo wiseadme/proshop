@@ -51,8 +51,7 @@
     <v-row class="pa-4">
         <v-col xl="6">
             <form-card>
-                <template #title>
-                    <!--                    <span class="mr-2">Форма загрузки изображений</span>-->
+                <template #icon>
                     <v-svg :path="SvgPaths.CAMERA"/>
                 </template>
                 <template #body>

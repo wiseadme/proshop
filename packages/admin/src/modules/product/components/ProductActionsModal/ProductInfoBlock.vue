@@ -15,13 +15,22 @@
 </script>
 <template>
     <v-row class="pa-4">
-        <v-col xl="6">
+        <v-col
+            class="mb-4"
+            xl="6"
+            lg="6"
+            md="6"
+            sm="12"
+        >
             <form-card>
-                <template #title>
+                <template #icon>
                     <v-svg
                         viewBox="-55 0 512 512"
                         :path="SvgPaths.FILE_LINES"
                     />
+                </template>
+                <template #title>
+                    Форма заполнения основной информации
                 </template>
                 <template #body>
                     <v-text-field
@@ -55,13 +64,19 @@
                 </template>
             </form-card>
         </v-col>
-        <v-col xl="6">
+        <v-col
+            class="mb-4"
+            xl="6"
+            lg="6"
+            md="6"
+            sm="12"
+        >
             <form-card>
+                <template #icon>
+                    <v-svg :path="SvgPaths.SHARE_NODES"/>
+                </template>
                 <template #title>
-                    <v-svg
-                        :path="SvgPaths.SHARE_NODES"
-                        width="35"
-                    />
+                    Информация для заголовков страницы
                 </template>
                 <template #body>
                     <v-text-field
@@ -91,10 +106,19 @@
                 </template>
             </form-card>
         </v-col>
-        <v-col class="pt-4">
+        <v-col
+            class="mb-4"
+            xl="12"
+            lg="12"
+            md="12"
+            sm="12"
+        >
             <form-card>
-                <template #title>
+                <template #icon>
                     <v-svg :path="SvgPaths.NEWSPAPER"/>
+                </template>
+                <template #title>
+                    Более детальное описание товара
                 </template>
                 <template #body>
                     <text-editor

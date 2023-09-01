@@ -28,7 +28,7 @@
                             'tree-item--has-child' : item.children,
                             'tree-item--has-parent': i && item.parentId
                         }"
-                        style="z-index: 1"
+                        style="z-index: 1; height: 60px"
                         @click="$emit('toggle', item)"
                     >
                         {{ item.title }}
@@ -54,7 +54,7 @@
 <style lang="scss">
     $tree-item-width: 20vw;
     $margin-bottom: 20px;
-    $button-height: 40px;
+    $button-height: 60px;
     $button-width: 200px;
 
     .tree {

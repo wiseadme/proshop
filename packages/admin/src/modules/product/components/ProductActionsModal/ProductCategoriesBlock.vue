@@ -32,11 +32,14 @@
     <v-row class="pa-4 app-border-radius">
         <v-col cols="12">
             <form-card>
-                <template #title>
+                <template #icon>
                     <v-svg
                         viewBox="-30 0 512 512"
                         :path="SvgPaths.DIAGRAM_NESTED"
                     />
+                </template>
+                <template #title>
+                    Категории в которые можно добавить товар
                 </template>
                 <template #body>
                     <tree-view

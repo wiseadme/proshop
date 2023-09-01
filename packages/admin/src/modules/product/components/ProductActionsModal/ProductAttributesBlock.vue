@@ -78,7 +78,7 @@
             class="used-attributes app-border-radius"
         >
             <form-card>
-                <template #title>
+                <template #icon>
                     <v-svg :path="SvgPaths.INBOX_IN"/>
                 </template>
                 <template #body>
@@ -170,7 +170,7 @@
         <v-col cols="6">
             <div class="attributes-list">
                 <form-card>
-                    <template #title>
+                    <template #icon>
                         <v-svg :path="SvgPaths.INBOX_OUT"/>
                     </template>
                     <template #body>

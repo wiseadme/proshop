@@ -7,11 +7,19 @@
         color="white"
         class="form-card"
     >
-        <v-card-title class="form-card__title">
-            <div class="form-card__title-text primary white--text px-3 py-2 elevation-2 d-flex justify-center align-center">
-                <slot name="title"/>
+        <v-card-title class="form-card__head">
+            <div class="form-card__icon primary white--text px-3 py-2 elevation-2 d-flex justify-center align-center">
+                <div class="form-card__icon-item">
+                    <slot name="icon"/>
+                </div>
+            </div>
+            <div class="form-card__title elevation-1 secondary--text px-3 py-2 d-flex justify-center align-center">
+                <div class="form-card__title-text">
+                    <slot name="title"/>
+                </div>
             </div>
         </v-card-title>
+
         <v-card-subtitle
             v-if="$slots.subtitle"
             class="form-card__subtitle"
@@ -34,19 +42,34 @@
         overflow: visible;
         border-radius: $border-radius;
 
-        &__title {
+        &__head {
+            position: relative;
+        }
+
+        &__icon {
             font-size: .9rem;
             padding: 0;
             min-height: 32px;
-            position: relative;
+            position: absolute;
+            left: 10px;
+            top: -10px;
+            border-radius: $border-radius;
 
-            &-text {
-                position: absolute;
-                left: 10px;
-                top: -10px;
-                border-radius: $border-radius;
+            &-item {
+
             }
         }
+
+        &__title {
+            position: absolute;
+            right: 0;
+            top: 0;
+            font-size: .8rem;
+            border-bottom-left-radius: $border-radius;
+            border-top-right-radius: $border-radius;
+            font-weight: 700;
+        }
+
 
         &__body {
             overflow-x: auto;

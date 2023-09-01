@@ -1,7 +1,7 @@
 <script lang="ts" setup>
     import { computed } from 'vue'
 
-    const { path, viewBox = '0 0 512 512', color = 'white', width = 34 } = defineProps<{
+    const { path, viewBox = '0 0 512 512', color = 'white', width = 28 } = defineProps<{
         path: string
         viewBox?: string
         color?: string
