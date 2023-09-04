@@ -1,4 +1,3 @@
-import { Document } from 'mongoose'
 import { inject, injectable } from 'inversify'
 
 // Entity
@@ -19,7 +18,6 @@ import { DELETE_CATEGORY_EVENT, UPDATE_CATEGORY_EVENT } from '@common/constants/
 
 @injectable()
 export class CategoryService implements ICategoryService {
-
     constructor(
         @inject(TYPES.UTILS.ILogger) private logger: ILogger,
         @inject(TYPES.REPOSITORIES.ICategoryRepository) private repository: ICategoryRepository,
@@ -29,16 +27,7 @@ export class CategoryService implements ICategoryService {
     }
 
     async create(category: ICategory) {
-        const ctg = await this.repository.create(Category.create(category))
-
-        if (category.parent) {
-            const [parent] = await this.repository.read({ id: category.parent } as Partial<ICategory>)
-            const children = [...parent!.children!, ctg] as ICategory[]
-
-            await this.repository.update({ id: parent.id, children })
-        }
-
-        return ctg
+        return await this.repository.create(Category.create(category))
     }
 
     async update(updates: Partial<ICategory>): Promise<{ updated: ICategory }> {
@@ -50,47 +39,19 @@ export class CategoryService implements ICategoryService {
             updates.length = category.length + updates.length
         }
 
-        if (updates.parent) {
-            if (category.parent) {
-                const [prevParent] = await this.repository.read({ id: (category.parent as ICategory).id } as Partial<ICategory>)
-                // @ts-ignore
-                const children = prevParent?.children?.filter((it) => it.id !== updates.id) as ICategory[]
-
-                children && await this.repository.update({ id: prevParent.id, children })
-            }
-
-            const [currentParent] = await this.repository.read({ id: updates.parent } as Partial<ICategory>)
-            const children = [...(currentParent!.children || []), category] as ICategory[]
-
-            await this.repository.update({ children, id: currentParent.id })
-        }
-
         return this.repository.update(updates)
     }
 
-    read(query: Partial<ICategory>) {
+    async read(query: Partial<ICategory>) {
         return this.repository.read(query)
     }
 
     async delete(id: string): Promise<boolean> {
-        const [category] = await this.repository.read({ id: id })
-        const res = await this.repository.delete(id)
-
-        // Если удаляем категорию и если у категории есть
-        // родитель, то удаляем его и в родителе
-        if (category.parent) {
-            const [parent] = await this.repository.read({ id: category.parent } as Partial<ICategory>)
-
-            // @ts-ignore
-            const children = parent!.children!.filter((it: ICategory) => it.id.toString() !== category.id)
-            const set = { id: parent.id, children }
-
-            await this.repository.update(set)
-        }
+        const result = await this.repository.delete(id)
 
         await this.events.emit(DELETE_CATEGORY_EVENT, id)
 
-        return res
+        return result
     }
 
     addListeners() {

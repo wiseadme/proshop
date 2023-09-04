@@ -1,18 +1,18 @@
-import { Document, model, Schema } from 'mongoose'
+import { model, Schema } from 'mongoose'
 import { ISettingsMongoModel } from '@proshop/types'
 
-const SettingsSchema: Schema = new Schema<ISettingsMongoModel & Document>({
+const SettingsSchema: Schema = new Schema<ISettingsMongoModel>({
     _id: Schema.Types.ObjectId,
     merchant: {
-        type: Schema.Types.ObjectId,
-        ref: 'Merchant',
-        _id: false,
+        type: String,
+        // ref: 'Merchant',
+        // _id: false,
         default: '' as any
     },
     site: {
-        type: Schema.Types.ObjectId,
-        ref: 'Site',
-        _id: false,
+        type: String,
+        // ref: 'Site',
+        // _id: false,
         default: '' as any
     },
 }, {

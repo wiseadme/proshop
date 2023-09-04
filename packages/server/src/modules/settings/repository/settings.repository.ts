@@ -26,7 +26,7 @@ export class SettingsRepository implements ISettingsRepository {
         const [settings] = await SettingsModel
             .find()
             .lean()
-            .populate(['merchant', 'site'])
+            // .populate(['merchant', 'site'])
 
         return SettingsMapper.toDomain(settings)
     }

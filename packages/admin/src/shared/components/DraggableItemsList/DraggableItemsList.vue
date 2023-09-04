@@ -4,9 +4,18 @@
 
     type OrderableItem<T> = T & { order: number }
 
-    const { items, editable = false } = defineProps<{
-        items: OrderableItem<T>[]
+    const {
+        modelValue,
+        editable = false,
+        itemKey = 'id',
+        itemClass = 'white',
+    } = defineProps<{
+        modelValue?: OrderableItem<T>[]
         editable?: boolean
+        deletable?: boolean
+        itemKey?: string
+        itemClass?: string
+        group?: symbol | { name: string | symbol, pull: (...args: any[]) => any }
     }>()
 
     const emit = defineEmits<{
@@ -14,64 +23,144 @@
         (e: 'change', value: OrderableItem<T>[]): void
         (e: 'delete', value: OrderableItem<T>): void
         (e: 'edit', value: OrderableItem<T>): void
+        (e: 'show-item-menu', value: OrderableItem<T>): void
     }>()
 
     const onDelete = (value: OrderableItem<T>) => emit('delete', value)
     const onEdit = (value: OrderableItem<T>) => emit('edit', value)
 
-    const modelValue = computed({
-        get: () => items || [],
-        set: (val) => {
-            emit('modelValue', val)
-        },
+    const items = computed({
+        get: () => modelValue || [],
+        set: (val) => emit('modelValue', val),
     })
 
     const onChange = () => {
-        unref(modelValue).forEach((it, i) => it.order = i)
-        emit('change', unref(modelValue))
+        unref(items).forEach((it, i) => it.order = i)
+        emit('change', unref(items))
     }
 </script>
 <template>
-    <draggable
-        v-model="modelValue"
-        item-key="id"
-        @change="onChange"
+    <v-list
+        class="draggable-list pa-2"
+        color="transparent"
     >
-        <template #item="{element}">
-            <div
-                class="d-flex justify-start align-center elevation-2 my-1 py-2 px-3 attribute-item white app-border-radius"
-            >
-                <v-icon
-                    class="mr-3"
-                    color="grey lighten-2"
-                >
-                    fas fa-grip-vertical
-                </v-icon>
-                <span>
-                    <slot
-                        name="title"
-                        :item="element"
-                    />
-                </span>
-                <v-spacer></v-spacer>
-                <v-icon
-                    v-if="editable"
-                    color="primary"
-                    class="mr-3"
-                    clickable
-                    @click="onEdit(element)"
-                >
-                    fas fa-pen
-                </v-icon>
+        <draggable
+            :list="items"
+            :item-key="itemKey"
+            :group="group"
+            class="draggable-container"
+            @change="onChange"
+        >
+            <template #item="{element}">
+                <div>
+                    <v-tooltip
+                        top
+                        offset-y="-10"
+                        color="rgba(0,0,0,.7)"
+                        elevation="3"
+                    >
+                        <template #activator="{on}">
+                            <v-list-item
+                                :class="['draggable-item mb-1 elevation-1 app-border-radius', itemClass]"
+                                v-on="on"
+                            >
+                                <v-list-item-icon>
+                                    <v-icon
+                                        class="mr-3"
+                                        color="grey lighten-2"
+                                    >
+                                        fas fa-grip-vertical
+                                    </v-icon>
+                                </v-list-item-icon>
+                                <v-list-item-content>
+                                    <v-list-item-title>
+                                        <slot
+                                            name="title"
+                                            :item="element"
+                                        />
+                                    </v-list-item-title>
+                                    <v-list-item-subtitle>
+                                        <slot
+                                            name="subtitle"
+                                            :item="element"
+                                        />
+                                    </v-list-item-subtitle>
+                                </v-list-item-content>
 
-                <v-icon
-                    color="error"
-                    clickable
-                    @click="onDelete(element)"
-                >
-                    fas fa-times
-                </v-icon>
-            </div>
-        </template>
-    </draggable>
+                                <v-spacer></v-spacer>
+                                <v-list-item-content
+                                    v-if="editable || deletable"
+                                    class="menu"
+                                >
+                                    <v-list-item-icon>
+                                        <v-menu
+                                            absolute
+                                            open-on-click
+                                            width="150"
+                                            offset-x="75"
+                                            bottom
+                                        >
+                                            <template #activator="{on: listeners}">
+                                                <v-icon
+                                                    clickable
+                                                    color="primary"
+                                                    v-on="listeners"
+                                                    @click="$emit('show-item-menu', element)"
+                                                >
+                                                    fas fa-bars
+                                                </v-icon>
+                                            </template>
+                                            <v-list active>
+                                                <v-list-item
+                                                    v-if="editable"
+                                                    @click="onEdit(element)"
+                                                >
+                                                    <v-list-item-title>
+                                                        Редактировать
+                                                    </v-list-item-title>
+                                                </v-list-item>
+                                                <v-list-item
+                                                    v-if="deletable"
+                                                    @click="onDelete(element)"
+                                                >
+                                                    <v-list-item-title>
+                                                        Удалить
+                                                    </v-list-item-title>
+                                                </v-list-item>
+                                            </v-list>
+                                        </v-menu>
+                                    </v-list-item-icon>
+                                </v-list-item-content>
+                            </v-list-item>
+                        </template>
+                        <span>
+                            <slot
+                                name="tooltip"
+                                :item="element"
+                            />
+                        </span>
+                    </v-tooltip>
+                </div>
+            </template>
+        </draggable>
+    </v-list>
 </template>
+<style lang="scss">
+    .draggable-item {
+        cursor: grab;
+
+        .menu {
+            cursor: pointer;
+            min-width: 45px;
+            width:  45px;
+        }
+    }
+
+    .draggable-item:active {
+        cursor: grabbing;
+    }
+
+    .draggable-container {
+        min-height: 400px;
+    }
+</style>

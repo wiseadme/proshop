@@ -27,7 +27,11 @@ export class MerchantRepository implements IMerchantRepository {
     }
 
     async read() {
-        const [merchant] = await MerchantModel.find().lean()
+        // validateId(params.id)
+
+        const [merchant] = await MerchantModel.find()
+            .lean()
+
         return MerchantMapper.toDomain(merchant)
     }
 

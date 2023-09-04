@@ -9,7 +9,7 @@ export class SiteMapper {
         delete map._id
 
         return {
-            id: entity._id,
+            id: entity._id.toString(),
             ...map,
         } as ISite
 

@@ -29,3 +29,8 @@ $hover-color: #e8e8e8;
     }
   }
 }
+
+.v-group__header {
+  border-radius: $border-radius;
+  margin-bottom: 5px;
+}

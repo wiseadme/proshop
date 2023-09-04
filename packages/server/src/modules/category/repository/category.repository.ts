@@ -22,11 +22,6 @@ export class CategoryRepository implements ICategoryRepository {
         })
             .save()
 
-        await Promise.all([
-            created.populate('parent'),
-            created.populate('children'),
-        ])
-
         return CategoryMapper.toDomain(created.toObject())
     }
 
@@ -36,30 +31,24 @@ export class CategoryRepository implements ICategoryRepository {
         const categories = await CategoryModel
             .find(params.id ? { _id: params.id } : params)
             .lean()
-            .populate('parent', ['_id', 'title', 'url', 'children'])
-            .populate('children', ['_id', 'title', 'url', 'children'])
 
         return categories.map(ctg => CategoryMapper.toDomain(ctg))
     }
 
     async update(updates: Partial<ICategory>) {
+        const { id } = updates
         validateId(updates.id)
 
-        const children = updates.children?.map(ctg => ctg.id) || null
+        delete updates.id
 
         const updated = await CategoryModel.findByIdAndUpdate(
-            { _id: updates.id },
+            { _id: id },
             {
-                $set: {
-                    ...updates,
-                    ...(children ? { children } : {}),
-                },
+                $set: updates,
             },
             { new: true },
         )
-            .lean()
-            .populate('parent', ['_id', 'title', 'url'])
-            .populate('children', ['_id', 'title', 'url']) as ICategoryMongoModel
+            .lean() as ICategoryMongoModel
 
         return { updated: CategoryMapper.toDomain(updated) }
     }

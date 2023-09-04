@@ -7,7 +7,7 @@
     import { useRouter } from 'vue-router'
     import { usePolling } from '@shared/composables/use-polling'
     import { useNotifications } from '@shared/components/VNotifications/use-notifications'
-    import { useOrdersService } from '@modules/order/composables/use-orders-service'
+    import { useOrdersService } from '@modules/orders/composables/use-orders-service'
     // Components
     import { AppHeader } from '@app/components/AppHeader'
     import { AppNavigation } from '@app/components/AppNavigation'

@@ -1,5 +1,9 @@
 <script lang="ts" setup generic="T">
-    const { uniqueKey = 'id', deletable = true, editable = true } = defineProps<{
+    const {
+        uniqueKey = 'id',
+        deletable = true,
+        editable = true
+    } = defineProps<{
         items: T[]
         uniqueKey?: string
         deletable?: boolean
@@ -38,25 +42,45 @@
                 </v-list-item-subtitle>
             </v-list-item-content>
             <v-spacer/>
-            <v-list-item-content v-if="editable">
-                <v-icon
-                    clickable
-                    color="primary"
-                    class="mr-5"
-                    @click="$emit('edit', item)"
-                >
-                    fas fa-pen
-                </v-icon>
-                <v-icon
-                    v-if="deletable"
-                    clickable
-                    color="error"
-                    class="mr-5"
-                    size="20"
-                    @click="$emit('delete', item)"
-                >
-                    fas fa-times
-                </v-icon>
+            <v-list-item-content v-if="editable || deletable">
+                <v-list-item-icon>
+                    <v-menu
+                        absolute
+                        open-on-click
+                        width="150"
+                        offset-x="75"
+                        bottom
+                    >
+                        <template #activator="{on: listeners}">
+                            <v-icon
+                                clickable
+                                color="primary"
+                                v-on="listeners"
+                                @click="$emit('show-item-menu', item)"
+                            >
+                                fas fa-bars
+                            </v-icon>
+                        </template>
+                        <v-list active>
+                            <v-list-item
+                                v-if="editable"
+                                @click="$emit('edit', item)"
+                            >
+                                <v-list-item-title>
+                                    Редактировать
+                                </v-list-item-title>
+                            </v-list-item>
+                            <v-list-item
+                                v-if="deletable"
+                                @click="$emit('delete', item)"
+                            >
+                                <v-list-item-title>
+                                    Удалить
+                                </v-list-item-title>
+                            </v-list-item>
+                        </v-list>
+                    </v-menu>
+                </v-list-item-icon>
             </v-list-item-content>
         </v-list-item>
     </v-list>

@@ -1,0 +1,158 @@
+<script lang="ts" setup>
+    import {
+        ref,
+        unref,
+        watch
+    } from 'vue'
+    import { ICategory, IProduct } from '@proshop/types'
+    import { useProductRelated } from '@modules/products/composables/use-product-related'
+    import { useProduct } from '@modules/products/composables/use-product'
+    import { useProductActionsModal } from '@modules/products/composables/use-product-actions-modal'
+    import { useProductsService } from '@modules/products/composables/use-products-service'
+
+    const { model } = useProduct()
+    const { categoryItems } = useProductsService()
+    const { showModal } = useProductActionsModal()
+    const {
+        category,
+        related,
+        categoryProducts,
+        getProducts
+    } = useProductRelated()
+
+    const selects = ref<IProduct[]>([])
+
+    let productsMap: Record<string, Record<string, IProduct>> = {}
+    let isCategoryChanged: boolean = false
+
+    const clearSelects = () => selects.value = []
+
+    const setToCategoryMap = (product: IProduct) => {
+        product.categories?.forEach((category: ICategory) => {
+            productsMap[unref(category).url!] ??= {}
+            productsMap[category!.url!][product.id] = product
+        })
+    }
+
+    const selectRelatedFromProducts = () => {
+        const categoryMap = productsMap[unref(category)!.url!]
+
+        unref(categoryProducts)!.forEach((it) => {
+            if (!categoryMap[it.id]) return
+
+            selects.value.push(it)
+        })
+    }
+
+    const setCategoryRelatedProducts = async () => {
+        if (!unref(category)) return
+
+        clearSelects()
+
+        isCategoryChanged = true
+        /** Очищаем мапу */
+        productsMap = {}
+        productsMap[unref(category).url!] = {} as Record<string, IProduct>
+
+        await getProducts()
+
+        unref(model).related?.forEach((pr) => setToCategoryMap(pr))
+        selectRelatedFromProducts()
+
+        isCategoryChanged = false
+    }
+
+    const removeUnselectedProductsFromMap = (relatedProducts: IProduct[]) => {
+        const categoryMap = productsMap[unref(category)!.url!]
+
+        /** Массив всех id продуктов замапенных по категории */
+        const categoryProductIds = Object.keys(categoryMap)
+
+        for (const id of categoryProductIds) {
+            if (!relatedProducts.find(rel => rel.id === id)) {
+                delete categoryMap[id]
+                break
+            }
+        }
+    }
+
+    const onUpdateRelatedProductsArray = (newRelated, oldRelated) => {
+        /** если изменилась категория то пропускаем сброс выбранных ранее продуктов */
+        if (isCategoryChanged || !unref(category)) return
+
+        /** если удален продукт из рекомендуемых то удаляем его из мапы */
+        if (newRelated.length < oldRelated.length) {
+            removeUnselectedProductsFromMap(newRelated)
+        }
+
+        /** объект категории с рекомендованными продуктами по id ключу */
+        const categoryMap = productsMap[unref(category)!.url!]
+
+        /** массив всех категорий с рекомендованными продуктами по id ключу */
+        const categories = Object.values(productsMap)
+
+        unref(selects).forEach(it => {
+            if (!categoryMap?.[it.id!]) categoryMap[it.id!] = it
+        })
+
+        unref(model).related = categories.map(it => Object.keys(it)).flat()
+    }
+
+    const onShowModal = (state) => {
+        !state && clearSelects()
+    }
+
+    watch(category, setCategoryRelatedProducts)
+    watch(showModal, to => to && setCategoryRelatedProducts())
+    // watch(model, setCategoryRelatedProducts)
+    watch(selects, onUpdateRelatedProductsArray)
+    watch(showModal, onShowModal)
+
+</script>
+<template>
+    <v-layout
+        class="white pa-4"
+        column
+    >
+        <v-row>
+            <v-col cols="3">
+                <v-select
+                    v-model="category"
+                    label="Категории"
+                    :items="categoryItems"
+                    value-key="title"
+                />
+            </v-col>
+            <v-col cols="9">
+                <v-multi-select
+                    v-model="selects"
+                    label="Список товаров"
+                    :items="categoryProducts"
+                    value-key="name"
+                    chip
+                />
+            </v-col>
+        </v-row>
+        <v-row class="mt-4">
+            <v-col
+                v-for="it in related"
+                :key="it.id"
+                cols="3"
+            >
+                <div class="related-item elevation-2 pa-2 d-flex align-center app-border-radius">
+                    <div class="related-item__image">
+                        <img
+                            :src="it.image"
+                            alt=""
+                            class="elevation-2"
+                            style="width: 100px; height: 100px; object-fit: cover; border-radius: 50%"
+                        >
+                    </div>
+                    <div class="related-item__content px-1">
+                        <span>{{ it.name }}</span>
+                    </div>
+                </div>
+            </v-col>
+        </v-row>
+    </v-layout>
+</template>

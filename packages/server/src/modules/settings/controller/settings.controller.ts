@@ -63,6 +63,8 @@ export class SettingsController extends BaseController implements IController {
             const merchant = await this.merchantService.create(body)
             const settings = await this.settingsService.read()
 
+            console.log(merchant, settings)
+
             if (!settings) {
                 await this.settingsService.create({ merchant: merchant.id })
             } else {

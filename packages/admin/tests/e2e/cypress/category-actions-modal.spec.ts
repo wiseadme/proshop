@@ -1,6 +1,8 @@
 import { mount } from '@cypress/vue'
 
-import { CategoryActionsModal } from '../../../src/modules/category/components/CategoryActionsModal'
+import {
+    CategoryActionsModal
+} from '../../../src/modules/categories/components/CategoryActionsModal'
 
 describe('CategoryActionsModal', () => {
     it('should mount component', () => {

@@ -20,6 +20,8 @@ export class OptionMapper {
         const { id } = domainModel
         const map: Partial<IOption> = domainModel
 
+        // const assets = map.assets?.map((asset) => asset.id)
+
         delete map.id
 
         return {

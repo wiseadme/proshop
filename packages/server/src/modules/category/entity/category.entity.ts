@@ -7,8 +7,7 @@ export class Category implements ICategory {
     readonly title: ICategory['title']
     readonly order: ICategory['order']
     readonly image: ICategory['image']
-    readonly parent: ICategory['parent']
-    readonly children: ICategory['children']
+    readonly parentId: ICategory['parentId']
     readonly seo?: ICategory['seo']
     readonly conditions: ICategory['conditions']
     readonly length: ICategory['length']
@@ -20,8 +19,7 @@ export class Category implements ICategory {
         order = 0,
         length = 0,
         image = null,
-        parent = null,
-        children = null,
+        parentId = null,
         conditions = {
             visible: true,
             special: false,
@@ -38,8 +36,7 @@ export class Category implements ICategory {
         this.title = title
         this.order = order
         this.image = image
-        this.parent = parent
-        this.children = children
+        this.parentId = parentId
         this.conditions = conditions
         this.seo = seo
         this.url = url || translator(this.title).toLowerCase()

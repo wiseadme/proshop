@@ -12,15 +12,12 @@ export interface ICategory {
     image: Maybe<string>
     seo?: ISEOType
     url: string
-    parent: Maybe<string | ICategory>
+    parentId: Maybe<string>
     order?: number
-    children: Maybe<string[] | ICategory[]>
     length: number
     conditions: ICategoryConditions
 }
 
-export interface ICategoryMongoModel extends Omit<ICategory, 'id' | 'children' | 'parent'>{
+export interface ICategoryMongoModel extends Omit<ICategory, 'id' | 'parent'>{
     _id: string
-    children: Maybe<string[] | ICategoryMongoModel[]>
-    parent: Maybe<string | ICategoryMongoModel>
 }
