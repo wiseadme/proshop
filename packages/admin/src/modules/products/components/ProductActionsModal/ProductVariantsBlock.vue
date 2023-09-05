@@ -5,14 +5,6 @@
         unref,
         watch,
     } from 'vue'
-    import {
-        IAsset,
-        IFilterGroup,
-        IFilterItem,
-        IOption,
-        IProduct,
-        IVariant,
-    } from '@proshop/types'
     import { useProduct } from '@modules/products/composables/use-product'
     import { useProductVariants } from '@modules/products/composables/use-product-variants'
     import { useFilterGroupService } from '@modules/filters/composables/use-filter-group-service'
@@ -22,6 +14,14 @@
     import { VSvg } from '@shared/components/VSvg'
     import { ItemsList } from '@shared/components/ItemsList'
     import { SvgPaths } from '@shared/enums/svg-paths'
+    import {
+        IAsset,
+        IFilterGroup,
+        IFilterItem,
+        IOption,
+        IProduct,
+        IVariant,
+    } from '@proshop/types'
 
     const { model, products } = useProduct()
 
@@ -162,10 +162,14 @@
         <v-col
             v-if="variantItems.length"
             cols="6"
+            class="mb-4"
         >
             <form-card>
                 <template #icon>
                     <v-svg :path="SvgPaths.DIAGRAM_NESTED"/>
+                </template>
+                <template #title>
+                    Выберите группу вариантов, фильтров или скопируйте варианты похожего товара
                 </template>
                 <template #body>
                     <v-row no-gutter>
@@ -182,7 +186,7 @@
                         <v-col>
                             <v-autocomplete
                                 v-model="productForInherit"
-                                label="Унаследовать варианты от"
+                                label="Унаследовать варианты"
                                 :items="products"
                                 value-key="name"
                                 color="primary"
@@ -226,31 +230,51 @@
                 </template>
             </form-card>
         </v-col>
-        <v-col cols="6">
+        <v-col
+            cols="6"
+            class="mb-4"
+        >
             <form-card>
                 <template #icon>
-                    <v-svg :path="SvgPaths.NEWSPAPER"/>
+                    <v-svg :path="SvgPaths.CAMERA"/>
                 </template>
-                <template
-                    v-if="currentVariant && currentVariant.options"
-                    #body
-                >
-                    <items-list
-                        :items="currentVariant.options"
-                        @delete="onDeleteProductVariantOption({variant: currentVariant, option: $event})"
-                        @edit="setOptionForEditing"
-                    >
-                        <template #title="{item}">
-                            {{ item.name }}
-                        </template>
-                    </items-list>
+                <template #title>
+                    Тут отобразятся фото товара опции
+                </template>
+                <template #body>
+                    <v-row>
+                        <!--                        <v-col>-->
+                        <!--                            <v-file-input-->
+                        <!--                                v-model="optionPattern.assets"-->
+                        <!--                                :label="!optionPattern.id ? 'только после сохранения варианта *': 'загрузить изображения'"-->
+                        <!--                                color="primary"-->
+                        <!--                                :disabled="!optionPattern.id"-->
+                        <!--                                @update:value="onUploadVariantOptionImage({files: $event, option: optionPattern})"-->
+                        <!--                            />-->
+                        <!--                        </v-col>-->
+                        <v-col
+                            v-for="asset in optionPattern.assets"
+                            :key="asset.id"
+                            cols="2"
+                            style="height: 130px; position: relative"
+                            class="d-flex align-center justify-center elevation-2"
+                        >
+                            <v-icon
+                                style="position: absolute; top: 5px; right: 5px;"
+                                icon="fas fa-times"
+                                clickable
+                                @click="onDeleteVariantImage(asset)"
+                            />
+                            <img
+                                :src="asset.url"
+                                style="width: 100px;"
+                            >
+                        </v-col>
+                    </v-row>
                 </template>
             </form-card>
         </v-col>
-        <v-col
-            cols="6"
-            class="py-4"
-        >
+        <v-col cols="6">
             <v-form v-slot="{validate}">
                 <form-card>
                     <template #icon>
@@ -314,13 +338,6 @@
                             :disabled="!!optionProductLink"
                             label="Описание"
                         />
-                        <v-file-input
-                            v-model="optionPattern.assets"
-                            :label="!optionPattern.id ? 'только после сохранения варианта *': 'загрузить изображения'"
-                            color="primary"
-                            :disabled="!optionPattern.id"
-                            @update:value="onUploadVariantOptionImage({files: $event, option: optionPattern})"
-                        />
                     </template>
                     <template #actions>
                         <v-button
@@ -345,35 +362,24 @@
                 </form-card>
             </v-form>
         </v-col>
-        <v-col
-            cols="6"
-            class="py-4"
-        >
+        <v-col cols="6">
             <form-card>
                 <template #icon>
-                    <v-svg :path="SvgPaths.CAMERA"/>
+                    <v-svg :path="SvgPaths.NEWSPAPER"/>
                 </template>
-                <template #body>
-                    <v-row>
-                        <v-col
-                            v-for="asset in optionPattern.assets"
-                            :key="asset.id"
-                            cols="2"
-                            style="height: 130px; position: relative"
-                            class="d-flex align-center justify-center elevation-2"
-                        >
-                            <v-icon
-                                style="position: absolute; top: 5px; right: 5px;"
-                                icon="fas fa-times"
-                                clickable
-                                @click="onDeleteVariantImage(asset)"
-                            />
-                            <img
-                                :src="asset.url"
-                                style="width: 100px;"
-                            >
-                        </v-col>
-                    </v-row>
+                <template
+                    v-if="currentVariant && currentVariant.options"
+                    #body
+                >
+                    <items-list
+                        :items="currentVariant.options"
+                        @delete="onDeleteProductVariantOption({variant: currentVariant, option: $event})"
+                        @edit="setOptionForEditing"
+                    >
+                        <template #title="{item}">
+                            {{ item.name }}
+                        </template>
+                    </items-list>
                 </template>
             </form-card>
         </v-col>

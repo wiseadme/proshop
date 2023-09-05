@@ -26,7 +26,6 @@
     }
 
     const onSave = (model) => {
-        console.log(unref(site))
         if (unref(site)) return updateSite(model)
 
         return createSite(model)
@@ -59,6 +58,7 @@
 <template>
     <v-menu
         v-model="showColorPicker"
+        absolute
         :position-x="positionX"
         :position-y="positionY"
         width="220"

@@ -26,7 +26,7 @@ export const useProductAttributes = createSharedComposable(() => {
         attributes.value = unref(model).attributes
     }
 
-    watch(attributeItems, (attrs) => {
+    watch(() => unref(model).attributes, (attrs) => {
         const map = attrs?.reduce((acc, it) => {
             acc[it.id] = true
 
