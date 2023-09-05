@@ -45,10 +45,9 @@
             <v-list-item-content v-if="editable || deletable">
                 <v-list-item-icon>
                     <v-menu
-                        absolute
                         open-on-click
                         width="150"
-                        offset-x="75"
+                        offset-y="-10"
                         bottom
                     >
                         <template #activator="{on: listeners}">
@@ -56,7 +55,6 @@
                                 clickable
                                 color="primary"
                                 v-on="listeners"
-                                @click="$emit('show-item-menu', item)"
                             >
                                 fas fa-bars
                             </v-icon>

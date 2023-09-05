@@ -94,10 +94,9 @@
                                 >
                                     <v-list-item-icon>
                                         <v-menu
-                                            absolute
                                             open-on-click
                                             width="150"
-                                            offset-x="75"
+                                            offset-y="-10"
                                             bottom
                                         >
                                             <template #activator="{on: listeners}">
