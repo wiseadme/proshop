@@ -11,6 +11,10 @@ export const useVariantsService = () => {
         return _store.create(item)
     }
 
+    const updateVariant = (updates: Partial<IVariant>) => {
+        return _store.update(updates)
+    }
+
     const deleteVariant = (id: string) => {
         return _store.delete(id)
     }
@@ -23,6 +27,7 @@ export const useVariantsService = () => {
         variants,
         createVariant,
         deleteVariant,
+        updateVariant,
         getVariants
     }
 }

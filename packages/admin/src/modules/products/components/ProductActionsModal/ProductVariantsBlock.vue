@@ -30,7 +30,7 @@
         isVariantEditMode,
         genVariantOptionPattern,
         onSelectParentProduct,
-        onUploadProductVariantOptionImage,
+        // onUploadProductVariantOptionImage,
         onDeleteProductVariantOptionImage,
         onUpdateProductVariantOption,
         onCreateProductVariantOption,
@@ -86,15 +86,15 @@
         optionPattern.value = option
     }
 
-    const onUploadVariantOptionImage = ({
-        files,
-        option,
-    }: {
-        files: File[]
-        option: IOption
-    }) => {
-        onUploadProductVariantOptionImage({ file: files[0], option })
-    }
+    // const onUploadVariantOptionImage = ({
+    //     files,
+    //     option,
+    // }: {
+    //     files: File[]
+    //     option: IOption
+    // }) => {
+    //     onUploadProductVariantOptionImage({ file: files[0], option })
+    // }
 
     const onDeleteVariantImage = (asset: IAsset) => {
         const option = unref(optionPattern)
@@ -132,8 +132,8 @@
 
     }, { immediate: true })
 
-    watch(productForInherit, (to: IProduct) => {
-        unref(model).variants = to.variants
+    watch(productForInherit, (product: IProduct) => {
+        unref(model).variants = product?.variants || []
     })
 
     /**
@@ -191,6 +191,7 @@
                                 value-key="name"
                                 color="primary"
                                 typeable
+                                clearable
                                 @input="getProducts({name: $event})"
                                 @select="onSelectParentProduct"
                             />
@@ -301,23 +302,23 @@
                             @select="onSelectFilterItem"
                         />
                         <v-autocomplete
-                            v-if="!optionPattern.url"
                             v-model="optionProductLink"
                             label="Ссылка на товар"
                             :items="products"
                             value-key="name"
                             color="primary"
                             typeable
+                            clearable
                             @input="getProducts({name: $event})"
                             @select="onSelectOptionLinkedProduct"
                         />
-                        <v-text-field
-                            v-else
-                            v-model="optionPattern.url"
-                            readonly
-                            clearable
-                            label="Ссылка на товар"
-                        />
+                        <!--                        <v-text-field-->
+                        <!--                            v-else-->
+                        <!--                            v-model="optionPattern.url"-->
+                        <!--                            readonly-->
+                        <!--                            clearable-->
+                        <!--                            label="Ссылка на товар"-->
+                        <!--                        />-->
                         <v-text-field
                             v-model.number="optionPattern.quantity"
                             color="primary"

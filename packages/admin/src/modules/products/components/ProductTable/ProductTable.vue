@@ -54,6 +54,7 @@
                     <v-button
                         color="primary"
                         elevation="5"
+                        data-test="create-modal"
                         @click="onOpenCreateProductModal"
                     >
                         <v-icon

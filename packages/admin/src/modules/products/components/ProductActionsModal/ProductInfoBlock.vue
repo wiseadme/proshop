@@ -36,12 +36,14 @@
                     <v-text-field
                         v-model.trim="model.name"
                         label="Наименование товара *"
+                        data-test="name-input"
                         :rules="[val => !!val || 'Обязательное поле']"
                         color="primary"
                     />
                     <v-text-field
                         v-model.number="model.price"
                         label="Цена *"
+                        data-test="price-input"
                         :rules="[val => !!val || 'Обязательное поле']"
                         color="primary"
                         type="number"
@@ -49,6 +51,7 @@
                     <v-text-field
                         v-model.number="model.quantity"
                         label="Количество"
+                        data-test="quantity-input"
                         type="number"
                         color="primary"
                     />
@@ -56,6 +59,7 @@
                         v-model="model.unit"
                         :items="unitItems"
                         label="Единица измерения"
+                        data-test="unit-input"
                         color="primary"
                         value-key="value"
                         active-class="primary white--text"
@@ -82,24 +86,28 @@
                     <v-text-field
                         v-model="model.seo.title"
                         label="SEO title"
+                        data-test="seo-title-input"
                         color="primary"
                         text-color="content"
                     />
                     <v-text-field
                         v-model="model.seo.description"
                         label="SEO description"
+                        data-test="seo-desc-input"
                         color="primary"
                         text-color="content"
                     />
                     <v-text-field
                         v-model="model.seo.keywords"
                         label="SEO keywords"
+                        data-test="seo-keywords-input"
                         color="primary"
                         text-color="content"
                     />
                     <v-text-field
                         v-model.trim="model.url"
                         label="URL товара"
+                        data-test="url-input"
                         color="primary"
                         text-color="content"
                     />
@@ -125,6 +133,7 @@
                         :key="textEditorRerenderKey"
                         v-model:content="model.description"
                         style="height: 300px"
+                        data-test="description-area"
                         content-type="html"
                         :global-options="{
                             placeholder: 'введите описание товара'

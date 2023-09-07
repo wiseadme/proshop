@@ -6,6 +6,5 @@ const buildConfig = (env = {}) => merge(baseConfig(env), {
     devtool: 'source-map'
 })
 
-module.exports = new Promise(res => {
-    res(buildConfig({dev: false}))
-})
+module.exports = buildConfig({dev: false})
+module.exports.buildTestConfig = buildConfig

@@ -141,7 +141,7 @@ module.exports = (env = {}) => {
                 '@app': `${PATH.src}/app`,
                 '@modules': `${PATH.src}/modules`,
                 '@shared': `${PATH.src}/shared`,
-                vue: env.dev ? 'vue/dist/vue.runtime.esm-browser.js' : 'vue/dist/vue.runtime.esm-browser.prod.js'
+                vue: env.dev ? 'vue/dist/vue.runtime.esm-browser.js' : env.test ? 'vue/dist/vue.runtime.esm-bundler.js' : 'vue/dist/vue.runtime.esm-browser.prod.js'
             }
         },
         plugins: [
