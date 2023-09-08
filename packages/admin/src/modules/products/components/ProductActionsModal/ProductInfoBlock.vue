@@ -1,16 +1,26 @@
 <script lang="ts" setup>
-    import { ref } from 'vue'
+    import { ref, watch } from 'vue'
     import { TextEditor } from '@shared/components/TextEditor'
-    import { useProduct } from '@modules/products/composables/use-product'
-    import { useProductsService } from '@modules/products/composables/use-products-service'
     import { FormCard } from '@shared/components/FormCard'
     import { VSvg } from '@shared/components/VSvg'
+    import { useProduct } from '@modules/products/composables/use-product'
+    import { useProductsService } from '@modules/products/composables/use-products-service'
+    import { useProductActionsModal } from '@modules/products/composables/use-product-actions-modal'
     import { SvgPaths } from '@shared/enums/svg-paths'
 
     const { unitItems } = useProductsService()
     const { model } = useProduct()
+    const { showModal } = useProductActionsModal()
 
-    const textEditorRerenderKey = ref<string>('')
+    const renderKey = ref<number>(0)
+
+    watch(showModal, (state) => {
+        if (!state) {
+            return
+        }
+
+        renderKey.value = Date.now()
+    }, { immediate: true })
 
 </script>
 <template>
@@ -130,7 +140,7 @@
                 </template>
                 <template #body>
                     <text-editor
-                        :key="textEditorRerenderKey"
+                        :key="renderKey"
                         v-model:content="model.description"
                         style="height: 300px"
                         data-test="description-area"

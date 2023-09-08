@@ -62,7 +62,7 @@
     >
         <v-card-title
             style="z-index: 10; justify-content: space-between"
-            class="primary--text elevation-2 mb-2"
+            class="white primary--text elevation-2"
         >
             <div>
                 <h5>Заказ № {{ model.orderId }}</h5>

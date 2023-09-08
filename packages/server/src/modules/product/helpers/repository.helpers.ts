@@ -29,7 +29,7 @@ export class RepositoryHelpers {
     getCategoriesPopulateParams() {
         return {
             path: 'categories',
-            select: 'title url order',
+            select: 'title url order _id parentId',
             options: {
                 lean: true
             }

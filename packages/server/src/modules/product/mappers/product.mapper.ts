@@ -23,8 +23,8 @@ export class ProductMapper {
     }
 
     static toMongoModelData(domainModel: Partial<IProduct>): IProductMongoModel {
-        const map = domainModel
-        const { id } = domainModel
+        const map = { ...domainModel }
+        const { id } = map
 
         delete map.id
 

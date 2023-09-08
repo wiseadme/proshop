@@ -19,7 +19,7 @@ export class VariantMapper {
 
     static toMongoModelData(domainModel: IVariant): IVariantMongoModel {
         const { id } = domainModel
-        const map: Partial<IVariant> = domainModel
+        const map: Partial<IVariant> = { ...domainModel }
 
         delete map.id
 

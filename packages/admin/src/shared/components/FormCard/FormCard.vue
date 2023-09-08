@@ -15,7 +15,32 @@
         class="form-card"
     >
         <v-card-title class="form-card__head">
-            <div class="form-card__icon primary white--text px-3 py-2 elevation-2 d-flex justify-center align-center">
+            <v-tooltip
+                v-if="$slots.tooltip"
+                right
+                offset-x="10"
+                color="rgba(0,0,0,.7)"
+                elevation="3"
+                style="max-height: fit-content"
+            >
+                <template #activator="{on}">
+                    <div
+                        class="form-card__icon primary white--text px-3 py-2 elevation-2 d-flex justify-center align-center"
+                        v-on="on"
+                    >
+                        <div class="form-card__icon-item">
+                            <slot name="icon"/>
+                        </div>
+                    </div>
+                </template>
+                <div style="max-width: 200px; white-space: normal; height: auto; min-height: 80px">
+                    <slot name="tooltip"/>
+                </div>
+            </v-tooltip>
+            <div
+                v-else
+                class="form-card__icon primary white--text px-3 py-2 elevation-2 d-flex justify-center align-center"
+            >
                 <div class="form-card__icon-item">
                     <slot name="icon"/>
                 </div>
