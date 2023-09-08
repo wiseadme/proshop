@@ -84,7 +84,7 @@
             title: 'Рекомендуемые товары',
             isActive: false,
             disabled: !unref(model).id || !unref(categoryItems)?.length,
-            independent: false,
+            independent: true,
         },
         {
             component: ProductConditionsBlock,
