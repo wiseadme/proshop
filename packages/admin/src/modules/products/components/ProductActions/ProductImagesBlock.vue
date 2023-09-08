@@ -46,9 +46,11 @@
 
         onUpdateProduct()
     }
+
+
 </script>
 <template>
-    <v-row class="pa-4">
+    <v-row>
         <v-col xl="6">
             <form-card>
                 <template #icon>
@@ -126,3 +128,11 @@
         </v-list>
     </v-menu>
 </template>
+<style lang="scss" scoped>
+    .image {
+        border: 2px solid transparent;
+    }
+    .product-image--main {
+        border-color: var(--primary) !important;
+    }
+</style>

@@ -29,7 +29,7 @@
 
 </script>
 <template>
-    <v-row class="pa-4 app-border-radius">
+    <v-row class="app-border-radius">
         <v-col cols="12">
             <form-card>
                 <template #icon>

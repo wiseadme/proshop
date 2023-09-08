@@ -24,7 +24,7 @@
 
 </script>
 <template>
-    <v-row class="pa-4">
+    <v-row>
         <v-col
             class="mb-4"
             xl="6"
@@ -47,14 +47,14 @@
                         v-model.trim="model.name"
                         label="Наименование товара *"
                         data-test="name-input"
-                        :rules="[val => !!val || 'Обязательное поле']"
+                        :rules="[() => !!model.name || 'Обязательное поле']"
                         color="primary"
                     />
                     <v-text-field
                         v-model.number="model.price"
                         label="Цена *"
                         data-test="price-input"
-                        :rules="[val => !!val || 'Обязательное поле']"
+                        :rules="[() => !!model.price || 'Обязательное поле']"
                         color="primary"
                         type="number"
                     />

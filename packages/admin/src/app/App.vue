@@ -11,9 +11,7 @@
 </script>
 <template>
     <v-app class="grey lighten-4">
-        <v-layout column>
-            <router-view/>
-        </v-layout>
+        <router-view/>
     </v-app>
 </template>
 <style lang="scss">

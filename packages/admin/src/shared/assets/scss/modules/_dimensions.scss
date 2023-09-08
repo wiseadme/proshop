@@ -1,7 +1,8 @@
-$headerHeight: 60px;
-$sidebarWidth: 60px;
+$header-height: 60px;
+$navigation-width: 247px;
+$page-top-padding: 6px;
 
 :export {
-  headerHeight: $headerHeight;
-  sidebarWidth: $sidebarWidth;
+  headerHeight: $header-height;
+  navigationWidth: $navigation-width;
 }

@@ -157,7 +157,7 @@
 <template>
     <v-row
         v-if="variantItems"
-        class="elevation-2 pa-4 app-border-radius"
+        class="app-border-radius"
     >
         <v-col
             v-if="variantItems.length"

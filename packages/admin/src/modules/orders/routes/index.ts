@@ -1,14 +1,19 @@
+import { RouteNames } from '@modules/orders/enums/route-names'
+
 export const orderRoutes = [
     {
         path: '/orders',
-        component: () => import(/* webpackChunkName: "Page.Proshop" */ '@modules/orders/layouts/OrdersLayout.vue'),
-        name: 'orders',
+        component: () => import(/* webpackChunkName: "Page.ORDERS" */ '@modules/orders/layouts/OrdersLayout.vue'),
+        name: RouteNames.ORDERS,
         children: [
             {
                 path: '',
-                component: () => import(/* webpackChunkName: "Page.Proshop" */ '@modules/orders/pages/OrdersPage.vue'),
-                name: 'order-table',
+                component: () => import(/* webpackChunkName: "Page.ORDERS_TABLE" */ '@modules/orders/pages/OrdersPage.vue'),
+                name: RouteNames.ORDERS_TABLE,
             },
         ],
+        meta: {
+            name: RouteNames.ORDERS
+        }
     },
 ]

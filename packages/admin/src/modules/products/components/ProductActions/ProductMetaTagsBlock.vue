@@ -1,58 +1,55 @@
 <script lang="ts" setup>
-    import { FormCard } from '@shared/components/FormCard'
-    import VSvg from '@shared/components/VSvg/VSvg.vue'
-    import { useProductAttributes } from '@modules/products/composables/use-product-attributes'
+    import MetaTagEditForm from '../EditForms/MetaTagsEditForm.vue'
+    import { useProductMetaTags } from '@modules/products/composables/use-product-metatags'
     import { useProduct } from '@modules/products/composables/use-product'
+    // Helpers
+    import { descriptorToMetaTag } from '@shared/helpers/metatag'
+    // @ts-ignore
+    import FormCard from '@shared/components/FormCard/FormCard.vue'
+    import VSvg from '@shared/components/VSvg/VSvg.vue'
     import { SvgPaths } from '@shared/enums/svg-paths'
     import DraggableItemsList from '@shared/components/DraggableItemsList/DraggableItemsList.vue'
-    import AttributesEditForm from '@modules/products/components/EditForms/AttributesEditForm.vue'
 
     const { model } = useProduct()
-    const groupSymbol = Symbol.for('attributes')
-
     const {
-        currentEditableAttribute,
-        availableAttributes,
+        availableMetaTags,
+        currentEditableMetaTag,
         setForEditing,
-    } = useProductAttributes()
+    } = useProductMetaTags()
 
+    const groupSymbol = Symbol.for('metaTags')
+    const onChange = () => {
+    }
     const pullFunction = () => {
     }
-
 </script>
 <template>
     <transition name="slide-down">
-        <attributes-edit-form v-if="currentEditableAttribute"/>
+        <MetaTagEditForm v-if="currentEditableMetaTag"/>
     </transition>
-    <v-row class="pa-4">
-        <v-col
-            cols="6"
-            class="used-attributes app-border-radius"
-        >
+    <v-row class="app-border-radius">
+        <v-col cols="6">
             <form-card>
                 <template #icon>
                     <v-svg :path="SvgPaths.INBOX_IN"/>
                 </template>
                 <template #title>
-                    Текущие атрибуты товара
+                    Текущие метатеги товара
                 </template>
                 <template #body>
                     <draggable-items-list
-                        v-model="model.attributes"
-                        item-key="key"
+                        v-model="model.seo.metatags"
+                        item-key="id"
                         :group="groupSymbol"
-                        class="draggable-container"
                         editable
                         @edit="setForEditing"
+                        @change="onChange"
                     >
                         <template #title="{item}">
-                            <span>{{ item.key }}</span>
-                        </template>
-                        <template #subtitle="{item}">
-                            <span>{{ item.value }}</span>
+                            {{ descriptorToMetaTag(item.props) }}
                         </template>
                         <template #tooltip="{item}">
-                            <span>{{ item.key }} : {{ item.value }}</span>
+                            {{ descriptorToMetaTag(item.props) }}
                         </template>
                     </draggable-items-list>
                 </template>
@@ -64,22 +61,21 @@
                     <v-svg :path="SvgPaths.INBOX_OUT"/>
                 </template>
                 <template #title>
-                    Коллекция атрибутов
+                    Коллекция метатегов
                 </template>
                 <template #body>
                     <draggable-items-list
-                        v-model="availableAttributes"
-                        item-key="key"
+                        v-model="availableMetaTags"
+                        item-key="id"
                         :group="{ name: groupSymbol, pull: pullFunction }"
                     >
                         <template #title="{item}">
-                            {{ item.key }}
-                        </template>
-                        <template #subtitle="{item}">
-                            {{ item.value }}
+                            <span>
+                                {{ descriptorToMetaTag(item.props) }}
+                            </span>
                         </template>
                         <template #tooltip="{item}">
-                            <span>{{ item.key }} : {{ item.value }}</span>
+                            {{ descriptorToMetaTag(item.props) }}
                         </template>
                     </draggable-items-list>
                 </template>
@@ -88,16 +84,4 @@
     </v-row>
 </template>
 <style lang="scss" scoped>
-    .draggable-container {
-        min-height: 400px;
-        border-radius: 10px;
-    }
-
-    .attribute {
-        cursor: pointer;
-    }
-
-    .sortable-ghost {
-        opacity: .3;
-    }
 </style>

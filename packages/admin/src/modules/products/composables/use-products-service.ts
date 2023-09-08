@@ -29,7 +29,6 @@ import {
     IMetaTag,
     IOption,
     IProduct,
-    IProductQuery,
     IUnit,
     IVariant,
     Maybe,
@@ -59,6 +58,7 @@ export const useProductsService = createSharedComposable(() => {
     const _optionsService = useOptionsService()
 
     const product = ref<Maybe<IProduct>>(null)
+    const isLoading = ref(true)
 
     const products = computed<Maybe<IProduct[]>>(() => _productsStore.products)
     const categoryProducts = computed<Maybe<IProduct[]>>(() => _productsStore.categoryProducts)
@@ -108,8 +108,16 @@ export const useProductsService = createSharedComposable(() => {
         return _metaTagsStore.read()
     }
 
-    const getProducts = (params?: IProductQuery) => {
+    const getProducts = (params?: Partial<IProduct>) => {
         return _productsStore.read(getRequestParams(params))
+    }
+
+    const getProduct = async (id) => {
+        const [item] = await _productsStore.read({ id })
+
+        product.value = clone(item)
+
+        return item
     }
 
     const getCategoryProducts = (category: ICategory) => {
@@ -147,7 +155,7 @@ export const useProductsService = createSharedComposable(() => {
 
         const updated = await _productsStore.update(updates)
 
-        setAsCurrent(updated)
+        setAsCurrent(clone(updated))
 
         return updated
     }
@@ -266,7 +274,6 @@ export const useProductsService = createSharedComposable(() => {
 
         return _optionsService.updateOption({
             id: option.id,
-            // @ts-ignore
             assets: option.assets?.filter((a: IAsset) => a.id !== asset.id),
         })
     }
@@ -279,6 +286,7 @@ export const useProductsService = createSharedComposable(() => {
         if (!file) return
 
         const asset: IAsset = await createAsset({ file, ownerId: unref(product)!.id })
+
         const { assets = [] } = unref(product)!
 
         asset.main = asset.main || !assets.length
@@ -310,7 +318,22 @@ export const useProductsService = createSharedComposable(() => {
         return updateProduct({ id: asset.ownerId, assets })
     }
 
+    const onInit = async () => {
+        await Promise.all([
+            getCategories(),
+            getAttributes(),
+            getProducts(),
+            getVariants(),
+            getMetaTags(),
+            getMerchant(),
+            getUnits(),
+        ])
+
+        isLoading.value = false
+    }
+
     return {
+        isLoading,
         sort,
         pagination,
         product,
@@ -322,6 +345,7 @@ export const useProductsService = createSharedComposable(() => {
         unitItems,
         metaTagItems,
         totalLength,
+        onInit,
         getMerchant,
         getAttributes,
         getUnits,
@@ -329,6 +353,7 @@ export const useProductsService = createSharedComposable(() => {
         getVariants,
         getMetaTags,
         getProducts,
+        getProduct,
         getCategoryProducts,
         setAsCurrent,
         createProduct,

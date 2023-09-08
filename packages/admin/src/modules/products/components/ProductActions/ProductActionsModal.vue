@@ -132,87 +132,87 @@
 
 </script>
 <template>
-    <v-modal
-        v-model="showModal"
-        transition="scale-in"
-        width="90%"
-        overlay
-    >
-        <v-form v-slot="{validate}">
-            <actions-modal-wrapper>
-                <template #header>
-                    <h5>{{ modalHeader }} {{ model.name }}</h5>
-                </template>
-                <template #navigation>
-                    <v-list
-                        v-model:value="currentTab"
-                        active-class="secondary white--text"
-                        color="white"
-                        class="nav"
+    <!--    <v-modal-->
+    <!--        v-model="showModal"-->
+    <!--        transition="scale-in"-->
+    <!--        width="90%"-->
+    <!--        overlay-->
+    <!--    >-->
+    <v-form v-slot="{validate}">
+        <actions-modal-wrapper>
+            <template #header>
+                <h5>{{ modalHeader }} {{ model.name }}</h5>
+            </template>
+            <template #navigation>
+                <v-list
+                    v-model:value="currentTab"
+                    active-class="secondary white--text"
+                    color="white"
+                    class="nav"
+                >
+                    <v-list-item
+                        v-for="(tab, i) in tabs"
+                        v-slot="{active}"
+                        :key="tab.title"
+                        class="nav__item secondary--text"
+                        @click="setTab(i)"
                     >
-                        <v-list-item
-                            v-for="(tab, i) in tabs"
-                            v-slot="{active}"
-                            :key="tab.title"
-                            class="nav__item secondary--text"
-                            @click="setTab(i)"
-                        >
-                            <v-list-item-icon>
-                                <v-icon
-                                    v-if="tab.disabled"
-                                    size="12"
-                                >
-                                    fas fa-lock
-                                </v-icon>
-                                <v-icon
-                                    v-else
-                                    size="12"
-                                >
-                                    {{ active.value ? 'fas fa-check' : 'fas fa-circle' }}
-                                </v-icon>
-                            </v-list-item-icon>
-                            <v-list-item-content>
-                                <v-list-item-title>
-                                    {{ tab.title }}
-                                </v-list-item-title>
-                                <v-list-item-subtitle v-if="tab.disabled">
-                                    Сначала создайте товар
-                                </v-list-item-subtitle>
-                            </v-list-item-content>
-                        </v-list-item>
-                    </v-list>
-                </template>
-                <template #actions>
-                    <v-button
-                        color="primary"
-                        class="app-border-radius"
-                        elevation="3"
-                        width="120"
-                        :disabled="tabs[currentTab].independent"
-                        :loading="!isSaved"
-                        @click="onSubmit(validate)"
-                    >
-                        сохранить
-                    </v-button>
-                    <v-button
-                        color="secondary"
-                        class="ml-2 app-border-radius"
-                        width="120"
-                        elevation="3"
-                        @click="closeModal"
-                    >
-                        отмена
-                    </v-button>
-                </template>
-                <template #top>
-                    <!--                    <component :is="tabs[currentTab]"/>-->
-                </template>
-                <template #content>
-                    <component :is="tabs[currentTab].component"/>
-                </template>
-            </actions-modal-wrapper>
-        </v-form>
-    </v-modal>
+                        <v-list-item-icon>
+                            <v-icon
+                                v-if="tab.disabled"
+                                size="12"
+                            >
+                                fas fa-lock
+                            </v-icon>
+                            <v-icon
+                                v-else
+                                size="12"
+                            >
+                                {{ active.value ? 'fas fa-check' : 'fas fa-circle' }}
+                            </v-icon>
+                        </v-list-item-icon>
+                        <v-list-item-content>
+                            <v-list-item-title>
+                                {{ tab.title }}
+                            </v-list-item-title>
+                            <v-list-item-subtitle v-if="tab.disabled">
+                                Сначала создайте товар
+                            </v-list-item-subtitle>
+                        </v-list-item-content>
+                    </v-list-item>
+                </v-list>
+            </template>
+            <template #actions>
+                <v-button
+                    color="primary"
+                    class="app-border-radius"
+                    elevation="3"
+                    width="120"
+                    :disabled="tabs[currentTab].independent"
+                    :loading="!isSaved"
+                    @click="onSubmit(validate)"
+                >
+                    сохранить
+                </v-button>
+                <v-button
+                    color="secondary"
+                    class="ml-2 app-border-radius"
+                    width="120"
+                    elevation="3"
+                    @click="closeModal"
+                >
+                    отмена
+                </v-button>
+            </template>
+            <template #top>
+                <!--                    <component :is="tabs[currentTab]"/>-->
+            </template>
+            <template #content>
+                <component :is="tabs[currentTab].component"/>
+            </template>
+        </actions-modal-wrapper>
+    </v-form>
+<!--    </v-modal>-->
 </template>
 <style lang="scss">
     @import "styles/ProductActionsModal";

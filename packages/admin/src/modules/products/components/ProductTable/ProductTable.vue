@@ -3,6 +3,7 @@
     import { useProductsTable } from '@modules/products/composables/use-products-table'
     import { IProduct } from '@proshop/types'
     import { useProduct } from '@modules/products/composables/use-product'
+    import { RouteNames } from '@modules/products/enums/route-names'
 
     defineEmits<{
         (e: 'delete:product', product: IProduct): void
@@ -11,8 +12,6 @@
     }>()
 
     const {
-        onOpenCreateProductModal,
-        onOpenEditProductModal,
         onDeleteProduct,
     } = useProduct()
 
@@ -21,7 +20,7 @@
         totalLength,
         products,
         onUpdateTablePage,
-        onUpdateTableRowsCount
+        onUpdateTableRowsCount,
     } = useProductsTable()
 
 </script>
@@ -55,7 +54,6 @@
                         color="primary"
                         elevation="5"
                         data-test="create-modal"
-                        @click="onOpenCreateProductModal"
                     >
                         <v-icon
                             size="14"
@@ -75,7 +73,12 @@
                 color="var(--primary)"
                 elevation="2"
                 text
-                @click="onOpenEditProductModal(row)"
+                @click="$router.push({
+                    name: RouteNames.PRODUCT_EDIT,
+                    params: {
+                        productId: row.id,
+                        section: 'info'
+                    }})"
             >
                 <v-icon>{{ icons.PEN }}</v-icon>
             </v-button>

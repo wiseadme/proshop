@@ -1,17 +1,11 @@
 <script lang="ts" setup>
     // Components
-    import { ProductActionsModal } from '@modules/products/components/ProductActionsModal'
     import { ProductTable } from '@modules/products/components/ProductTable'
     import SkeletonPreloader from '@shared/components/Preloader/SkeletonPreloader.vue'
     // Composables
-    import { useProduct } from '@modules/products/composables/use-product'
+    import { useProductsService } from '@modules/products/composables/use-products-service'
 
-    const {
-        isLoading,
-        onInit,
-    } = useProduct()
-
-    onInit()
+    const { isLoading } = useProductsService()
 
 </script>
 <template>
@@ -22,6 +16,5 @@
                 <product-table v-else/>
             </v-col>
         </v-row>
-        <product-actions-modal/>
     </v-layout>
 </template>

@@ -7,7 +7,7 @@ import {
 } from '@proshop/types'
 import { AxiosResponse } from 'axios'
 
-export interface IRest<T> {
+export interface IRest{
     get: (url: string, ...args: any) => Promise<AxiosResponse<{ data: any, ok: boolean }>>
     post: (url: string, ...args: any) => Promise<AxiosResponse<{ data: any, ok: boolean }>>
     patch: (url: string, ...args: any) => Promise<AxiosResponse<{ data: any, ok: boolean }>>

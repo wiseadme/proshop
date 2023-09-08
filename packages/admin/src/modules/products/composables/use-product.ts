@@ -12,13 +12,6 @@ export const useProduct = createSharedComposable(() => {
     const {
         product,
         products,
-        getMerchant,
-        getUnits,
-        getAttributes,
-        getProducts,
-        getCategories,
-        getMetaTags,
-        getVariants,
         setAsCurrent,
         createProduct,
         updateProduct,
@@ -96,6 +89,7 @@ export const useProduct = createSharedComposable(() => {
     }
 
     const onUploadProductImage = async (image) => {
+        console.log(image)
         await uploadProductImage(image)
 
         unref(model).image = unref(product)!.image
@@ -138,20 +132,6 @@ export const useProduct = createSharedComposable(() => {
         return keys.length ? diffs : null
     }
 
-    const onInit = async () => {
-        await Promise.all([
-            getCategories(),
-            getAttributes(),
-            getProducts(),
-            getVariants(),
-            getMetaTags(),
-            getMerchant(),
-            getUnits(),
-        ])
-
-        isLoading.value = false
-    }
-
     return {
         model,
         isEditMode,
@@ -160,7 +140,6 @@ export const useProduct = createSharedComposable(() => {
         hasChanges,
         products,
         product,
-        onInit,
         setProductAsModel,
         getProductUpdates,
         onCreateProduct,

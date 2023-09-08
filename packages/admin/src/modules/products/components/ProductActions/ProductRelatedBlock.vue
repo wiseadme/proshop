@@ -43,10 +43,7 @@
 
 </script>
 <template>
-    <v-layout
-        class="pa-4"
-        column
-    >
+    <v-layout column>
         <v-row>
             <v-col cols="8">
                 <form-card>
