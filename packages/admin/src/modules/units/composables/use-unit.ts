@@ -14,17 +14,11 @@ export const useUnit = () => {
     const onSaveUnit = (validate) => {
         setLoadingState(true)
 
-        let promise
+        const fn = unref(isEditMode) ? updateUnit : createUnit
 
-        validate().then(() => {
-            if (unref(isEditMode)) {
-                promise = updateUnit(unref(model))
-            } else {
-                promise = createUnit(unref(model))
-            }
-
-            promise.then(() => setLoadingState(false))
-        })
+        validate()
+            .then(() => fn(unref(model)))
+            .catch(() => setLoadingState(false))
     }
     const clearUnitModel = () => {
         model.value = Unit.create()

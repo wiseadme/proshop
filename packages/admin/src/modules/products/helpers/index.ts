@@ -5,6 +5,6 @@ export const getProductConditionTitle = (condition) => {
     return ProductConditions[stringToSnakeUpperCase(condition)]
 }
 
-export const getCategoriesIds = (product) => {
-    return product.categories.map(ctg => ctg.id)
+export const getIds = (itemsArray: any[]): string[] => {
+    return itemsArray.map(item => item.id)
 }

@@ -60,26 +60,28 @@
         width="100%"
         color="white"
     >
-        <v-card-title class="primary--text">
-            <h2>Заказ № {{ model.orderId }}</h2>
+        <v-card-title
+            style="z-index: 10; justify-content: space-between"
+            class="white primary--text elevation-2"
+        >
+            <div>
+                <h5>Заказ № {{ model.orderId }}</h5>
+            </div>
+            <div>
+                <img
+                    v-if="model.qrcode"
+                    :src="model.qrcode"
+                    alt=""
+                    style="width: 120px; z-index: 0"
+                >
+            </div>
         </v-card-title>
         <v-card-content
             class="grey lighten-4"
             style="max-height: 70vh; overflow: auto; z-index: 1"
         >
             <v-row>
-                <v-col
-                    cols="3"
-                    class="d-flex justify-center align-start"
-                >
-                    <img
-                        v-if="model.qrcode"
-                        :src="model.qrcode"
-                        alt=""
-                        style="width: 100%; max-width: 200px; z-index: 0"
-                    >
-                </v-col>
-                <v-col cols="9">
+                <v-col cols="12">
                     <address-map
                         class="app-border-radius"
                         :coords="model.delivery.coords"
@@ -90,7 +92,7 @@
             <v-row class="mt-2">
                 <v-col>
                     <v-list class="app-border-radius">
-                        <v-list-item class="primary white--text">
+                        <v-list-item class="secondary white--text">
                             <v-list-item-icon/>
                             <v-list-item-content style="width: 250px">
                                 <h4>Наименование</h4>
@@ -138,7 +140,7 @@
             <v-row class="mt-2">
                 <v-col>
                     <v-list class="app-border-radius">
-                        <v-list-item class="primary white--text">
+                        <v-list-item class="secondary white--text">
                             <v-list-item-icon/>
                             <v-list-item-content style="width: 250px">
                                 <h4>Заказчик</h4>
@@ -197,7 +199,7 @@
                             </v-chip>
                             <v-button
                                 class="elevation-2 my-1"
-                                :color="!model.status[it] ? 'grey lighten-2' : 'primary'"
+                                :color="!model.status[it] ? 'grey lighten-2' : 'success'"
                                 style="z-index: 1"
                                 round
                                 @click="changeOrderStatus(it)"
@@ -229,7 +231,7 @@
         </v-card-content>
         <v-card-actions>
             <v-button
-                color="orange"
+                color="secondary"
                 elevation="2"
                 class="app-border-radius"
                 width="120"
@@ -250,8 +252,8 @@
                     content: "";
                     position: absolute;
                     width: 50%;
-                    height: 2px;
-                    background-color: var(--primary);
+                    height: 1px;
+                    background-color: var(--secondary);
                     top: 68%;
                     left: 0;
                     transform: translateY(-50%);
@@ -263,8 +265,8 @@
                     content: "";
                     position: absolute;
                     width: 50%;
-                    height: 2px;
-                    background-color: var(--primary);
+                    height: 1px;
+                    background-color: var(--secondary);
                     top: 68%;
                     left: 50%;
                     transform: translateY(-50%);

@@ -53,7 +53,7 @@
                             <v-button
                                 elevation="2"
                                 class="app-border-radius"
-                                color="primary"
+                                color="success"
                                 :loading="loading"
                                 width="120"
                                 @click="onSaveUnit(validate)"

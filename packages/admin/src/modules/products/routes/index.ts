@@ -11,6 +11,11 @@ export const productRoutes = [
                 component: () => import(/* webpackChunkName: "Page.Proshop" */ '@modules/products/pages/ProductsPage.vue'),
                 name: 'products-table',
             },
+            // {
+            //     path: 'edit',
+            //     component: () => import(/* webpackChunkName: "Page.Proshop" */ '@modules/products/components/ProductActionsModal/ProductActionsModal.vue'),
+            //     name: 'product-edit',
+            // },
         ],
     },
 ]

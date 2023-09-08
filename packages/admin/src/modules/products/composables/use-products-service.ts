@@ -37,7 +37,7 @@ import {
 
 // Helpers
 import { clone } from '@shared/helpers'
-import { getCategoriesIds } from '@modules/products/helpers'
+import { getIds } from '@modules/products/helpers'
 
 export const useProductsService = createSharedComposable(() => {
     const _productsStore = useProductStore()
@@ -128,7 +128,7 @@ export const useProductsService = createSharedComposable(() => {
         product.currency = unref(merchant)?.id!
 
         if (product.categories?.length) {
-            product.categories = getCategoriesIds(product)
+            product.categories = getIds(product.categories)
         }
 
         return _productsStore.create(product).catch(err => console.log(err))
@@ -138,7 +138,11 @@ export const useProductsService = createSharedComposable(() => {
         updates.id = unref(product)!.id
 
         if (updates.categories?.length) {
-            updates.categories = getCategoriesIds(updates)
+            updates.categories = getIds(updates.categories)
+        }
+
+        if (updates.related?.length) {
+            updates.related = getIds(updates.related)
         }
 
         const updated = await _productsStore.update(updates)

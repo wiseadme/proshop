@@ -10,6 +10,7 @@
         variants,
         getVariants,
         createVariant,
+        updateVariant,
         deleteVariant,
     } = useVariantsService()
 
@@ -29,7 +30,9 @@
         clearForm()
     }
 
-    const onDelete = (item) => deleteVariant(item.id)
+    const onUpdateVariant = async () => updateVariant(unref(model))
+
+    const onDelete = (item: IVariant) => deleteVariant(item.id)
 
     const onEdit = (item: IVariant) => {
         isEditMode.value = true
@@ -45,6 +48,12 @@
         isEditMode.value = false
         selectedAttribute.value = null
         model.value = Variant.create()
+    }
+
+    const onSubmit = (validate: () => Promise<boolean>) => {
+        if (unref(isEditMode)) return onUpdateVariant()
+
+        return onCreate(validate)
     }
 
     getVariants()
@@ -90,9 +99,9 @@
                                 color="primary"
                                 class="app-border-radius"
                                 width="120"
-                                @click="onCreate(validate)"
+                                @click="onSubmit(validate)"
                             >
-                                Сохранить
+                                {{ isEditMode ? 'Изменить' : 'Сохранить' }}
                             </v-button>
                             <v-button
                                 elevation="2"

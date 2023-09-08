@@ -118,6 +118,9 @@
                         <template #title="{item}">
                             {{ item.key }}
                         </template>
+                        <template #tooltip="{item}">
+                            {{ item.key }}: {{ item.value }}
+                        </template>
                     </draggable-items-list>
                 </template>
             </v-col>

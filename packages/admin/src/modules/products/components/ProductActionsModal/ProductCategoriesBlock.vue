@@ -24,7 +24,7 @@
     onMounted(() => buildTreeItems(clone(unref(categoryItems))))
 
     watch(productCategories, (items: ICategory[]) => {
-        items.forEach((ctg) => select(ctg))
+        items?.forEach((ctg) => select(ctg))
     }, { immediate: true })
 
 </script>

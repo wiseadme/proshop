@@ -25,30 +25,33 @@
             :key="item[uniqueKey]"
             class="my-1 mx-1 elevation-1 app-border-radius white"
         >
+            <v-list-item-icon v-if="$slots.icon">
+                <slot
+                    name="icon"
+                    :item="item"
+                />
+            </v-list-item-icon>
             <v-list-item-content>
                 <v-list-item-title>
                     <slot
                         name="title"
                         :item="item"
-                    >
-                    </slot>
+                    />
                 </v-list-item-title>
                 <v-list-item-subtitle>
                     <slot
                         name="subtitle"
                         :item="item"
-                    >
-                    </slot>
+                    />
                 </v-list-item-subtitle>
             </v-list-item-content>
             <v-spacer/>
             <v-list-item-content v-if="editable || deletable">
                 <v-list-item-icon>
                     <v-menu
-                        absolute
                         open-on-click
                         width="150"
-                        offset-x="75"
+                        offset-y="-10"
                         bottom
                     >
                         <template #activator="{on: listeners}">
@@ -56,7 +59,6 @@
                                 clickable
                                 color="primary"
                                 v-on="listeners"
-                                @click="$emit('show-item-menu', item)"
                             >
                                 fas fa-bars
                             </v-icon>

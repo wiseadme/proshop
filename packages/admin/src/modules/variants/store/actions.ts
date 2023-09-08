@@ -15,6 +15,23 @@ export const actions: IVariantActions = {
         }
     },
 
+
+    async update(updates: Partial<IVariant>): Promise<IVariant> {
+        try {
+            const { data } = await repository.update(updates)
+
+            this.variants = this.variants.map(v => {
+                if (v.id === data.data.id) return data.data
+
+                return v
+            })
+
+            return data.data
+        } catch (err) {
+            return Promise.reject(err)
+        }
+    },
+
     async read(params: Partial<IVariant> = {}): Promise<Array<IVariant>> {
         try {
             const { data } = await repository.read(params)
