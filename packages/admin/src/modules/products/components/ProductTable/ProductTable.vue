@@ -76,6 +76,7 @@
                 @click="$router.push({
                     name: RouteNames.PRODUCT_EDIT,
                     params: {
+                        action: 'edit',
                         productId: row.id,
                         section: 'info'
                     }})"

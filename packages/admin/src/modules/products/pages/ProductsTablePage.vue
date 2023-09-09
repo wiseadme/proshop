@@ -5,7 +5,9 @@
     // Composables
     import { useProductsService } from '@modules/products/composables/use-products-service'
 
-    const { isLoading } = useProductsService()
+    const { isLoading, getProducts } = useProductsService()
+
+    getProducts()
 
 </script>
 <template>

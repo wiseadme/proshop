@@ -7,7 +7,8 @@ export const useProductsTable = () => {
         sort,
         totalLength,
         products,
-        getProducts } = useProductsService()
+        getProducts
+    } = useProductsService()
 
     const onUpdateTablePage = async (page) => {
         pagination.setPage(page)

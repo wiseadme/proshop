@@ -5,7 +5,6 @@
         unref
     } from 'vue'
     import { IProduct } from '@proshop/types'
-    import { useProductRelated } from '@modules/products/composables/use-product-related'
     import { useProduct } from '@modules/products/composables/use-product'
     import { useProductsService } from '@modules/products/composables/use-products-service'
     import FormCard from '@shared/components/FormCard/FormCard.vue'
@@ -13,8 +12,7 @@
     import { SvgPaths } from '@shared/enums/svg-paths'
     import ItemsList from '@shared/components/ItemsList/ItemsList.vue'
 
-    const { model, onUpdateProduct } = useProduct()
-    // const { related } = useProductRelated()
+    const { model } = useProduct()
     const { getProducts } = useProductsService()
 
     const products = ref<IProduct[]>([])
@@ -45,10 +43,16 @@
 <template>
     <v-layout column>
         <v-row>
-            <v-col cols="8">
+            <v-col
+                cols="8"
+                offset="2"
+            >
                 <form-card>
                     <template #icon>
                         <v-svg :path="SvgPaths.NEWSPAPER"/>
+                    </template>
+                    <template #title>
+                        Рекомендуемые товары
                     </template>
                     <template #body>
                         <div class="input-wrapper d-flex align-center justify-start">

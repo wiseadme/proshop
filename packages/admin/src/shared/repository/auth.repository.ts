@@ -1,17 +1,18 @@
 import { auth } from '@shared/api'
 import { IRest } from '@shared/types/app'
 import { IUser } from '@proshop/types'
+import { AxiosResponse } from 'axios'
 
 export interface IAuthRepository {
-    login(user: { username: string, password: string }): Promise<{ data: { data: IUser, ok: boolean } }>
+    login(user: { username: string, password: string }): Promise<AxiosResponse<{ data: IUser, ok: boolean }>>
 
-    logout(): Promise<{ data: { data: boolean, ok: boolean } }>
+    logout(): Promise<AxiosResponse<{ data: boolean, ok: boolean }>>
 
-    create(user: IUser): Promise<{ data: { data: IUser, ok: boolean } }>
+    create(user: IUser): Promise<AxiosResponse<{ data: IUser, ok: boolean }>>
 
-    whoAmI(): Promise<{ data: { data: IUser, ok: boolean } }>
+    whoAmI(): Promise<AxiosResponse<{ data: IUser, ok: boolean }>>
 
-    refresh(): Promise<{ data: { data: IUser, ok: boolean } }>
+    refresh(): Promise<AxiosResponse<{ data: IUser, ok: boolean }>>
 }
 
 class Repository implements IAuthRepository {
@@ -24,27 +25,27 @@ class Repository implements IAuthRepository {
     }
 
     async login(user: { username: string, password: string }) {
-        return this.client.post(`${this.path}/login`, user)
+        return this.client.post(`${ this.path }/login`, user)
     }
 
     async logout() {
-        return this.client.get(`${this.path}/logout`)
+        return this.client.get(`${ this.path }/logout`)
     }
 
     async create(user) {
-        return this.client.post(`${this.path}/create`, user)
+        return this.client.post(`${ this.path }/create`, user)
     }
 
     async refresh() {
-        return this.client.get(`${this.path}/refresh`)
+        return this.client.get(`${ this.path }/refresh`)
     }
 
     async whoAmI() {
-        return this.client.get(`${this.path}/whoami`)
+        return this.client.get(`${ this.path }/whoami`)
     }
 }
 
 export const useAuthRepository = () => new Repository({
-    client: auth,
+    client: auth.client,
     path: '/api/v1/user',
 })

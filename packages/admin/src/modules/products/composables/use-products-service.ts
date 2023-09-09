@@ -108,8 +108,12 @@ export const useProductsService = createSharedComposable(() => {
         return _metaTagsStore.read()
     }
 
-    const getProducts = (params?: Partial<IProduct>) => {
-        return _productsStore.read(getRequestParams(params))
+    const getProducts = async (params?: Partial<IProduct>) => {
+        const products = await _productsStore.read(getRequestParams(params))
+
+        isLoading.value = false
+
+        return products
     }
 
     const getProduct = async (id) => {

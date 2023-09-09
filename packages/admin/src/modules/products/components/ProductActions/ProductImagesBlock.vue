@@ -51,7 +51,10 @@
 </script>
 <template>
     <v-row>
-        <v-col xl="6">
+        <v-col
+            xl="8"
+            offset="2"
+        >
             <form-card>
                 <template #icon>
                     <v-svg :path="SvgPaths.CAMERA"/>

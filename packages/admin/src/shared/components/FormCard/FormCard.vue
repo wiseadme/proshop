@@ -14,7 +14,7 @@
         color="white"
         class="form-card"
     >
-        <v-card-title class="form-card__head">
+        <v-card-title class="form-card__head py-4">
             <v-tooltip
                 v-if="$slots.tooltip"
                 right
@@ -45,7 +45,7 @@
                     <slot name="icon"/>
                 </div>
             </div>
-            <div class="form-card__title elevation-1 secondary--text px-3 py-2 d-flex justify-center align-center">
+            <div class="form-card__title elevation-1 white primary--text px-3 py-2 ml-2 d-flex justify-center align-center">
                 <div class="form-card__title-text">
                     <slot name="title"/>
                 </div>
@@ -82,9 +82,6 @@
             font-size: .9rem;
             padding: 0;
             min-height: 32px;
-            position: absolute;
-            left: 10px;
-            top: -10px;
             border-radius: $border-radius;
 
             &-item {
@@ -93,9 +90,6 @@
         }
 
         &__title {
-            position: absolute;
-            right: 0;
-            top: 0;
             font-size: .8rem;
             border-bottom-left-radius: $border-radius;
             border-top-right-radius: $border-radius;
