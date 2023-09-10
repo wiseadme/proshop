@@ -1,5 +1,6 @@
 <script lang="ts" setup>
     import {
+        DefineComponent,
         computed,
         defineAsyncComponent,
         markRaw,
@@ -22,9 +23,18 @@
 
     const { model } = useProduct()
     const { categoryItems } = useProductsService()
-    const { activeItem } = useProductRightSidebar()
+    const { activeItem, setActiveNavItem } = useProductRightSidebar()
 
-    const tabs = computed(() => [
+    interface Tab {
+        component: InstanceType<DefineComponent<{}, {}, any>>
+        title: string
+        isActive: boolean
+        disabled: boolean
+        independent: boolean
+        section: string
+    }
+
+    const tabs = computed<Tab[]>(() => [
         {
             component: ProductInfoBlock,
             title: 'Информация о товаре',
@@ -37,7 +47,7 @@
             component: ProductImagesBlock,
             title: 'Изображения товара',
             isActive: false,
-            disabled: !unref(model).id,
+            disabled: !unref(model)?.id,
             independent: true,
             section: 'images',
         },
@@ -45,7 +55,7 @@
             component: ProductCategoriesBlock,
             title: 'Категории товара',
             isActive: false,
-            disabled: !unref(model).id,
+            disabled: !unref(model)?.id,
             independent: false,
             section: 'categories',
         },
@@ -53,7 +63,7 @@
             component: ProductAttributesBlock,
             title: 'Атрибуты товара',
             isActive: false,
-            disabled: !unref(model).id,
+            disabled: !unref(model)?.id,
             section: 'attributes',
             independent: false,
         },
@@ -61,7 +71,7 @@
             component: ProductMetaTagsBlock,
             title: 'Метатеги товара',
             isActive: false,
-            disabled: !unref(model).id,
+            disabled: !unref(model)?.id,
             section: 'meta-tags',
             independent: false,
         },
@@ -69,7 +79,7 @@
             component: ProductVariantsBlock,
             title: 'Варианты товара',
             isActive: false,
-            disabled: !unref(model).id,
+            disabled: !unref(model)?.id,
             section: 'variants',
             independent: true,
         },
@@ -77,7 +87,7 @@
             component: ProductRelatedBlock,
             title: 'Рекомендуемые товары',
             isActive: false,
-            disabled: !unref(model).id || !unref(categoryItems)?.length,
+            disabled: !unref(model)?.id || !unref(categoryItems)?.length,
             section: 'related',
             independent: true,
         },
@@ -85,7 +95,7 @@
             component: ProductConditionsBlock,
             title: 'Состояние товара',
             isActive: false,
-            disabled: !unref(model).id,
+            disabled: !unref(model)?.id,
             section: 'conditions',
             independent: false,
         },
@@ -95,16 +105,18 @@
     const router = useRouter()
 
     const ind = unref(tabs).findIndex(tab => route.params.section === tab.section) || 0
-    activeItem.value = unref(tabs)[ind || 0]
 
-    const onClick = (tab) => {
+    setActiveNavItem(unref(tabs)[ind || 0])
+
+    const onClick = (tab: Tab) => {
         activeItem.value = tab
+
         router.push({
             name: RouteNames.PRODUCT_EDIT,
             params: {
                 productId: route.params.productId,
-                section: tab.section
-            }
+                section: tab.section,
+            },
         })
     }
 
@@ -112,21 +124,26 @@
 <template>
     <div
         style="height: calc(100vh - 76px);"
-        class="product-sidebar white sticky white--text app-border-radius elevation-2 pt-2"
+        class="product-sidebar grey lighten-2 sticky white--text app-border-radius d-flex flex-column elevation-5 pt-2"
     >
         <v-card
-            color="primary"
+            v-if="model"
+            color="secondary"
             style="width: auto; font-size: .8rem"
-            class="pa-2 mx-2"
+            class="pa-2 pb-3 mx-2 app-border-radius"
             elevation="2"
         >
             {{ model.name }}
         </v-card>
-        <v-list class="mt-2">
+        <v-list
+            class="context-menu mt-2 pa-2 app-border-radius"
+            color="secondary"
+        >
             <v-list-item
                 v-for="tab in tabs"
                 :key="tab.title"
-                :class="[activeItem.title === tab.title ? 'primary white--text': 'secondary--text']"
+                class="context-menu__item app-border-radius mb-1"
+                :class="[activeItem.title === tab.title ? 'success white--text': 'white--text']"
                 @click="onClick(tab)"
             >
                 <v-list-item-title>
@@ -140,5 +157,16 @@
     .sticky {
         position: sticky;
         top: calc(#{$header-height} + #{$page-top-padding})
+    }
+
+    .context-menu {
+        height: 100%;
+        &__item {
+            cursor: pointer;
+        }
+
+        &__buttons {
+            justify-self: end;
+        }
     }
 </style>

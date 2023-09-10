@@ -1,43 +1,21 @@
 <script lang="ts" setup>
-    import {
-        computed,
-        ref,
-        unref
-    } from 'vue'
-    import { IProduct } from '@proshop/types'
-    import { useProduct } from '@modules/products/composables/use-product'
-    import { useProductsService } from '@modules/products/composables/use-products-service'
     import FormCard from '@shared/components/FormCard/FormCard.vue'
     import VSvg from '@shared/components/VSvg/VSvg.vue'
-    import { SvgPaths } from '@shared/enums/svg-paths'
     import ItemsList from '@shared/components/ItemsList/ItemsList.vue'
 
-    const { model } = useProduct()
-    const { getProducts } = useProductsService()
+    import { useProductRelated } from '@modules/products/composables/use-product-related'
+    import { SvgPaths } from '@shared/enums/svg-paths'
 
-    const products = ref<IProduct[]>([])
-    const relatedProduct = ref<Maybe<IProduct>>(null)
+    const {
+        related,
+        searchedItems,
+        relatedProduct,
+        onSearchInput,
+        onSelectSearched,
+        onAddToRelated,
+        onDeleteRelated,
+    } = useProductRelated()
 
-    const related = computed(() => unref(model).related)
-
-    const onInput = async (val: string) => {
-        products.value = await getProducts({ name: val })
-    }
-
-    const onSelect = (product: IProduct) => {
-        relatedProduct.value = product
-    }
-
-    const onAddToRelated = () => {
-        unref(model).related.push(unref(relatedProduct) as any)
-        relatedProduct.value = null
-        // onUpdateProduct()
-    }
-
-    const onDeleteRelated = (item) => {
-        unref(model).related = (unref(model).related as any).filter(it => it.id !== item.id)
-        // onUpdateProduct()
-    }
 
 </script>
 <template>
@@ -59,21 +37,21 @@
                             <v-autocomplete
                                 v-model="relatedProduct"
                                 label="Поиск товаров"
-                                :items="products"
+                                :items="searchedItems"
                                 value-key="name"
                                 prepend-icon="fas fa-search"
                                 color="primary"
                                 typeable
                                 clearable
-                                @input="onInput"
-                                @select="onSelect"
+                                @input="onSearchInput"
+                                @select="onSelectSearched"
                             />
                             <v-button
                                 class="ml-2 app-border-radius"
                                 width="120"
                                 height="48"
                                 :disabled="!relatedProduct"
-                                color="primary"
+                                color="success"
                                 elevation="2"
                                 tabindex="1"
                                 @click="onAddToRelated"

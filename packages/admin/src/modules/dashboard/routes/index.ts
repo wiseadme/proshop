@@ -10,5 +10,8 @@ export const dashboardRoutes = [
                 name: 'dashboard-table',
             },
         ],
+        meta: {
+            name: 'dashboard'
+        }
     },
 ]

@@ -140,7 +140,9 @@
      * @description Наблюдаем в режиме редактирования за вариантами продукта
      * и перезаписываем мапу существующих вариантов для редактирования
      */
-    watch(() => unref(model).variants, (variants) => {
+    watch(() => unref(model)?.variants, (variants) => {
+        if (!variants) return
+
         setExistsVariants(variants.length ? variants! : unref(variantItems)!)
 
         const variant = variants?.find(v => v.id === unref(currentVariant)!.id)
@@ -306,6 +308,7 @@
                             label="Ссылка на товар"
                             :items="products"
                             value-key="name"
+                            prepend-icon="fas fa-search"
                             color="primary"
                             typeable
                             clearable
@@ -342,7 +345,7 @@
                     </template>
                     <template #actions>
                         <v-button
-                            color="primary"
+                            color="success"
                             class="app-border-radius"
                             elevation="2"
                             width="120"

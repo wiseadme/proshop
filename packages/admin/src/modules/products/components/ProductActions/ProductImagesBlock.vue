@@ -2,20 +2,20 @@
     import { ref, unref } from 'vue'
     import { IAsset } from '@proshop/types'
     import { clone } from '@shared/helpers'
-    import { useProduct } from '@modules/products/composables/use-product'
     import { FormCard } from '@shared/components/FormCard'
     import { VSvg } from '@shared/components/VSvg'
     import { SvgPaths } from '@shared/enums/svg-paths'
+    import { useProductImages } from '@modules/products/composables/use-product-images'
 
     const {
-        model,
-        onUpdateProduct,
-        onUploadProductImage,
-        onDeleteProductImage,
-    } = useProduct()
+        assets,
+        images,
+        currentImage,
+        onLoadImage,
+        setAsMainImage,
+        onDeleteImage
+    } = useProductImages()
 
-    const productImages = ref<File[]>([])
-    const currentImage = ref<Maybe<IAsset>>(null)
     const imagesContextMenu = ref({
         show: false,
         positionX: 0,
@@ -29,24 +29,6 @@
 
         currentImage.value = clone(asset)
     }
-
-    const onLoadImage = ([file]) => {
-        if (!file) return
-
-        onUploadProductImage(file)
-        productImages.value = []
-    }
-
-    const setAsMainImage = () => {
-        unref(model).image = unref(currentImage)!.url
-
-        unref(model).assets.forEach((it) => {
-            it.main = it.id === unref(currentImage)!.id
-        })
-
-        onUpdateProduct()
-    }
-
 
 </script>
 <template>
@@ -65,14 +47,14 @@
                 <template #body>
                     <v-file-input
                         label="Загрузите изображение"
-                        :value="productImages"
+                        :value="images"
                         color="primary"
                         text-color="content"
                         @update:value="onLoadImage"
                     />
                     <div class="images-container d-flex flex-wrap">
                         <div
-                            v-for="it in model.assets"
+                            v-for="it in assets"
                             :key="it.id"
                             class="image mr-2 mb-2 white elevation-2"
                             :class="{'product-image--main': it.main}"
@@ -88,7 +70,7 @@
                                 round
                                 color="white"
                                 elevation="2"
-                                @click="onDeleteProductImage(it)"
+                                @click="onDeleteImage(it)"
                             >
                                 <v-icon color="grey darken-4">
                                     fas fa-times
@@ -135,6 +117,7 @@
     .image {
         border: 2px solid transparent;
     }
+
     .product-image--main {
         border-color: var(--primary) !important;
     }

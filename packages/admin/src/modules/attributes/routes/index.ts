@@ -12,5 +12,8 @@ export const attributeRoutes = [
                 name: 'attributes-table',
             },
         ],
+        meta: {
+            name: RouteNames.ATTRIBUTES
+        }
     },
 ]

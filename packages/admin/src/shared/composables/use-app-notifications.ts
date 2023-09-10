@@ -13,11 +13,18 @@ export const useAppNotifications = () => {
     const changesSavedNotification = () => notify({
         title: 'Сохранено',
         text: 'Изменения успешно сохранены',
-        type: 'success'
+        type: 'success',
+    })
+
+    const savingErrorNotification = () => notify({
+        title: 'Ошибка',
+        text: 'Изменения не сохранены, ошибка сервера',
+        type: 'error',
     })
 
     return {
         noChangesNotification,
-        changesSavedNotification
+        savingErrorNotification,
+        changesSavedNotification,
     }
 }

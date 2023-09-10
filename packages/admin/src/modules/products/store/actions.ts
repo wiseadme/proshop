@@ -2,7 +2,7 @@ import { useProductRepository } from '@modules/products/repository'
 import {
     IProduct,
     IProductQuery,
-    IRequestParams
+    IRequestParams,
 } from '@proshop/types'
 import { IProductActions } from '../types'
 
@@ -29,14 +29,8 @@ export const actions: IProductActions = {
             const { data } = await productRepository.read(params)
 
             this.$patch(state => {
-                if (params.category) {
-                    state.categoryProducts = data.data.items
-                } else {
-                    state.products = data.data?.items
-                    state.totalLength = data.data?.total
-                }
-
-                console.log(state)
+                state.products = data.data?.items
+                state.totalLength = data.data?.total
             })
 
             return data.data?.items
@@ -73,5 +67,5 @@ export const actions: IProductActions = {
         } catch (err) {
             return Promise.reject(err)
         }
-    }
+    },
 }

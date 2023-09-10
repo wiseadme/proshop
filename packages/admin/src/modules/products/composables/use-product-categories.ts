@@ -6,11 +6,13 @@ import {
 import { useProduct } from '@modules/products/composables/use-product'
 import { ICategory } from '@proshop/types'
 import { useProductsService } from '@modules/products/composables/use-products-service'
+import { useAppNotifications } from '@shared/composables/use-app-notifications'
 
 export const useProductCategories = () => {
     const { model } = useProduct()
+    const { changesSavedNotification, savingErrorNotification } = useAppNotifications()
 
-    const { categoryItems } = useProductsService()
+    const { categoryItems, updateProductCategories } = useProductsService()
     const selectsMap = ref({})
 
     const categoriesMap = computed(() => unref(categoryItems)?.reduce((map, it) => {
@@ -31,14 +33,20 @@ export const useProductCategories = () => {
         unref(model).categories = Object.values(unref(selectsMap)) as ICategory[]
     }
 
-    const toggleCategory = (ctg: ICategory) => {
-        if (unref(selectsMap)[ctg.id]) {
-            unSelect(ctg)
-        } else {
-            select(ctg)
-        }
+    const toggleCategory = async (ctg: ICategory) => {
+        const saved = !!unref(selectsMap)[ctg.id]
 
+        saved ? unSelect(ctg) : select(ctg)
         updateModelCategories()
+
+        const { categories } = unref(model)
+
+        try {
+            await updateProductCategories({ categories })
+            changesSavedNotification()
+        } catch (err) {
+            savingErrorNotification()
+        }
     }
 
     return {

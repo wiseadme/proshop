@@ -1,22 +1,30 @@
 import { ref } from 'vue'
 import { useProductsService } from '@modules/products/composables/use-products-service'
+import { ICategory, IProduct } from '@proshop/types'
+import { RouteNames } from '@modules/products/enums/route-names'
+import { NavigationFailure, useRouter } from 'vue-router'
+import { useProduct } from '@modules/products/composables/use-product'
 
 export const useProductsTable = () => {
+    const router = useRouter()
+
     const {
         pagination,
         sort,
         totalLength,
         products,
-        getProducts
+        getProducts,
     } = useProductsService()
 
-    const onUpdateTablePage = async (page) => {
+    const { setProductModel } = useProduct()
+
+    const onUpdateTablePage = async (page: number) => {
         pagination.setPage(page)
 
         return getProducts({})
     }
 
-    const onUpdateTableRowsCount = async (count) => {
+    const onUpdateTableRowsCount = (count: number) => {
         pagination.setItemsCount(count)
     }
 
@@ -27,11 +35,24 @@ export const useProductsTable = () => {
         setTimeout(() => getProducts())
     }
 
+    const onEditRow = (row: IProduct): Promise<void | NavigationFailure | undefined> => {
+        setProductModel(row)
+
+        return router.push({
+            name: RouteNames.PRODUCT_EDIT,
+            params: {
+                action: 'edit',
+                productId: row.id,
+                section: 'info',
+            },
+        })
+    }
+
     const cols = ref([
         {
             key: 'actions',
             title: 'Действия',
-            align: 'center'
+            align: 'center',
         },
         {
             key: 'name',
@@ -40,8 +61,8 @@ export const useProductsTable = () => {
             resizeable: true,
             sortable: true,
             filterable: true,
-            format: (row) => row.name,
-            onSort: (col) => onSortColumn(col)
+            format: (row: IProduct) => row.name,
+            onSort: (col) => onSortColumn(col),
         },
         {
             key: 'url',
@@ -50,8 +71,8 @@ export const useProductsTable = () => {
             resizeable: true,
             sortable: true,
             filterable: true,
-            format: (row) => row.url,
-            onSort: (col) => onSortColumn(col)
+            format: (row: IProduct) => row.url,
+            onSort: (col) => onSortColumn(col),
         },
         {
             key: 'price',
@@ -60,8 +81,8 @@ export const useProductsTable = () => {
             resizeable: true,
             sortable: true,
             filterable: true,
-            format: (row) => row.price,
-            onSort: (col) => onSortColumn(col)
+            format: (row: IProduct) => row.price,
+            onSort: (col) => onSortColumn(col),
         },
         {
             key: 'quantity',
@@ -70,8 +91,8 @@ export const useProductsTable = () => {
             resizeable: true,
             sortable: true,
             filterable: true,
-            format: (row) => row.quantity,
-            onSort: (col) => onSortColumn(col)
+            format: (row: IProduct) => row.quantity,
+            onSort: (col) => onSortColumn(col),
         },
         {
             key: 'summary',
@@ -80,7 +101,7 @@ export const useProductsTable = () => {
             resizeable: true,
             sortable: true,
             filterable: true,
-            onSort: (col) => onSortColumn(col)
+            onSort: (col) => onSortColumn(col),
         },
         {
             key: 'image',
@@ -97,12 +118,12 @@ export const useProductsTable = () => {
             resizeable: true,
             sortable: true,
             filterable: true,
-            format: (row) => row.categories.reduce((acc, c, i, arr) => {
+            format: (row: IProduct) => (row.categories as ICategory[]).reduce((acc, c, i, arr) => {
                 acc += c.title
                 if (i + 1 !== arr.length) acc += ', '
 
                 return acc
-            }, '')
+            }, ''),
         },
         {
             key: 'seo',
@@ -111,16 +132,17 @@ export const useProductsTable = () => {
             resizeable: true,
             sortable: true,
             filterable: true,
-            format: (row) => row.seo.title
-        }
+            format: (row: IProduct) => row.seo.title,
+        },
     ])
 
     return {
         cols,
         totalLength,
         products,
+        onEditRow,
         onSortColumn,
         onUpdateTablePage,
-        onUpdateTableRowsCount
+        onUpdateTableRowsCount,
     }
 }

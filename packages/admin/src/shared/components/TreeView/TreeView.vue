@@ -20,7 +20,7 @@
                 <div class="tree-item__cell d-flex justify-center">
                     <v-button
                         width="200"
-                        :color="value[item.id] ? 'primary' : 'secondary'"
+                        :color="value[item.id] ? 'success' : 'secondary'"
                         elevation="2"
                         :disabled="!!item.children"
                         :class="{

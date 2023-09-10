@@ -1,26 +1,17 @@
 <script lang="ts" setup>
-    import { ref, watch } from 'vue'
+    import { ref } from 'vue'
     import { TextEditor } from '@shared/components/TextEditor'
     import { FormCard } from '@shared/components/FormCard'
     import { VSvg } from '@shared/components/VSvg'
     import { useProduct } from '@modules/products/composables/use-product'
     import { useProductsService } from '@modules/products/composables/use-products-service'
-    import { useProductActionsModal } from '@modules/products/composables/use-product-actions-modal'
     import { SvgPaths } from '@shared/enums/svg-paths'
 
     const { unitItems } = useProductsService()
     const { model } = useProduct()
-    const { showModal } = useProductActionsModal()
 
     const renderKey = ref<number>(0)
 
-    watch(showModal, (state) => {
-        if (!state) {
-            return
-        }
-
-        renderKey.value = Date.now()
-    }, { immediate: true })
 
 </script>
 <template>
@@ -48,14 +39,12 @@
                         label="Наименование товара *"
                         data-test="name-input"
                         :rules="[() => !!model.name || 'Обязательное поле']"
-                        color="primary"
                     />
                     <v-text-field
                         v-model.number="model.price"
                         label="Цена *"
                         data-test="price-input"
                         :rules="[() => !!model.price || 'Обязательное поле']"
-                        color="primary"
                         type="number"
                     />
                     <v-text-field
@@ -63,14 +52,12 @@
                         label="Количество"
                         data-test="quantity-input"
                         type="number"
-                        color="primary"
                     />
                     <v-select
                         v-model="model.unit"
                         :items="unitItems"
                         label="Единица измерения"
                         data-test="unit-input"
-                        color="primary"
                         value-key="value"
                         active-class="primary white--text"
                         text-color="var(--content)"
@@ -97,28 +84,24 @@
                         v-model="model.seo.title"
                         label="SEO title"
                         data-test="seo-title-input"
-                        color="primary"
                         text-color="content"
                     />
                     <v-text-field
                         v-model="model.seo.description"
                         label="SEO description"
                         data-test="seo-desc-input"
-                        color="primary"
                         text-color="content"
                     />
                     <v-text-field
                         v-model="model.seo.keywords"
                         label="SEO keywords"
                         data-test="seo-keywords-input"
-                        color="primary"
                         text-color="content"
                     />
                     <v-text-field
                         v-model.trim="model.url"
                         label="URL товара"
                         data-test="url-input"
-                        color="primary"
                         text-color="content"
                     />
                 </template>
@@ -149,6 +132,24 @@
                             placeholder: 'введите описание товара'
                         }"
                     />
+                </template>
+                <template #actions>
+                    <v-button
+                        color="success"
+                        class="mr-2 app-border-radius"
+                        elevation="2"
+                        width="110"
+                    >
+                        Сохранить
+                    </v-button>
+                    <v-button
+                        color="secondary"
+                        class="app-border-radius"
+                        elevation="2"
+                        width="110"
+                    >
+                        Отменить
+                    </v-button>
                 </template>
             </form-card>
         </v-col>

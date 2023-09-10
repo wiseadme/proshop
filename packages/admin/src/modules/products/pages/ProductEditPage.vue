@@ -13,7 +13,7 @@
 
     onMounted(async () => {
         await onInit()
-        model.value = await getProduct(route.params.productId)
+        model.value = await getProduct(route.params.productId as string)
     })
 </script>
 <template>

@@ -16,7 +16,7 @@ export interface IVariantOption {
 export interface IVariant {
     id: string
     group: string,
-    options?: IOption[]
+    options?: IOption[] | string[]
     attributeId: string
 }
 
