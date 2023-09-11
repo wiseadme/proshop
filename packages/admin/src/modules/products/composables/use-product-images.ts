@@ -26,7 +26,7 @@ export const useProductImages = () => {
     const images = ref<File[]>([])
     const currentImage = ref<Maybe<IAsset>>(null)
 
-    const assets = computed(() => unref(model).assets)
+    const assets = computed(() => unref(model)?.assets || [])
 
     const onLoadImage = async ([file]) => {
         const { assets } = unref(model)

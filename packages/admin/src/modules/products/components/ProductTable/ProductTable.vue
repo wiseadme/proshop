@@ -17,6 +17,7 @@
         totalLength,
         products,
         onEditRow,
+        onCreateRow,
         onUpdateTablePage,
         onUpdateTableRowsCount,
     } = useProductsTable()
@@ -52,6 +53,7 @@
                         color="primary"
                         elevation="5"
                         data-test="create-modal"
+                        @click="onCreateRow"
                     >
                         <v-icon
                             size="14"

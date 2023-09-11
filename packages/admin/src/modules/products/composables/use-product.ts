@@ -29,14 +29,16 @@ export const useProduct = createSharedComposable(() => {
     const isSaved = ref(true)
     const checkDiffs = (): Maybe<Partial<IProduct>> => getDifferences(unref(model), unref(product))
 
-    const setProductModel = (value?: IProduct) => model.value = value ? Product.create(clone(value)) : Product.create()
+    const setProductModel = (value?: IProduct) => {
+        model.value = value ? Product.create(clone(value)) : Product.create()
+    }
 
     const onCreateProduct = async () => {
         isSaved.value = false
 
         await createProduct(unref(model))
 
-        model.value = Product.create()
+        setProductModel()
         isSaved.value = true
     }
 
@@ -89,7 +91,7 @@ export const useProduct = createSharedComposable(() => {
     }
 
     watch(product, (newProduct) => {
-        model.value = clone(newProduct)
+        setProductModel(newProduct!)
     }, { immediate: true })
 
     return {

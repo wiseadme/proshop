@@ -12,13 +12,22 @@ export const productRoutes = [
                 name: RouteNames.PRODUCTS_TABLE,
             },
             {
-                path: ':action/:productId/:section',
+                path: ':action(edit|create)/:productId?/:section',
                 components: {
                     default: () => import(/* webpackChunkName: "Page.ProductEditPage" */ '@modules/products/pages/ProductEditPage.vue'),
                     right: () => import(/* webpackChunkName: "Page.ProductRightSidebar" */ '@modules/products/components/ProductRightSidebar/ProductRightSidebar.vue'),
                 },
                 name: RouteNames.PRODUCT_EDIT,
             },
+            // {
+            //     path: 'create/:section',
+            //     components: {
+            //         default: () => import(/* webpackChunkName: "Page.ProductEditPage" */ '@modules/products/pages/ProductEditPage.vue'),
+            //         right: () => import(/* webpackChunkName: "Page.ProductRightSidebar" */ '@modules/products/components/ProductRightSidebar/ProductRightSidebar.vue'),
+            //     },
+            //     name: RouteNames.PRODUCT_CREATE,
+            // },
+
         ],
         meta: {
             name: RouteNames.PRODUCTS

@@ -80,7 +80,7 @@
         border-radius: $border-radius;
         display: flex;
         flex-direction: column;
-        justify-content: start;
+        justify-content: flex-start;
 
         &__head {
             position: relative;

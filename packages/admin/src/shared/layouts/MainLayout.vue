@@ -25,9 +25,10 @@
         handler: () => getNewOrders(),
         timeout: 5000,
     })
-    let notSeenCount = 0
 
+    let notSeenCount = 0
     let newOrdersNotifyId: Maybe<number> = null
+
     onMounted(() => startPolling())
     onBeforeUnmount(() => stopPolling())
 

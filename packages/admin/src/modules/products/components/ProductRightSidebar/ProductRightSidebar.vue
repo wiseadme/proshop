@@ -109,10 +109,13 @@
     setActiveNavItem(unref(tabs)[ind || 0])
 
     const onClick = (tab: Tab) => {
+        if (tab.disabled) return
+
         activeItem.value = tab
 
         router.push({
             name: RouteNames.PRODUCT_EDIT,
+
             params: {
                 productId: route.params.productId,
                 section: tab.section,
@@ -142,10 +145,17 @@
             <v-list-item
                 v-for="tab in tabs"
                 :key="tab.title"
-                class="context-menu__item app-border-radius mb-1"
-                :class="[activeItem.title === tab.title ? 'success white--text': 'white--text']"
+                class="context-menu__item app-border-radius mb-1 white--text"
+                :class="{
+                    success: activeItem.title === tab.title,
+                    ['context-menu__item--disabled']: tab.disabled,
+                    ['grey--text text--lighten-1']: tab.disabled,
+                }"
                 @click="onClick(tab)"
             >
+                <v-list-item-icon v-if="tab.disabled">
+                    <v-icon>fas fa-lock</v-icon>
+                </v-list-item-icon>
                 <v-list-item-title>
                     {{ tab.title }}
                 </v-list-item-title>
@@ -166,7 +176,7 @@
         }
 
         &__buttons {
-            justify-self: end;
+            justify-self: flex-end;
         }
     }
 </style>

@@ -11,8 +11,6 @@
     const { model } = useProduct()
 
     const renderKey = ref<number>(0)
-
-
 </script>
 <template>
     <v-row>

@@ -5,7 +5,7 @@
     import { useProductsService } from '@modules/products/composables/use-products-service'
     import { useProductRightSidebar } from '@modules/products/composables/use-product-right-sidebar'
 
-    const { model } = useProduct()
+    const { setProductModel } = useProduct()
     const { getProduct, onInit } = useProductsService()
     const { activeItem } = useProductRightSidebar()
 
@@ -13,7 +13,10 @@
 
     onMounted(async () => {
         await onInit()
-        model.value = await getProduct(route.params.productId as string)
+
+        if (route.params.productId) {
+            setProductModel(await getProduct(route.params.productId as string))
+        }
     })
 </script>
 <template>

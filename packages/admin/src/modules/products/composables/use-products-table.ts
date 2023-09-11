@@ -40,9 +40,23 @@ export const useProductsTable = () => {
 
         return router.push({
             name: RouteNames.PRODUCT_EDIT,
+
             params: {
                 action: 'edit',
                 productId: row.id,
+                section: 'info',
+            },
+        })
+    }
+
+    const onCreateRow = () => {
+        setProductModel()
+
+        return router.push({
+            name: RouteNames.PRODUCT_EDIT,
+
+            params: {
+                action: 'create',
                 section: 'info',
             },
         })
@@ -141,6 +155,7 @@ export const useProductsTable = () => {
         totalLength,
         products,
         onEditRow,
+        onCreateRow,
         onSortColumn,
         onUpdateTablePage,
         onUpdateTableRowsCount,

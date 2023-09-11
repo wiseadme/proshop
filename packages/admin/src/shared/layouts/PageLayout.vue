@@ -4,18 +4,18 @@
 
     const route = useRoute()
 
-    const isEditMode = computed(() => route.params.action === 'edit')
+    const isActionsMode = computed(() => route.params.action === 'edit' || route.params.action === 'create')
 </script>
 <template>
     <v-main
         style="position: relative"
         class="page-layout d-flex justify-space-between"
     >
-        <div :class="{['page-layout-content']: true, ['page-layout-content--with-sidebar']: isEditMode}">
+        <div :class="{['page-layout-content']: true, ['page-layout-content--with-sidebar']: isActionsMode}">
             <router-view/>
         </div>
         <div
-            v-if="isEditMode"
+            v-if="isActionsMode"
             class="page-layout-right-sidebar"
         >
             <router-view name="right"/>
