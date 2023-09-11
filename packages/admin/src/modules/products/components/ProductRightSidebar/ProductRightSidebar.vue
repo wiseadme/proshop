@@ -125,10 +125,7 @@
 
 </script>
 <template>
-    <div
-        style="height: calc(100vh - 76px);"
-        class="product-sidebar grey lighten-2 sticky white--text app-border-radius d-flex flex-column elevation-5 pt-2"
-    >
+    <div class="sidebar sidebar--sticky grey lighten-2 white--text app-border-radius d-flex flex-column elevation-5 pt-2">
         <v-card
             v-if="model"
             color="secondary"
@@ -163,14 +160,19 @@
         </v-list>
     </div>
 </template>
-<style lang="scss">
-    .sticky {
-        position: sticky;
-        top: calc(#{$header-height} + #{$page-top-padding})
+<style lang="scss" scoped>
+    .sidebar {
+        height: calc(100vh - #{$layout-padding-top} - #{$layout-padding-bottom});
+
+        &--sticky {
+            position: sticky;
+            top: $layout-padding-top;
+        }
     }
 
     .context-menu {
         height: 100%;
+
         &__item {
             cursor: pointer;
         }
