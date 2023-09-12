@@ -58,7 +58,7 @@ export const actions = {
             const { data } = await orderRepository.delete(id)
 
             this.$patch(state => {
-                state.orders = state.orders.filter(o => o._id !== id)
+                state.orders = state.orders.filter(o => o.id !== id)
             })
 
             return data.data

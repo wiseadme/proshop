@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-    import MetaTagEditForm from '../EditForms/MetaTagsEditForm.vue'
+    import MetaTagEditForm from '@modules/products/components/ModalEditForms/MetaTagsEditForm.vue'
     import { useProductMetaTags } from '@modules/products/composables/use-product-metatags'
     import { useProduct } from '@modules/products/composables/use-product'
     // Helpers

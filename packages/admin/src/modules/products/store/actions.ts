@@ -13,9 +13,8 @@ export const actions: IProductActions = {
         try {
             const { data } = await productRepository.create(product)
 
-            this.$patch(state => {
+            this.$patch((state) => {
                 state.products.push(data.data)
-                // state.totalLength = data.data.total
             })
 
             return data.data

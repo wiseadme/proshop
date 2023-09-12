@@ -1,20 +1,14 @@
 import { IUnit } from '@proshop/types'
 
 export class Unit implements IUnit {
-    private _value: IUnit['value']
-    private _meta: IUnit['meta']
+    readonly id: string
+    readonly value: IUnit['value']
+    readonly meta: IUnit['meta']
 
-    constructor({ value, meta }: IUnit) {
-        this._value = value
-        this._meta = meta
-    }
-
-    get value() {
-        return this._value
-    }
-
-    get meta() {
-        return this._meta
+    constructor({ id, value, meta }: IUnit) {
+        this.id = id
+        this.value = value
+        this.meta = meta
     }
 
     static create(unit = {}) {

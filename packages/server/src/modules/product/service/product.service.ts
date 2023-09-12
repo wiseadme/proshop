@@ -32,10 +32,7 @@ export class ProductService extends ServiceHelpers implements IProductService {
             }
         }
 
-        return {
-            items: [item],
-            total: await this.repository.getDocumentsCount(),
-        }
+        return item
     }
 
     async read(query: IRequestParams<IProductQuery>) {
@@ -59,16 +56,6 @@ export class ProductService extends ServiceHelpers implements IProductService {
 
             return data
         }
-
-        // if (attrQueries.length) {
-        //     const options = await this.gateway.option.findMany(optionQueries.map(key => query[key]))
-        //     const products = await this.repository.findByVariantOptions(options.map(option => option.name))
-        //
-        //     data.items = products
-        //     data.total = products.length
-        //
-        //     return data
-        // }
 
         if (url) {
             const product = await this.repository.findByUrl(url)

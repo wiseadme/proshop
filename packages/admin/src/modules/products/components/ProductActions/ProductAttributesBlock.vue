@@ -1,11 +1,12 @@
 <script lang="ts" setup>
+    import { computed, unref } from 'vue'
     import { FormCard } from '@shared/components/FormCard'
     import VSvg from '@shared/components/VSvg/VSvg.vue'
     import { useProductAttributes } from '@modules/products/composables/use-product-attributes'
     import { useProduct } from '@modules/products/composables/use-product'
     import { SvgPaths } from '@shared/enums/svg-paths'
     import DraggableItemsList from '@shared/components/DraggableItemsList/DraggableItemsList.vue'
-    import AttributesEditForm from '@modules/products/components/EditForms/AttributesEditForm.vue'
+    import AttributesEditForm from '@modules/products/components/ModalEditForms/AttributesEditForm.vue'
 
     const { model } = useProduct()
     const groupSymbol = Symbol.for('attributes')
@@ -13,18 +14,30 @@
     const {
         currentEditableAttribute,
         availableAttributes,
+        onDeleteAttribute,
+        onUpdateAttributes,
         setForEditing,
     } = useProductAttributes()
+
+    const showEditModal = computed(() => Boolean(unref(currentEditableAttribute)))
+
+    const onchange = (items) => {
+        console.log(items)
+    }
 
     const pullFunction = () => {
     }
 
 </script>
 <template>
-    <transition name="slide-down">
-        <attributes-edit-form v-if="currentEditableAttribute"/>
-    </transition>
     <v-row>
+        <v-modal
+            v-model="showEditModal"
+            transition="scale-in"
+            overlay
+        >
+            <attributes-edit-form />
+        </v-modal>
         <v-col
             cols="6"
             class="used-attributes app-border-radius"
@@ -43,7 +56,10 @@
                         :group="groupSymbol"
                         class="draggable-container"
                         editable
+                        deletable
                         @edit="setForEditing"
+                        @delete="onDeleteAttribute"
+                        @change="onUpdateAttributes"
                     >
                         <template #title="{item}">
                             <span>{{ item.key }}</span>

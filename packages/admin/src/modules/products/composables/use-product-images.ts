@@ -33,6 +33,7 @@ export const useProductImages = () => {
 
         try {
             const asset = await uploadProductImage(file)
+    
             assets.push(asset)
             await updateProductAssets({ assets })
 

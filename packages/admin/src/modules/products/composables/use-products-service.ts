@@ -131,19 +131,22 @@ export const useProductsService = createSharedComposable(() => {
         try {
             return await _productsStore.read(params)
         } catch (err) {
-            return console.log(err)
+            return Promise.reject(err)
         }
     }
 
-    const createProduct = async (product: IProduct) => {
+    const createProduct = async (product: IProduct): Promise<IProduct | undefined> => {
         if (!unref(merchant)?.id) return
 
         product.currency = unref(merchant)?.id!
 
         try {
-            return await _productsStore.create(product)
+            const data = await _productsStore.create(product)
+            setAsCurrent(data)
+
+            return data
         } catch (err) {
-            return console.log(err)
+            return Promise.reject(err)
         }
     }
 
@@ -177,6 +180,32 @@ export const useProductsService = createSharedComposable(() => {
     const updateProductCategories = async (updates: Partial<IProduct>): Promise<IProduct> => {
         updates.id = unref(product)!.id
         updates.categories = getIds(updates.categories!)
+
+        try {
+            const updated = await _productsStore.update(updates)
+            setAsCurrent(updated)
+
+            return updated
+        } catch (err) {
+            return Promise.reject(err)
+        }
+    }
+
+    const updateProductAttributes = async (updates: Partial<IProduct>): Promise<IProduct> => {
+        updates.id = unref(product)!.id
+
+        try {
+            const updated = await _productsStore.update(updates)
+            setAsCurrent(updated)
+
+            return updated
+        } catch (err) {
+            return Promise.reject(err)
+        }
+    }
+
+    const updateProductInfo = async (updates: Partial<IProduct>): Promise<IProduct> => {
+        updates.id = unref(product)!.id
 
         try {
             const updated = await _productsStore.update(updates)
@@ -411,6 +440,8 @@ export const useProductsService = createSharedComposable(() => {
         uploadProductVariantImage,
         updateMainImageAsset,
         updateProductCategories,
+        updateProductInfo,
+        updateProductAttributes,
         updateProductRelatedProducts,
         updateVariantOption,
         uploadProductImage,

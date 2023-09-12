@@ -11,6 +11,8 @@
 
     const route = useRoute()
 
+    const onEdit = () => {}
+
     onMounted(async () => {
         await onInit()
 
@@ -24,6 +26,9 @@
         <component
             :is="activeItem.component"
             v-if="activeItem"
+            @edit="onEdit"
         ></component>
+        <v-modal>
+        </v-modal>
     </v-layout>
 </template>

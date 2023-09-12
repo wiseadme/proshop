@@ -111,6 +111,7 @@
                     <draggable-items-list
                         v-model="attributes"
                         editable
+                        deletable
                         :items="attributes"
                         @delete="onDelete"
                         @change="onChange"

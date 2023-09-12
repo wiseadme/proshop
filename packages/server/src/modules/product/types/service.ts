@@ -1,8 +1,9 @@
 import { Document, LeanDocument } from 'mongoose'
 import { IProduct, IRequestParams } from '@proshop/types'
+import { id } from 'inversify'
 
 export interface IProductService {
-    create(product: IProduct): Promise<{ items: IProduct[], total?: number }>
+    create(product: IProduct): Promise<IProduct>
 
     read(query: IRequestParams<Partial<IProduct>>): Promise<{ items: LeanDocument<IProduct>[], total?: number }>,
 

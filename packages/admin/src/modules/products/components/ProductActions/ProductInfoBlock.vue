@@ -6,9 +6,11 @@
     import { useProduct } from '@modules/products/composables/use-product'
     import { useProductsService } from '@modules/products/composables/use-products-service'
     import { SvgPaths } from '@shared/enums/svg-paths'
+    import { useProductInfo } from '@modules/products/composables/use-product-info'
 
     const { unitItems } = useProductsService()
     const { model } = useProduct()
+    const { onSubmit } = useProductInfo()
 
     const renderKey = ref<number>(0)
 </script>
@@ -137,6 +139,7 @@
                         class="mr-2 app-border-radius"
                         elevation="2"
                         width="110"
+                        @click="onSubmit"
                     >
                         Сохранить
                     </v-button>

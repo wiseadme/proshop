@@ -7,4 +7,3 @@ const buildConfig = (env = {}) => merge(baseConfig(env), {
 })
 
 module.exports = buildConfig({dev: false})
-module.exports.buildTestConfig = buildConfig

@@ -3,19 +3,31 @@
         computed,
         ref,
         unref,
-        watch
+        watch,
     } from 'vue'
     import { useFilterGroupService } from '@modules/filters/composables/use-filter-group-service'
     import { useFilterItemsService } from '@modules/filters/composables/use-filter-items-service'
     import { useProduct } from '@modules/products/composables/use-product'
-    import { IFilterGroup } from '@proshop/types'
     import { useProductAttributes } from '@modules/products/composables/use-product-attributes'
+    import FormCard from '@shared/components/FormCard/FormCard.vue'
+    import { IFilterGroup } from '@proshop/types'
 
     const { model } = useProduct()
+    const {
+        filterGroups,
+        getFilterGroupItems,
+    } = useFilterGroupService()
 
-    const { filterGroups, getFilterGroupItems } = useFilterGroupService()
-    const { filterItems, getFilterItems } = useFilterItemsService()
-    const { currentEditableAttribute, attributeItems } = useProductAttributes()
+    const {
+        filterItems,
+        getFilterItems,
+    } = useFilterItemsService()
+
+    const {
+        currentEditableAttribute,
+        attributeItems,
+        onUpdateAttributes,
+    } = useProductAttributes()
 
     const attributesMap = ref({})
 
@@ -59,11 +71,21 @@
     }, { immediate: true })
 </script>
 <template>
-    <v-row
-        class="elevation-1 white mb-2 pl-4"
-        style="position: sticky; top: 0; z-index: 1"
+    <form-card
+        class="grey lighten-3 app-border-radius pa-2"
+        elevation="2"
+        width="600px"
     >
-        <v-col cols="3">
+        <template
+            v-if="currentEditableAttribute"
+            #title
+        >
+            <h5>Редатикрование атрибута {{ currentEditableAttribute.key }}</h5>
+        </template>
+        <template
+            v-if="currentEditableAttribute"
+            #body
+        >
             <v-select
                 v-model="attributesMap[currentEditableAttribute.id].group"
                 label="Группа фильтров"
@@ -90,11 +112,6 @@
                     </v-list>
                 </template>
             </v-select>
-        </v-col>
-        <v-col
-            cols="6"
-            class="d-flex"
-        >
             <v-text-field
                 v-if="!attributesMap[currentEditableAttribute.id].group?.id"
                 v-model="currentEditableAttribute.value"
@@ -113,19 +130,26 @@
                 @blur="onBlurFilter(currentEditableAttribute.id)"
                 @select="onBlurFilter(currentEditableAttribute.id)"
             />
-        </v-col>
-        <v-spacer/>
-        <v-col
-            cols="1"
-            class="d-flex justify-center align-center"
-        >
-            <v-icon
-                clickable
-                size="24"
+        </template>
+        <template #actions>
+            <v-button
+                class="app-border-radius mr-2"
+                width="120"
+                color="success"
+                elevation="2"
+                @click="onUpdateAttributes"
+            >
+                Сохранить
+            </v-button>
+            <v-button
+                class="app-border-radius"
+                width="120"
+                color="secondary"
+                elevation="2"
                 @click="clearEditableAttribute"
             >
-                fas fa-times
-            </v-icon>
-        </v-col>
-    </v-row>
+                Закрыть
+            </v-button>
+        </template>
+    </form-card>
 </template>

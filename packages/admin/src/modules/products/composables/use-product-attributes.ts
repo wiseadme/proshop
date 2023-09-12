@@ -7,10 +7,23 @@ import { useProductsService } from '@modules/products/composables/use-products-s
 import { useProduct } from '@modules/products/composables/use-product'
 import { IAttribute } from '@proshop/types'
 import { createSharedComposable } from '@shared/features/create-shared-composable'
+import { useAppNotifications } from '@shared/composables/use-app-notifications'
+import { toString } from '@shared/helpers'
 
 export const useProductAttributes = createSharedComposable(() => {
-    const { attributeItems } = useProductsService()
     const { model } = useProduct()
+
+    const {
+        product,
+        attributeItems,
+        updateProductAttributes
+    } = useProductsService()
+
+    const {
+        changesSavedNotification,
+        savingErrorNotification,
+        noChangesNotification
+    } = useAppNotifications()
 
     const attributes = ref<IAttribute[]>([])
     const currentEditableAttribute = ref<Maybe<IAttribute>>(null)
@@ -21,9 +34,34 @@ export const useProductAttributes = createSharedComposable(() => {
         currentEditableAttribute.value = attr
     }
 
-    const onDeleteAttribute = (attr: IAttribute) => {
-        unref(model).attributes = unref(model).attributes.filter(it => it.id !== attr.id)
-        attributes.value = unref(model).attributes
+    const hasValueDiffs = () => toString(unref(model).attributes) !== toString(unref(product)!.attributes)
+
+    const onDeleteAttribute = async (attr: IAttribute) => {
+        attributes.value = unref(model).attributes.filter(it => it.id !== attr.id)
+
+        try {
+            await updateProductAttributes({ attributes: unref(attributes) })
+            changesSavedNotification()
+        } catch (err) {
+            savingErrorNotification()
+        }
+    }
+
+    const onUpdateAttributes = async () => {
+        if (!hasValueDiffs()) {
+            noChangesNotification()
+
+            return
+        }
+
+        const attributes = unref(model).attributes
+
+        try {
+            await updateProductAttributes({ attributes })
+            changesSavedNotification()
+        } catch (err) {
+            savingErrorNotification()
+        }
     }
 
     watch(() => unref(model).attributes, (attrs) => {
@@ -45,5 +83,6 @@ export const useProductAttributes = createSharedComposable(() => {
         usedAttributes,
         setForEditing,
         onDeleteAttribute,
+        onUpdateAttributes,
     }
 })

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
     // Components
-    import { ProductTable } from '@modules/products/components/ProductTable'
+    import { ProductsTable } from '@modules/products/components/ProductsTable'
     import SkeletonPreloader from '@shared/components/Preloader/SkeletonPreloader.vue'
     // Composables
     import { useProductsService } from '@modules/products/composables/use-products-service'
@@ -15,7 +15,7 @@
         <v-row>
             <v-col cols="12">
                 <skeleton-preloader v-if="isLoading"/>
-                <product-table v-else/>
+                <products-table v-else/>
             </v-col>
         </v-row>
     </v-layout>
