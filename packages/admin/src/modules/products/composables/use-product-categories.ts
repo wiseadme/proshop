@@ -6,11 +6,12 @@ import {
 import { useProduct } from '@modules/products/composables/use-product'
 import { ICategory } from '@proshop/types'
 import { useProductsService } from '@modules/products/composables/use-products-service'
-import { useAppNotifications } from '@shared/composables/use-app-notifications'
+import { useNotifications } from '@shared/components/VNotifications/use-notifications'
+import { CHANGES_SAVED, SAVING_ERROR } from '@shared/constants/notifications'
 
 export const useProductCategories = () => {
     const { model } = useProduct()
-    const { changesSavedNotification, savingErrorNotification } = useAppNotifications()
+    const { notify } = useNotifications()
 
     const { categoryItems, updateProductCategories } = useProductsService()
     const selectsMap = ref({})
@@ -43,9 +44,10 @@ export const useProductCategories = () => {
 
         try {
             await updateProductCategories({ categories })
-            changesSavedNotification()
+
+            notify(CHANGES_SAVED)
         } catch (err) {
-            savingErrorNotification()
+            notify(SAVING_ERROR)
         }
     }
 

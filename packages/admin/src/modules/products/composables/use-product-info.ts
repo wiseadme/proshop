@@ -5,30 +5,37 @@ import {
 } from 'vue'
 import { useProduct } from '@modules/products/composables/use-product'
 import { useProductsService } from '@modules/products/composables/use-products-service'
-import { useAppNotifications } from '@shared/composables/use-app-notifications'
+import { useNotifications } from '@shared/components/VNotifications/use-notifications'
 import { useRouter } from 'vue-router'
 import { RouteNames } from '@modules/products/enums/route-names'
 import { IProduct } from '@proshop/types'
-import { toString } from '@shared/helpers'
+import { hasDiffs, hasValueDiffs } from '@shared/helpers/diffs.helpers'
+import {
+    CHANGES_SAVED,
+    NO_CHANGES,
+    SAVING_ERROR,
+} from '@shared/constants/notifications'
 
 const infoBlockKeys = ['description', 'name', 'price', 'quantity', 'seo', 'url']
 
 export const useProductInfo = () => {
     const { model } = useProduct()
     const { product, createProduct, updateProductInfo } = useProductsService()
-    const { changesSavedNotification, savingErrorNotification, noChangesNotification } = useAppNotifications()
+    const { notify } = useNotifications()
     const router = useRouter()
 
     const isLoading = ref(false)
     const isEditMode = computed(() => Boolean(unref(model).id))
 
-    const hasDiffs = (key: string) => unref(model)[key] !== unref(product)![key]
-    const hasValueDiffs = (key: string) => toString(unref(model)[key]) !== toString(unref(product)![key])
-
     const getInfoBlockUpdates = (): Partial<IProduct> => infoBlockKeys.reduce((updates, key) => {
-        if (typeof unref(model)[key] !== 'object' && hasDiffs(key)) {
-            (updates[key]) = unref(model)[key]
-        } else if (hasValueDiffs(key)) {
+        const values = {
+            model: unref(model)[key],
+            entity: unref(product)![key],
+        }
+
+        if (typeof unref(model)[key] !== 'object' && hasDiffs(values)) {
+            updates[key] = unref(model)[key]
+        } else if (hasValueDiffs(values)) {
             updates[key] = unref(model)[key]
         }
 
@@ -50,9 +57,9 @@ export const useProductInfo = () => {
 
             await goToEditProduct(data!)
 
-            changesSavedNotification()
+            notify(CHANGES_SAVED)
         } catch (err) {
-            savingErrorNotification()
+            notify(SAVING_ERROR)
         }
     }
 
@@ -60,16 +67,16 @@ export const useProductInfo = () => {
         const updates = getInfoBlockUpdates()
 
         if (!Object.keys(updates).length) {
-            noChangesNotification()
+            notify(NO_CHANGES)
 
             return
         }
 
         try {
             await updateProductInfo(updates)
-            changesSavedNotification()
+            notify(CHANGES_SAVED)
         } catch (err) {
-            savingErrorNotification()
+            notify(SAVING_ERROR)
         }
     }
 

@@ -4,14 +4,16 @@
 
     const { currentEditableMetaTag } = useProductMetaTags()
 
-    const metaTagKeys = computed<string[]>(() => Object.keys(unref(currentEditableMetaTag)?.props!))
+    const metaTagKeys = computed<string[]>(() => Object.keys(unref(currentEditableMetaTag)?.props! || {}))
 
     const clearEditableMetaTag = () => {
         currentEditableMetaTag.value = null
     }
 </script>
 <template>
-    <v-row class="white elevation-2 mb-2 pl-4">
+    <v-row
+        class="white elevation-2 mb-2 pl-4"
+    >
         <v-col
             v-for="key in metaTagKeys"
             :key="key"
@@ -20,10 +22,12 @@
             md="6"
             sm="11"
         >
-            <v-text-field
-                v-model="currentEditableMetaTag.props[key]"
-                :label="key"
-            />
+            <template v-if="currentEditableMetaTag">
+                <v-text-field
+                    v-model="currentEditableMetaTag.props[key]"
+                    :label="key"
+                />
+            </template>
         </v-col>
         <v-spacer/>
         <v-col

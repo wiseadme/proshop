@@ -1,16 +1,19 @@
 import {
     ref,
     unref,
-    watch
+    watch,
 } from 'vue'
 import { useProductsService } from '@modules/products/composables/use-products-service'
 import { useProduct } from '@modules/products/composables/use-product'
 import { IMetaTag, Maybe } from '@proshop/types'
 import { createSharedComposable } from '@shared/features/create-shared-composable'
+import { useNotifications } from '@shared/components/VNotifications/use-notifications'
+import { CHANGES_SAVED, SAVING_ERROR } from '@shared/constants/notifications'
 
 export const useProductMetaTags = createSharedComposable(() => {
     const { model } = useProduct()
-    const { metaTagItems } = useProductsService()
+    const { metaTagItems, updateProductMetaTags } = useProductsService()
+    const { notify } = useNotifications()
 
     const currentEditableMetaTag = ref<Maybe<IMetaTag>>(null)
 
@@ -19,6 +22,16 @@ export const useProductMetaTags = createSharedComposable(() => {
 
     const setForEditing = (item: IMetaTag) => {
         currentEditableMetaTag.value = item
+    }
+
+    const onUpdateMetaTags = async () => {
+        try {
+            await updateProductMetaTags({ seo: unref(model).seo })
+
+            notify(CHANGES_SAVED)
+        } catch (err) {
+            notify(SAVING_ERROR)
+        }
     }
 
     watch(() => unref(model).seo.metatags, (metaTags) => {
@@ -36,6 +49,7 @@ export const useProductMetaTags = createSharedComposable(() => {
         currentEditableMetaTag,
         usedMetaTags,
         availableMetaTags,
-        setForEditing
+        setForEditing,
+        onUpdateMetaTags,
     }
 })

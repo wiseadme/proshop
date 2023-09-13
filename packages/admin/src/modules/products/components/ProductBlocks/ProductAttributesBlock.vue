@@ -1,12 +1,12 @@
 <script lang="ts" setup>
     import { computed, unref } from 'vue'
-    import { FormCard } from '@shared/components/FormCard'
-    import VSvg from '@shared/components/VSvg/VSvg.vue'
     import { useProductAttributes } from '@modules/products/composables/use-product-attributes'
     import { useProduct } from '@modules/products/composables/use-product'
-    import { SvgPaths } from '@shared/enums/svg-paths'
+    import { FormCard } from '@shared/components/FormCard'
+    import VSvg from '@shared/components/VSvg/VSvg.vue'
     import DraggableItemsList from '@shared/components/DraggableItemsList/DraggableItemsList.vue'
-    import AttributesEditForm from '@modules/products/components/ModalEditForms/AttributesEditForm.vue'
+    import AttributesEditForm from '@modules/products/components/ProductModalEditForms/AttributesEditForm.vue'
+    import { SvgPaths } from '@shared/enums/svg-paths'
 
     const { model } = useProduct()
     const groupSymbol = Symbol.for('attributes')
@@ -20,10 +20,6 @@
     } = useProductAttributes()
 
     const showEditModal = computed(() => Boolean(unref(currentEditableAttribute)))
-
-    const onchange = (items) => {
-        console.log(items)
-    }
 
     const pullFunction = () => {
     }

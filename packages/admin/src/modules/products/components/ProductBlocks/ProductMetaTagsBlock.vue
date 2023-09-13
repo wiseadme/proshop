@@ -1,11 +1,11 @@
 <script lang="ts" setup>
-    import MetaTagEditForm from '@modules/products/components/ModalEditForms/MetaTagsEditForm.vue'
+    import { computed, unref } from 'vue'
+    import MetaTagEditForm from '@modules/products/components/ProductModalEditForms/MetaTagsEditForm.vue'
     import { useProductMetaTags } from '@modules/products/composables/use-product-metatags'
     import { useProduct } from '@modules/products/composables/use-product'
     // Helpers
     import { descriptorToMetaTag } from '@shared/helpers/metatag'
-    // @ts-ignore
-    import FormCard from '@shared/components/FormCard/FormCard.vue'
+    import { FormCard } from '@shared/components/FormCard/'
     import VSvg from '@shared/components/VSvg/VSvg.vue'
     import { SvgPaths } from '@shared/enums/svg-paths'
     import DraggableItemsList from '@shared/components/DraggableItemsList/DraggableItemsList.vue'
@@ -15,19 +15,24 @@
         availableMetaTags,
         currentEditableMetaTag,
         setForEditing,
+        onUpdateMetaTags
     } = useProductMetaTags()
 
     const groupSymbol = Symbol.for('metaTags')
-    const onChange = () => {
-    }
+
+    const showEditModal = computed(() => Boolean(unref(currentEditableMetaTag)))
     const pullFunction = () => {
     }
 </script>
 <template>
-    <transition name="slide-down">
-        <MetaTagEditForm v-if="currentEditableMetaTag"/>
-    </transition>
     <v-row class="app-border-radius">
+        <v-modal
+            v-model="showEditModal"
+            transition="scale-in"
+            overlay
+        >
+            <MetaTagEditForm />
+        </v-modal>
         <v-col cols="6">
             <form-card>
                 <template #icon>
@@ -43,7 +48,7 @@
                         :group="groupSymbol"
                         editable
                         @edit="setForEditing"
-                        @change="onChange"
+                        @change="onUpdateMetaTags"
                     >
                         <template #title="{item}">
                             {{ descriptorToMetaTag(item.props) }}

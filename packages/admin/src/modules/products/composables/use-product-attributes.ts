@@ -7,8 +7,13 @@ import { useProductsService } from '@modules/products/composables/use-products-s
 import { useProduct } from '@modules/products/composables/use-product'
 import { IAttribute } from '@proshop/types'
 import { createSharedComposable } from '@shared/features/create-shared-composable'
-import { useAppNotifications } from '@shared/composables/use-app-notifications'
-import { toString } from '@shared/helpers'
+import { useNotifications } from '@shared/components/VNotifications/use-notifications'
+import { hasValueDiffs } from '@shared/helpers/diffs.helpers'
+import {
+    CHANGES_SAVED,
+    NO_CHANGES,
+    SAVING_ERROR,
+} from '@shared/constants/notifications'
 
 export const useProductAttributes = createSharedComposable(() => {
     const { model } = useProduct()
@@ -16,14 +21,10 @@ export const useProductAttributes = createSharedComposable(() => {
     const {
         product,
         attributeItems,
-        updateProductAttributes
+        updateProductAttributes,
     } = useProductsService()
 
-    const {
-        changesSavedNotification,
-        savingErrorNotification,
-        noChangesNotification
-    } = useAppNotifications()
+    const { notify } = useNotifications()
 
     const attributes = ref<IAttribute[]>([])
     const currentEditableAttribute = ref<Maybe<IAttribute>>(null)
@@ -34,22 +35,26 @@ export const useProductAttributes = createSharedComposable(() => {
         currentEditableAttribute.value = attr
     }
 
-    const hasValueDiffs = () => toString(unref(model).attributes) !== toString(unref(product)!.attributes)
-
     const onDeleteAttribute = async (attr: IAttribute) => {
         attributes.value = unref(model).attributes.filter(it => it.id !== attr.id)
 
         try {
             await updateProductAttributes({ attributes: unref(attributes) })
-            changesSavedNotification()
+
+            notify(CHANGES_SAVED)
         } catch (err) {
-            savingErrorNotification()
+            notify(SAVING_ERROR)
         }
     }
 
+    const checkDiffs = () => hasValueDiffs({
+        model: unref(model).attributes,
+        entity: unref(product)!.attributes,
+    })
+
     const onUpdateAttributes = async () => {
-        if (!hasValueDiffs()) {
-            noChangesNotification()
+        if (!checkDiffs()) {
+            notify(NO_CHANGES)
 
             return
         }
@@ -58,9 +63,10 @@ export const useProductAttributes = createSharedComposable(() => {
 
         try {
             await updateProductAttributes({ attributes })
-            changesSavedNotification()
+
+            notify(CHANGES_SAVED)
         } catch (err) {
-            savingErrorNotification()
+            notify(SAVING_ERROR)
         }
     }
 

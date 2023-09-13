@@ -6,7 +6,8 @@ import {
 import { useProductsService } from '@modules/products/composables/use-products-service'
 import { IProduct } from '@proshop/types'
 import { useProduct } from '@modules/products/composables/use-product'
-import { useAppNotifications } from '@shared/composables/use-app-notifications'
+import { useNotifications } from '@shared/components/VNotifications/use-notifications'
+import { CHANGES_SAVED, SAVING_ERROR } from '@shared/constants/notifications'
 
 export const useProductRelated = () => {
     const {
@@ -15,11 +16,7 @@ export const useProductRelated = () => {
         updateProductRelatedProducts,
     } = useProductsService()
 
-    const {
-        changesSavedNotification,
-        savingErrorNotification,
-    } = useAppNotifications()
-
+    const { notify } = useNotifications()
     const { model } = useProduct()
 
     const searchedItems = ref<IProduct[]>([])
@@ -43,9 +40,10 @@ export const useProductRelated = () => {
 
         try {
             await updateProductRelatedProducts({ related })
-            changesSavedNotification()
+
+            notify(CHANGES_SAVED)
         } catch (err) {
-            savingErrorNotification()
+            notify(SAVING_ERROR)
         }
     }
 
@@ -56,9 +54,10 @@ export const useProductRelated = () => {
 
         try {
             await updateProductRelatedProducts({ related })
-            changesSavedNotification()
+
+            notify(CHANGES_SAVED)
         } catch (err) {
-            savingErrorNotification()
+            notify(SAVING_ERROR)
         }
     }
 

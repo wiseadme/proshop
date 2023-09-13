@@ -12,14 +12,14 @@
     import { useRoute, useRouter } from 'vue-router'
     import { RouteNames } from '@modules/products/enums/route-names'
 
-    const ProductAttributesBlock = markRaw(defineAsyncComponent(() => import('@modules/products/components/ProductActions/ProductAttributesBlock.vue')))
-    const ProductConditionsBlock = markRaw(defineAsyncComponent(() => import( '@modules/products/components/ProductActions/ProductConditionsBlock.vue')))
-    const ProductVariantsBlock = markRaw(defineAsyncComponent(() => import('@modules/products/components/ProductActions/ProductVariantsBlock.vue')))
-    const ProductMetaTagsBlock = markRaw(defineAsyncComponent(() => import('@modules/products/components/ProductActions/ProductMetaTagsBlock.vue')))
-    const ProductRelatedBlock = markRaw(defineAsyncComponent(() => import('@modules/products/components/ProductActions/ProductRelatedBlock.vue')))
-    const ProductInfoBlock = markRaw(defineAsyncComponent(() => import('@modules/products/components/ProductActions/ProductInfoBlock.vue')))
-    const ProductImagesBlock = markRaw(defineAsyncComponent(() => import('@modules/products/components/ProductActions/ProductImagesBlock.vue')))
-    const ProductCategoriesBlock = markRaw(defineAsyncComponent(() => import('@modules/products/components/ProductActions/ProductCategoriesBlock.vue')))
+    const ProductAttributesBlock = markRaw(defineAsyncComponent(() => import('@modules/products/components/ProductBlocks/ProductAttributesBlock.vue')))
+    const ProductConditionsBlock = markRaw(defineAsyncComponent(() => import( '@modules/products/components/ProductBlocks/ProductConditionsBlock.vue')))
+    const ProductVariantsBlock = markRaw(defineAsyncComponent(() => import('@modules/products/components/ProductBlocks/ProductVariantsBlock.vue')))
+    const ProductMetaTagsBlock = markRaw(defineAsyncComponent(() => import('@modules/products/components/ProductBlocks/ProductMetaTagsBlock.vue')))
+    const ProductRelatedBlock = markRaw(defineAsyncComponent(() => import('@modules/products/components/ProductBlocks/ProductRelatedBlock.vue')))
+    const ProductInfoBlock = markRaw(defineAsyncComponent(() => import('@modules/products/components/ProductBlocks/ProductInfoBlock.vue')))
+    const ProductImagesBlock = markRaw(defineAsyncComponent(() => import('@modules/products/components/ProductBlocks/ProductImagesBlock.vue')))
+    const ProductCategoriesBlock = markRaw(defineAsyncComponent(() => import('@modules/products/components/ProductBlocks/ProductCategoriesBlock.vue')))
 
     const { model } = useProduct()
     const { categoryItems } = useProductsService()

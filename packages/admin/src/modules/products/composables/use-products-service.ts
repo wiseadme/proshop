@@ -70,7 +70,7 @@ export const useProductsService = createSharedComposable(() => {
     const merchant = computed<Maybe<IMerchant>>(() => _merchantStore.merchant)
 
     const setAsCurrent = (item: Maybe<IProduct>) => {
-        product.value = clone(item)
+        product.value = clone(item!)
     }
 
     const getMerchant = () => {
@@ -168,10 +168,7 @@ export const useProductsService = createSharedComposable(() => {
         updates.related = getIds(updates.related!)
 
         try {
-            const updated = await _productsStore.update(updates)
-            setAsCurrent(updated)
-
-            return updated
+            return await updateProduct(updates)
         } catch (err) {
             return Promise.reject(err)
         }
@@ -182,10 +179,7 @@ export const useProductsService = createSharedComposable(() => {
         updates.categories = getIds(updates.categories!)
 
         try {
-            const updated = await _productsStore.update(updates)
-            setAsCurrent(updated)
-
-            return updated
+            return await updateProduct(updates)
         } catch (err) {
             return Promise.reject(err)
         }
@@ -195,10 +189,7 @@ export const useProductsService = createSharedComposable(() => {
         updates.id = unref(product)!.id
 
         try {
-            const updated = await _productsStore.update(updates)
-            setAsCurrent(updated)
-
-            return updated
+            return await updateProduct(updates)
         } catch (err) {
             return Promise.reject(err)
         }
@@ -208,10 +199,20 @@ export const useProductsService = createSharedComposable(() => {
         updates.id = unref(product)!.id
 
         try {
-            const updated = await _productsStore.update(updates)
-            setAsCurrent(updated)
+            return await updateProduct(updates)
+        } catch (err) {
+            return Promise.reject(err)
+        }
+    }
 
-            return updated
+    const updateProductMetaTags = async (updates: { seo: IProduct['seo'] }) => {
+        const payload = {
+            ...updates,
+            id: unref(product)!.id,
+        }
+
+        try {
+            return await updateProduct(payload)
         } catch (err) {
             return Promise.reject(err)
         }
@@ -441,6 +442,7 @@ export const useProductsService = createSharedComposable(() => {
         updateMainImageAsset,
         updateProductCategories,
         updateProductInfo,
+        updateProductMetaTags,
         updateProductAttributes,
         updateProductRelatedProducts,
         updateVariantOption,

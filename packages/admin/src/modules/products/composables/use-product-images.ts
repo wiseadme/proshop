@@ -5,8 +5,9 @@ import {
 } from 'vue'
 import { IAsset } from '@proshop/types'
 import { useProduct } from '@modules/products/composables/use-product'
-import { useAppNotifications } from '@shared/composables/use-app-notifications'
 import { useProductsService } from '@modules/products/composables/use-products-service'
+import { useNotifications } from '@shared/components/VNotifications/use-notifications'
+import { CHANGES_SAVED, SAVING_ERROR } from '@shared/constants/notifications'
 
 export const useProductImages = () => {
     const { model } = useProduct()
@@ -18,10 +19,7 @@ export const useProductImages = () => {
         deleteProductImage,
     } = useProductsService()
 
-    const {
-        changesSavedNotification,
-        savingErrorNotification,
-    } = useAppNotifications()
+    const {notify} = useNotifications()
 
     const images = ref<File[]>([])
     const currentImage = ref<Maybe<IAsset>>(null)
@@ -33,23 +31,25 @@ export const useProductImages = () => {
 
         try {
             const asset = await uploadProductImage(file)
-    
+
             assets.push(asset)
             await updateProductAssets({ assets })
 
             images.value = []
-            changesSavedNotification()
+
+            notify(CHANGES_SAVED)
         } catch (err) {
-            savingErrorNotification()
+            notify(SAVING_ERROR)
         }
     }
 
     const onDeleteImage = async (image: IAsset) => {
         try {
             await deleteProductImage(image)
-            changesSavedNotification()
+
+            notify(CHANGES_SAVED)
         } catch (err) {
-            savingErrorNotification()
+            notify(SAVING_ERROR)
         }
     }
 
@@ -61,9 +61,9 @@ export const useProductImages = () => {
             assets.forEach((it) => it.main = it.id === asset.id)
             await updateProductAssets({ assets: assets })
 
-            changesSavedNotification()
+            notify(CHANGES_SAVED)
         } catch (err) {
-            savingErrorNotification()
+            notify(SAVING_ERROR)
         }
     }
 
