@@ -2,7 +2,7 @@ import { ref } from 'vue'
 // Composables
 import { useProductsService } from '@modules/products/composables/use-products-service'
 import { NavigationFailure, useRouter } from 'vue-router'
-import { useProduct } from '@modules/products/composables/use-product'
+import { useProductModel } from '@modules/products/composables/use-product-model'
 // Constants
 import { CREATE_PRODUCT, EDIT_PRODUCT } from '@modules/products/constants/actions'
 import { INFO_BLOCK } from '@modules/products/constants/sections'
@@ -10,6 +10,8 @@ import { INFO_BLOCK } from '@modules/products/constants/sections'
 import { RouteNames } from '@modules/products/enums/route-names'
 // Types
 import { ICategory, IProduct } from '@proshop/types'
+import { useNotifications } from '@shared/components/VNotifications/use-notifications'
+import { PRODUCT_DELETED, PRODUCT_DELETE_ERROR } from '@modules/products/constants/notifications'
 
 export const useProductsTable = () => {
     const router = useRouter()
@@ -19,10 +21,13 @@ export const useProductsTable = () => {
         sort,
         totalLength,
         products,
+        deleteProduct,
         getProducts,
     } = useProductsService()
 
-    const { setProductModel } = useProduct()
+    const { notify } = useNotifications()
+
+    const { setProductModel } = useProductModel()
 
     const onUpdateTablePage = async (page: number) => {
         pagination.setPage(page)
@@ -32,6 +37,16 @@ export const useProductsTable = () => {
 
     const onUpdateTableRowsCount = (count: number) => {
         pagination.setItemsCount(count)
+    }
+
+    const onDeleteRow = async (row) => {
+        try {
+            await deleteProduct(row)
+
+            notify(PRODUCT_DELETED)
+        } catch (err) {
+            notify(PRODUCT_DELETE_ERROR)
+        }
     }
 
     const onSortColumn = (col) => {
@@ -162,6 +177,7 @@ export const useProductsTable = () => {
         products,
         onEditRow,
         onCreateRow,
+        onDeleteRow,
         onSortColumn,
         onUpdateTablePage,
         onUpdateTableRowsCount,

@@ -1,5 +1,9 @@
 <script lang="ts" setup>
-    import { computed, onMounted } from 'vue'
+    import {
+        computed,
+        onMounted,
+        ref
+    } from 'vue'
     import { useEventEmitter } from './use-event-emitter'
     import { Notify } from './types'
     import {
@@ -27,27 +31,27 @@
         error: ErrorNotification,
     }
 
-    let notifications = $ref<Notify[]>([])
+    let notifications = ref<Notify[]>([])
     let isClickable = false
 
     const addNotification = (params: Notify) => {
-        notifications.push(params)
+        notifications.value.push(params)
     }
 
-    const removeNotification = (id) => {
-        notifications = notifications.filter(it => it.id !== id)
+    const removeNotification = (id: number) => {
+        notifications.value = notifications.value.filter(it => it.id !== id)
     }
 
     const clearAll = () => {
-        notifications = []
+        notifications.value = []
     }
 
-    const onClick = (notify) => {
+    const onClick = (notify: Notify) => {
         if (!isClickable) {
             return
         }
 
-        removeNotification(notify.id)
+        removeNotification(notify.id!)
     }
 
     const styles = computed(() => positions.reduce((acc, pos) => {

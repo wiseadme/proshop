@@ -73,43 +73,55 @@ export const useProductsService = createSharedComposable(() => {
         product.value = clone(item!)
     }
 
-    const getMerchant = () => {
-        if (unref(merchant)?.id) return
+    const getMerchant = async (): Promise<IMerchant> => {
+        if (unref(merchant)?.id) {
+            return unref(merchant)!
+        }
 
         return _merchantStore.getMerchant()
     }
 
-    const getAttributes = () => {
-        if (unref(attributeItems)) return
+    const getAttributes = async (): Promise<IAttribute[]> => {
+        if (unref(attributeItems)) {
+            return unref(attributeItems)!
+        }
 
         return _attributesStore.read()
     }
 
-    const getUnits = () => {
-        if (unref(unitItems)) return
+    const getUnits = async (): Promise<IUnit[]> => {
+        if (unref(unitItems)) {
+            return unref(unitItems)!
+        }
 
         return _unitsStore.read()
     }
 
-    const getCategories = () => {
-        if (unref(categoryItems)) return
+    const getCategories = async (): Promise<ICategory[]> => {
+        if (unref(categoryItems)) {
+            return unref(categoryItems)!
+        }
 
         return _categoriesStore.read()
     }
 
-    const getVariants = () => {
-        if (unref(variantItems)) return
+    const getVariants = async (): Promise<IVariant[]> => {
+        if (unref(variantItems)) {
+            return unref(variantItems)!
+        }
 
         return _variantsStore.read()
     }
 
-    const getMetaTags = () => {
-        if (unref(metaTagItems)) return
+    const getMetaTags = async (): Promise<IMetaTag[]> => {
+        if (unref(metaTagItems)) {
+            return unref(metaTagItems)!
+        }
 
         return _metaTagsStore.read()
     }
 
-    const getProducts = async (params?: Partial<IProduct>) => {
+    const getProducts = async (params?: Partial<IProduct>): Promise<IProduct[]> => {
         const products = await _productsStore.read(getRequestParams(params))
 
         isLoading.value = false
@@ -117,7 +129,7 @@ export const useProductsService = createSharedComposable(() => {
         return products
     }
 
-    const getProduct = async (id: string) => {
+    const getProduct = async (id: string): Promise<IProduct> => {
         const [item] = await _productsStore.read({ id })
 
         product.value = clone(item)
@@ -125,7 +137,7 @@ export const useProductsService = createSharedComposable(() => {
         return item
     }
 
-    const getCategoryProducts = async (category: ICategory) => {
+    const getCategoryProducts = async (category: ICategory): Promise<IProduct[]> => {
         const params = { category: category.url, ...getPaginationParams() }
 
         try {
@@ -205,7 +217,7 @@ export const useProductsService = createSharedComposable(() => {
         }
     }
 
-    const updateProductMetaTags = async (updates: { seo: IProduct['seo'] }) => {
+    const updateProductMetaTags = async (updates: { seo: IProduct['seo'] }): Promise<IProduct> => {
         const payload = {
             ...updates,
             id: unref(product)!.id,

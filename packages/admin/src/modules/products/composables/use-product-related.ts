@@ -5,7 +5,7 @@ import {
 } from 'vue'
 import { useProductsService } from '@modules/products/composables/use-products-service'
 import { IProduct } from '@proshop/types'
-import { useProduct } from '@modules/products/composables/use-product'
+import { useProductModel } from '@modules/products/composables/use-product-model'
 import { useNotifications } from '@shared/components/VNotifications/use-notifications'
 import { CHANGES_SAVED, SAVING_ERROR } from '@shared/constants/notifications'
 
@@ -17,7 +17,7 @@ export const useProductRelated = () => {
     } = useProductsService()
 
     const { notify } = useNotifications()
-    const { model } = useProduct()
+    const { model } = useProductModel()
 
     const searchedItems = ref<IProduct[]>([])
     const relatedProduct = ref<Maybe<IProduct>>(null)

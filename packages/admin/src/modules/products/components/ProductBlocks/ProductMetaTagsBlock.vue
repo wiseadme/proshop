@@ -1,16 +1,16 @@
 <script lang="ts" setup>
     import { computed, unref } from 'vue'
     import MetaTagEditForm from '@modules/products/components/ProductModalEditForms/MetaTagsEditForm.vue'
+    import VSvg from '@shared/components/VSvg/VSvg.vue'
+    import DraggableItemsList from '@shared/components/DraggableItemsList/DraggableItemsList.vue'
+    import { FormCard } from '@shared/components/FormCard/'
     import { useProductMetaTags } from '@modules/products/composables/use-product-metatags'
-    import { useProduct } from '@modules/products/composables/use-product'
+    import { useProductModel } from '@modules/products/composables/use-product-model'
     // Helpers
     import { descriptorToMetaTag } from '@shared/helpers/metatag'
-    import { FormCard } from '@shared/components/FormCard/'
-    import VSvg from '@shared/components/VSvg/VSvg.vue'
     import { SvgPaths } from '@shared/enums/svg-paths'
-    import DraggableItemsList from '@shared/components/DraggableItemsList/DraggableItemsList.vue'
 
-    const { model } = useProduct()
+    const { model } = useProductModel()
     const {
         availableMetaTags,
         currentEditableMetaTag,

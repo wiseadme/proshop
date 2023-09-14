@@ -6,7 +6,7 @@
         markRaw,
         unref,
     } from 'vue'
-    import { useProduct } from '@modules/products/composables/use-product'
+    import { useProductModel } from '@modules/products/composables/use-product-model'
     import { useProductsService } from '@modules/products/composables/use-products-service'
     import { useProductRightSidebar } from '@modules/products/composables/use-product-right-sidebar'
     import { useRoute, useRouter } from 'vue-router'
@@ -31,7 +31,7 @@
     const ProductImagesBlock = markRaw(defineAsyncComponent(() => import('@modules/products/components/ProductBlocks/ProductImagesBlock.vue')))
     const ProductCategoriesBlock = markRaw(defineAsyncComponent(() => import('@modules/products/components/ProductBlocks/ProductCategoriesBlock.vue')))
 
-    const { model } = useProduct()
+    const { model } = useProductModel()
     const { categoryItems } = useProductsService()
     const { activeItem, setActiveNavItem } = useProductRightSidebar()
 

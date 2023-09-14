@@ -4,7 +4,7 @@ import {
     watch,
 } from 'vue'
 import { useProductsService } from '@modules/products/composables/use-products-service'
-import { useProduct } from '@modules/products/composables/use-product'
+import { useProductModel } from '@modules/products/composables/use-product-model'
 import { IAttribute } from '@proshop/types'
 import { createSharedComposable } from '@shared/features/create-shared-composable'
 import { useNotifications } from '@shared/components/VNotifications/use-notifications'
@@ -16,7 +16,7 @@ import {
 } from '@shared/constants/notifications'
 
 export const useProductAttributes = createSharedComposable(() => {
-    const { model } = useProduct()
+    const { model, setProductModel } = useProductModel()
 
     const {
         product,
@@ -51,6 +51,11 @@ export const useProductAttributes = createSharedComposable(() => {
         model: unref(model).attributes,
         entity: unref(product)!.attributes,
     })
+
+    const onDiscardChanges = () => {
+        setProductModel(unref(product)!)
+        currentEditableAttribute.value = null
+    }
 
     const onUpdateAttributes = async () => {
         if (!checkDiffs()) {
@@ -90,5 +95,6 @@ export const useProductAttributes = createSharedComposable(() => {
         setForEditing,
         onDeleteAttribute,
         onUpdateAttributes,
+        onDiscardChanges,
     }
 })

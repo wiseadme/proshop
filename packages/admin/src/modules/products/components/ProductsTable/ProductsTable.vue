@@ -1,8 +1,7 @@
 <script lang="ts" setup>
-    import { icons } from '@shared/enums/icons'
     import { useProductsTable } from '@modules/products/composables/use-products-table'
+    import { icons } from '@shared/enums/icons'
     import { IProduct } from '@proshop/types'
-    import { useProduct } from '@modules/products/composables/use-product'
 
     defineEmits<{
         (e: 'delete:product', product: IProduct): void
@@ -10,13 +9,12 @@
         (e: 'open:create-modal'): void
     }>()
 
-    const { onDeleteProduct } = useProduct()
-
     const {
         cols,
         totalLength,
         products,
         onEditRow,
+        onDeleteRow,
         onCreateRow,
         onUpdateTablePage,
         onUpdateTableRowsCount,
@@ -82,7 +80,7 @@
                 color="var(--error)"
                 elevation="2"
                 text
-                @click="onDeleteProduct(row)"
+                @click="onDeleteRow(row)"
             >
                 <v-icon>{{ icons.TRASH }}</v-icon>
             </v-button>

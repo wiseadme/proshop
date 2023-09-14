@@ -1,11 +1,11 @@
 <script lang="ts" setup>
     import { onMounted } from 'vue'
     import { useRoute } from 'vue-router'
-    import { useProduct } from '@modules/products/composables/use-product'
+    import { useProductModel } from '@modules/products/composables/use-product-model'
     import { useProductsService } from '@modules/products/composables/use-products-service'
     import { useProductRightSidebar } from '@modules/products/composables/use-product-right-sidebar'
 
-    const { setProductModel } = useProduct()
+    const { setProductModel } = useProductModel()
     const { getProduct, onInit } = useProductsService()
     const { activeItem } = useProductRightSidebar()
 

@@ -3,13 +3,13 @@
     import { TextEditor } from '@shared/components/TextEditor'
     import { FormCard } from '@shared/components/FormCard'
     import { VSvg } from '@shared/components/VSvg'
-    import { useProduct } from '@modules/products/composables/use-product'
+    import { useProductModel } from '@modules/products/composables/use-product-model'
     import { useProductsService } from '@modules/products/composables/use-products-service'
     import { SvgPaths } from '@shared/enums/svg-paths'
     import { useProductInfo } from '@modules/products/composables/use-product-info'
 
     const { unitItems } = useProductsService()
-    const { model } = useProduct()
+    const { model } = useProductModel()
     const { onSubmit } = useProductInfo()
 
     const renderKey = ref<number>(0)

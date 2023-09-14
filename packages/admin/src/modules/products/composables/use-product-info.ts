@@ -3,7 +3,7 @@ import {
     ref,
     unref,
 } from 'vue'
-import { useProduct } from '@modules/products/composables/use-product'
+import { useProductModel } from '@modules/products/composables/use-product-model'
 import { useProductsService } from '@modules/products/composables/use-products-service'
 import { useNotifications } from '@shared/components/VNotifications/use-notifications'
 import { useRouter } from 'vue-router'
@@ -15,11 +15,13 @@ import {
     NO_CHANGES,
     SAVING_ERROR,
 } from '@shared/constants/notifications'
+import { EDIT_PRODUCT } from '@modules/products/constants/actions'
+import { INFO_BLOCK } from '@modules/products/constants/sections'
 
 const infoBlockKeys = ['description', 'name', 'price', 'quantity', 'seo', 'url']
 
 export const useProductInfo = () => {
-    const { model } = useProduct()
+    const { model } = useProductModel()
     const { product, createProduct, updateProductInfo } = useProductsService()
     const { notify } = useNotifications()
     const router = useRouter()
@@ -45,9 +47,9 @@ export const useProductInfo = () => {
     const goToEditProduct = (product: IProduct) => router.push({
         name: RouteNames.PRODUCT_EDIT,
         params: {
-            action: 'edit',
+            action: EDIT_PRODUCT,
             productId: product.id,
-            section: 'info',
+            section: INFO_BLOCK,
         },
     })
 

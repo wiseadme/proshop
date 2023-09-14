@@ -7,12 +7,12 @@
     } from 'vue'
     import { useFilterGroupService } from '@modules/filters/composables/use-filter-group-service'
     import { useFilterItemsService } from '@modules/filters/composables/use-filter-items-service'
-    import { useProduct } from '@modules/products/composables/use-product'
+    import { useProductModel } from '@modules/products/composables/use-product-model'
     import { useProductAttributes } from '@modules/products/composables/use-product-attributes'
     import FormCard from '@shared/components/FormCard/FormCard.vue'
     import { IFilterGroup } from '@proshop/types'
 
-    const { model } = useProduct()
+    const { model } = useProductModel()
     const {
         filterGroups,
         getFilterGroupItems,
@@ -27,6 +27,7 @@
         currentEditableAttribute,
         attributeItems,
         onUpdateAttributes,
+        onDiscardChanges
     } = useProductAttributes()
 
     const attributesMap = ref({})
@@ -51,10 +52,6 @@
 
         const attribute = unref(model).attributes.find(attr => attr.id === attrId)
         attribute!.value = unref(attributesMap)[attrId].item.value
-    }
-
-    const clearEditableAttribute = () => {
-        currentEditableAttribute.value = null
     }
 
     watch(attributeItems, (attrs) => {
@@ -146,9 +143,9 @@
                 width="120"
                 color="secondary"
                 elevation="2"
-                @click="clearEditableAttribute"
+                @click="onDiscardChanges"
             >
-                Закрыть
+                Отмена
             </v-button>
         </template>
     </form-card>

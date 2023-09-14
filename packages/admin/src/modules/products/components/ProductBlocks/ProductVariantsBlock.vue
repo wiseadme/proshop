@@ -5,7 +5,7 @@
         unref,
         watch,
     } from 'vue'
-    import { useProduct } from '@modules/products/composables/use-product'
+    import { useProductModel } from '@modules/products/composables/use-product-model'
     import { useProductVariants } from '@modules/products/composables/use-product-variants'
     import { useFilterGroupService } from '@modules/filters/composables/use-filter-group-service'
     import { useFilterItemsService } from '@modules/filters/composables/use-filter-items-service'
@@ -23,7 +23,7 @@
         IVariant,
     } from '@proshop/types'
 
-    const { model, products } = useProduct()
+    const { model, products } = useProductModel()
 
     const {
         variantItems,

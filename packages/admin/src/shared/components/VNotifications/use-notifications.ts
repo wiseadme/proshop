@@ -7,32 +7,33 @@ export const useNotifications = () => {
     const { emit } = useEventEmitter()
 
     const notify = (params: Notify): number => {
-        params.id = Date.now()
+        const notification = { ...params }
+        notification.id = Date.now()
 
-        emit('add', params)
+        emit('add', notification)
 
-        if (!params.time) {
-            params.time = DEFAULT_TIMEOUT
+        if (!notification.time) {
+            notification.time = DEFAULT_TIMEOUT
         }
 
-        if (!params.type) {
-            params.type = 'info'
+        if (!notification.type) {
+            notification.type = 'info'
         }
 
-        if (params.closeOnClick) {
+        if (notification.closeOnClick) {
             emit('add-listener')
         }
 
-        if (!params.actions) {
-            setTimeout(() => emit('remove', params.id), params.time)
+        if (!notification.actions) {
+            setTimeout(() => emit('remove', notification.id), notification.time)
         } else {
-            delete params.time
+            delete notification.time
         }
 
-        return params.id
+        return notification.id
     }
 
-    const remove = (id) => emit('remove', id)
+    const remove = (id: number) => emit('remove', id)
     const clear = () => emit('clear')
 
     return {

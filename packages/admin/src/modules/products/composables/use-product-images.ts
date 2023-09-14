@@ -4,13 +4,13 @@ import {
     unref,
 } from 'vue'
 import { IAsset } from '@proshop/types'
-import { useProduct } from '@modules/products/composables/use-product'
+import { useProductModel } from '@modules/products/composables/use-product-model'
 import { useProductsService } from '@modules/products/composables/use-products-service'
 import { useNotifications } from '@shared/components/VNotifications/use-notifications'
 import { CHANGES_SAVED, SAVING_ERROR } from '@shared/constants/notifications'
 
 export const useProductImages = () => {
-    const { model } = useProduct()
+    const { model } = useProductModel()
 
     const {
         updateProductAssets,
