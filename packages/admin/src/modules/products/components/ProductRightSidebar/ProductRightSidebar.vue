@@ -11,6 +11,16 @@
     import { useProductRightSidebar } from '@modules/products/composables/use-product-right-sidebar'
     import { useRoute, useRouter } from 'vue-router'
     import { RouteNames } from '@modules/products/enums/route-names'
+    import {
+        ATTRIBUTES_BLOCK,
+        CATEGORIES_BLOCK,
+        CONDITIONS_BLOCK,
+        IMAGES_BLOCK,
+        INFO_BLOCK,
+        META_TAGS_BLOCK,
+        RELATED_BLOCK,
+        VARIANTS_BLOCK
+    } from '@modules/products/constants/sections'
 
     const ProductAttributesBlock = markRaw(defineAsyncComponent(() => import('@modules/products/components/ProductBlocks/ProductAttributesBlock.vue')))
     const ProductConditionsBlock = markRaw(defineAsyncComponent(() => import( '@modules/products/components/ProductBlocks/ProductConditionsBlock.vue')))
@@ -41,7 +51,7 @@
             isActive: true,
             disabled: false,
             independent: false,
-            section: 'info',
+            section: INFO_BLOCK,
         },
         {
             component: ProductImagesBlock,
@@ -49,7 +59,7 @@
             isActive: false,
             disabled: !unref(model)?.id,
             independent: true,
-            section: 'images',
+            section: IMAGES_BLOCK,
         },
         {
             component: ProductCategoriesBlock,
@@ -57,14 +67,14 @@
             isActive: false,
             disabled: !unref(model)?.id,
             independent: false,
-            section: 'categories',
+            section: CATEGORIES_BLOCK,
         },
         {
             component: ProductAttributesBlock,
             title: 'Атрибуты товара',
             isActive: false,
             disabled: !unref(model)?.id,
-            section: 'attributes',
+            section: ATTRIBUTES_BLOCK,
             independent: false,
         },
         {
@@ -72,7 +82,7 @@
             title: 'Метатеги товара',
             isActive: false,
             disabled: !unref(model)?.id,
-            section: 'meta-tags',
+            section: META_TAGS_BLOCK,
             independent: false,
         },
         {
@@ -80,7 +90,7 @@
             title: 'Варианты товара',
             isActive: false,
             disabled: !unref(model)?.id,
-            section: 'variants',
+            section: VARIANTS_BLOCK,
             independent: true,
         },
         {
@@ -88,7 +98,7 @@
             title: 'Рекомендуемые товары',
             isActive: false,
             disabled: !unref(model)?.id || !unref(categoryItems)?.length,
-            section: 'related',
+            section: RELATED_BLOCK,
             independent: true,
         },
         {
@@ -96,7 +106,7 @@
             title: 'Состояние товара',
             isActive: false,
             disabled: !unref(model)?.id,
-            section: 'conditions',
+            section: CONDITIONS_BLOCK,
             independent: false,
         },
     ])

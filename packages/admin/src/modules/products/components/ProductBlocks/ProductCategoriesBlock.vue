@@ -1,7 +1,7 @@
 <script lang="ts" setup>
     import {
         computed,
-        onMounted,
+        nextTick,
         unref,
         watch,
     } from 'vue'
@@ -21,10 +21,16 @@
 
     const productCategories = computed<ICategory[]>(() => unref(product)?.categories as ICategory[])
 
-    onMounted(() => buildTreeItems(clone(unref(categoryItems))))
 
     watch(productCategories, (items: ICategory[]) => {
         items?.forEach((ctg) => select(ctg))
+    }, { immediate: true })
+
+    const stopWatcher = watch(categoryItems, (items) => {
+        if (!items) return
+
+        buildTreeItems(clone(unref(items)))
+        nextTick(stopWatcher)
     }, { immediate: true })
 
 </script>
@@ -43,6 +49,7 @@
                 </template>
                 <template #body>
                     <tree-view
+                        v-if="treeItems"
                         :value="selectsMap"
                         :items="treeItems"
                         class="mt-4"

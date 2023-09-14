@@ -1,0 +1,8 @@
+export const INFO_BLOCK = 'info'
+export const ATTRIBUTES_BLOCK = 'attributes'
+export const IMAGES_BLOCK = 'images'
+export const VARIANTS_BLOCK = 'variants'
+export const RELATED_BLOCK = 'related'
+export const META_TAGS_BLOCK = 'meta-tags'
+export const CATEGORIES_BLOCK = 'categories'
+export const CONDITIONS_BLOCK = 'conditions'

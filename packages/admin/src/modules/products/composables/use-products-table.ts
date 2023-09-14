@@ -1,9 +1,15 @@
 import { ref } from 'vue'
+// Composables
 import { useProductsService } from '@modules/products/composables/use-products-service'
-import { ICategory, IProduct } from '@proshop/types'
-import { RouteNames } from '@modules/products/enums/route-names'
 import { NavigationFailure, useRouter } from 'vue-router'
 import { useProduct } from '@modules/products/composables/use-product'
+// Constants
+import { CREATE_PRODUCT, EDIT_PRODUCT } from '@modules/products/constants/actions'
+import { INFO_BLOCK } from '@modules/products/constants/sections'
+// Enums
+import { RouteNames } from '@modules/products/enums/route-names'
+// Types
+import { ICategory, IProduct } from '@proshop/types'
 
 export const useProductsTable = () => {
     const router = useRouter()
@@ -42,9 +48,9 @@ export const useProductsTable = () => {
             name: RouteNames.PRODUCT_EDIT,
 
             params: {
-                action: 'edit',
+                action: EDIT_PRODUCT,
                 productId: row.id,
-                section: 'info',
+                section: INFO_BLOCK,
             },
         })
     }
@@ -56,8 +62,8 @@ export const useProductsTable = () => {
             name: RouteNames.PRODUCT_EDIT,
 
             params: {
-                action: 'create',
-                section: 'info',
+                action: CREATE_PRODUCT,
+                section: INFO_BLOCK,
             },
         })
     }
