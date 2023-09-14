@@ -116,11 +116,5 @@
     </v-layout>
 </template>
 <style lang="scss" scoped>
-    .image {
-        border: 2px solid transparent;
-    }
-
-    .product-image--main {
-        border-color: var(--primary) !important;
-    }
+    @import "@modules/products/components/ProductBlocks/styles/ProductImagesBlock";
 </style>
