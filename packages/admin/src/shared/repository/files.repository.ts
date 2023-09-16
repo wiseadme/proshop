@@ -44,7 +44,7 @@ class Repository implements IFilesRepository {
 }
 
 export const useFilesRepository = () => new Repository({
-    filesClient: file,
-    client: rest,
+    filesClient: file.client,
+    client: rest.client,
     path: '/api/v1/assets'
 }) as IFilesRepository

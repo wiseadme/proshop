@@ -2,15 +2,8 @@ import { rest } from '@shared/api'
 import { IRepository, IRest } from '@shared/types/app'
 import { IOption } from '@proshop/types'
 
-interface IOptionsRepository extends IRepository {
-    create: (option: IOption) => Promise<{ data: { data: IOption } }>
-    read: (id?: string) => Promise<{ data: { data: IOption[] } }>
-    update: (updates: Partial<IOption>) => Promise<{ data: { data: IOption } }>
-    delete: (id: string) => Promise<{ data: { data: boolean } }>
-}
-
-class Repository implements IOptionsRepository {
-    client: IRest
+class Repository implements IRepository<IOption> {
+    client: IRest<IOption>
     path: string
 
     constructor({ client, path }) {
@@ -36,6 +29,6 @@ class Repository implements IOptionsRepository {
 }
 
 export const useOptionsRepository = () => new Repository({
-    client: rest,
+    client: rest.client,
     path: '/api/v1/options',
 })

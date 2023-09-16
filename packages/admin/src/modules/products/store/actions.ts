@@ -1,24 +1,23 @@
 import { useProductRepository } from '@modules/products/repository'
 import {
+    IAttribute,
     IProduct,
     IProductQuery,
-    IRequestParams
+    IRequestParams,
 } from '@proshop/types'
-import { IProductActions } from '../types'
 
 const productRepository = useProductRepository()
 
-export const actions: IProductActions = {
+export const actions = {
     async create(product: IProduct) {
         try {
             const { data } = await productRepository.create(product)
 
-            this.$patch(state => {
-                state.products.push(data.data.items[0])
-                state.totalLength = data.data.total
+            this.$patch((state) => {
+                state.products.push(data.data)
             })
 
-            return data.data.items[0]
+            return data.data
         } catch (err) {
             return Promise.reject(err)
         }
@@ -29,12 +28,8 @@ export const actions: IProductActions = {
             const { data } = await productRepository.read(params)
 
             this.$patch(state => {
-                if (params.category) {
-                    state.categoryProducts = data.data.items
-                } else {
-                    state.products = data.data?.items
-                    state.totalLength = data.data?.total
-                }
+                state.products = data.data?.items
+                state.totalLength = data.data?.total
             })
 
             return data.data?.items
@@ -71,5 +66,41 @@ export const actions: IProductActions = {
         } catch (err) {
             return Promise.reject(err)
         }
-    }
+    },
+
+    async addAttribute(params: { productId: string, attribute: IAttribute }) {
+        try {
+            const { data } = await productRepository.addAttribute(params)
+
+            this.$patch((state) => {
+                state.products = state.products.map(it => {
+                    if (it.id === params.productId) return data.data
+
+                    return it
+                })
+            })
+
+            return data.data
+        } catch (err) {
+            return Promise.reject(err)
+        }
+    },
+
+    async deleteAttribute(params: { productId: string, attributeId: string }) {
+        try {
+            const { data } = await productRepository.deleteAttribute(params)
+
+            this.$patch((state) => {
+                state.products = state.products.map(it => {
+                    if (it.id === params.productId) return data.data
+
+                    return it
+                })
+            })
+
+            return data.data
+        } catch (err) {
+            return Promise.reject(err)
+        }
+    },
 }

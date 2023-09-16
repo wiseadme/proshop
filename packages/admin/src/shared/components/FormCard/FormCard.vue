@@ -9,12 +9,11 @@
 </script>
 <template>
     <v-card
-        elevation="2"
         :style="{width, height}"
-        color="white"
+        color=""
         class="form-card"
     >
-        <v-card-title class="form-card__head">
+        <v-card-title class="grey lighten-2 form-card__head py-4 elevation-2 mb-2 app-border-radius">
             <v-tooltip
                 v-if="$slots.tooltip"
                 right
@@ -39,13 +38,13 @@
             </v-tooltip>
             <div
                 v-else
-                class="form-card__icon primary white--text px-3 py-2 elevation-2 d-flex justify-center align-center"
+                class="form-card__icon white white--text px-3 py-2 elevation-2 d-flex justify-center align-center"
             >
                 <div class="form-card__icon-item">
                     <slot name="icon"/>
                 </div>
             </div>
-            <div class="form-card__title elevation-1 secondary--text px-3 py-2 d-flex justify-center align-center">
+            <div class="form-card__title elevation-1 white secondary--text px-3 py-2 ml-2 d-flex justify-center align-center">
                 <div class="form-card__title-text">
                     <slot name="title"/>
                 </div>
@@ -61,10 +60,16 @@
                 <slot name="subtitle"/>
             </div>
         </v-card-subtitle>
-        <v-card-content class="form-card__body">
+        <v-card-content
+            class="form-card__body white elevation-2 pa-4 app-border-radius"
+            style="flex-grow: 1"
+        >
             <slot name="body"/>
         </v-card-content>
-        <v-card-actions v-if="$slots.actions">
+        <v-card-actions
+            v-if="$slots.actions"
+            class="white elevation-2 pa-4 mt-2 app-border-radius"
+        >
             <slot name="actions"/>
         </v-card-actions>
     </v-card>
@@ -73,6 +78,9 @@
     .form-card {
         overflow: visible;
         border-radius: $border-radius;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
 
         &__head {
             position: relative;
@@ -82,9 +90,6 @@
             font-size: .9rem;
             padding: 0;
             min-height: 32px;
-            position: absolute;
-            left: 10px;
-            top: -10px;
             border-radius: $border-radius;
 
             &-item {
@@ -93,9 +98,6 @@
         }
 
         &__title {
-            position: absolute;
-            right: 0;
-            top: 0;
             font-size: .8rem;
             border-bottom-left-radius: $border-radius;
             border-top-right-radius: $border-radius;

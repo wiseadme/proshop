@@ -1,11 +1,11 @@
 import { ref, unref } from 'vue'
 import { useProductsService } from '@modules/products/composables/use-products-service'
-import { useProduct } from '@modules/products/composables/use-product'
+import { useProductModel } from '@modules/products/composables/use-product-model'
 import { IOption, IProduct } from '@proshop/types'
 import { clone } from '@shared/helpers'
 
 export const useProductVariants = () => {
-    const { model } = useProduct()
+    const { model } = useProductModel()
 
     const {
         product,

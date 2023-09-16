@@ -9,6 +9,9 @@ export const usersRoutes = [
                 component: () => import(/* webpackChunkName: "Page.Proshop" */ '@modules/users/pages/UsersPage.vue'),
                 name: 'user-table'
             }
-        ]
+        ],
+        meta: {
+            name: 'users'
+        }
     }
 ]

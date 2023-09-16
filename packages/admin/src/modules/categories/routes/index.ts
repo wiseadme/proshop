@@ -1,14 +1,19 @@
+import { RouteNames } from '@modules/categories/enums/route-names'
+
 export const categoryRoutes = [
     {
         path: '/categories',
-        component: () => import(/* webpackChunkName: "Page.Proshop" */  '@modules/categories/layouts/CategoriesLayout.vue'),
+        component: () => import(/* webpackChunkName: "Page.CATEGORIES" */  '@modules/categories/layouts/CategoriesLayout.vue'),
         name: 'categories',
         children: [
             {
                 path: '',
-                component: () => import(/* webpackChunkName: "Page.Proshop" */ '@modules/categories/pages/CategoriesPage.vue'),
-                name: 'categories-table',
+                component: () => import(/* webpackChunkName: "Page.CATEGORIES_TABLE" */ '@modules/categories/pages/CategoriesPage.vue'),
+                name: RouteNames.CATEGORIES_TABLE,
             },
         ],
+        meta: {
+            name: RouteNames.CATEGORIES
+        }
     },
 ]

@@ -1,19 +1,24 @@
+import { RouteNames } from '@modules/filters/enums/route-names'
+
 export const filterRoutes = [
     {
         path: '/filter',
         component: () => import(/* webpackChunkName: "Page.Proshop" */ '@modules/filters/layouts/FiltersLayout.vue'),
-        name: 'filters',
+        name: RouteNames.FILTER,
         children: [
             {
                 path: 'groups',
                 component: () => import(/* webpackChunkName: "Page.Proshop" */ '@modules/filters/pages/FilterGroupsPage.vue'),
-                name: 'filter-groups-page'
+                name: RouteNames.FILTER_GROUPS
             },
             {
                 path: 'items',
                 component: () => import(/* webpackChunkName: "Page.Proshop" */ '@modules/filters/pages/FilterItemsPage.vue'),
-                name: 'filter-items-page'
+                name: RouteNames.FILTER_ITEMS
             }
-        ]
+        ],
+        meta: {
+            name: RouteNames.FILTER
+        }
     }
 ]

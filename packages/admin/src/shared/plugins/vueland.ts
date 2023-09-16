@@ -29,11 +29,11 @@ vueland.setIcons('fa')
 
 vueland.setTheme({
     base: colors.white.base,
-    primary: '#1987e1',
-    secondary: '#0a083e',
+    primary: '#6a6a6a',
+    secondary: '#2e2d2d',
     content: colors.grey.darken3,
     error: colors.red.lighten2,
-    success: 'rgb(77,204,118)',
+    success: 'rgb(27,188,80)',
     warning: 'rgb(243,148,78)',
     disabled: '#e6e6e6',
 })

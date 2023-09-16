@@ -9,6 +9,9 @@ export const metaTagRoutes = [
                 component: () => import(/* webpackChunkName: "Page.Proshop" */ '@modules/metatags/pages/MetaTagsPage.vue'),
                 name: 'metatags-table'
             }
-        ]
+        ],
+        meta: {
+            name: 'metatags'
+        }
     }
 ]

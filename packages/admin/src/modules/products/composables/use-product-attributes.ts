@@ -4,13 +4,29 @@ import {
     watch,
 } from 'vue'
 import { useProductsService } from '@modules/products/composables/use-products-service'
-import { useProduct } from '@modules/products/composables/use-product'
+import { useProductModel } from '@modules/products/composables/use-product-model'
 import { IAttribute } from '@proshop/types'
 import { createSharedComposable } from '@shared/features/create-shared-composable'
+import { useNotifications } from '@shared/components/VNotifications/use-notifications'
+import { hasValueDiffs } from '@shared/helpers/diffs.helpers'
+import {
+    CHANGES_SAVED,
+    NO_CHANGES,
+    SAVING_ERROR,
+} from '@shared/constants/notifications'
 
 export const useProductAttributes = createSharedComposable(() => {
-    const { attributeItems } = useProductsService()
-    const { model } = useProduct()
+    const { model, setProductModel } = useProductModel()
+
+    const {
+        product,
+        attributeItems,
+        addProductAttribute,
+        deleteProductAttribute,
+        updateProductAttributes,
+    } = useProductsService()
+
+    const { notify } = useNotifications()
 
     const attributes = ref<IAttribute[]>([])
     const currentEditableAttribute = ref<Maybe<IAttribute>>(null)
@@ -21,9 +37,54 @@ export const useProductAttributes = createSharedComposable(() => {
         currentEditableAttribute.value = attr
     }
 
-    const onDeleteAttribute = (attr: IAttribute) => {
-        unref(model).attributes = unref(model).attributes.filter(it => it.id !== attr.id)
-        attributes.value = unref(model).attributes
+    const checkDiffs = () => hasValueDiffs({
+        model: unref(model).attributes,
+        entity: unref(product)!.attributes,
+    })
+
+    const onDiscardChanges = () => {
+        setProductModel(unref(product)!)
+        currentEditableAttribute.value = null
+    }
+
+    const onRemoveAttribute = async (newIndex: number) => {
+        const attribute = unref(availableAttributes)[newIndex]
+
+        try {
+            await deleteProductAttribute(attribute.id)
+
+            notify(CHANGES_SAVED)
+        } catch (err) {
+            notify(SAVING_ERROR)
+        }
+    }
+
+    const onAddAttribute = async (attribute: IAttribute) => {
+        try {
+            await addProductAttribute(attribute)
+
+            notify(CHANGES_SAVED)
+        } catch (err) {
+            notify(SAVING_ERROR)
+        }
+    }
+
+    const onUpdateAttributes = async () => {
+        if (!checkDiffs()) {
+            notify(NO_CHANGES)
+
+            return
+        }
+
+        const attributes = unref(model).attributes
+
+        try {
+            await updateProductAttributes({ attributes })
+
+            notify(CHANGES_SAVED)
+        } catch (err) {
+            notify(SAVING_ERROR)
+        }
     }
 
     watch(() => unref(model).attributes, (attrs) => {
@@ -44,6 +105,9 @@ export const useProductAttributes = createSharedComposable(() => {
         availableAttributes,
         usedAttributes,
         setForEditing,
-        onDeleteAttribute,
+        onRemoveAttribute,
+        onUpdateAttributes,
+        onDiscardChanges,
+        onAddAttribute,
     }
 })

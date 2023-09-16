@@ -25,6 +25,7 @@
                 @open:order="onOpenOrder"
             />
             <order-actions-modal
+                v-if="users"
                 v-model="showModal"
                 :order="order"
                 :users="users"

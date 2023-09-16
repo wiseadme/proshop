@@ -10,5 +10,8 @@ export const unitRoutes = [
                 name: 'units-table',
             },
         ],
+        meta: {
+            name: 'units'
+        }
     },
 ]

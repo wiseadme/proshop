@@ -19,9 +19,8 @@ export class UnitRepository implements IUnitRepository {
 
     async create(unit: IUnit) {
         const unitData = await new UnitModel({
+            ...UnitsMapper.toMongoModelData(unit),
             _id: new mongoose.Types.ObjectId(),
-            value: unit.value,
-            meta: unit.meta,
         }).save()
 
         return UnitsMapper.toDomain(unitData.toObject())

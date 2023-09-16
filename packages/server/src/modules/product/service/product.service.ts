@@ -1,4 +1,4 @@
-import { inject, injectable } from 'inversify'
+import { id, inject, injectable } from 'inversify'
 import { TYPES } from '@common/schemes/di-types'
 
 // Entity
@@ -8,10 +8,10 @@ import { Product } from '@modules/product/entity/product.entity'
 import { ILogger } from '@/types/utils'
 import { IProductRepository } from '../types/repository'
 import { IProductService } from '../types/service'
-import { ICategory, IProduct, IProductQuery, IRequestParams } from '@proshop/types'
+import { IAttribute, ICategory, IProduct, IProductQuery, IRequestParams } from '@proshop/types'
 import { IProductGatewayService } from '@modules/product/gateway/gateway.service'
 import { ServiceHelpers } from '@modules/product/helpers/service.helpers'
-
+import { query } from 'express'
 
 @injectable()
 export class ProductService extends ServiceHelpers implements IProductService {
@@ -32,10 +32,7 @@ export class ProductService extends ServiceHelpers implements IProductService {
             }
         }
 
-        return {
-            items: [item],
-            total: await this.repository.getDocumentsCount(),
-        }
+        return item
     }
 
     async read(query: IRequestParams<IProductQuery>) {
@@ -59,16 +56,6 @@ export class ProductService extends ServiceHelpers implements IProductService {
 
             return data
         }
-
-        // if (attrQueries.length) {
-        //     const options = await this.gateway.option.findMany(optionQueries.map(key => query[key]))
-        //     const products = await this.repository.findByVariantOptions(options.map(option => option.name))
-        //
-        //     data.items = products
-        //     data.total = products.length
-        //
-        //     return data
-        // }
 
         if (url) {
             const product = await this.repository.findByUrl(url)
@@ -148,5 +135,13 @@ export class ProductService extends ServiceHelpers implements IProductService {
         }
 
         return result
+    }
+
+    async addAttribute(params: { productId: string, attribute: IAttribute }) {
+        return this.repository.addAttribute(params)
+    }
+
+    async deleteAttribute(params: { productId: string, attributeId: string }) {
+        return this.repository.deleteAttribute(params)
     }
 }

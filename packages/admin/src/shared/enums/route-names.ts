@@ -3,6 +3,5 @@ export const enum RouteNames {
     ATTRIBUTES = 'attributes',
     MAIN = 'main',
     DASHBOARD = 'dashboard',
-    PRODUCTS = 'products',
     LOGIN = 'login',
 }

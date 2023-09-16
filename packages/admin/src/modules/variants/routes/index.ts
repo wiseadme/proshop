@@ -10,5 +10,8 @@ export const variantRoutes = [
                 name: 'variant-table',
             },
         ],
+        meta: {
+            name: 'variants'
+        }
     },
 ]

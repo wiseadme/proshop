@@ -20,14 +20,21 @@
 
     const emit = defineEmits<{
         (e: 'modelValue', value: OrderableItem<T>[]): void
+        (e: 'update', value: OrderableItem<T>[]): void
         (e: 'change', value: OrderableItem<T>[]): void
+        (e: 'remove', value: number): void
         (e: 'delete', value: OrderableItem<T>): void
         (e: 'edit', value: OrderableItem<T>): void
+        (e: 'add', value: OrderableItem<T>): void
         (e: 'show-item-menu', value: OrderableItem<T>): void
     }>()
 
-    const onDelete = (value: OrderableItem<T>) => emit('delete', value)
-    const onEdit = (value: OrderableItem<T>) => emit('edit', value)
+    const onRemove = (item) => {
+        emit('remove', item.newIndex)
+    }
+
+    const onDelete = (item: OrderableItem<T>) => emit('delete', item)
+    const onEdit = (item: OrderableItem<T>) => emit('edit', item)
 
     const items = computed({
         get: () => modelValue || [],
@@ -37,6 +44,15 @@
     const onChange = () => {
         unref(items).forEach((it, i) => it.order = i)
         emit('change', unref(items))
+    }
+
+    const onAdd = (item: any) => {
+        const value = modelValue![item.newIndex as number]
+        emit('add', value)
+    }
+
+    const onUpdate = (/*val*/) => {
+        emit('update', unref(items))
     }
 </script>
 <template>
@@ -49,7 +65,10 @@
             :item-key="itemKey"
             :group="group"
             class="draggable-container"
+            @add="onAdd"
+            @remove="onRemove"
             @change="onChange"
+            @update="onUpdate"
         >
             <template #item="{element}">
                 <div>

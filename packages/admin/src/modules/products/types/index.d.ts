@@ -13,7 +13,7 @@ export interface IProductState {
 export interface IProductActions {
   create(product: IProduct): Promise<IProduct>
 
-  read(params?: IRequestParams<IProductQuery>): Promise<Array<IProduct>>
+  read(params?: IRequestParams<IProductQuery>): Promise<IProduct[]>
 
   delete(product): Promise<boolean>
 

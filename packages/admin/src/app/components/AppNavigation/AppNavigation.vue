@@ -1,5 +1,6 @@
 <script lang="ts" setup>
     import {
+        markRaw,
         ref,
         unref,
         watch
@@ -9,95 +10,102 @@
     const router = useRouter()
     const route = useRoute()
 
-    const items = {
+    const items = markRaw({
         dashboard: {
             title: 'Показатели',
             icon: 'fas fa-chart-pie',
-            path:'/dashboard'
+            path: '/dashboard',
         },
         categories: {
             title: 'Категории',
             icon: 'fas fa-cubes',
-            path: '/categories'
+            path: '/categories',
         },
         products: {
             title: 'Товары',
             icon: 'fas fa-boxes',
-            path: '/products'
+            path: '/products',
         },
         orders: {
             title: 'Заказы',
             icon: 'fas fa-folder',
-            path: '/orders'
+            path: '/orders',
         },
         customers: {
             title: 'Клиенты',
             icon: 'fas fa-people-arrows',
-            path: '/customers'
+            path: '/customers',
         },
         users: {
             title: 'Сотрудники',
             icon: 'fas fa-user',
-            path: '/users'
+            path: '/users',
         },
         attributes: {
             title: 'Атрибуты',
             icon: 'fab fa-buffer',
-            path: '/attributes'
+            path: '/attributes',
         },
         filter: {
             title: 'Фильтры',
             icon: 'fas fa-list',
             children: {
-                groups: {
+                ['/filter/groups']: {
                     title: 'Группы фильтров',
                     icon: 'far fa-object-group',
-                    path: '/filter/groups'
+                    path: '/filter/groups',
+                    parent: 'filter'
                 },
-                items: {
+                ['/filter/items']: {
                     title: 'Коллекции фильтров',
                     icon: 'far fa-object-group',
-                    path: '/filter/items'
-                }
-            }
+                    path: '/filter/items',
+                    parent: 'filter'
+                },
+            },
         },
         units: {
             title: 'Измерения',
             icon: 'fab fa-unity',
-            path: '/units'
+            path: '/units',
         },
         variants: {
             title: 'Варианты',
             icon: 'far fa-object-ungroup',
-            path: '/variants'
+            path: '/variants',
         },
         metatags: {
             title: 'Мета теги',
             icon: 'fas fa-code',
-            path: '/metatags'
+            path: '/metatags',
+        },
+        networks: {
+            title: 'Социальные сети',
+            icon: 'fas fa-project-diagram',
+            path: '/networks',
         },
         settings: {
             title: 'Конфигурация',
             icon: 'fas fa-cog',
             children: {
-                merchant: {
+                ['/settings/merchant']: {
                     title: 'Организация',
                     icon: 'fas fa-store-alt',
                     path: '/settings/merchant',
                 },
-                site: {
+                ['/settings/site']: {
                     title: 'Сайт',
                     icon: 'fas fa-store-alt',
                     path: '/settings/site',
                 },
-            }
+            },
         },
         // elements: {
         //     title: 'Элементы',
         //     icon: 'fas fa-newspaper',
         //     path: '/elements'
         // }
-    }
+    })
 
     const current = ref<Maybe<any>>(null)
 
@@ -105,25 +113,17 @@
         router.push(it.path)
     }
 
-    const getCurrentItemIndexByRoutePath = (items, path) => {
-        const key = Object.keys(items).find((key) => path.includes(key))
+    watch(() => route.path, () => {
+        if (!route.meta.name) return
 
-        return items[key!]
-    }
-
-    watch(() => route.path, (newPath) => {
-        if (newPath === '/') return
-
-        current.value = getCurrentItemIndexByRoutePath(items, newPath)
+        const name = route.meta.name as string
+        current.value = items[name]
 
         if (unref(current)?.children) {
-            const parent = newPath.split('/').filter(it => !!it)[0]
-
-            current.value = getCurrentItemIndexByRoutePath(items[parent].children, newPath)
+            current.value = items[name].children[route.path]
         }
 
-
-    }, {immediate: true})
+    }, { immediate: true })
 
 </script>
 <template>
@@ -188,5 +188,5 @@
     </v-navigation>
 </template>
 <style lang="scss">
-  @import 'AppNavigation';
+    @import 'AppNavigation';
 </style>

@@ -1,7 +1,6 @@
 import { IAuthRepository, useAuthRepository } from '@shared/repository/auth.repository'
 
 const repository: IAuthRepository = useAuthRepository()
-
 export const actions = {
     async loginUser(user: {username: string, password: string}){
         try {
