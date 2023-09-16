@@ -141,7 +141,7 @@ module.exports = (env = {}) => {
                 '@app': `${PATH.src}/app`,
                 '@modules': `${PATH.src}/modules`,
                 '@shared': `${PATH.src}/shared`,
-                vue: env.dev ? 'vue/dist/vue.runtime.esm-browser.js' : 'vue/dist/vue.runtime.esm-browser.prod.js'
+                vue: env.dev ? 'vue/dist/vue.runtime.esm-browser.js' : env.test ? 'vue/dist/vue.runtime.esm-bundler.js' : 'vue/dist/vue.runtime.esm-browser.prod.js'
             }
         },
         plugins: [
@@ -180,7 +180,14 @@ module.exports = (env = {}) => {
             new webpack.DefinePlugin({
                 __VUE_OPTIONS_API__: false,
                 __VUE_PROD_DEVTOOLS__: false,
-                'process.env.YANDEX_MAP_API_KEY': JSON.stringify(process.env.YANDEX_MAP_API_KEY)
+                'process.env.YANDEX_MAP_API_KEY': JSON.stringify(process.env.YANDEX_MAP_API_KEY),
+                'process.env.VK_AUTH_URI': JSON.stringify(process.env.VK_AUTH_URI),
+                'process.env.VK_CLIENT_ID': JSON.stringify(process.env.VK_CLIENT_ID),
+                'process.env.VK_SECRET_KEY': JSON.stringify(process.env.VK_SECRET_KEY),
+                'process.env.VK_REDIRECT_URI': JSON.stringify(process.env.VK_REDIRECT_URI),
+                'process.env.VK_RESPONSE_TYPE': JSON.stringify(process.env.VK_RESPONSE_TYPE),
+                'process.env.VK_DISPLAY': JSON.stringify(process.env.VK_DISPLAY),
+                'process.env.VK_SCOPE': JSON.stringify(process.env.VK_SCOPE),
             }),
             new VueLoaderPlugin(),
             new BundleAnalyzerPlugin({

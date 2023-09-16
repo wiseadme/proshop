@@ -1,7 +1,7 @@
-import { Document, model, Schema } from 'mongoose'
-import { IUser } from '@proshop/types'
+import { model, Schema } from 'mongoose'
+import { IUserMongoModel } from '@proshop/types'
 
-const UserSchema = new Schema<Document & IUser>({
+const UserSchema = new Schema<IUserMongoModel>({
     _id: Schema.Types.ObjectId,
     firstName: {
         type: String,
@@ -48,4 +48,4 @@ const UserSchema = new Schema<Document & IUser>({
     timestamps: true,
 })
 
-export const UserModel = model('User', UserSchema)
+export const UserModel = model<IUserMongoModel>('User', UserSchema)

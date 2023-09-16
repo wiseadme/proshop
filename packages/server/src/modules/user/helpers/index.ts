@@ -3,9 +3,9 @@ import { IUser } from '@proshop/types'
 import { isExpired, parseJWToken } from '@common/helpers'
 
 export class UserHelpers {
-    prepareUserResponseData(user: IUser): IUser & Document {
+    prepareUserResponseData(user: IUser): IUser {
         const userData: Partial<IUser> = {
-            _id: user._id,
+            id: user.id,
             firstName: user.firstName,
             secondName: user.secondName,
             username: user.username,
@@ -21,6 +21,6 @@ export class UserHelpers {
             delete userData.exp
         }
 
-        return userData as IUser & Document
+        return userData as IUser
     }
 }

@@ -1,14 +1,19 @@
-import { Document, model, Schema } from 'mongoose'
-import { IVariant } from '@proshop/types'
+import { model, Schema } from 'mongoose'
+import { IVariantMongoModel } from '@proshop/types'
 
-const VariantSchema = new Schema<Document & IVariant>({
+const VariantSchema = new Schema<IVariantMongoModel>({
     _id: Schema.Types.ObjectId,
     group: {
         type: String,
         required: true,
+        unique: true
     },
+    attributeId: {
+        type: String,
+        default: null
+    }
 }, {
     timestamps: true,
 })
 
-export const VariantModel = model<IVariant>('Variant', VariantSchema)
+export const VariantModel = model<IVariantMongoModel>('Variant', VariantSchema)

@@ -15,9 +15,9 @@ export abstract class BaseController implements IBaseController {
         })
     }
 
-    error({ method, error, url }: ErrorOptions) {
+    error({ method, error, url, status = 500 }: ErrorOptions) {
         BaseController.logger.error(
-            error?.status || 500,
+            error?.status || status,
             method,
             url,
             error?.message || error,

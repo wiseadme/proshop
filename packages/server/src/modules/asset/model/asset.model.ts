@@ -1,7 +1,7 @@
-import { Document, model, Schema } from 'mongoose'
-import { IAsset } from '@proshop/types'
+import { model, Schema } from 'mongoose'
+import { IAssetMongoModel } from '@proshop/types'
 
-const AssetSchema: Schema = new Schema<IAsset & Document>({
+const AssetSchema: Schema = new Schema<IAssetMongoModel>({
     _id: Schema.Types.ObjectId,
     url: {
         type: String,
@@ -27,4 +27,4 @@ const AssetSchema: Schema = new Schema<IAsset & Document>({
     timestamps: true,
 })
 
-export const AssetModel = model<IAsset>('Asset', AssetSchema)
+export const AssetModel = model<IAssetMongoModel>('Asset', AssetSchema)

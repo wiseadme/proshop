@@ -1,6 +1,7 @@
 import { IProduct } from '@proshop/types'
 
 export class ProductDTO {
+    id: IProduct['id']
     name: IProduct['name']
     price: IProduct['price']
     quantity: IProduct['quantity']

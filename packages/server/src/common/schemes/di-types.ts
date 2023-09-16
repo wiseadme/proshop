@@ -5,6 +5,12 @@ export const TYPES = {
     DB: Symbol.for('DB'),
     REDIS: Symbol.for('REDIS'),
     CONFIG: Symbol.for('CONFIG'),
+    CONTROLLERS: {
+        IController: Symbol.for('IController'),
+    },
+    UTILS: {
+        ILogger: Symbol.for('ILogger'),
+    },
     SERVICES: {
         ICategoryService: Symbol.for('ICategoryService'),
         IProductService: Symbol.for('IProductService'),
@@ -22,13 +28,13 @@ export const TYPES = {
         IMerchantService: Symbol.for('IMerchantService'),
         ISettingsService: Symbol.for('ISettingsService'),
         ISiteService: Symbol.for('ISiteService'),
-        IProductGatewayService: Symbol.for('IProductGatewayService')
+        IFilterGroupService: Symbol.for('IFilterGroupService'),
+        IFilterItemService: Symbol.for('IFilterItemService'),
     },
-    CONTROLLERS: {
-        IController: Symbol.for('IController'),
-    },
-    UTILS: {
-        ILogger: Symbol.for('ILogger'),
+    GATEWAYS: {
+        IProductGatewayService: Symbol.for('IProductGatewayService'),
+        ICartGatewayService: Symbol.for('ICartGatewayService'),
+        IOrderGatewayService: Symbol.for('IOrderGatewayService'),
     },
     REPOSITORIES: {
         ICategoryRepository: Symbol.for('ICategoryRepository'),
@@ -45,7 +51,9 @@ export const TYPES = {
         IMetaTagRepository: Symbol.for('IMetaTagRepository'),
         IMerchantRepository: Symbol.for('IMerchantRepository'),
         ISettingsRepository: Symbol.for('ISettingsRepository'),
-        ISiteRepository: Symbol.for('ISiteRepository')
+        ISiteRepository: Symbol.for('ISiteRepository'),
+        IFilterGroupRepository: Symbol.for('IFilterGroupRepository'),
+        IFilterItemRepository: Symbol.for('IFilterItemRepository')
     },
     MIDDLEWARES: {
         IMiddleware: Symbol.for('IMiddleware'),

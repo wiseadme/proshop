@@ -1,56 +1,60 @@
 <script lang="ts" setup>
-    import { onMounted } from 'vue'
-    import { emitter } from './events'
+    import {
+        computed,
+        onMounted,
+        ref
+    } from 'vue'
+    import { useEventEmitter } from './use-event-emitter'
     import { Notify } from './types'
     import {
+        ErrorNotification,
         InfoNotification,
         SimpleNotification,
         SuccessNotification,
-        WarningNotification
+        WarningNotification,
     } from './components'
 
-
-    const props = withDefaults(defineProps<{
+    const { transition = 'fade', position = 'top right' } = defineProps<{
         transition?: string
         position?: string
-    }>(), {
-        transition: 'fade',
-        position: 'top right'
-    })
+    }>()
 
-    const positions = props.position.split(' ')
+    const positions = position.split(' ')
+
+    const { on } = useEventEmitter()
 
     const notifyComponents = {
         info: InfoNotification,
         success: SuccessNotification,
         warning: WarningNotification,
-        simple: SimpleNotification
+        simple: SimpleNotification,
+        error: ErrorNotification,
     }
 
-    let notifications = $ref<Notify[]>([])
+    let notifications = ref<Notify[]>([])
     let isClickable = false
 
     const addNotification = (params: Notify) => {
-        notifications.push(params)
+        notifications.value.push(params)
     }
 
-    const removeNotification = (id) => {
-        notifications = notifications.filter(it => it.id !== id)
+    const removeNotification = (id: number) => {
+        notifications.value = notifications.value.filter(it => it.id !== id)
     }
 
     const clearAll = () => {
-        notifications = []
+        notifications.value = []
     }
 
-    const onClick = (notify) => {
+    const onClick = (notify: Notify) => {
         if (!isClickable) {
             return
         }
 
-        removeNotification(notify.id)
+        removeNotification(notify.id!)
     }
 
-    const styles = $computed(() => positions.reduce((acc, pos) => {
+    const styles = computed(() => positions.reduce((acc, pos) => {
         if (pos === 'center') {
             acc['left'] = '50%'
             acc['transform'] = 'translateX(-50%)'
@@ -62,10 +66,10 @@
     }, {}))
 
     onMounted(() => {
-        emitter.on('add', addNotification)
-        emitter.on('remove', removeNotification)
-        emitter.on('add-listener',() => isClickable = true)
-        emitter.on('clear', clearAll)
+        on('add', addNotification)
+        on('remove', removeNotification)
+        on('add-listener', () => isClickable = true)
+        on('clear', clearAll)
     })
 
 </script>
@@ -75,8 +79,8 @@
         :style="styles"
     >
         <transition-group
-            :name="props.transition"
-            :move-class="props.transition"
+            :name="transition"
+            :move-class="transition"
             tag="div"
         >
             <component
@@ -93,10 +97,10 @@
     </div>
 </template>
 <style lang="scss">
-  .v-notifications {
-    display: block;
-    position: fixed;
-    z-index: 5000;
-    padding: 10px;
-  }
+    .v-notifications {
+        display: block;
+        position: fixed;
+        z-index: 5000;
+        padding: 10px;
+    }
 </style>

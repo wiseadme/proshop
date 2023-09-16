@@ -61,13 +61,14 @@ export class SettingsController extends BaseController implements IController {
     async createMerchant({ body, method, url }: Request<{}, {}, IMerchant>, res: Response) {
         try {
             const merchant = await this.merchantService.create(body)
-
             const settings = await this.settingsService.read()
 
+            console.log(merchant, settings)
+
             if (!settings) {
-                await this.settingsService.create({ merchant: merchant._id })
+                await this.settingsService.create({ merchant: merchant.id })
             } else {
-                await this.settingsService.update({ _id: settings._id, merchant: merchant._id })
+                await this.settingsService.update({ id: settings.id, merchant: merchant.id })
             }
 
             this.send({
@@ -149,9 +150,9 @@ export class SettingsController extends BaseController implements IController {
             const settings = await this.settingsService.read()
 
             if (!settings) {
-                await this.settingsService.create({ site: siteConfig._id })
+                await this.settingsService.create({ site: siteConfig.id })
             } else {
-                await this.settingsService.update({ _id: settings._id, site: siteConfig._id })
+                await this.settingsService.update({ id: settings.id, site: siteConfig.id })
             }
 
             this.send({

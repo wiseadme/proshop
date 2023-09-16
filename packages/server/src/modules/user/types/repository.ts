@@ -2,11 +2,11 @@ import { Document } from 'mongoose'
 import { IUser } from '@proshop/types'
 
 export interface IUserRepository {
-    create(params): Promise<IUser & Document>
+    create(params): Promise<IUser>
 
-    read(params: Partial<IUser>): Promise<(IUser & Document)[]>
+    find(params: Partial<IUser>): Promise<IUser[]>
 
-    update(updates: any): Promise<{ updated: IUser & Document }>
+    update(updates: any): Promise<{ updated: IUser }>
 
     delete(id: string): Promise<boolean>
 }

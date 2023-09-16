@@ -2,11 +2,13 @@ import { Document } from 'mongoose'
 import { IOption } from '@proshop/types'
 
 export interface IOptionService {
-    create(option: IOption): Promise<Document & IOption>
+    create(option: IOption): Promise<IOption>
 
-    read(id?: string): Promise<Array<Document & IOption>>,
+    find(id?: string): Promise<IOption[] | IOption>,
 
-    update(updates: Partial<IOption>): Promise<{ updated: Document & IOption }>
+    findMany(ids: string[]): Promise<IOption[]>
+
+    update(updates: Partial<IOption>): Promise<{ updated: IOption }>
 
     delete(id: string): Promise<boolean>
 }

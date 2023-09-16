@@ -1,7 +1,7 @@
 import { model, Schema } from 'mongoose'
-import { IOrder } from '@proshop/types'
+import { IOrderMongoModel } from '@proshop/types'
 
-const OrderSchema = new Schema<IOrder>({
+const OrderSchema = new Schema<IOrderMongoModel>({
     _id: Schema.Types.ObjectId,
     items: {
         type: Array as any,
@@ -67,4 +67,4 @@ const OrderSchema = new Schema<IOrder>({
     timestamps: true,
 })
 
-export const OrderModel = model('Order', OrderSchema)
+export const OrderModel = model<IOrderMongoModel>('Order', OrderSchema)

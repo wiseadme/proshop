@@ -2,11 +2,11 @@ import { Document } from 'mongoose'
 import { IUnit } from '@proshop/types'
 
 export interface IUnitService {
-    create(unit: IUnit): Promise<Document & IUnit>
+    create(unit: IUnit): Promise<IUnit>
 
-    read(params: Partial<IUnit>): Promise<Array<Document & IUnit>>
+    read(params: Partial<IUnit>): Promise<IUnit[]>
 
-    update(updates: Partial<IUnit>): Promise<{ updated: Document & IUnit }>
+    update(updates: Partial<IUnit>): Promise<{ updated: IUnit }>
 
     delete(id: string): Promise<boolean>
 }

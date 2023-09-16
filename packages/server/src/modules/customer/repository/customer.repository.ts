@@ -3,37 +3,40 @@ import { injectable } from 'inversify'
 import { CustomerModel } from '@modules/customer/model/customer.model'
 import { validateId } from '@common/utils/mongoose-validate-id'
 import { ICustomerRepository } from '@modules/customer/types/repository'
-import { ICustomer } from '@proshop/types'
+import { ICustomer, ICustomerMongoModel } from '@proshop/types'
+import { CustomerMapper } from '@modules/customer/mappers/customer.mapper'
 
 @injectable()
 export class CustomerRepository implements ICustomerRepository {
-    async create(params): Promise<ICustomer & Document> {
+    async create(customer: ICustomer): Promise<ICustomer> {
 
-        const customer = new CustomerModel({
+        const customerData = await new CustomerModel({
+            ...CustomerMapper.toMongoModelData(customer),
             _id: new mongoose.Types.ObjectId(),
-            name: params.name ?? '',
-            phone: params.phone,
         })
+            .save() as ICustomerMongoModel
 
-        await customer.save()
-
-        return customer
+        return CustomerMapper.toDomain(customerData)
     }
 
     async read(params: Partial<ICustomer>) {
-        return CustomerModel.find(params)
+        const customers = await CustomerModel
+            .find(params)
+            .lean() as ICustomerMongoModel[]
+
+        return customers.map(customer => CustomerMapper.toDomain(customer))
     }
 
     async update(updates: Partial<ICustomer>) {
-        validateId(updates._id)
+        validateId(updates.id)
 
         const updated = await CustomerModel.findByIdAndUpdate(
-            { _id: updates._id },
+            { _id: updates.id },
             { $set: updates },
             { new: true },
-        ) as ICustomer & Document
+        ) as ICustomerMongoModel
 
-        return { updated }
+        return { updated: CustomerMapper.toDomain(updated) }
     }
 
     async delete(id) {

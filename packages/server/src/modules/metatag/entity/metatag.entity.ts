@@ -1,21 +1,16 @@
 export class MetaTag {
-    private _order: number
-    private _props: Record<string, string>
+    readonly id: string
+    readonly order: number
+    readonly props: Record<string, string>
 
     constructor({
+        id = '',
         order,
         props,
     }) {
-        this._order = order
-        this._props = props
-    }
-
-    get order() {
-        return this._order
-    }
-
-    get props() {
-        return this._props
+        this.id = id
+        this.order = order
+        this.props = props
     }
 
     static create(metaTag) {

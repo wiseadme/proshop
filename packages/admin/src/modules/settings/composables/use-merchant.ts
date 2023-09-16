@@ -14,7 +14,7 @@ export const useMerchant = createSharedComposable(() => {
 
     const model = ref<IMerchant>(Merchant.create())
 
-    const isEditMode = computed(() => !!unref(merchant)?._id)
+    const isEditMode = computed(() => !!unref(merchant)?.id)
 
     const createMerchant = () => createMerchantSettings(unref(model))
     const updateMerchant = () => updateMerchantSettings(unref(model))

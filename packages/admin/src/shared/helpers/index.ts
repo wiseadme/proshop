@@ -1,5 +1,13 @@
-export const toString = obj => JSON.stringify(obj).trim()
-export const clone = obj => JSON.parse(toString(obj))
+/**
+ * @description - конвертация объекта в json строку
+ * @param {Object | Array} origin массив или объект для конвертирования
+ */
+export const toJSON = (origin: object | any[]) => JSON.stringify(origin).trim()
+/**
+ * @description - копирует объект без связи с data объектом
+ * @param {Object | Array} origin массив или объект для клонирования
+ */
+export const clone = (origin: object | any[]) => JSON.parse(toJSON(origin))
 
 export const getDifferences = (changed, origin) => {
     if (!origin) return null
@@ -8,7 +16,7 @@ export const getDifferences = (changed, origin) => {
 
     for (const key in changed) {
         if (changed[key] && changed.hasOwnProperty(key)) {
-            if (toString(changed[key]) !== toString(origin[key])) {
+            if (toJSON(changed[key]) !== toJSON(origin[key])) {
                 diffs[key] = changed[key]
             }
         }
@@ -17,4 +25,9 @@ export const getDifferences = (changed, origin) => {
     return Object.keys(diffs).length ? diffs : null
 }
 
-export const stringToSnakeUpperCase = (string) => string.replace(/([a-z]+)([A-Z])/g, '$1_$2').toUpperCase()
+/**
+ * @description - конвертирует camelCase в snake_case в верхнем регистре
+ * @param {String} value - строка вида camelCase
+ * @returns {String} - строка вида CAMEL_CASE
+ */
+export const camelToSnakeCase = (value: string): string => value.replace(/([a-z]+)([A-Z])/g, '$1_$2').toUpperCase()

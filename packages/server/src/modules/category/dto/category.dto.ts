@@ -5,8 +5,7 @@ export class CategoryDTO {
     title: string
     order?: number
     image?: string
-    parent?: string
-    children?: string[]
+    parentId?: string
     seo?: ICategory['seo']
     conditions: ICategoryConditions
 }

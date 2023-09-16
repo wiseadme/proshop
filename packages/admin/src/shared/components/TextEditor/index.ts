@@ -1,4 +1,1 @@
-import TextEditor from './TextEditor.vue'
-
-export { TextEditor }
-export default TextEditor
+export { default as TextEditor } from './TextEditor.vue'

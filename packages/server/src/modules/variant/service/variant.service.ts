@@ -6,6 +6,7 @@ import { Document } from 'mongoose'
 import { IVariant } from '@proshop/types'
 import { IVariantService } from '../types/service'
 import { IVariantRepository } from '../types/repository'
+import { Variant } from '@modules/variant/entity/variant.entity'
 
 @injectable()
 export class VariantService implements IVariantService {
@@ -16,14 +17,14 @@ export class VariantService implements IVariantService {
     }
 
     async create(variant: IVariant) {
-        return await this.repository.create(variant)
+        return await this.repository.create(Variant.create(variant))
     }
 
     async read() {
         return await this.repository.read()
     }
 
-    async update(updates: Partial<IVariant & Document>) {
+    async update(updates: Partial<IVariant>) {
         return this.repository.update(updates)
     }
 

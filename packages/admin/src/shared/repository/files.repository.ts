@@ -13,15 +13,15 @@ type DeleteFileParams = {
   url: string,
 }
 
-interface IFilesRepository extends Omit<() => IRepository, 'read' | 'update'> {
+interface IFilesRepository extends Omit<() => IRepository<IAsset>, 'read' | 'update'> {
   create: (params: CreateFileParams) => Promise<{ data: { data: any } }>
   update: (updates: Partial<IAsset>) => Promise<{ data: { data: IAsset } }>
   delete: (params: DeleteFileParams) => Promise<{ data: { data: boolean } }>
 }
 
 class Repository implements IFilesRepository {
-  filesClient: IRest
-  client: IRest
+  filesClient: IRest<IAsset>
+  client: IRest<IAsset>
   path: string
 
   constructor({ filesClient, client, path }){
@@ -44,7 +44,7 @@ class Repository implements IFilesRepository {
 }
 
 export const useFilesRepository = () => new Repository({
-    filesClient: file,
-    client: rest,
+    filesClient: file.client,
+    client: rest.client,
     path: '/api/v1/assets'
 }) as IFilesRepository

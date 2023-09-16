@@ -9,11 +9,11 @@ async function foo() {
         workers: 8,
         requests: [
             {
-                path: '/v1/order',
+                path: '/api/v1/order',
                 method: 'GET',
             },
             {
-                path: '/v1/order',
+                path: '/api/v1/order',
                 method: 'POST',
                 header: {
                   "Content-type": "application/json"

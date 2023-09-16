@@ -1,13 +1,15 @@
 import mongoose, { Document } from 'mongoose'
-import { inject, injectable } from 'inversify'
+import { id, inject, injectable } from 'inversify'
 import { TYPES } from '@common/schemes/di-types'
 import { ProductModel } from '@modules/product/model/product.model'
 import { validateId } from '@common/utils/mongoose-validate-id'
 // Types
 import { IProductRepository } from '../types/repository'
-import { IProduct, IProductQuery, IRequestParams } from '@proshop/types'
+import { IAttribute, IProduct, IProductMongoModel, IProductQuery, IRequestParams, IVariant } from '@proshop/types'
 import { ILogger } from '@/types/utils'
 import { RepositoryHelpers } from '@modules/product/helpers/repository.helpers'
+
+import { ProductMapper } from '@modules/product/mappers/product.mapper'
 
 // Constants
 import { DEFAULT_ITEMS_COUNT, DEFAULT_PAGE } from '@common/constants/counts'
@@ -19,110 +21,131 @@ export class ProductRepository extends RepositoryHelpers implements IProductRepo
     }
 
     async create(product: IProduct) {
-        return await (await new ProductModel({
+        const productData = await new ProductModel({
+            ...ProductMapper.toMongoModelData(product),
             _id: new mongoose.Types.ObjectId(),
-            name: product.name,
-            price: product.price,
-            currency: product.currency,
-            description: product.description,
-            image: product.image,
-            url: product.url,
-            count: product.quantity,
-            categories: product.categories,
-            variants: product.variants,
-            attributes: product.attributes,
-            unit: product.unit,
-            assets: product.assets,
-            seo: product.seo,
-            conditions: product.conditions,
-            related: product.related,
         })
-            .save())
-            .populate(this.getPopulateParams()) as Document & IProduct
+            .save()
+
+        await productData.populate(this.getPopulateParams())
+
+        return ProductMapper.toDomain(productData.toObject())
     }
 
-    async read({
-        _id,
-        name,
-        category,
-        url,
-        desc,
-        asc,
-        key,
-        page = DEFAULT_PAGE,
-        count = DEFAULT_ITEMS_COUNT,
-    }: IRequestParams<IProductQuery>) {
-
-        let products
+    async find(query: IRequestParams<IProductQuery>) {
+        const { page, count, desc, asc, key } = query
 
         const queryParams = {
             ...this.getPaginationParams({ page, count }),
             ...this.getSortParams({ desc, asc, key }),
         }
 
-        if (_id) {
-            validateId(_id)
+        const products = await ProductModel
+            .find({}, [], queryParams)
+            .lean()
+            .populate(this.getPopulateParams())
 
-            return ProductModel.find({ _id }).lean().populate(this.getPopulateParams())
-        }
+        return products.map(product => ProductMapper.toDomain(product))
+    }
 
-        if (category) {
-            products = await ProductModel.aggregate(this.prepareAggregateParams({
+    async findById(id: string): Promise<IProduct> {
+        validateId(id)
+
+        const product = await ProductModel
+            .findById(id)
+            .lean()
+            .populate(this.getPopulateParams()) as IProductMongoModel
+
+        return ProductMapper.toDomain(product)
+    }
+
+    async findByQueryString(queryString: string) {
+        const products = await ProductModel
+            .find({ name: new RegExp(queryString, 'i') })
+            .lean()
+            .populate(this.getPopulateParams()) as IProductMongoModel[]
+
+        return products.map(product => ProductMapper.toDomain(product))
+    }
+
+    async findByUrl(url: string) {
+        const [product] = await ProductModel
+            .find({ url })
+            .lean()
+            .populate(this.getPopulateParams()) as IProductMongoModel[]
+
+        return ProductMapper.toDomain(product)
+    }
+
+    async findByCategory({
+        category,
+        desc,
+        asc,
+        key,
+        page = DEFAULT_PAGE,
+        count = DEFAULT_ITEMS_COUNT,
+    }: IRequestParams<IProductQuery>) {
+        const products = await ProductModel
+            .aggregate(this.prepareAggregateParams({
                 count,
                 page,
                 category,
                 desc,
                 asc,
                 key,
-            })).exec()
+            }))
+            .exec()
 
-            await Promise.all([
-                ProductModel.populate(products, this.getRelatedPopulateParams()),
-                ProductModel.populate(products, this.getCurrencyPopulateParams()),
-            ])
-        }
+        await Promise.all([
+            ProductModel.populate(products, this.getRelatedPopulateParams()),
+            ProductModel.populate(products, this.getCurrencyPopulateParams()),
+        ])
 
-        if (url) {
-            products = ProductModel.find({ url }, [], queryParams).lean().populate(this.getPopulateParams())
-        }
-
-        if (name) {
-            products = ProductModel.find({
-                'name': {
-                    '$regex': `.*${name}*.`,
-                    '$options': 'i',
-                },
-            }, queryParams).lean().populate(this.getPopulateParams())
-        }
-
-        if (!products) {
-            products = ProductModel
-                .find({}, [], queryParams)
-                .lean()
-                .populate(this.getPopulateParams())
-        }
-
-        return products
+        return products.map(product => ProductMapper.toDomain(product))
     }
 
     async update($set: Partial<IProduct>) {
-        validateId($set._id)
+        validateId($set.id)
 
         const updated = await ProductModel.findByIdAndUpdate(
-            { _id: $set._id },
-            { $set },
+            { _id: $set.id },
+            { $set: ProductMapper.toMongoModelData($set) },
             { new: true },
         )
             .lean()
-            .populate(this.getPopulateParams()) as Document & IProduct
+            .populate(this.getPopulateParams()) as IProductMongoModel
 
-        return { updated }
+        return { updated: ProductMapper.toDomain(updated) }
     }
 
-    async delete(id) {
+    async delete(id: string) {
         validateId(id)
 
-        return !!await ProductModel.findOneAndDelete({ _id: id }).lean()
+        return !!await ProductModel.findOneAndDelete({ _id: id })
+    }
+
+    async addAttribute(params: { productId: string, attribute: IAttribute }) {
+        validateId(params.productId)
+
+        const product = await ProductModel.findOneAndUpdate({ _id: params.productId }, {
+            $push: { attributes: params.attribute },
+        }, { new: true })
+            .populate(this.getPopulateParams())
+            .lean() as IProductMongoModel
+
+        return ProductMapper.toDomain(product)
+    }
+
+    async deleteAttribute(params: { productId: string, attributeId: string }) {
+        validateId(params.productId)
+
+        const product = await ProductModel.findOneAndUpdate({ _id: params.productId }, {
+            $pull: { attributes: { id: params.attributeId } },
+        }, { new: true })
+            .populate(this.getPopulateParams())
+            .lean() as IProductMongoModel
+
+        return ProductMapper.toDomain(product)
     }
 
     async getDocumentsCount(params: any = {}) {

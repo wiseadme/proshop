@@ -1,101 +1,114 @@
-import { inject, injectable } from 'inversify'
+import { id, inject, injectable } from 'inversify'
 import { TYPES } from '@common/schemes/di-types'
 
 // Entity
 import { Product } from '@modules/product/entity/product.entity'
 
 // Types
-import { Document } from 'mongoose'
 import { ILogger } from '@/types/utils'
 import { IProductRepository } from '../types/repository'
 import { IProductService } from '../types/service'
-import { IProduct, IRequestParams } from '@proshop/types'
-import { IEventBusService } from '@/types/services'
+import { IAttribute, ICategory, IProduct, IProductQuery, IRequestParams } from '@proshop/types'
 import { IProductGatewayService } from '@modules/product/gateway/gateway.service'
 import { ServiceHelpers } from '@modules/product/helpers/service.helpers'
+import { query } from 'express'
 
 @injectable()
 export class ProductService extends ServiceHelpers implements IProductService {
     constructor(
         @inject(TYPES.UTILS.ILogger) private logger: ILogger,
         @inject(TYPES.REPOSITORIES.IProductRepository) private repository: IProductRepository,
-        @inject(TYPES.SERVICES.IEventBusService) private events: IEventBusService,
-        @inject(TYPES.SERVICES.IProductGatewayService) private gateway: IProductGatewayService,
+        @inject(TYPES.GATEWAYS.IProductGatewayService) private gateway: IProductGatewayService,
     ) {
         super()
     }
 
     async create(product: IProduct) {
-        const item = await this.repository.create(Product.create(product)) as Document & IProduct
+        const item = await this.repository.create(Product.create(product)) as IProduct
 
         if (product.categories.length) {
-            for await (const category of product.categories) {
-                await this.gateway.category.update({ _id: category._id, length: 1 })
+            for await (const category of product.categories as string[]) {
+                await this.gateway.category.update({ id: category, length: 1 })
             }
         }
 
-        return {
-            items: [item],
-            total: await this.repository.getDocumentsCount(),
-        }
+        return item
     }
 
-    async read(query: IRequestParams<Partial<Omit<IProduct, 'categories'>>>) {
-        const { _id, url, category } = query
-        const hasSearchProductParams = _id || url || category
+    async read(query: IRequestParams<IProductQuery>) {
+        const { id, url, category, name, page, count, desc, asc } = query
 
-        const data = {
-            items: await this.repository.read(query) as (Document & IProduct)[],
+        const data: { items: IProduct[], total: number } = {
+            items: [],
             total: 1,
+        }
+
+        if (id) {
+            const product = await this.repository.findById(id)
+            data.items = [product]
+
+            return data
+        }
+
+        if (name) {
+            data.items = await this.repository.findByQueryString(name)
+            data.total = data.items.length
+
+            return data
+        }
+
+        if (url) {
+            const product = await this.repository.findByUrl(url)
+            data.items = [product]
+
+            return data
         }
 
         if (category) {
             const [found] = await this.gateway.category.read({ url: category })
+
             data.total = found.length
+            data.items = await this.repository.findByCategory({ category, page, count, desc, asc })
+
+            return data
         }
 
+        data.items = await this.repository.find(query)
         /**
-         * @description - если отсутствует параметры
-         * конкретного товара то получаем кол - во
-         * документов в total
+         * TODO нужно кэшировать значение total
+         * чтоб не запрашивать категорию каждый
+         * раз при запросе по категории
          */
-        if (!hasSearchProductParams) {
-
-            /**
-             * TODO нужно кэшировать значение total
-             * чтоб не запрашивать категорию каждый
-             * раз при запросе по категории
-             */
-            data.total = await this.repository.getDocumentsCount() as number
-        }
+        data.total = await this.repository.getDocumentsCount() as number
 
         return data
     }
 
-    async update(updates: Partial<Document & IProduct>) {
+    async update(updates: Partial<IProduct>) {
         if (updates.assets) {
             updates.assets.forEach(it => this.gateway.asset.updateFile(it))
             updates.image = updates.assets?.find(it => it.main)?.url || null
         }
 
         if (updates.categories) {
-            const [product] = await this.repository.read({ _id: updates._id })
+            const product = await this.repository.findById(updates.id!)
+            const currentCategories = product.categories?.map(ctg => ctg.id)
             /**
-             * Сохраняем текущие категории и апдейты категорий в мапу
+             * @description - Сохраняем текущие категории и апдейты категорий в мапу
              * для дальнейшего апдейта кол-ва товаров в категориях
              */
             const updateCategoriesMap = this.getCategoriesMap(updates.categories)
-            const productCategoriesMap = this.getCategoriesMap(product.categories)
+            const productCategoriesMap = this.getCategoriesMap(currentCategories)
 
-            for await (const { _id } of product.categories) {
-                if (_id && !updateCategoriesMap[_id]) {
-                    await this.gateway.category.update({ _id, length: -1 })
+            for await (const id of currentCategories as string[]) {
+                if (id && !updateCategoriesMap[id]) {
+                    await this.gateway.category.update({ id, length: -1 })
                 }
             }
 
-            for await (const { _id } of updates.categories) {
-                if (_id && !productCategoriesMap[_id]) {
-                    await this.gateway.category.update({ _id, length: 1 })
+            for await (const id of updates.categories as string[]) {
+                if (id && !productCategoriesMap[id]) {
+                    await this.gateway.category.update({ id, length: 1 })
                 }
             }
         }
@@ -104,18 +117,31 @@ export class ProductService extends ServiceHelpers implements IProductService {
     }
 
     async delete(id) {
-        const [product] = await this.repository.read(id)
+        const product = await this.repository.findById(id)
         const result = await this.repository.delete(id)
 
-        await this.gateway.asset.deleteFiles(product._id)
-
-        for await (const category of product.categories) {
+        /**
+         * @description - Удаляем всю статику связанную с товаром
+         */
+        await this.gateway.asset.deleteFiles(product.id)
+        /**
+         * @description - Удаляем товар из категории
+         */
+        for await (const category of product.categories as ICategory[]) {
             await Promise.all([
-                this.gateway.category.update({ _id: category._id, length: -1 }),
-                this.gateway.asset.deleteFiles(category._id),
+                this.gateway.category.update({ id: category.id, length: -1 }),
+                // this.gateway.asset.deleteFiles(category._id),
             ])
         }
 
         return result
+    }
+
+    async addAttribute(params: { productId: string, attribute: IAttribute }) {
+        return this.repository.addAttribute(params)
+    }
+
+    async deleteAttribute(params: { productId: string, attributeId: string }) {
+        return this.repository.deleteAttribute(params)
     }
 }

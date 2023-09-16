@@ -42,6 +42,7 @@
                         :rules="[v => !!v || 'Необходимо заполнить']"
                         :prepend-icon="icons.AT"
                         tabindex="1"
+                        data-field="login"
                         placeholder="введите почту"
                         autocomplete="new-password"
                     />
@@ -52,12 +53,12 @@
                         :prepend-icon="icons.LOCK"
                         :type="passwordFieldType"
                         tabindex="2"
+                        data-field="password"
                         placeholder="введите пароль"
                         autocomplete="new-password"
                     >
                         <template #append-icon>
                             <v-icon
-                                clickable
                                 :icon="passwordToggleIcon"
                                 @click="isPasswordHidden = !isPasswordHidden"
                             />
@@ -70,6 +71,7 @@
                         color="primary"
                         width="120"
                         tabindex="3"
+                        data-btn="submit"
                         @click="loginUser(validate)"
                     >
                         войти

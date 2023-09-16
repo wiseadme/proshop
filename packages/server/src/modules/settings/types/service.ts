@@ -1,12 +1,11 @@
-import { Document, LeanDocument } from 'mongoose'
-import { IMerchant, ISettings, ISite } from '@proshop/types'
+import { IMerchant, ISettings, ISite, Maybe } from '@proshop/types'
 
 export interface IMerchantService {
-    create(merchant: IMerchant): Promise<Document & IMerchant>
+    create(merchant: IMerchant): Promise<IMerchant>
 
-    read(): Promise<LeanDocument<IMerchant>>
+    read(): Promise<Maybe<IMerchant>>
 
-    update(updates: Partial<IMerchant>): Promise<{ updated: Document & IMerchant }>
+    update(updates: Partial<IMerchant>): Promise<{ updated: IMerchant }>
 
     delete(id: string): Promise<boolean>
 }
@@ -14,18 +13,18 @@ export interface IMerchantService {
 export interface ISettingsService {
     create(settings: Partial<ISettings>)
 
-    read(): Promise<LeanDocument<ISettings>>
+    read(): Promise<Maybe<ISettings>>
 
-    update(updates: Partial<ISettings>): Promise<{ updated: Document & ISettings }>
+    update(updates: Partial<ISettings>): Promise<{ updated: ISettings }>
 
     delete(id): Promise<boolean>
 }
 export interface ISiteService {
     create(siteConfig: Partial<ISite>)
 
-    read(): Promise<LeanDocument<ISite>>
+    read(): Promise<Maybe<ISite>>
 
-    update(updates: Partial<ISite>): Promise<{ updated: Document & ISite }>
+    update(updates: Partial<ISite>): Promise<{ updated: ISite }>
 
     delete(id): Promise<boolean>
 }

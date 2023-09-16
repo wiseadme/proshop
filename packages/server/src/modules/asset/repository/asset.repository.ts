@@ -9,10 +9,12 @@ import { AssetModel } from '@modules/asset/model/asset.model'
 import { config } from '@app/config'
 // Types
 import { Request, Response } from 'express'
-import { IAsset } from '@proshop/types'
+import { IAsset, IAssetMongoModel } from '@proshop/types'
 import { IAssetsRepository } from '../types/repository'
 import { AssetsResponse } from '../types/params'
 import { IFileLoaderMiddleware } from '@/types/middlewares'
+
+import {AssetMapper} from '@modules/asset/mappers/asset.mapper'
 
 @injectable()
 export class AssetRepository implements IAssetsRepository {
@@ -50,34 +52,35 @@ export class AssetRepository implements IAssetsRepository {
                     url,
                 })
                     .save()
-                    .then((asset) => resolve(asset))
+                    .then((asset) => resolve(AssetMapper.toDomain(asset.toObject())))
             })
         })
     }
 
     async update(updates) {
-        validateId(updates._id)
+        validateId(updates.id)
 
         const updated = await AssetModel.findByIdAndUpdate(
-            { _id: updates._id },
+            { _id: updates.id },
             { $set: updates },
             { new: true },
-        ) as IAsset
+        )
+            .lean() as IAssetMongoModel
 
-        return { updated }
+        return { updated: AssetMapper.toDomain(updated) }
     }
 
-    async deleteOne(asset) {
-        validateId(asset._id)
+    async deleteOne(asset: IAsset) {
+        validateId(asset.id)
 
-        const assetData = await AssetModel.findOne({ _id: asset._id })
+        const assetData = await AssetModel.findOne({ _id: asset.id })
         const ownerDir = asset.ownerId.slice(-4)
         const dirPath = `${config.uploadsDir}/${ownerDir}`
 
         await assetData!.deleteOne()
 
         await fs
-            .unlink(`${dirPath}/${asset._id}|${asset.fileName}`)
+            .unlink(`${dirPath}/${asset.id}|${asset.fileName}`)
             .catch(err => console.log(err))
 
         const dir = await fs.readdir(dirPath)

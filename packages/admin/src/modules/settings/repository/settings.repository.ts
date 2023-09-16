@@ -1,8 +1,9 @@
 import { rest } from '@shared/api'
 import { IRepository, IRest } from '@shared/types/app'
+import { ISettings } from '@proshop/types'
 
-class Repository implements IRepository {
-    client: IRest
+class Repository implements IRepository<ISettings> {
+    client: IRest<ISettings>
     path: string
 
     constructor({ client, path }) {
@@ -11,7 +12,7 @@ class Repository implements IRepository {
     }
 
     async create() {
-        return { data: null }
+        return { data: null } as any
     }
 
     async read() {
@@ -19,7 +20,7 @@ class Repository implements IRepository {
     }
 
     async update() {
-        return { data: null }
+        return { data: null } as any
     }
 
     async delete(id: string) {

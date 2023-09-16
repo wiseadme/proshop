@@ -1,41 +1,52 @@
 import { ICart } from '@proshop/types'
 
 export class Cart implements ICart {
-    private __id: string
-    private _items: ICart['items']
-    private _currency: ICart['currency']
-    private _ownerId: ICart['ownerId']
+    readonly id: string
+    public items: ICart['items']
+    public currency: ICart['currency']
+    readonly ownerId: ICart['ownerId']
+    public totalUniqueItems: ICart['totalUniqueItems']
+    readonly totalItems: ICart['totalItems']
+    public amount: ICart['amount']
+    readonly orderId: ICart['orderId']
 
     constructor({
-        _id = '',
+        id = '',
         items,
         currency = null,
         ownerId = null,
-    }: Omit<ICart, 'amount' | 'totalItems' | 'totalUniqueItems'>) {
-        this.__id = _id
-        this._items = items
-        this._currency = currency
-        this._ownerId = ownerId
+        orderId = null
+    }: ICart) {
+        this.id = id
+        this.currency = currency
+        this.ownerId = ownerId
+        this.totalUniqueItems = 0
+        this.totalItems = items.length
+        this.items = items.map(it => {
+            it.amount = it.product.price * it.quantity
+
+            return it
+        })
+        this.amount = 0
+        this.orderId = orderId
+
+        this.unmarshal()
     }
 
-    get _id() {
-        return this.__id
+    public setTotalUniqueItems() {
+        this.totalUniqueItems = this.items.reduce((acc, it) => acc + it.quantity, 0)
     }
 
-    get items() {
-        return this._items
+    public setItemsWithAmount() {
+        this.items = this.items.map(it => {
+            it.amount = it.product.price * it.quantity
+
+            return it
+        })
     }
 
-    get totalItems() {
-        return this.items.length
-    }
-
-    get totalUniqueItems() {
-        return this.items.reduce((acc, it) => acc + it.quantity, 0)
-    }
-
-    get amount() {
-        return this.items.reduce((acc, it) => {
+    public setCartAmount() {
+        this.amount = this.items.reduce((acc, it) => {
             if (it.variant?.option.price) {
                 acc += it.variant.option.price * it.quantity
             } else {
@@ -45,16 +56,10 @@ export class Cart implements ICart {
         }, 0)
     }
 
-    get currency() {
-        return this._currency
-    }
-
-    get ownerId() {
-        return this._ownerId
-    }
-
     public unmarshal() {
-
+        this.setTotalUniqueItems()
+        // this.setItemsWithAmount()
+        this.setCartAmount()
     }
 
     static create(cart: ICart) {

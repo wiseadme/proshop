@@ -1,7 +1,7 @@
 import { Document, model, Schema } from 'mongoose'
-import { IMetaTag } from '@proshop/types'
+import { IMetaTag, IMetaTagMongoModel } from '@proshop/types'
 
-const MetaTagSchema: Schema = new Schema<IMetaTag & Document>({
+const MetaTagSchema: Schema = new Schema<IMetaTagMongoModel>({
     _id: Schema.Types.ObjectId,
     props: {
         type: Object,
@@ -16,4 +16,4 @@ const MetaTagSchema: Schema = new Schema<IMetaTag & Document>({
     strict: false,
 })
 
-export const MetaTagModel = model<IMetaTag>('MetaTag', MetaTagSchema)
+export const MetaTagModel = model<IMetaTagMongoModel>('MetaTag', MetaTagSchema)

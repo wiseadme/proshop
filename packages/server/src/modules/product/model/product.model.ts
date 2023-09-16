@@ -1,21 +1,21 @@
 import { model, Schema } from 'mongoose'
-import { IProduct } from '@proshop/types'
+import { IProductMongoModel } from '@proshop/types'
 
-const ProductSchema = new Schema<IProduct>({
+const ProductSchema = new Schema<IProductMongoModel>({
     _id: Schema.Types.ObjectId,
     name: {
         type: String,
         required: true,
+        unique: true,
         index: true,
     },
     description: {
         type: String,
-        required: true,
+        default: ''
     },
     price: {
         type: Number,
-        default: 0,
-        index: true,
+        required: true
     },
     currency: {
         type: Schema.Types.ObjectId,
@@ -63,6 +63,7 @@ const ProductSchema = new Schema<IProduct>({
             key: String,
             value: String,
             order: Number,
+            id: String,
             _id: false,
         }],
         default: [],
@@ -78,6 +79,8 @@ const ProductSchema = new Schema<IProduct>({
         type: [
             {
                 group: String,
+                attributeId: String,
+                _id: String,
                 options: [{
                     type: Schema.Types.ObjectId,
                     ref: 'Option',

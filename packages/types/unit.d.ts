@@ -1,7 +1,12 @@
 import { Maybe } from './utils'
 
 export interface IUnit {
-    _id?: string
+    id: string
     value: string
     meta: Maybe<string>
+}
+
+
+export interface IUnitMongoModel extends Omit<IUnit, 'id'> {
+    _id: string
 }

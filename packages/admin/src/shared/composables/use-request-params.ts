@@ -4,7 +4,7 @@ import {
     IProductQuery,
     IRequestPagination,
     IRequestParams,
-    IRequestSort
+    IRequestSort,
 } from '@proshop/types'
 import { unref } from 'vue'
 
@@ -12,9 +12,11 @@ export const useRequestParams = () => {
     const pagination = usePagination()
     const sort = useSort()
 
-    const makeRequestParams = (params: Maybe<IProductQuery> = null): IRequestParams<IProductQuery> => {
+    const { page, count } = pagination
+
+    const getRequestParams = (params: Maybe<IProductQuery> = null): IRequestParams<IProductQuery> => {
         return {
-            ...(params ? params : {}),
+            ...(params || {}),
             ...getPaginationParams(),
             ...getSortParams(),
         }
@@ -22,8 +24,8 @@ export const useRequestParams = () => {
 
     const getPaginationParams = (): IRequestPagination => {
         return {
-            page: unref(pagination.page),
-            count: unref(pagination.count),
+            page: unref(page),
+            count: unref(count),
             length: true,
         }
     }
@@ -39,8 +41,8 @@ export const useRequestParams = () => {
     return {
         sort,
         pagination,
-        makeRequestParams,
+        getRequestParams,
         getPaginationParams,
-        getSortParams
+        getSortParams,
     }
 }

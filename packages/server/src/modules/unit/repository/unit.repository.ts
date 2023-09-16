@@ -2,10 +2,11 @@ import mongoose, { Document } from 'mongoose'
 import { inject, injectable } from 'inversify'
 import { TYPES } from '@common/schemes/di-types'
 import { UnitModel } from '../model/unit.model'
+import { UnitsMapper } from '@modules/unit/mappers/units.mapper'
 
 // Types
 import { ILogger } from '@/types/utils'
-import { IUnit } from '@proshop/types'
+import { IUnit, IUnitMongoModel } from '@proshop/types'
 import { IUnitRepository } from '@modules/unit/types/repository'
 import { validateId } from '@common/utils/mongoose-validate-id'
 
@@ -17,27 +18,32 @@ export class UnitRepository implements IUnitRepository {
     }
 
     async create(unit: IUnit) {
-        return new UnitModel({
+        const unitData = await new UnitModel({
+            ...UnitsMapper.toMongoModelData(unit),
             _id: new mongoose.Types.ObjectId(),
-            value: unit.value,
-            meta: unit.meta,
         }).save()
+
+        return UnitsMapper.toDomain(unitData.toObject())
     }
 
     async read(params) {
-        return UnitModel.find(params)
+        const units = await UnitModel
+            .find(params)
+            .lean() as IUnitMongoModel[]
+
+        return units.map(unit => UnitsMapper.toDomain(unit))
     }
 
     async update(updates: Partial<IUnit>) {
-        validateId(updates._id)
+        validateId(updates.id)
 
         const updated = await UnitModel.findByIdAndUpdate(
-            { _id: updates._id },
+            { _id: updates.id },
             { $set: updates },
             { new: true },
-        ) as Document & IUnit
+        ).lean() as IUnitMongoModel
 
-        return { updated }
+        return { updated: UnitsMapper.toDomain(updated) }
     }
 
     async delete(id): Promise<boolean> {

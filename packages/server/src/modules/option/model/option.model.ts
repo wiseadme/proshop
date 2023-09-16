@@ -1,7 +1,7 @@
-import { Document, model, Schema } from 'mongoose'
-import { IOption } from '@proshop/types'
+import { model, Schema } from 'mongoose'
+import { IOptionMongoModel } from '@proshop/types'
 
-const OptionSchema = new Schema<Document & IOption>({
+const OptionSchema = new Schema<IOptionMongoModel>({
     _id: Schema.Types.ObjectId,
     name: {
         type: String,
@@ -12,15 +12,18 @@ const OptionSchema = new Schema<Document & IOption>({
         required: true,
     },
     price: Number,
-    url: String,
     quantity: Number,
     description: String,
     assets: [{
         type: Schema.Types.ObjectId,
         ref: 'Asset',
     }],
+    url: {
+        type: String,
+        default: null
+    }
 }, {
     timestamps: true,
 })
 
-export const OptionModel = model<IOption>('Option', OptionSchema)
+export const OptionModel = model<IOptionMongoModel>('Option', OptionSchema)

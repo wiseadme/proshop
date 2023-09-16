@@ -1,5 +1,5 @@
 const webpack = require('webpack')
-const { merge } = require('webpack-merge')
+const {merge} = require('webpack-merge')
 const baseConfig = require('./webpack.config')
 const path = require('path')
 
@@ -31,13 +31,16 @@ const devConfig = (env = {}) => merge(baseConfig(env), {
             //   changeOrigin: true
             // }
         },
+        client: {
+            overlay: false,
+        },
         static: true,
         open: false,
         port: 8081,
         hot: true,
         historyApiFallback: {
             rewrites: [
-                { from: /\w+/, to: '/index.html' }
+                {from: /\w+/, to: '/index.html'}
             ]
         }
     },
@@ -46,4 +49,4 @@ const devConfig = (env = {}) => merge(baseConfig(env), {
     ]
 })
 
-module.exports = new Promise(res => res(devConfig({ dev: true })))
+module.exports = devConfig({dev: true})

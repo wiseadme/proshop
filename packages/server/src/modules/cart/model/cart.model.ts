@@ -1,7 +1,7 @@
-import { Document, model, Schema } from 'mongoose'
-import { ICart } from '@proshop/types'
+import { model, Schema } from 'mongoose'
+import { ICartMongoModel } from '@proshop/types'
 
-const CartSchema = new Schema<ICart & Document>({
+const CartSchema = new Schema<ICartMongoModel>({
     _id: Schema.Types.ObjectId,
     items: {
         type: Array as any,
@@ -28,14 +28,12 @@ const CartSchema = new Schema<ICart & Document>({
         ref: 'User',
         default: null,
     },
-    expireAt: {
-        type: Date,
+    orderId: {
+        type: String,
         default: null,
     },
 }, {
     timestamps: true,
 })
 
-CartSchema.index({ expireAt: 1 }, { expireAfterSeconds: 0 })
-
-export const CartModel = model('Cart', CartSchema)
+export const CartModel = model<ICartMongoModel>('Cart', CartSchema)

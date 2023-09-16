@@ -2,11 +2,11 @@ import { ICategory } from '@proshop/types'
 import { Document } from 'mongoose'
 
 export interface ICategoryRepository {
-    create(category: ICategory): Promise<Document & ICategory>
+    create(category: ICategory): Promise<ICategory>
 
-    read(params: Partial<ICategory>): Promise<Array<Document & ICategory>>
+    read(params: Partial<ICategory>): Promise<ICategory[]>
 
-    update(updates: Partial<ICategory>): Promise<{ updated: Document & ICategory }>
+    update(updates: Partial<ICategory>): Promise<{ updated: ICategory }>
 
     delete(id: string): Promise<boolean>
 }

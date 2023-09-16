@@ -1,11 +1,12 @@
-import mongoose, { Document } from 'mongoose'
+import mongoose from 'mongoose'
 import { inject, injectable } from 'inversify'
 import { TYPES } from '@common/schemes/di-types'
 import { validateId } from '@common/utils/mongoose-validate-id'
+import { CartMapper } from '@modules/cart/mappers/cart.mapper'
 // Types
 import { ILogger } from '@/types/utils'
 import { ICartRepository } from '../types/repository'
-import { ICart } from '@proshop/types'
+import { ICart, ICartMongoModel } from '@proshop/types'
 import { CartModel } from '@modules/cart/model/cart.model'
 
 @injectable()
@@ -15,38 +16,48 @@ export class CartRepository implements ICartRepository {
     ) {
     }
 
-    async create(cart: ICart): Promise<Document & ICart> {
-        return new CartModel({
+    async create(cart: ICart): Promise<ICart> {
+        const cartData = await new CartModel({
+            ...CartMapper.toMongoModelData(cart),
             _id: new mongoose.Types.ObjectId(),
-            items: cart.items,
-            totalItems: cart.totalItems,
-            totalUniqueItems: cart.totalUniqueItems,
-            currency: cart.currency,
-            amount: cart.amount,
-            ownerId: cart.ownerId,
-            // 43200 * 1000 is a milliseconds in 12 hours
-            expireAt: !cart.ownerId ? Date.now() + (43200 * 1000) : null,
-        }).save()
+        })
+            .save()
+
+        return CartMapper.toDomain(cartData.toObject())
     }
 
-    async read(params: Partial<ICart>): Promise<Document & ICart> {
-        params._id && validateId(params._id)
+    async findByOwnerId(id: string) {
+        const carts = await CartModel.find<ICartMongoModel[]>({ ownerId: id, orderId: null })
+            .lean()
 
-        const cart = await CartModel.find(params)
-
-        return cart?.[0]
+        return carts.map(cart => CartMapper.toDomain(cart))[0]
     }
 
-    async update(updates: ICart & Document): Promise<{ updated: Document<ICart> }> {
-        validateId(updates._id)
+    async read(params: Partial<ICart>): Promise<ICart> {
+        const { id } = params
+        id && validateId(id)
+
+        const data = CartMapper.toMongoModelData(params as ICart) as ICartMongoModel
+        id && delete params.id
+        // @ts-ignore
+        !data._id && delete data._id
+
+        const carts = await CartModel.find<ICartMongoModel[]>(data).lean()
+
+        return CartMapper.toDomain(carts[0])
+    }
+
+    async update(updates: ICart): Promise<{ updated: ICart }> {
+        validateId(updates.id)
 
         const updated = await CartModel.findByIdAndUpdate(
-            { _id: updates._id },
+            { _id: updates.id },
             { $set: updates },
             { new: true },
-        ) as Document<ICart>
+        )
+            .lean() as ICartMongoModel
 
-        return { updated }
+        return { updated: CartMapper.toDomain(updated) }
     }
 
     async delete(id) {

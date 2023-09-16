@@ -7,17 +7,17 @@ type RegistrationAccessResponse = {
 }
 
 export interface IUserService {
-    login(params, res: Response): Promise<IUser & Document>
+    login(params, res: Response): Promise<IUser>
 
     logout(cookies: Record<string, string>, res: Response): Promise<any>
 
-    create(user): Promise<IUser & Document>
+    create(user): Promise<IUser>
 
-    getUsers(params: Partial<IUser>): Promise<(IUser & Document)[]>
+    getUsers(params: Partial<IUser>): Promise<IUser[]>
 
     deleteUser(id: string): Promise<boolean>
 
-    whoami(cookies: Record<string, string>): Promise<IUser & Document>
+    whoami(cookies: Record<string, string>): Promise<IUser>
 
-    refresh(cookies: Record<string, string>, res: Response): Promise<IUser & Document>
+    refresh(cookies: Record<string, string>, res: Response): Promise<IUser>
 }

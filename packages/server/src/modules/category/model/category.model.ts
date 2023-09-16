@@ -1,7 +1,7 @@
 import { Document, model, Schema } from 'mongoose'
-import { ICategory } from '@proshop/types'
+import { ICategory, ICategoryMongoModel } from '@proshop/types'
 
-const CategorySchema: Schema = new Schema<ICategory & Document>({
+const CategorySchema: Schema = new Schema<ICategoryMongoModel>({
     _id: Schema.Types.ObjectId,
     title: {
         type: String,
@@ -20,7 +20,7 @@ const CategorySchema: Schema = new Schema<ICategory & Document>({
         metatags: Array,
         schema: Array,
     },
-    parent: {
+    parentId: {
         type: Schema.Types.ObjectId,
         ref: 'Category',
         default: null,
@@ -29,12 +29,6 @@ const CategorySchema: Schema = new Schema<ICategory & Document>({
         type: Number,
         default: 0,
     },
-    children: [{
-        type: Schema.Types.ObjectId,
-        ref: 'Category',
-        default: null,
-        _id: false,
-    }],
     conditions: {
         visible: Boolean,
         special: Boolean,
@@ -47,4 +41,4 @@ const CategorySchema: Schema = new Schema<ICategory & Document>({
     timestamps: true,
 })
 
-export const CategoryModel = model<ICategory>('Category', CategorySchema)
+export const CategoryModel = model<ICategoryMongoModel>('Category', CategorySchema)

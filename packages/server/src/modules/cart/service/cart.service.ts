@@ -1,4 +1,3 @@
-import { Document } from 'mongoose'
 import { inject, injectable } from 'inversify'
 import { TYPES } from '@common/schemes/di-types'
 // Types
@@ -6,44 +5,51 @@ import { ILogger } from '@/types/utils'
 import { ICartService } from '../types/service'
 import { ICartRepository } from '../types/repository'
 import { ICart } from '@proshop/types'
-import { IEventBusService } from '@/types/services'
-import { DELETE_CART_EVENT } from '@common/constants/events'
+import { Cart } from '@modules/cart/entity/cart.entity'
+
+// import { ICartGatewayService } from '@modules/cart/gateway/gateway.service'
 
 @injectable()
 export class CartService implements ICartService {
     constructor(
         @inject(TYPES.UTILS.ILogger) private logger: ILogger,
         @inject(TYPES.REPOSITORIES.ICartRepository) private repository: ICartRepository,
-        @inject(TYPES.SERVICES.IEventBusService) private events: IEventBusService,
     ) {
-        this.addListeners()
     }
 
     async create(cart) {
-        return await this.repository.create(cart)
+        return await this.repository.create(Cart.create(cart))
     }
 
-    async read(params: Partial<ICart>): Promise<Document & ICart> {
-        return await this.repository.read(params)
+    async read(params: Partial<ICart>): Promise<ICart> {
+        if (!params.ownerId) {
+            return await this.repository.read(params)
+        }
+
+        const cart = await this.repository.findByOwnerId(params.ownerId)
+
+        if (cart) return cart
+
+        return Promise.reject({
+            message: 'Not found',
+            status: 404,
+        })
     }
 
-    async update(updates: ICart & Document): Promise<{ updated: Document<ICart> }> {
+    async update(updates: Partial<ICart>): Promise<{ updated: ICart }> {
         if (updates.items) {
 
             updates.amount = 0
             updates.totalItems = 0
-            updates.totalUniqueItems = 0
-
             updates.totalUniqueItems = updates.items.length
 
             updates.items.forEach(it => {
-                if (it.variant && it.variant.option.price) {
-                    updates.amount += it.variant.option.price * it.quantity
-                } else {
-                    updates.amount += it.product.price * it.quantity
-                }
+                const { variant, product, quantity } = it
+                const price = variant?.option.price ?? product.price
 
-                updates.totalItems += it.quantity
+                it.amount = quantity * price!
+                updates.amount! += it.amount
+                updates.totalItems! += quantity
             })
         }
 
@@ -52,9 +58,5 @@ export class CartService implements ICartService {
 
     async delete(id: string): Promise<boolean> {
         return await this.repository.delete(id)
-    }
-
-    addListeners() {
-        this.events.on(DELETE_CART_EVENT, this.delete.bind(this))
     }
 }

@@ -12,22 +12,3 @@
 // This function is called when a project is opened or re-opened (e.g. due to
 // the project's settings changing)
 
-const { startDevServer } = require('@cypress/webpack-dev-server')
-const webpackConfig = require('../../build/webpack.dev.config.js')
-let conf
-
-webpackConfig.then(data => {
-  conf = data
-})
-/**
- * @type {Cypress.PluginConfig}
- */
-// eslint-disable-next-line no-unused-vars
-module.exports = (on, config) => {
-  on('dev-server:start', (options) => startDevServer({ options, webpackConfig: conf }))
-  // `on` is used to hook into various events Cypress emits
-  // `settings` is the resolved Cypress settings
-
-
-  return config
-}

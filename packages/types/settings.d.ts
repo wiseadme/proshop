@@ -13,7 +13,7 @@ export interface IMerchantSocial {
 }
 
 export interface IMerchant {
-    _id: string
+    id: string
     organization: string
     name: Maybe<string>
     description: Maybe<string>
@@ -39,7 +39,7 @@ export interface ISiteColors {
 }
 
 export interface ISite {
-    _id: string
+    id: string
     colors?: ISiteColors
     layout?: string
     components?: any
@@ -56,7 +56,21 @@ export interface ISitePages {
 }
 
 export interface ISettings {
+    id: string
+    merchant?: string | IMerchant
+    site?: string | ISite
+}
+
+export interface ISettingsMongoModel extends Omit<ISettings, 'id' | 'merchant' | 'site'>{
     _id: string
-    merchant: IMerchant
-    site: ISite
+    merchant?: string | IMerchantMongoModel
+    site?: string | ISiteMongoModel
+}
+
+export interface IMerchantMongoModel extends Omit<IMerchant, 'id'> {
+    _id: string
+}
+
+export interface ISiteMongoModel extends Omit<ISite, 'id'> {
+    _id: string
 }

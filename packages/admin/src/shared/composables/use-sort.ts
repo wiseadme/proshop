@@ -11,13 +11,13 @@ export const useSort = () => {
 
     const isNeedToBeSorted = computed<boolean>(() => unref(desc) || unref(asc))
 
-    const setDesc = (key) => {
+    const setDesc = (key: string) => {
         desc.value = true
         asc.value = false
         sortKey.value = key
     }
 
-    const setAsc = (key) => {
+    const setAsc = (key: string) => {
         desc.value = false
         asc.value = true
         sortKey.value = key

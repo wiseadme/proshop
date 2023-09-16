@@ -37,10 +37,15 @@ import { EventBusService } from '@common/services/event-bus.service'
 import { UserService } from '@modules/user/service/user.service'
 import { CustomerService } from '@modules/customer/service/customer.service'
 import { MetaTagService } from '@modules/metatag/service/metatag.service'
-import { MerchantService } from '@modules/settings/service/merchant.service'
-import { SettingsService } from '@modules/settings/service/settings.service'
-import { SiteService } from '@modules/settings/service/site.service'
+import { MerchantService } from '@modules/settings/services/merchant.service'
+import { SettingsService } from '@modules/settings/services/settings.service'
+import { SiteService } from '@modules/settings/services/site.service'
+import { FilterGroupService } from '@modules/filter/service/filterGroup.service'
+import { FilterItemService } from '@modules/filter/service/filterItem.service'
+
 import { GatewayService as ProductGateway, IProductGatewayService } from '@modules/product/gateway/gateway.service'
+import { GatewayService as CartGateway, ICartGatewayService } from '@modules/cart/gateway/gateway.service'
+import { GatewayService as OrderGateway, IOrderGatewayService } from '@modules/order/gateway/gateway.service'
 
 // Repositories
 import { CategoryRepository } from '@modules/category/repository/category.repository'
@@ -55,10 +60,11 @@ import { OptionRepository } from '@modules/option/repository/option.repository'
 import { UserRepository } from '@modules/user/repository/user.repository'
 import { CustomerRepository } from '@modules/customer/repository/customer.repository'
 import { MetaTagRepository } from '@modules/metatag/repository/metatag.repository'
-import { MerchantRepository } from '@modules/settings/repository/merchant.repository'
-import { SiteRepository } from '@modules/settings/repository/site.repository'
-import { SettingsRepository } from '@modules/settings/repository/settings.repository'
-
+import { MerchantRepository } from '@modules/settings/repositories/merchant.repository'
+import { SiteRepository } from '@modules/settings/repositories/site.repository'
+import { SettingsRepository } from '@modules/settings/repositories/settings.repository'
+import { FilterGroupRepository } from '@modules/filter/repository/filterGroup.repository'
+import { FilterItemRepository } from '@modules/filter/repository/filterItem.repository'
 // Middlewares
 import { JsonMiddleware } from '@common/middlewares/json.middleware'
 import { UrlEncodedMiddleware } from '@common/middlewares/urlencoded.middleware'
@@ -83,6 +89,8 @@ import { ICustomerService } from '@modules/customer/types/service'
 import { IEventBusService } from '@/types/services'
 import { IMerchantService, ISettingsService, ISiteService } from '@modules/settings/types/service'
 import { IMetaTagService } from '@modules/metatag/types/service'
+import { IFilterGroupService } from '@modules/filter/types/service'
+import { IFilterItemService } from '@modules/filter/types/service'
 
 import { ICategoryRepository } from '@modules/category/types/repository'
 import { IAssetsRepository } from '@modules/asset/types/repository'
@@ -97,10 +105,14 @@ import { IOrderRepository } from '@modules/order/types/repository'
 import { IOptionRepository } from '@modules/option/types/repository'
 import { IMetaTagRepository } from '@modules/metatag/types/repository'
 import { IMerchantRepository, ISettingsRepository, ISiteRepository } from '@modules/settings/types/repository'
+import { IFilterGroupRepository } from '@modules/filter/types/repository'
+import { IFilterItemRepository } from '@modules/filter/types/repository'
+// Utils Types
 import { ILogger } from '@/types/utils'
 import { IConfig, IController, IDb, IRedis } from '@/types'
 import { IErrorRouteMiddleware, IExpressMiddleware, IFileLoaderMiddleware, IMiddleware } from '@/types/middlewares'
 import { AuthMiddleware } from '@common/middlewares/auth.middleware'
+import { FilterController } from '@modules/filter/controller/filter.controller'
 
 export const container = new Container({ skipBaseClassChecks: true })
 
@@ -130,7 +142,13 @@ container.bind<IMetaTagService>(TYPES.SERVICES.IMetaTagService).to(MetaTagServic
 container.bind<IMerchantService>(TYPES.SERVICES.IMerchantService).to(MerchantService)
 container.bind<ISettingsService>(TYPES.SERVICES.ISettingsService).to(SettingsService)
 container.bind<ISiteService>(TYPES.SERVICES.ISiteService).to(SiteService)
-container.bind<IProductGatewayService>(TYPES.SERVICES.IProductGatewayService).to(ProductGateway)
+container.bind<IFilterGroupService>(TYPES.SERVICES.IFilterGroupService).to(FilterGroupService)
+container.bind<IFilterItemService>(TYPES.SERVICES.IFilterItemService).to(FilterItemService)
+
+// Gateways
+container.bind<IProductGatewayService>(TYPES.GATEWAYS.IProductGatewayService).to(ProductGateway)
+container.bind<ICartGatewayService>(TYPES.GATEWAYS.ICartGatewayService).to(CartGateway)
+container.bind<IOrderGatewayService>(TYPES.GATEWAYS.IOrderGatewayService).to(OrderGateway)
 
 // Controllers
 container.bind<IController>(TYPES.CONTROLLERS.IController).to(SwaggerController)
@@ -147,6 +165,7 @@ container.bind<IController>(TYPES.CONTROLLERS.IController).to(UserController)
 container.bind<IController>(TYPES.CONTROLLERS.IController).to(CustomerController)
 container.bind<IController>(TYPES.CONTROLLERS.IController).to(MetaTagController)
 container.bind<IController>(TYPES.CONTROLLERS.IController).to(SettingsController)
+container.bind<IController>(TYPES.CONTROLLERS.IController).to(FilterController)
 
 // Middlewares
 container.bind<IMiddleware>(TYPES.MIDDLEWARES.IMiddleware).to(LoggerMiddleware)
@@ -175,3 +194,5 @@ container.bind<IMetaTagRepository>(TYPES.REPOSITORIES.IMetaTagRepository).to(Met
 container.bind<IMerchantRepository>(TYPES.REPOSITORIES.IMerchantRepository).to(MerchantRepository)
 container.bind<ISettingsRepository>(TYPES.REPOSITORIES.ISettingsRepository).to(SettingsRepository)
 container.bind<ISiteRepository>(TYPES.REPOSITORIES.ISiteRepository).to(SiteRepository)
+container.bind<IFilterGroupRepository>(TYPES.REPOSITORIES.IFilterGroupRepository).to(FilterGroupRepository)
+container.bind<IFilterItemRepository>(TYPES.REPOSITORIES.IFilterItemRepository).to(FilterItemRepository)
