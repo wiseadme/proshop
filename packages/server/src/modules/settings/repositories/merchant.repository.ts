@@ -7,7 +7,7 @@ import { ILogger } from '@/types/utils'
 import { IMerchant, IMerchantMongoModel } from '@proshop/types'
 import { IMerchantRepository } from '@modules/settings/types/repository'
 import { validateId } from '@common/utils/mongoose-validate-id'
-import { MerchantModel } from '@modules/settings/model/merchant.model'
+import { MerchantModel } from '@modules/settings/models/merchant.model'
 import {MerchantMapper} from '@modules/settings/mappers/merchant.mapper'
 
 @injectable()

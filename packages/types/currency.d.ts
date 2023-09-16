@@ -9,4 +9,5 @@ export interface ICurrency {
     country: string
     countryId: string
     code: string
+    abbr: string
 }

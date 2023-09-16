@@ -1,5 +1,5 @@
 import { Document, LeanDocument } from 'mongoose'
-import { IProduct, IProductMongoModel, IProductQuery, IRequestParams } from '@proshop/types'
+import { IAttribute, IProduct, IProductMongoModel, IProductQuery, IRequestParams } from '@proshop/types'
 
 // import { ProductQuery } from './params'
 
@@ -19,6 +19,10 @@ export interface IProductRepository {
     update(updates: Partial<IProduct>): Promise<{ updated: IProduct }>
 
     delete(id: string): Promise<boolean>
+
+    addAttribute(params: { productId: string, attribute: IAttribute }): Promise<IProduct>
+
+    deleteAttribute(params: { productId: string, attributeId: string }): Promise<IProduct>
 
     getDocumentsCount(params?: any): Promise<number>
 }

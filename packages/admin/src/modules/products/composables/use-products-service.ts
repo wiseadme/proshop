@@ -207,6 +207,40 @@ export const useProductsService = createSharedComposable(() => {
         }
     }
 
+    const addProductAttribute = async (attr: IAttribute) => {
+        const updates = {
+            productId: unref(product)!.id,
+            attribute: attr,
+        }
+
+        try {
+            const updated = await _productsStore.addAttribute(updates)
+
+            setAsCurrent(updated)
+
+            return true
+        } catch (err) {
+            return Promise.reject(err)
+        }
+    }
+
+    const deleteProductAttribute = async (id: string) => {
+        const updates = {
+            productId: unref(product)!.id,
+            attributeId: id,
+        }
+
+        try {
+            const updated = await _productsStore.deleteAttribute(updates)
+
+            setAsCurrent(updated)
+
+            return true
+        } catch (err) {
+            return Promise.reject(err)
+        }
+    }
+
     const updateProductInfo = async (updates: Partial<IProduct>): Promise<IProduct> => {
         updates.id = unref(product)!.id
 
@@ -455,11 +489,13 @@ export const useProductsService = createSharedComposable(() => {
         updateProductCategories,
         updateProductInfo,
         updateProductMetaTags,
+        addProductAttribute,
         updateProductAttributes,
         updateProductRelatedProducts,
         updateVariantOption,
         uploadProductImage,
         updateProductAssets,
+        deleteProductAttribute,
         deleteVariantOption,
         deleteProductImage,
     }

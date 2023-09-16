@@ -14,8 +14,9 @@
     const {
         currentEditableAttribute,
         availableAttributes,
-        onDeleteAttribute,
+        onRemoveAttribute,
         onUpdateAttributes,
+        onAddAttribute,
         setForEditing,
     } = useProductAttributes()
 
@@ -52,10 +53,10 @@
                         :group="groupSymbol"
                         class="draggable-container"
                         editable
-                        deletable
                         @edit="setForEditing"
-                        @delete="onDeleteAttribute"
-                        @change="onUpdateAttributes"
+                        @add="onAddAttribute"
+                        @remove="onRemoveAttribute"
+                        @update="onUpdateAttributes"
                     >
                         <template #title="{item}">
                             <span>{{ item.key }}</span>

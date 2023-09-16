@@ -1,8 +1,8 @@
 import { ref, watch } from 'vue'
 import { useProductsService } from '@modules/products/composables/use-products-service'
+import { createSharedComposable } from '@shared/features/create-shared-composable'
 import { Product } from '@modules/products/model/product.model'
 import { clone } from '@shared/helpers'
-import { createSharedComposable } from '@shared/features/create-shared-composable'
 import { IProduct } from '@proshop/types'
 
 export const useProductModel = createSharedComposable(() => {

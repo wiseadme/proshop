@@ -6,6 +6,7 @@
     "coin": "тийин",
     "code": "UZS",
     "countryId": "UZ",
+    "abbr": "сум",
     "country": "Uzbekistan"
   },
   {
@@ -15,6 +16,7 @@
     "coin":  "копеек",
     "code": "RUR",
     "countryId": "RU",
+    "abbr": "руб",
     "country": "Russia"
   },
   {
@@ -24,6 +26,7 @@
     "coin":  "gepik",
     "code": "AZN",
     "countryId": "AZ",
+    "abbr": "mn",
     "country": "Azerbaijan"
   }
 ]

@@ -2,7 +2,7 @@ import mongoose, { Document, LeanDocument } from 'mongoose'
 import { ISettingsRepository } from '@modules/settings/types/repository'
 import { ISettings, ISettingsMongoModel, Maybe } from '@proshop/types'
 
-import { SettingsModel } from '@modules/settings/model/settings.model'
+import { SettingsModel } from '@modules/settings/models/settings.model'
 import { injectable } from 'inversify'
 import { validateId } from '@common/utils/mongoose-validate-id'
 import { SettingsMapper } from '@modules/settings/mappers/settings.mapper'

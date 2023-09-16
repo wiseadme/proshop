@@ -1,4 +1,4 @@
-import { Request, Response, Router } from 'express'
+import { query, Request, Response, Router } from 'express'
 import { inject, injectable } from 'inversify'
 import expressAsyncHandler from 'express-async-handler'
 
@@ -9,7 +9,7 @@ import { ProductDTO } from '@modules/product/dto/product.dto'
 // Types
 import { ILogger } from '@/types/utils'
 import { IController } from '@/types'
-import { IProduct } from '@proshop/types'
+import { IAttribute, IProduct } from '@proshop/types'
 import { IProductService } from '../types/service'
 
 // Helpers
@@ -29,26 +29,12 @@ export class ProductController extends BaseController implements IController {
     }
 
     public initRoutes() {
-        this.router.post(
-            '/',
-            setMiddlewares({ dto: ProductDTO, roles: ['root'] }),
-            expressAsyncHandler(this.createProduct.bind(this)),
-        )
-        this.router.patch(
-            '/',
-            setMiddlewares({ dto: ProductDTO, roles: ['root'] }),
-            expressAsyncHandler(this.updateProduct.bind(this)),
-        )
-        this.router.get(
-            '/',
-            setMiddlewares({}),
-            expressAsyncHandler(this.getProducts.bind(this)),
-        )
-        this.router.delete(
-            '/',
-            setMiddlewares({ roles: ['root'] }),
-            expressAsyncHandler(this.deleteProduct.bind(this)),
-        )
+        this.router.post('/', setMiddlewares({ dto: ProductDTO, roles: ['root'] }), expressAsyncHandler(this.createProduct.bind(this)))
+        this.router.get('/', setMiddlewares({}), expressAsyncHandler(this.getProducts.bind(this)))
+        this.router.patch('/', setMiddlewares({ dto: ProductDTO, roles: ['root'] }), expressAsyncHandler(this.updateProduct.bind(this)))
+        this.router.patch('/attribute/add', setMiddlewares({ roles: ['root'] }), expressAsyncHandler(this.addProductAttribute.bind(this)))
+        this.router.patch('/attribute/delete', setMiddlewares({ roles: ['root'] }), expressAsyncHandler(this.deleteProductAttribute.bind(this)))
+        this.router.delete('/', setMiddlewares({ roles: ['root'] }), expressAsyncHandler(this.deleteProduct.bind(this)))
     }
 
     async createProduct({ body, method }: Request<{}, {}, IProduct>, res: Response) {
@@ -116,6 +102,45 @@ export class ProductController extends BaseController implements IController {
             this.send({
                 response: res,
                 data: true,
+                url: this.path,
+                method,
+            })
+        } catch (err) {
+            return this.error({
+                error: err,
+                url: this.path,
+                method,
+            })
+        }
+    }
+
+    async addProductAttribute ({ body, method }: Request<{}, {}, { productId: string, attribute: IAttribute }>, res: Response) {
+        try {
+            const product = await this.service.addAttribute(body)
+
+            this.send({
+                response: res,
+                data: product,
+                url: this.path,
+                method,
+            })
+        } catch (err) {
+            return this.error({
+                error: err,
+                url: this.path,
+                method,
+            })
+        }
+    }
+
+
+    async deleteProductAttribute ({ body, method }: Request<{}, {}, { productId: string, attributeId: string }>, res: Response) {
+        try {
+            const product = await this.service.deleteAttribute(body)
+
+            this.send({
+                response: res,
+                data: product,
                 url: this.path,
                 method,
             })

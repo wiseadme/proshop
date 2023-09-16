@@ -1,4 +1,4 @@
-import { Document, model, Schema } from 'mongoose'
+import { model, Schema } from 'mongoose'
 import { IMerchantMongoModel } from '@proshop/types'
 
 const MerchantSchema: Schema = new Schema<IMerchantMongoModel>({
@@ -19,6 +19,7 @@ const MerchantSchema: Schema = new Schema<IMerchantMongoModel>({
             country: String,
             countryId: String,
             code: String,
+            abbr: String
         },
         required: true,
         _id: false

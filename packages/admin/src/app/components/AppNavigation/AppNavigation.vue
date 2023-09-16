@@ -79,6 +79,11 @@
             icon: 'fas fa-code',
             path: '/metatags',
         },
+        networks: {
+            title: 'Социальные сети',
+            icon: 'fas fa-project-diagram',
+            path: '/networks',
+        },
         settings: {
             title: 'Конфигурация',
             icon: 'fas fa-cog',

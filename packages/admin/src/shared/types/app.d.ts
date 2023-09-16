@@ -25,7 +25,7 @@ export interface IItemsRepository<T> {
     create: (args: any) => Promise<AxiosResponse<{ data: T, ok: boolean }>>
     read: (args: any) => Promise<AxiosResponse<{ data: { items: T[], total: number }, ok: boolean }>>
     update: (args: any[]) => Promise<AxiosResponse<{ data: T, ok: boolean }>>
-    delete: (args: any[]) => Promise<AxiosResponse<{ data: boolean, ok: boolean }>>
+    delete: (id: string) => Promise<AxiosResponse<{ data: boolean, ok: boolean }>>
 }
 
 declare type AppState = {

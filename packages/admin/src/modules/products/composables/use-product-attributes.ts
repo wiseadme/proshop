@@ -21,6 +21,8 @@ export const useProductAttributes = createSharedComposable(() => {
     const {
         product,
         attributeItems,
+        addProductAttribute,
+        deleteProductAttribute,
         updateProductAttributes,
     } = useProductsService()
 
@@ -35,18 +37,6 @@ export const useProductAttributes = createSharedComposable(() => {
         currentEditableAttribute.value = attr
     }
 
-    const onDeleteAttribute = async (attr: IAttribute) => {
-        attributes.value = unref(model).attributes.filter(it => it.id !== attr.id)
-
-        try {
-            await updateProductAttributes({ attributes: unref(attributes) })
-
-            notify(CHANGES_SAVED)
-        } catch (err) {
-            notify(SAVING_ERROR)
-        }
-    }
-
     const checkDiffs = () => hasValueDiffs({
         model: unref(model).attributes,
         entity: unref(product)!.attributes,
@@ -55,6 +45,28 @@ export const useProductAttributes = createSharedComposable(() => {
     const onDiscardChanges = () => {
         setProductModel(unref(product)!)
         currentEditableAttribute.value = null
+    }
+
+    const onRemoveAttribute = async (newIndex: number) => {
+        const attribute = unref(availableAttributes)[newIndex]
+
+        try {
+            await deleteProductAttribute(attribute.id)
+
+            notify(CHANGES_SAVED)
+        } catch (err) {
+            notify(SAVING_ERROR)
+        }
+    }
+
+    const onAddAttribute = async (attribute: IAttribute) => {
+        try {
+            await addProductAttribute(attribute)
+
+            notify(CHANGES_SAVED)
+        } catch (err) {
+            notify(SAVING_ERROR)
+        }
     }
 
     const onUpdateAttributes = async () => {
@@ -93,8 +105,9 @@ export const useProductAttributes = createSharedComposable(() => {
         availableAttributes,
         usedAttributes,
         setForEditing,
-        onDeleteAttribute,
+        onRemoveAttribute,
         onUpdateAttributes,
         onDiscardChanges,
+        onAddAttribute,
     }
 })

@@ -1,8 +1,9 @@
 <script lang="ts" setup>
     import { computed, unref } from 'vue'
+    import { ModalCard } from '@shared/components/Modals'
     import { useProductMetaTags } from '@modules/products/composables/use-product-metatags'
 
-    const { currentEditableMetaTag } = useProductMetaTags()
+    const { currentEditableMetaTag, onUpdateMetaTags } = useProductMetaTags()
 
     const metaTagKeys = computed<string[]>(() => Object.keys(unref(currentEditableMetaTag)?.props! || {}))
 
@@ -11,36 +12,40 @@
     }
 </script>
 <template>
-    <v-row
-        class="white elevation-2 mb-2 pl-4"
-    >
-        <v-col
-            v-for="key in metaTagKeys"
-            :key="key"
-            xl="4"
-            lg="4"
-            md="6"
-            sm="11"
+    <modal-card>
+        <template #title>
+            Редактирование мета тега
+        </template>
+        <template
+            v-if="currentEditableMetaTag"
+            #content
         >
-            <template v-if="currentEditableMetaTag">
-                <v-text-field
-                    v-model="currentEditableMetaTag.props[key]"
-                    :label="key"
-                />
-            </template>
-        </v-col>
-        <v-spacer/>
-        <v-col
-            cols="1"
-            class="d-flex justify-center align-center"
-        >
-            <v-icon
-                clickable
-                size="24"
+            <v-text-field
+                v-for="key in metaTagKeys"
+                :key="key"
+                v-model="currentEditableMetaTag.props[key]"
+                :label="key"
+            />
+        </template>
+        <template #actions>
+            <v-button
+                color="success"
+                elevation="2"
+                width="120"
+                class="app-border-radius mr-2"
+                @click="onUpdateMetaTags"
+            >
+                Сохранить
+            </v-button>
+            <v-button
+                color="secondary"
+                elevation="2"
+                width="120"
+                class="app-border-radius"
                 @click="clearEditableMetaTag"
             >
-                fas fa-times
-            </v-icon>
-        </v-col>
-    </v-row>
+                Отменить
+            </v-button>
+        </template>
+    </modal-card>
 </template>

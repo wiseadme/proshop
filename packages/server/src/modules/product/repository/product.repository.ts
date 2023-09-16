@@ -1,11 +1,11 @@
 import mongoose, { Document } from 'mongoose'
-import { inject, injectable } from 'inversify'
+import { id, inject, injectable } from 'inversify'
 import { TYPES } from '@common/schemes/di-types'
 import { ProductModel } from '@modules/product/model/product.model'
 import { validateId } from '@common/utils/mongoose-validate-id'
 // Types
 import { IProductRepository } from '../types/repository'
-import { IProduct, IProductMongoModel, IProductQuery, IRequestParams, IVariant } from '@proshop/types'
+import { IAttribute, IProduct, IProductMongoModel, IProductQuery, IRequestParams, IVariant } from '@proshop/types'
 import { ILogger } from '@/types/utils'
 import { RepositoryHelpers } from '@modules/product/helpers/repository.helpers'
 
@@ -118,10 +118,34 @@ export class ProductRepository extends RepositoryHelpers implements IProductRepo
         return { updated: ProductMapper.toDomain(updated) }
     }
 
-    async delete(id) {
+    async delete(id: string) {
         validateId(id)
 
         return !!await ProductModel.findOneAndDelete({ _id: id })
+    }
+
+    async addAttribute(params: { productId: string, attribute: IAttribute }) {
+        validateId(params.productId)
+
+        const product = await ProductModel.findOneAndUpdate({ _id: params.productId }, {
+            $push: { attributes: params.attribute },
+        }, { new: true })
+            .populate(this.getPopulateParams())
+            .lean() as IProductMongoModel
+
+        return ProductMapper.toDomain(product)
+    }
+
+    async deleteAttribute(params: { productId: string, attributeId: string }) {
+        validateId(params.productId)
+
+        const product = await ProductModel.findOneAndUpdate({ _id: params.productId }, {
+            $pull: { attributes: { id: params.attributeId } },
+        }, { new: true })
+            .populate(this.getPopulateParams())
+            .lean() as IProductMongoModel
+
+        return ProductMapper.toDomain(product)
     }
 
     async getDocumentsCount(params: any = {}) {

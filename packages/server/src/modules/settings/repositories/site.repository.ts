@@ -3,7 +3,7 @@ import { injectable } from 'inversify'
 import { validateId } from '@common/utils/mongoose-validate-id'
 import { ISiteRepository } from '@modules/settings/types/repository'
 import { ISite, ISiteMongoModel, Maybe } from '@proshop/types'
-import { SiteModel } from '@modules/settings/model/site.model'
+import { SiteModel } from '@modules/settings/models/site.model'
 import { SiteMapper } from '@modules/settings/mappers/site.mapper'
 
 @injectable()

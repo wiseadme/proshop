@@ -13,6 +13,7 @@ import { settingsRoutes } from '@modules/settings/routes'
 import { usersRoutes } from '@modules/users/routes'
 import { metaTagRoutes } from '@modules/metatags/routes'
 import { filterRoutes } from '@modules/filters/routes'
+import { networksRoutes } from '@modules/networks/routes'
 // import { elementRoutes } from '@modules/elements/routes'
 
 const baseUrl = process.env.NODE_ENV === 'development' ? '/' : '/admin'
@@ -35,6 +36,7 @@ export const routes = [
             ...usersRoutes,
             ...metaTagRoutes,
             ...filterRoutes,
+            ...networksRoutes
             // ...elementRoutes
         ],
     },

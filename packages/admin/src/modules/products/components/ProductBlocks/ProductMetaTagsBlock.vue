@@ -15,7 +15,7 @@
         availableMetaTags,
         currentEditableMetaTag,
         setForEditing,
-        onUpdateMetaTags
+        onUpdateMetaTags,
     } = useProductMetaTags()
 
     const groupSymbol = Symbol.for('metaTags')
@@ -31,7 +31,7 @@
             transition="scale-in"
             overlay
         >
-            <MetaTagEditForm />
+            <MetaTagEditForm/>
         </v-modal>
         <v-col cols="6">
             <form-card>

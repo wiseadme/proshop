@@ -1,14 +1,14 @@
 import { useProductRepository } from '@modules/products/repository'
 import {
+    IAttribute,
     IProduct,
     IProductQuery,
     IRequestParams,
 } from '@proshop/types'
-import { IProductActions } from '../types'
 
 const productRepository = useProductRepository()
 
-export const actions: IProductActions = {
+export const actions = {
     async create(product: IProduct) {
         try {
             const { data } = await productRepository.create(product)
@@ -63,6 +63,42 @@ export const actions: IProductActions = {
             this.totalLength -= 1
 
             return response?.data.data
+        } catch (err) {
+            return Promise.reject(err)
+        }
+    },
+
+    async addAttribute(params: { productId: string, attribute: IAttribute }) {
+        try {
+            const { data } = await productRepository.addAttribute(params)
+
+            this.$patch((state) => {
+                state.products = state.products.map(it => {
+                    if (it.id === params.productId) return data.data
+
+                    return it
+                })
+            })
+
+            return data.data
+        } catch (err) {
+            return Promise.reject(err)
+        }
+    },
+
+    async deleteAttribute(params: { productId: string, attributeId: string }) {
+        try {
+            const { data } = await productRepository.deleteAttribute(params)
+
+            this.$patch((state) => {
+                state.products = state.products.map(it => {
+                    if (it.id === params.productId) return data.data
+
+                    return it
+                })
+            })
+
+            return data.data
         } catch (err) {
             return Promise.reject(err)
         }

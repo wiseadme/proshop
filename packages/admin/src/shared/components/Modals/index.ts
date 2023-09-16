@@ -1,1 +1,1 @@
-export { default as ActionsModalWrapper } from './ActionsModalWrapper.vue'
+export { default as ModalCard } from './ModalCard.vue'
