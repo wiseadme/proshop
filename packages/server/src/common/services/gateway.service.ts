@@ -1,8 +1,8 @@
 import { inject, injectable } from 'inversify'
 import { TYPES } from '@common/schemes/di-types'
 import { ICategoryService } from '@modules/category/types/service'
-import { IProductService } from '@modules/product/types/service'
-import { IOrderService } from '@modules/order/types/service'
+import { IProductService } from '@modules/products/types/service'
+import { IOrderService } from '@modules/orders/types/service'
 
 export interface IGatewayService {
     category(): ICategoryService

@@ -16,6 +16,8 @@
         currentEditableMetaTag,
         setForEditing,
         onUpdateMetaTags,
+        onAddMetaTag,
+        onRemoveMetaTag
     } = useProductMetaTags()
 
     const groupSymbol = Symbol.for('metaTags')
@@ -48,7 +50,9 @@
                         :group="groupSymbol"
                         editable
                         @edit="setForEditing"
-                        @change="onUpdateMetaTags"
+                        @add="onAddMetaTag"
+                        @update="onUpdateMetaTags"
+                        @remove="onRemoveMetaTag"
                     >
                         <template #title="{item}">
                             {{ descriptorToMetaTag(item.props) }}

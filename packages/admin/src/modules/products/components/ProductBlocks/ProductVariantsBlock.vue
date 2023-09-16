@@ -23,7 +23,8 @@
         IVariant,
     } from '@proshop/types'
 
-    const { model, products } = useProductModel()
+    const { model } = useProductModel()
+    const { products } = useProductsService()
 
     const {
         variantItems,

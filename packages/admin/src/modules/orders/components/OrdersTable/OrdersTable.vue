@@ -37,7 +37,7 @@
             <v-data-table
                 :cols="cols"
                 :rows="orders"
-                class="elevation-2 app-border-radius"
+                class="app-border-radius"
                 :footer-options="{
                     counts: {
                         displayColor: 'primary',

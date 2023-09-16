@@ -59,7 +59,7 @@ export const useProductVariants = () => {
 
     const onDeleteProductVariantOption = async ({ option, variant }) => {
         await deleteVariantOption({ option, variant })
-        model.value.variants = clone(unref(product)?.variants)
+        model.value.variants = clone(unref(product)?.variants!)
     }
 
     const onSelectParentProduct = (product: IProduct) => {

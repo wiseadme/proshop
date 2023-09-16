@@ -1,4 +1,4 @@
-import { IProductGatewayService } from '@modules/product/gateway/gateway.service'
+import { IProductGatewayService } from '@modules/products/gateway/gateway.service'
 
 export const TYPES = {
     APPLICATION: Symbol.for('App'),
@@ -13,14 +13,14 @@ export const TYPES = {
     },
     SERVICES: {
         ICategoryService: Symbol.for('ICategoryService'),
-        IProductService: Symbol.for('IProductService'),
+        IProductsService: Symbol.for('IProductsService'),
         IAssetsService: Symbol.for('IAssetsService'),
         IVariantService: Symbol.for('IVariantService'),
         IEventBusService: Symbol.for('IEventBusService'),
         IAttributeService: Symbol.for('IAttributeService'),
         IUnitService: Symbol.for('IUnitService'),
         ICartService: Symbol.for('ICartService'),
-        IOrderService: Symbol.for('IOrderService'),
+        IOrdersService: Symbol.for('IOrdersService'),
         IOptionService: Symbol.for('IOptionService'),
         IUserService: Symbol.for('IUserService'),
         ICustomerService: Symbol.for('ICustomerService'),
@@ -38,13 +38,13 @@ export const TYPES = {
     },
     REPOSITORIES: {
         ICategoryRepository: Symbol.for('ICategoryRepository'),
-        IProductRepository: Symbol.for('IProductRepository'),
+        IProductsRepository: Symbol.for('IProductsRepository'),
         IAssetsRepository: Symbol.for('IAssetsRepository'),
         IVariantRepository: Symbol.for('IVariantRepository'),
         IAttributeRepository: Symbol.for('IAttributeRepository'),
         IUnitRepository: Symbol.for('IUnitRepository'),
         ICartRepository: Symbol.for('ICartRepository'),
-        IOrderRepository: Symbol.for('IOrderRepository'),
+        IOrdersRepository: Symbol.for('IOrdersRepository'),
         IOptionRepository: Symbol.for('IOptionRepository'),
         IUserRepository: Symbol.for('IUserRepository'),
         ICustomerRepository: Symbol.for('ICustomerRepository'),
