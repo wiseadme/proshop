@@ -1,18 +1,17 @@
 import { inject, injectable } from 'inversify'
 import { TYPES } from '@common/schemes/di-types'
-import { ICategoryService } from '@modules/category/types/service'
-import { IProductService } from '@modules/products/types/service'
-import { IOrderService } from '@modules/orders/types/service'
+import { IProductsService } from '@modules/products/types/service'
+import { IOrdersService } from '@modules/orders/types/service'
 
 export interface IGatewayService {
-    product: IProductService
-    order: IOrderService
+    product: IProductsService
+    order: IOrdersService
 }
 
 @injectable()
 export class GatewayService {
     constructor(
-        @inject(TYPES.SERVICES.IProductService) public product: IProductService,
-        @inject(TYPES.SERVICES.IOrderService) private order: IOrderService
+        @inject(TYPES.SERVICES.IProductsService) public product: IProductsService,
+        @inject(TYPES.SERVICES.IOrdersService) private order: IOrdersService
     ) {}
 }

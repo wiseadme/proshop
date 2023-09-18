@@ -1,6 +1,5 @@
-import { Document, LeanDocument } from 'mongoose'
+import { LeanDocument } from 'mongoose'
 import { IAttribute, IMetaTag, IProduct, IRequestParams } from '@proshop/types'
-import { id } from 'inversify'
 
 export interface IProductsService {
     createProduct(product: IProduct): Promise<IProduct>
