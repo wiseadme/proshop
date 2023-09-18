@@ -1,5 +1,5 @@
 import { ICart, ICartMongoModel } from '@proshop/types'
-import { ProductMapper } from '@modules/product/mappers/product.mapper'
+import { ProductMapper } from '@modules/products/mappers/product.mapper'
 
 export class CartMapper {
     static toDomain(entity: ICartMongoModel): ICart {

@@ -1,5 +1,9 @@
 <script lang="ts" setup generic="T">
-    import { computed, unref } from 'vue'
+    import {
+        computed,
+        ref,
+        unref
+    } from 'vue'
     import draggable from 'vuedraggable'
 
     type OrderableItem<T> = T & { order: number }
@@ -19,18 +23,21 @@
     }>()
 
     const emit = defineEmits<{
-        (e: 'modelValue', value: OrderableItem<T>[]): void
+        (e: 'update:modelValue', value: OrderableItem<T>[]): void
         (e: 'update', value: OrderableItem<T>[]): void
         (e: 'change', value: OrderableItem<T>[]): void
         (e: 'remove', value: number): void
         (e: 'delete', value: OrderableItem<T>): void
         (e: 'edit', value: OrderableItem<T>): void
+        (e: 'sort', value: OrderableItem<T>): void
         (e: 'add', value: OrderableItem<T>): void
         (e: 'show-item-menu', value: OrderableItem<T>): void
     }>()
 
-    const onRemove = (item) => {
-        emit('remove', item.newIndex)
+    const draggableItem = ref()
+
+    const onRemove = (/*item*/) => {
+        emit('remove', unref(draggableItem))
     }
 
     const onDelete = (item: OrderableItem<T>) => emit('delete', item)
@@ -38,7 +45,7 @@
 
     const items = computed({
         get: () => modelValue || [],
-        set: (val) => emit('modelValue', val),
+        set: (val) => emit('update:modelValue', val),
     })
 
     const onChange = () => {
@@ -48,11 +55,20 @@
 
     const onAdd = (item: any) => {
         const value = modelValue![item.newIndex as number]
+        value.order = Number(item.newIndex)
         emit('add', value)
     }
 
-    const onUpdate = (/*val*/) => {
+    const onUpdate = () => {
         emit('update', unref(items))
+    }
+
+    const onSort = (val) => {
+        emit('sort', val)
+    }
+
+    const onDragStart = (item) => {
+        draggableItem.value = modelValue![item.oldIndex]
     }
 </script>
 <template>
@@ -66,6 +82,8 @@
             :group="group"
             class="draggable-container"
             @add="onAdd"
+            @start="onDragStart"
+            @sort="onSort"
             @remove="onRemove"
             @change="onChange"
             @update="onUpdate"
@@ -170,7 +188,7 @@
         .menu {
             cursor: pointer;
             min-width: 45px;
-            width:  45px;
+            width: 45px;
         }
     }
 

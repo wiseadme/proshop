@@ -30,7 +30,7 @@
                         displayColor: 'primary'
                     }
                 }"
-                class="elevation-2 app-border-radius"
+                class="app-border-radius"
                 show-sequence
             >
                 <template #toolbar>

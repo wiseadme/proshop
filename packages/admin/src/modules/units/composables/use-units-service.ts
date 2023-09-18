@@ -22,7 +22,7 @@ export const useUnitsService = createSharedComposable(() => {
     }
 
     const updateUnit = (updates: Partial<IUnit>) => {
-        updates._id = unref(unit)!._id
+        updates.id = unref(unit)!.id
 
         return _store.update(updates)
     }

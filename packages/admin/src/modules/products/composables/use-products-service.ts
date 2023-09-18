@@ -122,7 +122,7 @@ export const useProductsService = createSharedComposable(() => {
     }
 
     const getProducts = async (params?: Partial<IProduct>): Promise<IProduct[]> => {
-        const products = await _productsStore.read(getRequestParams(params))
+        const products = await _productsStore.getProducts(getRequestParams(params))
 
         isLoading.value = false
 
@@ -130,7 +130,7 @@ export const useProductsService = createSharedComposable(() => {
     }
 
     const getProduct = async (id: string): Promise<IProduct> => {
-        const [item] = await _productsStore.read({ id })
+        const [item] = await _productsStore.getProducts({ id })
 
         product.value = clone(item)
 
@@ -141,7 +141,7 @@ export const useProductsService = createSharedComposable(() => {
         const params = { category: category.url, ...getPaginationParams() }
 
         try {
-            return await _productsStore.read(params)
+            return await _productsStore.getProducts(params)
         } catch (err) {
             return Promise.reject(err)
         }
@@ -153,7 +153,7 @@ export const useProductsService = createSharedComposable(() => {
         product.currency = unref(merchant)?.id!
 
         try {
-            const data = await _productsStore.create(product)
+            const data = await _productsStore.createProduct(product)
             setAsCurrent(data)
 
             return data
@@ -166,7 +166,7 @@ export const useProductsService = createSharedComposable(() => {
         updates.id = unref(product)!.id
 
         try {
-            const updated = await _productsStore.update(updates)
+            const updated = await _productsStore.updateProduct(updates)
             setAsCurrent(updated)
 
             return updated
@@ -251,14 +251,44 @@ export const useProductsService = createSharedComposable(() => {
         }
     }
 
-    const updateProductMetaTags = async (updates: { seo: IProduct['seo'] }): Promise<IProduct> => {
+    const updateProductMetaTags = async (metaTags: IMetaTag[]): Promise<IProduct> => {
         const payload = {
-            ...updates,
-            id: unref(product)!.id,
+            productId: unref(product)!.id,
+            metaTags,
         }
 
         try {
-            return await updateProduct(payload)
+            return await _productsStore.updateMetaTags(payload)
+        } catch (err) {
+            return Promise.reject(err)
+        }
+    }
+
+    const addProductMetaTag = async (metaTag: IMetaTag) => {
+        const updates = {
+            productId: unref(product)!.id,
+            metaTag: metaTag,
+        }
+
+        try {
+            const updated = await _productsStore.addMetaTag(updates)
+
+            setAsCurrent(updated)
+
+            return true
+        } catch (err) {
+            return Promise.reject(err)
+        }
+    }
+
+    const deleteProductMetaTag = async (metaTag: IMetaTag) => {
+        const payload = {
+            productId: unref(product)!.id,
+            metaTagId: metaTag.id,
+        }
+
+        try {
+            return await _productsStore.deleteMetaTag(payload)
         } catch (err) {
             return Promise.reject(err)
         }
@@ -315,6 +345,7 @@ export const useProductsService = createSharedComposable(() => {
         const payload = { ...option } as Record<string, any>
         payload.assets = option.assets?.map(asset => asset.id)
 
+        /** TODO убрать возможность унаследования вариантов от других товаров */
         const updated = await _optionsService.updateOption(payload)
         const { variants } = unref(product)!
 
@@ -386,7 +417,7 @@ export const useProductsService = createSharedComposable(() => {
 
     const deleteProduct = async (product: IProduct) => {
         try {
-            return await _productsStore.delete(product)
+            return await _productsStore.deleteProduct(product)
         } catch (err) {
             return Promise.reject(err)
         }
@@ -482,21 +513,23 @@ export const useProductsService = createSharedComposable(() => {
         createProduct,
         createVariantOption,
         updateProduct,
-        deleteProduct,
-        deleteProductVariantImage,
         uploadProductVariantImage,
         updateMainImageAsset,
         updateProductCategories,
         updateProductInfo,
         updateProductMetaTags,
         addProductAttribute,
+        addProductMetaTag,
         updateProductAttributes,
         updateProductRelatedProducts,
         updateVariantOption,
         uploadProductImage,
         updateProductAssets,
+        deleteProduct,
+        deleteProductVariantImage,
         deleteProductAttribute,
         deleteVariantOption,
+        deleteProductMetaTag,
         deleteProductImage,
     }
 })
