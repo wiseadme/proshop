@@ -1,7 +1,7 @@
 import { ref, unref } from 'vue'
 import { useProductsService } from '@modules/products/composables/use-products-service'
 import { useProductModel } from '@modules/products/composables/use-product-model'
-import { IOption, IProduct } from '@proshop/types'
+import { IOption } from '@proshop/types'
 import { clone } from '@shared/helpers'
 
 export const useProductVariants = () => {
@@ -10,7 +10,6 @@ export const useProductVariants = () => {
     const {
         product,
         variantItems,
-        updateProduct,
         createVariantOption,
         updateVariantOption,
         deleteVariantOption,
@@ -62,26 +61,26 @@ export const useProductVariants = () => {
         model.value.variants = clone(unref(product)?.variants!)
     }
 
-    const onSelectParentProduct = (product: IProduct) => {
-        const variants = clone(product.variants)
-
-        /** TODO - подумать над типом, исправить any */
-        variants.forEach(variant => {
-            variant.options = variant.options!.map(option => option.id) as any
-        })
-
-        return updateProduct({
-            id: unref(model).id,
-            variants
-        })
-    }
+    // const onSelectParentProduct = (product: IProduct) => {
+    //     const variants = clone(product.variants)
+    //
+    //     /** TODO - подумать над типом, исправить any */
+    //     variants.forEach(variant => {
+    //         variant.options = variant.options!.map(option => option.id) as any
+    //     })
+    //
+    //     return updateProduct({
+    //         id: unref(model).id,
+    //         variants
+    //     })
+    // }
 
     return {
         isVariantEditMode,
         variantItems,
         genVariantOptionPattern,
         onUploadProductVariantOptionImage,
-        onSelectParentProduct,
+        // onSelectParentProduct,
         onDeleteProductVariantOptionImage,
         onCreateProductVariantOption,
         onUpdateProductVariantOption,

@@ -345,6 +345,7 @@ export const useProductsService = createSharedComposable(() => {
         const payload = { ...option } as Record<string, any>
         payload.assets = option.assets?.map(asset => asset.id)
 
+        /** TODO убрать возможность унаследования вариантов от других товаров */
         const updated = await _optionsService.updateOption(payload)
         const { variants } = unref(product)!
 

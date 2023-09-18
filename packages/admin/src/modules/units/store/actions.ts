@@ -35,7 +35,7 @@ export const actions: IUnitActions = {
 
             this.$patch(state => {
                 state.units = state.units.reduce((acc, it) => {
-                    acc.push(it._id === data.data._id ? data.data : it)
+                    acc.push(it.id === data.data.id ? data.data : it)
 
                     return acc
                 }, [])
@@ -52,7 +52,7 @@ export const actions: IUnitActions = {
             const { data } = await repository.delete(id)
 
             this.$patch(state => {
-                state.units = state.units.filter(it => it._id !== id)
+                state.units = state.units.filter(it => it.id !== id)
             })
 
             return data.data as boolean

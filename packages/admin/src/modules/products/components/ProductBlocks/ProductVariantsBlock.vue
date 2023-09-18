@@ -30,7 +30,7 @@
         variantItems,
         isVariantEditMode,
         genVariantOptionPattern,
-        onSelectParentProduct,
+        // onSelectParentProduct,
         // onUploadProductVariantOptionImage,
         onDeleteProductVariantOptionImage,
         onUpdateProductVariantOption,
@@ -186,19 +186,19 @@
                                 @select="setCurrentVariant"
                             />
                         </v-col>
-                        <v-col>
-                            <v-autocomplete
-                                v-model="productForInherit"
-                                label="Унаследовать варианты"
-                                :items="products"
-                                value-key="name"
-                                color="primary"
-                                typeable
-                                clearable
-                                @input="getProducts({name: $event})"
-                                @select="onSelectParentProduct"
-                            />
-                        </v-col>
+                        <!--                        <v-col>-->
+                        <!--                            <v-autocomplete-->
+                        <!--                                v-model="productForInherit"-->
+                        <!--                                label="Унаследовать варианты"-->
+                        <!--                                :items="products"-->
+                        <!--                                value-key="name"-->
+                        <!--                                color="primary"-->
+                        <!--                                typeable-->
+                        <!--                                clearable-->
+                        <!--                                @input="getProducts({name: $event})"-->
+                        <!--                                @select="onSelectParentProduct"-->
+                        <!--                            />-->
+                        <!--                        </v-col>-->
                         <v-col>
                             <v-select
                                 v-model="filterGroup"
