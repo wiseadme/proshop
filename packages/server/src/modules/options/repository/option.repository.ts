@@ -23,16 +23,13 @@ export class OptionRepository implements IOptionRepository {
         })
             .save()
 
-        await optionData.populate('assets')
-
         return OptionMapper.toDomain(optionData.toObject())
     }
 
     async find(params = {}): Promise<IOption[]> {
         const options = await OptionModel
             .find(params)
-            .lean()
-            .populate('assets') as IOptionMongoModel[]
+            .lean() as IOptionMongoModel[]
 
         return options.map(option => OptionMapper.toDomain(option))
     }
@@ -40,8 +37,7 @@ export class OptionRepository implements IOptionRepository {
     async findById(id: string) {
         const option = await OptionModel
             .findById(id)
-            .lean()
-            .populate('assets') as IOptionMongoModel
+            .lean() as IOptionMongoModel
 
         return OptionMapper.toDomain(option)
     }
@@ -49,11 +45,10 @@ export class OptionRepository implements IOptionRepository {
     async findMany(ids: string[]) {
         const options = await OptionModel.find({
             _id: {
-                $in: ids
-            }
+                $in: ids,
+            },
         })
-            .lean()
-            .populate('assets') as IOptionMongoModel[]
+            .lean() as IOptionMongoModel[]
 
         return options.map(option => OptionMapper.toDomain(option))
     }
@@ -67,8 +62,7 @@ export class OptionRepository implements IOptionRepository {
                 { $set: updates },
                 { new: true },
             )
-            .lean()
-            .populate('assets') as IOptionMongoModel
+            .lean() as IOptionMongoModel
 
         return { updated: OptionMapper.toDomain(option) }
     }

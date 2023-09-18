@@ -382,39 +382,6 @@ export const useProductsService = createSharedComposable(() => {
         })
     }
 
-    const uploadProductVariantImage = async ({
-        file,
-        option,
-    }: {
-        file: File,
-        option: IOption
-    }): Promise<IOption> => {
-
-        const optionAsset = await loadImage({ file, ownerId: option.id })
-
-        option.assets!.push(optionAsset)
-
-        return _optionsService.updateOption({
-            id: option.id,
-            assets: option.assets!.map(asset => asset.id),
-        })
-    }
-
-    const deleteProductVariantImage = async ({
-        asset,
-        option,
-    }: {
-        asset: IAsset
-        option: IOption
-    }): Promise<IOption> => {
-        await _filesService.deleteFile(asset)
-
-        return _optionsService.updateOption({
-            id: option.id,
-            assets: option.assets?.filter((a: IAsset) => a.id !== asset.id),
-        })
-    }
-
     const deleteProduct = async (product: IProduct) => {
         try {
             return await _productsStore.deleteProduct(product)
@@ -513,7 +480,6 @@ export const useProductsService = createSharedComposable(() => {
         createProduct,
         createVariantOption,
         updateProduct,
-        uploadProductVariantImage,
         updateMainImageAsset,
         updateProductCategories,
         updateProductInfo,
@@ -526,7 +492,6 @@ export const useProductsService = createSharedComposable(() => {
         uploadProductImage,
         updateProductAssets,
         deleteProduct,
-        deleteProductVariantImage,
         deleteProductAttribute,
         deleteVariantOption,
         deleteProductMetaTag,

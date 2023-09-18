@@ -1,6 +1,5 @@
 <script lang="ts" setup>
     import {
-        onBeforeMount,
         ref,
         unref,
         watch,
@@ -15,7 +14,6 @@
     import { ItemsList } from '@shared/components/ItemsList'
     import { SvgPaths } from '@shared/enums/svg-paths'
     import {
-        IAsset,
         IFilterGroup,
         IFilterItem,
         IOption,
@@ -32,7 +30,6 @@
         genVariantOptionPattern,
         // onSelectParentProduct,
         // onUploadProductVariantOptionImage,
-        onDeleteProductVariantOptionImage,
         onUpdateProductVariantOption,
         onCreateProductVariantOption,
         onDeleteProductVariantOption,
@@ -44,14 +41,13 @@
     const { filterGroups, getFilterGroupItems } = useFilterGroupService()
 
     const currentVariant = ref<Maybe<IVariant>>(null)
-    const currentOption = ref<Maybe<IOption>>(null)
     const filterGroup = ref<Maybe<IFilterGroup>>(null)
     const existsVariants = ref<IVariant[]>([])
     const optionPattern = ref<IOption>(genVariantOptionPattern())
     const productForInherit = ref(null)
     const optionProductLink = ref(null)
 
-    const setExistsVariants = (variants: IVariant[]) => {
+    const setAvailableVariants = (variants: IVariant[]) => {
         const variantsMap = {}
 
         unref(existsVariants).forEach((it) => variantsMap[it.group] = it)
@@ -76,31 +72,14 @@
     }
 
     const setCurrentVariant = (variant: IVariant) => {
-        optionPattern.value = genVariantOptionPattern()
         currentVariant.value = variant
-        currentOption.value = null
+        optionPattern.value = genVariantOptionPattern()
         isVariantEditMode.value = false
     }
 
     const setOptionForEditing = (option: IOption) => {
         isVariantEditMode.value = true
         optionPattern.value = option
-    }
-
-    // const onUploadVariantOptionImage = ({
-    //     files,
-    //     option,
-    // }: {
-    //     files: File[]
-    //     option: IOption
-    // }) => {
-    //     onUploadProductVariantOptionImage({ file: files[0], option })
-    // }
-
-    const onDeleteVariantImage = (asset: IAsset) => {
-        const option = unref(optionPattern)
-
-        onDeleteProductVariantOptionImage({ asset, option })
     }
 
     const clearVariantOptionForm = () => {
@@ -116,7 +95,7 @@
     const onSelectOptionLinkedProduct = (product: IProduct) => {
         unref(optionPattern).url = product.url
         unref(optionPattern).price = product.price
-        unref(optionPattern).assets = product.assets
+        unref(optionPattern).image = product.image
         unref(optionPattern).quantity = product.quantity
     }
 
@@ -125,36 +104,28 @@
             return
         }
 
-        setExistsVariants(variants)
+        setAvailableVariants(variants)
 
-        if (!unref(currentVariant)) {
+        if (unref(existsVariants)[0]) {
             setCurrentVariant(unref(existsVariants)[0])
         }
 
     }, { immediate: true })
-
-    watch(productForInherit, (product: IProduct) => {
-        unref(model).variants = product?.variants || []
-    })
 
     /**
      * @description Наблюдаем в режиме редактирования за вариантами продукта
      * и перезаписываем мапу существующих вариантов для редактирования
      */
     watch(() => unref(model)?.variants, (variants) => {
-        if (!variants) return
+        if (!variants || !variants.length) return
 
-        setExistsVariants(variants.length ? variants! : unref(variantItems)!)
+        setAvailableVariants(variants || unref(variantItems)!)
 
-        const variant = variants?.find(v => v.id === unref(currentVariant)!.id)
+        const variant = variants.find(v => v.id === unref(currentVariant)!.id)
 
         setCurrentVariant(variant! || unref(currentVariant))
 
     }, { immediate: true })
-
-    onBeforeMount(() => {
-        optionPattern.value = genVariantOptionPattern()
-    })
 
 </script>
 <template>
@@ -186,19 +157,6 @@
                                 @select="setCurrentVariant"
                             />
                         </v-col>
-                        <!--                        <v-col>-->
-                        <!--                            <v-autocomplete-->
-                        <!--                                v-model="productForInherit"-->
-                        <!--                                label="Унаследовать варианты"-->
-                        <!--                                :items="products"-->
-                        <!--                                value-key="name"-->
-                        <!--                                color="primary"-->
-                        <!--                                typeable-->
-                        <!--                                clearable-->
-                        <!--                                @input="getProducts({name: $event})"-->
-                        <!--                                @select="onSelectParentProduct"-->
-                        <!--                            />-->
-                        <!--                        </v-col>-->
                         <v-col>
                             <v-select
                                 v-model="filterGroup"
@@ -247,30 +205,14 @@
                 </template>
                 <template #body>
                     <v-row>
-                        <!--                        <v-col>-->
-                        <!--                            <v-file-input-->
-                        <!--                                v-model="optionPattern.assets"-->
-                        <!--                                :label="!optionPattern.id ? 'только после сохранения варианта *': 'загрузить изображения'"-->
-                        <!--                                color="primary"-->
-                        <!--                                :disabled="!optionPattern.id"-->
-                        <!--                                @update:value="onUploadVariantOptionImage({files: $event, option: optionPattern})"-->
-                        <!--                            />-->
-                        <!--                        </v-col>-->
                         <v-col
-                            v-for="asset in optionPattern.assets"
-                            :key="asset.id"
+                            v-if="optionPattern.image"
                             cols="2"
                             style="height: 130px; position: relative"
                             class="d-flex align-center justify-center elevation-2"
                         >
-                            <v-icon
-                                style="position: absolute; top: 5px; right: 5px;"
-                                icon="fas fa-times"
-                                clickable
-                                @click="onDeleteVariantImage(asset)"
-                            />
                             <img
-                                :src="asset.url"
+                                :src="optionPattern.image"
                                 style="width: 100px;"
                             >
                         </v-col>
@@ -305,6 +247,7 @@
                             @select="onSelectFilterItem"
                         />
                         <v-autocomplete
+                            v-if="!optionPattern.url"
                             v-model="optionProductLink"
                             label="Ссылка на товар"
                             :items="products"
@@ -316,13 +259,21 @@
                             @input="getProducts({name: $event})"
                             @select="onSelectOptionLinkedProduct"
                         />
-                        <!--                        <v-text-field-->
-                        <!--                            v-else-->
-                        <!--                            v-model="optionPattern.url"-->
-                        <!--                            readonly-->
-                        <!--                            clearable-->
-                        <!--                            label="Ссылка на товар"-->
-                        <!--                        />-->
+                        <v-text-field
+                            v-else
+                            v-model="optionPattern.url"
+                            readonly
+                            label="Ссылка на товар"
+                        >
+                            <template #append-icon>
+                                <v-icon
+                                    clickable
+                                    @click="optionPattern.url = null"
+                                >
+                                    fas fa-times
+                                </v-icon>
+                            </template>
+                        </v-text-field>
                         <v-text-field
                             v-model.number="optionPattern.quantity"
                             color="primary"
@@ -377,6 +328,7 @@
                     #body
                 >
                     <items-list
+                        v-model="optionPattern"
                         :items="currentVariant.options"
                         @delete="onDeleteProductVariantOption({variant: currentVariant, option: $event})"
                         @edit="setOptionForEditing"

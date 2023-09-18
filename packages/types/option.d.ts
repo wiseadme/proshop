@@ -16,7 +16,7 @@ export interface IOption {
     quantity?: number
     url: Maybe<string>
     description?: Maybe<string>
-    assets?: IAsset[]
+    image: Maybe<string>
     products?: IOptionProduct[]
 }
 

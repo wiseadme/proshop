@@ -41,12 +41,6 @@ export class RepositoryHelpers {
             path: 'variants',
             populate: {
                 path: 'options',
-                populate: {
-                    path: 'assets',
-                    options: {
-                        lean: true
-                    }
-                },
                 options: {
                     lean: true,
                 },

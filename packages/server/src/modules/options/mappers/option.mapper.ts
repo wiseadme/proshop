@@ -6,8 +6,6 @@ export class OptionMapper {
         const { _id } = entity
         const map: Partial<IOptionMongoModel> = { ...entity }
 
-        map.assets = map.assets?.map(asset => AssetMapper.toDomain(asset))
-
         delete map._id
 
         return {
@@ -19,8 +17,6 @@ export class OptionMapper {
     static toMongoModelData(domainModel: IOption): IOptionMongoModel {
         const { id } = domainModel
         const map: Partial<IOption> = domainModel
-
-        // const assets = map.assets?.map((asset) => asset.id)
 
         delete map.id
 

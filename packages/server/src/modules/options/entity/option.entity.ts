@@ -7,7 +7,7 @@ export class Option implements IOption {
     readonly price: number
     readonly quantity: number
     readonly description: Maybe<string>
-    readonly assets?: IAsset[]
+    readonly image: Maybe<string>
     readonly modelAttribute: Maybe<IAttribute>
     readonly url: Maybe<string>
 
@@ -18,7 +18,7 @@ export class Option implements IOption {
         quantity = 0,
         description = null,
         url = null,
-        assets = [],
+        image = null,
         variantId = '',
     }: IOption) {
         this.id = id
@@ -26,7 +26,7 @@ export class Option implements IOption {
         this.price = price
         this.quantity = quantity
         this.description = description
-        this.assets = assets
+        this.image = image
         this.variantId = variantId
         this.url = url
     }
