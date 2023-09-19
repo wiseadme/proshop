@@ -3,6 +3,7 @@
     import { useCategoriesService } from '@modules/categories/composables/use-categories-service'
     import { useCategoriesTable } from '@modules/categories/composables/use-categories-table'
     import { ICategory } from '@proshop/types'
+    import { RouteNames } from '@modules/categories/enums/route-names'
 
     defineEmits<{
         (e: 'open:create-modal'): void
@@ -54,14 +55,14 @@
                     </v-toolbar>
                 </template>
                 <template #pagination-text="{start, last, length}">
-                    <span>{{ `с ${ start } по ${ last } из ${ length }` }}</span>
+                    <span>{{ `с ${start} по ${last} из ${length}` }}</span>
                 </template>
                 <template #actions="{row}">
                     <v-button
                         color="var(--primary)"
                         elevation="2"
                         text
-                        @click="$emit('open:edit-modal', row)"
+                        @click="$router.push({name: RouteNames.CATEGORY_EDIT, params: {action: 'edit', categoryId: row.id, section: 'info'}})"
                     >
                         <v-icon>fas fa-pen</v-icon>
                     </v-button>

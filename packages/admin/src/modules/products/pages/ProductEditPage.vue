@@ -3,11 +3,12 @@
     import { useRoute } from 'vue-router'
     import { useProductModel } from '@modules/products/composables/use-product-model'
     import { useProductsService } from '@modules/products/composables/use-products-service'
-    import { useProductRightSidebar } from '@modules/products/composables/use-product-right-sidebar'
+    import { useRightSidebar } from '@shared/composables/use-right-sidebar'
+
 
     const { setProductModel } = useProductModel()
     const { getProduct, onInit } = useProductsService()
-    const { activeItem } = useProductRightSidebar()
+    const { activeItem } = useRightSidebar()
 
     const route = useRoute()
 
@@ -28,7 +29,5 @@
             v-if="activeItem"
             @edit="onEdit"
         ></component>
-        <v-modal>
-        </v-modal>
     </v-layout>
 </template>
