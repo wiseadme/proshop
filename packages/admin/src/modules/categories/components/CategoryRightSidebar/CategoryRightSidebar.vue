@@ -32,7 +32,6 @@
     const onSelectTab = (tab: SidebarTab) => {
         router.push({
             name: RouteNames.CATEGORY_EDIT,
-
             params: {
                 categoryId: route.params.categoryId,
                 section: tab.section,
@@ -47,7 +46,7 @@
         @select-tab="onSelectTab"
     >
         <template #header>
-            {{ model.name }}
+            <div>{{ model.title }}</div>
         </template>
     </right-sidebar>
 </template>

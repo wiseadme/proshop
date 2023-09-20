@@ -1,7 +1,7 @@
 import {
     computed,
     ref,
-    unref
+    unref,
 } from 'vue'
 import { createSharedComposable } from '@shared/features/create-shared-composable'
 import { useCategoriesStore } from '@modules/categories/store'
@@ -20,31 +20,43 @@ export const useCategoriesService = createSharedComposable(() => {
         category.value = item
     }
 
-    const extractAssetIdFromFileName = (url) => {
+    const extractAssetIdFromFileName = (url: string): string => {
         const urlParams = url.split('|')[0].split('/')
 
         return urlParams[urlParams.length - 1]
     }
 
-    const createCategory = async (model) => {
-        return _store.create(model)
+    const createCategory = async (model: ICategory): Promise<ICategory> => {
+        try {
+            return await _store.create(model)
+        } catch (err) {
+            return Promise.reject(err)
+        }
     }
 
-    const getCategories = () => {
-        return _store.read()
+    const getCategories = async (params = {}): Promise<ICategory[]> => {
+        try {
+            return await _store.read(params)
+        } catch (err) {
+            return Promise.reject(err)
+        }
     }
 
-    const updateCategory = (updates) => {
-        return _store.update(updates)
+    const updateCategory = async (updates: Partial<ICategory>): Promise<ICategory> => {
+        try {
+            return await _store.update(updates)
+        } catch (err) {
+            return Promise.reject(err)
+        }
     }
 
-    const deleteCategory = async (id) => {
+    const deleteCategory = async (id: string) => {
         await _store.delete(id)
 
         return getCategories()
     }
 
-    const uploadCategoryImage = async (file) => {
+    const uploadCategoryImage = async (file: File) => {
         const { formData, fileName } = _filesService.createFormData(file)
         const ownerId = unref(category)!.id
 
@@ -63,7 +75,7 @@ export const useCategoriesService = createSharedComposable(() => {
 
         category.value = await updateCategory({
             id: ownerId,
-            image: null
+            image: null,
         })
     }
 
@@ -76,6 +88,6 @@ export const useCategoriesService = createSharedComposable(() => {
         updateCategory,
         deleteCategory,
         uploadCategoryImage,
-        deleteCategoryImage
+        deleteCategoryImage,
     }
 })

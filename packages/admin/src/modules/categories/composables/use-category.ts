@@ -28,25 +28,26 @@ export const useCategory = createSharedComposable(() => {
 
     const setEditModeState = (state) => isEditMode.value = state
 
-    const onEdit = (row) => {
+    const onEdit = (row: ICategory) => {
         model.value = Category.create(clone(row))
+
         setAsCurrent(row)
         setEditModeState(true)
         openActionsModal()
     }
 
-    const onUploadCategoryImage = async (file) => {
+    const onUploadCategoryImage = async (file: File) => {
         await uploadCategoryImage(file)
         unref(model).image = unref(category)!.image
     }
 
-    const onDeleteCategoryImage = async (url) => {
+    const onDeleteCategoryImage = async (url: string) => {
         await deleteCategoryImage(url)
 
         unref(model)!.image = null
     }
 
-    const onDeleteCategory = (category: ICategory) => deleteCategory(category)
+    const onDeleteCategory = (category: ICategory) => deleteCategory(category.id)
 
     const onAddNew = () => {
         openActionsModal()

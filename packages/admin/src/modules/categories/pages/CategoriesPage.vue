@@ -40,7 +40,7 @@
                     :rows="categories"
                     @open:create-modal="onAddNew"
                     @open:edit-modal="onEdit"
-                    @delete:category="onDeleteCategory($event.id)"
+                    @delete:category="onDeleteCategory($event)"
                 />
             </v-col>
         </v-row>

@@ -1,9 +1,11 @@
 <script lang="ts" setup>
-    import FormCard from '@shared/components/FormCard/FormCard.vue'
+    import { VSvg } from '@shared/components/VSvg'
+    import { FormCard } from '@shared/components/FormCard'
     import { useCategoriesService } from '@modules/categories/composables/use-categories-service'
     import { useCategoriesTable } from '@modules/categories/composables/use-categories-table'
-    import { ICategory } from '@proshop/types'
+    import { SvgPaths } from '@shared/enums/svg-paths'
     import { RouteNames } from '@modules/categories/enums/route-names'
+    import { ICategory } from '@proshop/types'
 
     defineEmits<{
         (e: 'open:create-modal'): void
@@ -16,6 +18,15 @@
 </script>
 <template>
     <form-card>
+        <template #icon>
+            <v-svg
+                :path="SvgPaths.TABLE_LIST"
+                view-box="0 -30 512 512"
+            />
+        </template>
+        <template #title>
+            Таблица категорий
+        </template>
         <template #body>
             <v-data-table
                 :cols="cols"
@@ -62,7 +73,13 @@
                         color="var(--primary)"
                         elevation="2"
                         text
-                        @click="$router.push({name: RouteNames.CATEGORY_EDIT, params: {action: 'edit', categoryId: row.id, section: 'info'}})"
+                        @click="$router.push({
+                            name: RouteNames.CATEGORY_EDIT,
+                            params: {
+                                action: 'edit',
+                                categoryId: row.id,
+                                section: 'info'
+                            }})"
                     >
                         <v-icon>fas fa-pen</v-icon>
                     </v-button>

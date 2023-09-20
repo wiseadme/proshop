@@ -21,11 +21,7 @@ export const actions = {
             const { data } = await categoryRepository.update(updates)
 
             this.$patch(state => {
-                state.categories = state.categories.map((it) => {
-                    if (it.id === data.data.id) return data.data
-
-                    return it
-                })
+                state.categories = state.categories.map((it) => it.id === data.data.id ? data.data : it)
             })
 
             return data.data
@@ -34,16 +30,12 @@ export const actions = {
         }
     },
 
-    async read(params = null) {
+    async read(params = {}) {
         try {
             const { data } = await categoryRepository.read(params)
 
             this.$patch(state => {
-                if (!params) {
-                    state.categories = data?.data
-                } else {
-                    state.category = data?.data
-                }
+                state.categories = data?.data
             })
 
             return data?.data
@@ -52,7 +44,7 @@ export const actions = {
         }
     },
 
-    async delete(id) {
+    async delete(id: string) {
         try {
             const { data } = await categoryRepository.delete(id)
 
