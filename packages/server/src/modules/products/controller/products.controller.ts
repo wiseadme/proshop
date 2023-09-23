@@ -9,7 +9,7 @@ import { ProductDTO } from '@modules/products/dto/product.dto'
 // Types
 import { ILogger } from '@/types/utils'
 import { IController } from '@/types'
-import { IAttribute, IMetaTag, IProduct } from '@proshop/types'
+import { IAttribute, IMetaTag, IOption, IProduct, IVariant } from '@proshop/types'
 import { IProductsService } from '../types/service'
 
 // Helpers
@@ -34,6 +34,8 @@ export class ProductsController extends BaseController implements IController {
         this.router.patch('/', setMiddlewares({ dto: ProductDTO, roles: ['root'] }), expressAsyncHandler(this.updateProduct.bind(this)))
         this.router.delete('/', setMiddlewares({ roles: ['root'] }), expressAsyncHandler(this.deleteProduct.bind(this)))
         this.router.patch('/attributes/add', setMiddlewares({ roles: ['root'] }), expressAsyncHandler(this.addProductAttribute.bind(this)))
+        this.router.patch('/variants/add', setMiddlewares({ roles: ['root'] }), expressAsyncHandler(this.addProductVariant.bind(this)))
+        this.router.patch('/variants/option/add', setMiddlewares({ roles: ['root'] }), expressAsyncHandler(this.addProductVariantOption.bind(this)))
         this.router.patch('/attributes/delete', setMiddlewares({ roles: ['root'] }), expressAsyncHandler(this.deleteProductAttribute.bind(this)))
         this.router.patch('/metatags/add', setMiddlewares({ roles: ['root'] }), expressAsyncHandler(this.addProductMetaTag.bind(this)))
         this.router.patch('/metatags/update', setMiddlewares({ roles: ['root'] }), expressAsyncHandler(this.updateProductMetaTags.bind(this)))
@@ -196,6 +198,44 @@ export class ProductsController extends BaseController implements IController {
     async deleteProductMetaTag({ body, method }: Request<{}, {}, { productId: string, metaTagId: string }>, res: Response) {
         try {
             const product = await this.service.deleteMetaTag(body)
+
+            this.send({
+                response: res,
+                data: product,
+                url: this.path,
+                method,
+            })
+        } catch (err) {
+            return this.error({
+                error: err,
+                url: this.path,
+                method,
+            })
+        }
+    }
+
+    async addProductVariant({ body, method }: Request<{}, {}, { productId: string, variant: IVariant }>, res: Response) {
+        try {
+            const product = await this.service.addVariant(body)
+
+            this.send({
+                response: res,
+                data: product,
+                url: this.path,
+                method,
+            })
+        } catch (err) {
+            return this.error({
+                error: err,
+                url: this.path,
+                method,
+            })
+        }
+    }
+
+    async addProductVariantOption({ body, method }: Request<{}, {}, {productId: string, option: IOption}>, res: Response) {
+        try {
+            const product = await this.service.addVariantOption(body)
 
             this.send({
                 response: res,

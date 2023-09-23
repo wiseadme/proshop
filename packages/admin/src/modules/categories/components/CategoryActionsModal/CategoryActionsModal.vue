@@ -58,7 +58,7 @@
         }
     }
 
-    const onDeleteImage = () => onDeleteCategoryImage(unref(model).image)
+    const onDeleteImage = () => onDeleteCategoryImage(unref(model).image!)
 
     const onLoadImage = ([file]) => {
         if (!file) return

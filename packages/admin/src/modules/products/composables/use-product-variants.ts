@@ -10,7 +10,7 @@ export const useProductVariants = () => {
     const {
         product,
         variantItems,
-        createVariantOption,
+        addNewVariantOption,
         updateVariantOption,
         deleteVariantOption,
     } = useProductsService()
@@ -29,7 +29,7 @@ export const useProductVariants = () => {
     })
 
     const onCreateProductVariantOption = async (option: IOption) => {
-        await createVariantOption(option)
+        await addNewVariantOption(option)
         model.value.variants = clone(unref(product)!.variants!)
     }
 

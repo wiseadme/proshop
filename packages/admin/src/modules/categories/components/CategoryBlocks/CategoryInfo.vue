@@ -4,9 +4,14 @@
     import { useCategory } from '@modules/categories/composables/use-category'
     import { useCategoriesService } from '@modules/categories/composables/use-categories-service'
     import { ICategory } from '@proshop/types'
+    import { useCategoryInfo } from '@modules/categories/composables/use-category-info'
 
-    const { model, isEditMode } = useCategory()
-    const { categories, createCategory, updateCategory } = useCategoriesService()
+    const { model } = useCategory()
+    const {
+        categories,
+    } = useCategoriesService()
+
+    const { onSubmit } = useCategoryInfo()
 
     const getParent = (): Maybe<ICategory> => unref(categories).find(it => it.id === unref(model).parentId) || null
 
@@ -18,21 +23,6 @@
         get: getParent,
         set: setParent,
     })
-
-    const onSubmit = async (validate) => {
-        try {
-            await validate()
-
-            if (!unref(isEditMode)) {
-                createCategory(unref(model))
-            } else {
-                updateCategory(unref(model))
-            }
-        } catch (err) {
-            console.log(err)
-        }
-    }
-
 
 </script>
 <template>
@@ -91,10 +81,15 @@
                 </form-card>
             </v-col>
             <v-col>
-                <v-card>
+                <v-card
+                    style="width: 100%"
+                    color="white"
+                    class="app-border-radius mt-2"
+                    elevation="2"
+                >
                     <v-card-actions>
                         <v-button
-                            color="primary"
+                            color="success"
                             class="app-border-radius"
                             elevation="2"
                             width="120"
@@ -103,12 +98,12 @@
                             сохранить
                         </v-button>
                         <v-button
-                            color="warning"
+                            color="secondary"
                             class="ml-2 app-border-radius"
                             width="120"
                             elevation="3"
                         >
-                            отмена
+                            отменить
                         </v-button>
                     </v-card-actions>
                 </v-card>

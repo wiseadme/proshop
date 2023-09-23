@@ -1,44 +1,45 @@
-import { ref, unref } from 'vue'
+import {
+    computed,
+    ref,
+    unref,
+    watch,
+} from 'vue'
 import { createSharedComposable } from '@shared/features/create-shared-composable'
 import { useCategoriesService } from '@modules/categories/composables/use-categories-service'
-import { useCategoryActionsModal } from '@modules/categories/composables/use-category-actions-modal'
 import { Category } from '@modules/categories/model/category.model'
 import { ICategory } from '@proshop/types'
-import { clone, getDifferences } from '@shared/helpers'
+import { clone } from '@shared/helpers'
+import { useNotifications } from '@shared/components/VNotifications/use-notifications'
+import { CHANGES_SAVED, SAVING_ERROR } from '@shared/constants/notifications'
 
 export const useCategory = createSharedComposable(() => {
     const {
         category,
         setAsCurrent,
         deleteCategory,
-        createCategory,
-        updateCategory,
         uploadCategoryImage,
         deleteCategoryImage,
     } = useCategoriesService()
 
-    const {
-        closeActionsModal,
-        openActionsModal,
-    } = useCategoryActionsModal()
+    const { notify } = useNotifications()
 
     const model = ref<ICategory>(Category.create())
-    const isEditMode = ref<boolean>(false)
-    const hasChanges = ref<boolean>(false)
 
-    const setEditModeState = (state) => isEditMode.value = state
+    const isEditMode = computed(() => Boolean(unref(model).id))
 
-    const onEdit = (row: ICategory) => {
-        model.value = Category.create(clone(row))
-
-        setAsCurrent(row)
-        setEditModeState(true)
-        openActionsModal()
+    const setCategoryModel = (value) => {
+        model.value = value ? Category.create(clone(value)) : Category.create()
     }
 
     const onUploadCategoryImage = async (file: File) => {
-        await uploadCategoryImage(file)
-        unref(model).image = unref(category)!.image
+        try {
+            await uploadCategoryImage(file)
+            unref(model).image = unref(category)!.image
+
+            notify(CHANGES_SAVED)
+        } catch (err) {
+            notify(SAVING_ERROR)
+        }
     }
 
     const onDeleteCategoryImage = async (url: string) => {
@@ -50,46 +51,19 @@ export const useCategory = createSharedComposable(() => {
     const onDeleteCategory = (category: ICategory) => deleteCategory(category.id)
 
     const onAddNew = () => {
-        openActionsModal()
-        setEditModeState(false)
-
         setAsCurrent(null)
         model.value = Category.create()
     }
 
-    const onCreateCategory = async () => {
-        await createCategory(unref(model))
-
-        model.value = Category.create()
-        closeActionsModal()
-    }
-
-    const onUpdateCategory = async () => {
-        const updates = getDifferences(
-            unref(model),
-            unref(category),
-        ) as Maybe<Partial<ICategory>>
-
-        if (!updates) return
-
-        updates!.id = unref(category)!.id
-
-        await updateCategory(updates!)
-
-        closeActionsModal()
-        setEditModeState(false)
-    }
+    watch(category, setCategoryModel, { immediate: true })
 
     return {
         model,
         isEditMode,
-        hasChanges,
-        onEdit,
         onAddNew,
-        onCreateCategory,
-        onUpdateCategory,
         onUploadCategoryImage,
         onDeleteCategoryImage,
         onDeleteCategory,
+        setCategoryModel,
     }
 })

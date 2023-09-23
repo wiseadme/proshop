@@ -1,8 +1,4 @@
-import {
-    computed,
-    ref,
-    unref,
-} from 'vue'
+import { ref, unref } from 'vue'
 import { useProductModel } from '@modules/products/composables/use-product-model'
 import { useProductsService } from '@modules/products/composables/use-products-service'
 import { useNotifications } from '@shared/components/VNotifications/use-notifications'
@@ -15,19 +11,18 @@ import {
     NO_CHANGES,
     SAVING_ERROR,
 } from '@shared/constants/notifications'
-import { EDIT_PRODUCT } from '@modules/products/constants/actions'
+import { EDIT } from '@shared/constants/actions'
 import { INFO_BLOCK } from '@modules/products/constants/sections'
 
-const infoBlockKeys = ['description', 'name', 'price', 'quantity', 'seo', 'url']
+const infoBlockKeys = ['description', 'name', 'price', 'quantity', 'seo', 'url', 'unit']
 
 export const useProductInfo = () => {
-    const { model } = useProductModel()
+    const { model, isEditMode } = useProductModel()
     const { product, createProduct, updateProductInfo } = useProductsService()
     const { notify } = useNotifications()
     const router = useRouter()
 
     const isLoading = ref(false)
-    const isEditMode = computed(() => Boolean(unref(model).id))
 
     const getInfoBlockUpdates = (): Partial<IProduct> => infoBlockKeys.reduce((updates, key) => {
         const values = {
@@ -47,7 +42,7 @@ export const useProductInfo = () => {
     const goToEditProduct = (product: IProduct) => router.push({
         name: RouteNames.PRODUCT_EDIT,
         params: {
-            action: EDIT_PRODUCT,
+            action: EDIT,
             productId: product.id,
             section: INFO_BLOCK,
         },
@@ -82,8 +77,14 @@ export const useProductInfo = () => {
         }
     }
 
-    const onSubmit = async () => {
-        unref(isEditMode) ? await onUpdateProductInfo() : await onCreateProductInfo()
+    const onSubmit = async (validate) => {
+        try {
+            await validate()
+
+            unref(isEditMode) ? await onUpdateProductInfo() : await onCreateProductInfo()
+        } catch {
+            notify(SAVING_ERROR)
+        }
     }
 
     return {

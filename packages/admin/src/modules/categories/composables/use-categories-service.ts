@@ -36,24 +36,45 @@ export const useCategoriesService = createSharedComposable(() => {
 
     const getCategories = async (params = {}): Promise<ICategory[]> => {
         try {
-            return await _store.read(params)
+            return await _store.getCategories(params)
+        } catch (err) {
+            return Promise.reject(err)
+        }
+    }
+
+    const getCategory = async (id: string): Promise<ICategory> => {
+        try {
+            const [category] = await _store.getCategory(id)
+
+            setAsCurrent(category)
+
+            return category
         } catch (err) {
             return Promise.reject(err)
         }
     }
 
     const updateCategory = async (updates: Partial<ICategory>): Promise<ICategory> => {
+        updates.id = unref(category)!.id
+
         try {
-            return await _store.update(updates)
+            const updated = await _store.update(updates)
+
+            setAsCurrent(updated)
+
+            return updated
         } catch (err) {
             return Promise.reject(err)
         }
     }
 
-    const deleteCategory = async (id: string) => {
-        await _store.delete(id)
-
-        return getCategories()
+    const deleteCategory = async (id: string): Promise<void> => {
+        try {
+            await _store.delete(id)
+            await getCategories()
+        } catch (err) {
+            return Promise.reject(err)
+        }
     }
 
     const uploadCategoryImage = async (file: File) => {
@@ -84,6 +105,7 @@ export const useCategoriesService = createSharedComposable(() => {
         categories,
         setAsCurrent,
         getCategories,
+        getCategory,
         createCategory,
         updateCategory,
         deleteCategory,

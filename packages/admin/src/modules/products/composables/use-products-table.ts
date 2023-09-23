@@ -4,7 +4,7 @@ import { useProductsService } from '@modules/products/composables/use-products-s
 import { NavigationFailure, useRouter } from 'vue-router'
 import { useProductModel } from '@modules/products/composables/use-product-model'
 // Constants
-import { CREATE_PRODUCT, EDIT_PRODUCT } from '@modules/products/constants/actions'
+import { CREATE, EDIT } from '@shared//constants/actions'
 import { INFO_BLOCK } from '@modules/products/constants/sections'
 // Enums
 import { RouteNames } from '@modules/products/enums/route-names'
@@ -21,6 +21,7 @@ export const useProductsTable = () => {
         sort,
         totalLength,
         products,
+        setAsCurrent,
         deleteProduct,
         getProducts,
     } = useProductsService()
@@ -63,7 +64,7 @@ export const useProductsTable = () => {
             name: RouteNames.PRODUCT_EDIT,
 
             params: {
-                action: EDIT_PRODUCT,
+                action: EDIT,
                 productId: row.id,
                 section: INFO_BLOCK,
             },
@@ -71,13 +72,14 @@ export const useProductsTable = () => {
     }
 
     const onCreateRow = () => {
-        setProductModel()
+        setProductModel(null)
+        setAsCurrent(null)
 
         return router.push({
             name: RouteNames.PRODUCT_EDIT,
 
             params: {
-                action: CREATE_PRODUCT,
+                action: CREATE,
                 section: INFO_BLOCK,
             },
         })

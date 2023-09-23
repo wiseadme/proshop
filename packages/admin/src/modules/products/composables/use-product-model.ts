@@ -15,12 +15,14 @@ export const useProductModel = createSharedComposable(() => {
 
     const model = ref<IProduct>(Product.create())
 
+    const isEditMode = computed(() => Boolean(unref(model).id))
+
     const sortOrderedItems = () => {
         unref(model).seo.metatags.sort((a, b) => a.order - b.order)
         unref(model).attributes.sort((a, b) => a.order - b.order)
     }
 
-    const setProductModel = (value?: IProduct) => {
+    const setProductModel = (value: Maybe<IProduct>) => {
         model.value = value ? Product.create(clone(value)) : Product.create()
         sortOrderedItems()
     }
@@ -34,6 +36,7 @@ export const useProductModel = createSharedComposable(() => {
     return {
         model,
         modelMetaTags,
+        isEditMode,
         setProductModel,
     }
 })

@@ -1,4 +1,4 @@
-import { IAttribute, IMetaTag, IProduct, IProductQuery, IRequestParams } from '@proshop/types'
+import { IAttribute, IMetaTag, IOption, IProduct, IProductQuery, IRequestParams, IVariant } from '@proshop/types'
 
 export interface IProductsRepository {
     createProduct(product: IProduct): Promise<IProduct>
@@ -18,6 +18,10 @@ export interface IProductsRepository {
     deleteProduct(id: string): Promise<boolean>
 
     addAttribute(params: { productId: string, attribute: IAttribute }): Promise<IProduct>
+
+    addVariant(params: { productId: string, variant: IVariant }): Promise<IProduct>
+
+    addVariantOption(params: { productId: string, option: IOption }): Promise<IProduct>
 
     deleteAttribute(params: { productId: string, attributeId: string }): Promise<IProduct>
 

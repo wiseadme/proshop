@@ -2,9 +2,11 @@ import { useProductRepository } from '@modules/products/repository'
 import {
     IAttribute,
     IMetaTag,
+    IOption,
     IProduct,
     IProductQuery,
     IRequestParams,
+    IVariant
 } from '@proshop/types'
 
 const repository = useProductRepository()
@@ -124,6 +126,34 @@ export const actions = {
     async deleteMetaTag(params: { productId: string, metaTagId: string }) {
         try {
             const { data } = await repository.deleteMetaTag(params)
+
+            this.$patch((state) => {
+                state.products = state.products.map(it => it.id === params.productId ? data.data : it)
+            })
+
+            return data.data
+        } catch (err) {
+            return Promise.reject(err)
+        }
+    },
+
+    async addVariant(params: { productId: string, variant: IVariant }) {
+        try {
+            const { data } = await repository.addVariant(params)
+
+            this.$patch((state) => {
+                state.products = state.products.map(it => it.id === params.productId ? data.data : it)
+            })
+
+            return data.data
+        } catch (err) {
+            return Promise.reject(err)
+        }
+    },
+
+    async addVariantOption(params: { productId: string, option: IOption }) {
+        try {
+            const { data } = await repository.addVariantOption(params)
 
             this.$patch((state) => {
                 state.products = state.products.map(it => it.id === params.productId ? data.data : it)

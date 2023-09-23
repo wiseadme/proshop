@@ -8,16 +8,25 @@ import { Product } from '@modules/products/entity/product.entity'
 import { ILogger } from '@/types/utils'
 import { IProductsRepository } from '../types/repository'
 import { IProductsService } from '../types/service'
-import { IAttribute, ICategory, IMetaTag, IProduct, IProductQuery, IRequestParams } from '@proshop/types'
+import {
+    IAttribute,
+    ICategory,
+    IMetaTag,
+    IOption,
+    IProduct,
+    IProductQuery,
+    IRequestParams,
+    IVariant,
+} from '@proshop/types'
 import { IProductGatewayService } from '@modules/products/gateway/gateway.service'
 import { ServiceHelpers } from '@modules/products/helpers/service.helpers'
 
 @injectable()
 export class ProductsService extends ServiceHelpers implements IProductsService {
     constructor(
-      @inject(TYPES.UTILS.ILogger) private logger: ILogger,
-      @inject(TYPES.REPOSITORIES.IProductsRepository) private repository: IProductsRepository,
-      @inject(TYPES.GATEWAYS.IProductGatewayService) private gateway: IProductGatewayService,
+        @inject(TYPES.UTILS.ILogger) private logger: ILogger,
+        @inject(TYPES.REPOSITORIES.IProductsRepository) private repository: IProductsRepository,
+        @inject(TYPES.GATEWAYS.IProductGatewayService) private gateway: IProductGatewayService,
     ) {
         super()
     }
@@ -138,6 +147,14 @@ export class ProductsService extends ServiceHelpers implements IProductsService 
 
     async addAttribute(params: { productId: string, attribute: IAttribute }) {
         return this.repository.addAttribute(params)
+    }
+
+    async addVariant(params: { productId: string, variant: IVariant }) {
+        return this.repository.addVariant(params)
+    }
+
+    async addVariantOption(params: { productId: string, option: IOption }) {
+        return this.repository.addVariantOption(params)
     }
 
     async deleteAttribute(params: { productId: string, attributeId: string }) {

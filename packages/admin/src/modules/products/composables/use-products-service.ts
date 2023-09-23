@@ -102,7 +102,7 @@ export const useProductsService = createSharedComposable(() => {
             return unref(categoryItems)!
         }
 
-        return _categoriesStore.read()
+        return _categoriesStore.getCategories()
     }
 
     const getVariants = async (): Promise<IVariant[]> => {
@@ -207,6 +207,40 @@ export const useProductsService = createSharedComposable(() => {
         }
     }
 
+    const addProductVariant = async (variant: IVariant) => {
+        const updates = {
+            productId: unref(product)!.id,
+            variant,
+        }
+
+        try {
+            const product = await _productsStore.addVariant(updates)
+
+            setAsCurrent(product)
+
+            return product
+        } catch (err) {
+            return Promise.reject(err)
+        }
+    }
+
+    const addProductVariantOption = async (option: IOption) => {
+        const updates = {
+            productId: unref(product)!.id,
+            option,
+        }
+
+        try {
+            const product = await _productsStore.addVariantOption(updates)
+
+            setAsCurrent(product)
+
+            return product
+        } catch (err) {
+            return Promise.reject(err)
+        }
+    }
+
     const addProductAttribute = async (attr: IAttribute) => {
         const updates = {
             productId: unref(product)!.id,
@@ -294,6 +328,16 @@ export const useProductsService = createSharedComposable(() => {
         }
     }
 
+    const loadImage = async ({ file, ownerId }: { file: File, ownerId: string }) => {
+        try {
+            const { formData, fileName } = _filesService.createFormData(file)
+
+            return await _filesService.uploadFile({ ownerId, fileName, formData })
+        } catch (err) {
+            return Promise.reject(err)
+        }
+    }
+
     const getVariantsWithOptionsIds = (variants: IVariant[]): IVariant[] => {
         return variants.map((v) => {
             const payload = { ...v } as any
@@ -304,49 +348,45 @@ export const useProductsService = createSharedComposable(() => {
         })
     }
 
-    const createVariantOption = async (option: IOption) => {
-        const payload = { ...option } as Record<string, any>
+    const createProductOption = async (option: IOption): Promise<IOption> => {
+        try {
+            return await _optionsService.createOption(option)
+        } catch (err) {
+            return Promise.reject(err)
+        }
+    }
 
-        payload.assets = option.assets?.map(asset => asset.id)
-        const createdOption = await _optionsService.createOption(payload)
+    const updateProductOption = async (updates) => {
+        try {
+            return await _optionsService.updateOption(updates)
+        } catch (err) {
+            return Promise.reject(err)
+        }
+    }
 
+    const addNewVariantOption = async (data: IOption) => {
+        const option = await createProductOption(data)
         const { variants } = unref(product)!
 
         let variant = variants?.find(v => v.id === option.variantId)!
 
         if (!variant) {
-            variant = unref(variantItems)!.find(v => v.id === createdOption.variantId) as IVariant
-            variants.push(variant)
+            variant = unref(variantItems)!.find(v => v.id === option.variantId) as IVariant
+            await addProductVariant(variant)
         }
 
-        variant.options ??= []
-        variant.options.push(createdOption)
+        // variant.options ??= [] as IOption[]
+        // variant.options.push(option as any)
 
-        await updateProduct({
-            variants: getVariantsWithOptionsIds(variants),
-        })
+        await addProductVariantOption(option)
 
-        variant.options = []
-    }
-
-    const loadImage = ({
-        file,
-        ownerId,
-    }: {
-        file: File
-        ownerId: string
-    }) => {
-        const { formData, fileName } = _filesService.createFormData(file)
-
-        return _filesService.uploadFile({ ownerId, fileName, formData })
+        // await updateProduct({
+        //     variants: getVariantsWithOptionsIds(variants),
+        // })
     }
 
     const updateVariantOption = async (option: IOption) => {
-        const payload = { ...option } as Record<string, any>
-        payload.assets = option.assets?.map(asset => asset.id)
-
-        /** TODO убрать возможность унаследования вариантов от других товаров */
-        const updated = await _optionsService.updateOption(payload)
+        const updated = await updateProductOption(option)
         const { variants } = unref(product)!
 
         const variant = variants.find(v => v.id === option.variantId)!
@@ -478,7 +518,6 @@ export const useProductsService = createSharedComposable(() => {
         getCategoryProducts,
         setAsCurrent,
         createProduct,
-        createVariantOption,
         updateProduct,
         updateMainImageAsset,
         updateProductCategories,
@@ -486,6 +525,7 @@ export const useProductsService = createSharedComposable(() => {
         updateProductMetaTags,
         addProductAttribute,
         addProductMetaTag,
+        addNewVariantOption,
         updateProductAttributes,
         updateProductRelatedProducts,
         updateVariantOption,

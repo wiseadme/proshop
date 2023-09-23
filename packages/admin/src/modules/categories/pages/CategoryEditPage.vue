@@ -4,12 +4,13 @@
     import { useRoute } from 'vue-router'
 
     const { activeItem } = useRightSidebar()
-    const { getCategories } = useCategoriesService()
+    const { getCategory, getCategories } = useCategoriesService()
     const route = useRoute()
 
     const onEdit = () => {}
 
-    getCategories({ id: route.params.categoryId })
+    getCategory(route.params.categoryId as string)
+    getCategories()
 
 </script>
 <template>
