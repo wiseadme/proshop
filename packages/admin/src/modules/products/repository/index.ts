@@ -7,7 +7,7 @@ import {
     IProduct,
     IProductQuery,
     IRequestParams,
-    IVariant
+    IVariant,
 } from '@proshop/types'
 
 class Repository {
@@ -35,12 +35,20 @@ class Repository {
         return this.client.patch(`${this.path}/attributes/add`, params)
     }
 
-    addVariant(params: { productId: string, variant: IVariant }) {
-        return this.client.patch(`${this.path}/variants/add`, params)
+    addVariant(variant: IVariant) {
+        return this.client.patch(`${this.path}/variants/add`, { variant })
     }
 
-    addVariantOption(params: { productId: string, option: IOption }) {
-        return this.client.patch(`${this.path}/variants/option/add`, params)
+    deleteVariant(variant: IVariant) {
+        return this.client.patch(`${this.path}/variants/delete`, { variant })
+    }
+
+    addVariantOption(option: IOption) {
+        return this.client.patch(`${this.path}/variants/option/add`, { option })
+    }
+
+    deleteVariantOption(option: IOption) {
+        return this.client.patch(`${this.path}/variants/option/delete`, { option })
     }
 
     deleteAttribute(params: { productId: string, attributeId: string }) {

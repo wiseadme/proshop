@@ -7,7 +7,7 @@ import { validateId } from '@common/utils/mongoose-validate-id'
 import { ICategory, ICategoryMongoModel } from '@proshop/types'
 import { ICategoryRepository } from '../types/repository'
 import { ILogger } from '@/types/utils'
-
+// Mappers
 import { CategoryMapper } from '@modules/category/mappers/category.mapper'
 
 @injectable()
@@ -15,7 +15,7 @@ export class CategoryRepository implements ICategoryRepository {
     constructor(@inject(TYPES.UTILS.ILogger) private logger: ILogger) {
     }
 
-    async create(category: ICategory) {
+    async createCategory(category: ICategory) {
         const created = await new CategoryModel({
             ...CategoryMapper.toMongoModelData(category),
             _id: new mongoose.Types.ObjectId(),
@@ -25,7 +25,7 @@ export class CategoryRepository implements ICategoryRepository {
         return CategoryMapper.toDomain(created.toObject())
     }
 
-    async read(params: Partial<ICategory>): Promise<ICategory[]> {
+    async getCategories(params: Partial<ICategory>): Promise<ICategory[]> {
         params.id && validateId(params.id)
 
         const categories = await CategoryModel
@@ -35,7 +35,7 @@ export class CategoryRepository implements ICategoryRepository {
         return categories.map(ctg => CategoryMapper.toDomain(ctg))
     }
 
-    async update(updates: Partial<ICategory>) {
+    async updateCategory(updates: Partial<ICategory>) {
         const { id } = updates
         validateId(updates.id)
 
@@ -43,9 +43,7 @@ export class CategoryRepository implements ICategoryRepository {
 
         const updated = await CategoryModel.findByIdAndUpdate(
             { _id: id },
-            {
-                $set: updates,
-            },
+            { $set: updates },
             { new: true },
         )
             .lean() as ICategoryMongoModel
@@ -53,7 +51,7 @@ export class CategoryRepository implements ICategoryRepository {
         return { updated: CategoryMapper.toDomain(updated) }
     }
 
-    async delete(id) {
+    async deleteCategory(id) {
         validateId(id)
 
         return !!await CategoryModel.findByIdAndDelete(id)

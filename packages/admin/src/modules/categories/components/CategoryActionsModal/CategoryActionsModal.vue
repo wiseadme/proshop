@@ -16,8 +16,6 @@
     const {
         model,
         isEditMode,
-        onCreateCategory,
-        onUpdateCategory,
         onDeleteCategoryImage,
         onUploadCategoryImage
     } = useCategory()
@@ -41,12 +39,10 @@
     })
 
     const createCategory = (validate) => {
-        validate().then(() => onCreateCategory())
     }
 
     const updateCategory = (validate) => {
         validate()
-            .then(() => onUpdateCategory())
             .then(() => files.value = [])
     }
 

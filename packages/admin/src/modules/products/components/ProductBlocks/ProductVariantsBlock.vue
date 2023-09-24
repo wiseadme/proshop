@@ -28,8 +28,6 @@
         variantItems,
         isVariantEditMode,
         genVariantOptionPattern,
-        // onSelectParentProduct,
-        // onUploadProductVariantOptionImage,
         onUpdateProductVariantOption,
         onCreateProductVariantOption,
         onDeleteProductVariantOption,
@@ -60,6 +58,7 @@
         await validate()
 
         unref(optionPattern)!.variantId = unref(currentVariant)!.id
+        unref(optionPattern)!.ownerId = unref(model)!.id
 
         if (unref(isVariantEditMode)) {
             await onUpdateProductVariantOption(unref(optionPattern))
@@ -71,10 +70,15 @@
         productForInherit.value = null
     }
 
-    const setCurrentVariant = (variant: IVariant) => {
+    const setCurrentVariant = (variant: Maybe<IVariant>) => {
         currentVariant.value = variant
         optionPattern.value = genVariantOptionPattern()
         isVariantEditMode.value = false
+    }
+
+    const onDeleteOption = (option: IOption) => {
+        unref(currentVariant)!.options = (unref(currentVariant)!.options as IOption[]).filter(it => it.id !== option.id)
+        onDeleteProductVariantOption({ variant: unref(currentVariant), option })
     }
 
     const setOptionForEditing = (option: IOption) => {
@@ -112,6 +116,14 @@
 
     }, { immediate: true })
 
+    watch(() => unref(model).variants, (newVariants = []) => {
+        if (unref(currentVariant)) {
+            const variant = newVariants.find(it => it.id === unref(currentVariant)?.id)
+
+            setCurrentVariant(variant || unref(existsVariants)[0])
+        }
+    }, { immediate: true })
+
     /**
      * @description Наблюдаем в режиме редактирования за вариантами продукта
      * и перезаписываем мапу существующих вариантов для редактирования
@@ -121,7 +133,7 @@
 
         setAvailableVariants(variants || unref(variantItems)!)
 
-        const variant = variants.find(v => v.id === unref(currentVariant)!.id)
+        const variant = variants.find(v => v.id === unref(currentVariant)?.id)
 
         setCurrentVariant(variant! || unref(currentVariant))
 
@@ -220,7 +232,10 @@
                 </template>
             </form-card>
         </v-col>
-        <v-col cols="6">
+        <v-col
+            cols="6"
+            class="mb-4"
+        >
             <v-form v-slot="{validate}">
                 <form-card>
                     <template #icon>
@@ -318,7 +333,10 @@
                 </form-card>
             </v-form>
         </v-col>
-        <v-col cols="6">
+        <v-col
+            cols="6"
+            class="mb-4"
+        >
             <form-card>
                 <template #icon>
                     <v-svg :path="SvgPaths.NEWSPAPER"/>
@@ -330,7 +348,7 @@
                     <items-list
                         v-model="optionPattern"
                         :items="currentVariant.options"
-                        @delete="onDeleteProductVariantOption({variant: currentVariant, option: $event})"
+                        @delete="onDeleteOption"
                         @edit="setOptionForEditing"
                     >
                         <template #title="{item}">

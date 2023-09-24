@@ -14,12 +14,9 @@
     const {
         model,
         isEditMode,
-        onEdit,
         onUploadCategoryImage,
         onDeleteCategoryImage,
         onDeleteCategory,
-        onCreateCategory,
-        onUpdateCategory,
         onAddNew
     } = useCategory()
 
@@ -39,7 +36,6 @@
                     :cols="cols"
                     :rows="categories"
                     @open:create-modal="onAddNew"
-                    @open:edit-modal="onEdit"
                     @delete:category="onDeleteCategory($event)"
                 />
             </v-col>
@@ -57,8 +53,6 @@
             v-model:conditions="model.conditions"
             :categories="categories"
             :is-update="isEditMode"
-            @create="onCreateCategory"
-            @update="onUpdateCategory"
             @delete:image="onDeleteCategoryImage"
             @upload:image="onUploadCategoryImage"
         />

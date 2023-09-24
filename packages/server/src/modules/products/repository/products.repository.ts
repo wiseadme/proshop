@@ -208,10 +208,10 @@ export class ProductsRepository extends RepositoryHelpers implements IProductsRe
         return ProductMapper.toDomain(product)
     }
 
-    async addVariant(params: { productId: string, variant: IVariant }) {
-        validateId(params.productId)
+    async addVariant(params: { variant: IVariant }) {
+        validateId(params.variant.ownerId)
 
-        const product = await ProductModel.findOneAndUpdate({ _id: params.productId }, {
+        const product = await ProductModel.findOneAndUpdate({ _id: params.variant.ownerId }, {
             $push: { 'variants': params.variant },
         }, { new: true })
             .populate(this.getPopulateParams())
@@ -220,15 +220,42 @@ export class ProductsRepository extends RepositoryHelpers implements IProductsRe
         return ProductMapper.toDomain(product)
     }
 
-    async addVariantOption(params: { productId: string, option: IOption }) {
-        validateId(params.productId)
+    async deleteVariant(params: { variant: IVariant }): Promise<IProduct> {
+        validateId(params.variant.ownerId)
+
+        const product = await ProductModel.findOneAndUpdate({ _id: params.variant.ownerId }, {
+            $pull: { variants: { id: params.variant.id } },
+        }, { new: true })
+            .populate(this.getPopulateParams())
+            .lean() as IProductMongoModel
+
+        return ProductMapper.toDomain(product)
+    }
+
+    async addVariantOption(params: { option: IOption }) {
+        validateId(params.option.ownerId)
 
         const product = await ProductModel.findOneAndUpdate({
-            _id: params.productId, variants: {
+            _id: params.option.ownerId, variants: {
                 $elemMatch: { _id: params.option.variantId },
             },
         }, {
             $push: { 'variants.$.options': params.option.id },
+        }, { new: true })
+            .populate(this.getPopulateParams())
+            .lean() as IProductMongoModel
+
+        return ProductMapper.toDomain(product)
+    }
+
+    async deleteVariantOption(params: { option: IOption }) {
+        validateId(params.option.ownerId)
+
+        const product = await ProductModel.findOneAndUpdate({
+            _id: params.option.ownerId,
+            variants: { $elemMatch: { _id: params.option.variantId } },
+        }, {
+            $pull: { 'variants.$.options': params.option.id },
         }, { new: true })
             .populate(this.getPopulateParams())
             .lean() as IProductMongoModel

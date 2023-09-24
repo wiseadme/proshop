@@ -32,7 +32,12 @@
     const ProductCategoriesBlock = markRaw(defineAsyncComponent(() => import('@modules/products/components/ProductBlocks/ProductCategoriesBlock.vue')))
 
     const { model } = useProductModel()
-    const { categoryItems } = useProductsService()
+
+    const {
+        categoryItems,
+        variantItems,
+        attributeItems,
+    } = useProductsService()
 
     const tabs = computed<SidebarTab[]>(() => [
         {
@@ -55,7 +60,7 @@
             component: ProductCategoriesBlock,
             title: 'Категории товара',
             isActive: false,
-            disabled: !unref(model)?.id,
+            disabled: !unref(categoryItems)?.length || !unref(model)?.id,
             independent: false,
             section: CATEGORIES_BLOCK,
         },
@@ -63,7 +68,7 @@
             component: ProductAttributesBlock,
             title: 'Атрибуты товара',
             isActive: false,
-            disabled: !unref(model)?.id,
+            disabled: !unref(attributeItems).length || !unref(model)?.id,
             section: ATTRIBUTES_BLOCK,
             independent: false,
         },
@@ -79,7 +84,7 @@
             component: ProductVariantsBlock,
             title: 'Варианты товара',
             isActive: false,
-            disabled: !unref(model)?.id,
+            disabled: !unref(variantItems)?.length || !unref(model)?.id,
             section: VARIANTS_BLOCK,
             independent: true,
         },
@@ -87,7 +92,7 @@
             component: ProductRelatedBlock,
             title: 'Рекомендуемые товары',
             isActive: false,
-            disabled: !unref(model)?.id || !unref(categoryItems)?.length,
+            disabled: !unref(categoryItems)?.length || !unref(model)?.id,
             section: RELATED_BLOCK,
             independent: true,
         },

@@ -38,6 +38,7 @@ export const useCategory = createSharedComposable(() => {
 
             notify(CHANGES_SAVED)
         } catch (err) {
+            console.log(err)
             notify(SAVING_ERROR)
         }
     }

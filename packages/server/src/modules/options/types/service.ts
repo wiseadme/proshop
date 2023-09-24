@@ -11,4 +11,6 @@ export interface IOptionService {
     update(updates: Partial<IOption>): Promise<{ updated: IOption }>
 
     delete(id: string): Promise<boolean>
+
+    deleteVariantOptions(options: IOption[]): Promise<boolean>
 }

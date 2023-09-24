@@ -28,7 +28,7 @@ export const useCategoriesService = createSharedComposable(() => {
 
     const createCategory = async (model: ICategory): Promise<ICategory> => {
         try {
-            return await _store.create(model)
+            return await _store.createCategory(model)
         } catch (err) {
             return Promise.reject(err)
         }
@@ -58,7 +58,7 @@ export const useCategoriesService = createSharedComposable(() => {
         updates.id = unref(category)!.id
 
         try {
-            const updated = await _store.update(updates)
+            const updated = await _store.updateCategory(updates)
 
             setAsCurrent(updated)
 
@@ -70,7 +70,7 @@ export const useCategoriesService = createSharedComposable(() => {
 
     const deleteCategory = async (id: string): Promise<void> => {
         try {
-            await _store.delete(id)
+            await _store.deleteCategory(id)
             await getCategories()
         } catch (err) {
             return Promise.reject(err)
@@ -81,14 +81,25 @@ export const useCategoriesService = createSharedComposable(() => {
         const { formData, fileName } = _filesService.createFormData(file)
         const ownerId = unref(category)!.id
 
-        const asset = await _filesService.uploadFile({ ownerId, fileName, formData })
+        const asset = await _filesService.uploadFile({
+            ownerId,
+            fileName,
+            formData,
+        })
 
-        if (asset && asset.url) {
-            category.value = await updateCategory({ id: ownerId, image: asset.url })
-        }
+        const { assets = [] } = unref(category)
+        assets.push(asset)
+
+        const data = await updateCategory({
+            id: ownerId,
+            image: asset.url,
+            assets,
+        })
+
+        setAsCurrent(data)
     }
 
-    const deleteCategoryImage = async (url) => {
+    const deleteCategoryImage = async (url: string) => {
         const ownerId = unref(category)!.id
         const id = extractAssetIdFromFileName(url)
 

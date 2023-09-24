@@ -36,7 +36,7 @@ export class ProductsService extends ServiceHelpers implements IProductsService 
 
         if (product.categories.length) {
             for await (const category of product.categories as string[]) {
-                await this.gateway.category.update({ id: category, length: 1 })
+                await this.gateway.category.updateCategory({ id: category, length: 1 })
             }
         }
 
@@ -73,7 +73,7 @@ export class ProductsService extends ServiceHelpers implements IProductsService 
         }
 
         if (category) {
-            const [found] = await this.gateway.category.read({ url: category })
+            const [found] = await this.gateway.category.getCategories({ url: category })
 
             data.total = found.length
             data.items = await this.repository.findByCategory({ category, page, count, desc, asc })
@@ -110,13 +110,13 @@ export class ProductsService extends ServiceHelpers implements IProductsService 
 
             for await (const id of currentCategories as string[]) {
                 if (id && !updateCategoriesMap[id]) {
-                    await this.gateway.category.update({ id, length: -1 })
+                    await this.gateway.category.updateCategory({ id, length: -1 })
                 }
             }
 
             for await (const id of updates.categories as string[]) {
                 if (id && !productCategoriesMap[id]) {
-                    await this.gateway.category.update({ id, length: 1 })
+                    await this.gateway.category.updateCategory({ id, length: 1 })
                 }
             }
         }
@@ -131,14 +131,19 @@ export class ProductsService extends ServiceHelpers implements IProductsService 
         /**
          * @description - Удаляем всю статику связанную с товаром
          */
-        await this.gateway.asset.deleteFiles(product.id)
+        await this.gateway.asset.deleteFiles(id)
+        /**
+         * @description - Удаляем варианты товара
+         */
+        for await (const variant of product.variants as IVariant[]) {
+            await this.gateway.option.deleteVariantOptions(variant.options as IOption[])
+        }
         /**
          * @description - Удаляем товар из категории
          */
         for await (const category of product.categories as ICategory[]) {
             await Promise.all([
-                this.gateway.category.update({ id: category.id, length: -1 }),
-                // this.gateway.asset.deleteFiles(category._id),
+                this.gateway.category.updateCategory({ id: category.id, length: -1 }),
             ])
         }
 
@@ -149,12 +154,20 @@ export class ProductsService extends ServiceHelpers implements IProductsService 
         return this.repository.addAttribute(params)
     }
 
-    async addVariant(params: { productId: string, variant: IVariant }) {
+    async addVariant(params: { variant: IVariant }) {
         return this.repository.addVariant(params)
     }
 
-    async addVariantOption(params: { productId: string, option: IOption }) {
+    async deleteVariant(params: { variant: IVariant }) {
+        return this.repository.deleteVariant(params)
+    }
+
+    async addVariantOption(params: { option: IOption }) {
         return this.repository.addVariantOption(params)
+    }
+
+    async deleteVariantOption(params: { option: IOption }) {
+        return this.repository.deleteVariantOption(params)
     }
 
     async deleteAttribute(params: { productId: string, attributeId: string }) {

@@ -12,12 +12,12 @@ export interface IOption {
     id: string
     name: string
     variantId: string
+    ownerId: string
     price?: number
     quantity?: number
     url: Maybe<string>
     description?: Maybe<string>
     image: Maybe<string>
-    products?: IOptionProduct[]
 }
 
 export interface IOptionMongoModel extends Omit<IOption, 'id' | 'assets'> {

@@ -1,11 +1,11 @@
 <script lang="ts" setup>
     import { ref, unref } from 'vue'
-    import { IAsset } from '@proshop/types'
-    import { clone } from '@shared/helpers'
     import { FormCard } from '@shared/components/FormCard'
     import { VSvg } from '@shared/components/VSvg'
-    import { SvgPaths } from '@shared/enums/svg-paths'
     import { useProductImages } from '@modules/products/composables/use-product-images'
+    import { clone } from '@shared/helpers'
+    import { SvgPaths } from '@shared/enums/svg-paths'
+    import { IAsset } from '@proshop/types'
 
     const {
         assets,

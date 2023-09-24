@@ -4,7 +4,7 @@ import { ICategory } from '@proshop/types'
 const repository = useCategoryRepository()
 
 export const actions = {
-    async create(category: ICategory) {
+    async createCategory(category: ICategory) {
         try {
             const { data } = await repository.create(category)
 
@@ -16,7 +16,7 @@ export const actions = {
         }
     },
 
-    async update(updates) {
+    async updateCategory(updates) {
         try {
             const { data } = await repository.update(updates)
 
@@ -52,7 +52,7 @@ export const actions = {
         }
     },
 
-    async delete(id: string) {
+    async deleteCategory(id: string) {
         try {
             const { data } = await repository.delete(id)
 

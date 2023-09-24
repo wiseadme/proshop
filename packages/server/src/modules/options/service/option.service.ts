@@ -44,4 +44,16 @@ export class OptionService implements IOptionService {
         this.events.emit(DELETE_OPTION_EVENT, id)
         return this.repository.delete(id)
     }
+
+    async deleteVariantOptions(options: IOption[]) {
+        try {
+            // for await (const option of options) {
+            await Promise.all(options.map(it => this.delete(it.id)))
+            // }
+
+            return true
+        } catch (err) {
+            return Promise.reject(err)
+        }
+    }
 }

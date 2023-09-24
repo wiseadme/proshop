@@ -11,6 +11,10 @@ const OptionSchema = new Schema<IOptionMongoModel>({
         type: String,
         required: true,
     },
+    ownerId: {
+        type: String,
+        required: true,
+    },
     price: {
         type: Number,
         default: 0

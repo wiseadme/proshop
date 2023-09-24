@@ -87,6 +87,7 @@ const ProductSchema = new Schema<IProductMongoModel>({
             {
                 group: String,
                 attributeId: String,
+                ownerId: String,
                 id: String,
                 _id: false,
                 options: [{

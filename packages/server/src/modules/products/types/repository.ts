@@ -19,9 +19,13 @@ export interface IProductsRepository {
 
     addAttribute(params: { productId: string, attribute: IAttribute }): Promise<IProduct>
 
-    addVariant(params: { productId: string, variant: IVariant }): Promise<IProduct>
+    addVariant(params: { variant: IVariant }): Promise<IProduct>
 
-    addVariantOption(params: { productId: string, option: IOption }): Promise<IProduct>
+    deleteVariant(params: { variant: IVariant }): Promise<IProduct>
+
+    addVariantOption(params: { option: IOption }): Promise<IProduct>
+
+    deleteVariantOption(params: { option: IOption }): Promise<IProduct>
 
     deleteAttribute(params: { productId: string, attributeId: string }): Promise<IProduct>
 

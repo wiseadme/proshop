@@ -1,8 +1,10 @@
 import { ref, unref } from 'vue'
 import { useProductsService } from '@modules/products/composables/use-products-service'
 import { useProductModel } from '@modules/products/composables/use-product-model'
-import { IOption } from '@proshop/types'
+import { useNotifications } from '@shared/components/VNotifications/use-notifications'
 import { clone } from '@shared/helpers'
+import { CHANGES_SAVED, SAVING_ERROR } from '@shared/constants/notifications'
+import { IOption } from '@proshop/types'
 
 export const useProductVariants = () => {
     const { model } = useProductModel()
@@ -15,11 +17,14 @@ export const useProductVariants = () => {
         deleteVariantOption,
     } = useProductsService()
 
+    const { notify } = useNotifications()
+
     const isVariantEditMode = ref(false)
 
     const genVariantOptionPattern = (): IOption => ({
         id: '',
         variantId: '',
+        ownerId: '',
         name: '',
         quantity: 0,
         price: 0,
@@ -28,24 +33,42 @@ export const useProductVariants = () => {
         image: '',
     })
 
-    const onCreateProductVariantOption = async (option: IOption) => {
-        await addNewVariantOption(option)
-        model.value.variants = clone(unref(product)!.variants!)
+    const onCreateProductVariantOption = async (option: IOption): Promise<void> => {
+        try {
+            await addNewVariantOption(option)
+            model.value.variants = clone(unref(product)!.variants!)
+
+            notify(CHANGES_SAVED)
+        } catch {
+            notify(SAVING_ERROR)
+        }
     }
 
-    const onUpdateProductVariantOption = async (option: IOption) => {
-        await updateVariantOption(option)
-        model.value.variants = clone(unref(product)!.variants)
+    const onUpdateProductVariantOption = async (option: IOption): Promise<void> => {
+        try {
+            await updateVariantOption(option)
+            model.value.variants = clone(unref(product)!.variants)
+
+            notify(CHANGES_SAVED)
+        } catch {
+            notify(SAVING_ERROR)
+        }
     }
 
-    const onDeleteProductVariantOption = async ({ option, variant }) => {
-        await deleteVariantOption({ option, variant })
-        model.value.variants = clone(unref(product)?.variants!)
+    const onDeleteProductVariantOption = async ({ option, variant }): Promise<void> => {
+        try {
+            await deleteVariantOption({ option, variant })
+            model.value.variants = clone(unref(product)?.variants!)
+
+            notify(CHANGES_SAVED)
+        } catch {
+            notify(SAVING_ERROR)
+        }
     }
 
     return {
-        isVariantEditMode,
         variantItems,
+        isVariantEditMode,
         genVariantOptionPattern,
         onCreateProductVariantOption,
         onUpdateProductVariantOption,

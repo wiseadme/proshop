@@ -4,11 +4,11 @@ export class Option implements IOption {
     readonly id: string
     readonly name: string
     readonly variantId: string
+    readonly ownerId: string
     readonly price: number
     readonly quantity: number
     readonly description: Maybe<string>
     readonly image: Maybe<string>
-    readonly modelAttribute: Maybe<IAttribute>
     readonly url: Maybe<string>
 
     constructor({
@@ -20,6 +20,7 @@ export class Option implements IOption {
         url = null,
         image = null,
         variantId = '',
+        ownerId = '',
     }: IOption) {
         this.id = id
         this.name = name
@@ -28,6 +29,7 @@ export class Option implements IOption {
         this.description = description
         this.image = image
         this.variantId = variantId
+        this.ownerId = ownerId
         this.url = url
     }
 

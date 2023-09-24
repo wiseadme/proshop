@@ -11,6 +11,7 @@ export interface IVariantOption {
     url?: string
     name: string
     variantId: string
+    ownerId?: string
 }
 
 export interface IVariant {
@@ -18,6 +19,7 @@ export interface IVariant {
     group: string,
     options?: IOption[] | string[]
     attributeId: string
+    ownerId: Maybe<string>
 }
 
 export interface IVariantMongoModel extends Omit<IVariant, 'id'> {

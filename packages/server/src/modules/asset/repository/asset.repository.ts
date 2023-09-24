@@ -74,7 +74,7 @@ export class AssetRepository implements IAssetsRepository {
         validateId(asset.id)
 
         const assetData = await AssetModel.findOne({ _id: asset.id })
-        const ownerDir = asset.ownerId.slice(-4)
+        const ownerDir = asset.ownerId.slice(-10)
         const dirPath = `${config.uploadsDir}/${ownerDir}`
 
         await assetData!.deleteOne()
@@ -92,12 +92,12 @@ export class AssetRepository implements IAssetsRepository {
         return true
     }
 
-    async deleteAll(id) {
+    async deleteAll(id: string) {
         try {
             validateId(id)
 
             const assets = await AssetModel.find({ ownerId: id }) as HydratedDocument<IAsset>[]
-            const ownerDir = id.slice(-4)
+            const ownerDir = id.slice(-10)
             const dirPath = `${config.uploadsDir}/${ownerDir}`
 
             for await (const data of assets) {
