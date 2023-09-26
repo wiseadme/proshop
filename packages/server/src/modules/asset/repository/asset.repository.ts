@@ -27,7 +27,7 @@ export class AssetRepository implements IAssetsRepository {
         return new Promise((resolve, reject) => {
             const upload = this.fileLoader.loadSingle('image')
             const ownerId = req.query.id as string
-            const ownerDir = ownerId.slice(-4)
+            const ownerDir = ownerId.slice(-10)
 
             const assetId = new mongoose.Types.ObjectId()
 
@@ -38,9 +38,7 @@ export class AssetRepository implements IAssetsRepository {
             req.query.assetId = assetId.toString()
             req.query.ownerDir = ownerDir
 
-            upload(req, res, (err, filename) => {
-                console.log(err, filename)
-
+            upload(req, res, (err) => {
                 if (err) {
                     return reject(err)
                 }
@@ -80,7 +78,7 @@ export class AssetRepository implements IAssetsRepository {
         await assetData!.deleteOne()
 
         await fs
-            .unlink(`${dirPath}/${asset.id}|${asset.fileName}`)
+            .unlink(`${dirPath}/${assetData!.id}|${assetData!.fileName}`)
             .catch(err => console.log(err))
 
         const dir = await fs.readdir(dirPath)

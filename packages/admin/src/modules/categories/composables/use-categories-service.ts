@@ -6,7 +6,11 @@ import {
 import { createSharedComposable } from '@shared/features/create-shared-composable'
 import { useCategoriesStore } from '@modules/categories/store'
 import { useFilesService } from '@shared/services/files.service'
-import { ICategory, Maybe } from '@proshop/types'
+import {
+    IAsset,
+    ICategory,
+    Maybe,
+} from '@proshop/types'
 
 export const useCategoriesService = createSharedComposable(() => {
     const _store = useCategoriesStore()
@@ -20,15 +24,13 @@ export const useCategoriesService = createSharedComposable(() => {
         category.value = item
     }
 
-    const extractAssetIdFromFileName = (url: string): string => {
-        const urlParams = url.split('|')[0].split('/')
-
-        return urlParams[urlParams.length - 1]
-    }
-
     const createCategory = async (model: ICategory): Promise<ICategory> => {
         try {
-            return await _store.createCategory(model)
+            const category = await _store.createCategory(model)
+
+            setAsCurrent(category)
+
+            return category
         } catch (err) {
             return Promise.reject(err)
         }
@@ -87,7 +89,7 @@ export const useCategoriesService = createSharedComposable(() => {
             formData,
         })
 
-        const { assets = [] } = unref(category)
+        const { assets = [] } = unref(category) as ICategory
         assets.push(asset)
 
         const data = await updateCategory({
@@ -99,16 +101,25 @@ export const useCategoriesService = createSharedComposable(() => {
         setAsCurrent(data)
     }
 
-    const deleteCategoryImage = async (url: string) => {
-        const ownerId = unref(category)!.id
-        const id = extractAssetIdFromFileName(url)
+    const deleteCategoryImage = async (asset: IAsset) => {
+        try {
+            await _filesService.deleteFile({
+                ownerId: asset.ownerId,
+                url: asset.url,
+                id: asset.id,
+            })
 
-        await _filesService.deleteFile({ ownerId, url, id })
+            const updated = await updateCategory({
+                id: asset.ownerId,
+                assets: unref(category)?.assets.filter(it => it.id !== asset.id),
+            })
 
-        category.value = await updateCategory({
-            id: ownerId,
-            image: null,
-        })
+            setAsCurrent(updated)
+
+            return updated
+        } catch (err) {
+            return Promise.reject(err)
+        }
     }
 
     return {

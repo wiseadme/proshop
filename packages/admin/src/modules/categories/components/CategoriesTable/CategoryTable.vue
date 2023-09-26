@@ -6,10 +6,12 @@
     import { SvgPaths } from '@shared/enums/svg-paths'
     import { RouteNames } from '@modules/categories/enums/route-names'
     import { ICategory } from '@proshop/types'
+    import { CREATE, EDIT } from '@shared/constants/actions'
+    import { INFO_BLOCK } from '@modules/categories/constants/sections'
 
     defineEmits<{
-        (e: 'open:create-modal'): void
-        (e: 'open:edit-modal', row: ICategory): void
+        (e: 'create:category'): void
+        (e: 'edit:category', row: ICategory): void
         (e: 'delete:category', row: ICategory): void
     }>()
 
@@ -53,7 +55,12 @@
                             <v-button
                                 color="primary"
                                 elevation="5"
-                                @click="$emit('open:create-modal')"
+                                @click="$router.push({
+                                    name: RouteNames.CATEGORY_EDIT,
+                                    params: {
+                                        action: CREATE,
+                                        section: INFO_BLOCK
+                                    }})"
                             >
                                 <v-icon
                                     size="14"
@@ -76,9 +83,9 @@
                         @click="$router.push({
                             name: RouteNames.CATEGORY_EDIT,
                             params: {
-                                action: 'edit',
+                                action: EDIT,
                                 categoryId: row.id,
-                                section: 'info'
+                                section: INFO_BLOCK
                             }})"
                     >
                         <v-icon>fas fa-pen</v-icon>

@@ -35,7 +35,11 @@ export const actions = {
             const { data } = await repository.read(params)
 
             this.$patch((state) => {
-                state.categories = data?.data
+                if (params.id) {
+                    state.category = data?.data
+                } else {
+                    state.categories = data?.data
+                }
             })
 
             return data?.data

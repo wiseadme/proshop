@@ -2,7 +2,8 @@
     import {
         computed,
         defineAsyncComponent,
-        markRaw
+        markRaw,
+        unref
     } from 'vue'
     import { SidebarTab } from '@shared/composables/use-right-sidebar'
     import { useRoute, useRouter } from 'vue-router'
@@ -29,7 +30,7 @@
             component: CategoryImages,
             title: 'Изображения категории',
             isActive: true,
-            disabled: false,
+            disabled: !Boolean(unref(model).id),
             independent: false,
             section: IMAGES_BLOCK,
         },

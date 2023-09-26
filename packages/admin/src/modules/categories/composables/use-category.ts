@@ -7,7 +7,7 @@ import {
 import { createSharedComposable } from '@shared/features/create-shared-composable'
 import { useCategoriesService } from '@modules/categories/composables/use-categories-service'
 import { Category } from '@modules/categories/model/category.model'
-import { ICategory } from '@proshop/types'
+import { IAsset, ICategory } from '@proshop/types'
 import { clone } from '@shared/helpers'
 import { useNotifications } from '@shared/components/VNotifications/use-notifications'
 import { CHANGES_SAVED, SAVING_ERROR } from '@shared/constants/notifications'
@@ -38,15 +38,12 @@ export const useCategory = createSharedComposable(() => {
 
             notify(CHANGES_SAVED)
         } catch (err) {
-            console.log(err)
             notify(SAVING_ERROR)
         }
     }
 
-    const onDeleteCategoryImage = async (url: string) => {
-        await deleteCategoryImage(url)
-
-        unref(model)!.image = null
+    const onDeleteCategoryImage = async (asset: IAsset) => {
+        await deleteCategoryImage(asset)
     }
 
     const onDeleteCategory = (category: ICategory) => deleteCategory(category.id)

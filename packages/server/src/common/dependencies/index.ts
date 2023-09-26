@@ -7,7 +7,7 @@ import { TYPES } from '../schemes/di-types'
 import { Container } from 'inversify'
 
 // Controllers
-import { CategoryController } from '@modules/category/controller/category.controller'
+import { CategoryController } from '@modules/categories/controller/category.controller'
 import { ProductsController } from '@modules/products/controller/products.controller'
 import { AssetController } from '@modules/asset/controller/asset.controller'
 import { AttributeController } from '@modules/attribute/controller/attribute.controller'
@@ -24,7 +24,7 @@ import { SettingsController } from '@modules/settings/controller/settings.contro
 
 // Services
 import { LoggerService } from '../services/logger.service'
-import { CategoryService } from '@modules/category/service/category.service'
+import { CategoryService } from '@modules/categories/service/category.service'
 import { ProductsService } from '@modules/products/service/products.service'
 import { VariantService } from '@modules/variant/service/variant.service'
 import { AssetService } from '@modules/asset/service/asset.service'
@@ -48,7 +48,7 @@ import { GatewayService as CartGateway, ICartGatewayService } from '@modules/car
 import { GatewayService as OrderGateway, IOrderGatewayService } from '@modules/orders/gateway/gateway.service'
 
 // Repositories
-import { CategoryRepository } from '@modules/category/repository/category.repository'
+import { CategoryRepository } from '@modules/categories/repository/category.repository'
 import { ProductsRepository } from '@modules/products/repository/products.repository'
 import { VariantRepository } from '@modules/variant/repository/variant.repository'
 import { AssetRepository } from '@modules/asset/repository/asset.repository'
@@ -75,7 +75,7 @@ import { FileLoaderMiddleware } from '@common/middlewares/fileloader.middleware'
 import { CookieMiddleware } from '@common/middlewares/cookie.middleware'
 // import { CorsMiddleware } from '@common/middlewares/cors.middleware'
 // Types
-import { ICategoryService } from '@modules/category/types/service'
+import { ICategoryService } from '@modules/categories/types/service'
 import { IProductsService } from '@modules/products/types/service'
 import { IAssetsService } from '@modules/asset/types/service'
 import { IVariantService } from '@modules/variant/types/service'
@@ -92,7 +92,7 @@ import { IMetaTagService } from '@modules/metatag/types/service'
 import { IFilterGroupService } from '@modules/filter/types/service'
 import { IFilterItemService } from '@modules/filter/types/service'
 
-import { ICategoryRepository } from '@modules/category/types/repository'
+import { ICategoryRepository } from '@modules/categories/types/repository'
 import { IAssetsRepository } from '@modules/asset/types/repository'
 import { IProductsRepository } from '@modules/products/types/repository'
 import { IVariantRepository } from '@modules/variant/types/repository'

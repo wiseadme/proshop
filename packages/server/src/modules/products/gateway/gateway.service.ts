@@ -1,6 +1,6 @@
 import { inject, injectable } from 'inversify'
 import { TYPES } from '@common/schemes/di-types'
-import { ICategoryService } from '@modules/category/types/service'
+import { ICategoryService } from '@modules/categories/types/service'
 import { IOrdersService } from '@modules/orders/types/service'
 import { IAssetsService } from '@modules/asset/types/service'
 import { IOptionService } from '@modules/options/types/service'

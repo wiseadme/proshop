@@ -8,7 +8,7 @@ import { ICategory, ICategoryMongoModel } from '@proshop/types'
 import { ICategoryRepository } from '../types/repository'
 import { ILogger } from '@/types/utils'
 // Mappers
-import { CategoryMapper } from '@modules/category/mappers/category.mapper'
+import { CategoryMapper } from '@modules/categories/mappers/category.mapper'
 
 @injectable()
 export class CategoryRepository implements ICategoryRepository {

@@ -1,8 +1,4 @@
-import {
-    computed,
-    ref,
-    unref,
-} from 'vue'
+import { computed, unref } from 'vue'
 import { IAsset } from '@proshop/types'
 import { useProductModel } from '@modules/products/composables/use-product-model'
 import { useProductsService } from '@modules/products/composables/use-products-service'
@@ -21,9 +17,6 @@ export const useProductImages = () => {
 
     const {notify} = useNotifications()
 
-    const images = ref<File[]>([])
-    const currentImage = ref<Maybe<IAsset>>(null)
-
     const assets = computed(() => unref(model)?.assets || [])
 
     const onLoadImage = async ([file]) => {
@@ -34,8 +27,6 @@ export const useProductImages = () => {
 
             assets.push(asset)
             await updateProductAssets({ assets })
-
-            images.value = []
 
             notify(CHANGES_SAVED)
         } catch (err) {
@@ -53,9 +44,9 @@ export const useProductImages = () => {
         }
     }
 
-    const setAsMainImage = async () => {
+    const setAsMainImage = async (imageAsset: IAsset) => {
         try {
-            const asset = await updateMainImageAsset(unref(currentImage)!)
+            const asset = await updateMainImageAsset(imageAsset!)
             const { assets } = unref(model)
 
             assets.forEach((it) => it.main = it.id === asset.id)
@@ -69,8 +60,6 @@ export const useProductImages = () => {
 
     return {
         assets,
-        images,
-        currentImage,
         onLoadImage,
         onDeleteImage,
         setAsMainImage,
