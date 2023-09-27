@@ -1,16 +1,16 @@
 import { ref } from 'vue'
 // Composables
 import { useProductsService } from '@modules/products/composables/use-products-service'
-import { NavigationFailure, useRouter } from 'vue-router'
+import { useRouter } from 'vue-router'
 import { useProductModel } from '@modules/products/composables/use-product-model'
-// Constants
-import { CREATE_PRODUCT, EDIT_PRODUCT } from '@modules/products/constants/actions'
-import { INFO_BLOCK } from '@modules/products/constants/sections'
 // Enums
 import { RouteNames } from '@modules/products/enums/route-names'
 // Types
 import { ICategory, IProduct } from '@proshop/types'
 import { useNotifications } from '@shared/components/VNotifications/use-notifications'
+// Constants
+import { CREATE, EDIT } from '@shared//constants/actions'
+import { INFO_BLOCK } from '@modules/products/constants/sections'
 import { PRODUCT_DELETED, PRODUCT_DELETE_ERROR } from '@modules/products/constants/notifications'
 
 export const useProductsTable = () => {
@@ -21,6 +21,7 @@ export const useProductsTable = () => {
         sort,
         totalLength,
         products,
+        setAsCurrent,
         deleteProduct,
         getProducts,
     } = useProductsService()
@@ -39,7 +40,7 @@ export const useProductsTable = () => {
         pagination.setItemsCount(count)
     }
 
-    const onDeleteRow = async (row) => {
+    const onDeleteRow = async (row: IProduct) => {
         try {
             await deleteProduct(row)
 
@@ -53,17 +54,16 @@ export const useProductsTable = () => {
         const { sorted } = col
         sorted ? sort.setAsc(col.key) : sort.setDesc(col.key)
 
-        setTimeout(() => getProducts())
+        setTimeout(getProducts)
     }
 
-    const onEditRow = (row: IProduct): Promise<void | NavigationFailure | undefined> => {
+    const onEditRow = (row: IProduct) => {
         setProductModel(row)
 
         return router.push({
             name: RouteNames.PRODUCT_EDIT,
-
             params: {
-                action: EDIT_PRODUCT,
+                action: EDIT,
                 productId: row.id,
                 section: INFO_BLOCK,
             },
@@ -71,13 +71,14 @@ export const useProductsTable = () => {
     }
 
     const onCreateRow = () => {
-        setProductModel()
+        setProductModel(null)
+        setAsCurrent(null)
 
         return router.push({
             name: RouteNames.PRODUCT_EDIT,
 
             params: {
-                action: CREATE_PRODUCT,
+                action: CREATE,
                 section: INFO_BLOCK,
             },
         })

@@ -1,12 +1,12 @@
 import { useCategoryRepository } from '@modules/categories/repository/category.repository'
 import { ICategory } from '@proshop/types'
 
-const categoryRepository = useCategoryRepository()
+const repository = useCategoryRepository()
 
 export const actions = {
-    async create(category: ICategory) {
+    async createCategory(category: ICategory) {
         try {
-            const { data } = await categoryRepository.create(category)
+            const { data } = await repository.create(category)
 
             this.$patch((state) => state.categories.push(data.data))
 
@@ -16,16 +16,12 @@ export const actions = {
         }
     },
 
-    async update(updates) {
+    async updateCategory(updates) {
         try {
-            const { data } = await categoryRepository.update(updates)
+            const { data } = await repository.update(updates)
 
             this.$patch(state => {
-                state.categories = state.categories.map((it) => {
-                    if (it.id === data.data.id) return data.data
-
-                    return it
-                })
+                state.categories = state.categories.map((it) => it.id === data.data.id ? data.data : it)
             })
 
             return data.data
@@ -34,15 +30,15 @@ export const actions = {
         }
     },
 
-    async read(params = null) {
+    async getCategories(params: Partial<ICategory> = {}) {
         try {
-            const { data } = await categoryRepository.read(params)
+            const { data } = await repository.read(params)
 
-            this.$patch(state => {
-                if (!params) {
-                    state.categories = data?.data
-                } else {
+            this.$patch((state) => {
+                if (params.id) {
                     state.category = data?.data
+                } else {
+                    state.categories = data?.data
                 }
             })
 
@@ -52,12 +48,20 @@ export const actions = {
         }
     },
 
-    async delete(id) {
+    async getCategory(id: string) {
         try {
-            const { data } = await categoryRepository.delete(id)
+            return await this.getCategories({ id })
+        } catch (err) {
+            return Promise.reject(err)
+        }
+    },
+
+    async deleteCategory(id: string) {
+        try {
+            const { data } = await repository.delete(id)
 
             this.$patch(state => {
-                state.categories = state.categories.filter(ctg => ctg.id !== id)
+                state.categories = state.categories.filter((ctg) => ctg.id !== id)
             })
 
             return data.data

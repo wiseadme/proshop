@@ -10,19 +10,19 @@ class Repository implements IRepository<ICategory> {
         this.client = client
         this.path = path
     }
-    create(category) {
+    create(category: ICategory) {
         return this.client.post(this.path, category)
     }
 
     read(params) {
-        return this.client.get(this.path, { query: params })
+        return this.client.get(this.path, { params })
     }
 
-    update(updates) {
+    update(updates: Partial<ICategory>) {
         return this.client.patch(this.path, updates)
     }
 
-    delete(id) {
+    delete(id: string) {
         return this.client.delete(this.path, { params: { id } })
     }
 }

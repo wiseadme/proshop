@@ -1,16 +1,22 @@
 import { ref, unref } from 'vue'
 import { useCategoriesService } from '@modules/categories/composables/use-categories-service'
 import { ICategory } from '@proshop/types'
-
+import { useCategory } from '@modules/categories/composables/use-category'
+import { RouteNames } from '@modules/categories/enums/route-names'
+import { CREATE } from '@shared/constants/actions'
+import { INFO_BLOCK } from '@modules/products/constants/sections'
+import { useRouter } from 'vue-router'
 
 export const useCategoriesTable = () => {
-    const {categories} = useCategoriesService()
+    const router = useRouter()
+    const { categories, setAsCurrent } = useCategoriesService()
+    const { setCategoryModel } = useCategory()
 
     const cols = ref([
         {
             key: 'actions',
             title: 'Действия',
-            align: 'center'
+            align: 'center',
         },
         {
             key: 'title',
@@ -19,7 +25,7 @@ export const useCategoriesTable = () => {
             resizeable: true,
             sortable: true,
             filterable: true,
-            format: (row: ICategory) => row.title
+            format: (row: ICategory) => row.title,
         },
         {
             key: 'url',
@@ -28,7 +34,7 @@ export const useCategoriesTable = () => {
             resizeable: true,
             sortable: true,
             filterable: true,
-            format: (row: ICategory) => row.url
+            format: (row: ICategory) => row.url,
         },
         {
             key: 'image',
@@ -36,7 +42,7 @@ export const useCategoriesTable = () => {
             width: '150',
             resizeable: true,
             sortable: true,
-            filterable: true
+            filterable: true,
         },
         {
             key: 'parentId',
@@ -51,7 +57,7 @@ export const useCategoriesTable = () => {
                 }
 
                 return ''
-            }
+            },
 
         },
         {
@@ -61,7 +67,7 @@ export const useCategoriesTable = () => {
             resizeable: true,
             sortable: true,
             filterable: true,
-            format: (row: ICategory) => row.length
+            format: (row: ICategory) => row.length,
         },
         {
             key: 'seo',
@@ -70,7 +76,7 @@ export const useCategoriesTable = () => {
             resizeable: true,
             sortable: true,
             filterable: true,
-            format: (row: ICategory) => row.seo?.title
+            format: (row: ICategory) => row.seo?.title,
         },
         {
             key: 'order',
@@ -78,11 +84,26 @@ export const useCategoriesTable = () => {
             width: '200',
             resizeable: true,
             sortable: true,
-            filterable: true
-        }
+            filterable: true,
+        },
     ])
 
+    const onCreateRow = () => {
+        setCategoryModel(null)
+        setAsCurrent(null)
+
+        return router.push({
+            name: RouteNames.CATEGORY_EDIT,
+
+            params: {
+                action: CREATE,
+                section: INFO_BLOCK,
+            },
+        })
+    }
+
     return {
-        cols
+        cols,
+        onCreateRow,
     }
 }

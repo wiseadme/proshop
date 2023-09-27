@@ -27,7 +27,7 @@ export class AssetRepository implements IAssetsRepository {
         return new Promise((resolve, reject) => {
             const upload = this.fileLoader.loadSingle('image')
             const ownerId = req.query.id as string
-            const ownerDir = ownerId.slice(-4)
+            const ownerDir = ownerId.slice(-10)
 
             const assetId = new mongoose.Types.ObjectId()
 
@@ -38,9 +38,7 @@ export class AssetRepository implements IAssetsRepository {
             req.query.assetId = assetId.toString()
             req.query.ownerDir = ownerDir
 
-            upload(req, res, (err, filename) => {
-                console.log(err, filename)
-
+            upload(req, res, (err) => {
                 if (err) {
                     return reject(err)
                 }
@@ -74,13 +72,13 @@ export class AssetRepository implements IAssetsRepository {
         validateId(asset.id)
 
         const assetData = await AssetModel.findOne({ _id: asset.id })
-        const ownerDir = asset.ownerId.slice(-4)
+        const ownerDir = asset.ownerId.slice(-10)
         const dirPath = `${config.uploadsDir}/${ownerDir}`
 
         await assetData!.deleteOne()
 
         await fs
-            .unlink(`${dirPath}/${asset.id}|${asset.fileName}`)
+            .unlink(`${dirPath}/${assetData!.id}|${assetData!.fileName}`)
             .catch(err => console.log(err))
 
         const dir = await fs.readdir(dirPath)
@@ -92,12 +90,12 @@ export class AssetRepository implements IAssetsRepository {
         return true
     }
 
-    async deleteAll(id) {
+    async deleteAll(id: string) {
         try {
             validateId(id)
 
             const assets = await AssetModel.find({ ownerId: id }) as HydratedDocument<IAsset>[]
-            const ownerDir = id.slice(-4)
+            const ownerDir = id.slice(-10)
             const dirPath = `${config.uploadsDir}/${ownerDir}`
 
             for await (const data of assets) {

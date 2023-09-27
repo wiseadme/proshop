@@ -1,12 +1,21 @@
 <script lang="ts" setup>
-    import FormCard from '@shared/components/FormCard/FormCard.vue'
+    import { VSvg } from '@shared/components/VSvg'
+    import { FormCard } from '@shared/components/FormCard'
+    // Composables
     import { useCategoriesService } from '@modules/categories/composables/use-categories-service'
     import { useCategoriesTable } from '@modules/categories/composables/use-categories-table'
+    // Enums
+    import { SvgPaths } from '@shared/enums/svg-paths'
+    import { RouteNames } from '@modules/categories/enums/route-names'
+    // Constants
+    import { CREATE, EDIT } from '@shared/constants/actions'
+    import { INFO_BLOCK } from '@modules/categories/constants/sections'
+    // Types
     import { ICategory } from '@proshop/types'
 
     defineEmits<{
-        (e: 'open:create-modal'): void
-        (e: 'open:edit-modal', row: ICategory): void
+        (e: 'create:category'): void
+        (e: 'edit:category', row: ICategory): void
         (e: 'delete:category', row: ICategory): void
     }>()
 
@@ -15,6 +24,15 @@
 </script>
 <template>
     <form-card>
+        <template #icon>
+            <v-svg
+                :path="SvgPaths.TABLE_LIST"
+                view-box="0 -30 512 512"
+            />
+        </template>
+        <template #title>
+            Таблица категорий
+        </template>
         <template #body>
             <v-data-table
                 :cols="cols"
@@ -41,7 +59,12 @@
                             <v-button
                                 color="primary"
                                 elevation="5"
-                                @click="$emit('open:create-modal')"
+                                @click="$router.push({
+                                    name: RouteNames.CATEGORY_EDIT,
+                                    params: {
+                                        action: CREATE,
+                                        section: INFO_BLOCK
+                                    }})"
                             >
                                 <v-icon
                                     size="14"
@@ -54,14 +77,20 @@
                     </v-toolbar>
                 </template>
                 <template #pagination-text="{start, last, length}">
-                    <span>{{ `с ${ start } по ${ last } из ${ length }` }}</span>
+                    <span>{{ `с ${start} по ${last} из ${length}` }}</span>
                 </template>
                 <template #actions="{row}">
                     <v-button
                         color="var(--primary)"
                         elevation="2"
                         text
-                        @click="$emit('open:edit-modal', row)"
+                        @click="$router.push({
+                            name: RouteNames.CATEGORY_EDIT,
+                            params: {
+                                action: EDIT,
+                                categoryId: row.id,
+                                section: INFO_BLOCK
+                            }})"
                     >
                         <v-icon>fas fa-pen</v-icon>
                     </v-button>

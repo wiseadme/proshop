@@ -4,11 +4,11 @@ export class Option implements IOption {
     readonly id: string
     readonly name: string
     readonly variantId: string
+    readonly ownerId: string
     readonly price: number
     readonly quantity: number
     readonly description: Maybe<string>
-    readonly assets?: IAsset[]
-    readonly modelAttribute: Maybe<IAttribute>
+    readonly image: Maybe<string>
     readonly url: Maybe<string>
 
     constructor({
@@ -18,16 +18,18 @@ export class Option implements IOption {
         quantity = 0,
         description = null,
         url = null,
-        assets = [],
+        image = null,
         variantId = '',
+        ownerId = '',
     }: IOption) {
         this.id = id
         this.name = name
         this.price = price
         this.quantity = quantity
         this.description = description
-        this.assets = assets
+        this.image = image
         this.variantId = variantId
+        this.ownerId = ownerId
         this.url = url
     }
 

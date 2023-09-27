@@ -8,16 +8,25 @@ import { Product } from '@modules/products/entity/product.entity'
 import { ILogger } from '@/types/utils'
 import { IProductsRepository } from '../types/repository'
 import { IProductsService } from '../types/service'
-import { IAttribute, ICategory, IMetaTag, IProduct, IProductQuery, IRequestParams } from '@proshop/types'
+import {
+    IAttribute,
+    ICategory,
+    IMetaTag,
+    IOption,
+    IProduct,
+    IProductQuery,
+    IRequestParams,
+    IVariant,
+} from '@proshop/types'
 import { IProductGatewayService } from '@modules/products/gateway/gateway.service'
 import { ServiceHelpers } from '@modules/products/helpers/service.helpers'
 
 @injectable()
 export class ProductsService extends ServiceHelpers implements IProductsService {
     constructor(
-      @inject(TYPES.UTILS.ILogger) private logger: ILogger,
-      @inject(TYPES.REPOSITORIES.IProductsRepository) private repository: IProductsRepository,
-      @inject(TYPES.GATEWAYS.IProductGatewayService) private gateway: IProductGatewayService,
+        @inject(TYPES.UTILS.ILogger) private logger: ILogger,
+        @inject(TYPES.REPOSITORIES.IProductsRepository) private repository: IProductsRepository,
+        @inject(TYPES.GATEWAYS.IProductGatewayService) private gateway: IProductGatewayService,
     ) {
         super()
     }
@@ -27,7 +36,7 @@ export class ProductsService extends ServiceHelpers implements IProductsService 
 
         if (product.categories.length) {
             for await (const category of product.categories as string[]) {
-                await this.gateway.category.update({ id: category, length: 1 })
+                await this.gateway.category.updateCategory({ id: category, length: 1 })
             }
         }
 
@@ -64,7 +73,7 @@ export class ProductsService extends ServiceHelpers implements IProductsService 
         }
 
         if (category) {
-            const [found] = await this.gateway.category.read({ url: category })
+            const [found] = await this.gateway.category.getCategories({ url: category })
 
             data.total = found.length
             data.items = await this.repository.findByCategory({ category, page, count, desc, asc })
@@ -101,13 +110,13 @@ export class ProductsService extends ServiceHelpers implements IProductsService 
 
             for await (const id of currentCategories as string[]) {
                 if (id && !updateCategoriesMap[id]) {
-                    await this.gateway.category.update({ id, length: -1 })
+                    await this.gateway.category.updateCategory({ id, length: -1 })
                 }
             }
 
             for await (const id of updates.categories as string[]) {
                 if (id && !productCategoriesMap[id]) {
-                    await this.gateway.category.update({ id, length: 1 })
+                    await this.gateway.category.updateCategory({ id, length: 1 })
                 }
             }
         }
@@ -122,14 +131,19 @@ export class ProductsService extends ServiceHelpers implements IProductsService 
         /**
          * @description - Удаляем всю статику связанную с товаром
          */
-        await this.gateway.asset.deleteFiles(product.id)
+        await this.gateway.asset.deleteFiles(id)
+        /**
+         * @description - Удаляем варианты товара
+         */
+        for await (const variant of product.variants as IVariant[]) {
+            await this.gateway.option.deleteVariantOptions(variant.options as IOption[])
+        }
         /**
          * @description - Удаляем товар из категории
          */
         for await (const category of product.categories as ICategory[]) {
             await Promise.all([
-                this.gateway.category.update({ id: category.id, length: -1 }),
-                // this.gateway.asset.deleteFiles(category._id),
+                this.gateway.category.updateCategory({ id: category.id, length: -1 }),
             ])
         }
 
@@ -138,6 +152,22 @@ export class ProductsService extends ServiceHelpers implements IProductsService 
 
     async addAttribute(params: { productId: string, attribute: IAttribute }) {
         return this.repository.addAttribute(params)
+    }
+
+    async addVariant(params: { variant: IVariant }) {
+        return this.repository.addVariant(params)
+    }
+
+    async deleteVariant(params: { variant: IVariant }) {
+        return this.repository.deleteVariant(params)
+    }
+
+    async addVariantOption(params: { option: IOption }) {
+        return this.repository.addVariantOption(params)
+    }
+
+    async deleteVariantOption(params: { option: IOption }) {
+        return this.repository.deleteVariantOption(params)
     }
 
     async deleteAttribute(params: { productId: string, attributeId: string }) {

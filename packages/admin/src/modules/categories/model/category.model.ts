@@ -5,6 +5,7 @@ export class Category implements ICategory {
     title: ICategory['title']
     url: ICategory['url']
     image: ICategory['image']
+    assets: ICategory['assets']
     parentId: ICategory['parentId']
     order: ICategory['order']
     seo: ICategory['seo']
@@ -16,6 +17,7 @@ export class Category implements ICategory {
         title = '',
         url = '',
         image = null,
+        assets = [],
         parentId = null,
         order = 0,
         length = 0,
@@ -35,6 +37,7 @@ export class Category implements ICategory {
         this.title = title
         this.url = url
         this.image = image
+        this.assets = assets
         this.parentId = parentId
         this.order = order
         this.seo = seo

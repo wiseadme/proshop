@@ -10,6 +10,7 @@ import {
     DELETE_OPTION_EVENT,
     UPDATE_ASSETS_EVENT,
 } from '@common/constants/events'
+import { IAsset } from '@proshop/types'
 
 @injectable()
 export class AssetService implements IAssetsService {
@@ -24,15 +25,15 @@ export class AssetService implements IAssetsService {
         return await this.repository.save(req, res)
     }
 
-    async updateFile(updates) {
+    async updateFile(updates: Partial<IAsset>) {
         return await this.repository.update(updates)
     }
 
-    async deleteFile(asset) {
+    async deleteFile(asset: IAsset) {
         return await this.repository.deleteOne(asset)
     }
 
-    async deleteFiles(id) {
+    async deleteFiles(id: string) {
         return await this.repository.deleteAll(id)
     }
 

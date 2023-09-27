@@ -21,7 +21,6 @@
 
     const productCategories = computed<ICategory[]>(() => unref(product)?.categories as ICategory[])
 
-
     watch(productCategories, (items: ICategory[]) => {
         items?.forEach((ctg) => select(ctg))
     }, { immediate: true })

@@ -4,6 +4,7 @@
         deletable = true,
         editable = true
     } = defineProps<{
+        modelValue: any
         items: T[]
         uniqueKey?: string
         deletable?: boolean
@@ -23,7 +24,8 @@
         <v-list-item
             v-for="item in items"
             :key="item[uniqueKey]"
-            class="my-1 mx-1 elevation-1 app-border-radius white"
+            class="my-1 mx-1 elevation-1 app-border-radius"
+            :class="[modelValue && modelValue.id === item.id ? 'primary white--text' : 'white']"
         >
             <v-list-item-icon v-if="$slots.icon">
                 <slot
@@ -57,7 +59,7 @@
                         <template #activator="{on: listeners}">
                             <v-icon
                                 clickable
-                                color="primary"
+                                :color="modelValue && modelValue.id === item.id ? 'white': 'primary'"
                                 v-on="listeners"
                             >
                                 fas fa-bars

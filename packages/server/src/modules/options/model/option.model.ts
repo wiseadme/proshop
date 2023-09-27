@@ -11,13 +11,26 @@ const OptionSchema = new Schema<IOptionMongoModel>({
         type: String,
         required: true,
     },
-    price: Number,
-    quantity: Number,
-    description: String,
-    assets: [{
-        type: Schema.Types.ObjectId,
-        ref: 'Asset',
-    }],
+    ownerId: {
+        type: String,
+        required: true,
+    },
+    price: {
+        type: Number,
+        default: 0
+    },
+    quantity: {
+        type: Number,
+        default: 0
+    },
+    description: {
+        type: String,
+        default: null
+    },
+    image: {
+        type: String,
+        default: null
+    },
     url: {
         type: String,
         default: null

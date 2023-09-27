@@ -2,9 +2,11 @@ import { useProductRepository } from '@modules/products/repository'
 import {
     IAttribute,
     IMetaTag,
+    IOption,
     IProduct,
     IProductQuery,
     IRequestParams,
+    IVariant,
 } from '@proshop/types'
 
 const repository = useProductRepository()
@@ -127,6 +129,62 @@ export const actions = {
 
             this.$patch((state) => {
                 state.products = state.products.map(it => it.id === params.productId ? data.data : it)
+            })
+
+            return data.data
+        } catch (err) {
+            return Promise.reject(err)
+        }
+    },
+
+    async addVariant(variant: IVariant) {
+        try {
+            const { data } = await repository.addVariant(variant)
+
+            this.$patch((state) => {
+                state.products = state.products.map(it => it.id === variant.ownerId ? data.data : it)
+            })
+
+            return data.data
+        } catch (err) {
+            return Promise.reject(err)
+        }
+    },
+
+    async deleteVariant(variant: IVariant) {
+        try {
+            const { data } = await repository.deleteVariant(variant)
+
+            this.$patch((state) => {
+                state.products = state.products.map(it => it.id === variant.ownerId ? data.data : it)
+            })
+
+            return data.data
+        } catch (err) {
+            return Promise.reject(err)
+        }
+    },
+
+    async addVariantOption(option: IOption) {
+        try {
+            const { data } = await repository.addVariantOption(option)
+
+            this.$patch((state) => {
+                state.products = state.products.map(it => it.id === option.ownerId ? data.data : it)
+            })
+
+            return data.data
+        } catch (err) {
+            return Promise.reject(err)
+        }
+    },
+
+    async deleteVariantOption(option: IOption) {
+        try {
+            const { data } = await repository.deleteVariantOption(option)
+
+            this.$patch((state) => {
+                state.products = state.products.map(it => it.id === option.ownerId ? data.data : it)
             })
 
             return data.data

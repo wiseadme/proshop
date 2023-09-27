@@ -1,5 +1,5 @@
 import { IProduct, IProductMongoModel } from '@proshop/types'
-import { CategoryMapper } from '@modules/category/mappers/category.mapper'
+import { CategoryMapper } from '@modules/categories/mappers/category.mapper'
 import { AssetMapper } from '@modules/asset/mappers/asset.mapper'
 import { VariantMapper } from '@modules/variant/mappers/variant.mapper'
 

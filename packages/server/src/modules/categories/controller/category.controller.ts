@@ -37,7 +37,7 @@ export class CategoryController extends BaseController implements IController {
 
     async createCategory({ body, method }: Request<{}, {}, ICategory>, res: Response) {
         try {
-            const category = await this.service.create(body)
+            const category = await this.service.createCategory(body)
 
             this.send({
                 response: res,
@@ -56,7 +56,7 @@ export class CategoryController extends BaseController implements IController {
 
     async updateCategory({ body, method }: Request<{}, {}, Partial<ICategory & Document>>, res: Response) {
         try {
-            const { updated } = await this.service.update(body)
+            const { updated } = await this.service.updateCategory(body)
 
             this.send({
                 response: res,
@@ -75,7 +75,7 @@ export class CategoryController extends BaseController implements IController {
 
     async getCategories({ query, method }: Request<{}, {}, {}, Partial<ICategory>>, res: Response) {
         try {
-            const categories = await this.service.read(query)
+            const categories = await this.service.getCategories(query)
 
             this.send({
                 response: res,
@@ -94,7 +94,7 @@ export class CategoryController extends BaseController implements IController {
 
     async deleteCategory({ query, method }: Request, res: Response) {
         try {
-            await this.service.delete(query.id as string)
+            await this.service.deleteCategory(query.id as string)
 
             this.send({
                 response: res,

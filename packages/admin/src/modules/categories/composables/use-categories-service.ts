@@ -1,12 +1,16 @@
 import {
     computed,
     ref,
-    unref
+    unref,
 } from 'vue'
 import { createSharedComposable } from '@shared/features/create-shared-composable'
 import { useCategoriesStore } from '@modules/categories/store'
 import { useFilesService } from '@shared/services/files.service'
-import { ICategory, Maybe } from '@proshop/types'
+import {
+    IAsset,
+    ICategory,
+    Maybe,
+} from '@proshop/types'
 
 export const useCategoriesService = createSharedComposable(() => {
     const _store = useCategoriesStore()
@@ -20,51 +24,120 @@ export const useCategoriesService = createSharedComposable(() => {
         category.value = item
     }
 
-    const extractAssetIdFromFileName = (url) => {
-        const urlParams = url.split('|')[0].split('/')
+    const createCategory = async (model: ICategory): Promise<ICategory> => {
+        try {
+            const category = await _store.createCategory(model)
 
-        return urlParams[urlParams.length - 1]
-    }
+            setAsCurrent(category)
 
-    const createCategory = async (model) => {
-        return _store.create(model)
-    }
-
-    const getCategories = () => {
-        return _store.read()
-    }
-
-    const updateCategory = (updates) => {
-        return _store.update(updates)
-    }
-
-    const deleteCategory = async (id) => {
-        await _store.delete(id)
-
-        return getCategories()
-    }
-
-    const uploadCategoryImage = async (file) => {
-        const { formData, fileName } = _filesService.createFormData(file)
-        const ownerId = unref(category)!.id
-
-        const asset = await _filesService.uploadFile({ ownerId, fileName, formData })
-
-        if (asset && asset.url) {
-            category.value = await updateCategory({ id: ownerId, image: asset.url })
+            return category
+        } catch (err) {
+            return Promise.reject(err)
         }
     }
 
-    const deleteCategoryImage = async (url) => {
-        const ownerId = unref(category)!.id
-        const id = extractAssetIdFromFileName(url)
+    const getCategories = async (params = {}): Promise<ICategory[]> => {
+        try {
+            return await _store.getCategories(params)
+        } catch (err) {
+            return Promise.reject(err)
+        }
+    }
 
-        await _filesService.deleteFile({ ownerId, url, id })
+    const getCategory = async (id: string): Promise<ICategory> => {
+        try {
+            const [category] = await _store.getCategory(id)
 
-        category.value = await updateCategory({
-            id: ownerId,
-            image: null
-        })
+            setAsCurrent(category)
+
+            return category
+        } catch (err) {
+            return Promise.reject(err)
+        }
+    }
+
+    const updateCategory = async (updates: Partial<ICategory>): Promise<ICategory> => {
+        updates.id = unref(category)!.id
+
+        try {
+            const updated = await _store.updateCategory(updates)
+
+            setAsCurrent(updated)
+
+            return updated
+        } catch (err) {
+            return Promise.reject(err)
+        }
+    }
+
+    const deleteCategory = async (id: string): Promise<void> => {
+        try {
+            await _store.deleteCategory(id)
+            await getCategories()
+        } catch (err) {
+            return Promise.reject(err)
+        }
+    }
+
+    const saveFileAsset = async (file: File): Promise<IAsset> => {
+        try {
+            const { formData, fileName } = _filesService.createFormData(file)
+            const ownerId = unref(category)!.id
+
+            return await _filesService.uploadFile({
+                ownerId,
+                fileName,
+                formData,
+            })
+        } catch (err) {
+            return Promise.reject(err)
+        }
+    }
+
+    const uploadCategoryImage = async (file: File): Promise<ICategory> => {
+        try {
+            const asset = await saveFileAsset(file)
+
+            const { assets = [] } = unref(category) as ICategory
+            assets.push(asset)
+
+            const data = await updateCategory({
+                id: asset.ownerId,
+                image: null /*asset.url*/,
+                assets,
+            })
+
+            setAsCurrent(data)
+
+            return data
+        } catch (err) {
+            return Promise.reject(err)
+        }
+    }
+
+    /**
+     * TODO - реализовать главное изображение категории
+     * и его изменение при удалении последней картинки
+     */
+    const deleteCategoryImage = async (asset: IAsset): Promise<ICategory> => {
+        try {
+            await _filesService.deleteFile({
+                ownerId: asset.ownerId,
+                url: asset.url,
+                id: asset.id,
+            })
+
+            const updated = await updateCategory({
+                id: asset.ownerId,
+                assets: unref(category)?.assets.filter(it => it.id !== asset.id),
+            })
+
+            setAsCurrent(updated)
+
+            return updated
+        } catch (err) {
+            return Promise.reject(err)
+        }
     }
 
     return {
@@ -72,10 +145,11 @@ export const useCategoriesService = createSharedComposable(() => {
         categories,
         setAsCurrent,
         getCategories,
+        getCategory,
         createCategory,
         updateCategory,
         deleteCategory,
         uploadCategoryImage,
-        deleteCategoryImage
+        deleteCategoryImage,
     }
 })

@@ -1,5 +1,5 @@
 import { IProductsService } from '@modules/products/types/service'
-import { ICategoryService } from '@modules/category/types/service'
+import { ICategoryService } from '@modules/categories/types/service'
 import { IOrdersService } from '@modules/orders/types/service'
 
 export interface IGatewayService {

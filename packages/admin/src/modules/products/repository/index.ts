@@ -3,9 +3,11 @@ import { IRest } from '@shared/types/app'
 import {
     IAttribute,
     IMetaTag,
+    IOption,
     IProduct,
     IProductQuery,
-    IRequestParams
+    IRequestParams,
+    IVariant,
 } from '@proshop/types'
 
 class Repository {
@@ -31,6 +33,22 @@ class Repository {
 
     addAttribute(params: { productId: string, attribute: IAttribute }) {
         return this.client.patch(`${this.path}/attributes/add`, params)
+    }
+
+    addVariant(variant: IVariant) {
+        return this.client.patch(`${this.path}/variants/add`, { variant })
+    }
+
+    deleteVariant(variant: IVariant) {
+        return this.client.patch(`${this.path}/variants/delete`, { variant })
+    }
+
+    addVariantOption(option: IOption) {
+        return this.client.patch(`${this.path}/variants/option/add`, { option })
+    }
+
+    deleteVariantOption(option: IOption) {
+        return this.client.patch(`${this.path}/variants/option/delete`, { option })
     }
 
     deleteAttribute(params: { productId: string, attributeId: string }) {

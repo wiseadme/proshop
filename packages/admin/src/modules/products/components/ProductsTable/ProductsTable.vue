@@ -3,6 +3,8 @@
     import { icons } from '@shared/enums/icons'
     import { IProduct } from '@proshop/types'
     import { FormCard } from '@shared/components/FormCard'
+    import { VSvg } from '@shared/components/VSvg'
+    import { SvgPaths } from '@shared/enums/svg-paths'
 
     defineEmits<{
         (e: 'delete:product', product: IProduct): void
@@ -24,7 +26,14 @@
 </script>
 <template>
     <form-card>
+        <template #icon>
+            <v-svg
+                :path="SvgPaths.TABLE_LIST"
+                view-box="0 -30 512 512"
+            />
+        </template>
         <template #title>
+            Таблица товаров
         </template>
         <template #body>
             <v-data-table
