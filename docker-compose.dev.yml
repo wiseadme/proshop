@@ -1,6 +1,6 @@
 version: '3'
 services:
-  redis_cache:
+  redis-cache:
     image: redis:alpine
     container_name: redis
     ports: [ "127.0.0.1:6379:6379" ]
