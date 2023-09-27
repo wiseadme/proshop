@@ -121,9 +121,6 @@ export const useProductsService = createSharedComposable(() => {
         return _metaTagsStore.read()
     }
 
-    /**
-     * @description -
-     */
     const getProducts = async (params?: Partial<IProduct>): Promise<IProduct[]> => {
         const products = await _productsStore.getProducts(getRequestParams(params))
 
@@ -132,9 +129,6 @@ export const useProductsService = createSharedComposable(() => {
         return products
     }
 
-    /**
-     * @description -
-     */
     const getProduct = async (id: string): Promise<IProduct> => {
         const [item] = await _productsStore.getProducts({ id })
 
@@ -143,9 +137,6 @@ export const useProductsService = createSharedComposable(() => {
         return item
     }
 
-    /**
-     * @description -
-     */
     const getCategoryProducts = async (category: ICategory): Promise<IProduct[]> => {
         const params = { category: category.url, ...getPaginationParams() }
 
@@ -156,9 +147,6 @@ export const useProductsService = createSharedComposable(() => {
         }
     }
 
-    /**
-     * @description -
-     */
     const createProduct = async (product: IProduct): Promise<IProduct> => {
         if (!unref(merchant)?.id) {
             return Promise.reject()
@@ -176,9 +164,6 @@ export const useProductsService = createSharedComposable(() => {
         }
     }
 
-    /**
-     * @description -
-     */
     const updateProduct = async (updates: Partial<IProduct>): Promise<IProduct> => {
         updates.id = unref(product)!.id
 
@@ -192,9 +177,6 @@ export const useProductsService = createSharedComposable(() => {
         }
     }
 
-    /**
-     * @description -
-     */
     const updateProductRelatedProducts = async (updates: Partial<IProduct>): Promise<IProduct> => {
         updates.id = unref(product)!.id
         updates.related = getIds(updates.related!)
@@ -206,9 +188,6 @@ export const useProductsService = createSharedComposable(() => {
         }
     }
 
-    /**
-     * @description -
-     */
     const updateProductCategories = async (updates: Partial<IProduct>): Promise<IProduct> => {
         updates.id = unref(product)!.id
         updates.categories = getIds(updates.categories!)
@@ -220,9 +199,6 @@ export const useProductsService = createSharedComposable(() => {
         }
     }
 
-    /**
-     * @description -
-     */
     const updateProductAttributes = async (updates: Partial<IProduct>): Promise<IProduct> => {
         updates.id = unref(product)!.id
 
@@ -233,10 +209,7 @@ export const useProductsService = createSharedComposable(() => {
         }
     }
 
-    /**
-     * @description -
-     */
-    const addProductVariant = async (variant: IVariant) => {
+    const addProductVariant = async (variant: IVariant): Promise<IProduct> => {
         variant.ownerId = unref(product)!.id
 
         try {
@@ -250,10 +223,7 @@ export const useProductsService = createSharedComposable(() => {
         }
     }
 
-    /**
-     * @description -
-     */
-    const addProductVariantOption = async (option: IOption) => {
+    const addProductVariantOption = async (option: IOption): Promise<IProduct> => {
         try {
             const data = await _productsStore.addVariantOption(option)
 
@@ -265,9 +235,6 @@ export const useProductsService = createSharedComposable(() => {
         }
     }
 
-    /**
-     * @description -
-     */
     const createProductOption = async (option: IOption): Promise<IOption> => {
         try {
             return await _optionsService.createOption(option)
@@ -276,9 +243,6 @@ export const useProductsService = createSharedComposable(() => {
         }
     }
 
-    /**
-     * @description -
-     */
     const updateProductOption = async (updates: Partial<IOption>): Promise<IOption> => {
         try {
             return await _optionsService.updateOption(updates)
@@ -287,9 +251,6 @@ export const useProductsService = createSharedComposable(() => {
         }
     }
 
-    /**
-     * @description -
-     */
     const addNewVariantOption = async (data: IOption): Promise<void> => {
         try {
             const option = await createProductOption(data)
@@ -308,9 +269,6 @@ export const useProductsService = createSharedComposable(() => {
         }
     }
 
-    /**
-     * @description -
-     */
     const updateVariantOption = async (option: IOption): Promise<IOption> => {
         try {
             const updated = await updateProductOption(option)
@@ -327,9 +285,6 @@ export const useProductsService = createSharedComposable(() => {
         }
     }
 
-    /**
-     * @description -
-     */
     const deleteVariantOption = async ({ option, variant }: { option: IOption, variant: IVariant }): Promise<void> => {
         try {
             let data: IProduct
@@ -348,9 +303,6 @@ export const useProductsService = createSharedComposable(() => {
         }
     }
 
-    /**
-     * @description -
-     */
     const addProductAttribute = async (attr: IAttribute): Promise<IProduct> => {
         const updates = {
             productId: unref(product)!.id,
@@ -368,9 +320,6 @@ export const useProductsService = createSharedComposable(() => {
         }
     }
 
-    /**
-     * @description -
-     */
     const deleteProductAttribute = async (id: string): Promise<IProduct> => {
         const updates = {
             productId: unref(product)!.id,
@@ -388,9 +337,6 @@ export const useProductsService = createSharedComposable(() => {
         }
     }
 
-    /**
-     * @description -
-     */
     const updateProductInfo = async (updates: Partial<IProduct>): Promise<IProduct> => {
         updates.id = unref(product)!.id
 
@@ -401,9 +347,6 @@ export const useProductsService = createSharedComposable(() => {
         }
     }
 
-    /**
-     * @description -
-     */
     const updateProductMetaTags = async (metaTags: IMetaTag[]): Promise<IProduct> => {
         const payload = {
             productId: unref(product)!.id,
@@ -417,9 +360,6 @@ export const useProductsService = createSharedComposable(() => {
         }
     }
 
-    /**
-     * @description -
-     */
     const addProductMetaTag = async (metaTag: IMetaTag): Promise<IProduct> => {
         const updates = {
             productId: unref(product)!.id,
@@ -437,9 +377,6 @@ export const useProductsService = createSharedComposable(() => {
         }
     }
 
-    /**
-     * @description - метод удаления метатега товара
-     * */
     const deleteProductMetaTag = async (metaTag: IMetaTag): Promise<IProduct> => {
         const payload = {
             productId: unref(product)!.id,
@@ -453,9 +390,6 @@ export const useProductsService = createSharedComposable(() => {
         }
     }
 
-    /**
-     * @description -
-     */
     const loadImage = async ({ file, ownerId }: { file: File, ownerId: string }): Promise<IAsset> => {
         try {
             const { formData, fileName } = _filesService.createFormData(file)
@@ -466,9 +400,6 @@ export const useProductsService = createSharedComposable(() => {
         }
     }
 
-    /**
-     * @description -
-     */
     const deleteProduct = async (product: IProduct) => {
         try {
             return await _productsStore.deleteProduct(product)
@@ -477,9 +408,6 @@ export const useProductsService = createSharedComposable(() => {
         }
     }
 
-    /**
-     * @description -
-     */
     const updateProductAssets = async (updates: Partial<IProduct>): Promise<IProduct> => {
         updates.id = unref(product)?.id
 
@@ -490,9 +418,6 @@ export const useProductsService = createSharedComposable(() => {
         }
     }
 
-    /**
-     * @description -
-     */
     const updateMainImageAsset = (asset: IAsset): Promise<IAsset> => {
         return _filesService.updateFile({
             id: asset.id,
@@ -500,9 +425,6 @@ export const useProductsService = createSharedComposable(() => {
         })
     }
 
-    /**
-     * @description -
-     */
     const uploadProductImage = async (file: File): Promise<IAsset> => {
         try {
             const asset = await loadImage({
@@ -523,9 +445,6 @@ export const useProductsService = createSharedComposable(() => {
         }
     }
 
-    /**
-     * @description -
-     */
     const deleteProductImage = async (asset: IAsset) => {
         await _filesService.deleteFile(asset)
 
@@ -539,9 +458,6 @@ export const useProductsService = createSharedComposable(() => {
         return updateProduct({ assets })
     }
 
-    /**
-     * @description -
-     */
     const onInit = async () => {
         await Promise.all([
             getCategories(),

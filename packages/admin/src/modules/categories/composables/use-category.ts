@@ -10,7 +10,12 @@ import { Category } from '@modules/categories/model/category.model'
 import { IAsset, ICategory } from '@proshop/types'
 import { clone } from '@shared/helpers'
 import { useNotifications } from '@shared/components/VNotifications/use-notifications'
-import { CHANGES_SAVED, SAVING_ERROR } from '@shared/constants/notifications'
+import { SAVING_ERROR } from '@shared/constants/notifications'
+import {
+    CATEGORY_DELETED,
+    CATEGORY_IMAGE_DELETED,
+    CATEGORY_IMAGE_SAVED,
+} from '@modules/categories/constants/notifications'
 
 export const useCategory = createSharedComposable(() => {
     const {
@@ -27,7 +32,7 @@ export const useCategory = createSharedComposable(() => {
 
     const isEditMode = computed(() => Boolean(unref(model).id))
 
-    const setCategoryModel = (value) => {
+    const setCategoryModel = (value: Maybe<ICategory>) => {
         model.value = value ? Category.create(clone(value)) : Category.create()
     }
 
@@ -36,17 +41,31 @@ export const useCategory = createSharedComposable(() => {
             await uploadCategoryImage(file)
             unref(model).image = unref(category)!.image
 
-            notify(CHANGES_SAVED)
+            notify(CATEGORY_IMAGE_SAVED)
         } catch (err) {
             notify(SAVING_ERROR)
         }
     }
 
     const onDeleteCategoryImage = async (asset: IAsset) => {
-        await deleteCategoryImage(asset)
+        try {
+            await deleteCategoryImage(asset)
+
+            notify(CATEGORY_IMAGE_DELETED)
+        } catch {
+            notify(SAVING_ERROR)
+        }
     }
 
-    const onDeleteCategory = (category: ICategory) => deleteCategory(category.id)
+    const onDeleteCategory = async (category: ICategory) => {
+        try {
+            await deleteCategory(category.id)
+
+            notify(CATEGORY_DELETED)
+        } catch {
+            notify(SAVING_ERROR)
+        }
+    }
 
     const onAddNew = () => {
         setAsCurrent(null)

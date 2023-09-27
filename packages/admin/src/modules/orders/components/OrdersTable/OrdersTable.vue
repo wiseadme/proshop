@@ -1,8 +1,10 @@
 <script lang="ts" setup>
+    import { VSvg } from '@shared/components/VSvg'
+    import { FormCard } from '@shared/components/FormCard'
     import { useOrders } from '@modules/orders/composables/use-orders'
     import { useOrdersTable } from '@modules/orders/composables/use-orders-table'
+    import { SvgPaths } from '@shared/enums/svg-paths'
     import { IOrder } from '@proshop/types'
-    import FormCard from '@shared/components/FormCard/FormCard.vue'
 
     defineEmits<{
         (e: 'open:order', row: IOrder): void
@@ -20,7 +22,7 @@
         onUpdateTablePage,
     } = useOrdersTable()
 
-    const getOrderStatusClasses = (row) => ({
+    const getOrderStatusClasses = (row: IOrder) => ({
         'primary': row.status.created && !row.status.seen,
         'blue lighten-1': row.status.seen && !row.status.confirmed,
         'teal accent-3': row.status.confirmed && !row.status.inProcess,
@@ -33,6 +35,15 @@
 </script>
 <template>
     <form-card>
+        <template #icon>
+            <v-svg
+                :path="SvgPaths.TABLE_LIST"
+                view-box="0 -30 512 512"
+            />
+        </template>
+        <template #title>
+            Таблица заказов
+        </template>
         <template #body>
             <v-data-table
                 :cols="cols"

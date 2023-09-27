@@ -79,29 +79,47 @@ export const useCategoriesService = createSharedComposable(() => {
         }
     }
 
-    const uploadCategoryImage = async (file: File) => {
-        const { formData, fileName } = _filesService.createFormData(file)
-        const ownerId = unref(category)!.id
+    const saveFileAsset = async (file: File): Promise<IAsset> => {
+        try {
+            const { formData, fileName } = _filesService.createFormData(file)
+            const ownerId = unref(category)!.id
 
-        const asset = await _filesService.uploadFile({
-            ownerId,
-            fileName,
-            formData,
-        })
-
-        const { assets = [] } = unref(category) as ICategory
-        assets.push(asset)
-
-        const data = await updateCategory({
-            id: ownerId,
-            image: asset.url,
-            assets,
-        })
-
-        setAsCurrent(data)
+            return await _filesService.uploadFile({
+                ownerId,
+                fileName,
+                formData,
+            })
+        } catch (err) {
+            return Promise.reject(err)
+        }
     }
 
-    const deleteCategoryImage = async (asset: IAsset) => {
+    const uploadCategoryImage = async (file: File): Promise<ICategory> => {
+        try {
+            const asset = await saveFileAsset(file)
+
+            const { assets = [] } = unref(category) as ICategory
+            assets.push(asset)
+
+            const data = await updateCategory({
+                id: asset.ownerId,
+                image: null /*asset.url*/,
+                assets,
+            })
+
+            setAsCurrent(data)
+
+            return data
+        } catch (err) {
+            return Promise.reject(err)
+        }
+    }
+
+    /**
+     * TODO - реализовать главное изображение категории
+     * и его изменение при удалении последней картинки
+     */
+    const deleteCategoryImage = async (asset: IAsset): Promise<ICategory> => {
         try {
             await _filesService.deleteFile({
                 ownerId: asset.ownerId,
