@@ -14,7 +14,7 @@ import { IAssetsRepository } from '../types/repository'
 import { AssetsResponse } from '../types/params'
 import { IFileLoaderMiddleware } from '@/types/middlewares'
 
-import {AssetMapper} from '@modules/asset/mappers/asset.mapper'
+import { AssetMapper } from '@modules/asset/mappers/asset.mapper'
 
 @injectable()
 export class AssetRepository implements IAssetsRepository {
@@ -30,9 +30,7 @@ export class AssetRepository implements IAssetsRepository {
             const ownerDir = ownerId.slice(-10)
 
             const assetId = new mongoose.Types.ObjectId()
-
             const { fileName } = req.query
-
             const url = `/uploads/${ownerDir}/${assetId.toString()}|${fileName}`
 
             req.query.assetId = assetId.toString()
@@ -55,7 +53,7 @@ export class AssetRepository implements IAssetsRepository {
         })
     }
 
-    async update(updates) {
+    async update(updates: Partial<IAsset>) {
         validateId(updates.id)
 
         const updated = await AssetModel.findByIdAndUpdate(
@@ -66,6 +64,18 @@ export class AssetRepository implements IAssetsRepository {
             .lean() as IAssetMongoModel
 
         return { updated: AssetMapper.toDomain(updated) }
+    }
+
+    async updateMany(assets: Partial<IAsset>[]) {
+        const asset = assets[0]
+
+        validateId(asset.id)
+
+        for await (const asset of assets) {
+            await AssetModel.findByIdAndUpdate({ _id: asset.id }, asset)
+        }
+
+        return true
     }
 
     async deleteOne(asset: IAsset) {

@@ -9,6 +9,7 @@ import { ILogger } from '@/types/utils'
 import { IProductsRepository } from '../types/repository'
 import { IProductsService } from '../types/service'
 import {
+    IAsset,
     IAttribute,
     ICategory,
     IMetaTag,
@@ -52,8 +53,7 @@ export class ProductsService extends ServiceHelpers implements IProductsService 
         }
 
         if (id) {
-            const product = await this.repository.findById(id)
-            data.items = [product]
+            data.items = [await this.repository.findById(id)]
 
             return data
         }
@@ -66,8 +66,7 @@ export class ProductsService extends ServiceHelpers implements IProductsService 
         }
 
         if (url) {
-            const product = await this.repository.findByUrl(url)
-            data.items = [product]
+            data.items = [await this.repository.findByUrl(url)]
 
             return data
         }
@@ -93,11 +92,6 @@ export class ProductsService extends ServiceHelpers implements IProductsService 
     }
 
     async updateProduct(updates: Partial<IProduct>) {
-        if (updates.assets) {
-            updates.assets.forEach(it => this.gateway.asset.updateFile(it))
-            updates.image = updates.assets?.find(it => it.main)?.url || null
-        }
-
         if (updates.categories) {
             const product = await this.repository.findById(updates.id!)
             const currentCategories = product.categories?.map(ctg => ctg.id)

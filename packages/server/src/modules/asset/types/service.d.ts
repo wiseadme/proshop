@@ -6,6 +6,8 @@ export interface IAssetsService {
 
     updateFile(updates: Partial<IAsset>): Promise<{ updated: IAsset }>
 
+    updateMany(assets: Partial<IAsset>[]): Promise<boolean>
+
     deleteFile(params: { id: string, url: string }): Promise<boolean>
 
     deleteFiles(id: string): Promise<boolean>

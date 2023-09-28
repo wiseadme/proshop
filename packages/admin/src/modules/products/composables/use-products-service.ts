@@ -132,7 +132,7 @@ export const useProductsService = createSharedComposable(() => {
     const getProduct = async (id: string): Promise<IProduct> => {
         const [item] = await _productsStore.getProducts({ id })
 
-        product.value = clone(item)
+        setAsCurrent(clone(item))
 
         return item
     }
@@ -408,38 +408,62 @@ export const useProductsService = createSharedComposable(() => {
         }
     }
 
-    const updateProductAssets = async (updates: Partial<IProduct>): Promise<IProduct> => {
-        updates.id = unref(product)?.id
+    // const updateProductAssets = async (updates: { id?: string, assets: IAsset[] }): Promise<IProduct> => {
+    //     updates.id = unref(product)?.id
+    //
+    //     try {
+    //         return await updateProduct(updates)
+    //     } catch (err) {
+    //         return Promise.reject(err)
+    //     }
+    // }
 
+    const updateMainImageAsset = async (asset: IAsset): Promise<IAsset> => {
         try {
-            return await updateProduct(updates)
+            return await _filesService.updateFile({
+                id: asset.id,
+                main: true,
+            })
         } catch (err) {
             return Promise.reject(err)
         }
     }
 
-    const updateMainImageAsset = (asset: IAsset): Promise<IAsset> => {
-        return _filesService.updateFile({
-            id: asset.id,
-            main: true,
-        })
+    const updateProductAssets = async (assets: Partial<IAsset>[]) => {
+        try {
+            await _filesService.updateMany(assets)
+
+            return await getProduct(unref(product)!.id)
+        } catch (err) {
+            return Promise.reject(err)
+        }
     }
 
-    const uploadProductImage = async (file: File): Promise<IAsset> => {
+    const uploadProductImage = async (file: File): Promise<IProduct> => {
         try {
             const asset = await loadImage({
-                file,
                 ownerId: unref(product)!.id,
-            })
+                file,
+            }) as IAsset
 
-            const { assets = [] } = unref(product)!
-            const isMain = asset.main || !assets.length
+            const assets = [...unref(product)!.assets] as IAsset[]
+            asset.main = !assets.length
 
-            if (isMain) {
-                return await updateMainImageAsset(asset)
+            assets.push(asset)
+
+            if (asset.main) {
+                await updateProductAssets([asset])
             }
 
-            return asset
+            const updated = await updateProduct({
+                id: asset.ownerId,
+                assets: assets.map(it => it.id),
+                image: asset.main ? asset.url : null,
+            })
+
+            setAsCurrent(updated)
+
+            return updated
         } catch (err) {
             return Promise.reject(err)
         }
@@ -448,7 +472,7 @@ export const useProductsService = createSharedComposable(() => {
     const deleteProductImage = async (asset: IAsset) => {
         await _filesService.deleteFile(asset)
 
-        const assets = unref(product)!.assets?.filter(it => it.id !== asset.id)
+        const assets = (unref(product)!.assets as IAsset[])?.filter(it => it.id !== asset.id)
         const mainImage = assets?.find(it => it.main)
 
         if (assets?.length && !mainImage) {

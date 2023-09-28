@@ -1,10 +1,9 @@
 import { Request, Response, Router } from 'express'
 import { inject, injectable } from 'inversify'
+import expressAsyncHandler from 'express-async-handler'
 import { TYPES } from '@common/schemes/di-types'
 import { BaseController } from '@common/controller/base.controller'
-import expressAsyncHandler from 'express-async-handler'
 // Types
-import { Document } from 'mongoose'
 import { IAsset } from '@proshop/types'
 import { ILogger } from '@/types/utils'
 import { IController } from '@/types'
@@ -26,12 +25,13 @@ export class AssetController extends BaseController implements IController {
     }
 
     initRoutes() {
-        this.router.post('/', /*new ValidateMiddleware(AssetDTO).execute*/ expressAsyncHandler(this.uploadImage.bind(this)))
-        this.router.patch('/', /*new ValidateMiddleware(AssetDTO).execute,*/ expressAsyncHandler(this.updateImage.bind(this)))
-        this.router.delete('/', expressAsyncHandler(this.deleteImage.bind(this)))
+        this.router.post('/', /*new ValidateMiddleware(AssetDTO).execute*/ expressAsyncHandler(this.uploadAsset.bind(this)))
+        this.router.patch('/', /*new ValidateMiddleware(AssetDTO).execute,*/ expressAsyncHandler(this.updateAsset.bind(this)))
+        this.router.patch('/many', /*new ValidateMiddleware(AssetDTO).execute,*/ expressAsyncHandler(this.updateAssets.bind(this)))
+        this.router.delete('/', /*new ValidateMiddleware(AssetDTO).execute,*/ expressAsyncHandler(this.deleteImage.bind(this)))
     }
 
-    async uploadImage(req: Request, res: Response) {
+    async uploadAsset(req: Request, res: Response) {
         try {
             const data = await this.service.saveFile(req, res)
 
@@ -50,13 +50,32 @@ export class AssetController extends BaseController implements IController {
         }
     }
 
-    async updateImage({ body, method }: Request<{}, {}, Partial<IAsset & Document>>, res: Response) {
+    async updateAsset({ body, method }: Request<{}, {}, Partial<IAsset>>, res: Response) {
         try {
             const { updated } = await this.service.updateFile(body)
 
             this.send({
                 response: res,
                 data: updated,
+                url: this.path,
+                method,
+            })
+        } catch (err: any) {
+            return this.error({
+                error: err,
+                url: this.path,
+                method,
+            })
+        }
+    }
+
+    async updateAssets({ body, method }: Request<{}, {}, Partial<IAsset>[]>, res: Response) {
+        try {
+            const result = await this.service.updateMany(body)
+
+            this.send({
+                response: res,
+                data: result,
                 url: this.path,
                 method,
             })

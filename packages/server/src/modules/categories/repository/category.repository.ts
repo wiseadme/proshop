@@ -22,6 +22,8 @@ export class CategoryRepository implements ICategoryRepository {
         })
             .save()
 
+        await created.populate('assets')
+
         return CategoryMapper.toDomain(created.toObject())
     }
 
@@ -30,6 +32,7 @@ export class CategoryRepository implements ICategoryRepository {
 
         const categories = await CategoryModel
             .find(params.id ? { _id: params.id } : params)
+            .populate('assets')
             .lean()
 
         return categories.map(ctg => CategoryMapper.toDomain(ctg))
@@ -46,6 +49,7 @@ export class CategoryRepository implements ICategoryRepository {
             { $set: updates },
             { new: true },
         )
+            .populate('assets')
             .lean() as ICategoryMongoModel
 
         return { updated: CategoryMapper.toDomain(updated) }

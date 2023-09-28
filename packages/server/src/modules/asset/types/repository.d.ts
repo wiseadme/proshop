@@ -7,6 +7,8 @@ export interface IAssetsRepository {
 
     update(updates: Partial<IAsset>): Promise<{ updated: IAsset }>
 
+    updateMany(updates: Partial<IAsset>[]): Promise<boolean>
+
     deleteOne(asset: IAsset): Promise<boolean>
 
     deleteAll(id: string): Promise<boolean>

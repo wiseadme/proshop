@@ -1,23 +1,30 @@
 <script lang="ts" setup>
-    import { ref, unref } from 'vue'
+    import {
+        ref,
+        unref,
+        watch,
+    } from 'vue'
     import { FormCard } from '@shared/components/FormCard'
     import { VSvg } from '@shared/components/VSvg'
     import { clone } from '@shared/helpers'
     import { SvgPaths } from '@shared/enums/svg-paths'
     import { IAsset } from '@proshop/types'
+    import draggable from 'vuedraggable'
 
-    defineProps<{
+    const { assets } = defineProps<{
         assets: IAsset[]
     }>()
 
-    defineEmits<{
+    const emit = defineEmits<{
         (e: 'load', value: File[]): void
         (e: 'delete', value: IAsset): void
-        (e: 'main', value: IAsset): void
+        (e: 'update:main', value: IAsset): void
+        (e: 'update:order', value: IAsset[]): void
     }>()
 
-    const currentImage = ref(null)
-    const loadedImages = ref([])
+    const currentImage = ref<Maybe<IAsset>>(null)
+    const loadedImages = ref<File[]>([])
+    const clonedItems = ref<IAsset[]>([])
 
     const imagesContextMenu = ref({
         show: false,
@@ -32,6 +39,15 @@
 
         currentImage.value = clone(asset)
     }
+
+    const onChange = () => {
+        unref(clonedItems).forEach((it, i) => it.order = i)
+        emit('update:order', unref(clonedItems))
+    }
+
+    watch(() => assets, (value) => {
+        clonedItems.value = clone(value)
+    }, { immediate: true })
 
 </script>
 <template>
@@ -56,32 +72,39 @@
                             text-color="content"
                             @update:value="$emit('load', $event)"
                         />
-                        <div class="images-container d-flex flex-wrap">
-                            <div
-                                v-for="it in assets"
-                                :key="it.id"
-                                class="image mr-2 mb-2 white elevation-2"
-                                :class="{'product-image--main': it.main}"
-                                style="height: 150px; width: 150px; overflow: hidden; position: relative; border-radius: 10px; padding: 0"
-                                @contextmenu.prevent="onImageContextMenu($event, it)"
-                            >
-                                <img
-                                    style="height: 150px; width: 100%; object-fit: cover"
-                                    :src="it.url"
-                                >
-                                <v-button
-                                    style="position: absolute; top: 5px; right: 5px"
-                                    round
-                                    color="white"
-                                    elevation="2"
-                                    @click="$emit('delete', it)"
-                                >
-                                    <v-icon color="grey darken-4">
-                                        fas fa-times
-                                    </v-icon>
-                                </v-button>
-                            </div>
-                        </div>
+                        <draggable
+                            :list="clonedItems"
+                            item-key="id"
+                            class="d-flex justify-start align-center"
+                            @change="onChange"
+                        >
+                            <template #item="{element}">
+                                <div class="images-container d-flex flex-wrap">
+                                    <div
+                                        class="image mr-2 mb-2 white elevation-2"
+                                        :class="{'product-image--main': element.main}"
+                                        style="height: 150px; width: 150px; overflow: hidden; position: relative; border-radius: 10px; padding: 0"
+                                        @contextmenu.prevent="onImageContextMenu($event, element)"
+                                    >
+                                        <img
+                                            style="height: 150px; width: 100%; object-fit: cover"
+                                            :src="element.url"
+                                        >
+                                        <v-button
+                                            style="position: absolute; top: 5px; right: 5px"
+                                            round
+                                            color="white"
+                                            elevation="2"
+                                            @click="$emit('delete', element)"
+                                        >
+                                            <v-icon color="grey darken-4">
+                                                fas fa-times
+                                            </v-icon>
+                                        </v-button>
+                                    </div>
+                                </div>
+                            </template>
+                        </draggable>
                     </template>
                 </form-card>
             </v-col>
@@ -100,7 +123,7 @@
             >
                 <v-list-item
                     class="images-menu__item"
-                    @click="$emit('main', currentImage)"
+                    @click="$emit('update:main', currentImage)"
                 >
                     <v-list-item-title>
                         установить главным

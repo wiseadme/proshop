@@ -7,15 +7,17 @@
         onLoadImage,
         setAsMainImage,
         onDeleteImage,
+        updateImagesOrders
     } = useProductImages()
 
 </script>
 <template>
     <v-layout>
         <images-loader
-            :assets="assets"
+            :assets="assets.sort((a, b) => a.order - b.order)"
             @load="onLoadImage"
-            @main="setAsMainImage"
+            @update:main="setAsMainImage"
+            @update:order="updateImagesOrders"
             @delete="onDeleteImage"
         />
     </v-layout>

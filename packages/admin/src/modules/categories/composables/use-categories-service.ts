@@ -96,15 +96,15 @@ export const useCategoriesService = createSharedComposable(() => {
 
     const uploadCategoryImage = async (file: File): Promise<ICategory> => {
         try {
-            const asset = await saveFileAsset(file)
+            const asset = await saveFileAsset(file) as IAsset
 
-            const { assets = [] } = unref(category) as ICategory
-            assets.push(asset)
+            const { assets = [] as IAsset[] } = unref(category) as ICategory
+            (assets as IAsset[]).push(asset)
 
             const data = await updateCategory({
                 id: asset.ownerId,
                 image: null /*asset.url*/,
-                assets,
+                assets: assets.map(it => it.id),
             })
 
             setAsCurrent(data)
@@ -127,14 +127,26 @@ export const useCategoriesService = createSharedComposable(() => {
                 id: asset.id,
             })
 
+            const { assets = [] as IAsset[] } = unref(category) as ICategory
+
             const updated = await updateCategory({
                 id: asset.ownerId,
-                assets: unref(category)?.assets.filter(it => it.id !== asset.id),
+                assets: (assets as IAsset[]).filter(it => it.id !== asset.id).map(it => it.id),
             })
 
             setAsCurrent(updated)
 
             return updated
+        } catch (err) {
+            return Promise.reject(err)
+        }
+    }
+
+    const updateCategoryImagesOrders = async (assets: IAsset[]): Promise<boolean> => {
+        try {
+            await _filesService.updateMany(assets)
+
+            return true
         } catch (err) {
             return Promise.reject(err)
         }
@@ -151,5 +163,6 @@ export const useCategoriesService = createSharedComposable(() => {
         deleteCategory,
         uploadCategoryImage,
         deleteCategoryImage,
+        updateCategoryImagesOrders,
     }
 })
