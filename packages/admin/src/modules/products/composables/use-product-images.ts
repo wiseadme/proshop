@@ -13,7 +13,7 @@ export const useProductImages = () => {
     const { model } = useProductModel()
 
     const {
-        updateProductAssets,
+        updateProductImages,
         uploadProductImage,
         deleteProductImage,
     } = useProductsService()
@@ -50,7 +50,7 @@ export const useProductImages = () => {
         currentMainAsset.main = false
 
         try {
-            await updateProductAssets([
+            await updateProductImages([
                 currentMainAsset,
                 imageAsset,
             ])
@@ -63,7 +63,7 @@ export const useProductImages = () => {
 
     const updateImagesOrders = async (assets: IAsset[]) => {
         try {
-            await updateProductAssets(assets.map(it => ({
+            await updateProductImages(assets.map(it => ({
                 id: it.id,
                 order: it.order
             })))
