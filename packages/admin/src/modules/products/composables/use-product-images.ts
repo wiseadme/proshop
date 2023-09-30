@@ -21,7 +21,7 @@ export const useProductImages = () => {
     const { notify } = useNotifications()
 
     const assets = computed<IAsset[]>(() => (unref(model)?.assets || []) as IAsset[])
-    const mainAsset = computed(() => unref(assets).find(it => it.main))
+    const mainImage = computed(() => unref(assets).find(it => it.main))
 
     const onLoadImage = async ([file]) => {
         try {
@@ -44,14 +44,14 @@ export const useProductImages = () => {
     }
 
     const setAsMainImage = async (imageAsset: IAsset) => {
-        const currentMainAsset = toRaw(unref(mainAsset)!)
+        const currentMainImage = toRaw(unref(mainImage)!)
 
         imageAsset.main = true
-        currentMainAsset.main = false
+        currentMainImage.main = false
 
         try {
             await updateProductImages([
-                currentMainAsset,
+                currentMainImage,
                 imageAsset,
             ])
 

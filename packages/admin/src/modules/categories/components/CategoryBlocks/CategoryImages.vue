@@ -6,7 +6,7 @@
     import { IAsset } from '@proshop/types'
 
     const { onDeleteCategoryImage, onUploadCategoryImage } = useCategory()
-    const { updateOrders } = useCategoryImages()
+    const { onUpdateImagesOrders, onUpdateMainImage } = useCategoryImages()
     const { category } = useCategoriesService()
 
     const onLoadImage = ([file]) => {
@@ -21,7 +21,8 @@
             :assets="category.assets as IAsset[]"
             @delete="onDeleteCategoryImage"
             @load="onLoadImage"
-            @update:order="updateOrders"
+            @update:main="onUpdateMainImage"
+            @update:order="onUpdateImagesOrders"
         />
     </v-layout>
 </template>
