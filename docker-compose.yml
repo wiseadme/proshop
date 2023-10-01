@@ -7,12 +7,12 @@ services:
     restart: unless-stopped
     environment:
       - PORT=5001
-      - USER=${{ secrets.USER }}
-      - MONGO_URI=${{ secrets.MONGO_URI }}
-      - ACCESS_TOKEN_SECRET_KEY=${{ secrets.ACCESS_TOKEN_SECRET_KEY }}
-      - REFRESH_TOKEN_SECRET_KEY={{ secrets.REFRESH_TOKEN_SECRET_KEY }}
-      - REDIS_URL=${{ secrets.REDIS_URL }}
-      - UPLOADS_DIR=${{ secrets.UPLOADS_DIR }}
+      - USER=${USER}
+      - MONGO_URI=${MONGO_URI}
+      - ACCESS_TOKEN_SECRET_KEY=${ACCESS_TOKEN_SECRET_KEY}
+      - REFRESH_TOKEN_SECRET_KEY=${REFRESH_TOKEN_SECRET_KEY}
+      - REDIS_URL=${REDIS_URL}
+      - UPLOADS_DIR=${UPLOADS_DIR}
     volumes:
       - uploads:/home/wiseadme/www/uploads/
     depends_on:
