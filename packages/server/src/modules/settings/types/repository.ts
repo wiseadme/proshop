@@ -1,4 +1,3 @@
-import { Document, LeanDocument } from 'mongoose'
 import { IMerchant, ISettings, ISite, Maybe } from '@proshop/types'
 
 export interface IMerchantRepository {
@@ -6,7 +5,7 @@ export interface IMerchantRepository {
 
     read(): Promise<Maybe<IMerchant>>
 
-    update(updates: Partial<IMerchant>): Promise<{ updated: IMerchant }>
+    update(updates: Partial<IMerchant>): Promise<IMerchant>
 
     delete(id: string): Promise<boolean>
 }
@@ -16,7 +15,7 @@ export interface ISettingsRepository {
 
     read(): Promise<Maybe<ISettings>>
 
-    update(updates: Partial<ISettings>): Promise<{ updated: ISettings }>
+    update(updates: Partial<ISettings>): Promise<ISettings>
 
     delete(id): Promise<boolean>
 }
@@ -25,7 +24,7 @@ export interface ISiteRepository {
 
     read(): Promise<Maybe<ISite>>
 
-    update(updates: Partial<ISite>): Promise<{ updated: ISite }>
+    update(updates: Partial<ISite>): Promise<ISite>
 
     delete(id): Promise<boolean>
 }

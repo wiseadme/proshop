@@ -5,7 +5,7 @@ import { AssetsResponse } from './params'
 export interface IAssetsRepository {
     save(req: Request, res: Response): Promise<AssetsResponse>
 
-    update(updates: Partial<IAsset>): Promise<{ updated: IAsset }>
+    update(updates: Partial<IAsset>): Promise<IAsset>
 
     updateMany(updates: Partial<IAsset>[]): Promise<boolean>
 

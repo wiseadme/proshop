@@ -123,7 +123,7 @@ export class ProductsRepository extends RepositoryHelpers implements IProductsRe
             .lean()
             .populate(this.getPopulateParams()) as IProductMongoModel
 
-        return { updated: ProductMapper.toDomain(updated) }
+        return ProductMapper.toDomain(updated)
     }
 
     async deleteProduct(id: string) {

@@ -1,12 +1,11 @@
-import expressAsyncHandler from 'express-async-handler'
 import { BaseController } from '@common/controller/base.controller'
-import { Request, Response, Router } from 'express'
+import { NextFunction, Request, Response, Router } from 'express'
 import { inject, injectable } from 'inversify'
 import { TYPES } from '@common/schemes/di-types'
 // Types
 import { ILogger } from '@/types/utils'
 import { IController } from '@/types'
-import { ICartService } from '../types/service'
+import { ICartService } from '@modules/cart/types/service'
 import { ICart } from '@proshop/types'
 
 @injectable()
@@ -23,84 +22,49 @@ export class CartController extends BaseController implements IController {
     }
 
     initRoutes() {
-        this.router.post('/', expressAsyncHandler(this.createCart.bind(this)))
-        this.router.get('/', expressAsyncHandler(this.getCart.bind(this)))
-        this.router.patch('/', expressAsyncHandler(this.updateCart.bind(this)))
-        this.router.delete('/', expressAsyncHandler(this.deleteCart.bind(this)))
+        this.router.post('/', this.createCart.bind(this))
+        this.router.get('/', this.getCart.bind(this))
+        this.router.patch('/', this.updateCart.bind(this))
+        this.router.delete('/', this.deleteCart.bind(this))
     }
 
-    async createCart({ body, method }: Request<{}, {}, ICart>, res: Response) {
+    async createCart(request: Request<{}, {}, ICart>, response: Response, next: NextFunction) {
         try {
-            const cart = await this.service.create(body)
+            const data = await this.service.create(request.body)
 
-            this.send({
-                response: res,
-                data: cart,
-                url: this.path,
-                method,
-            })
-        } catch (err) {
-            return this.error({
-                error: err,
-                url: this.path,
-                method,
-            })
+            this.send({ data, request, response })
+        } catch (error) {
+            this.error({ error, request, next })
         }
     }
 
-    async getCart({ query, method }: Request<{}, {}, {}, { id?: string }>, res: Response) {
+    async getCart(request: Request<{}, {}, {}, { id?: string }>, response: Response, next: NextFunction) {
         try {
-            const cart = await this.service.read(query)
+            const data = await this.service.read(request.query)
 
-            this.send({
-                response: res,
-                data: cart,
-                url: this.path,
-                method,
-            })
-        } catch (err) {
-            return this.error({
-                error: err,
-                url: this.path,
-                method,
-            })
+            this.send({ data, request, response })
+        } catch (error) {
+            this.error({ error, request, next })
         }
     }
 
-    async updateCart({ body, method }: Request<{}, {}, ICart>, res: Response) {
+    async updateCart(request: Request<{}, {}, ICart>, response: Response, next: NextFunction) {
         try {
-            const { updated } = await this.service.update(body)
+            const data = await this.service.update(request.body)
 
-            this.send({
-                response: res,
-                data: updated,
-                url: this.path,
-                method,
-            })
-        } catch (err) {
-            return this.error({
-                error: err,
-                url: this.path,
-                method,
-            })
+            this.send({ data, request, response })
+        } catch (error) {
+            this.error({ error, request, next })
         }
     }
 
-    async deleteCart({ query, method }: Request<{}, {}, {}, { id: string }>, res: Response) {
+    async deleteCart(request: Request<{}, {}, {}, { id: string }>, response: Response, next: NextFunction) {
         try {
-            await this.service.delete(query.id)
-            this.send({
-                response: res,
-                data: null,
-                url: this.path,
-                method,
-            })
-        } catch (err: any) {
-            return this.error({
-                error: err,
-                url: this.path,
-                method,
-            })
+            const data = await this.service.delete(request.query.id)
+
+            this.send({ data, request, response })
+        } catch (error) {
+            this.error({ error, request, next })
         }
     }
 }

@@ -29,7 +29,7 @@ export class CategoryService implements ICategoryService {
         return this.repository.createCategory(Category.create(category))
     }
 
-    async updateCategory(updates: Partial<ICategory>): Promise<{ updated: ICategory }> {
+    async updateCategory(updates: Partial<ICategory>): Promise<ICategory> {
         const [category] = await this.repository.getCategories({ id: updates.id })
 
         updates = Category.update(updates)

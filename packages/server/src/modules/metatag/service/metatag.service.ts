@@ -20,15 +20,15 @@ export class MetaTagService implements IMetaTagService {
         return await this.repository.create(metaTag)
     }
 
-    async read(params) {
+    async read(params: Partial<IMetaTag>) {
         return await this.repository.read(params)
     }
 
-    async update(updates) {
+    async update(updates: Partial<IMetaTag>) {
         return await this.repository.update(updates)
     }
 
-    async delete(id) {
+    async delete(id: string) {
         return this.repository.delete(id)
     }
 }

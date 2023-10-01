@@ -4,9 +4,9 @@ import { IAttribute, IMetaTag, IOption, IProduct, IRequestParams, IVariant } fro
 export interface IProductsService {
     createProduct(product: IProduct): Promise<IProduct>
 
-    getProducts(query: IRequestParams<Partial<IProduct>>): Promise<{ items: LeanDocument<IProduct>[], total?: number }>,
+    getProducts(query: IRequestParams<Partial<IProduct>>): Promise<{ items: IProduct[], total?: number }>,
 
-    updateProduct(updates: Partial<IProduct>): Promise<{ updated: LeanDocument<IProduct> }>
+    updateProduct(updates: Partial<IProduct>): Promise<IProduct>
 
     deleteProduct(id: string): Promise<boolean>
 

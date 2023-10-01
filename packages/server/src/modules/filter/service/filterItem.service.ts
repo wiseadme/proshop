@@ -1,4 +1,4 @@
-import { inject, injectable } from 'inversify'
+import { id, inject, injectable } from 'inversify'
 import { TYPES } from '@common/schemes/di-types'
 import { FilterItem } from '@modules/filter/entity/filterItem.entity'
 // Types
@@ -23,7 +23,7 @@ export class FilterItemService implements IFilterItemService {
         return this.repository.read(params)
     }
 
-    update(updates: Partial<IFilterItem>): Promise<{ updated: IFilterItem }> {
+    update(updates: Partial<IFilterItem>): Promise<IFilterItem> {
         return this.repository.update(updates)
     }
 

@@ -1,11 +1,8 @@
-// Types
-import { Request, Response, Router } from 'express'
 import { inject, injectable } from 'inversify'
-import expressAsyncHandler from 'express-async-handler'
-
+// Types
+import { NextFunction, Request, Response, Router } from 'express'
 import { TYPES } from '@common/schemes/di-types'
 import { BaseController } from '@common/controller/base.controller'
-import { Variant } from '../entity/variant.entity'
 import { IController } from '@/types'
 import { ILogger } from '@/types/utils'
 import { IVariant } from '@proshop/types'
@@ -25,85 +22,49 @@ export class VariantController extends BaseController implements IController {
     }
 
     initRoutes() {
-        this.router.post('/', expressAsyncHandler(this.createVariant.bind(this)))
-        this.router.get('/', expressAsyncHandler(this.getVariants.bind(this)))
-        this.router.patch('/', expressAsyncHandler(this.updateVariant.bind(this)))
-        this.router.delete('/', expressAsyncHandler(this.deleteVariant.bind(this)))
+        this.router.post('/', this.createVariant.bind(this))
+        this.router.get('/', this.getVariants.bind(this))
+        this.router.patch('/', this.updateVariant.bind(this))
+        this.router.delete('/', this.deleteVariant.bind(this))
     }
 
-    async createVariant({ body, method }: Request<{}, {}, IVariant>, res: Response) {
+    async createVariant(request: Request<{}, {}, IVariant>, response: Response, next: NextFunction) {
         try {
-            const variant = await this.service.create(body)
+            const data = await this.service.create(request.body)
 
-            this.send({
-                response: res,
-                data: variant,
-                url: this.path,
-                method,
-            })
-        } catch (err) {
-            return this.error({
-                error: err,
-                url: this.path,
-                method,
-            })
+            this.send({ data, request, response })
+        } catch (error) {
+            this.error({ error, request, next })
         }
     }
 
-    async getVariants({ method }: Request<{}, {}, {}>, res: Response) {
+    async getVariants(request: Request, response: Response, next: NextFunction) {
         try {
-            const variants = await this.service.read()
+            const data = await this.service.read()
 
-            this.send({
-                response: res,
-                data: variants,
-                url: this.path,
-                method,
-            })
-        } catch (err) {
-            return this.error({
-                error: err,
-                url: this.path,
-                method,
-            })
+            this.send({ data, request, response })
+        } catch (error) {
+            this.error({ error, request, next })
         }
     }
 
-    async updateVariant({ body, method }: Request<{}, {}, Partial<IVariant>>, res: Response) {
+    async updateVariant(request: Request<{}, {}, Partial<IVariant>>, response: Response, next: NextFunction) {
         try {
-            const { updated } = await this.service.update(body)
+            const data = await this.service.update(request.body)
 
-            this.send({
-                response: res,
-                data: updated,
-                url: this.path,
-                method,
-            })
-        } catch (err) {
-            return this.error({
-                error: err,
-                url: this.path,
-                method,
-            })
+            this.send({ data, request, response })
+        } catch (error) {
+            this.error({ error, request, next })
         }
     }
 
-    async deleteVariant({ query, method }: Request<{}, {}, {}, { id: string }>, res: Response) {
+    async deleteVariant(request: Request<{}, {}, {}, { id: string }>, response: Response, next: NextFunction) {
         try {
-            await this.service.delete(query.id)
+            const data = await this.service.delete(request.query.id)
 
-            this.send({
-                response: res,
-                data: true,
-                url: this.path,
-                method,
-            })
-        } catch (err) {
-            return this.error({
-                error: err,
-                url: this.path,
-                method,
-            })
+            this.send({ data, request, response })
+        } catch (error) {
+            this.error({ error, request, next })
         }
     }
 }

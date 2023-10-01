@@ -52,7 +52,7 @@ export class CategoryRepository implements ICategoryRepository {
             .populate('assets')
             .lean() as ICategoryMongoModel
 
-        return { updated: CategoryMapper.toDomain(updated) }
+        return CategoryMapper.toDomain(updated)
     }
 
     async deleteCategory(id) {

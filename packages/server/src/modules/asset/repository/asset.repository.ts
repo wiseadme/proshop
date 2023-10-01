@@ -63,7 +63,7 @@ export class AssetRepository implements IAssetsRepository {
         )
             .lean() as IAssetMongoModel
 
-        return { updated: AssetMapper.toDomain(updated) }
+        return AssetMapper.toDomain(updated)
     }
 
     async updateMany(assets: Partial<IAsset>[]) {

@@ -1,5 +1,5 @@
 import { Document } from 'mongoose'
-import { inject, injectable } from 'inversify'
+import { id, inject, injectable } from 'inversify'
 import QRCode from 'qrcode'
 import { TYPES } from '@common/schemes/di-types'
 // Types
@@ -69,14 +69,14 @@ export class OrdersService implements IOrdersService {
         return data
     }
 
-    async update(updates: IOrder): Promise<{ updated: IOrder }> {
-        const { updated } = await this.repository.update(updates)
+    async update(updates: IOrder): Promise<IOrder> {
+        const order = await this.repository.update(updates)
 
-        if (updated.status.cancelled || updated.status.completed) {
-            await this.gateway.cart.delete(updated.cart!)
+        if (order.status.cancelled || order.status.completed) {
+            await this.gateway.cart.delete(order.cart!)
         }
 
-        return { updated }
+        return order
     }
 
     async delete(id: string): Promise<boolean> {

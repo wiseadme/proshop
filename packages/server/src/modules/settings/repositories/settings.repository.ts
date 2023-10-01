@@ -40,7 +40,7 @@ export class SettingsRepository implements ISettingsRepository {
             { new: true },
         ) as ISettingsMongoModel
 
-        return { updated: SettingsMapper.toDomain(updated)! }
+        return SettingsMapper.toDomain(updated)!
     }
 
     async delete(id): Promise<boolean> {

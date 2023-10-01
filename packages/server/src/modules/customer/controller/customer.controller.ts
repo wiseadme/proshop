@@ -1,8 +1,5 @@
-import { Request, Response, Router } from 'express'
-
-import expressAsyncHandler from 'express-async-handler'
+import { NextFunction, Request, Response, Router } from 'express'
 import { inject, injectable } from 'inversify'
-
 import { BaseController } from '@common/controller/base.controller'
 
 // Types
@@ -13,7 +10,6 @@ import { ICustomerService } from '../types/service'
 
 // Schemes
 import { TYPES } from '@common/schemes/di-types'
-import { Document } from 'mongoose'
 
 @injectable()
 export class CustomerController extends BaseController implements IController {
@@ -29,127 +25,71 @@ export class CustomerController extends BaseController implements IController {
     }
 
     public initRoutes() {
-        this.router.get('/', expressAsyncHandler(this.getCustomers.bind(this)))
-        this.router.post('/account', expressAsyncHandler(this.createCustomer.bind(this)))
-        this.router.post('/login', expressAsyncHandler(this.loginCustomer.bind(this)))
-        this.router.get('/whoami', expressAsyncHandler(this.whoami.bind(this)))
-        this.router.patch('/', expressAsyncHandler(this.updateCustomer.bind(this)))
-        this.router.delete('/', expressAsyncHandler(this.deleteCustomer.bind(this)))
+        this.router.get('/', this.getCustomers.bind(this))
+        this.router.post('/account', this.createCustomer.bind(this))
+        this.router.post('/login', this.loginCustomer.bind(this))
+        this.router.get('/whoami', this.whoami.bind(this))
+        this.router.patch('/', this.updateCustomer.bind(this))
+        this.router.delete('/', this.deleteCustomer.bind(this))
     }
 
-    async createCustomer({ body, method }: Request<{}, {}, ICustomer>, res: Response) {
+    async createCustomer(request: Request<{}, {}, ICustomer>, response: Response, next: NextFunction) {
         try {
-            const customer = await this.service.createCustomer(res, body)
+            const data = await this.service.createCustomer(response, request.body)
 
-            this.send({
-                response: res,
-                data: customer,
-                url: this.path,
-                method,
-            })
-        } catch (err: any) {
-            return this.error({
-                error: err,
-                url: this.path,
-                method,
-            })
-        }
-    }
-
-    async loginCustomer({ body, method, url }: Request, res: Response) {
-        try {
-            const data = await this.service.loginCustomer(res, body)
-
-            this.send({
-                response: res,
-                data,
-                url: this.path + url,
-                method,
-            })
+            this.send({ data, request, response })
         } catch (error) {
-            return this.error({
-                method,
-                error,
-                url: this.path + url,
-            })
+            this.error({ error, request, next })
         }
     }
 
-    async whoami({ method, url, cookies }: Request, res: Response) {
+    async loginCustomer(request: Request<{}, {}, Partial<ICustomer>>, response: Response, next: NextFunction) {
         try {
-            const data = await this.service.whoami(cookies)
+            const data = await this.service.loginCustomer(response, request.body as any)
 
-            this.send({
-                response: res,
-                data,
-                method,
-                url: this.path + url,
-            })
+            this.send({ data, request, response })
         } catch (error) {
-            return this.error({
-                method,
-                error,
-                url: this.path + url,
-            })
+            this.error({ error, request, next })
         }
     }
 
-    async updateCustomer({ body, method }: Request<{}, {}, Partial<ICustomer & Document>>, res: Response) {
+    async whoami(request: Request, response: Response, next: NextFunction) {
         try {
-            const { updated } = await this.service.updateCustomer(body)
+            const data = await this.service.whoami(request.cookies)
 
-            this.send({
-                response: res,
-                data: updated,
-                url: this.path,
-                method,
-            })
-        } catch (err: any) {
-            return this.error({
-                error: err,
-                url: this.path,
-                method,
-            })
+            this.send({ data, request, response })
+        } catch (error) {
+            this.error({ error, request, next })
         }
     }
 
-    async getCustomers({ query, method }: Request<{}, {}, {}, Partial<ICustomer>>, res: Response) {
+    async updateCustomer(request: Request<{}, {}, Partial<ICustomer>>, response: Response, next: NextFunction) {
         try {
-            const customers = await this.service.getCustomers(query)
+            const data = await this.service.updateCustomer(request.body)
 
-            this.send({
-                response: res,
-                data: customers,
-                url: this.path,
-                method,
-            })
-        } catch (err: any) {
-            return this.error({
-                error: err,
-                url: this.path,
-                method,
-            })
+            this.send({ data, request, response })
+        } catch (error) {
+            this.error({ error, request, next })
         }
     }
 
-    async deleteCustomer({ query, method }: Request, res: Response) {
+    async getCustomers(request: Request<{}, {}, {}, Partial<ICustomer>>, response: Response, next: NextFunction) {
         try {
-            await this.service.deleteCustomer(query.id as string)
+            const data = await this.service.getCustomers(request.query)
 
-            this.send({
-                response: res,
-                data: null,
-                url: this.path,
-                method,
-            })
-        } catch (err: any) {
-            return this.error({
-                error: err,
-                url: this.path,
-                method,
-            })
+            this.send({ data, request, response })
+        } catch (error) {
+            this.error({ error, request, next })
+        }
+    }
+
+    async deleteCustomer(request: Request<{}, {}, {}, { id: string }>, response: Response, next: NextFunction) {
+        try {
+            const data = await this.service.deleteCustomer(request.query.id)
+
+            this.send({ data, request, response })
+        } catch (error) {
+            this.error({ error, request, next })
         }
     }
 }
-
-export default CustomerController

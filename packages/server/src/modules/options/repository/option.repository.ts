@@ -53,7 +53,7 @@ export class OptionRepository implements IOptionRepository {
         return options.map(option => OptionMapper.toDomain(option))
     }
 
-    async update(updates: Partial<IOption>): Promise<{ updated: IOption }> {
+    async update(updates: Partial<IOption>): Promise<IOption> {
         validateId(updates.id)
 
         const option = await OptionModel
@@ -64,7 +64,7 @@ export class OptionRepository implements IOptionRepository {
             )
             .lean() as IOptionMongoModel
 
-        return { updated: OptionMapper.toDomain(option) }
+        return OptionMapper.toDomain(option)
     }
 
     async delete(id) {

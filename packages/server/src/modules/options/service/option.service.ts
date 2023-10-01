@@ -1,5 +1,5 @@
 import { Document } from 'mongoose'
-import { inject, injectable } from 'inversify'
+import { id, inject, injectable } from 'inversify'
 import { TYPES } from '@common/schemes/di-types'
 // Types
 import { ILogger } from '@/types/utils'
@@ -10,6 +10,7 @@ import { IEventBusService } from '@/types/services'
 // Constants
 import { DELETE_OPTION_EVENT } from '@common/constants/events'
 import { Option } from '@modules/options/entity/option.entity'
+import * as events from 'events'
 
 @injectable()
 export class OptionService implements IOptionService {
@@ -36,7 +37,7 @@ export class OptionService implements IOptionService {
         return this.repository.findMany(ids)
     }
 
-    update(updates: Partial<IOption>): Promise<{ updated: IOption }> {
+    update(updates: Partial<IOption>): Promise<IOption> {
         return this.repository.update(updates)
     }
 

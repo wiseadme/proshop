@@ -1,4 +1,4 @@
-import { Document, Types } from 'mongoose'
+import { Types } from 'mongoose'
 import { inject, injectable } from 'inversify'
 import { TYPES } from '@common/schemes/di-types'
 import { validateId } from '@common/utils/mongoose-validate-id'
@@ -80,7 +80,7 @@ export class OrdersRepository implements IOrdersRepository {
         return orders.map(order => OrderMapper.toDomain(order))
     }
 
-    async update(updates: IOrder & Document): Promise<{ updated: IOrder }> {
+    async update(updates: IOrder): Promise<IOrder> {
         validateId(updates.id)
 
         const updated = await OrderModel.findByIdAndUpdate(
@@ -94,7 +94,7 @@ export class OrdersRepository implements IOrdersRepository {
                 select: 'firstName secondName roles phone',
             }).lean() as IOrderMongoModel
 
-        return { updated: OrderMapper.toDomain(updated) }
+        return OrderMapper.toDomain(updated)
     }
 
     async delete(id) {

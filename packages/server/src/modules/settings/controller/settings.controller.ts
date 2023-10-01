@@ -1,5 +1,4 @@
-import { Request, Response, Router } from 'express'
-import expressAsyncHandler from 'express-async-handler'
+import { NextFunction, Request, Response, Router } from 'express'
 import { inject, injectable } from 'inversify'
 import { BaseController } from '@common/controller/base.controller'
 import { IController } from '@/types'
@@ -24,33 +23,24 @@ export class SettingsController extends BaseController implements IController {
     }
 
     initRoutes() {
-        this.router.get('/', expressAsyncHandler(this.getSettings.bind(this)))
-        this.router.delete('/', expressAsyncHandler(this.deleteSettings.bind(this)))
-        this.router.post('/merchant', expressAsyncHandler(this.createMerchant.bind(this)))
-        this.router.get('/merchant', expressAsyncHandler(this.getMerchant.bind(this)))
-        this.router.patch('/merchant', expressAsyncHandler(this.updateMerchant.bind(this)))
-        this.router.delete('/merchant', expressAsyncHandler(this.deleteMerchant.bind(this)))
-        this.router.post('/site', expressAsyncHandler(this.createSite.bind(this)))
-        this.router.get('/site', expressAsyncHandler(this.getSite.bind(this)))
-        this.router.patch('/site', expressAsyncHandler(this.updateSite.bind(this)))
+        this.router.get('/', this.getSettings.bind(this))
+        this.router.delete('/', this.deleteSettings.bind(this))
+        this.router.post('/merchant', this.createMerchant.bind(this))
+        this.router.get('/merchant', this.getMerchant.bind(this))
+        this.router.patch('/merchant', this.updateMerchant.bind(this))
+        this.router.delete('/merchant', this.deleteMerchant.bind(this))
+        this.router.post('/site', this.createSite.bind(this))
+        this.router.get('/site', this.getSite.bind(this))
+        this.router.patch('/site', this.updateSite.bind(this))
     }
 
-    async getSettings({ method }: Request, res: Response) {
+    async getSettings(request: Request, response: Response, next: NextFunction) {
         try {
-            const settings = await this.settingsService.read()
+            const data = await this.settingsService.read()
 
-            this.send({
-                response: res,
-                data: settings,
-                url: this.path,
-                method,
-            })
+            this.send({ data, request, response })
         } catch (error) {
-            return this.error({
-                method,
-                error,
-                url: this.path,
-            })
+            this.error({ error, request, next })
         }
     }
 
@@ -58,153 +48,88 @@ export class SettingsController extends BaseController implements IController {
 
     }
 
-    async createMerchant({ body, method, url }: Request<{}, {}, IMerchant>, res: Response) {
+    async createMerchant(request: Request<{}, {}, IMerchant>, response: Response, next: NextFunction) {
         try {
-            const merchant = await this.merchantService.create(body)
+            const data = await this.merchantService.create(request.body)
             const settings = await this.settingsService.read()
 
-            console.log(merchant, settings)
-
             if (!settings) {
-                await this.settingsService.create({ merchant: merchant.id })
+                await this.settingsService.create({ merchant: data.id })
             } else {
-                await this.settingsService.update({ id: settings.id, merchant: merchant.id })
+                await this.settingsService.update({ id: settings.id, merchant: data.id })
             }
 
-            this.send({
-                response: res,
-                data: merchant,
-                url: this.path + url,
-                method,
-            })
+            this.send({ data, request, response })
         } catch (error) {
-            return this.error({
-                method,
-                error,
-                url: this.path + url,
-            })
+            this.error({ error, request, next })
         }
     }
 
-    async getMerchant({ method, url }: Request<{}, {}, {}, Partial<IMerchant>>, res: Response) {
+    async getMerchant(request: Request, response: Response, next: NextFunction) {
         try {
-            const merchant = await this.merchantService.read()
+            const data = await this.merchantService.read()
 
-            this.send({
-                response: res,
-                data: merchant,
-                url: this.path + url,
-                method,
-            })
-        } catch (err) {
-            return this.error({
-                error: err,
-                url: this.path + url,
-                method,
-            })
+            this.send({ data, request, response })
+        } catch (error) {
+            this.error({ error, request, next })
         }
     }
 
-    async updateMerchant({ body, method, url }: Request<{}, {}, Partial<IMerchant>>, res: Response) {
+    async updateMerchant(request: Request<{}, {}, Partial<IMerchant>>, response: Response, next: NextFunction) {
         try {
-            const { updated } = await this.merchantService.update(body)
+            const data = await this.merchantService.update(request.body)
 
-            this.send({
-                response: res,
-                data: updated,
-                url: this.path + url,
-                method,
-            })
-        } catch (err) {
-            return this.error({
-                error: err,
-                url: this.path + url,
-                method,
-            })
+            this.send({ data, request, response })
+        } catch (error) {
+            this.error({ error, request, next })
         }
     }
 
-    async deleteMerchant({ query, method, url }: Request<{}, {}, {}, { id: string }>, res: Response) {
+    async deleteMerchant(request: Request<{}, {}, {}, { id: string }>, response: Response, next: NextFunction) {
         try {
-            await this.merchantService.delete(query.id)
+            const data = await this.merchantService.delete(request.query.id)
 
-            this.send({
-                response: res,
-                data: null,
-                url: this.path + url,
-                method,
-            })
-        } catch (err) {
-            return this.error({
-                error: err,
-                url: this.path + url,
-                method,
-            })
+            this.send({ data, request, response })
+        } catch (error) {
+            this.error({ error, request, next })
         }
     }
 
-    async createSite({ body, method, url }: Request<{}, {}, ISite>, res: Response) {
+    async createSite(request: Request<{}, {}, ISite>, response: Response, next: NextFunction) {
         try {
-            const siteConfig = await this.siteService.create(body)
+            const data = await this.siteService.create(request.body)
 
             const settings = await this.settingsService.read()
 
             if (!settings) {
-                await this.settingsService.create({ site: siteConfig.id })
+                await this.settingsService.create({ site: data.id })
             } else {
-                await this.settingsService.update({ id: settings.id, site: siteConfig.id })
+                await this.settingsService.update({ id: settings.id, site: data.id })
             }
 
-            this.send({
-                response: res,
-                data: siteConfig,
-                url: this.path + url,
-                method,
-            })
-        } catch (err) {
-            return this.error({
-                error: err,
-                url: this.path + url,
-                method,
-            })
+            this.send({ data, request, response })
+        } catch (error) {
+            this.error({ error, request, next })
         }
     }
 
-    async getSite({ method, url }: Request<{}, {}, {}, Partial<ISite>>, res: Response) {
+    async getSite(request: Request, response: Response, next: NextFunction) {
         try {
-            const siteConfig = await this.siteService.read()
+            const data = await this.siteService.read()
 
-            this.send({
-                response: res,
-                data: siteConfig,
-                url: this.path + url,
-                method,
-            })
-        } catch (err) {
-            return this.error({
-                error: err,
-                url: this.path + url,
-                method,
-            })
+            this.send({ data, request, response })
+        } catch (error) {
+            this.error({ error, request, next })
         }
     }
 
-    async updateSite({ body, method, url }: Request<{}, {}, {}, Partial<ISite>>, res: Response) {
+    async updateSite(request: Request<{}, {}, Partial<ISite>>, response: Response, next: NextFunction) {
         try {
-            const { updated } = await this.siteService.update(body)
+            const data = await this.siteService.update(request.body)
 
-            this.send({
-                response: res,
-                data: updated,
-                url: this.path + url,
-                method,
-            })
-        } catch (err) {
-            return this.error({
-                error: err,
-                url: this.path + url,
-                method,
-            })
+            this.send({ data, request, response })
+        } catch (error) {
+            this.error({ error, request, next })
         }
     }
 }

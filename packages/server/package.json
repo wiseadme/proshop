@@ -1,7 +1,7 @@
 {
   "name": "@proshop/server",
   "version": "1.0.0",
-  "description": "> TODO: description",
+  "description": "Proshop ecommerce platform server",
   "author": "Anar Allakhverdiev <wiseadme@gmail.com>",
   "homepage": "https://github.com/wiseadme/proshop#readme",
   "license": "ISC",
@@ -50,7 +50,6 @@
     "custom-id": "^1.2.0",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
-    "express-async-handler": "^1.2.0",
     "express-session": "^1.17.3",
     "jsonwebtoken": "^8.5.1",
     "mkdirp": "^1.0.4",

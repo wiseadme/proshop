@@ -13,7 +13,7 @@ export interface IProductsRepository {
 
     findByCategory(params: IRequestParams<IProductQuery>): Promise<IProduct[]>
 
-    updateProduct(updates: Partial<IProduct>): Promise<{ updated: IProduct }>
+    updateProduct(updates: Partial<IProduct>): Promise<IProduct>
 
     deleteProduct(id: string): Promise<boolean>
 

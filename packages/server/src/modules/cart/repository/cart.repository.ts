@@ -47,7 +47,7 @@ export class CartRepository implements ICartRepository {
         return CartMapper.toDomain(carts[0])
     }
 
-    async update(updates: ICart): Promise<{ updated: ICart }> {
+    async update(updates: ICart): Promise<ICart> {
         validateId(updates.id)
 
         const updated = await CartModel.findByIdAndUpdate(
@@ -57,7 +57,7 @@ export class CartRepository implements ICartRepository {
         )
             .lean() as ICartMongoModel
 
-        return { updated: CartMapper.toDomain(updated) }
+        return CartMapper.toDomain(updated)
     }
 
     async delete(id) {

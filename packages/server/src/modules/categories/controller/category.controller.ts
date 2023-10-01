@@ -1,19 +1,15 @@
-import { Request, Response, Router } from 'express'
-
-import expressAsyncHandler from 'express-async-handler'
+import { NextFunction, Request, Response, Router } from 'express'
 import { inject, injectable } from 'inversify'
-
 import { BaseController } from '@common/controller/base.controller'
 
 // Types
 import { IController } from '@/types'
 import { ILogger } from '@/types/utils'
 import { ICategory } from '@proshop/types'
-import { ICategoryService } from '../types/service'
+import { ICategoryService } from '@modules/categories/types/service'
 
 // Schemes
 import { TYPES } from '@common/schemes/di-types'
-import { Document } from 'mongoose'
 
 @injectable()
 export class CategoryController extends BaseController implements IController {
@@ -29,87 +25,51 @@ export class CategoryController extends BaseController implements IController {
     }
 
     public initRoutes() {
-        this.router.get('/', expressAsyncHandler(this.getCategories.bind(this)))
-        this.router.post('/', expressAsyncHandler(this.createCategory.bind(this)))
-        this.router.patch('/', expressAsyncHandler(this.updateCategory.bind(this)))
-        this.router.delete('/', expressAsyncHandler(this.deleteCategory.bind(this)))
+        this.router.get('/', this.getCategories.bind(this))
+        this.router.post('/', this.createCategory.bind(this))
+        this.router.patch('/', this.updateCategory.bind(this))
+        this.router.delete('/', this.deleteCategory.bind(this))
     }
 
-    async createCategory({ body, method }: Request<{}, {}, ICategory>, res: Response) {
+    async createCategory(request: Request<{}, {}, ICategory>, response: Response, next: NextFunction) {
         try {
-            const category = await this.service.createCategory(body)
+            const data = await this.service.createCategory(request.body)
 
-            this.send({
-                response: res,
-                data: category,
-                url: this.path,
-                method,
-            })
-        } catch (err: any) {
-            return this.error({
-                error: err,
-                url: this.path,
-                method,
-            })
+            this.send({ data, request, response })
+        } catch (error) {
+            this.error({ error, request, next })
         }
     }
 
-    async updateCategory({ body, method }: Request<{}, {}, Partial<ICategory & Document>>, res: Response) {
+    async updateCategory(request: Request<{}, {}, Partial<ICategory>>, response: Response, next: NextFunction) {
         try {
-            const { updated } = await this.service.updateCategory(body)
+            const data = await this.service.updateCategory(request.body)
 
-            this.send({
-                response: res,
-                data: updated,
-                url: this.path,
-                method,
-            })
-        } catch (err: any) {
-            return this.error({
-                error: err,
-                url: this.path,
-                method,
-            })
+            this.send({ data, request, response })
+        } catch (error) {
+            this.error({ error, request, next })
         }
     }
 
-    async getCategories({ query, method }: Request<{}, {}, {}, Partial<ICategory>>, res: Response) {
+    async getCategories(request: Request<{}, {}, {}, Partial<ICategory>>, response: Response, next: NextFunction) {
         try {
-            const categories = await this.service.getCategories(query)
+            const data = await this.service.getCategories(request.query)
 
-            this.send({
-                response: res,
-                data: categories,
-                url: this.path,
-                method,
-            })
-        } catch (err: any) {
-            return this.error({
-                error: err,
-                url: this.path,
-                method,
-            })
+            // @ts-ignore
+            this.send({ data, request, response })
+        } catch (error) {
+            // @ts-ignore
+            this.error({ error, request, next })
         }
     }
 
-    async deleteCategory({ query, method }: Request, res: Response) {
+    async deleteCategory(request: Request<{}, {}, {}, {id: string}>, response: Response, next: NextFunction) {
         try {
-            await this.service.deleteCategory(query.id as string)
+            const data = await this.service.deleteCategory(request.query.id)
 
-            this.send({
-                response: res,
-                data: null,
-                url: this.path,
-                method,
-            })
-        } catch (err: any) {
-            return this.error({
-                error: err,
-                url: this.path,
-                method,
-            })
+            this.send({ data, request, response })
+        } catch (error) {
+            this.error({ error, request, next })
         }
     }
 }
-
-export default CategoryController

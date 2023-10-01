@@ -1,5 +1,4 @@
-import { Request, Response, Router } from 'express'
-import expressAsyncHandler from 'express-async-handler'
+import { NextFunction, Request, Response, Router } from 'express'
 import { inject, injectable } from 'inversify'
 import { BaseController } from '@common/controller/base.controller'
 import { IController } from '@/types'
@@ -12,153 +11,90 @@ export class UserController extends BaseController implements IController {
     public router: Router = Router()
 
     constructor(
-        @inject(TYPES.SERVICES.IUserService) private service: IUserService,
+      @inject(TYPES.SERVICES.IUserService) private service: IUserService,
     ) {
         super()
         this.initRoutes()
     }
 
     initRoutes() {
-        this.router.post('/login', expressAsyncHandler(this.login.bind(this)))
-        this.router.get('/logout', expressAsyncHandler(this.logout.bind(this)))
-        this.router.post('/create', expressAsyncHandler(this.create.bind(this)))
-        this.router.get('/whoami', expressAsyncHandler(this.whoami.bind(this)))
-        this.router.get('/refresh', expressAsyncHandler(this.refresh.bind(this)))
-        this.router.get('/', expressAsyncHandler(this.getUsers.bind(this)))
-        this.router.delete('/', expressAsyncHandler(this.deleteUser.bind(this)))
+        this.router.post('/login', this.login.bind(this))
+        this.router.get('/logout', this.logout.bind(this))
+        this.router.post('/create', this.create.bind(this))
+        this.router.get('/whoami', this.whoami.bind(this))
+        this.router.get('/refresh', this.refresh.bind(this))
+        this.router.get('/', this.getUsers.bind(this))
+        this.router.delete('/', this.deleteUser.bind(this))
     }
 
-    async login({ body, method, url }: Request, res: Response) {
+    async login(request: Request, response: Response, next: NextFunction) {
         try {
-            const data = await this.service.login(body, res)
+            const data = await this.service.login(request.body, response)
 
-            this.send({
-                response: res,
-                data,
-                url: this.path + url,
-                method,
-            })
+            this.send({ data, response, request })
         } catch (error) {
-            return this.error({
-                method,
-                error,
-                url: this.path + url,
-            })
+            this.error({ request, error, next })
         }
     }
 
-    async logout({ cookies, method, url }: Request, res: Response) {
+    async logout(request: Request, response: Response, next: NextFunction) {
         try {
-            const data = await this.service.logout(cookies, res)
+            const data = await this.service.logout(request.cookies, response)
 
-            this.send({
-                response: res,
-                data,
-                method,
-                url: this.path + url,
-            })
+            this.send({ data, request, response })
         } catch (error) {
-            return this.error({
-                method,
-                error,
-                url: this.path + url,
-            })
+            this.error({ error, request, next })
         }
     }
 
-    async create({ body, method, url, cookies }: Request, res: Response) {
+    async create(request: Request, response: Response, next: NextFunction) {
         try {
-            const data = await this.service.create(body)
+            const data = await this.service.create(request.body)
 
-            this.send({
-                response: res,
-                data,
-                method,
-                url: this.path + url,
-            })
+            this.send({ data, response, request })
         } catch (error) {
-            return this.error({
-                method,
-                error,
-                url: this.path + url,
-            })
+            this.error({ error, request, next })
         }
     }
 
-    async getUsers({ body, method, url, cookies }: Request, res: Response) {
+    async getUsers(request: Request, response: Response, next: NextFunction) {
         try {
-            const data = await this.service.getUsers(body)
+            const data = await this.service.getUsers(request.body)
 
-            this.send({
-                response: res,
-                data,
-                method,
-                url: this.path + url,
-            })
+            this.send({ data, request, response })
         } catch (error) {
-            return this.error({
-                method,
-                error,
-                url: this.path + url,
-            })
+            this.error({ error, request, next })
         }
     }
 
-    async whoami({ method, url, cookies }: Request, res: Response) {
+    async whoami(request: Request, response: Response, next: NextFunction) {
         try {
-            const data = await this.service.whoami(cookies)
+            const data = await this.service.whoami(request.cookies)
 
-            this.send({
-                response: res,
-                data,
-                method,
-                url: this.path + url,
-            })
+            this.send({ data, request, response })
         } catch (error) {
-            return this.error({
-                method,
-                error,
-                url: this.path + url,
-            })
+            this.error({ error, request, next })
         }
     }
 
-    async refresh({ method, url, cookies }: Request, res: Response) {
+    async refresh(request: Request, response: Response, next: NextFunction) {
         try {
-            const data = await this.service.refresh(cookies, res)
+            const data = await this.service.refresh(request.cookies, response)
 
-            this.send({
-                response: res,
-                data,
-                method,
-                url: this.path + url,
-            })
+            this.send({ data, request, response })
 
         } catch (error) {
-            return this.error({
-                method,
-                error,
-                url: this.path + url,
-            })
+            this.error({ error, request, next })
         }
     }
 
-    async deleteUser({ query, method, url }: Request<{}, {}, {}, { id: string }>, res: Response) {
+    async deleteUser(request: Request<{}, {}, {}, { id: string }>, response: Response, next: NextFunction) {
         try {
-            const data = await this.service.deleteUser(query.id)
+            const data = await this.service.deleteUser(request.query.id)
 
-            this.send({
-                response: res,
-                data,
-                method,
-                url: this.path + url,
-            })
+            this.send({ data, request, response })
         } catch (error) {
-            return this.error({
-                method,
-                error,
-                url: this.path + url,
-            })
+            this.error({ error, request, next })
         }
     }
 }

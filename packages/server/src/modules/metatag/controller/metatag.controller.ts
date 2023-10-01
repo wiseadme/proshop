@@ -1,10 +1,8 @@
-import expressAsyncHandler from 'express-async-handler'
 import { BaseController } from '@common/controller/base.controller'
-import { Request, Response, Router } from 'express'
+import { NextFunction, Request, Response, Router } from 'express'
 import { inject, injectable } from 'inversify'
 import { TYPES } from '@common/schemes/di-types'
 // Types
-import { Document } from 'mongoose'
 import { ILogger } from '@/types/utils'
 import { IController } from '@/types'
 import { IMetaTag } from '@proshop/types'
@@ -23,84 +21,51 @@ export class MetaTagController extends BaseController implements IController {
     }
 
     initRoutes() {
-        this.router.post('/', expressAsyncHandler(this.createMetaTag.bind(this)))
-        this.router.get('/', expressAsyncHandler(this.getMetaTags.bind(this)))
-        this.router.patch('/', expressAsyncHandler(this.updateMetaTag.bind(this)))
-        this.router.delete('/', expressAsyncHandler(this.deleteMetaTag.bind(this)))
+        this.router.post('/', this.createMetaTag.bind(this))
+        this.router.get('/', this.getMetaTags.bind(this))
+        this.router.patch('/', this.updateMetaTag.bind(this))
+        this.router.delete('/', this.deleteMetaTag.bind(this))
     }
 
-    async createMetaTag({ body, method }: Request<{}, {}, IMetaTag>, res: Response) {
+    async createMetaTag(request: Request<{}, {}, IMetaTag>, response: Response, next: NextFunction) {
         try {
-            const order = await this.service.create(body)
+            const data = await this.service.create(request.body)
 
-            this.send({
-                response: res,
-                data: order,
-                url: this.path,
-                method,
-            })
-        } catch (err) {
-            return this.error({
-                error: err,
-                url: this.path,
-                method,
-            })
+            this.send({ data, request, response })
+        } catch (error) {
+            this.error({ error, request, next })
         }
     }
 
-    async getMetaTags({ query, method }: Request<{}, {}, {}, Partial<IMetaTag>>, res: Response) {
+    async getMetaTags(request: Request<{}, {}, {}, Partial<IMetaTag>>, response: Response, next: NextFunction) {
         try {
-            const orders = await this.service.read(query)
+            const data = await this.service.read(request.query)
 
-            this.send({
-                response: res,
-                data: orders,
-                url: this.path,
-                method,
-            })
-        } catch (err) {
-            return this.error({
-                error: err,
-                url: this.path,
-                method,
-            })
+            // @ts-ignore
+            this.send({ data, request, response })
+        } catch (error) {
+            // @ts-ignore
+            this.error({ error, request, next })
         }
     }
 
-    async updateMetaTag({ body, method }: Request<{}, {}, IMetaTag & Document>, res: Response) {
+    async updateMetaTag(request: Request<{}, {}, IMetaTag>, response: Response, next: NextFunction) {
         try {
-            const { updated } = await this.service.update(body)
+            const data = await this.service.update(request.body)
 
-            this.send({
-                response: res,
-                data: updated,
-                url: this.path,
-                method,
-            })
-        } catch (err) {
-            return this.error({
-                error: err,
-                url: this.path,
-                method,
-            })
+            this.send({ data, request, response })
+        } catch (error) {
+            this.error({ error, request, next })
         }
     }
 
-    async deleteMetaTag({ query, method }: Request<{}, {}, {}, { id: string }>, res: Response) {
+    async deleteMetaTag(request: Request<{}, {}, {}, { id: string }>, response: Response, next: NextFunction) {
         try {
-            await this.service.delete(query.id)
-            this.send({
-                response: res,
-                data: null,
-                url: this.path,
-                method,
-            })
-        } catch (err: any) {
-            return this.error({
-                error: err,
-                url: this.path,
-                method,
-            })
+            const data = await this.service.delete(request.query.id)
+
+            this.send({ data, request, response })
+        } catch (error) {
+            this.error({ error, request, next })
         }
     }
 }
