@@ -1,6 +1,6 @@
 import { Response } from 'express'
 import { Document } from 'mongoose'
-import { inject, injectable } from 'inversify'
+import { id, inject, injectable } from 'inversify'
 import { TYPES } from '@common/schemes/di-types'
 import { Customer } from '@modules/customer/entity/customer.entity'
 // Types
@@ -86,7 +86,7 @@ export class CustomerService extends CustomerHelpers implements ICustomerService
         return this.repository.read({})
     }
 
-    async updateCustomer(updates: Partial<ICustomer>): Promise<{ updated: ICustomer }> {
+    async updateCustomer(updates: Partial<ICustomer>): Promise<ICustomer> {
         return await this.repository.update(updates)
     }
 

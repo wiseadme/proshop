@@ -1,5 +1,6 @@
 import { Document } from 'mongoose'
 import { ICart } from '@proshop/types'
+import { id } from 'inversify'
 
 export interface ICartRepository {
     create(cart: ICart): Promise<ICart>
@@ -8,7 +9,7 @@ export interface ICartRepository {
 
     findByOwnerId(id: string): Promise<ICart>
 
-    update(updates: Partial<ICart>): Promise<{ updated: ICart }>
+    update(updates: Partial<ICart>): Promise<ICart>
 
     delete(id: string): Promise<boolean>
 }

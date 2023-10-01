@@ -30,5 +30,5 @@ class Repository implements IItemsRepository<IOrder> {
 
 export const useOrderRepository = () => new Repository({
     client: rest,
-    path: '/api/v1/order',
+    path: '/api/v1/orders',
 })

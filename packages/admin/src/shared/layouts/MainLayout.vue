@@ -15,6 +15,7 @@
     // Types
     import { IOrder, Maybe } from '@proshop/types'
     import { useAuthService } from '@shared/composables/use-auth-service'
+    import { RouteNames } from '@modules/orders/enums/route-names'
 
     const router = useRouter()
     const { newOrders, getNewOrders, getOrders } = useOrdersService()
@@ -33,7 +34,7 @@
     onBeforeUnmount(() => stopPolling())
 
     const onClick = () => {
-        remove(newOrdersNotifyId)
+        remove(newOrdersNotifyId!)
 
         newOrdersNotifyId = null
         notSeenCount = 0
@@ -42,7 +43,7 @@
             getOrders()
         }
 
-        router.replace({ name: 'order-table' })
+        router.replace({ name: RouteNames.ORDERS_TABLE })
     }
 
     watch(newOrders!, (newOrders: IOrder[]) => {

@@ -1,17 +1,20 @@
 import { useProductRepository } from '@modules/products/repository'
 import {
     IAttribute,
+    IMetaTag,
+    IOption,
     IProduct,
     IProductQuery,
     IRequestParams,
+    IVariant,
 } from '@proshop/types'
 
-const productRepository = useProductRepository()
+const repository = useProductRepository()
 
 export const actions = {
-    async create(product: IProduct) {
+    async createProduct(product: IProduct) {
         try {
-            const { data } = await productRepository.create(product)
+            const { data } = await repository.createProduct(product)
 
             this.$patch((state) => {
                 state.products.push(data.data)
@@ -23,9 +26,9 @@ export const actions = {
         }
     },
 
-    async read(params: IRequestParams<IProductQuery>) {
+    async getProducts(params: IRequestParams<IProductQuery>) {
         try {
-            const { data } = await productRepository.read(params)
+            const { data } = await repository.getProducts(params)
 
             this.$patch(state => {
                 state.products = data.data?.items
@@ -38,16 +41,12 @@ export const actions = {
         }
     },
 
-    async update(updates) {
+    async updateProduct(updates) {
         try {
-            const { data } = await productRepository.update(updates)
+            const { data } = await repository.updateProduct(updates)
 
-            this.products = Array.from(this.products, (pr: IProduct) => {
-                if (pr.id === updates.id) {
-                    return data.data
-                }
-
-                return pr
+            this.$patch((state) => {
+                state.products = state.products.map(it => it.id === updates.id ? data.data : it)
             })
 
             return data.data
@@ -56,9 +55,9 @@ export const actions = {
         }
     },
 
-    async delete(product: IProduct) {
+    async deleteProduct(product: IProduct) {
         try {
-            const response = await productRepository.delete(product.id)
+            const response = await repository.deleteProduct(product.id)
             this.products = this.products.filter(it => it.id !== product.id)
             this.totalLength -= 1
 
@@ -70,14 +69,10 @@ export const actions = {
 
     async addAttribute(params: { productId: string, attribute: IAttribute }) {
         try {
-            const { data } = await productRepository.addAttribute(params)
+            const { data } = await repository.addAttribute(params)
 
             this.$patch((state) => {
-                state.products = state.products.map(it => {
-                    if (it.id === params.productId) return data.data
-
-                    return it
-                })
+                state.products = state.products.map(it => it.id === params.productId ? data.data : it)
             })
 
             return data.data
@@ -88,14 +83,108 @@ export const actions = {
 
     async deleteAttribute(params: { productId: string, attributeId: string }) {
         try {
-            const { data } = await productRepository.deleteAttribute(params)
+            const { data } = await repository.deleteAttribute(params)
 
             this.$patch((state) => {
-                state.products = state.products.map(it => {
-                    if (it.id === params.productId) return data.data
+                state.products = state.products.map(it => it.id === params.productId ? data.data : it)
+            })
 
-                    return it
-                })
+            return data.data
+        } catch (err) {
+            return Promise.reject(err)
+        }
+    },
+
+    async addMetaTag(params: { productId: string, metaTag: IMetaTag }) {
+        try {
+            const { data } = await repository.addMetaTag(params)
+
+            this.$patch((state) => {
+                state.products = state.products.map(it => it.id === params.productId ? data.data : it)
+            })
+
+            return data.data
+        } catch (err) {
+            return Promise.reject(err)
+        }
+    },
+
+    async updateMetaTags(params: { productId: string, metaTags: IMetaTag [] }) {
+        try {
+            const { data } = await repository.updateMetaTags(params)
+
+            this.$patch((state) => {
+                state.products = state.products.map(it => it.id === params.productId ? data.data : it)
+            })
+
+            return data.data
+        } catch (err) {
+            return Promise.reject(err)
+        }
+    },
+
+    async deleteMetaTag(params: { productId: string, metaTagId: string }) {
+        try {
+            const { data } = await repository.deleteMetaTag(params)
+
+            this.$patch((state) => {
+                state.products = state.products.map(it => it.id === params.productId ? data.data : it)
+            })
+
+            return data.data
+        } catch (err) {
+            return Promise.reject(err)
+        }
+    },
+
+    async addVariant(variant: IVariant) {
+        try {
+            const { data } = await repository.addVariant(variant)
+
+            this.$patch((state) => {
+                state.products = state.products.map(it => it.id === variant.ownerId ? data.data : it)
+            })
+
+            return data.data
+        } catch (err) {
+            return Promise.reject(err)
+        }
+    },
+
+    async deleteVariant(variant: IVariant) {
+        try {
+            const { data } = await repository.deleteVariant(variant)
+
+            this.$patch((state) => {
+                state.products = state.products.map(it => it.id === variant.ownerId ? data.data : it)
+            })
+
+            return data.data
+        } catch (err) {
+            return Promise.reject(err)
+        }
+    },
+
+    async addVariantOption(option: IOption) {
+        try {
+            const { data } = await repository.addVariantOption(option)
+
+            this.$patch((state) => {
+                state.products = state.products.map(it => it.id === option.ownerId ? data.data : it)
+            })
+
+            return data.data
+        } catch (err) {
+            return Promise.reject(err)
+        }
+    },
+
+    async deleteVariantOption(option: IOption) {
+        try {
+            const { data } = await repository.deleteVariantOption(option)
+
+            this.$patch((state) => {
+                state.products = state.products.map(it => it.id === option.ownerId ? data.data : it)
             })
 
             return data.data

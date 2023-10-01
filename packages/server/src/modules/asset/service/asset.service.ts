@@ -1,3 +1,4 @@
+import { Request, Response } from 'express'
 import { inject, injectable } from 'inversify'
 import { TYPES } from '@common/schemes/di-types'
 // Types
@@ -10,6 +11,7 @@ import {
     DELETE_OPTION_EVENT,
     UPDATE_ASSETS_EVENT,
 } from '@common/constants/events'
+import { IAsset } from '@proshop/types'
 
 @injectable()
 export class AssetService implements IAssetsService {
@@ -20,19 +22,23 @@ export class AssetService implements IAssetsService {
         this.addEventListeners()
     }
 
-    async saveFile(req, res) {
+    async saveFile(req: Request, res: Response) {
         return await this.repository.save(req, res)
     }
 
-    async updateFile(updates) {
+    async updateFile(updates: Partial<IAsset>) {
         return await this.repository.update(updates)
     }
 
-    async deleteFile(asset) {
+    async updateMany(updates: Partial<IAsset>[]) {
+        return await this.repository.updateMany(updates)
+    }
+
+    async deleteFile(asset: IAsset) {
         return await this.repository.deleteOne(asset)
     }
 
-    async deleteFiles(id) {
+    async deleteFiles(id: string) {
         return await this.repository.deleteAll(id)
     }
 

@@ -1,5 +1,5 @@
 import { Document } from 'mongoose'
-import { inject, injectable } from 'inversify'
+import { id, inject, injectable } from 'inversify'
 import { TYPES } from '@common/schemes/di-types'
 // Types
 import { ILogger } from '@/types/utils'
@@ -23,18 +23,18 @@ export class AttributeService implements IAttributeService {
         return this.repository.read(id)
     }
 
-    async update(updates: Partial<IAttribute>): Promise<{ updated: IAttribute | IAttribute[] }> {
+    async update(updates: Partial<IAttribute>): Promise<IAttribute | IAttribute[]> {
         let data: any
 
         if (Array.isArray(updates)) {
             data = []
 
             for await (const atr of updates) {
-                const { updated } = await this.repository.update(atr)
-                data.push(updated)
+                const attr = await this.repository.update(atr)
+                data.push(attr)
             }
 
-            return { updated: data }
+            return data
         }
 
         return await this.repository.update(updates)

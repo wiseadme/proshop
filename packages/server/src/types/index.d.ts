@@ -1,4 +1,4 @@
-import { Response, Router } from 'express'
+import { NextFunction, Request, Response, Router } from 'express'
 
 export enum Method {
     GET = 'GET',
@@ -9,16 +9,15 @@ export enum Method {
 
 export type SendOptions = {
     response: Response,
-    method: string
+    request: Request
     data: any
-    url: string
 }
 
 export type ErrorOptions = {
-    method: string
+    request: Request
     error: any
-    url: string
     status?: number
+    next?: NextFunction
 }
 
 export interface IController {

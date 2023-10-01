@@ -1,5 +1,6 @@
 import { ISEOType } from './common'
 import { Maybe } from './utils'
+import { IAsset } from './asset'
 
 export interface ICategoryConditions {
     visible: boolean
@@ -10,7 +11,8 @@ export interface ICategory {
     id: string
     title: string
     image: Maybe<string>
-    seo?: ISEOType
+    assets: IAsset[] | string[]
+    seo: ISEOType
     url: string
     parentId: Maybe<string>
     order?: number

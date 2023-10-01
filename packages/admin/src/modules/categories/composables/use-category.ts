@@ -1,94 +1,86 @@
-import { ref, unref } from 'vue'
+import {
+    computed,
+    ref,
+    unref,
+    watch,
+} from 'vue'
 import { createSharedComposable } from '@shared/features/create-shared-composable'
 import { useCategoriesService } from '@modules/categories/composables/use-categories-service'
-import { useCategoryActionsModal } from '@modules/categories/composables/use-category-actions-modal'
 import { Category } from '@modules/categories/model/category.model'
-import { ICategory } from '@proshop/types'
-import { clone, getDifferences } from '@shared/helpers'
+import { IAsset, ICategory } from '@proshop/types'
+import { clone } from '@shared/helpers'
+import { useNotifications } from '@shared/components/VNotifications/use-notifications'
+import { SAVING_ERROR } from '@shared/constants/notifications'
+import {
+    CATEGORY_DELETED,
+    CATEGORY_IMAGE_DELETED,
+    CATEGORY_IMAGE_SAVED,
+} from '@modules/categories/constants/notifications'
 
 export const useCategory = createSharedComposable(() => {
     const {
         category,
         setAsCurrent,
         deleteCategory,
-        createCategory,
-        updateCategory,
         uploadCategoryImage,
         deleteCategoryImage,
     } = useCategoriesService()
 
-    const {
-        closeActionsModal,
-        openActionsModal,
-    } = useCategoryActionsModal()
+    const { notify } = useNotifications()
 
     const model = ref<ICategory>(Category.create())
-    const isEditMode = ref<boolean>(false)
-    const hasChanges = ref<boolean>(false)
 
-    const setEditModeState = (state) => isEditMode.value = state
+    const isEditMode = computed(() => Boolean(unref(model).id))
 
-    const onEdit = (row) => {
-        model.value = Category.create(clone(row))
-        setAsCurrent(row)
-        setEditModeState(true)
-        openActionsModal()
+    const setCategoryModel = (value: Maybe<ICategory>) => {
+        model.value = value ? Category.create(clone(value)) : Category.create()
     }
 
-    const onUploadCategoryImage = async (file) => {
-        await uploadCategoryImage(file)
-        unref(model).image = unref(category)!.image
+    const onUploadCategoryImage = async (file: File) => {
+        try {
+            await uploadCategoryImage(file)
+            unref(model).image = unref(category)!.image
+
+            notify(CATEGORY_IMAGE_SAVED)
+        } catch (err) {
+            notify(SAVING_ERROR)
+        }
     }
 
-    const onDeleteCategoryImage = async (url) => {
-        await deleteCategoryImage(url)
+    const onDeleteCategoryImage = async (asset: IAsset) => {
+        try {
+            await deleteCategoryImage(asset)
 
-        unref(model)!.image = null
+            notify(CATEGORY_IMAGE_DELETED)
+        } catch {
+            notify(SAVING_ERROR)
+        }
     }
 
-    const onDeleteCategory = (category: ICategory) => deleteCategory(category)
+    const onDeleteCategory = async (category: ICategory) => {
+        try {
+            await deleteCategory(category.id)
+
+            notify(CATEGORY_DELETED)
+        } catch {
+            notify(SAVING_ERROR)
+        }
+    }
 
     const onAddNew = () => {
-        openActionsModal()
-        setEditModeState(false)
-
         setAsCurrent(null)
         model.value = Category.create()
     }
 
-    const onCreateCategory = async () => {
-        await createCategory(unref(model))
-
-        model.value = Category.create()
-        closeActionsModal()
-    }
-
-    const onUpdateCategory = async () => {
-        const updates = getDifferences(
-            unref(model),
-            unref(category),
-        ) as Maybe<Partial<ICategory>>
-
-        if (!updates) return
-
-        updates!.id = unref(category)!.id
-
-        await updateCategory(updates!)
-
-        closeActionsModal()
-        setEditModeState(false)
-    }
+    watch(category, setCategoryModel, { immediate: true })
 
     return {
         model,
         isEditMode,
-        hasChanges,
-        onEdit,
         onAddNew,
-        onCreateCategory,
-        onUpdateCategory,
         onUploadCategoryImage,
         onDeleteCategoryImage,
         onDeleteCategory,
+        setCategoryModel,
     }
 })

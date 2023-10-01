@@ -7,23 +7,23 @@ import { ErrorOptions, SendOptions } from '@/types'
 export abstract class BaseController implements IBaseController {
     static logger = new LoggerService()
 
-    send({ response, data, method, url }: SendOptions) {
-        BaseController.logger.success('response:', method, 200, url, 'success')
+    send({ request, response, data }: SendOptions) {
+        BaseController.logger.success('response:', request.method, 200, request.originalUrl, 'success')
         response.status(200).json({
             ok: true,
             data,
         })
     }
 
-    error({ method, error, url, status = 500 }: ErrorOptions) {
+    error({ request, error, status = 500, next }: ErrorOptions) {
         BaseController.logger.error(
             error?.status || status,
-            method,
-            url,
+            request.method,
+            request.originalUrl,
             error?.message || error,
         )
 
-        return Promise.reject({
+        next?.({
             ok: false,
             status: error?.status || 500,
             message: error?.message || error,

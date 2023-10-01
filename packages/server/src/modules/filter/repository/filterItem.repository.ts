@@ -36,7 +36,7 @@ export class FilterItemRepository implements IFilterItemRepository {
         return filters.map(filter => FilterItemMapper.toDomain(filter))
     }
 
-    async update(updates: Partial<IFilterItem>): Promise<{ updated: IFilterItem }> {
+    async update(updates: Partial<IFilterItem>): Promise<IFilterItem> {
         validateId(updates.id)
 
         const option = await FilterItemModel.findByIdAndUpdate(
@@ -46,7 +46,7 @@ export class FilterItemRepository implements IFilterItemRepository {
         )
             .lean() as IFilterItemMongoModel
 
-        return { updated: FilterItemMapper.toDomain(option) }
+        return FilterItemMapper.toDomain(option)
     }
 
     async delete(id) {

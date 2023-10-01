@@ -125,6 +125,7 @@
             >
                 <template v-if="variants">
                     <items-list
+                        v-model="model"
                         :items="variants"
                         @delete="onDelete"
                         @edit="onEdit"

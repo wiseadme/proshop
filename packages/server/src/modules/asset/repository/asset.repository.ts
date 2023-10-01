@@ -14,7 +14,7 @@ import { IAssetsRepository } from '../types/repository'
 import { AssetsResponse } from '../types/params'
 import { IFileLoaderMiddleware } from '@/types/middlewares'
 
-import {AssetMapper} from '@modules/asset/mappers/asset.mapper'
+import { AssetMapper } from '@modules/asset/mappers/asset.mapper'
 
 @injectable()
 export class AssetRepository implements IAssetsRepository {
@@ -27,20 +27,16 @@ export class AssetRepository implements IAssetsRepository {
         return new Promise((resolve, reject) => {
             const upload = this.fileLoader.loadSingle('image')
             const ownerId = req.query.id as string
-            const ownerDir = ownerId.slice(-4)
+            const ownerDir = ownerId.slice(-10)
 
             const assetId = new mongoose.Types.ObjectId()
-
             const { fileName } = req.query
-
             const url = `/uploads/${ownerDir}/${assetId.toString()}|${fileName}`
 
             req.query.assetId = assetId.toString()
             req.query.ownerDir = ownerDir
 
-            upload(req, res, (err, filename) => {
-                console.log(err, filename)
-
+            upload(req, res, (err) => {
                 if (err) {
                     return reject(err)
                 }
@@ -57,7 +53,7 @@ export class AssetRepository implements IAssetsRepository {
         })
     }
 
-    async update(updates) {
+    async update(updates: Partial<IAsset>) {
         validateId(updates.id)
 
         const updated = await AssetModel.findByIdAndUpdate(
@@ -67,20 +63,32 @@ export class AssetRepository implements IAssetsRepository {
         )
             .lean() as IAssetMongoModel
 
-        return { updated: AssetMapper.toDomain(updated) }
+        return AssetMapper.toDomain(updated)
+    }
+
+    async updateMany(assets: Partial<IAsset>[]) {
+        const asset = assets[0]
+
+        validateId(asset.id)
+
+        for await (const asset of assets) {
+            await AssetModel.findByIdAndUpdate({ _id: asset.id }, asset)
+        }
+
+        return true
     }
 
     async deleteOne(asset: IAsset) {
         validateId(asset.id)
 
         const assetData = await AssetModel.findOne({ _id: asset.id })
-        const ownerDir = asset.ownerId.slice(-4)
+        const ownerDir = asset.ownerId.slice(-10)
         const dirPath = `${config.uploadsDir}/${ownerDir}`
 
         await assetData!.deleteOne()
 
         await fs
-            .unlink(`${dirPath}/${asset.id}|${asset.fileName}`)
+            .unlink(`${dirPath}/${assetData!.id}|${assetData!.fileName}`)
             .catch(err => console.log(err))
 
         const dir = await fs.readdir(dirPath)
@@ -92,12 +100,12 @@ export class AssetRepository implements IAssetsRepository {
         return true
     }
 
-    async deleteAll(id) {
+    async deleteAll(id: string) {
         try {
             validateId(id)
 
             const assets = await AssetModel.find({ ownerId: id }) as HydratedDocument<IAsset>[]
-            const ownerDir = id.slice(-4)
+            const ownerDir = id.slice(-10)
             const dirPath = `${config.uploadsDir}/${ownerDir}`
 
             for await (const data of assets) {

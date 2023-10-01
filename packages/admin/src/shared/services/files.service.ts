@@ -1,32 +1,38 @@
 import { useFilesStore } from '@shared/store/files'
+import { IAsset } from '@proshop/types'
+import { Store } from 'nervue'
 
 export class Service {
-  private _store: any
+    private _store: any
 
-  constructor(store){
-      this._store = store
-  }
+    constructor(store: Store) {
+        this._store = store
+    }
 
-  createFormData(file){
-      const formData = new FormData()
-      const fileName = file.name
+    createFormData(file: File) {
+        const formData = new FormData()
+        const fileName = file.name
 
-      formData.append('image', file)
+        formData.append('image', file)
 
-      return { formData, fileName }
-  }
+        return { formData, fileName }
+    }
 
-  async uploadFile({ ownerId, fileName, formData }){
-      return await this._store.uploadFile({ ownerId, fileName, formData })
-  }
+    uploadFile({ ownerId, fileName, formData }) {
+        return this._store.uploadFile({ ownerId, fileName, formData })
+    }
 
-  async updateFile(updates){
-      return this._store.update(updates)
-  }
+    async updateFile(updates: Partial<IAsset>): Promise<IAsset> {
+        return this._store.update(updates)
+    }
 
-  async deleteFile(asset){
-      return await this._store.deleteFile(asset)
-  }
+    async updateMany(assets: Partial<IAsset>[]) {
+        return this._store.updateMany(assets)
+    }
+
+    async deleteFile(asset: Partial<IAsset>) {
+        return this._store.deleteFile(asset)
+    }
 }
 
 export const useFilesService = () => new Service(useFilesStore())

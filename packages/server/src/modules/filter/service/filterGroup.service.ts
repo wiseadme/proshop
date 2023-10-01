@@ -1,4 +1,4 @@
-import { inject, injectable } from 'inversify'
+import { id, inject, injectable } from 'inversify'
 import { TYPES } from '@common/schemes/di-types'
 import {FilterGroup} from '@modules/filter/entity/filterGroup.entity'
 // Types
@@ -23,7 +23,7 @@ export class FilterGroupService implements IFilterGroupService {
         return this.repository.read(id)
     }
 
-    update(updates: Partial<IFilterGroup>): Promise<{ updated: IFilterGroup }> {
+    update(updates: Partial<IFilterGroup>): Promise<IFilterGroup> {
         return this.repository.update(updates)
     }
 

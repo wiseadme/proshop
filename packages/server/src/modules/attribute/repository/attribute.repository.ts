@@ -1,4 +1,4 @@
-import mongoose, { Document } from 'mongoose'
+import mongoose from 'mongoose'
 import { inject, injectable } from 'inversify'
 import { TYPES } from '@common/schemes/di-types'
 import { AttributeModel } from '@modules/attribute/model/attribute.model'
@@ -31,9 +31,7 @@ export class AttributeRepository implements IAttributeRepository {
         return attrs.map(attribute => AttributeMapper.toDomain(attribute))
     }
 
-    async update(updates: Partial<IAttribute>): Promise<{
-        updated: IAttribute
-    }> {
+    async update(updates: Partial<IAttribute>): Promise<IAttribute | IAttribute[]> {
         const result = { updated: null } as any
 
         if (updates.id) {
@@ -64,10 +62,10 @@ export class AttributeRepository implements IAttributeRepository {
             }
         }
 
-        return result
+        return result.updated
     }
 
-    async delete(id) {
+    async delete(id: string) {
         return !!await AttributeModel.findByIdAndDelete(id)
     }
 }

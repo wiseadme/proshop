@@ -1,4 +1,9 @@
-import { ref, watch } from 'vue'
+import {
+    computed,
+    ref,
+    unref,
+    watch,
+} from 'vue'
 import { useProductsService } from '@modules/products/composables/use-products-service'
 import { createSharedComposable } from '@shared/features/create-shared-composable'
 import { Product } from '@modules/products/model/product.model'
@@ -10,9 +15,19 @@ export const useProductModel = createSharedComposable(() => {
 
     const model = ref<IProduct>(Product.create())
 
-    const setProductModel = (value?: IProduct) => {
-        model.value = value ? Product.create(clone(value)) : Product.create()
+    const isEditMode = computed(() => Boolean(unref(model).id))
+
+    const sortOrderedItems = () => {
+        unref(model).seo.metatags.sort((a, b) => a.order - b.order)
+        unref(model).attributes.sort((a, b) => a.order - b.order)
     }
+
+    const setProductModel = (value: Maybe<IProduct>) => {
+        model.value = value ? Product.create(clone(value)) : Product.create()
+        sortOrderedItems()
+    }
+
+    const modelMetaTags = computed(() => unref(model).seo.metatags)
 
     watch(product, (newProduct) => {
         setProductModel(newProduct!)
@@ -20,6 +35,8 @@ export const useProductModel = createSharedComposable(() => {
 
     return {
         model,
+        modelMetaTags,
+        isEditMode,
         setProductModel,
     }
 })

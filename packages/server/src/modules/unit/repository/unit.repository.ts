@@ -43,7 +43,7 @@ export class UnitRepository implements IUnitRepository {
             { new: true },
         ).lean() as IUnitMongoModel
 
-        return { updated: UnitsMapper.toDomain(updated) }
+        return UnitsMapper.toDomain(updated)
     }
 
     async delete(id): Promise<boolean> {

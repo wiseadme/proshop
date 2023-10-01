@@ -34,7 +34,7 @@ export interface IProduct {
     seo: ISEOType
     unit: Maybe<IUnit>
     categories: ICategory[] | string[]
-    assets: IAsset[]
+    assets: IAsset[] | string[]
     variants: IVariant[]
     attributes: IAttribute[]
     conditions: IProductConditions

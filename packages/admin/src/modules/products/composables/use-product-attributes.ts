@@ -47,9 +47,7 @@ export const useProductAttributes = createSharedComposable(() => {
         currentEditableAttribute.value = null
     }
 
-    const onRemoveAttribute = async (newIndex: number) => {
-        const attribute = unref(availableAttributes)[newIndex]
-
+    const onRemoveAttribute = async (attribute: IAttribute) => {
         try {
             await deleteProductAttribute(attribute.id)
 
@@ -60,6 +58,7 @@ export const useProductAttributes = createSharedComposable(() => {
     }
 
     const onAddAttribute = async (attribute: IAttribute) => {
+        console.log(attribute)
         try {
             await addProductAttribute(attribute)
 

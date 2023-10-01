@@ -18,7 +18,8 @@ export const useUnit = () => {
 
         validate()
             .then(() => fn(unref(model)))
-            .catch(() => setLoadingState(false))
+            .catch((err) => console.log(err))
+            .finally(() => setLoadingState(false))
     }
     const clearUnitModel = () => {
         model.value = Unit.create()
@@ -41,6 +42,6 @@ export const useUnit = () => {
         onSaveUnit,
         onEditUnit,
         clearUnitModel,
-        onDeleteUnit
+        onDeleteUnit,
     }
 }

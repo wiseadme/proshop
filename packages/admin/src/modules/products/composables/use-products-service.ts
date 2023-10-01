@@ -60,12 +60,12 @@ export const useProductsService = createSharedComposable(() => {
     const product = ref<Maybe<IProduct>>(null)
     const isLoading = ref(true)
 
-    const products = computed<Maybe<IProduct[]>>(() => _productsStore.products)
-    const attributeItems = computed<Maybe<IAttribute[]>>(() => _attributesStore.attributes)
-    const categoryItems = computed<Maybe<ICategory[]>>(() => _categoriesStore.categories)
-    const variantItems = computed<Maybe<IVariant[]>>(() => _variantsStore.variants)
-    const unitItems = computed<Maybe<IUnit[]>>(() => _unitsStore.units)
-    const metaTagItems = computed<Maybe<IMetaTag[]>>(() => _metaTagsStore.metaTags)
+    const products = computed<IProduct[]>(() => _productsStore.products || [])
+    const attributeItems = computed<IAttribute[]>(() => _attributesStore.attributes || [])
+    const categoryItems = computed<ICategory[]>(() => _categoriesStore.categories || [])
+    const variantItems = computed<IVariant[]>(() => _variantsStore.variants || [])
+    const unitItems = computed<IUnit[]>(() => _unitsStore.units || [])
+    const metaTagItems = computed<IMetaTag[]>(() => _metaTagsStore.metaTags || [])
     const totalLength = computed<number>(() => _productsStore.totalLength)
     const merchant = computed<Maybe<IMerchant>>(() => _merchantStore.merchant)
 
@@ -82,7 +82,7 @@ export const useProductsService = createSharedComposable(() => {
     }
 
     const getAttributes = async (): Promise<IAttribute[]> => {
-        if (unref(attributeItems)) {
+        if (unref(attributeItems).length) {
             return unref(attributeItems)!
         }
 
@@ -90,7 +90,7 @@ export const useProductsService = createSharedComposable(() => {
     }
 
     const getUnits = async (): Promise<IUnit[]> => {
-        if (unref(unitItems)) {
+        if (unref(unitItems).length) {
             return unref(unitItems)!
         }
 
@@ -98,15 +98,15 @@ export const useProductsService = createSharedComposable(() => {
     }
 
     const getCategories = async (): Promise<ICategory[]> => {
-        if (unref(categoryItems)) {
+        if (unref(categoryItems).length) {
             return unref(categoryItems)!
         }
 
-        return _categoriesStore.read()
+        return _categoriesStore.getCategories()
     }
 
     const getVariants = async (): Promise<IVariant[]> => {
-        if (unref(variantItems)) {
+        if (unref(variantItems).length) {
             return unref(variantItems)!
         }
 
@@ -114,7 +114,7 @@ export const useProductsService = createSharedComposable(() => {
     }
 
     const getMetaTags = async (): Promise<IMetaTag[]> => {
-        if (unref(metaTagItems)) {
+        if (unref(metaTagItems).length) {
             return unref(metaTagItems)!
         }
 
@@ -122,7 +122,7 @@ export const useProductsService = createSharedComposable(() => {
     }
 
     const getProducts = async (params?: Partial<IProduct>): Promise<IProduct[]> => {
-        const products = await _productsStore.read(getRequestParams(params))
+        const products = await _productsStore.getProducts(getRequestParams(params))
 
         isLoading.value = false
 
@@ -130,9 +130,9 @@ export const useProductsService = createSharedComposable(() => {
     }
 
     const getProduct = async (id: string): Promise<IProduct> => {
-        const [item] = await _productsStore.read({ id })
+        const [item] = await _productsStore.getProducts({ id })
 
-        product.value = clone(item)
+        setAsCurrent(clone(item))
 
         return item
     }
@@ -141,19 +141,21 @@ export const useProductsService = createSharedComposable(() => {
         const params = { category: category.url, ...getPaginationParams() }
 
         try {
-            return await _productsStore.read(params)
+            return await _productsStore.getProducts(params)
         } catch (err) {
             return Promise.reject(err)
         }
     }
 
-    const createProduct = async (product: IProduct): Promise<IProduct | undefined> => {
-        if (!unref(merchant)?.id) return
+    const createProduct = async (product: IProduct): Promise<IProduct> => {
+        if (!unref(merchant)?.id) {
+            return Promise.reject()
+        }
 
         product.currency = unref(merchant)?.id!
 
         try {
-            const data = await _productsStore.create(product)
+            const data = await _productsStore.createProduct(product)
             setAsCurrent(data)
 
             return data
@@ -166,7 +168,7 @@ export const useProductsService = createSharedComposable(() => {
         updates.id = unref(product)!.id
 
         try {
-            const updated = await _productsStore.update(updates)
+            const updated = await _productsStore.updateProduct(updates)
             setAsCurrent(updated)
 
             return updated
@@ -207,35 +209,129 @@ export const useProductsService = createSharedComposable(() => {
         }
     }
 
-    const addProductAttribute = async (attr: IAttribute) => {
+    const addProductVariant = async (variant: IVariant): Promise<IProduct> => {
+        variant.ownerId = unref(product)!.id
+
+        try {
+            const product = await _productsStore.addVariant(variant)
+
+            setAsCurrent(product)
+
+            return product
+        } catch (err) {
+            return Promise.reject(err)
+        }
+    }
+
+    const addProductVariantOption = async (option: IOption): Promise<IProduct> => {
+        try {
+            const data = await _productsStore.addVariantOption(option)
+
+            setAsCurrent(data)
+
+            return data
+        } catch (err) {
+            return Promise.reject(err)
+        }
+    }
+
+    const createProductOption = async (option: IOption): Promise<IOption> => {
+        try {
+            return await _optionsService.createOption(option)
+        } catch (err) {
+            return Promise.reject(err)
+        }
+    }
+
+    const updateProductOption = async (updates: Partial<IOption>): Promise<IOption> => {
+        try {
+            return await _optionsService.updateOption(updates)
+        } catch (err) {
+            return Promise.reject(err)
+        }
+    }
+
+    const addNewVariantOption = async (data: IOption): Promise<void> => {
+        try {
+            const option = await createProductOption(data)
+            const { variants } = unref(product)!
+
+            let variant = variants?.find(v => v.id === option.variantId)!
+
+            if (!variant) {
+                variant = unref(variantItems)!.find(v => v.id === option.variantId) as IVariant
+                await addProductVariant(variant)
+            }
+
+            await addProductVariantOption(option)
+        } catch (err) {
+            return Promise.reject(err)
+        }
+    }
+
+    const updateVariantOption = async (option: IOption): Promise<IOption> => {
+        try {
+            const updated = await updateProductOption(option)
+            const { variants } = unref(product)!
+
+            const variant = variants.find(v => v.id === option.variantId)!
+            const { options } = variant
+
+            variant.options = options?.map(opt => opt.id === option.id ? updated : opt)
+
+            return updated
+        } catch (err) {
+            return Promise.reject(err)
+        }
+    }
+
+    const deleteVariantOption = async ({ option, variant }: { option: IOption, variant: IVariant }): Promise<void> => {
+        try {
+            let data: IProduct
+
+            await _optionsService.deleteOption(option)
+
+            if (variant.options!.length <= 1) {
+                data = await _productsStore.deleteVariant(variant)
+            } else {
+                data = await _productsStore.deleteVariantOption(option)
+            }
+
+            setAsCurrent(data)
+        } catch (err) {
+            return Promise.reject(err)
+        }
+    }
+
+    const addProductAttribute = async (attr: IAttribute): Promise<IProduct> => {
         const updates = {
             productId: unref(product)!.id,
             attribute: attr,
         }
 
         try {
-            const updated = await _productsStore.addAttribute(updates)
+            const product = await _productsStore.addAttribute(updates)
 
-            setAsCurrent(updated)
+            setAsCurrent(product)
 
-            return true
+            return product
         } catch (err) {
             return Promise.reject(err)
         }
     }
 
-    const deleteProductAttribute = async (id: string) => {
+    const deleteProductAttribute = async (id: string): Promise<IProduct> => {
         const updates = {
             productId: unref(product)!.id,
             attributeId: id,
         }
 
         try {
-            const updated = await _productsStore.deleteAttribute(updates)
+            const product = await _productsStore.deleteAttribute(updates)
 
-            setAsCurrent(updated)
+            setAsCurrent(product)
 
-            return true
+            return product
         } catch (err) {
             return Promise.reject(err)
         }
@@ -251,179 +347,112 @@ export const useProductsService = createSharedComposable(() => {
         }
     }
 
-    const updateProductMetaTags = async (updates: { seo: IProduct['seo'] }): Promise<IProduct> => {
+    const updateProductMetaTags = async (metaTags: IMetaTag[]): Promise<IProduct> => {
         const payload = {
-            ...updates,
-            id: unref(product)!.id,
+            productId: unref(product)!.id,
+            metaTags,
         }
 
         try {
-            return await updateProduct(payload)
+            return await _productsStore.updateMetaTags(payload)
         } catch (err) {
             return Promise.reject(err)
         }
     }
 
-    const getVariantsWithOptionsIds = (variants: IVariant[]): IVariant[] => {
-        return variants.map((v) => {
-            const payload = { ...v } as any
-
-            payload.options = getIds(v.options as IOption[])
-
-            return payload
-        })
-    }
-
-    const createVariantOption = async (option: IOption) => {
-        const payload = { ...option } as Record<string, any>
-
-        payload.assets = option.assets?.map(asset => asset.id)
-        const createdOption = await _optionsService.createOption(payload)
-
-        const { variants } = unref(product)!
-
-        let variant = variants?.find(v => v.id === option.variantId)!
-
-        if (!variant) {
-            variant = unref(variantItems)!.find(v => v.id === createdOption.variantId) as IVariant
-            variants.push(variant)
+    const addProductMetaTag = async (metaTag: IMetaTag): Promise<IProduct> => {
+        const updates = {
+            productId: unref(product)!.id,
+            metaTag: metaTag,
         }
 
-        variant.options ??= []
-        variant.options.push(createdOption)
+        try {
+            const product = await _productsStore.addMetaTag(updates)
 
-        await updateProduct({
-            variants: getVariantsWithOptionsIds(variants),
-        })
+            setAsCurrent(product)
 
-        variant.options = []
+            return product
+        } catch (err) {
+            return Promise.reject(err)
+        }
     }
 
-    const loadImage = ({
-        file,
-        ownerId,
-    }: {
-        file: File
-        ownerId: string
-    }) => {
-        const { formData, fileName } = _filesService.createFormData(file)
-
-        return _filesService.uploadFile({ ownerId, fileName, formData })
-    }
-
-    const updateVariantOption = async (option: IOption) => {
-        const payload = { ...option } as Record<string, any>
-        payload.assets = option.assets?.map(asset => asset.id)
-
-        const updated = await _optionsService.updateOption(payload)
-        const { variants } = unref(product)!
-
-        const variant = variants.find(v => v.id === option.variantId)!
-        const { options } = variant
-
-        variant.options = options?.map(opt => opt.id === option.id ? updated : opt)
-
-        return updateProduct({
-            variants: getVariantsWithOptionsIds(variants),
-        })
-    }
-
-    const deleteVariantOption = async ({
-        option,
-        variant,
-    }: {
-        option: IOption
-        variant: IVariant
-    }): Promise<IProduct | void> => {
-
-        await _optionsService.deleteOption(option)
-
-        let { variants } = unref(product)!
-
-        variant.options = (variant.options as IOption[])?.filter((it) => it.id !== option.id)
-
-        if (!variant.options?.length) {
-            variants = variants.filter(v => v.id !== variant.id)
+    const deleteProductMetaTag = async (metaTag: IMetaTag): Promise<IProduct> => {
+        const payload = {
+            productId: unref(product)!.id,
+            metaTagId: metaTag.id,
         }
 
-        return updateProduct({
-            variants: getVariantsWithOptionsIds(variants),
-        })
+        try {
+            return await _productsStore.deleteMetaTag(payload)
+        } catch (err) {
+            return Promise.reject(err)
+        }
     }
 
-    const uploadProductVariantImage = async ({
-        file,
-        option,
-    }: {
-        file: File,
-        option: IOption
-    }): Promise<IOption> => {
+    const loadImage = async ({ file, ownerId }: { file: File, ownerId: string }): Promise<IAsset> => {
+        try {
+            const { formData, fileName } = _filesService.createFormData(file)
 
-        const optionAsset = await loadImage({ file, ownerId: option.id })
-
-        option.assets!.push(optionAsset)
-
-        return _optionsService.updateOption({
-            id: option.id,
-            assets: option.assets!.map(asset => asset.id),
-        })
-    }
-
-    const deleteProductVariantImage = async ({
-        asset,
-        option,
-    }: {
-        asset: IAsset
-        option: IOption
-    }): Promise<IOption> => {
-        await _filesService.deleteFile(asset)
-
-        return _optionsService.updateOption({
-            id: option.id,
-            assets: option.assets?.filter((a: IAsset) => a.id !== asset.id),
-        })
+            return await _filesService.uploadFile({ ownerId, fileName, formData })
+        } catch (err) {
+            return Promise.reject(err)
+        }
     }
 
     const deleteProduct = async (product: IProduct) => {
         try {
-            return await _productsStore.delete(product)
+            return await _productsStore.deleteProduct(product)
         } catch (err) {
             return Promise.reject(err)
         }
     }
 
-    const updateProductAssets = async (updates: Partial<IProduct>): Promise<IProduct> => {
-        updates.id = unref(product)?.id
-
+    const updateMainImageAsset = async (update: Partial<IAsset>): Promise<IAsset> => {
         try {
-            return await updateProduct(updates)
+            return await _filesService.updateFile({
+                id: update.id,
+                main: true,
+            })
         } catch (err) {
             return Promise.reject(err)
         }
     }
 
-    const updateMainImageAsset = (asset: IAsset): Promise<IAsset> => {
-        return _filesService.updateFile({
-            id: asset.id,
-            main: true,
-        })
+    const updateProductImages = async (assets: Partial<IAsset>[]) => {
+        try {
+            await _filesService.updateMany(assets)
+
+            return await getProduct(unref(product)!.id)
+        } catch (err) {
+            return Promise.reject(err)
+        }
     }
 
-    const uploadProductImage = async (file: File): Promise<IAsset> => {
+    const uploadProductImage = async (file: File): Promise<IProduct> => {
         try {
             const asset = await loadImage({
-                file,
                 ownerId: unref(product)!.id,
-            })
+                file,
+            }) as IAsset
 
-            const { assets = [] } = unref(product)!
-            const isMain = asset.main || !assets.length
+            asset.main = !unref(product)?.assets.length
+            const assets = [...unref(product)!.assets, asset] as IAsset[]
 
-            if (isMain) {
-                return await updateMainImageAsset(asset)
+            /** TODO - заменить на один апдейт */
+            if (asset.main) {
+                await updateProductImages([asset])
             }
 
-            return asset
+            const updated = await updateProduct({
+                id: asset.ownerId,
+                assets: getIds(assets),
+                image: asset.main ? asset.url : null,
+            })
+
+            setAsCurrent(updated)
+
+            return updated
         } catch (err) {
             return Promise.reject(err)
         }
@@ -432,14 +461,17 @@ export const useProductsService = createSharedComposable(() => {
     const deleteProductImage = async (asset: IAsset) => {
         await _filesService.deleteFile(asset)
 
-        const assets = unref(product)!.assets?.filter(it => it.id !== asset.id)
+        const assets = (unref(product)!.assets as IAsset[])?.filter(it => it.id !== asset.id)
         const mainImage = assets?.find(it => it.main)
 
         if (assets?.length && !mainImage) {
-            assets[0] = await updateMainImageAsset(assets[0])
+            assets[0] = await updateMainImageAsset({
+                id: assets[0].id,
+                main: true
+            })
         }
 
-        return updateProduct({ assets })
+        return updateProduct({ assets: getIds(assets) })
     }
 
     const onInit = async () => {
@@ -480,23 +512,23 @@ export const useProductsService = createSharedComposable(() => {
         getCategoryProducts,
         setAsCurrent,
         createProduct,
-        createVariantOption,
+        addProductAttribute,
+        addProductMetaTag,
+        addNewVariantOption,
+        uploadProductImage,
         updateProduct,
-        deleteProduct,
-        deleteProductVariantImage,
-        uploadProductVariantImage,
         updateMainImageAsset,
         updateProductCategories,
         updateProductInfo,
         updateProductMetaTags,
-        addProductAttribute,
         updateProductAttributes,
         updateProductRelatedProducts,
         updateVariantOption,
-        uploadProductImage,
-        updateProductAssets,
+        updateProductImages,
+        deleteProduct,
         deleteProductAttribute,
         deleteVariantOption,
+        deleteProductMetaTag,
         deleteProductImage,
     }
 })

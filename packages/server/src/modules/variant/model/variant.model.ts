@@ -11,6 +11,10 @@ const VariantSchema = new Schema<IVariantMongoModel>({
     attributeId: {
         type: String,
         default: null
+    },
+    ownerId: {
+        type: String,
+        default: null
     }
 }, {
     timestamps: true,

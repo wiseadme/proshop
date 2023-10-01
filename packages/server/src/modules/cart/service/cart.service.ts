@@ -1,4 +1,4 @@
-import { inject, injectable } from 'inversify'
+import { id, inject, injectable } from 'inversify'
 import { TYPES } from '@common/schemes/di-types'
 // Types
 import { ILogger } from '@/types/utils'
@@ -36,7 +36,7 @@ export class CartService implements ICartService {
         })
     }
 
-    async update(updates: Partial<ICart>): Promise<{ updated: ICart }> {
+    async update(updates: Partial<ICart>): Promise<ICart> {
         if (updates.items) {
 
             updates.amount = 0

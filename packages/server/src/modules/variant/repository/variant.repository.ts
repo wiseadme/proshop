@@ -43,7 +43,7 @@ export class VariantRepository implements IVariantRepository {
         )
             .lean() as IVariantMongoModel
 
-        return { updated: VariantMapper.toDomain(updated) }
+        return VariantMapper.toDomain(updated)
     }
 
     async delete(id: string) {

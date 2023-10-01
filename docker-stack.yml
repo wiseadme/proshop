@@ -1,0 +1,192 @@
+version: '3'
+services:
+  server:
+    image: wiseadme/ecommerce:server
+    container_name: server
+    command: npm run start
+    restart: unless-stopped
+    environment:
+      - PORT=5001
+      - USER=wiseadme
+      - MONGO_URI=mongodb://mongo1,mongo2,mongo3:27017/commerce
+      - ACCESS_TOKEN_SECRET_KEY=menesilazerbaijanliyam
+      - REFRESH_TOKEN_SECRET_KEY=esilsozmenasibudur
+      - REDIS_URL=redis://redis-cache:6379
+      - UPLOADS_DIR=/home/wiseadme/www/uploads
+    volumes:
+      - uploads:/home/wiseadme/www/uploads/
+    depends_on:
+      - mongo-setup
+      - redis-cache
+    networks:
+      - ecommerce
+      - mongoNet
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+
+  redis-cache:
+    image: redis:alpine
+    container_name: redis
+    ports: [ "127.0.0.1:6379:6379" ]
+    networks:
+      - ecommerce
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+
+  mongo1:
+    image: mongo:5.0.14
+    container_name: mongo1
+    volumes:
+      - mongo_primary:/data/db
+    networks:
+      - mongoNet
+    command: mongod --replSet my-mongo-set
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+
+  mongo2:
+    image: mongo:5.0.14
+    container_name: mongo2
+    volumes:
+      - mongo_secondary:/data/db
+    networks:
+      - mongoNet
+    depends_on:
+      - mongo1
+    command: mongod --replSet my-mongo-set
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+
+  mongo3:
+    image: mongo:5.0.14
+    container_name: mongo3
+    volumes:
+      - mongo_seed:/data/db
+    networks:
+      - mongoNet
+    depends_on:
+      - mongo1
+      - mongo2
+    command: mongod --replSet my-mongo-set
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+
+  mongo-setup:
+    image: mongo:5.0.14
+    restart: "no"
+    depends_on:
+      - mongo1
+      - mongo2
+      - mongo3
+    volumes:
+      - ./scripts/mongosetup.sh:/scripts/mongosetup.sh
+    entrypoint: [ "bash", "/scripts/mongosetup.sh" ]
+    networks:
+      - mongoNet
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+
+  admin:
+    image: wiseadme/ecommerce:admin
+    container_name: admin
+    command: nginx -g "daemon off;"
+    restart: unless-stopped
+    depends_on:
+      - server
+    networks:
+      - ecommerce
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+
+  shop:
+    image: wiseadme/ecommerce:shop
+    container_name: shop-app
+    restart: unless-stopped
+    command: pm2-runtime ".output/server/index.mjs"
+    volumes:
+      - shop:/usr/src/app
+    depends_on:
+      - server
+    networks:
+      - ecommerce
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+
+  nginx:
+    image: nginx:stable-alpine
+    container_name: nginx
+    command: nginx -g "daemon off;"
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.prod.conf:/etc/nginx/nginx.conf
+      - ./nginx/nginx.shop.conf:/etc/nginx/conf.d/nginx.shop.conf
+      - uploads:/var/lib/docker/volumes/proshop_uploads/_data
+      - shop:/var/lib/docker/volumes/proshop_shop/_data/.output/public/_nuxt
+      - cache:/usr/share/nginx/www
+    depends_on:
+      - admin
+    networks:
+      - ecommerce
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+
+volumes:
+  ecommerce:
+  uploads:
+  shop:
+  cache:
+  mongo_primary:
+  mongo_secondary:
+  mongo_seed:
+
+networks:
+  mongoNet:
+    driver: overlay
+  ecommerce:
+    driver: overlay

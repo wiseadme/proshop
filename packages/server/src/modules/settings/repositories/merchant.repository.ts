@@ -45,7 +45,7 @@ export class MerchantRepository implements IMerchantRepository {
         )
             .lean() as IMerchantMongoModel
 
-        return { updated: MerchantMapper.toDomain(updated)! }
+        return MerchantMapper.toDomain(updated)!
     }
 
     async delete(id): Promise<boolean> {

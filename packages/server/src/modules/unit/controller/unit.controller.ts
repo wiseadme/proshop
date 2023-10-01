@@ -1,10 +1,9 @@
-// Types
-import { Request, Response, Router } from 'express'
-import expressAsyncHandler from 'express-async-handler'
 import { inject, injectable } from 'inversify'
+import { BaseController } from '@common/controller/base.controller'
+// Types
+import { NextFunction, Request, Response, Router } from 'express'
 import { TYPES } from '@common/schemes/di-types'
 import { ILogger } from '@/types/utils'
-import { BaseController } from '@common/controller/base.controller'
 import { IController } from '@/types'
 import { IUnit } from '@proshop/types'
 import { IUnitService } from '@modules/unit/types/service'
@@ -23,85 +22,51 @@ export class UnitController extends BaseController implements IController {
     }
 
     initRoutes() {
-        this.router.post('/', expressAsyncHandler(this.createUnit.bind(this)))
-        this.router.get('/', expressAsyncHandler(this.getUnits.bind(this)))
-        this.router.patch('/', expressAsyncHandler(this.updateUnit.bind(this)))
-        this.router.delete('/', expressAsyncHandler(this.deleteUnit.bind(this)))
+        this.router.post('/', this.createUnit.bind(this))
+        this.router.get('/', this.getUnits.bind(this))
+        this.router.patch('/', this.updateUnit.bind(this))
+        this.router.delete('/', this.deleteUnit.bind(this))
     }
 
-    async createUnit({ body, method }: Request<{}, {}, IUnit>, res: Response) {
+    async createUnit(request: Request<{}, {}, IUnit>, response: Response, next: NextFunction) {
         try {
-            const unit = await this.service.create(body)
+            const data = await this.service.create(request.body)
 
-            this.send({
-                response: res,
-                data: unit,
-                url: this.path,
-                method,
-            })
-        } catch (err) {
-            return this.error({
-                error: err,
-                url: this.path,
-                method,
-            })
+            this.send({ data, request, response })
+        } catch (error) {
+            this.error({ error, request, next })
         }
     }
 
-    async getUnits({ query, method }: Request<{}, {}, {}, Partial<IUnit>>, res: Response) {
+    async getUnits(request: Request<{}, {}, {}, Partial<IUnit>>, response: Response, next: NextFunction) {
         try {
-            const units = await this.service.read(query)
+            const data = await this.service.read(request.query)
 
-            this.send({
-                response: res,
-                data: units,
-                url: this.path,
-                method,
-            })
-        } catch (err) {
-            return this.error({
-                error: err,
-                url: this.path,
-                method,
-            })
+            // @ts-ignore
+            this.send({ data, request, response })
+        } catch (error) {
+            // @ts-ignore
+            this.error({ error, request, next })
         }
     }
 
-    async updateUnit({ body, method }: Request<{}, {}, Partial<IUnit>>, res: Response) {
+    async updateUnit(request: Request<{}, {}, Partial<IUnit>>, response: Response, next: NextFunction) {
         try {
-            const { updated } = await this.service.update(body)
+            const data = await this.service.update(request.body)
 
-            this.send({
-                response: res,
-                data: updated,
-                url: this.path,
-                method,
-            })
-        } catch (err) {
-            return this.error({
-                error: err,
-                url: this.path,
-                method,
-            })
+            this.send({ data, request, response })
+        } catch (error) {
+            this.error({ error, request, next })
         }
     }
 
-    async deleteUnit({ query, method }: Request<{}, {}, {}, { id: string }>, res: Response) {
+    async deleteUnit(request: Request<{}, {}, {}, { id: string }>, response: Response, next: NextFunction) {
         try {
-            await this.service.delete(query.id)
+            const data = await this.service.delete(request.query.id)
 
-            this.send({
-                response: res,
-                data: null,
-                url: this.path,
-                method,
-            })
-        } catch (err) {
-            return this.error({
-                error: err,
-                url: this.path,
-                method,
-            })
+            this.send({ data, request, response })
+        } catch (error) {
+            this.error({ error, request, next })
         }
     }
 }

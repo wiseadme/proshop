@@ -1,5 +1,5 @@
 import { IVariant, IVariantMongoModel } from '@proshop/types'
-import { OptionMapper } from '@modules/option/mappers/option.mapper'
+import { OptionMapper } from '@modules/options/mappers/option.mapper'
 
 export class VariantMapper {
     static toDomain(entity: IVariantMongoModel): IVariant {

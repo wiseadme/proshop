@@ -1,11 +1,12 @@
 import { IMerchant, ISettings, ISite, Maybe } from '@proshop/types'
+import { id } from 'inversify'
 
 export interface IMerchantService {
     create(merchant: IMerchant): Promise<IMerchant>
 
     read(): Promise<Maybe<IMerchant>>
 
-    update(updates: Partial<IMerchant>): Promise<{ updated: IMerchant }>
+    update(updates: Partial<IMerchant>): Promise<IMerchant>
 
     delete(id: string): Promise<boolean>
 }
@@ -15,7 +16,7 @@ export interface ISettingsService {
 
     read(): Promise<Maybe<ISettings>>
 
-    update(updates: Partial<ISettings>): Promise<{ updated: ISettings }>
+    update(updates: Partial<ISettings>): Promise<ISettings>
 
     delete(id): Promise<boolean>
 }
@@ -24,7 +25,7 @@ export interface ISiteService {
 
     read(): Promise<Maybe<ISite>>
 
-    update(updates: Partial<ISite>): Promise<{ updated: ISite }>
+    update(updates: Partial<ISite>): Promise<ISite>
 
     delete(id): Promise<boolean>
 }

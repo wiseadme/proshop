@@ -1,6 +1,6 @@
 import {
     computed,
-    ref,
+    toRaw,
     unref,
 } from 'vue'
 import { IAsset } from '@proshop/types'
@@ -13,29 +13,19 @@ export const useProductImages = () => {
     const { model } = useProductModel()
 
     const {
-        updateProductAssets,
-        updateMainImageAsset,
+        updateProductImages,
         uploadProductImage,
         deleteProductImage,
     } = useProductsService()
 
-    const {notify} = useNotifications()
+    const { notify } = useNotifications()
 
-    const images = ref<File[]>([])
-    const currentImage = ref<Maybe<IAsset>>(null)
-
-    const assets = computed(() => unref(model)?.assets || [])
+    const assets = computed<IAsset[]>(() => (unref(model)?.assets || []) as IAsset[])
+    const mainImage = computed(() => unref(assets).find(it => it.main))
 
     const onLoadImage = async ([file]) => {
-        const { assets } = unref(model)
-
         try {
-            const asset = await uploadProductImage(file)
-
-            assets.push(asset)
-            await updateProductAssets({ assets })
-
-            images.value = []
+            await uploadProductImage(file)
 
             notify(CHANGES_SAVED)
         } catch (err) {
@@ -53,13 +43,30 @@ export const useProductImages = () => {
         }
     }
 
-    const setAsMainImage = async () => {
-        try {
-            const asset = await updateMainImageAsset(unref(currentImage)!)
-            const { assets } = unref(model)
+    const setAsMainImage = async (imageAsset: IAsset) => {
+        const currentMainImage = toRaw(unref(mainImage)!)
 
-            assets.forEach((it) => it.main = it.id === asset.id)
-            await updateProductAssets({ assets: assets })
+        imageAsset.main = true
+        currentMainImage.main = false
+
+        try {
+            await updateProductImages([
+                currentMainImage,
+                imageAsset,
+            ])
+
+            notify(CHANGES_SAVED)
+        } catch (err) {
+            notify(SAVING_ERROR)
+        }
+    }
+
+    const updateImagesOrders = async (assets: IAsset[]) => {
+        try {
+            await updateProductImages(assets.map(it => ({
+                id: it.id,
+                order: it.order
+            })))
 
             notify(CHANGES_SAVED)
         } catch (err) {
@@ -69,10 +76,9 @@ export const useProductImages = () => {
 
     return {
         assets,
-        images,
-        currentImage,
         onLoadImage,
         onDeleteImage,
         setAsMainImage,
+        updateImagesOrders,
     }
 }

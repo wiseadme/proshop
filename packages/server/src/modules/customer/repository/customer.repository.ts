@@ -1,5 +1,5 @@
 import mongoose, { Document } from 'mongoose'
-import { injectable } from 'inversify'
+import { id, injectable } from 'inversify'
 import { CustomerModel } from '@modules/customer/model/customer.model'
 import { validateId } from '@common/utils/mongoose-validate-id'
 import { ICustomerRepository } from '@modules/customer/types/repository'
@@ -36,7 +36,7 @@ export class CustomerRepository implements ICustomerRepository {
             { new: true },
         ) as ICustomerMongoModel
 
-        return { updated: CustomerMapper.toDomain(updated) }
+        return CustomerMapper.toDomain(updated)
     }
 
     async delete(id) {
