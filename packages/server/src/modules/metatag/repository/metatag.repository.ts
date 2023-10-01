@@ -1,4 +1,4 @@
-import mongoose, { Document } from 'mongoose'
+import mongoose from 'mongoose'
 import { injectable } from 'inversify'
 import { MetaTagModel } from '@modules/metatag/model/metatag.model'
 import { validateId } from '@common/utils/mongoose-validate-id'
@@ -18,7 +18,7 @@ export class MetaTagRepository implements IMetaTagRepository {
         return MetatagMapper.toDomain(metaTagData.toObject())
     }
 
-    async read(params) {
+    async read(params: Partial<IMetaTag>) {
         const metaTags = await MetaTagModel
             .find(params)
             .lean() as IMetaTagMongoModel[]
@@ -36,10 +36,10 @@ export class MetaTagRepository implements IMetaTagRepository {
         )
             .lean() as IMetaTagMongoModel
 
-        return { updated: MetatagMapper.toDomain(updated) }
+        return MetatagMapper.toDomain(updated)
     }
 
-    async delete(id) {
+    async delete(id: string) {
         validateId(id)
 
         await MetaTagModel.findByIdAndDelete(id)

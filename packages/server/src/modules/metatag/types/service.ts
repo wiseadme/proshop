@@ -6,7 +6,7 @@ export interface IMetaTagService {
 
     read(params: Partial<IMetaTag>): Promise<IMetaTag[]>
 
-    update(updates: Partial<IMetaTag>): Promise<{ updated: IMetaTag }>
+    update(updates: Partial<IMetaTag>): Promise<IMetaTag>
 
-    delete(queryParams: Partial<IMetaTag>): Promise<boolean>
+    delete(id: string): Promise<boolean>
 }

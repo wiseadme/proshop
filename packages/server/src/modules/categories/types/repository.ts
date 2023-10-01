@@ -6,7 +6,7 @@ export interface ICategoryRepository {
 
     getCategories(params: Partial<ICategory>): Promise<ICategory[]>
 
-    updateCategory(updates: Partial<ICategory>): Promise<{ updated: ICategory }>
+    updateCategory(updates: Partial<ICategory>): Promise<ICategory>
 
     deleteCategory(id: string): Promise<boolean>
 }

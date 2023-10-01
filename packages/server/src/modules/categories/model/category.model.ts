@@ -13,7 +13,13 @@ const CategorySchema: Schema = new Schema<ICategoryMongoModel>({
         unique: true,
     },
     image: String,
-    assets: Array,
+    assets: {
+        type: [{
+            type: Schema.Types.ObjectId,
+            ref: 'Asset',
+        }],
+        default: [],
+    },
     seo: {
         title: String,
         description: String,

@@ -1,10 +1,9 @@
-import expressAsyncHandler from 'express-async-handler'
+
 import { BaseController } from '@common/controller/base.controller'
-import { Request, Response, Router } from 'express'
+import { NextFunction, Request, Response, Router } from 'express'
 import { inject, injectable } from 'inversify'
 import { TYPES } from '@common/schemes/di-types'
 // Types
-import { Document } from 'mongoose'
 import { ILogger } from '@/types/utils'
 import { IController } from '@/types'
 import { IAttributeService } from '../types/service'
@@ -27,84 +26,49 @@ export class AttributeController extends BaseController implements IController {
     }
 
     initRoutes() {
-        this.router.post('/', new ValidateMiddleware(AttributeDTO).execute(), expressAsyncHandler(this.createAttribute.bind(this)))
-        this.router.get('/', expressAsyncHandler(this.getAttribute.bind(this)))
-        this.router.patch('/', expressAsyncHandler(this.updateAttributes.bind(this)))
-        this.router.delete('/', expressAsyncHandler(this.deleteAttribute.bind(this)))
+        this.router.post('/', new ValidateMiddleware(AttributeDTO).execute(), this.createAttribute.bind(this))
+        this.router.get('/', this.getAttribute.bind(this))
+        this.router.patch('/', this.updateAttributes.bind(this))
+        this.router.delete('/', this.deleteAttribute.bind(this))
     }
 
-    async createAttribute({ body, method }: Request<{}, {}, IAttribute>, res: Response) {
+    async createAttribute(request: Request<{}, {}, IAttribute>, response: Response, next: NextFunction) {
         try {
-            const attribute = await this.service.create(Attribute.create(body))
+            const data = await this.service.create(Attribute.create(request.body))
 
-            this.send({
-                response: res,
-                data: attribute,
-                url: this.path,
-                method,
-            })
-        } catch (err) {
-            return this.error({
-                error: err,
-                url: this.path,
-                method,
-            })
+            this.send({ data, request, response })
+        } catch (error) {
+            return this.error({ error, request, next })
         }
     }
 
-    async getAttribute({ query, method }: Request<{}, {}, {}, { id?: string }>, res: Response) {
+    async getAttribute(request: Request<{}, {}, {}, { id?: string }>, response: Response, next: NextFunction) {
         try {
-            const attributes = await this.service.read(query?.id)
+            const data = await this.service.read(request.query?.id)
 
-            this.send({
-                response: res,
-                data: attributes,
-                url: this.path,
-                method,
-            })
-        } catch (err) {
-            return this.error({
-                error: err,
-                url: this.path,
-                method,
-            })
+            this.send({ data, request, response })
+        } catch (error) {
+            return this.error({ error, request, next })
         }
     }
 
-    async updateAttributes({ body, method }: Request<{}, {}, IAttribute & Document>, res: Response) {
+    async updateAttributes(request: Request<{}, {}, IAttribute>, response: Response, next: NextFunction) {
         try {
-            const { updated } = await this.service.update(body)
+            const data = await this.service.update(request.body)
 
-            this.send({
-                response: res,
-                data: updated,
-                url: this.path,
-                method,
-            })
-        } catch (err) {
-            return this.error({
-                error: err,
-                url: this.path,
-                method,
-            })
+            this.send({ data, request, response })
+        } catch (error) {
+            this.error({ error, request, next })
         }
     }
 
-    async deleteAttribute({ query, method }: Request<{}, {}, {}, { id: string }>, res: Response) {
+    async deleteAttribute(request: Request<{}, {}, {}, { id: string }>, response: Response, next: NextFunction) {
         try {
-            await this.service.delete(query.id)
-            this.send({
-                response: res,
-                data: null,
-                url: this.path,
-                method,
-            })
-        } catch (err: any) {
-            return this.error({
-                error: err,
-                url: this.path,
-                method,
-            })
+            const data = await this.service.delete(request.query.id)
+
+            this.send({ data, request, response })
+        } catch (error) {
+            return this.error({ error, request, next })
         }
     }
 }

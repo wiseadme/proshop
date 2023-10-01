@@ -35,7 +35,7 @@ export class FilterGroupRepository implements IFilterGroupRepository {
         return filterGroups.map(filterGroup => FilterGroupMapper.toDomain(filterGroup)) as IFilterGroup[]
     }
 
-    async update(updates: Partial<IFilterGroup>): Promise<{ updated: IFilterGroup }> {
+    async update(updates: Partial<IFilterGroup>): Promise<IFilterGroup> {
         validateId(updates.id)
 
         const filterGroup = await FilterGroupModel.findByIdAndUpdate(
@@ -45,7 +45,7 @@ export class FilterGroupRepository implements IFilterGroupRepository {
         )
             .lean() as IFilterGroupMongoModel
 
-        return { updated: FilterGroupMapper.toDomain(filterGroup) }
+        return FilterGroupMapper.toDomain(filterGroup)
     }
 
     async delete(id) {

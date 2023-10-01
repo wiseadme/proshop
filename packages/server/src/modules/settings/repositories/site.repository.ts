@@ -33,7 +33,7 @@ export class SiteRepository implements ISiteRepository {
         )
             .lean() as ISiteMongoModel
 
-        return { updated: SiteMapper.toDomain(updated)! }
+        return SiteMapper.toDomain(updated)!
     }
 
     async delete(id): Promise<boolean> {

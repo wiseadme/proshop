@@ -26,6 +26,10 @@ export class Service {
         return this._store.update(updates)
     }
 
+    async updateMany(assets: Partial<IAsset>[]) {
+        return this._store.updateMany(assets)
+    }
+
     async deleteFile(asset: Partial<IAsset>) {
         return this._store.deleteFile(asset)
     }

@@ -1,16 +1,12 @@
-import { Request, Response, Router } from 'express'
+import { NextFunction, Request, Response, Router } from 'express'
 import { inject, injectable } from 'inversify'
 import { TYPES } from '@common/schemes/di-types'
 import { BaseController } from '@common/controller/base.controller'
-import expressAsyncHandler from 'express-async-handler'
 // Types
-import { Document } from 'mongoose'
 import { IAsset } from '@proshop/types'
 import { ILogger } from '@/types/utils'
 import { IController } from '@/types'
-import { IAssetsService } from '../types/service'
-// import { AssetDTO } from '../dto/asset.dto'
-// import { ValidateMiddleware } from '@common/middlewares/validate.middleware'
+import { IAssetsService } from '@modules/asset/types/service'
 
 @injectable()
 export class AssetController extends BaseController implements IController {
@@ -26,65 +22,49 @@ export class AssetController extends BaseController implements IController {
     }
 
     initRoutes() {
-        this.router.post('/', /*new ValidateMiddleware(AssetDTO).execute*/ expressAsyncHandler(this.uploadImage.bind(this)))
-        this.router.patch('/', /*new ValidateMiddleware(AssetDTO).execute,*/ expressAsyncHandler(this.updateImage.bind(this)))
-        this.router.delete('/', expressAsyncHandler(this.deleteImage.bind(this)))
+        this.router.post('/', this.uploadAsset.bind(this))
+        this.router.patch('/', this.updateAsset.bind(this))
+        this.router.patch('/many', this.updateAssets.bind(this))
+        this.router.delete('/', this.deleteImage.bind(this))
     }
 
-    async uploadImage(req: Request, res: Response) {
+    async uploadAsset(request: Request, response: Response, next: NextFunction) {
         try {
-            const data = await this.service.saveFile(req, res)
+            const data = await this.service.saveFile(request, response)
 
-            this.send({
-                response: res,
-                url: this.path,
-                method: req.method,
-                data,
-            })
-        } catch (err) {
-            return this.error({
-                error: err,
-                url: this.path,
-                method: req.method,
-            })
+            this.send({ data, request, response })
+        } catch (error) {
+            this.error({ error, request, next })
         }
     }
 
-    async updateImage({ body, method }: Request<{}, {}, Partial<IAsset & Document>>, res: Response) {
+    async updateAsset(request: Request<{}, {}, Partial<IAsset>>, response: Response, next: NextFunction) {
         try {
-            const { updated } = await this.service.updateFile(body)
+            const data = await this.service.updateFile(request.body)
 
-            this.send({
-                response: res,
-                data: updated,
-                url: this.path,
-                method,
-            })
-        } catch (err: any) {
-            return this.error({
-                error: err,
-                url: this.path,
-                method,
-            })
+            this.send({ data, request, response })
+        } catch (error) {
+            this.error({ error, request, next })
         }
     }
 
-    async deleteImage(req: Request<{}, {}, {}, { id: string, url: string }>, res: Response) {
+    async updateAssets(request: Request<{}, {}, Partial<IAsset>[]>, response: Response, next: NextFunction) {
         try {
-            const result = await this.service.deleteFile(req.query)
+            const data = await this.service.updateMany(request.body)
 
-            this.send({
-                response: res,
-                data: result,
-                url: this.path,
-                method: req.method,
-            })
-        } catch (err) {
-            return this.error({
-                error: err,
-                url: this.path,
-                method: req.method,
-            })
+            this.send({ data, request, response })
+        } catch (error) {
+            this.error({ error, request, next })
+        }
+    }
+
+    async deleteImage(request: Request<{}, {}, {}, { id: string, url: string }>, response: Response, next: NextFunction) {
+        try {
+            const data = await this.service.deleteFile(request.query)
+
+            this.send({ data, request, response })
+        } catch (error) {
+            this.error({ error, request, next })
         }
     }
 }

@@ -1,7 +1,5 @@
-import { Request, Response, Router } from 'express'
+import { NextFunction, Request, Response, Router } from 'express'
 import { inject, injectable } from 'inversify'
-import expressAsyncHandler from 'express-async-handler'
-
 import { TYPES } from '@common/schemes/di-types'
 import { BaseController } from '@common/controller/base.controller'
 import { ProductDTO } from '@modules/products/dto/product.dto'
@@ -29,287 +27,198 @@ export class ProductsController extends BaseController implements IController {
     }
 
     public initRoutes() {
-        this.router.post('/', setMiddlewares({
-            dto: ProductDTO,
-            roles: ['root'],
-        }), expressAsyncHandler(this.createProduct.bind(this)))
-        this.router.get('/', setMiddlewares({}), expressAsyncHandler(this.getProducts.bind(this)))
-        this.router.patch('/', setMiddlewares({
-            dto: ProductDTO,
-            roles: ['root'],
-        }), expressAsyncHandler(this.updateProduct.bind(this)))
-        this.router.delete('/', setMiddlewares({ roles: ['root'] }), expressAsyncHandler(this.deleteProduct.bind(this)))
-        this.router.patch('/attributes/add', setMiddlewares({ roles: ['root'] }), expressAsyncHandler(this.addProductAttribute.bind(this)))
-        this.router.patch('/variants/add', setMiddlewares({ roles: ['root'] }), expressAsyncHandler(this.addProductVariant.bind(this)))
-        this.router.patch('/variants/delete', setMiddlewares({ roles: ['root'] }), expressAsyncHandler(this.deleteProductVariant.bind(this)))
-        this.router.patch('/variants/option/add', setMiddlewares({ roles: ['root'] }), expressAsyncHandler(this.addProductVariantOption.bind(this)))
-        this.router.patch('/variants/option/delete', setMiddlewares({ roles: ['root'] }), expressAsyncHandler(this.deleteProductVariantOption.bind(this)))
-        this.router.patch('/attributes/delete', setMiddlewares({ roles: ['root'] }), expressAsyncHandler(this.deleteProductAttribute.bind(this)))
-        this.router.patch('/metatags/add', setMiddlewares({ roles: ['root'] }), expressAsyncHandler(this.addProductMetaTag.bind(this)))
-        this.router.patch('/metatags/update', setMiddlewares({ roles: ['root'] }), expressAsyncHandler(this.updateProductMetaTags.bind(this)))
-        this.router.patch('/metatags/delete', setMiddlewares({ roles: ['root'] }), expressAsyncHandler(this.deleteProductMetaTag.bind(this)))
+        this.router.post('/', setMiddlewares({ dto: ProductDTO, roles: ['root'] }), this.createProduct.bind(this))
+        this.router.get('/', setMiddlewares({}), this.getProducts.bind(this))
+        this.router.patch('/', setMiddlewares({ dto: ProductDTO, roles: ['root'] }), this.updateProduct.bind(this))
+        this.router.delete('/', setMiddlewares({ roles: ['root'] }), this.deleteProduct.bind(this))
+        this.router.patch('/attributes/add', setMiddlewares({ roles: ['root'] }), this.addProductAttribute.bind(this))
+        this.router.patch('/variants/add', setMiddlewares({ roles: ['root'] }), this.addProductVariant.bind(this))
+        this.router.patch('/variants/delete', setMiddlewares({ roles: ['root'] }), this.deleteProductVariant.bind(this))
+        this.router.patch('/variants/option/add', setMiddlewares({ roles: ['root'] }), this.addProductVariantOption.bind(this))
+        this.router.patch('/variants/option/delete', setMiddlewares({ roles: ['root'] }), this.deleteProductVariantOption.bind(this))
+        this.router.patch('/attributes/delete', setMiddlewares({ roles: ['root'] }), this.deleteProductAttribute.bind(this))
+        this.router.patch('/metatags/add', setMiddlewares({ roles: ['root'] }), this.addProductMetaTag.bind(this))
+        this.router.patch('/metatags/update', setMiddlewares({ roles: ['root'] }), this.updateProductMetaTags.bind(this))
+        this.router.patch('/metatags/delete', setMiddlewares({ roles: ['root'] }), this.deleteProductMetaTag.bind(this))
     }
 
-    async createProduct({ body, method }: Request<{}, {}, IProduct>, res: Response) {
+    async createProduct(request: Request<{}, {}, IProduct>, response: Response, next: NextFunction) {
         try {
-            const product = await this.service.createProduct(body)
+            const data = await this.service.createProduct(request.body)
 
-            this.send({
-                response: res,
-                data: product,
-                url: this.path,
-                method,
-            })
-        } catch (err) {
-            return this.error({
-                error: err,
-                url: this.path,
-                method,
-            })
+            this.send({ data, request, response })
+        } catch (error) {
+            this.error({ error, request, next })
         }
     }
 
-    async getProducts({ query, method }: Request<{}, {}, {}, Partial<IProduct>>, res: Response) {
+    async getProducts(request: Request<{}, {}, {}, Partial<IProduct>>, response: Response, next: NextFunction) {
         try {
-            const products = await this.service.getProducts(query)
+            const data = await this.service.getProducts(request.query)
 
-            this.send({
-                response: res,
-                data: products,
-                url: this.path,
-                method,
-            })
-        } catch (err) {
-            return this.error({
-                error: err,
-                url: this.path,
-                method,
-            })
+            // @ts-ignore
+            this.send({ data, request, response })
+        } catch (error) {
+            // @ts-ignore
+            this.error({ error, request, next })
         }
     }
 
-    async updateProduct({ body, method }: Request<{}, {}, Partial<IProduct>>, res: Response) {
+    async updateProduct(request: Request<{}, {}, Partial<IProduct>>, response: Response, next: NextFunction) {
 
         try {
-            const { updated } = await this.service.updateProduct(body)
+            const data = await this.service.updateProduct(request.body)
 
-            this.send({
-                response: res,
-                data: updated,
-                url: this.path,
-                method,
-            })
-        } catch (err) {
-            return this.error({
-                error: err,
-                url: this.path,
-                method,
-            })
+            this.send({ data, request, response })
+        } catch (error) {
+            this.error({ error, request, next })
         }
     }
 
-    async deleteProduct({ query, method }: Request<{}, {}, {}, { id: string }>, res: Response) {
+    async deleteProduct(request: Request<{}, {}, {}, { id: string }>, response: Response, next: NextFunction) {
         try {
-            await this.service.deleteProduct(query.id)
+            const data = await this.service.deleteProduct(request.query.id)
 
-            this.send({
-                response: res,
-                data: true,
-                url: this.path,
-                method,
-            })
-        } catch (err) {
-            return this.error({
-                error: err,
-                url: this.path,
-                method,
-            })
+            this.send({ data, request, response })
+        } catch (error) {
+            this.error({ error, request, next })
         }
     }
 
-    async addProductAttribute({ body, method }: Request<{}, {}, {
-        productId: string,
-        attribute: IAttribute
-    }>, res: Response) {
+    async addProductAttribute(
+        request: Request<{}, {}, {
+            productId: string,
+            attribute: IAttribute
+        }>,
+        response: Response,
+        next: NextFunction,
+    ) {
         try {
-            const product = await this.service.addAttribute(body)
+            const data = await this.service.addAttribute(request.body)
 
-            this.send({
-                response: res,
-                data: product,
-                url: this.path,
-                method,
-            })
-        } catch (err) {
-            return this.error({
-                error: err,
-                url: this.path,
-                method,
-            })
+            this.send({ data, request, response })
+        } catch (error) {
+            this.error({ error, request, next })
         }
     }
 
-    async deleteProductAttribute({ body, method }: Request<{}, {}, {
-        productId: string,
-        attributeId: string
-    }>, res: Response) {
+    async deleteProductAttribute(
+        request: Request<{}, {}, {
+            productId: string,
+            attributeId: string
+        }>,
+        response: Response,
+        next: NextFunction,
+    ) {
         try {
-            const product = await this.service.deleteAttribute(body)
+            const data = await this.service.deleteAttribute(request.body)
 
-            this.send({
-                response: res,
-                data: product,
-                url: this.path,
-                method,
-            })
-        } catch (err) {
-            return this.error({
-                error: err,
-                url: this.path,
-                method,
-            })
+            this.send({ data, request, response })
+        } catch (error) {
+            this.error({ error, request, next })
         }
     }
 
-    async addProductMetaTag({ body, method }: Request<{}, {}, {
-        productId: string,
-        metaTag: IMetaTag
-    }>, res: Response) {
+    async addProductMetaTag(
+        request: Request<{}, {}, {
+            productId: string,
+            metaTag: IMetaTag
+        }>,
+        response: Response,
+        next: NextFunction,
+    ) {
         try {
-            const product = await this.service.addMetaTag(body)
+            const data = await this.service.addMetaTag(request.body)
 
-            this.send({
-                response: res,
-                data: product,
-                url: this.path,
-                method,
-            })
-        } catch (err) {
-            return this.error({
-                error: err,
-                url: this.path,
-                method,
-            })
+            this.send({ data, request, response })
+        } catch (error) {
+            this.error({ error, request, next })
         }
     }
 
-    async updateProductMetaTags({ body, method }: Request<{}, {}, {
-        productId: string,
-        metaTags: IMetaTag[]
-    }>, res: Response) {
+    async updateProductMetaTags(
+        request: Request<{}, {}, {
+            productId: string,
+            metaTags: IMetaTag[]
+        }>,
+        response: Response,
+        next: NextFunction,
+    ) {
         try {
-            const product = await this.service.updateMetaTags(body)
+            const data = await this.service.updateMetaTags(request.body)
 
-            this.send({
-                response: res,
-                data: product,
-                url: this.path,
-                method,
-            })
-        } catch (err) {
-            return this.error({
-                error: err,
-                url: this.path,
-                method,
-            })
+            this.send({ data, request, response })
+        } catch (error) {
+            this.error({ error, request, next })
         }
     }
 
-    async deleteProductMetaTag({ body, method }: Request<{}, {}, {
-        productId: string,
-        metaTagId: string
-    }>, res: Response) {
+    async deleteProductMetaTag(
+        request: Request<{}, {}, {
+            productId: string,
+            metaTagId: string
+        }>,
+        response: Response,
+        next: NextFunction,
+    ) {
         try {
-            const product = await this.service.deleteMetaTag(body)
+            const data = await this.service.deleteMetaTag(request.body)
 
-            this.send({
-                response: res,
-                data: product,
-                url: this.path,
-                method,
-            })
-        } catch (err) {
-            return this.error({
-                error: err,
-                url: this.path,
-                method,
-            })
+            this.send({ data, request, response })
+        } catch (error) {
+            this.error({ error, request, next })
         }
     }
 
-    async addProductVariant({ body, method }: Request<{}, {}, { variant: IVariant }>, res: Response) {
+    async addProductVariant(request: Request<{}, {}, { variant: IVariant }>, response: Response, next: NextFunction) {
         try {
-            const product = await this.service.addVariant(body)
+            const data = await this.service.addVariant(request.body)
 
-            this.send({
-                response: res,
-                data: product,
-                url: this.path,
-                method,
-            })
-        } catch (err) {
-            return this.error({
-                error: err,
-                url: this.path,
-                method,
-            })
+            this.send({ data, request, response })
+        } catch (error) {
+            this.error({ error, request, next })
         }
     }
 
-    async deleteProductVariant({ body, method }: Request<{}, {}, { variant: IVariant }>, res: Response) {
+    async deleteProductVariant(
+        request: Request<{}, {}, { variant: IVariant }>,
+        response: Response,
+        next: NextFunction,
+    ) {
         try {
-            const product = await this.service.deleteVariant(body)
+            const data = await this.service.deleteVariant(request.body)
 
-            this.send({
-                response: res,
-                data: product,
-                url: this.path,
-                method,
-            })
-        } catch (err) {
-            return this.error({
-                error: err,
-                url: this.path,
-                method,
-            })
+            this.send({ data, request, response })
+        } catch (error) {
+            this.error({ error, request, next })
         }
     }
 
-    async addProductVariantOption({ body, method }: Request<{}, {}, { option: IOption }>, res: Response) {
+    async addProductVariantOption(
+        request: Request<{}, {}, { option: IOption }>,
+        response: Response,
+        next: NextFunction,
+    ) {
         try {
-            const product = await this.service.addVariantOption(body)
+            const data = await this.service.addVariantOption(request.body)
 
-            this.send({
-                response: res,
-                data: product,
-                url: this.path,
-                method,
-            })
-        } catch (err) {
-            return this.error({
-                error: err,
-                url: this.path,
-                method,
-            })
+            this.send({ data, request, response })
+        } catch (error) {
+            this.error({ error, request, next })
         }
     }
 
-    async deleteProductVariantOption({ body, method }: Request<{}, {}, { option: IOption }>, res: Response) {
+    async deleteProductVariantOption(
+        request: Request<{}, {}, { option: IOption }>,
+        response: Response,
+        next: NextFunction,
+    ) {
         try {
-            const product = await this.service.deleteVariantOption(body)
+            const data = await this.service.deleteVariantOption(request.body)
 
-            this.send({
-                response: res,
-                data: product,
-                url: this.path,
-                method,
-            })
-        } catch (err) {
-            return this.error({
-                error: err,
-                url: this.path,
-                method,
-            })
+            this.send({ data, request, response })
+        } catch (error) {
+            this.error({ error, request, next })
         }
     }
 }

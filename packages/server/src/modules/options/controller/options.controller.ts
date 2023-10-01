@@ -1,10 +1,8 @@
-import expressAsyncHandler from 'express-async-handler'
 import { BaseController } from '@common/controller/base.controller'
-import { Request, Response, Router } from 'express'
+import { NextFunction, Request, Response, Router } from 'express'
 import { inject, injectable } from 'inversify'
 import { TYPES } from '@common/schemes/di-types'
 // Types
-import { Document } from 'mongoose'
 import { ILogger } from '@/types/utils'
 import { IController } from '@/types'
 import { IOptionService } from '../types/service'
@@ -26,84 +24,49 @@ export class OptionsController extends BaseController implements IController {
     }
 
     initRoutes() {
-        this.router.post('/', new ValidateMiddleware(OptionDTO).execute(), expressAsyncHandler(this.createOption.bind(this)))
-        this.router.patch('/', expressAsyncHandler(this.updateOption.bind(this)))
-        this.router.get('/', expressAsyncHandler(this.getOptions.bind(this)))
-        this.router.delete('/', expressAsyncHandler(this.deleteOption.bind(this)))
+        this.router.post('/', new ValidateMiddleware(OptionDTO).execute(), this.createOption.bind(this))
+        this.router.patch('/', this.updateOption.bind(this))
+        this.router.get('/', this.getOptions.bind(this))
+        this.router.delete('/', this.deleteOption.bind(this))
     }
 
-    async createOption({ body, method }: Request<{}, {}, IOption>, res: Response) {
+    async createOption(request: Request<{}, {}, IOption>, response: Response, next: NextFunction) {
         try {
-            const option = await this.service.create(body)
+            const data = await this.service.create(request.body)
 
-            this.send({
-                response: res,
-                data: option,
-                url: this.path,
-                method,
-            })
-        } catch (err) {
-            return this.error({
-                error: err,
-                url: this.path,
-                method,
-            })
+            this.send({ data, request, response })
+        } catch (error) {
+            this.error({ error, request, next })
         }
     }
 
-    async getOptions({ query, method }: Request<{}, {}, {}, { id?: string }>, res: Response) {
+    async getOptions(request: Request<{}, {}, {}, { id?: string }>, response: Response, next: NextFunction) {
         try {
-            const options = await this.service.find(query?.id)
+            const data = await this.service.find(request.query?.id)
 
-            this.send({
-                response: res,
-                data: options,
-                url: this.path,
-                method,
-            })
-        } catch (err) {
-            return this.error({
-                error: err,
-                url: this.path,
-                method,
-            })
+            this.send({ data, request, response })
+        } catch (error) {
+            this.error({ error, request, next })
         }
     }
 
-    async updateOption({ body, method }: Request<{}, {}, IOption & Document>, res: Response) {
+    async updateOption(request: Request<{}, {}, IOption>, response: Response, next: NextFunction) {
         try {
-            const { updated } = await this.service.update(body)
+            const data = await this.service.update(request.body)
 
-            this.send({
-                response: res,
-                data: updated,
-                url: this.path,
-                method,
-            })
-        } catch (err) {
-            return this.error({
-                error: err,
-                url: this.path,
-                method,
-            })
+            this.send({ data, request, response })
+        } catch (error) {
+            this.error({ error, request, next })
         }
     }
 
-    async deleteOption({ query, method }: Request<{}, {}, {}, { id: string }>, res: Response) {
+    async deleteOption(request: Request<{}, {}, {}, { id: string }>, response: Response, next: NextFunction) {
         try {
-            await this.service.delete(query.id)
-            this.send({
-                response: res,
-                data: null,
-                url: this.path,
-                method,
-            })
-        } catch (err: any) {
-            return this.error({
-                error: err,
-                url: this.path,
-                method,
-            })
+            const data = await this.service.delete(request.query.id)
+
+            this.send({ data, request, response })
+        } catch (error) {
+            this.error({ error, request, next })
         }
     }
 }

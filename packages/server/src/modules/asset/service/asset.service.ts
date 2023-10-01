@@ -1,3 +1,4 @@
+import { Request, Response } from 'express'
 import { inject, injectable } from 'inversify'
 import { TYPES } from '@common/schemes/di-types'
 // Types
@@ -21,12 +22,16 @@ export class AssetService implements IAssetsService {
         this.addEventListeners()
     }
 
-    async saveFile(req, res) {
+    async saveFile(req: Request, res: Response) {
         return await this.repository.save(req, res)
     }
 
     async updateFile(updates: Partial<IAsset>) {
         return await this.repository.update(updates)
+    }
+
+    async updateMany(updates: Partial<IAsset>[]) {
+        return await this.repository.updateMany(updates)
     }
 
     async deleteFile(asset: IAsset) {

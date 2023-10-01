@@ -1,5 +1,6 @@
 import { Document } from 'mongoose'
 import { IOrder } from '@proshop/types'
+import { id } from 'inversify'
 
 export interface IOrdersRepository {
     create(order: IOrder): Promise<IOrder>
@@ -10,7 +11,7 @@ export interface IOrdersRepository {
 
     findBySeen(seen: boolean): Promise<IOrder[]>
 
-    update(updates: IOrder): Promise<{ updated: IOrder }>
+    update(updates: IOrder): Promise<IOrder>
 
     delete(id: string): Promise<boolean>
 

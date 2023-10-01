@@ -1,13 +1,11 @@
-import expressAsyncHandler from 'express-async-handler'
 import { BaseController } from '@common/controller/base.controller'
-import { Request, Response, Router } from 'express'
+import { NextFunction, Request, Response, Router } from 'express'
 import { inject, injectable } from 'inversify'
 import { TYPES } from '@common/schemes/di-types'
 // Types
-import { Document } from 'mongoose'
 import { ILogger } from '@/types/utils'
 import { IController } from '@/types'
-import { IFilterGroupService, IFilterItemService } from '../types/service'
+import { IFilterGroupService, IFilterItemService } from '@modules/filter/types/service'
 import { IFilterGroup, IFilterItem } from '@proshop/types'
 
 @injectable()
@@ -25,145 +23,84 @@ export class FilterController extends BaseController implements IController {
     }
 
     initRoutes() {
-        this.router.post('/groups', expressAsyncHandler(this.createFilterGroup.bind(this)))
-        this.router.patch('/groups', expressAsyncHandler(this.updateFilterGroup.bind(this)))
-        this.router.get('/groups', expressAsyncHandler(this.getFilterGroups.bind(this)))
-        this.router.delete('/groups', expressAsyncHandler(this.deleteFilterGroup.bind(this)))
-        this.router.post('/items', expressAsyncHandler(this.createFilterItem.bind(this)))
-        this.router.get('/items', expressAsyncHandler(this.getFilterItems.bind(this)))
-        this.router.delete('/items', expressAsyncHandler(this.deleteFilterItem.bind(this)))
+        this.router.post('/groups', this.createFilterGroup.bind(this))
+        this.router.patch('/groups', this.updateFilterGroup.bind(this))
+        this.router.get('/groups', this.getFilterGroups.bind(this))
+        this.router.delete('/groups', this.deleteFilterGroup.bind(this))
+        this.router.post('/items', this.createFilterItem.bind(this))
+        this.router.get('/items', this.getFilterItems.bind(this))
+        this.router.delete('/items', this.deleteFilterItem.bind(this))
     }
 
-    async createFilterGroup({ body, method }: Request<{}, {}, IFilterGroup>, res: Response) {
+    async createFilterGroup(request: Request<{}, {}, IFilterGroup>, response: Response, next: NextFunction) {
         try {
-            const filterGroup = await this.filterGroupService.create(body)
+            const data = await this.filterGroupService.create(request.body)
 
-            this.send({
-                response: res,
-                data: filterGroup,
-                url: this.path,
-                method,
-            })
-        } catch (err) {
-            return this.error({
-                error: err,
-                url: this.path,
-                method,
-            })
+            this.send({ data, request, response })
+        } catch (error) {
+            this.error({ error, request, next })
         }
     }
 
-    async getFilterGroups({ query, method }: Request<{}, {}, {}, { id?: string }>, res: Response) {
+    async getFilterGroups(request: Request<{}, {}, {}, { id?: string }>, response: Response, next: NextFunction) {
         try {
-            const filterGroups = await this.filterGroupService.read(query?.id)
+            const data = await this.filterGroupService.read(request.query?.id)
 
-            this.send({
-                response: res,
-                data: filterGroups,
-                url: this.path,
-                method,
-            })
-        } catch (err) {
-            return this.error({
-                error: err,
-                url: this.path,
-                method,
-            })
+            this.send({ data, request, response })
+        } catch (error) {
+            this.error({ error, request, next })
         }
     }
 
-    async updateFilterGroup({ body, method }: Request<{}, {}, IFilterGroup & Document>, res: Response) {
+    async updateFilterGroup(request: Request<{}, {}, IFilterGroup>, response: Response, next: NextFunction) {
         try {
-            const { updated } = await this.filterGroupService.update(body)
+            const data = await this.filterGroupService.update(request.body)
 
-            this.send({
-                response: res,
-                data: updated,
-                url: this.path,
-                method,
-            })
-        } catch (err) {
-            return this.error({
-                error: err,
-                url: this.path,
-                method,
-            })
+            this.send({ data, request, response })
+        } catch (error) {
+            this.error({ error, request, next })
         }
     }
 
-    async deleteFilterGroup({ query, method }: Request<{}, {}, {}, { id: string }>, res: Response) {
+    async deleteFilterGroup(request: Request<{}, {}, {}, { id: string }>, response: Response, next: NextFunction) {
         try {
-            await this.filterGroupService.delete(query.id)
+            const data = await this.filterGroupService.delete(request.query.id)
 
-            this.send({
-                response: res,
-                data: null,
-                url: this.path,
-                method,
-            })
-        } catch (err: any) {
-            return this.error({
-                error: err,
-                url: this.path,
-                method,
-            })
+            this.send({ data, request, response })
+        } catch (error) {
+            this.error({ error, request, next })
         }
     }
 
-    async createFilterItem({ body, method }: Request<{}, {}, IFilterItem>, res: Response) {
+    async createFilterItem(request: Request<{}, {}, IFilterItem>, response: Response, next: NextFunction) {
         try {
-            const filterItem = await this.filterItemService.create(body)
+            const data = await this.filterItemService.create(request.body)
 
-            this.send({
-                response: res,
-                data: filterItem,
-                url: this.path,
-                method,
-            })
-        } catch (err) {
-            return this.error({
-                error: err,
-                url: this.path,
-                method,
-            })
+            this.send({ data, request, response })
+        } catch (error) {
+            this.error({ error, request, next })
         }
     }
 
-    async getFilterItems({ query, method }: Request<{}, {}, {}, Partial<IFilterItem> & { id?: string }>, res: Response) {
+    async getFilterItems(request: Request<{}, {}, {}, Partial<IFilterItem>>, response: Response, next: NextFunction) {
         try {
-            const filterItems = await this.filterItemService.read(query)
+            const data = await this.filterItemService.read(request.query)
 
-            this.send({
-                response: res,
-                data: filterItems,
-                url: this.path,
-                method,
-            })
-        } catch (err) {
-            return this.error({
-                error: err,
-                url: this.path,
-                method,
-            })
+            // @ts-ignore
+            this.send({ data, request, response })
+        } catch (error) {
+            // @ts-ignore
+            this.error({ error, request, next })
         }
     }
 
-    async deleteFilterItem({ query, method }: Request<{}, {}, {}, { id: string }>, res: Response) {
+    async deleteFilterItem(request: Request<{}, {}, {}, { id: string }>, response: Response, next: NextFunction) {
         try {
-            await this.filterItemService.delete(query.id)
+            const data = await this.filterItemService.delete(request.query.id)
 
-            this.send({
-                response: res,
-                data: true,
-                url: this.path,
-                method,
-            })
-        } catch (err: any) {
-            return this.error({
-                error: err,
-                url: this.path,
-                method,
-            })
+            this.send({ data, request, response })
+        } catch (error) {
+            this.error({ error, request, next })
         }
     }
 }
