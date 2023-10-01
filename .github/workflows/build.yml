@@ -16,6 +16,13 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     needs: preinstall
+    env:
+      USER: ${{ secrets.USER }}
+      MONGO_URI: ${{ secrets.MONGO_URI }}
+      ACCESS_TOKEN_SECRET_KEY: ${{ secrets.ACCESS_TOKEN_SECRET_KEY }}
+      REFRESH_TOKEN_SECRET_KEY: ${{ secrets.REFRESH_TOKEN_SECRET_KEY }}
+      REDIS_URL: ${{ secrets.REDIS_URL }}
+      UPLOADS_DIR: ${{ secrets.UPLOADS_DIR }}
     steps:
       - uses: actions/checkout@v3
       - name: install lerna
