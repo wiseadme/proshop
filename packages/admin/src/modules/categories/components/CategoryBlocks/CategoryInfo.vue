@@ -1,12 +1,12 @@
 <script lang="ts" setup>
     import { computed, unref } from 'vue'
     import { FormCard } from '@shared/components/FormCard'
-    import { useCategory } from '@modules/categories/composables/use-category'
+    import { useCategoryModel } from '@modules/categories/composables/use-category-model'
     import { useCategoriesService } from '@modules/categories/composables/use-categories-service'
     import { ICategory } from '@proshop/types'
     import { useCategoryInfo } from '@modules/categories/composables/use-category-info'
 
-    const { model } = useCategory()
+    const { model } = useCategoryModel()
     const {
         categories,
     } = useCategoriesService()

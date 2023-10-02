@@ -1,13 +1,19 @@
 <script lang="ts" setup>
     import { ImagesLoader } from '@shared/components/ImagesLoader'
-    import { useCategory } from '@modules/categories/composables/use-category'
     import { useCategoriesService } from '@modules/categories/composables/use-categories-service'
     import { useCategoryImages } from '@modules/categories/composables/use-category-images'
-    import { IAsset } from '@proshop/types'
+    import { computed, unref } from 'vue'
 
-    const { onDeleteCategoryImage, onUploadCategoryImage } = useCategory()
-    const { onUpdateImagesOrders, onUpdateMainImage } = useCategoryImages()
+    const {
+        onUpdateImagesOrders,
+        onUpdateMainImage,
+        onUploadCategoryImage,
+        onDeleteCategoryImage,
+    } = useCategoryImages()
+
     const { category } = useCategoriesService()
+
+    const assets = computed(() => unref(category)?.assets.sort((a, b) => a.order - b.order) || [])
 
     const onLoadImage = ([file]) => {
         if (!file) return
@@ -18,7 +24,7 @@
 <template>
     <v-layout>
         <images-loader
-            :assets="category.assets as IAsset[]"
+            :assets="assets"
             @delete="onDeleteCategoryImage"
             @load="onLoadImage"
             @update:main="onUpdateMainImage"

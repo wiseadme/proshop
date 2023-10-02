@@ -3,9 +3,22 @@ import { IAsset } from '@proshop/types'
 import { useNotifications } from '@shared/components/VNotifications/use-notifications'
 import { CHANGES_SAVED, SAVING_ERROR } from '@shared/constants/notifications'
 import { computed, unref } from 'vue'
+import {
+    CATEGORY_IMAGE_DELETED,
+    CATEGORY_IMAGE_SAVED,
+} from '@modules/categories/constants/notifications'
+import { useCategoryModel } from '@modules/categories/composables/use-category-model'
 
 export const useCategoryImages = () => {
-    const { category, updateCategoryImagesOrders } = useCategoriesService()
+    const {
+        category,
+        updateCategoryImagesOrders,
+        updateCategoryMainImage,
+        uploadCategoryImage,
+        deleteCategoryImage,
+    } = useCategoriesService()
+
+    const { model } = useCategoryModel()
     const { notify } = useNotifications()
 
     const mainImage = computed(() => (unref(category)?.assets as IAsset[]).find(it => it.main))
@@ -20,13 +33,42 @@ export const useCategoryImages = () => {
         }
     }
 
-    const onUpdateMainImage = (asset: IAsset) => {
-        console.log(asset)
+    const onUploadCategoryImage = async (file: File) => {
+        try {
+            await uploadCategoryImage(file)
+            unref(model).image = unref(category)!.image
+
+            notify(CATEGORY_IMAGE_SAVED)
+        } catch (err) {
+            notify(SAVING_ERROR)
+        }
+    }
+
+    const onDeleteCategoryImage = async (asset: IAsset) => {
+        try {
+            await deleteCategoryImage(asset)
+
+            notify(CATEGORY_IMAGE_DELETED)
+        } catch {
+            notify(SAVING_ERROR)
+        }
+    }
+
+    const onUpdateMainImage = async (asset: IAsset) => {
+        try {
+            await updateCategoryMainImage(asset)
+
+            notify(CHANGES_SAVED)
+        } catch (err) {
+            notify(SAVING_ERROR)
+        }
     }
 
     return {
         mainImage,
         onUpdateImagesOrders,
+        onUploadCategoryImage,
+        onDeleteCategoryImage,
         onUpdateMainImage,
     }
 }

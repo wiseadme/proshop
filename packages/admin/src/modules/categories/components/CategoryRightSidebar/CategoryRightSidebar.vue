@@ -10,12 +10,12 @@
     import { RouteNames } from '@modules/categories/enums/route-names'
     import { IMAGES_BLOCK, INFO_BLOCK } from '@modules/categories/constants/sections'
     import { RightSidebar } from '@shared/components/RightSidebar'
-    import { useCategory } from '@modules/categories/composables/use-category'
+    import { useCategoryModel } from '@modules/categories/composables/use-category-model'
 
     const CategoryInfo = markRaw(defineAsyncComponent(() => import('@modules/categories/components/CategoryBlocks/CategoryInfo.vue')))
     const CategoryImages = markRaw(defineAsyncComponent(() => import('@modules/categories/components/CategoryBlocks/CategoryImages.vue')))
 
-    const { model } = useCategory()
+    const { model } = useCategoryModel()
 
     const tabs = computed<SidebarTab[]>(() => [
         {
