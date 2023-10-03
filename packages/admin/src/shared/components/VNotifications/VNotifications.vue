@@ -2,7 +2,7 @@
     import {
         computed,
         onMounted,
-        ref
+        ref,
     } from 'vue'
     import { useEventEmitter } from './use-event-emitter'
     import { Notify } from './types'
@@ -97,10 +97,5 @@
     </div>
 </template>
 <style lang="scss">
-    .v-notifications {
-        display: block;
-        position: fixed;
-        z-index: 5000;
-        padding: 10px;
-    }
+    @import "VNotifications";
 </style>

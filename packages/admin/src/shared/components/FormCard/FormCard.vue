@@ -49,6 +49,13 @@
                     <slot name="title"/>
                 </div>
             </div>
+            <v-spacer/>
+            <div
+                v-if="$slots.header"
+                class="form-card__header-right"
+            >
+                <slot name="header"/>
+            </div>
         </v-card-title>
 
         <v-card-subtitle
@@ -74,45 +81,6 @@
         </v-card-actions>
     </v-card>
 </template>
-<style lang="scss">
-    .form-card {
-        overflow: visible;
-        border-radius: $border-radius;
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-
-        &__head {
-            position: relative;
-        }
-
-        &__icon {
-            font-size: .9rem;
-            padding: 0;
-            min-height: 32px;
-            border-radius: $border-radius;
-
-            &-item {
-
-            }
-        }
-
-        &__title {
-            font-size: .8rem;
-            border-bottom-left-radius: $border-radius;
-            border-top-right-radius: $border-radius;
-            font-weight: 700;
-        }
-
-
-        &__body {
-            overflow-x: auto;
-        }
-
-        &__subtitle {
-            font-size: .7rem;
-            padding: 0;
-            min-height: 32px;
-        }
-    }
+<style lang="scss" scoped>
+    @import "FormCard";
 </style>

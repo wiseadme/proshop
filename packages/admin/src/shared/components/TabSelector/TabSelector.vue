@@ -56,11 +56,3 @@
         </div>
     </div>
 </template>
-<style lang="scss" scoped>
-
-    .tab-selector {
-        &__tabs {
-
-        }
-    }
-</style>

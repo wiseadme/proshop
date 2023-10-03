@@ -51,58 +51,6 @@
         </template>
     </div>
 </template>
-<style lang="scss">
-    $tree-item-width: 20vw;
-    $margin-bottom: 20px;
-    $button-height: 60px;
-    $button-width: 200px;
-
-    .tree {
-        &-item {
-            position: relative;
-            margin-bottom: $margin-bottom;
-
-            &--parent-line {
-                position: absolute;
-                width: $tree-item-width;
-                height: 1px;
-                top: calc(#{$button-height} / 2);
-                left: -$tree-item-width / 2;
-                background-color: #000;
-            }
-
-            &__cell {
-                width: 20vw;
-                position: relative;
-            }
-
-            &__button {
-                position: relative;
-                overflow: visible;
-                display: block;
-                white-space: pre-wrap;
-            }
-
-            &--has-child {
-                &:after {
-                    content: "";
-                    position: absolute;
-                    display: block;
-                    width: 50%;
-                    left: 100%;
-                    top: 50%;
-                    height: 1px;
-                    background-color: #000;
-                }
-            }
-        }
-    }
-
-    .bottom-line {
-        position: absolute;
-        width: 1px;
-        height: calc(100% - #{$margin-bottom} - #{$button-height / 2});
-        left: 50%;
-        background-color: #000;
-    }
+<style lang="scss" scoped>
+    @import "TreeView";
 </style>
