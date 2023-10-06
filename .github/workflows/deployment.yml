@@ -7,19 +7,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: cache node modules
-        id: cache-node-modules
-        uses: actions/cache@v2
-        env:
-          cache-name: cache-node-modules
-        with:
-          path: node_modules
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
-
-      - uses: actions/checkout@v3
-      - name: install lerna
-        if: steps.cache-node-modules.outputs.cache-hit != 'true'
-        run: npm install
       - name: cache project deps
         id: cache-project-deps
         uses: actions/cache@v2
@@ -47,18 +34,6 @@ jobs:
       IMAGE_NAME: ecommerce
     steps:
       - uses: actions/checkout@v3
-      - name: cache node modules
-        id: cache-node-modules
-        uses: actions/cache@v3
-        env:
-          cache-name: cache-node-modules
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
-
-      - name: Install Dependencies
-        if: steps.cache-node-modules.outputs.cache-hit != 'true'
-        run: npm install
       - name: cache project deps
         id: cache-project-deps
         uses: actions/cache@v3
