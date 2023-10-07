@@ -15,7 +15,8 @@
     "lint:fix": "lerna run lint:fix"
   },
   "workspaces": [
-    "packages/*"
+    "packages/admin",
+    "packages/server"
   ],
   "keywords": [],
   "author": "Anar Allakhverdiev <wiseadme@gmail.com>",
