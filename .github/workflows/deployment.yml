@@ -1,7 +1,7 @@
 name: preinstall
 on:
   push:
-    branches: ['master', 'refactor']
+    branches: ['master']
 jobs:
   preinstall:
     runs-on: ubuntu-latest

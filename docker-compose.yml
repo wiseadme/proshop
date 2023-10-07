@@ -1,18 +1,18 @@
 version: '3'
 services:
   server:
-    build: ./packages/server
+    image: wiseadme/ecommerce:server
     container_name: server
     command: npm run start
     restart: unless-stopped
     environment:
       - PORT=5001
-      - USER=${USER}
-      - MONGO_URI=${MONGO_URI}
-      - ACCESS_TOKEN_SECRET_KEY=${ACCESS_TOKEN_SECRET_KEY}
-      - REFRESH_TOKEN_SECRET_KEY=${REFRESH_TOKEN_SECRET_KEY}
-      - REDIS_URL=${REDIS_URL}
-      - UPLOADS_DIR=${UPLOADS_DIR}
+      - USER=wiseadme
+      - MONGO_URI=mongodb://localhost:27017/commerce
+      - ACCESS_TOKEN_SECRET_KEY=menesilazerbaijanliyam
+      - REFRESH_TOKEN_SECRET_KEY=esilsozmenasibudur
+      - REDIS_URL=redis://redis-cache:6379
+      - UPLOADS_DIR=/home/wiseadme/www/uploads
     volumes:
       - uploads:/home/wiseadme/www/uploads/
     depends_on:
@@ -75,7 +75,7 @@ services:
       - mongoNet
 
   admin:
-    build: ./packages/admin
+    image: wiseadme/ecommerce:admin
     container_name: admin
     command: nginx -g "daemon off;"
     restart: unless-stopped
