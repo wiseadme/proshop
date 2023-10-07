@@ -1,0 +1,26 @@
+name: test
+on:
+  pull_request:
+    branches: [master, develop]
+  push:
+    branches: [master]
+
+jobs:
+  install_deps:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: cache project deps
+        id: cache-project-deps
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-project-deps
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+      - name: install project deps
+        if: steps.cache-project-deps.outputs.cache-hit != 'true'
+        run: npm run setup
+      - name: build project
+        run: npm run build
+

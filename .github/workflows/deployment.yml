@@ -1,25 +1,13 @@
-name: preinstall
+name: deployment
 on:
+  workflow_run:
+    workflows: ["test"]
+    branches: [master]
+    types:
+      - completed
   push:
     branches: ['master']
 jobs:
-  preinstall:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - name: cache project deps
-        id: cache-project-deps
-        uses: actions/cache@v2
-        env:
-          cache-name: cache-project-deps
-        with:
-          path: node_modules
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
-      - name: install project deps
-        if: steps.cache-project-deps.outputs.cache-hit != 'true'
-        run: npm run setup
-      - name: build project
-        run: npm run build
   build:
     runs-on: ubuntu-latest
     needs: preinstall
