@@ -2,7 +2,7 @@
     import {
         computed,
         ref,
-        unref
+        unref,
     } from 'vue'
     import draggable from 'vuedraggable'
 
@@ -26,7 +26,7 @@
         (e: 'update:modelValue', value: OrderableItem<T>[]): void
         (e: 'update', value: OrderableItem<T>[]): void
         (e: 'change', value: OrderableItem<T>[]): void
-        (e: 'remove', value: number): void
+        (e: 'remove', value: T): void
         (e: 'delete', value: OrderableItem<T>): void
         (e: 'edit', value: OrderableItem<T>): void
         (e: 'sort', value: OrderableItem<T>): void
@@ -181,22 +181,6 @@
         </draggable>
     </v-list>
 </template>
-<style lang="scss">
-    .draggable-item {
-        cursor: grab;
-
-        .menu {
-            cursor: pointer;
-            min-width: 45px;
-            width: 45px;
-        }
-    }
-
-    .draggable-item:active {
-        cursor: grabbing;
-    }
-
-    .draggable-container {
-        min-height: 400px;
-    }
+<style lang="scss" scoped>
+    @import "DraggableItemsList";
 </style>

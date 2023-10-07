@@ -58,7 +58,6 @@ export const useProductAttributes = createSharedComposable(() => {
     }
 
     const onAddAttribute = async (attribute: IAttribute) => {
-        console.log(attribute)
         try {
             await addProductAttribute(attribute)
 

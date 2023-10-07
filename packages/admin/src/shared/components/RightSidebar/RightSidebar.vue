@@ -63,24 +63,5 @@
     </div>
 </template>
 <style lang="scss" scoped>
-    .sidebar {
-        height: calc(100vh - #{$layout-padding-top} - #{$layout-padding-bottom});
-
-        &--sticky {
-            position: sticky;
-            top: $layout-padding-top;
-        }
-    }
-
-    .context-menu {
-        height: 100%;
-
-        &__item {
-            cursor: pointer;
-        }
-
-        &__buttons {
-            justify-self: flex-end;
-        }
-    }
+    @import "RightSideBar";
 </style>

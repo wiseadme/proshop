@@ -1,6 +1,6 @@
 <script lang="ts" setup>
     import CategoryTable from '@modules/categories/components/CategoriesTable'
-    import { useCategory } from '@modules/categories/composables/use-category'
+    import { useCategoryModel } from '@modules/categories/composables/use-category-model'
     import { useCategoriesService } from '@modules/categories/composables/use-categories-service'
     import { useCategoriesTable } from '@modules/categories/composables/use-categories-table'
 
@@ -11,7 +11,7 @@
 
     const {
         onDeleteCategory,
-    } = useCategory()
+    } = useCategoryModel()
 
     const { cols } = useCategoriesTable()
 

@@ -1,5 +1,5 @@
 import { unref } from 'vue'
-import { useCategory } from '@modules/categories/composables/use-category'
+import { useCategoryModel } from '@modules/categories/composables/use-category-model'
 import { useCategoriesService } from '@modules/categories/composables/use-categories-service'
 import { useNotifications } from '@shared/components/VNotifications/use-notifications'
 import { hasDiffs, hasValueDiffs } from '@shared/helpers/diffs.helpers'
@@ -13,7 +13,7 @@ import { ICategory } from '@proshop/types'
 const infoBlockKeys = ['title', 'order', 'seo', 'url', 'parentId']
 
 export const useCategoryInfo = () => {
-    const { model, isEditMode } = useCategory()
+    const { model, isEditMode } = useCategoryModel()
     const { category, updateCategory, createCategory } = useCategoriesService()
     const { notify } = useNotifications()
     const getInfoBlockUpdates = (): Partial<ICategory> => infoBlockKeys.reduce((updates, key) => {

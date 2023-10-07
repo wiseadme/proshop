@@ -7,12 +7,12 @@ services:
     restart: unless-stopped
     environment:
       - PORT=5001
-      - USER=wiseadme
-      - MONGO_URI=mongodb://mongo1,mongo2,mongo3:27017/commerce
-      - ACCESS_TOKEN_SECRET_KEY=menesilazerbaijanliyam
-      - REFRESH_TOKEN_SECRET_KEY=esilsozmenasibudur
-      - REDIS_URL=redis://redis-cache:6379
-      - UPLOADS_DIR=/home/wiseadme/www/uploads
+      - USER=${USER}
+      - MONGO_URI=${MONGO_URI}
+      - ACCESS_TOKEN_SECRET_KEY=${ACCESS_TOKEN_SECRET_KEY}
+      - REFRESH_TOKEN_SECRET_KEY=${REFRESH_TOKEN_SECRET_KEY}
+      - REDIS_URL=${REDIS_URL}
+      - UPLOADS_DIR=${UPLOADS_DIR}
     volumes:
       - uploads:/home/wiseadme/www/uploads/
     depends_on:
@@ -161,8 +161,8 @@ services:
     volumes:
       - ./nginx/nginx.prod.conf:/etc/nginx/nginx.conf
       - ./nginx/nginx.shop.conf:/etc/nginx/conf.d/nginx.shop.conf
-      - uploads:/var/lib/docker/volumes/uploads/_data
-      - shop:/var/lib/docker/volumes/shop/_data/.output/public/_nuxt
+      - uploads:/var/lib/docker/volumes/proshop_uploads/_data
+      - shop:/var/lib/docker/volumes/proshop_shop/_data/.output/public/_nuxt
       - cache:/usr/share/nginx/www
     depends_on:
       - admin

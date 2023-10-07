@@ -11,6 +11,7 @@ import {
     ICategory,
     Maybe,
 } from '@proshop/types'
+import { getIds } from '@modules/products/helpers'
 
 export const useCategoriesService = createSharedComposable(() => {
     const _store = useCategoriesStore()
@@ -56,7 +57,7 @@ export const useCategoriesService = createSharedComposable(() => {
         }
     }
 
-    const updateCategory = async (updates: Partial<ICategory>): Promise<ICategory> => {
+    const updateCategory = async (updates: Record<string, any>): Promise<ICategory> => {
         updates.id = unref(category)!.id
 
         try {
@@ -94,17 +95,40 @@ export const useCategoriesService = createSharedComposable(() => {
         }
     }
 
+    const updateCategoryMainImage = async (asset: IAsset) => {
+        const oldMain = unref(category)!.assets.find(it => it.main)!
+        const newMain = unref(category)!.assets.find(it => it.id === asset.id)!
+
+        if (oldMain) oldMain.main = false
+
+        newMain.main = true
+
+        try {
+            await _filesService.updateMany(unref(category)!.assets.map(it => ({
+                id: it.id,
+                main: it.main
+            })))
+
+            return await updateCategory({id: newMain.ownerId, image: newMain.url})
+        } catch (err) {
+            return Promise.reject(err)
+        }
+    }
+
     const uploadCategoryImage = async (file: File): Promise<ICategory> => {
         try {
             const asset = await saveFileAsset(file) as IAsset
+            const assets = [...unref(category)!.assets, asset]
 
-            const { assets = [] as IAsset[] } = unref(category) as ICategory
-            (assets as IAsset[]).push(asset)
+            if (assets.length === 1) {
+                assets[0].main = true
+                await _filesService.updateFile(asset)
+            }
 
             const data = await updateCategory({
-                id: asset.ownerId,
-                image: null /*asset.url*/,
-                assets: assets.map(it => it.id),
+                id: unref(category)!.id,
+                image: assets[0].url,
+                assets: getIds(assets)
             })
 
             setAsCurrent(data)
@@ -127,11 +151,18 @@ export const useCategoriesService = createSharedComposable(() => {
                 id: asset.id,
             })
 
-            const { assets = [] as IAsset[] } = unref(category) as ICategory
+            const assets = [...unref(category)!.assets.filter(it => it.id !== asset.id)]
+            const hasLastImage = assets.length === 1
+
+            if (hasLastImage) {
+                assets[0].main = true
+                await _filesService.updateFile(assets[0])
+            }
 
             const updated = await updateCategory({
                 id: asset.ownerId,
-                assets: (assets as IAsset[]).filter(it => it.id !== asset.id).map(it => it.id),
+                assets: getIds(assets),
+                image: hasLastImage ? assets[0].url : null
             })
 
             setAsCurrent(updated)
@@ -163,6 +194,7 @@ export const useCategoriesService = createSharedComposable(() => {
         deleteCategory,
         uploadCategoryImage,
         deleteCategoryImage,
+        updateCategoryMainImage,
         updateCategoryImagesOrders,
     }
 })
