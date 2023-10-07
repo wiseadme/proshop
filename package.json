@@ -7,7 +7,7 @@
     "docker-start": "docker-compose -f docker-compose.dev.yml up -d",
     "docker-stop": "docker-compose -f docker-compose.dev.yml down",
     "bootstrap": "lerna bootstrap --hoist",
-    "setup": "npm ci && npm run bootstrap",
+    "setup": "npm install && npm run bootstrap",
     "build": "lerna run build",
     "lint": "lerna run lint",
     "publish": "lerna publish --conventional-commits",

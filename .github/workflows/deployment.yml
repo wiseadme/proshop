@@ -18,8 +18,8 @@ jobs:
       IMAGE_NAME: ecommerce
     steps:
       - uses: actions/checkout@v3
-      - name: cache project deps
-        id: cache-project-deps
+      - name: cache-deps
+        id: cache-deps
         uses: actions/cache@v3
         env:
           cache-name: cache-project-deps
@@ -27,7 +27,7 @@ jobs:
           path: ~/.npm
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
       - name: install project deps
-        if: steps.cache-project-deps.outputs.cache-hit != 'true'
+        if: steps.cache-deps.outputs.cache-hit != 'true'
         run: npm run setup
       - name: build projects
         run: npm run build
