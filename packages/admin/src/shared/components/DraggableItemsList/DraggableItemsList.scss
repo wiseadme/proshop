@@ -1,0 +1,17 @@
+.draggable-item {
+  cursor: grab;
+
+  .menu {
+    cursor: pointer;
+    min-width: 45px;
+    width: 45px;
+  }
+}
+
+.draggable-item:active {
+  cursor: grabbing;
+}
+
+.draggable-container {
+  min-height: 400px;
+}

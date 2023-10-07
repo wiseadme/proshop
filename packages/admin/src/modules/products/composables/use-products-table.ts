@@ -96,7 +96,7 @@ export const useProductsTable = () => {
             width: '300',
             resizeable: true,
             sortable: true,
-            filterable: true,
+            filterable: false,
             format: (row: IProduct) => row.name,
             onSort: (col) => onSortColumn(col),
         },
@@ -106,7 +106,7 @@ export const useProductsTable = () => {
             width: '250',
             resizeable: true,
             sortable: true,
-            filterable: true,
+            filterable: false,
             format: (row: IProduct) => row.url,
             onSort: (col) => onSortColumn(col),
         },
@@ -116,7 +116,7 @@ export const useProductsTable = () => {
             width: '250',
             resizeable: true,
             sortable: true,
-            filterable: true,
+            filterable: false,
             format: (row: IProduct) => row.price,
             onSort: (col) => onSortColumn(col),
         },
@@ -126,7 +126,7 @@ export const useProductsTable = () => {
             width: '250',
             resizeable: true,
             sortable: true,
-            filterable: true,
+            filterable: false,
             format: (row: IProduct) => row.quantity,
             onSort: (col) => onSortColumn(col),
         },
@@ -136,7 +136,7 @@ export const useProductsTable = () => {
             width: '250',
             resizeable: true,
             sortable: true,
-            filterable: true,
+            filterable: false,
             onSort: (col) => onSortColumn(col),
         },
         {
@@ -153,7 +153,7 @@ export const useProductsTable = () => {
             width: '250',
             resizeable: true,
             sortable: true,
-            filterable: true,
+            filterable: false,
             format: (row: IProduct) => (row.categories as ICategory[]).reduce((acc, c, i, arr) => {
                 acc += c.title
                 if (i + 1 !== arr.length) acc += ', '
@@ -167,7 +167,7 @@ export const useProductsTable = () => {
             width: '250',
             resizeable: true,
             sortable: true,
-            filterable: true,
+            filterable: false,
             format: (row: IProduct) => row.seo.title,
         },
     ])

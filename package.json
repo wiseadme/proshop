@@ -9,6 +9,7 @@
     "bootstrap": "lerna bootstrap --hoist",
     "setup": "npm ci && npm run bootstrap",
     "build": "lerna run build",
+    "lint": "lerna run lint",
     "publish": "lerna publish --conventional-commits",
     "docker:build": "lerna run build && docker-compose build",
     "lint:fix": "lerna run lint:fix"

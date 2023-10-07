@@ -11,7 +11,7 @@ export interface ICategory {
     id: string
     title: string
     image: Maybe<string>
-    assets: IAsset[] | string[]
+    assets: IAsset[]
     seo: ISEOType
     url: string
     parentId: Maybe<string>

@@ -1,11 +1,14 @@
 <script lang="ts" setup>
     import { computed, unref } from 'vue'
+    // Composables
     import { useProductAttributes } from '@modules/products/composables/use-product-attributes'
     import { useProductModel } from '@modules/products/composables/use-product-model'
+    // Components
     import { FormCard } from '@shared/components/FormCard'
-    import VSvg from '@shared/components/VSvg/VSvg.vue'
+    import { VSvg } from '@shared/components/VSvg'
     import DraggableItemsList from '@shared/components/DraggableItemsList/DraggableItemsList.vue'
     import AttributesEditForm from '@modules/products/components/ProductModalEditForms/AttributesEditForm.vue'
+    // Enums
     import { SvgPaths } from '@shared/enums/svg-paths'
 
     const { model } = useProductModel()

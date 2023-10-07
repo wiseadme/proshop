@@ -1,16 +1,20 @@
 import { ref, unref } from 'vue'
 import { useCategoriesService } from '@modules/categories/composables/use-categories-service'
 import { ICategory } from '@proshop/types'
-import { useCategory } from '@modules/categories/composables/use-category'
+import { useCategoryModel } from '@modules/categories/composables/use-category-model'
 import { RouteNames } from '@modules/categories/enums/route-names'
 import { CREATE } from '@shared/constants/actions'
 import { INFO_BLOCK } from '@modules/products/constants/sections'
 import { useRouter } from 'vue-router'
+import { CATEGORY_DELETED } from '@modules/categories/constants/notifications'
+import { SAVING_ERROR } from '@shared/constants/notifications'
+import { useNotifications } from '@shared/components/VNotifications/use-notifications'
 
 export const useCategoriesTable = () => {
+    const { categories, setAsCurrent, deleteCategory } = useCategoriesService()
+    const { setCategoryModel } = useCategoryModel()
+    const { notify } = useNotifications()
     const router = useRouter()
-    const { categories, setAsCurrent } = useCategoriesService()
-    const { setCategoryModel } = useCategory()
 
     const cols = ref([
         {
@@ -88,6 +92,16 @@ export const useCategoriesTable = () => {
         },
     ])
 
+    const onDeleteRow = async (category: ICategory) => {
+        try {
+            await deleteCategory(category.id)
+
+            notify(CATEGORY_DELETED)
+        } catch {
+            notify(SAVING_ERROR)
+        }
+    }
+
     const onCreateRow = () => {
         setCategoryModel(null)
         setAsCurrent(null)
@@ -105,5 +119,6 @@ export const useCategoriesTable = () => {
     return {
         cols,
         onCreateRow,
+        onDeleteRow,
     }
 }
