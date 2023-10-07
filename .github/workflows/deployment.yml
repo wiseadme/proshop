@@ -4,7 +4,6 @@ on:
     workflows: ["test"]
     branches: [master]
     types: [completed]
-
 jobs:
   build:
     runs-on: ubuntu-latest
