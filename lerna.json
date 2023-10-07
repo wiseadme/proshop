@@ -3,5 +3,6 @@
     "packages/admin",
     "packages/server"
   ],
+  "useWorkspaces": true,
   "version": "independent"
 }
