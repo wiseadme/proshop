@@ -1,21 +1,20 @@
 <script lang="ts" setup>
     import CategoryTable from '@modules/categories/components/CategoriesTable'
-    import { useCategoryModel } from '@modules/categories/composables/use-category-model'
     import { useCategoriesService } from '@modules/categories/composables/use-categories-service'
     import { useCategoriesTable } from '@modules/categories/composables/use-categories-table'
+    import { onBeforeMount } from 'vue'
 
     const {
         categories,
         getCategories
     } = useCategoriesService()
 
-    const {
-        onDeleteCategory,
-    } = useCategoryModel()
-
+    const {onDeleteRow} = useCategoriesTable()
     const { cols } = useCategoriesTable()
 
-    getCategories()
+    onBeforeMount(async () => {
+        await getCategories()
+    })
 
 </script>
 <template>
@@ -25,7 +24,7 @@
                 <category-table
                     :cols="cols"
                     :rows="categories"
-                    @delete:category="onDeleteCategory"
+                    @delete:category="onDeleteRow"
                 />
             </v-col>
         </v-row>

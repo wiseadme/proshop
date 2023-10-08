@@ -1,9 +1,11 @@
 name: deployment
 on:
-  workflow_run:
-    workflows: ["test"]
+  push:
     branches: [master]
-    types: [completed]
+#  workflow_run:
+#    workflows: ["test"]
+#    branches: [master]
+#    types: [completed]
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -14,20 +16,20 @@ jobs:
       REFRESH_TOKEN_SECRET_KEY: ${{ secrets.REFRESH_TOKEN_SECRET_KEY }}
       REDIS_URL: ${{ secrets.REDIS_URL }}
       UPLOADS_DIR: ${{ secrets.UPLOADS_DIR }}
-      REGISTRY: wiseadme
-      IMAGE_NAME: ecommerce
+      REGISTRY: ${{ secrets.DOCKER_REGISTRY }}
+      IMAGE_NAME: ${{ secrets.DOCKER_PROJECT }}
     steps:
       - uses: actions/checkout@v3
-      - name: cache-deps
-        id: cache-deps
+      - name: cache modules
+        id: cache-modules
         uses: actions/cache@v3
         env:
-          cache-name: cache-deps
+          cache-name: cache-modules
         with:
-          path: ~/.npm
+          path: node_modules
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
       - name: install project deps
-        if: steps.cache-deps.outputs.cache-hit != 'true'
+        if: steps.cache-modules.outputs.cache-hit != 'true'
         run: npm run setup
       - name: build projects
         run: npm run build

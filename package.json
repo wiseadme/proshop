@@ -16,7 +16,8 @@
   },
   "workspaces": [
     "packages/admin",
-    "packages/server"
+    "packages/server",
+    "packages/types"
   ],
   "keywords": [],
   "author": "Anar Allakhverdiev <wiseadme@gmail.com>",

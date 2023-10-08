@@ -1,7 +1,8 @@
 {
   "packages": [
     "packages/admin",
-    "packages/server"
+    "packages/server",
+    "packages/types"
   ],
   "useWorkspaces": true,
   "version": "independent"
