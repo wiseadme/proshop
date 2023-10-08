@@ -14,7 +14,7 @@ services:
       - REDIS_URL=${REDIS_URL}
       - UPLOADS_DIR=${UPLOADS_DIR}
     volumes:
-      - uploads:/home/wiseadme/www/uploads/
+      - uploads:/home/${USER}/www/uploads/
     depends_on:
       - mongo-setup
       - redis-cache
