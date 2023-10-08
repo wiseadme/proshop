@@ -2,6 +2,8 @@ name: deployment
 on:
   push:
     branches: [master]
+#    paths-ignore:
+#      - '.github/**'
 #  workflow_run:
 #    workflows: ["test"]
 #    branches: [master]

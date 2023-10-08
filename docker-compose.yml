@@ -7,14 +7,14 @@ services:
     restart: unless-stopped
     environment:
       - PORT=5001
-      - USER=wiseadme
-      - MONGO_URI=mongodb://localhost:27017/commerce
+      - USER=anar
+      - MONGO_URI=mongodb://mongo1,mongo2,mongo3:27017/commerce
       - ACCESS_TOKEN_SECRET_KEY=menesilazerbaijanliyam
       - REFRESH_TOKEN_SECRET_KEY=esilsozmenasibudur
       - REDIS_URL=redis://redis-cache:6379
-      - UPLOADS_DIR=/home/wiseadme/www/uploads
+      - UPLOADS_DIR=/home/${USER}/www/uploads
     volumes:
-      - uploads:/home/wiseadme/www/uploads/
+      - uploads:/home/${USER}/www/uploads/
     depends_on:
       - mongo-setup
       - redis-cache

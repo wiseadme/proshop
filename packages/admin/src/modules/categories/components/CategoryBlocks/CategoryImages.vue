@@ -13,7 +13,7 @@
 
     const { category } = useCategoriesService()
 
-    const assets = computed(() => unref(category)?.assets.sort((a, b) => a.order - b.order) || [])
+    const assets = computed(() => unref(category)?.assets?.sort((a, b) => a.order - b.order) || [])
 
     const onLoadImage = ([file]) => {
         if (!file) return

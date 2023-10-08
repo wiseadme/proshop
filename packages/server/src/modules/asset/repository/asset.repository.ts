@@ -24,22 +24,20 @@ export class AssetRepository implements IAssetsRepository {
     }
 
     save(req: Request, res: Response): Promise<AssetsResponse> {
+        const upload = this.fileLoader.loadSingle('image')
+        const ownerId = req.query.id as string
+        const ownerDir = ownerId.slice(-10)
+
+        const assetId = new mongoose.Types.ObjectId()
+        const { fileName } = req.query
+        const url = `/uploads/${ownerDir}/${assetId.toString()}|${fileName}`
+
+        req.query.assetId = assetId.toString()
+        req.query.ownerDir = ownerDir
+
         return new Promise((resolve, reject) => {
-            const upload = this.fileLoader.loadSingle('image')
-            const ownerId = req.query.id as string
-            const ownerDir = ownerId.slice(-10)
-
-            const assetId = new mongoose.Types.ObjectId()
-            const { fileName } = req.query
-            const url = `/uploads/${ownerDir}/${assetId.toString()}|${fileName}`
-
-            req.query.assetId = assetId.toString()
-            req.query.ownerDir = ownerDir
-
             upload(req, res, (err) => {
-                if (err) {
-                    return reject(err)
-                }
+                if (err) return reject(err)
 
                 new AssetModel({
                     _id: assetId,
