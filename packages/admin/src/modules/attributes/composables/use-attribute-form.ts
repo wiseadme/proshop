@@ -37,7 +37,6 @@ export const useAttributeForm = createSharedComposable(() => {
 
     const onSubmit = (validate: () => Promise<boolean>) => {
         validate().then(() => unref(isEditMode) ? onUpdateAttribute() : onCreateAttribute())
-
     }
 
     return {

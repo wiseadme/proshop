@@ -12,6 +12,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      REGISTRY: ${{ secrets.DOCKER_REGISTRY }}
+      IMAGE_NAME: ${{ secrets.DOCKER_PROJECT }}
     steps:
       - uses: actions/checkout@v3
       - name: cache modules
