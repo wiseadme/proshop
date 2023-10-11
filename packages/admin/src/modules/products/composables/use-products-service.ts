@@ -422,8 +422,6 @@ export const useProductsService = createSharedComposable(() => {
     const updateProductAssets = async (assets: Partial<IAsset>[]) => {
         try {
             return await _filesService.updateMany(assets)
-
-            // return await getProduct(unref(product)!.id)
         } catch (err) {
             return Promise.reject(err)
         }
@@ -450,20 +448,16 @@ export const useProductsService = createSharedComposable(() => {
             asset.main = !unref(product)?.assets.length
             const assets = [...unref(product)!.assets, asset] as IAsset[]
 
-            /** TODO - заменить на один апдейт */
             if (asset.main) {
                 await updateProductAssets([asset])
             }
 
-            const updated = await updateProduct({
+            return await updateProduct({
                 id: asset.ownerId,
                 assets: getIds(assets),
                 image: asset.main ? asset.url : null,
             })
 
-            setAsCurrent(updated)
-
-            return updated
         } catch (err) {
             return Promise.reject(err)
         }
