@@ -236,8 +236,9 @@ export class ProductsRepository extends RepositoryHelpers implements IProductsRe
         validateId(params.option.ownerId)
 
         const product = await ProductModel.findOneAndUpdate({
-            _id: params.option.ownerId, variants: {
-                $elemMatch: { _id: params.option.variantId },
+            _id: params.option.ownerId,
+            variants: {
+                $elemMatch: { id: params.option.variantId },
             },
         }, {
             $push: { 'variants.$.options': params.option.id },
@@ -253,7 +254,7 @@ export class ProductsRepository extends RepositoryHelpers implements IProductsRe
 
         const product = await ProductModel.findOneAndUpdate({
             _id: params.option.ownerId,
-            variants: { $elemMatch: { _id: params.option.variantId } },
+            variants: { $elemMatch: { id: params.option.variantId } },
         }, {
             $pull: { 'variants.$.options': params.option.id },
         }, { new: true })

@@ -21,7 +21,7 @@
         IVariant,
     } from '@proshop/types'
 
-    const { model } = useProductModel()
+    const { model, isEditMode } = useProductModel()
     const { products } = useProductsService()
 
     const {
@@ -104,7 +104,7 @@
     }
 
     watch(variantItems, (variants) => {
-        if (!variants) {
+        if (!variants || unref(isEditMode)) {
             return
         }
 
@@ -132,10 +132,7 @@
         if (!variants || !variants.length) return
 
         setAvailableVariants(variants || unref(variantItems)!)
-
-        const variant = variants.find(v => v.id === unref(currentVariant)?.id)
-
-        setCurrentVariant(variant! || unref(currentVariant))
+        setCurrentVariant(unref(currentVariant) || variants[0])
 
     }, { immediate: true })
 
