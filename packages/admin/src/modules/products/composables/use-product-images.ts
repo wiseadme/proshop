@@ -13,9 +13,10 @@ export const useProductImages = () => {
     const { model } = useProductModel()
 
     const {
-        updateProductImages,
+        updateProductAssets,
         uploadProductImage,
         deleteProductImage,
+        updateProductMainImage,
     } = useProductsService()
 
     const { notify } = useNotifications()
@@ -43,17 +44,15 @@ export const useProductImages = () => {
         }
     }
 
-    const setAsMainImage = async (imageAsset: IAsset) => {
-        const currentMainImage = toRaw(unref(mainImage)!)
+    const setAsMainImage = async (mainAsset: IAsset) => {
+        const currentMainAsset = toRaw(unref(mainImage)!)
 
-        imageAsset.main = true
-        currentMainImage.main = false
+        mainAsset.main = true
+        currentMainAsset.main = false
 
         try {
-            await updateProductImages([
-                currentMainImage,
-                imageAsset,
-            ])
+            await updateProductAssets([mainAsset, currentMainAsset])
+            await updateProductMainImage(mainAsset)
 
             notify(CHANGES_SAVED)
         } catch (err) {
@@ -63,7 +62,7 @@ export const useProductImages = () => {
 
     const updateImagesOrders = async (assets: IAsset[]) => {
         try {
-            await updateProductImages(assets.map(it => ({
+            await updateProductAssets(assets.map(it => ({
                 id: it.id,
                 order: it.order
             })))
