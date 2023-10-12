@@ -16,7 +16,7 @@
     import { clone } from '@shared/helpers'
 
     const { product, categoryItems } = useProductsService()
-    const { toggleCategory, select, selectsMap } = useProductCategories()
+    const { selectsMap, toggleCategory, select } = useProductCategories()
     const { treeItems, buildTreeItems } = useTreeView()
 
     const productCategories = computed<ICategory[]>(() => unref(product)?.categories as ICategory[])
@@ -51,7 +51,6 @@
                         v-if="treeItems"
                         :value="selectsMap"
                         :items="treeItems"
-                        class="mt-4"
                         @toggle="toggleCategory"
                     />
                 </template>
