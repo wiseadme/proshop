@@ -3,8 +3,9 @@ on:
   push:
     branches: [master]
     paths-ignore:
-#      - '.github/**'
+      - '.github/**'
       - 'packages/admin/**'
+      - 'docker-*'
 #  workflow_run:
 #    workflows: ["test"]
 #    branches: [master]
