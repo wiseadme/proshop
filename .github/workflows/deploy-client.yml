@@ -34,7 +34,7 @@ jobs:
           username: json_key
           password: ${{ secrets.YCR_TOKEN }}
       - name: Build Docker image
-        run: docker build packages/admin --file packages/admin/Dockerfile --tag ${{ secrets.YR }}/${{ secrets.YR_ID }}/${{ secrets.YR_NAME }}:${{ secrets.YR_ADMIN_IMAGE_TAG }}
+        run: docker build packages/admin --file packages/admin/Dockerfile --tag ${{ secrets.YR }}/${{ secrets.YR_ID }}/${{ secrets.YR_NAME }}:${{ secrets.ADMIN_IMAGE_TAG }}
       - name: Push Docker image to yandex registry
-        run: docker push ${{ secrets.YR }}/${{ secrets.YR_ID }}/${{ secrets.YR_NAME }}:${{ secrets.YR_ADMIN_IMAGE_TAG }}
+        run: docker push ${{ secrets.YR }}/${{ secrets.YR_ID }}/${{ secrets.YR_NAME }}:${{ secrets.ADMIN_IMAGE_TAG }}
 
