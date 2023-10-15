@@ -33,8 +33,11 @@ jobs:
           registry: ${{ secrets.YR }}
           username: json_key
           password: ${{ secrets.YCR_TOKEN }}
-      - name: Build Docker image
-        run: docker build packages/admin --file packages/admin/Dockerfile --tag ${{ secrets.YR }}/${{ secrets.YR_ID }}/${{ secrets.YR_NAME }}:${{ secrets.ADMIN_IMAGE_TAG }}
-      - name: Push Docker image to yandex registry
-        run: docker push ${{ secrets.YR }}/${{ secrets.YR_ID }}/${{ secrets.YR_NAME }}:${{ secrets.ADMIN_IMAGE_TAG }}
+      - name: Build and push docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./packages/admin
+          file: ./packages/admin/Dockerfile
+          push: true
+          tags: ${{ secrets.YR }}/${{ secrets.YR_ID }}/${{ secrets.YR_NAME }}:${{ secrets.ADMIN_IMAGE_TAG }}
 

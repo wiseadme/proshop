@@ -42,10 +42,6 @@ jobs:
           registry: ${{ secrets.YR }}
           username: json_key
           password: ${{ secrets.YCR_TOKEN }}
-#      - name: Build Docker image
-#        run: docker build . --file packages/server/Dockerfile --tag ${{ secrets.YR }}/${{ secrets.YR_ID }}/${{ secrets.YR_NAME }}:${{ secrets.SERVER_IMAGE_TAG }}
-#      - name: Push Docker image to yandex registry
-#        run: docker push ${{ secrets.YR }}/${{ secrets.YR_ID }}/${{ secrets.YR_NAME }}:${{ secrets.SERVER_IMAGE_TAG }}
       - name: Build Docker image
         uses: docker/build-push-action@v5
         with:
