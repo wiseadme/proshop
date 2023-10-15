@@ -3,7 +3,7 @@ on:
   push:
     branches: [master]
     paths-ignore:
-      - '.github/**'
+#      - '.github/**'
       - 'packages/server/**'
 #  workflow_run:
 #    workflows: ["test"]
@@ -12,10 +12,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      REGISTRY: ${{ secrets.YANDEX_REGISTRY }}
-      IMAGE_NAME: ${{ secrets.YANDEX_REGISTRY }}/${{ secrets.YR_ID }}/${{ secrets.YR_NAME }}:${{ secrets.YR_ADMIN_IMAGE_TAG }}
-      TOKEN: ${{ secrets.YCR_TOKEN }}
     steps:
       - uses: actions/checkout@v3
       - name: cache modules
@@ -32,13 +28,13 @@ jobs:
       - name: build projects
         run: npm run build:client
       - name: Log in to Registry
-        uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
+        uses: docker/login-action@343f7c4344506bcbf9b4de18042ae17996df046d
         with:
-          registry: ${{ env.REGISTRY }}
+          registry: ${{ secrets.YR }}
           username: json_key
-          password: ${{ env.TOKEN }}
+          password: ${{ secrets.YCR_TOKEN }}
       - name: Build Docker image
-        run: docker build . --file packages/admin/Dockerfile --tag ${{ env.IMAGE_NAME }}
+        run: docker build packages/admin --file packages/admin/Dockerfile --tag ${{ secrets.YR }}/${{ secrets.YR_ID }}/${{ secrets.YR_NAME }}:${{ secrets.YR_ADMIN_IMAGE_TAG }}
       - name: Push Docker image to yandex registry
-        run: docker push ${{ env.IMAGE_NAME }}
+        run: docker push ${{ secrets.YR }}/${{ secrets.YR_ID }}/${{ secrets.YR_NAME }}:${{ secrets.YR_ADMIN_IMAGE_TAG }}
 
