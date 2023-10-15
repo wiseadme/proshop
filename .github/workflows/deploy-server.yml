@@ -19,8 +19,6 @@ jobs:
       REFRESH_TOKEN_SECRET_KEY: ${{ secrets.REFRESH_TOKEN_SECRET_KEY }}
       REDIS_URL: ${{ secrets.REDIS_URL }}
       UPLOADS_DIR: ${{ secrets.UPLOADS_DIR }}
-      REGISTRY: ${{ secrets.DOCKER_REGISTRY }}
-      IMAGE_NAME: ${{ secrets.DOCKER_PROJECT }}
     steps:
       - uses: actions/checkout@v3
       - name: cache modules
