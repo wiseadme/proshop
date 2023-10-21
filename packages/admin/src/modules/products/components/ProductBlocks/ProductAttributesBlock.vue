@@ -6,16 +6,13 @@
     import { FormCard } from '@shared/components/FormCard'
     import { VSvg } from '@shared/components/VSvg'
     import DraggableItemsList from '@shared/components/DraggableItemsList/DraggableItemsList.vue'
-    import AttributesEditForm from '@modules/products/components/ProductModalEditForms/AttributesEditForm.vue'
     // Enums
     import { SvgPaths } from '@shared/enums/svg-paths'
 
     const { model } = useProductModel()
-    const { isAttributeEditMode } = useProductAttributes()
     const groupSymbol = Symbol.for('attributes')
 
     const {
-        currentEditableAttribute,
         availableAttributes,
         onRemoveAttribute,
         onUpdateAttributes,
@@ -29,14 +26,6 @@
 </script>
 <template>
     <v-row>
-        <v-modal
-            v-model="isAttributeEditMode"
-            transition="scale-in"
-            width="600"
-            overlay
-        >
-            <attributes-edit-form v-if="currentEditableAttribute"/>
-        </v-modal>
         <v-col
             cols="6"
             class="used-attributes app-border-radius"

@@ -1,9 +1,6 @@
 <script lang="ts" setup>
-    import { AttributeForm } from '@modules/attributes/components/AttributeForm'
+    import { AttributeFormModal } from '@modules/attributes/components/AttributeFormModal'
     import { AttributesList } from '@modules/attributes/components/AttributesList'
-    import { useAttributeForm } from '@modules/attributes/composables/use-attribute-form'
-
-    const { isFormVisible } = useAttributeForm()
 
 </script>
 <template>
@@ -20,13 +17,7 @@
                 <attributes-list/>
             </v-col>
         </v-row>
-        <v-modal
-            v-model="isFormVisible"
-            overlay
-            transition="scale-in"
-        >
-            <attribute-form/>
-        </v-modal>
+        <attribute-form-modal/>
     </v-layout>
 </template>
 <style lang="scss">

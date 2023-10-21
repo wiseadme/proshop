@@ -226,6 +226,9 @@
                     <template #icon>
                         <v-svg :path="SvgPaths.DIAGRAM_NESTED"/>
                     </template>
+                    <template #title>
+                        Параметры опции товара
+                    </template>
                     <template #body>
                         <v-text-field
                             v-if="!filterGroup"
@@ -331,6 +334,9 @@
             <form-card>
                 <template #icon>
                     <v-svg :path="SvgPaths.NEWSPAPER"/>
+                </template>
+                <template #title>
+                    Все опции текущего варианта
                 </template>
                 <template
                     v-if="currentVariant && currentVariant.options"

@@ -31,6 +31,9 @@
     const ProductImagesBlock = markRaw(defineAsyncComponent(() => import('@modules/products/components/ProductBlocks/ProductImagesBlock.vue')))
     const ProductCategoriesBlock = markRaw(defineAsyncComponent(() => import('@modules/products/components/ProductBlocks/ProductCategoriesBlock.vue')))
 
+    const AttributeEditModal = markRaw(defineAsyncComponent(() => import('@modules/products/components/Modals/AttributeEditModal.vue')))
+    const MetaTagEditModal = markRaw(defineAsyncComponent(() => import('@modules/products/components/Modals/MetaTagEditModal.vue')))
+
     const { model } = useProductModel()
 
     const {
@@ -70,6 +73,7 @@
             isActive: false,
             disabled: !unref(attributeItems).length || !unref(model)?.id,
             section: ATTRIBUTES_BLOCK,
+            modal: AttributeEditModal,
             independent: false,
         },
         {
@@ -78,6 +82,7 @@
             isActive: false,
             disabled: !unref(model)?.id,
             section: META_TAGS_BLOCK,
+            modal: MetaTagEditModal,
             independent: false,
         },
         {
