@@ -9,10 +9,11 @@
     import { useFilterItemsService } from '@modules/filters/composables/use-filter-items-service'
     import { useProductModel } from '@modules/products/composables/use-product-model'
     import { useProductAttributes } from '@modules/products/composables/use-product-attributes'
-    import FormCard from '@shared/components/FormCard/FormCard.vue'
+    import { ModalCard } from '@shared/components/Modals'
     import { IFilterGroup } from '@proshop/types'
 
     const { model } = useProductModel()
+
     const {
         filterGroups,
         getFilterGroupItems,
@@ -27,7 +28,7 @@
         currentEditableAttribute,
         attributeItems,
         onUpdateAttributes,
-        onDiscardChanges
+        onDiscardChanges,
     } = useProductAttributes()
 
     const attributesMap = ref({})
@@ -68,21 +69,15 @@
     }, { immediate: true })
 </script>
 <template>
-    <form-card
-        class="grey lighten-3 app-border-radius pa-2"
+    <modal-card
+        class="app-border-radius"
         elevation="2"
         width="600px"
     >
-        <template
-            v-if="currentEditableAttribute"
-            #title
-        >
+        <template #title>
             <h5>Редатикрование атрибута {{ currentEditableAttribute.key }}</h5>
         </template>
-        <template
-            v-if="currentEditableAttribute"
-            #body
-        >
+        <template #content>
             <v-select
                 v-model="attributesMap[currentEditableAttribute.id].group"
                 label="Группа фильтров"
@@ -148,5 +143,5 @@
                 Отмена
             </v-button>
         </template>
-    </form-card>
+    </modal-card>
 </template>

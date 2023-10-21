@@ -15,6 +15,7 @@ export interface IOption {
     ownerId: string
     price?: number
     quantity?: number
+    order: number
     url: Maybe<string>
     description?: Maybe<string>
     image: Maybe<string>

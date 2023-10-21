@@ -7,6 +7,7 @@ export class Option implements IOption{
     public name: string
     public quantity: number
     public price: number
+    public order: number
     public description: Maybe<string>
     public url: Maybe<string>
     public image: Maybe<string>
@@ -18,6 +19,7 @@ export class Option implements IOption{
         name = '',
         quantity = 0,
         price = 0,
+        order = 0,
         description = null,
         url = null,
         image = null
@@ -30,6 +32,7 @@ export class Option implements IOption{
         this.price = price
         this.description = description
         this.url = url
+        this.order = order
         this.image = image
     }
 

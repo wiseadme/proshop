@@ -32,6 +32,7 @@ export const useProductVariants = () => {
         name: '',
         quantity: 0,
         price: 0,
+        order: 0,
         description: null,
         url: null,
         image: '',

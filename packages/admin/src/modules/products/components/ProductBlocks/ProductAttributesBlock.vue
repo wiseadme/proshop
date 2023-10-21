@@ -12,6 +12,7 @@
     import { SvgPaths } from '@shared/enums/svg-paths'
 
     const { model } = useProductModel()
+    const { isAttributeEditMode } = useProductAttributes()
     const groupSymbol = Symbol.for('attributes')
 
     const {
@@ -23,8 +24,6 @@
         setForEditing,
     } = useProductAttributes()
 
-    const showEditModal = computed(() => Boolean(unref(currentEditableAttribute)))
-
     const pullFunction = () => {
     }
 
@@ -32,11 +31,12 @@
 <template>
     <v-row>
         <v-modal
-            v-model="showEditModal"
+            v-model="isAttributeEditMode"
             transition="scale-in"
+            width="600"
             overlay
         >
-            <attributes-edit-form />
+            <attributes-edit-form v-if="currentEditableAttribute"/>
         </v-modal>
         <v-col
             cols="6"

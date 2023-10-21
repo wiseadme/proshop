@@ -22,7 +22,7 @@
     } from '@proshop/types'
 
     const { model } = useProductModel()
-    const { products } = useProductsService()
+    const { products, getProducts } = useProductsService()
 
     const {
         variantItems,
@@ -33,8 +33,6 @@
         onCreateProductVariantOption,
         onDeleteProductVariantOption,
     } = useProductVariants()
-
-    const { getProducts } = useProductsService()
 
     const { filterItems, getFilterItems } = useFilterItemsService()
     const { filterGroups, getFilterGroupItems } = useFilterGroupService()
@@ -289,6 +287,12 @@
                             label="Цена"
                             type="number"
                             :disabled="!!optionProductLink"
+                        />
+                        <v-text-field
+                            v-model.number="optionModel.order"
+                            color="primary"
+                            label="Порядковый номер"
+                            type="number"
                         />
                         <v-text-field
                             v-model.trim="optionModel.description"

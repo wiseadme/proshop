@@ -6,6 +6,7 @@ export class Option implements IOption {
     readonly variantId: string
     readonly ownerId: string
     readonly price: number
+    readonly order: number
     readonly quantity: number
     readonly description: Maybe<string>
     readonly image: Maybe<string>
@@ -16,6 +17,7 @@ export class Option implements IOption {
         name = '',
         price = 0,
         quantity = 0,
+        order = 0,
         description = null,
         url = null,
         image = null,
@@ -25,6 +27,7 @@ export class Option implements IOption {
         this.id = id
         this.name = name
         this.price = price
+        this.order = order
         this.quantity = quantity
         this.description = description
         this.image = image

@@ -22,16 +22,16 @@ jobs:
       UPLOADS_DIR: ${{ secrets.UPLOADS_DIR }}
     steps:
       - uses: actions/checkout@v3
-      - name: cache modules
-        id: cache-modules
+      - name: server cache modules
+        id: server-cache-modules
         uses: actions/cache@v3
         env:
-          cache-name: cache-modules
+          cache-name: server-cache-modules
         with:
           path: node_modules
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
       - name: install project deps
-        if: steps.cache-modules.outputs.cache-hit != 'true'
+        if: steps.server-cache-modules.outputs.cache-hit != 'true'
         run: npm run setup
       - name: build projects
         run: npm run build:server
