@@ -1,4 +1,4 @@
-name: deploy-client
+name: build-client
 on:
   push:
     branches: [master]
