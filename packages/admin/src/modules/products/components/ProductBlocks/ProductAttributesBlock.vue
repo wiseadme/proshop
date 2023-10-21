@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-    import { computed, unref } from 'vue'
     // Composables
     import { useProductAttributes } from '@modules/products/composables/use-product-attributes'
     import { useProductModel } from '@modules/products/composables/use-product-model'
