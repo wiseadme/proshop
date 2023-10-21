@@ -1,4 +1,4 @@
-name: build-server
+name: Build server
 on:
   push:
     branches: [master]
