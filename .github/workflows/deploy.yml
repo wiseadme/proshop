@@ -1,11 +1,7 @@
 name: Deploy
 on:
-  push:
-    branches: [master]
-  workflow_run:
-    workflows: ["test", "build-client", "build-server"]
-    branches: [master]
-    types: [completed]
+  workflow_dispatch:
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -13,8 +9,10 @@ jobs:
       - name: Copy id_rsa
         env:
           ID_RSA: ${{ secrets.ID_RSA }}
-          SSH_HOST: ${{ secrets.SSH_HOST }}
-          SSH_USER: ${{ secrets.SSH_USER }}
-        run: mkdir .ssh && touch .ssh/id_rsa && printf -- "$ID_RSA" > ~/.ssh/id_rsa
+        run: touch id_rsa && printf -- "$ID_RSA" > id_rsa
+      - name: Make id usable
+        run: chmod 400 id_rsa
       - name: Login to yandex server
-        run: ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no "$SSH_USER"@"$SSH_HOST"
+        run: ssh -i id_rsa -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}
+      - name: deploy app
+        run: cd proshop/ && docker-compose pull && docker-compose up -d
