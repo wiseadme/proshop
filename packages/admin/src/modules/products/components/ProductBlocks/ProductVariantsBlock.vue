@@ -22,48 +22,36 @@
     } from '@proshop/types'
 
     const { model } = useProductModel()
-    const { products } = useProductsService()
+    const { products, getProducts } = useProductsService()
 
     const {
         variantItems,
         isVariantEditMode,
+        mergedVariants,
         genVariantOptionPattern,
         onUpdateProductVariantOption,
         onCreateProductVariantOption,
         onDeleteProductVariantOption,
     } = useProductVariants()
 
-    const { getProducts } = useProductsService()
-
     const { filterItems, getFilterItems } = useFilterItemsService()
     const { filterGroups, getFilterGroupItems } = useFilterGroupService()
 
     const currentVariant = ref<Maybe<IVariant>>(null)
     const filterGroup = ref<Maybe<IFilterGroup>>(null)
-    const existsVariants = ref<IVariant[]>([])
-    const optionPattern = ref<IOption>(genVariantOptionPattern())
+    const optionModel = ref<IOption>(genVariantOptionPattern())
     const productForInherit = ref(null)
     const optionProductLink = ref(null)
-
-    const setAvailableVariants = (variants: IVariant[]) => {
-        const variantsMap = {}
-
-        unref(existsVariants).forEach((it) => variantsMap[it.group] = it)
-        variants?.forEach(v => variantsMap[v.group] = v)
-
-        existsVariants.value = Object.values(variantsMap)
-    }
-
     const createOption = async (validate: () => Promise<boolean>) => {
         await validate()
 
-        unref(optionPattern)!.variantId = unref(currentVariant)!.id
-        unref(optionPattern)!.ownerId = unref(model)!.id
+        unref(optionModel)!.variantId = unref(currentVariant)!.id
+        unref(optionModel)!.ownerId = unref(model)!.id
 
         if (unref(isVariantEditMode)) {
-            await onUpdateProductVariantOption(unref(optionPattern))
+            await onUpdateProductVariantOption(unref(optionModel))
         } else {
-            await onCreateProductVariantOption(unref(optionPattern))
+            await onCreateProductVariantOption(unref(optionModel))
         }
 
         optionProductLink.value = null
@@ -72,7 +60,7 @@
 
     const setCurrentVariant = (variant: Maybe<IVariant>) => {
         currentVariant.value = variant
-        optionPattern.value = genVariantOptionPattern()
+        optionModel.value = genVariantOptionPattern()
         isVariantEditMode.value = false
     }
 
@@ -83,35 +71,31 @@
 
     const setOptionForEditing = (option: IOption) => {
         isVariantEditMode.value = true
-        optionPattern.value = option
+        optionModel.value = option
     }
 
     const clearVariantOptionForm = () => {
         isVariantEditMode.value = false
 
-        optionPattern.value = genVariantOptionPattern()
+        optionModel.value = genVariantOptionPattern()
     }
 
     const onSelectFilterItem = (item: IFilterItem) => {
-        unref(optionPattern).name = item.value as string
+        unref(optionModel).name = item.value as string
     }
 
     const onSelectOptionLinkedProduct = (product: IProduct) => {
-        unref(optionPattern).url = product.url
-        unref(optionPattern).price = product.price
-        unref(optionPattern).image = product.image
-        unref(optionPattern).quantity = product.quantity
+        unref(optionModel).url = product.url
+        unref(optionModel).price = product.price
+        unref(optionModel).image = product.image
+        unref(optionModel).quantity = product.quantity
     }
 
     watch(variantItems, (variants) => {
-        if (!variants) {
-            return
-        }
+        if (!variants) return
 
-        setAvailableVariants(variants)
-
-        if (unref(existsVariants)[0]) {
-            setCurrentVariant(unref(existsVariants)[0])
+        if (unref(mergedVariants)[0]) {
+            setCurrentVariant(unref(mergedVariants)[0])
         }
 
     }, { immediate: true })
@@ -120,7 +104,7 @@
         if (unref(currentVariant)) {
             const variant = newVariants.find(it => it.id === unref(currentVariant)?.id)
 
-            setCurrentVariant(variant || unref(existsVariants)[0])
+            setCurrentVariant(variant || unref(mergedVariants)[0])
         }
     }, { immediate: true })
 
@@ -131,13 +115,13 @@
     watch(() => unref(model)?.variants, (variants) => {
         if (!variants || !variants.length) return
 
-        setAvailableVariants(variants || unref(variantItems)!)
-
-        const variant = variants.find(v => v.id === unref(currentVariant)?.id)
-
-        setCurrentVariant(variant! || unref(currentVariant))
+        setCurrentVariant(unref(currentVariant) || variants[0])
 
     }, { immediate: true })
+
+    watch(currentVariant, () => {
+        filterGroup.value = null
+    }, {immediate: true})
 
 </script>
 <template>
@@ -163,7 +147,7 @@
                             <v-select
                                 v-model="currentVariant"
                                 label="Варианты"
-                                :items="existsVariants"
+                                :items="mergedVariants"
                                 value-key="group"
                                 color="primary"
                                 @select="setCurrentVariant"
@@ -175,6 +159,7 @@
                                 label="Группа фильтров"
                                 value-key="name"
                                 color="primary"
+                                :disabled="!currentVariant"
                                 @focus="getFilterGroupItems"
                             >
                                 <template #select-list="{onSelect}">
@@ -218,13 +203,13 @@
                 <template #body>
                     <v-row>
                         <v-col
-                            v-if="optionPattern.image"
+                            v-if="optionModel.image"
                             cols="2"
                             style="height: 130px; position: relative"
                             class="d-flex align-center justify-center elevation-2"
                         >
                             <img
-                                :src="optionPattern.image"
+                                :src="optionModel.image"
                                 style="width: 100px;"
                             >
                         </v-col>
@@ -241,10 +226,13 @@
                     <template #icon>
                         <v-svg :path="SvgPaths.DIAGRAM_NESTED"/>
                     </template>
+                    <template #title>
+                        Параметры опции товара
+                    </template>
                     <template #body>
                         <v-text-field
                             v-if="!filterGroup"
-                            v-model.trim="optionPattern.name"
+                            v-model.trim="optionModel.name"
                             color="primary"
                             label="Значение *"
                             :rules="[val => !!val || 'Обязательное поле']"
@@ -252,7 +240,7 @@
                         />
                         <v-select
                             v-else
-                            v-model="optionPattern.name"
+                            v-model="optionModel.name"
                             label="Фильтр *"
                             :items="filterItems"
                             color="primary"
@@ -262,7 +250,7 @@
                             @select="onSelectFilterItem"
                         />
                         <v-autocomplete
-                            v-if="!optionPattern.url"
+                            v-if="!optionModel.url"
                             v-model="optionProductLink"
                             label="Ссылка на товар"
                             :items="products"
@@ -276,35 +264,41 @@
                         />
                         <v-text-field
                             v-else
-                            v-model="optionPattern.url"
+                            v-model="optionModel.url"
                             readonly
                             label="Ссылка на товар"
                         >
                             <template #append-icon>
                                 <v-icon
                                     clickable
-                                    @click="optionPattern.url = null"
+                                    @click="optionModel.url = ''"
                                 >
                                     fas fa-times
                                 </v-icon>
                             </template>
                         </v-text-field>
                         <v-text-field
-                            v-model.number="optionPattern.quantity"
+                            v-model.number="optionModel.quantity"
                             color="primary"
                             label="Количество"
                             type="number"
                             :disabled="!!optionProductLink"
                         />
                         <v-text-field
-                            v-model.number="optionPattern.price"
+                            v-model.number="optionModel.price"
                             color="primary"
                             label="Цена"
                             type="number"
                             :disabled="!!optionProductLink"
                         />
                         <v-text-field
-                            v-model.trim="optionPattern.description"
+                            v-model.number="optionModel.order"
+                            color="primary"
+                            label="Порядковый номер"
+                            type="number"
+                        />
+                        <v-text-field
+                            v-model.trim="optionModel.description"
                             color="primary"
                             :disabled="!!optionProductLink"
                             label="Описание"
@@ -318,7 +312,7 @@
                             width="120"
                             @click="createOption(validate)"
                         >
-                            {{ optionPattern.id ? 'изменить' : 'сохранить' }}
+                            {{ optionModel.id ? 'изменить' : 'сохранить' }}
                         </v-button>
                         <v-button
                             class="ml-2 app-border-radius"
@@ -341,12 +335,15 @@
                 <template #icon>
                     <v-svg :path="SvgPaths.NEWSPAPER"/>
                 </template>
+                <template #title>
+                    Все опции текущего варианта
+                </template>
                 <template
                     v-if="currentVariant && currentVariant.options"
                     #body
                 >
                     <items-list
-                        v-model="optionPattern"
+                        v-model="optionModel"
                         :items="currentVariant.options"
                         @delete="onDeleteOption"
                         @edit="setOptionForEditing"

@@ -1,6 +1,12 @@
 import { ref, unref } from 'vue'
 
-export type TreeItem<T> = T & { id: string, title: string, parentId: string, children: T[] }
+export type TreeItem<T> = T & {
+    id: string,
+    title: string,
+    parentId: string,
+    children: T[],
+    hasChild: boolean
+}
 export const useTreeView = <T>() => {
     const treeItems = ref<TreeItem<T>[]>([])
 
@@ -11,6 +17,7 @@ export const useTreeView = <T>() => {
 
                 parent.children ??= []
                 parent.children.push(item)
+                parent.hasChild = true
             } else {
                 // @ts-ignore
                 unref(treeItems).push(item as TreeItem<T>)

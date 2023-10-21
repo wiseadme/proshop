@@ -1,13 +1,13 @@
 version: '3'
 services:
   server:
-    image: wiseadme/ecommerce:server
+    image: cr.yandex/crpjnimru3924065isot/proshop:server
     container_name: server
     command: npm run start
     restart: unless-stopped
     environment:
       - PORT=5001
-      - USER=anar
+      - USER=wiseadme
       - MONGO_URI=mongodb://mongo1,mongo2,mongo3:27017/commerce
       - ACCESS_TOKEN_SECRET_KEY=menesilazerbaijanliyam
       - REFRESH_TOKEN_SECRET_KEY=esilsozmenasibudur
@@ -75,7 +75,7 @@ services:
       - mongoNet
 
   admin:
-    image: wiseadme/ecommerce:admin
+    image: cr.yandex/crpjnimru3924065isot/proshop:admin
     container_name: admin
     command: nginx -g "daemon off;"
     restart: unless-stopped

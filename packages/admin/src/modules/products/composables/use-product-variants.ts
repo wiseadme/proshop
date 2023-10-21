@@ -1,10 +1,14 @@
-import { ref, unref } from 'vue'
+import {
+    computed,
+    ref,
+    unref
+} from 'vue'
 import { useProductsService } from '@modules/products/composables/use-products-service'
 import { useProductModel } from '@modules/products/composables/use-product-model'
 import { useNotifications } from '@shared/components/VNotifications/use-notifications'
 import { clone } from '@shared/helpers'
 import { CHANGES_SAVED, SAVING_ERROR } from '@shared/constants/notifications'
-import { IOption } from '@proshop/types'
+import { IOption, IVariant } from '@proshop/types'
 
 export const useProductVariants = () => {
     const { model } = useProductModel()
@@ -28,9 +32,20 @@ export const useProductVariants = () => {
         name: '',
         quantity: 0,
         price: 0,
+        order: 0,
         description: null,
         url: null,
         image: '',
+    })
+
+    const mergedVariants = computed<IVariant[]>(() => {
+        return Object.values(unref(model).variants.concat(unref(variantItems)).reduce((map, variant) => {
+            if (!map[variant.id]){
+                map[variant.id] = variant
+            }
+
+            return map
+        }, {}))
     })
 
     const onCreateProductVariantOption = async (option: IOption): Promise<void> => {
@@ -66,9 +81,11 @@ export const useProductVariants = () => {
         }
     }
 
+
     return {
         variantItems,
         isVariantEditMode,
+        mergedVariants,
         genVariantOptionPattern,
         onCreateProductVariantOption,
         onUpdateProductVariantOption,

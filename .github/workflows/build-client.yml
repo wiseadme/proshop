@@ -1,20 +1,14 @@
-name: deploy-client
+name: Build client
 on:
   push:
     branches: [master]
     paths-ignore:
       - '.github/**'
       - 'packages/server/**'
-#  workflow_run:
-#    workflows: ["test"]
-#    branches: [master]
-#    types: [completed]
+      - 'docker-*'
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      REGISTRY: ${{ secrets.DOCKER_REGISTRY }}
-      IMAGE_NAME: ${{ secrets.DOCKER_PROJECT }}
     steps:
       - uses: actions/checkout@v3
       - name: cache modules
@@ -30,17 +24,17 @@ jobs:
         run: npm run setup
       - name: build projects
         run: npm run build:client
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-      - name: Log in to Docker Hub
-        uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
+      - name: Log in to Registry
+        uses: docker/login-action@343f7c4344506bcbf9b4de18042ae17996df046d
         with:
-          username: ${{ secrets.DOCKER_LOGIN }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-      - name: Build and push admin
+          registry: ${{ secrets.YR }}
+          username: json_key
+          password: ${{ secrets.YCR_TOKEN }}
+      - name: Build and push docker image
         uses: docker/build-push-action@v5
         with:
           context: ./packages/admin
           file: ./packages/admin/Dockerfile
           push: true
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:admin
+          tags: ${{ secrets.YR }}/${{ secrets.YR_ID }}/${{ secrets.YR_NAME }}:${{ secrets.ADMIN_IMAGE_TAG }}
+

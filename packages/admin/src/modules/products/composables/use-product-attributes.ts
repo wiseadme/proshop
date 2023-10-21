@@ -32,9 +32,11 @@ export const useProductAttributes = createSharedComposable(() => {
     const currentEditableAttribute = ref<Maybe<IAttribute>>(null)
     const availableAttributes = ref<IAttribute[]>([])
     const usedAttributes = ref<IAttribute[]>([])
+    const isAttributeEditMode = ref(false)
 
     const setForEditing = (attr: IAttribute) => {
         currentEditableAttribute.value = attr
+        isAttributeEditMode.value = true
     }
 
     const checkDiffs = () => hasValueDiffs({
@@ -44,7 +46,7 @@ export const useProductAttributes = createSharedComposable(() => {
 
     const onDiscardChanges = () => {
         setProductModel(unref(product)!)
-        currentEditableAttribute.value = null
+        isAttributeEditMode.value = false
     }
 
     const onRemoveAttribute = async (attribute: IAttribute) => {
@@ -102,6 +104,7 @@ export const useProductAttributes = createSharedComposable(() => {
         currentEditableAttribute,
         availableAttributes,
         usedAttributes,
+        isAttributeEditMode,
         setForEditing,
         onRemoveAttribute,
         onUpdateAttributes,

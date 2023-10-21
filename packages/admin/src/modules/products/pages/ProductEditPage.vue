@@ -5,7 +5,6 @@
     import { useProductsService } from '@modules/products/composables/use-products-service'
     import { useRightSidebar } from '@shared/composables/use-right-sidebar'
 
-
     const { setProductModel } = useProductModel()
     const { getProduct, onInit } = useProductsService()
     const { activeItem } = useRightSidebar()
@@ -28,6 +27,10 @@
             :is="activeItem.component"
             v-if="activeItem"
             @edit="onEdit"
-        ></component>
+        />
+        <component
+            :is="activeItem.modal"
+            v-if="activeItem && activeItem.modal"
+        />
     </v-layout>
 </template>

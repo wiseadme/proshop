@@ -85,14 +85,7 @@ export class ProductsController extends BaseController implements IController {
         }
     }
 
-    async addProductAttribute(
-        request: Request<{}, {}, {
-            productId: string,
-            attribute: IAttribute
-        }>,
-        response: Response,
-        next: NextFunction,
-    ) {
+    async addProductAttribute(request: Request<{}, {}, { productId: string, attribute: IAttribute }>, response: Response, next: NextFunction) {
         try {
             const data = await this.service.addAttribute(request.body)
 

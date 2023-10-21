@@ -1,0 +1,15 @@
+name: Deploy app
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Login to yandex server and deploy app
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.ID_RSA }}
+          script: cd proshop && docker-compose pull && docker-compose up -d

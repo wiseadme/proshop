@@ -19,6 +19,10 @@ const OptionSchema = new Schema<IOptionMongoModel>({
         type: Number,
         default: 0
     },
+    order: {
+        type: Number,
+        default: 0
+    },
     quantity: {
         type: Number,
         default: 0

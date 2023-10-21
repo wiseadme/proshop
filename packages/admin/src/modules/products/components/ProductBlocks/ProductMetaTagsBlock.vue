@@ -1,6 +1,4 @@
 <script lang="ts" setup>
-    import { computed, unref } from 'vue'
-    import MetaTagEditForm from '@modules/products/components/ProductModalEditForms/MetaTagsEditForm.vue'
     import VSvg from '@shared/components/VSvg/VSvg.vue'
     import DraggableItemsList from '@shared/components/DraggableItemsList/DraggableItemsList.vue'
     import { FormCard } from '@shared/components/FormCard/'
@@ -11,9 +9,9 @@
     import { SvgPaths } from '@shared/enums/svg-paths'
 
     const { model } = useProductModel()
+
     const {
         availableMetaTags,
-        currentEditableMetaTag,
         setForEditing,
         onUpdateMetaTags,
         onAddMetaTag,
@@ -21,20 +19,11 @@
     } = useProductMetaTags()
 
     const groupSymbol = Symbol.for('metaTags')
-
-    const showEditModal = computed(() => Boolean(unref(currentEditableMetaTag)))
     const pullFunction = () => {
     }
 </script>
 <template>
     <v-row class="app-border-radius">
-        <v-modal
-            v-model="showEditModal"
-            transition="scale-in"
-            overlay
-        >
-            <MetaTagEditForm/>
-        </v-modal>
         <v-col cols="6">
             <form-card>
                 <template #icon>
@@ -92,5 +81,3 @@
         </v-col>
     </v-row>
 </template>
-<style lang="scss" scoped>
-</style>

@@ -408,7 +408,7 @@ export const useProductsService = createSharedComposable(() => {
         }
     }
 
-    const updateMainImageAsset = async (update: Partial<IAsset>): Promise<IAsset> => {
+    const updateImageAsset = async (update: Partial<IAsset>): Promise<IAsset> => {
         try {
             return await _filesService.updateFile({
                 id: update.id,
@@ -419,11 +419,20 @@ export const useProductsService = createSharedComposable(() => {
         }
     }
 
-    const updateProductImages = async (assets: Partial<IAsset>[]) => {
+    const updateProductAssets = async (assets: Partial<IAsset>[]) => {
         try {
-            await _filesService.updateMany(assets)
+            return await _filesService.updateMany(assets)
+        } catch (err) {
+            return Promise.reject(err)
+        }
+    }
 
-            return await getProduct(unref(product)!.id)
+    const updateProductMainImage = async (asset: IAsset) => {
+        try {
+            return await updateProduct({
+                id: asset.ownerId,
+                image: asset.url,
+            })
         } catch (err) {
             return Promise.reject(err)
         }
@@ -439,20 +448,16 @@ export const useProductsService = createSharedComposable(() => {
             asset.main = !unref(product)?.assets.length
             const assets = [...unref(product)!.assets, asset] as IAsset[]
 
-            /** TODO - заменить на один апдейт */
             if (asset.main) {
-                await updateProductImages([asset])
+                await updateProductAssets([asset])
             }
 
-            const updated = await updateProduct({
+            return await updateProduct({
                 id: asset.ownerId,
                 assets: getIds(assets),
                 image: asset.main ? asset.url : null,
             })
 
-            setAsCurrent(updated)
-
-            return updated
         } catch (err) {
             return Promise.reject(err)
         }
@@ -462,16 +467,18 @@ export const useProductsService = createSharedComposable(() => {
         await _filesService.deleteFile(asset)
 
         const assets = (unref(product)!.assets as IAsset[])?.filter(it => it.id !== asset.id)
-        const mainImage = assets?.find(it => it.main)
 
-        if (assets?.length && !mainImage) {
-            assets[0] = await updateMainImageAsset({
+        if (assets.length && asset.main) {
+            assets[0] = await updateImageAsset({
                 id: assets[0].id,
-                main: true
+                main: true,
             })
         }
 
-        return updateProduct({ assets: getIds(assets) })
+        await updateProduct({
+            assets: getIds(assets),
+            ...(asset.main ? { image: assets.length ? assets[0].url : null } : {}),
+        })
     }
 
     const onInit = async () => {
@@ -517,14 +524,15 @@ export const useProductsService = createSharedComposable(() => {
         addNewVariantOption,
         uploadProductImage,
         updateProduct,
-        updateMainImageAsset,
+        updateImageAsset,
         updateProductCategories,
         updateProductInfo,
         updateProductMetaTags,
         updateProductAttributes,
         updateProductRelatedProducts,
         updateVariantOption,
-        updateProductImages,
+        updateProductAssets,
+        updateProductMainImage,
         deleteProduct,
         deleteProductAttribute,
         deleteVariantOption,

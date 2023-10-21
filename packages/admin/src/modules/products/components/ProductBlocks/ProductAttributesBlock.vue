@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-    import { computed, unref } from 'vue'
     // Composables
     import { useProductAttributes } from '@modules/products/composables/use-product-attributes'
     import { useProductModel } from '@modules/products/composables/use-product-model'
@@ -7,7 +6,6 @@
     import { FormCard } from '@shared/components/FormCard'
     import { VSvg } from '@shared/components/VSvg'
     import DraggableItemsList from '@shared/components/DraggableItemsList/DraggableItemsList.vue'
-    import AttributesEditForm from '@modules/products/components/ProductModalEditForms/AttributesEditForm.vue'
     // Enums
     import { SvgPaths } from '@shared/enums/svg-paths'
 
@@ -15,7 +13,6 @@
     const groupSymbol = Symbol.for('attributes')
 
     const {
-        currentEditableAttribute,
         availableAttributes,
         onRemoveAttribute,
         onUpdateAttributes,
@@ -23,21 +20,12 @@
         setForEditing,
     } = useProductAttributes()
 
-    const showEditModal = computed(() => Boolean(unref(currentEditableAttribute)))
-
     const pullFunction = () => {
     }
 
 </script>
 <template>
     <v-row>
-        <v-modal
-            v-model="showEditModal"
-            transition="scale-in"
-            overlay
-        >
-            <attributes-edit-form />
-        </v-modal>
         <v-col
             cols="6"
             class="used-attributes app-border-radius"

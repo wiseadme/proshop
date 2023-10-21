@@ -1,14 +1,11 @@
-name: deploy-server
+name: Build server
 on:
   push:
     branches: [master]
     paths-ignore:
       - '.github/**'
       - 'packages/admin/**'
-#  workflow_run:
-#    workflows: ["test"]
-#    branches: [master]
-#    types: [completed]
+      - 'docker-*'
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -19,34 +16,34 @@ jobs:
       REFRESH_TOKEN_SECRET_KEY: ${{ secrets.REFRESH_TOKEN_SECRET_KEY }}
       REDIS_URL: ${{ secrets.REDIS_URL }}
       UPLOADS_DIR: ${{ secrets.UPLOADS_DIR }}
-      REGISTRY: ${{ secrets.DOCKER_REGISTRY }}
-      IMAGE_NAME: ${{ secrets.DOCKER_PROJECT }}
     steps:
       - uses: actions/checkout@v3
-      - name: cache modules
-        id: cache-modules
+      - name: server cache modules
+        id: server-cache-modules
         uses: actions/cache@v3
         env:
-          cache-name: cache-modules
+          cache-name: server-cache-modules
         with:
           path: node_modules
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
       - name: install project deps
-        if: steps.cache-modules.outputs.cache-hit != 'true'
-        run: npm run setup
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18.x'
+        if: steps.server-cache-modules.outputs.cache-hit != 'true'
+      - run: npm run setup
       - name: build projects
         run: npm run build:server
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-      - name: Log in to Docker Hub
-        uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
+      - name: Log in to Registry
+        uses: docker/login-action@343f7c4344506bcbf9b4de18042ae17996df046d
         with:
-          username: ${{ secrets.DOCKER_LOGIN }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-      - name: Build and push server
+          registry: ${{ secrets.YR }}
+          username: json_key
+          password: ${{ secrets.YCR_TOKEN }}
+      - name: Build Docker image
         uses: docker/build-push-action@v5
         with:
           context: ./packages/server
           file: ./packages/server/Dockerfile
           push: true
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:server
+          tags: ${{ secrets.YR }}/${{ secrets.YR_ID }}/${{ secrets.YR_NAME }}:${{ secrets.SERVER_IMAGE_TAG }}

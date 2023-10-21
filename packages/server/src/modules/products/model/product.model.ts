@@ -85,15 +85,15 @@ const ProductSchema = new Schema<IProductMongoModel>({
     variants: {
         type: [
             {
+                id: String,
                 group: String,
                 attributeId: String,
                 ownerId: String,
-                id: String,
-                _id: false,
                 options: [{
                     type: Schema.Types.ObjectId,
                     ref: 'Option',
                 }],
+                _id: false,
             },
         ],
         default: [],

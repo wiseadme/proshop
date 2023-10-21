@@ -24,10 +24,14 @@ export const useProductMetaTags = createSharedComposable(() => {
 
     const currentEditableMetaTag = ref<Maybe<IMetaTag>>(null)
     const availableMetaTags = ref<Maybe<IMetaTag[]>>(null)
+    const isMetaTagEditMode = ref(false)
 
     const setForEditing = (item: IMetaTag) => {
         currentEditableMetaTag.value = item
+        isMetaTagEditMode.value = true
     }
+
+    const closeEditModal = () => isMetaTagEditMode.value = false
 
     const onUpdateMetaTags = async () => {
         unref(model).seo.metatags.forEach((it, i) => it.order = i)
@@ -75,7 +79,9 @@ export const useProductMetaTags = createSharedComposable(() => {
     return {
         currentEditableMetaTag,
         availableMetaTags,
+        isMetaTagEditMode,
         setForEditing,
+        closeEditModal,
         onUpdateMetaTags,
         onAddMetaTag,
         onRemoveMetaTag,
