@@ -20,6 +20,9 @@ jobs:
       REFRESH_TOKEN_SECRET_KEY: ${{ secrets.REFRESH_TOKEN_SECRET_KEY }}
       REDIS_URL: ${{ secrets.REDIS_URL }}
       UPLOADS_DIR: ${{ secrets.UPLOADS_DIR }}
+    strategy:
+      matrix:
+        node-version: ['18.x']
     steps:
       - uses: actions/checkout@v3
       - name: server cache modules
@@ -32,6 +35,9 @@ jobs:
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
       - name: install project deps
         if: steps.server-cache-modules.outputs.cache-hit != 'true'
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
         run: npm run setup
       - name: build projects
         run: npm run build:server
