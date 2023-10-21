@@ -6,12 +6,6 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      #      - name: Copy id_rsa
-      #        env:
-      #          ID_RSA: ${{ secrets.ID_RSA }}
-      #        run: touch id_rsa && printf -- "$ID_RSA" > id_rsa
-      #      - name: Make id usable
-      #        run: chmod 400 id_rsa
       - name: Login to yandex server and deploy app
         uses: appleboy/ssh-action@v1.0.0
         with:

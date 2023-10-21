@@ -6,10 +6,6 @@ on:
       - '.github/**'
       - 'packages/admin/**'
       - 'docker-*'
-#  workflow_run:
-#    workflows: ["test"]
-#    branches: [master]
-#    types: [completed]
 jobs:
   build:
     runs-on: ubuntu-latest
