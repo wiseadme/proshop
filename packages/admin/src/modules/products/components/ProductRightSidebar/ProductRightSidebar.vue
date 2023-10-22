@@ -31,8 +31,8 @@
     const ProductImagesBlock = markRaw(defineAsyncComponent(() => import('@modules/products/components/ProductBlocks/ProductImagesBlock.vue')))
     const ProductCategoriesBlock = markRaw(defineAsyncComponent(() => import('@modules/products/components/ProductBlocks/ProductCategoriesBlock.vue')))
 
-    const AttributeEditModal = markRaw(defineAsyncComponent(() => import('@modules/products/components/Modals/AttributeEditModal.vue')))
-    const MetaTagEditModal = markRaw(defineAsyncComponent(() => import('@modules/products/components/Modals/MetaTagEditModal.vue')))
+    const AttributeEditModal = markRaw(defineAsyncComponent(() => import('@modules/products/components/modals/AttributeEditModal.vue')))
+    const MetaTagEditModal = markRaw(defineAsyncComponent(() => import('@modules/products/components/modals/MetaTagEditModal.vue')))
 
     const { model } = useProductModel()
 

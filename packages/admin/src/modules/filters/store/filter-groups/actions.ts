@@ -44,4 +44,22 @@ export const actions = {
             return Promise.reject(err)
         }
     },
+
+    async updateFilterGroup(updates) {
+        try {
+            const { data } = await repository.update(updates)
+
+            this.$patch(state => {
+                state.filterGroups = state.filterGroups.map((group) => {
+                    if (data.data.id === group.id) return data.data
+
+                    return group
+                })
+            })
+
+            return data.data
+        } catch (err) {
+            return Promise.reject(err)
+        }
+    },
 }
