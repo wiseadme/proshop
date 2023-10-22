@@ -42,6 +42,7 @@
     const optionModel = ref<IOption>(genVariantOptionPattern())
     const productForInherit = ref(null)
     const optionProductLink = ref(null)
+
     const createOption = async (validate: () => Promise<boolean>) => {
         await validate()
 
