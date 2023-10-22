@@ -85,12 +85,12 @@ services:
       - ecommerce
 
   shop:
-    image: wiseadme/ecommerce:shop
+    image: cr.yandex/crpjnimru3924065isot/proshop:shop
     container_name: shop-app
     restart: unless-stopped
     command: pm2-runtime ".output/server/index.mjs"
     volumes:
-      - shop:/usr/src/app
+      - shop:/app
     depends_on:
       - server
     networks:
