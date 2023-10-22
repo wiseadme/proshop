@@ -7,7 +7,7 @@ export const useFilterGroupService = () => {
     const _filterGroupsStore = useFilterGroupsStore()
     const _attributesStore = useAttributesStore()
 
-    const { createFilterGroup, getFilterGroups, deleteFilterGroup } = _filterGroupsStore
+    const { createFilterGroup, getFilterGroups, deleteFilterGroup, updateFilterGroup } = _filterGroupsStore
 
     const attributes = computed(() => _attributesStore.attributes)
     const filterGroups = computed(() => _filterGroupsStore.filterGroups)
@@ -21,6 +21,7 @@ export const useFilterGroupService = () => {
     const createFilterGroupItem = (filterGroup: IFilterGroup) => createFilterGroup(filterGroup)
     const getFilterGroupItems = (params = {}) => getFilterGroups(params)
     const deleteFilterGroupItem = (id: string) => deleteFilterGroup(id)
+    const updateFilterGroupItem = (updates) => updateFilterGroup(updates)
 
     return {
         attributes,
@@ -28,6 +29,7 @@ export const useFilterGroupService = () => {
         getFilterGroupAttributes,
         createFilterGroupItem,
         getFilterGroupItems,
+        updateFilterGroupItem,
         deleteFilterGroupItem,
     }
 }

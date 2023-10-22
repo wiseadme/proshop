@@ -3,7 +3,7 @@
     import { SvgPaths } from '@shared/enums/svg-paths'
 
     const { width = 600 } = defineProps<{
-        width: number
+        width?: number
     }>()
 </script>
 <template>
@@ -15,7 +15,7 @@
     >
         <v-card-title
             v-if="$slots.title"
-            class="modal-card__header white py-5 d-flex justify-center align-center elevation-2"
+            class="modal-card__header white py-5 d-flex justify-center align-center elevation-1"
         >
             <div class="modal-card__header-icon success mr-2 app-border-radius elevation-2 pt-2 pb-1 px-3">
                 <v-svg
