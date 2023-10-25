@@ -89,8 +89,8 @@ services:
     container_name: shop-app
     restart: unless-stopped
     command: pm2-runtime ".output/server/index.mjs"
-    volumes:
-      - shop:/app
+#    volumes:
+#      - shop:/app
     depends_on:
       - server
     networks:
@@ -106,7 +106,7 @@ services:
       - ./nginx/nginx.prod.conf:/etc/nginx/nginx.conf
       - ./nginx/nginx.shop.conf:/etc/nginx/conf.d/nginx.shop.conf
       - uploads:/var/lib/docker/volumes/proshop_uploads/_data
-      - shop:/var/lib/docker/volumes/proshop_shop/_data/.output/public/_nuxt
+#      - shop:/var/lib/docker/volumes/proshop_shop/_data/.output/public/_nuxt
       - cache:/usr/share/nginx/www
     depends_on:
       - admin
