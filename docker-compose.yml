@@ -1,4 +1,4 @@
-version: '3'
+version: '3.9'
 services:
   server:
     image: cr.yandex/crpjnimru3924065isot/proshop:server
@@ -89,8 +89,6 @@ services:
     container_name: shop-app
     restart: unless-stopped
     command: pm2-runtime ".output/server/index.mjs"
-    ports:
-      - "3001:3000"
     volumes:
       - shop:/app
     depends_on:

@@ -12,4 +12,4 @@ jobs:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.ID_RSA }}
-          script: cd proshop && docker-compose pull && docker-compose up -d
+          script: cd proshop && git pull && docker-compose pull && docker-compose up -d
