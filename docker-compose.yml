@@ -89,6 +89,8 @@ services:
     container_name: shop-app
     restart: unless-stopped
     command: pm2-runtime ".output/server/index.mjs"
+    ports:
+      - "3001:3000"
     volumes:
       - shop:/app
     depends_on:
@@ -110,6 +112,8 @@ services:
       - cache:/usr/share/nginx/www
     depends_on:
       - admin
+      - shop
+      - server
     networks:
       - ecommerce
 
