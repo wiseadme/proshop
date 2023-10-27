@@ -455,7 +455,7 @@ export const useProductsService = createSharedComposable(() => {
             return await updateProduct({
                 id: asset.ownerId,
                 assets: getIds(assets),
-                image: asset.main ? asset.url : null,
+                ...(asset.main ? { image: asset.url } : {}),
             })
 
         } catch (err) {
