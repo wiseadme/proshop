@@ -10,6 +10,7 @@
         fixed
         class="elevation-3"
         color="var(--secondary)"
+        style="z-index: 1"
     >
         <v-toolbar-logo>
             <product-logo/>

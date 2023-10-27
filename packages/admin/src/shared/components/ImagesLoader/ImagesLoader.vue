@@ -62,7 +62,7 @@
                         <v-svg :path="SvgPaths.CAMERA"/>
                     </template>
                     <template #title>
-                        Главные фото отображаемые на странице товара
+                        Отображаемые фото
                     </template>
                     <template #body>
                         <v-file-input
@@ -75,11 +75,11 @@
                         <draggable
                             :list="clonedItems"
                             item-key="id"
-                            class="d-flex justify-start align-center"
+                            class="d-flex justify-start align-center flex-wrap"
                             @change="onChange"
                         >
                             <template #item="{element}">
-                                <div class="images-container d-flex flex-wrap">
+                                <div class="d-flex">
                                     <div
                                         class="image mr-2 mb-2 white elevation-2"
                                         :class="{'product-image--main': element.main}"
