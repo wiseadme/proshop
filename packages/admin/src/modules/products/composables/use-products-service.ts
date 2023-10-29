@@ -291,7 +291,7 @@ export const useProductsService = createSharedComposable(() => {
 
             await _optionsService.deleteOption(option)
 
-            if (variant.options!.length <= 1) {
+            if (variant.options!.length < 1) {
                 data = await _productsStore.deleteVariant(variant)
             } else {
                 data = await _productsStore.deleteVariantOption(option)

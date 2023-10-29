@@ -40,7 +40,6 @@
     const currentVariant = ref<Maybe<IVariant>>(null)
     const filterGroup = ref<Maybe<IFilterGroup>>(null)
     const optionModel = ref<IOption>(genVariantOptionPattern())
-    const productForInherit = ref(null)
     const optionProductLink = ref(null)
 
     const createOption = async (validate: () => Promise<boolean>) => {
@@ -56,7 +55,6 @@
         }
 
         optionProductLink.value = null
-        productForInherit.value = null
     }
 
     const setCurrentVariant = (variant: Maybe<IVariant>) => {
@@ -77,7 +75,7 @@
 
     const clearVariantOptionForm = () => {
         isVariantEditMode.value = false
-
+        optionProductLink.value = null
         optionModel.value = genVariantOptionPattern()
     }
 
@@ -87,9 +85,7 @@
 
     const onSelectOptionLinkedProduct = (product: IProduct) => {
         unref(optionModel).url = product.url
-        unref(optionModel).price = product.price
-        unref(optionModel).image = product.image
-        unref(optionModel).quantity = product.quantity
+        unref(optionModel).product = product.id
     }
 
     watch(variantItems, (variants) => {
@@ -251,7 +247,8 @@
                             @select="onSelectFilterItem"
                         />
                         <v-autocomplete
-                            v-if="!optionModel.url"
+                            v-if="!optionModel.product"
+                            :key="optionProductLink"
                             v-model="optionProductLink"
                             label="Ссылка на товар"
                             :items="products"
@@ -300,9 +297,9 @@
                         />
                         <v-text-field
                             v-model.trim="optionModel.description"
+                            label="Описание"
                             color="primary"
                             :disabled="!!optionProductLink"
-                            label="Описание"
                         />
                     </template>
                     <template #actions>
