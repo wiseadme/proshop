@@ -1,10 +1,11 @@
-import { IAsset, IAttribute, IOption, Maybe } from '@proshop/types'
+import { IAsset, IAttribute, IOption, IProduct, Maybe } from '@proshop/types'
 
 export class Option implements IOption {
     readonly id: string
     readonly name: string
     readonly variantId: string
     readonly ownerId: string
+    readonly product: Maybe<IProduct | string>
     readonly price: number
     readonly order: number
     readonly quantity: number
@@ -23,6 +24,7 @@ export class Option implements IOption {
         image = null,
         variantId = '',
         ownerId = '',
+        product = null
     }: IOption) {
         this.id = id
         this.name = name
@@ -34,6 +36,7 @@ export class Option implements IOption {
         this.variantId = variantId
         this.ownerId = ownerId
         this.url = url
+        this.product = product
     }
 
     static create(option: IOption): IOption {

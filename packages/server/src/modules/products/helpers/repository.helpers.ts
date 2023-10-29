@@ -1,3 +1,5 @@
+import { IProduct, Maybe } from '@proshop/types'
+
 export class RepositoryHelpers {
     getPaginationParams({ page, count }) {
         return {
@@ -41,9 +43,17 @@ export class RepositoryHelpers {
             path: 'variants',
             populate: {
                 path: 'options',
+                select: '_id name product ownerId variantId quantity order price',
                 options: {
                     lean: true,
                 },
+                populate: {
+                    path: 'product',
+                    select: 'name url price quantity image',
+                    options: {
+                        lean: true
+                    }
+                }
             },
         }
     }
@@ -64,6 +74,9 @@ export class RepositoryHelpers {
                 this.getCategoriesPopulateParams(),
                 this.getCurrencyPopulateParams(),
             ],
+            options: {
+                lean: true
+            }
         }
     }
 
