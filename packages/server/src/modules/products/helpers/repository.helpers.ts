@@ -43,7 +43,7 @@ export class RepositoryHelpers {
             path: 'variants',
             populate: {
                 path: 'options',
-                select: '_id name product ownerId variantId quantity order price',
+                select: '_id name product ownerId variantId quantity order price description',
                 options: {
                     lean: true,
                 },

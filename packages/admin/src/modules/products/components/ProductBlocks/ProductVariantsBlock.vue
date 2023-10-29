@@ -60,6 +60,7 @@
     const setCurrentVariant = (variant: Maybe<IVariant>) => {
         currentVariant.value = variant
         optionModel.value = genVariantOptionPattern()
+        unref(optionModel).variantId = unref(currentVariant)!.id
         isVariantEditMode.value = false
     }
 
@@ -72,6 +73,7 @@
         isVariantEditMode.value = true
         optionModel.value = option
         optionModel.value.url = (option.product as IProduct)?.url
+        optionModel.value.variantId = option.variantId
     }
 
     const clearVariantOptionForm = () => {
@@ -85,7 +87,7 @@
     }
 
     const onSelectOptionLinkedProduct = (product: IProduct) => {
-        unref(optionModel).url = product.url
+        unref(optionModel).variantId = unref(currentVariant)!.id
         unref(optionModel).product = product
     }
 
