@@ -15,6 +15,10 @@ const OptionSchema = new Schema<IOptionMongoModel>({
         type: String,
         required: true,
     },
+    product: {
+        type: Schema.Types.ObjectId,
+        ref: 'Product',
+    },
     price: {
         type: Number,
         default: 0

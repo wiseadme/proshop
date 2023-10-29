@@ -104,10 +104,7 @@ export class ProductsRepository extends RepositoryHelpers implements IProductsRe
             }))
             .exec()
 
-        await Promise.all([
-            ProductModel.populate(products, this.getRelatedPopulateParams()),
-            ProductModel.populate(products, this.getCurrencyPopulateParams()),
-        ])
+        await ProductModel.populate(products, this.getPopulateParams())
 
         return products.map(product => ProductMapper.toDomain(product))
     }
