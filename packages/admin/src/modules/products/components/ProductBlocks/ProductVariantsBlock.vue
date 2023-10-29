@@ -71,6 +71,7 @@
     const setOptionForEditing = (option: IOption) => {
         isVariantEditMode.value = true
         optionModel.value = option
+        optionModel.value.url = (option.product as IProduct)?.url
     }
 
     const clearVariantOptionForm = () => {
@@ -85,7 +86,7 @@
 
     const onSelectOptionLinkedProduct = (product: IProduct) => {
         unref(optionModel).url = product.url
-        unref(optionModel).product = product.id
+        unref(optionModel).product = product
     }
 
     watch(variantItems, (variants) => {
@@ -247,7 +248,7 @@
                             @select="onSelectFilterItem"
                         />
                         <v-autocomplete
-                            v-if="!optionModel.product"
+                            v-if="!optionModel.url"
                             :key="optionProductLink"
                             v-model="optionProductLink"
                             label="Ссылка на товар"

@@ -270,6 +270,8 @@ export const useProductsService = createSharedComposable(() => {
     }
 
     const updateVariantOption = async (option: IOption): Promise<IOption> => {
+        option.product = (option.product as IProduct)?.id || null
+
         try {
             const updated = await updateProductOption(option)
             const { variants } = unref(product)!
