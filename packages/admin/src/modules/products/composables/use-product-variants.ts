@@ -29,6 +29,7 @@ export const useProductVariants = () => {
         id: '',
         variantId: '',
         ownerId: '',
+        product: null,
         name: '',
         quantity: 0,
         price: 0,
