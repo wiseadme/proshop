@@ -15,6 +15,7 @@ export type { ICustomer, ICustomerMongoModel } from './customer'
 export type { IMetaTag, IMetaTagMongoModel } from './metatag'
 export type { ICurrency, ICurrencyMeta } from './currency'
 export type { IFilterGroup, IFilterItem, IFilterGroupMongoModel, IFilterItemMongoModel } from './filter'
+export type { IFavorite, IFavoriteMongoModel } from './favorites'
 export type {
     ISettings,
     ISettingsMongoModel,
