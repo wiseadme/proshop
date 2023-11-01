@@ -18,6 +18,7 @@ import { ILogger } from '@/types/utils'
 import { RepositoryHelpers } from '@modules/products/helpers/repository.helpers'
 
 import { ProductMapper } from '@modules/products/mappers/product.mapper'
+import { SkuGenerator } from '@common/plugins/sku-generator'
 
 // Constants
 import { DEFAULT_ITEMS_COUNT, DEFAULT_PAGE } from '@common/constants/counts'

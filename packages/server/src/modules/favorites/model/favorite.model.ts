@@ -8,9 +8,12 @@ const FavoriteSchema = new Schema<IFavoriteMongoModel>({
         required: true,
         unique: true
     },
-    map: {
-        type: Object,
-        default: {}
+    items: {
+        type: [{
+            type: Schema.Types.ObjectId,
+            ref: 'Product'
+        }],
+        default: []
     },
 }, {
     timestamps: true,

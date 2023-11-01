@@ -31,6 +31,7 @@ export interface IProduct {
     quantity: number
     image: Maybe<string>
     url: string
+    sku: string
     seo: ISEOType
     unit: Maybe<IUnit>
     categories: ICategory[] | string[]
