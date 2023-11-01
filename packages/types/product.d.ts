@@ -12,6 +12,7 @@ export interface IProductQuery {
     category?: string
     name?: string
     url?: string
+    sku?: string
 }
 
 export interface IProductConditions {

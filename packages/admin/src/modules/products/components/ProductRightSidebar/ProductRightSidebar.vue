@@ -119,7 +119,7 @@
             name: RouteNames.PRODUCT_EDIT,
 
             params: {
-                productId: route.params.productId,
+                sku: route.params.sku,
                 section: tab.section,
             },
         })

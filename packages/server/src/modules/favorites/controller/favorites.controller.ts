@@ -1,4 +1,3 @@
-
 import { BaseController } from '@common/controller/base.controller'
 import { NextFunction, Request, Response, Router } from 'express'
 import { inject, injectable } from 'inversify'
@@ -8,10 +7,7 @@ import { ILogger } from '@/types/utils'
 import { IController } from '@/types'
 import { IFavoriteService } from '@modules/favorites/types/service'
 import { IFavorite } from '@proshop/types'
-import { ValidateMiddleware } from '@common/middlewares/validate.middleware'
-import { Attribute } from '@modules/attribute/entity/attribute.entity'
-import { AttributeDTO } from '@modules/attribute/dto/attribute.dto'
-import { IAttributeService } from '@modules/attribute/types/service'
+import { Favorite } from '@modules/favorites/entity/favorite.entity'
 
 @injectable()
 export class FavoritesController extends BaseController implements IController {
@@ -30,9 +26,12 @@ export class FavoritesController extends BaseController implements IController {
         this.router.post('/', this.addToFavorite.bind(this))
     }
 
-    async addToFavorite(request: Request<{}, {}, IFavorite>, response: Response, next: NextFunction) {
+    async addToFavorite(request: Request<{}, {}, { sku: string }>, response: Response, next: NextFunction) {
         try {
-            const data = await this.service.addToFavorites(Attribute.create(request.body))
+            const data = await this.service.addToFavorites({
+                cookies: request.cookies,
+                ...request.body,
+            })
 
             this.send({ data, request, response })
         } catch (error) {

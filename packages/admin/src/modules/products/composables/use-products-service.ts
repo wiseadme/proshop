@@ -129,8 +129,8 @@ export const useProductsService = createSharedComposable(() => {
         return products
     }
 
-    const getProduct = async (id: string): Promise<IProduct> => {
-        const [item] = await _productsStore.getProducts({ id })
+    const getProduct = async (sku: string): Promise<IProduct> => {
+        const [item] = await _productsStore.getProducts({ sku })
 
         setAsCurrent(clone(item))
 

@@ -22,5 +22,3 @@ export class SkuGenerator {
         return new SkuGenerator().generateSku({ url, id })
     }
 }
-
-export const skuGenerator = new SkuGenerator()

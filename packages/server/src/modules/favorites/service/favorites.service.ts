@@ -1,3 +1,4 @@
+import { Request } from 'express'
 import { inject, injectable } from 'inversify'
 import { TYPES } from '@common/schemes/di-types'
 // Types
@@ -14,32 +15,7 @@ export class FavoriteService implements IFavoriteService {
     ) {
     }
 
-    create(favorite) {
-        return this.repository.create(favorite)
-    }
-
-    read(params): Promise<IAttribute[]> {
-        return this.repository.read(params)
-    }
-
-    async update(updates: Partial<IAttribute>): Promise<IAttribute | IAttribute[]> {
-        let data: any
-
-        if (Array.isArray(updates)) {
-            data = []
-
-            for await (const atr of updates) {
-                const attr = await this.repository.update(atr)
-                data.push(attr)
-            }
-
-            return data
-        }
-
-        return await this.repository.update(updates)
-    }
-
-    delete(id: string): Promise<boolean> {
-        return this.repository.delete(id)
+    async addToFavorites({ cookies, sku }: { cookies: Request['cookies'], sku: string }) {
+        return this.repository.saveFavorite()
     }
 }

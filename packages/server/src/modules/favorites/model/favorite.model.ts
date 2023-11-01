@@ -3,17 +3,14 @@ import { IFavoriteMongoModel } from '@proshop/types/mongo'
 
 const FavoriteSchema = new Schema<IFavoriteMongoModel>({
     _id: Schema.Types.ObjectId,
-    userId: {
+    user: {
         type: String,
         required: true,
         unique: true
     },
-    items: {
-        type: [{
-            type: Schema.Types.ObjectId,
-            ref: 'Product'
-        }],
-        default: []
+    sku: {
+        type: String,
+        default: ''
     },
 }, {
     timestamps: true,

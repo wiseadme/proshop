@@ -2,16 +2,16 @@ import { IFavorite, IProduct } from '@proshop/types'
 
 export class Favorite implements IFavorite{
     readonly id: string
-    readonly userId: string
-    readonly items: string[] | IProduct[]
+    readonly user: string
+    readonly sku: string
 
     constructor({
         id = '',
-        userId,
-        items = []
+        user,
+        sku = ''
     }) {
         this.id = id
-        this.userId = userId
-        this.items = items
+        this.user = user
+        this.sku = sku
     }
 }
