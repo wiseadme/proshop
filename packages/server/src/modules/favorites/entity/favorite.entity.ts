@@ -2,16 +2,20 @@ import { IFavorite, IProduct } from '@proshop/types'
 
 export class Favorite implements IFavorite{
     readonly id: string
-    readonly user: string
+    readonly userId: string
     readonly sku: string
 
     constructor({
         id = '',
-        user,
+        userId,
         sku = ''
     }) {
         this.id = id
-        this.user = user
+        this.userId = userId
         this.sku = sku
+    }
+
+    static create(favorite: IFavorite): IFavorite {
+        return new Favorite(favorite) as IFavorite
     }
 }

@@ -2,7 +2,7 @@ import { IProduct } from './product'
 
 export interface IFavorite {
     id: string
-    user: string
+    userId: string
     sku: string
 }
 

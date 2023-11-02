@@ -2,11 +2,10 @@ import { model, Schema } from 'mongoose'
 import { IFavoriteMongoModel } from '@proshop/types/mongo'
 
 const FavoriteSchema = new Schema<IFavoriteMongoModel>({
-    _id: Schema.Types.ObjectId,
-    user: {
+    userId: {
         type: String,
         required: true,
-        unique: true
+        index: true
     },
     sku: {
         type: String,

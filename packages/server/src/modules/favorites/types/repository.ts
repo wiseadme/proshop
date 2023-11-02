@@ -1,3 +1,5 @@
+import { IFavorite } from '@proshop/types'
+
 export interface IFavoriteRepository {
-    saveFavorite()
+    saveFavorite(favorite: IFavorite): Promise<IFavorite>
 }
