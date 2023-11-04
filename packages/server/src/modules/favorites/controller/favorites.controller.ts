@@ -5,9 +5,7 @@ import { TYPES } from '@common/schemes/di-types'
 // Types
 import { ILogger } from '@/types/utils'
 import { IController } from '@/types'
-import { IFavoriteService } from '@modules/favorites/types/service'
-import { IFavorite } from '@proshop/types'
-import { Favorite } from '@modules/favorites/entity/favorite.entity'
+import { IFavoritesService } from '@modules/favorites/types/service'
 
 @injectable()
 export class FavoritesController extends BaseController implements IController {
@@ -16,7 +14,7 @@ export class FavoritesController extends BaseController implements IController {
 
     constructor(
         @inject(TYPES.UTILS.ILogger) private logger: ILogger,
-        @inject(TYPES.SERVICES.IAttributeService) private service: IFavoriteService,
+        @inject(TYPES.SERVICES.IFavoritesService) private service: IFavoritesService,
     ) {
         super()
         this.initRoutes()
@@ -24,6 +22,8 @@ export class FavoritesController extends BaseController implements IController {
 
     initRoutes() {
         this.router.post('/', this.addToFavorite.bind(this))
+        this.router.get('/', this.getFavorites.bind(this))
+        this.router.delete('/', this.deleteFavorite.bind(this))
     }
 
     async addToFavorite(request: Request<{}, {}, { sku: string }>, response: Response, next: NextFunction) {
@@ -35,7 +35,30 @@ export class FavoritesController extends BaseController implements IController {
 
             this.send({ data, request, response })
         } catch (error) {
-            return this.error({ error, request, next })
+            this.error({ error, request, next })
+        }
+    }
+
+    async getFavorites(request: Request<{}, {}, { userId: string }>, response: Response, next: NextFunction) {
+        try {
+            const data = await this.service.getFavorites(request.cookies)
+
+            this.send({ data, request, response })
+        } catch (error) {
+            this.error({ error, request, next })
+        }
+    }
+
+    async deleteFavorite(request: Request<{}, {}, {}, { sku: string }>, response: Response, next: NextFunction) {
+        try {
+            const data = await this.service.deleteFavorite({
+                sku: request.query.sku,
+                cookies: request.cookies
+            })
+
+            this.send({ data, request, response })
+        } catch (error) {
+            this.error({ error, request, next })
         }
     }
 }

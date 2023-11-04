@@ -1,17 +1,20 @@
-import { IFavorite, IFavoriteMongoModel } from '@proshop/types'
+import { IFavorite, IFavoriteMongoModel, IAttribute } from '@proshop/types'
 
-export class AttributeMapper {
+export class FavoriteMapper {
     static toDomain(entity: IFavoriteMongoModel): IFavorite {
         const { _id } = entity
         const map: Partial<IFavoriteMongoModel> = entity
+        const product = map.product?.[0]
 
         delete map._id
+        delete map.userId
+        delete product._id
 
         return {
             id: _id,
             ...map,
+            product: map.product?.[0]
         } as IFavorite
-
     }
 
     static toMongoModelData(domainModel: IFavorite): IFavoriteMongoModel {

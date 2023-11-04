@@ -61,11 +61,11 @@ export class CustomerService extends CustomerHelpers implements ICustomerService
     async loginCustomer(response: Response, customerParams) {
         const [candidate] = await this.getCustomers(customerParams)
 
-        const { name, phone } = candidate
+        const { name, phone, id } = candidate
 
         this.setResponseCookie({
             key: 'user_token',
-            value: this.genAccessToken({ name, phone }),
+            value: this.genAccessToken({ name, phone, id }),
             res: response,
         })
 
