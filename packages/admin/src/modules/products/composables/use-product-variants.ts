@@ -8,7 +8,11 @@ import { useProductModel } from '@modules/products/composables/use-product-model
 import { useNotifications } from '@shared/components/VNotifications/use-notifications'
 import { clone } from '@shared/helpers'
 import { CHANGES_SAVED, SAVING_ERROR } from '@shared/constants/notifications'
-import { IOption, IVariant } from '@proshop/types'
+import {
+    IOption,
+    IProduct,
+    IVariant
+} from '@proshop/types'
 
 export const useProductVariants = () => {
     const { model } = useProductModel()
@@ -50,6 +54,8 @@ export const useProductVariants = () => {
     })
 
     const onCreateProductVariantOption = async (option: IOption): Promise<void> => {
+        option.product = (option.product as IProduct)?.id ?? null
+
         try {
             await addNewVariantOption(option)
             model.value.variants = clone(unref(product)!.variants!)
