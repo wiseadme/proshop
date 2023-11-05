@@ -18,6 +18,7 @@ import { ILogger } from '@/types/utils'
 import { RepositoryHelpers } from '@modules/products/helpers/repository.helpers'
 
 import { ProductMapper } from '@modules/products/mappers/product.mapper'
+import { SkuGenerator } from '@common/plugins/sku-generator'
 
 // Constants
 import { DEFAULT_ITEMS_COUNT, DEFAULT_PAGE } from '@common/constants/counts'
@@ -104,10 +105,7 @@ export class ProductsRepository extends RepositoryHelpers implements IProductsRe
             }))
             .exec()
 
-        await Promise.all([
-            ProductModel.populate(products, this.getRelatedPopulateParams()),
-            ProductModel.populate(products, this.getCurrencyPopulateParams()),
-        ])
+        await ProductModel.populate(products, this.getPopulateParams())
 
         return products.map(product => ProductMapper.toDomain(product))
     }

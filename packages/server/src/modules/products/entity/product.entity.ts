@@ -1,5 +1,7 @@
 import { translator } from '@common/utils/translator'
 import { IProduct } from '@proshop/types'
+import { SkuGenerator } from '@common/plugins/sku-generator'
+import customId from 'custom-id'
 
 export class Product implements IProduct {
     readonly id: string
@@ -10,6 +12,7 @@ export class Product implements IProduct {
     readonly description: IProduct['description']
     readonly image: IProduct['image']
     readonly url: IProduct['url']
+    readonly sku: IProduct['sku']
     readonly categories: IProduct['categories']
     readonly seo: IProduct['seo']
     readonly assets: IProduct['assets']
@@ -35,7 +38,8 @@ export class Product implements IProduct {
         attributes,
         conditions,
         related,
-        currency = null
+        sku = '',
+        currency = null,
     }: IProduct) {
         this.id = id
         this.name = name
@@ -45,6 +49,7 @@ export class Product implements IProduct {
         this.description = description
         this.image = image
         this.url = url || translator(name.toLowerCase())
+        this.sku = sku || SkuGenerator.generate({ url: this.url, id: customId({ name: this.url, randomLength: 5 }) })
         this.seo = seo
         this.assets = assets
         this.variants = variants

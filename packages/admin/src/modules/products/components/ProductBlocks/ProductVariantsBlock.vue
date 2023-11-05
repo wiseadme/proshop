@@ -40,7 +40,6 @@
     const currentVariant = ref<Maybe<IVariant>>(null)
     const filterGroup = ref<Maybe<IFilterGroup>>(null)
     const optionModel = ref<IOption>(genVariantOptionPattern())
-    const productForInherit = ref(null)
     const optionProductLink = ref(null)
 
     const createOption = async (validate: () => Promise<boolean>) => {
@@ -56,12 +55,12 @@
         }
 
         optionProductLink.value = null
-        productForInherit.value = null
     }
 
     const setCurrentVariant = (variant: Maybe<IVariant>) => {
         currentVariant.value = variant
         optionModel.value = genVariantOptionPattern()
+        unref(optionModel).variantId = unref(currentVariant)!.id
         isVariantEditMode.value = false
     }
 
@@ -73,11 +72,13 @@
     const setOptionForEditing = (option: IOption) => {
         isVariantEditMode.value = true
         optionModel.value = option
+        optionModel.value.url = (option.product as IProduct)?.url
+        optionModel.value.variantId = option.variantId
     }
 
     const clearVariantOptionForm = () => {
         isVariantEditMode.value = false
-
+        optionProductLink.value = null
         optionModel.value = genVariantOptionPattern()
     }
 
@@ -86,10 +87,8 @@
     }
 
     const onSelectOptionLinkedProduct = (product: IProduct) => {
-        unref(optionModel).url = product.url
-        unref(optionModel).price = product.price
-        unref(optionModel).image = product.image
-        unref(optionModel).quantity = product.quantity
+        unref(optionModel).variantId = unref(currentVariant)!.id
+        unref(optionModel).product = product
     }
 
     watch(variantItems, (variants) => {
@@ -252,6 +251,7 @@
                         />
                         <v-autocomplete
                             v-if="!optionModel.url"
+                            :key="optionProductLink"
                             v-model="optionProductLink"
                             label="Ссылка на товар"
                             :items="products"
@@ -300,9 +300,9 @@
                         />
                         <v-text-field
                             v-model.trim="optionModel.description"
+                            label="Описание"
                             color="primary"
                             :disabled="!!optionProductLink"
-                            label="Описание"
                         />
                     </template>
                     <template #actions>

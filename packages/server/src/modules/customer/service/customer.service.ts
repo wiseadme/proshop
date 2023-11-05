@@ -28,11 +28,11 @@ export class CustomerService extends CustomerHelpers implements ICustomerService
 
         if (!found) {
             const created = await this.repository.create(Customer.create(customer))
-            const { name, phone } = created
+            const { name, phone, id } = created
 
             this.setResponseCookie({
-                key: 'secret',
-                value: this.genAccessToken({ name, phone }),
+                key: 'user_token',
+                value: this.genAccessToken({ name, phone, id }),
                 res: response,
             })
 
@@ -43,7 +43,7 @@ export class CustomerService extends CustomerHelpers implements ICustomerService
     }
 
     async whoami(cookies) {
-        const auth = cookies.secret
+        const auth = cookies.user_token
 
         if (!auth || isExpired(auth)) {
             return Promise.reject({
@@ -61,11 +61,11 @@ export class CustomerService extends CustomerHelpers implements ICustomerService
     async loginCustomer(response: Response, customerParams) {
         const [candidate] = await this.getCustomers(customerParams)
 
-        const { name, phone } = candidate
+        const { name, phone, id } = candidate
 
         this.setResponseCookie({
-            key: 'secret',
-            value: this.genAccessToken({ name, phone }),
+            key: 'user_token',
+            value: this.genAccessToken({ name, phone, id }),
             res: response,
         })
 
@@ -73,7 +73,7 @@ export class CustomerService extends CustomerHelpers implements ICustomerService
     }
 
     async logoutCustomer(response: Response) {
-        response.clearCookie('secret')
+        response.clearCookie('user_token')
     }
 
     async getCustomers(params: Partial<ICustomer>): Promise<(ICustomer)[]> {

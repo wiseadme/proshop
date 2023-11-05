@@ -21,6 +21,7 @@ import { UserController } from '@modules/user/controller/user.controller'
 import { CustomerController } from '@modules/customer/controller/customer.controller'
 import { MetaTagController } from '@modules/metatag/controller/metatag.controller'
 import { SettingsController } from '@modules/settings/controller/settings.controller'
+import { FavoritesController } from '@modules/favorites/controller/favorites.controller'
 
 // Services
 import { LoggerService } from '../services/logger.service'
@@ -42,6 +43,7 @@ import { SettingsService } from '@modules/settings/services/settings.service'
 import { SiteService } from '@modules/settings/services/site.service'
 import { FilterGroupService } from '@modules/filter/service/filterGroup.service'
 import { FilterItemService } from '@modules/filter/service/filterItem.service'
+import { FavoritesService } from '@modules/favorites/service/favorites.service'
 
 import { GatewayService as ProductGateway, IProductGatewayService } from '@modules/products/gateway/gateway.service'
 import { GatewayService as CartGateway, ICartGatewayService } from '@modules/cart/gateway/gateway.service'
@@ -65,6 +67,7 @@ import { SiteRepository } from '@modules/settings/repositories/site.repository'
 import { SettingsRepository } from '@modules/settings/repositories/settings.repository'
 import { FilterGroupRepository } from '@modules/filter/repository/filterGroup.repository'
 import { FilterItemRepository } from '@modules/filter/repository/filterItem.repository'
+import { FavoritesRepository } from '@modules/favorites/repository/favorites.repository'
 // Middlewares
 import { JsonMiddleware } from '@common/middlewares/json.middleware'
 import { UrlEncodedMiddleware } from '@common/middlewares/urlencoded.middleware'
@@ -91,6 +94,7 @@ import { IMerchantService, ISettingsService, ISiteService } from '@modules/setti
 import { IMetaTagService } from '@modules/metatag/types/service'
 import { IFilterGroupService } from '@modules/filter/types/service'
 import { IFilterItemService } from '@modules/filter/types/service'
+import { IFavoritesService } from '@modules/favorites/types/service'
 
 import { ICategoryRepository } from '@modules/categories/types/repository'
 import { IAssetsRepository } from '@modules/asset/types/repository'
@@ -107,6 +111,7 @@ import { IMetaTagRepository } from '@modules/metatag/types/repository'
 import { IMerchantRepository, ISettingsRepository, ISiteRepository } from '@modules/settings/types/repository'
 import { IFilterGroupRepository } from '@modules/filter/types/repository'
 import { IFilterItemRepository } from '@modules/filter/types/repository'
+import { IFavoritesRepository } from '@modules/favorites/types/repository'
 // Utils Types
 import { ILogger } from '@/types/utils'
 import { IConfig, IController, IDb, IRedis } from '@/types'
@@ -144,6 +149,7 @@ container.bind<ISettingsService>(TYPES.SERVICES.ISettingsService).to(SettingsSer
 container.bind<ISiteService>(TYPES.SERVICES.ISiteService).to(SiteService)
 container.bind<IFilterGroupService>(TYPES.SERVICES.IFilterGroupService).to(FilterGroupService)
 container.bind<IFilterItemService>(TYPES.SERVICES.IFilterItemService).to(FilterItemService)
+container.bind<IFavoritesService>(TYPES.SERVICES.IFavoritesService).to(FavoritesService)
 
 // Gateways
 container.bind<IProductGatewayService>(TYPES.GATEWAYS.IProductGatewayService).to(ProductGateway)
@@ -166,6 +172,7 @@ container.bind<IController>(TYPES.CONTROLLERS.IController).to(CustomerController
 container.bind<IController>(TYPES.CONTROLLERS.IController).to(MetaTagController)
 container.bind<IController>(TYPES.CONTROLLERS.IController).to(SettingsController)
 container.bind<IController>(TYPES.CONTROLLERS.IController).to(FilterController)
+container.bind<IController>(TYPES.CONTROLLERS.IController).to(FavoritesController)
 
 // Middlewares
 container.bind<IMiddleware>(TYPES.MIDDLEWARES.IMiddleware).to(LoggerMiddleware)
@@ -196,3 +203,4 @@ container.bind<ISettingsRepository>(TYPES.REPOSITORIES.ISettingsRepository).to(S
 container.bind<ISiteRepository>(TYPES.REPOSITORIES.ISiteRepository).to(SiteRepository)
 container.bind<IFilterGroupRepository>(TYPES.REPOSITORIES.IFilterGroupRepository).to(FilterGroupRepository)
 container.bind<IFilterItemRepository>(TYPES.REPOSITORIES.IFilterItemRepository).to(FilterItemRepository)
+container.bind<IFavoritesRepository>(TYPES.REPOSITORIES.IFavoritesRepository).to(FavoritesRepository)

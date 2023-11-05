@@ -6,7 +6,7 @@ export class VariantMapper {
         const { _id } = entity
         const map: Partial<IVariantMongoModel> = { ...entity }
 
-        map.options = map.options?.map((option) => OptionMapper.toDomain(option as any))
+        map.options = map.options?.map((option) => OptionMapper.toDomain(option))
 
         delete map._id
 

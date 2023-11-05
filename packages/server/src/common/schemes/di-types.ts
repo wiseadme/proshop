@@ -30,6 +30,7 @@ export const TYPES = {
         ISiteService: Symbol.for('ISiteService'),
         IFilterGroupService: Symbol.for('IFilterGroupService'),
         IFilterItemService: Symbol.for('IFilterItemService'),
+        IFavoritesService: Symbol.for('IFavoritesService'),
     },
     GATEWAYS: {
         IProductGatewayService: Symbol.for('IProductGatewayService'),
@@ -53,7 +54,8 @@ export const TYPES = {
         ISettingsRepository: Symbol.for('ISettingsRepository'),
         ISiteRepository: Symbol.for('ISiteRepository'),
         IFilterGroupRepository: Symbol.for('IFilterGroupRepository'),
-        IFilterItemRepository: Symbol.for('IFilterItemRepository')
+        IFilterItemRepository: Symbol.for('IFilterItemRepository'),
+        IFavoritesRepository: Symbol.for('IFavoritesRepository')
     },
     MIDDLEWARES: {
         IMiddleware: Symbol.for('IMiddleware'),

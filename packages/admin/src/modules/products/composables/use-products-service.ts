@@ -129,8 +129,8 @@ export const useProductsService = createSharedComposable(() => {
         return products
     }
 
-    const getProduct = async (id: string): Promise<IProduct> => {
-        const [item] = await _productsStore.getProducts({ id })
+    const getProduct = async (sku: string): Promise<IProduct> => {
+        const [item] = await _productsStore.getProducts({ sku })
 
         setAsCurrent(clone(item))
 
@@ -270,6 +270,8 @@ export const useProductsService = createSharedComposable(() => {
     }
 
     const updateVariantOption = async (option: IOption): Promise<IOption> => {
+        option.product = (option.product as IProduct)?.id || null
+
         try {
             const updated = await updateProductOption(option)
             const { variants } = unref(product)!
@@ -291,7 +293,7 @@ export const useProductsService = createSharedComposable(() => {
 
             await _optionsService.deleteOption(option)
 
-            if (variant.options!.length <= 1) {
+            if (variant.options!.length < 1) {
                 data = await _productsStore.deleteVariant(variant)
             } else {
                 data = await _productsStore.deleteVariantOption(option)
@@ -455,7 +457,7 @@ export const useProductsService = createSharedComposable(() => {
             return await updateProduct({
                 id: asset.ownerId,
                 assets: getIds(assets),
-                image: asset.main ? asset.url : null,
+                ...(asset.main ? { image: asset.url } : {}),
             })
 
         } catch (err) {

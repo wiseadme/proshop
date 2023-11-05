@@ -38,6 +38,12 @@ const ProductSchema = new Schema<IProductMongoModel>({
         unique: true,
         index: true,
     },
+    sku: {
+        type: String,
+        unique: true,
+        required: true,
+        index: true,
+    },
     categories: {
         type: [{
             type: Schema.Types.ObjectId,
@@ -59,7 +65,7 @@ const ProductSchema = new Schema<IProductMongoModel>({
                 id: String,
                 order: Number,
                 props: Object,
-                _id: false
+                _id: false,
             }],
         },
         schema: Array,

@@ -48,6 +48,7 @@
             <v-data-table
                 :cols="cols"
                 :rows="orders"
+                key-prop="id"
                 class="app-border-radius"
                 :footer-options="{
                     counts: {

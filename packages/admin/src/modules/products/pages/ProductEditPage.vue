@@ -16,8 +16,8 @@
     onMounted(async () => {
         await onInit()
 
-        if (route.params.productId) {
-            setProductModel(await getProduct(route.params.productId as string))
+        if (route.params.sku) {
+            setProductModel(await getProduct(route.params.sku as string))
         }
     })
 </script>
