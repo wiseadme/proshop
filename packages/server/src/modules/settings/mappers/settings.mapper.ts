@@ -5,6 +5,7 @@ import { SiteMapper } from '@modules/settings/mappers/site.mapper'
 export class SettingsMapper {
     static toDomain(entity: ISettingsMongoModel): Maybe<ISettings> {
         if (!entity) return null
+
         const map = { ...entity }
 
         // @ts-ignore
@@ -13,8 +14,6 @@ export class SettingsMapper {
         return {
             id: entity._id,
             ...map
-            // merchant: entity.merchant ? MerchantMapper.toDomain(entity.merchant as IMerchantMongoModel) : '',
-            // site: entity.site ? SiteMapper.toDomain(entity.site as ISiteMongoModel) : ''
         } as ISettings
     }
 
@@ -22,7 +21,10 @@ export class SettingsMapper {
         if (!domainModel) return null
 
         const { id } = domainModel
-        const map: Partial<ISettings> = domainModel
+        const map = { ...domainModel } as Record<string, any>
+
+        map.site = map.site?.id
+        map.merchant = map.merchant?.id
 
         delete map.id
 

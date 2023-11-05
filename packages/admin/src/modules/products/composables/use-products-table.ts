@@ -64,7 +64,7 @@ export const useProductsTable = () => {
             name: RouteNames.PRODUCT_EDIT,
             params: {
                 action: EDIT,
-                productId: row.id,
+                sku: row.sku,
                 section: INFO_BLOCK,
             },
         })
@@ -101,13 +101,13 @@ export const useProductsTable = () => {
             onSort: (col) => onSortColumn(col),
         },
         {
-            key: 'url',
-            title: 'Url товара',
+            key: 'sku',
+            title: 'SKU',
             width: '250',
             resizeable: true,
             sortable: true,
             filterable: false,
-            format: (row: IProduct) => row.url,
+            format: (row: IProduct) => row.sku,
             onSort: (col) => onSortColumn(col),
         },
         {

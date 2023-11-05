@@ -12,6 +12,7 @@ export interface IProductQuery {
     category?: string
     name?: string
     url?: string
+    sku?: string
 }
 
 export interface IProductConditions {
@@ -31,6 +32,7 @@ export interface IProduct {
     quantity: number
     image: Maybe<string>
     url: string
+    sku: string
     seo: ISEOType
     unit: Maybe<IUnit>
     categories: ICategory[] | string[]

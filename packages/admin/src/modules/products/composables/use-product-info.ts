@@ -43,7 +43,7 @@ export const useProductInfo = () => {
         name: RouteNames.PRODUCT_EDIT,
         params: {
             action: EDIT,
-            productId: product.id,
+            sku: product.sku,
             section: INFO_BLOCK,
         },
     })

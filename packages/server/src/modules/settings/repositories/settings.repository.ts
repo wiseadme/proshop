@@ -10,7 +10,6 @@ import { SettingsMapper } from '@modules/settings/mappers/settings.mapper'
 @injectable()
 export class SettingsRepository implements ISettingsRepository {
     async create(settings: Partial<ISettings>) {
-
         const settingsData = await new SettingsModel({
             ...SettingsMapper.toMongoModelData(settings),
             _id: new mongoose.Types.ObjectId(),
@@ -26,7 +25,7 @@ export class SettingsRepository implements ISettingsRepository {
         const [settings] = await SettingsModel
             .find()
             .lean()
-            // .populate(['merchant', 'site'])
+        // .populate(['merchant', 'site'])
 
         return SettingsMapper.toDomain(settings)
     }
@@ -34,9 +33,11 @@ export class SettingsRepository implements ISettingsRepository {
     async update(updates: Partial<ISettings>) {
         validateId(updates.id)
 
+        const payload = SettingsMapper.toMongoModelData(updates) as ISettingsMongoModel
+
         const updated = await SettingsModel.findByIdAndUpdate(
-            { _id: updates.id },
-            { $set: updates },
+            { _id: payload._id },
+            { $set: { ...payload } },
             { new: true },
         ) as ISettingsMongoModel
 
