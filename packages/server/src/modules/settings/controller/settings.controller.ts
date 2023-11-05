@@ -54,9 +54,9 @@ export class SettingsController extends BaseController implements IController {
             const settings = await this.settingsService.read()
 
             if (!settings) {
-                await this.settingsService.create({ merchant: data.id })
+                await this.settingsService.create({ merchant: data })
             } else {
-                await this.settingsService.update({ id: settings.id, merchant: data.id })
+                await this.settingsService.update({ id: settings.id, merchant: data })
             }
 
             this.send({ data, request, response })
@@ -102,9 +102,9 @@ export class SettingsController extends BaseController implements IController {
             const settings = await this.settingsService.read()
 
             if (!settings) {
-                await this.settingsService.create({ site: data.id })
+                await this.settingsService.create({ site: data })
             } else {
-                await this.settingsService.update({ id: settings.id, site: data.id })
+                await this.settingsService.update({ id: settings.id, site: data })
             }
 
             this.send({ data, request, response })

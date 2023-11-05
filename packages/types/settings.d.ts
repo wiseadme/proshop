@@ -57,8 +57,8 @@ export interface ISitePages {
 
 export interface ISettings {
     id: string
-    merchant?: string | IMerchant
-    site?: string | ISite
+    merchant?: IMerchant
+    site?: ISite
 }
 
 export interface ISettingsMongoModel extends Omit<ISettings, 'id' | 'merchant' | 'site'>{
