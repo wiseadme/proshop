@@ -3,7 +3,7 @@ import { IFavorite, IFavoriteMongoModel, IAttribute } from '@proshop/types'
 export class FavoriteMapper {
     static toDomain(entity: IFavoriteMongoModel): IFavorite {
         const { _id } = entity
-        const map: Partial<IFavoriteMongoModel> = entity
+        const map: Partial<IFavoriteMongoModel> = { ...entity }
         const product = map.product?.[0]
 
         delete map._id
@@ -13,7 +13,7 @@ export class FavoriteMapper {
         return {
             id: _id,
             ...map,
-            product: map.product?.[0]
+            product
         } as IFavorite
     }
 
