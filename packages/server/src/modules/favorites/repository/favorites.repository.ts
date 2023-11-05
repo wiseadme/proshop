@@ -32,7 +32,7 @@ export class FavoritesRepository implements IFavoritesRepository {
             .populate('product', ['name', 'image', 'price'])
             .lean()
 
-        return favorites.map(it => FavoriteMapper.toDomain(it))
+        return favorites.length ? favorites.map(it => FavoriteMapper.toDomain(it)) : []
     }
 
     async delete(params: { sku: string, userId: string }): Promise<boolean> {

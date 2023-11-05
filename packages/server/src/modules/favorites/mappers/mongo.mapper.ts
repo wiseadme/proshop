@@ -1,9 +1,8 @@
-import { IFavorite, IFavoriteMongoModel, IAttribute, Maybe } from '@proshop/types'
+import type { IFavorite, IFavoriteMongoModel, Maybe } from '@proshop/types'
+import { id } from 'inversify'
 
 export class FavoriteMapper {
-    static toDomain(entity: IFavoriteMongoModel): Maybe<IFavorite> {
-        if (!entity) return null
-
+    static toDomain(entity: IFavoriteMongoModel): IFavorite {
         const { _id } = entity
         const map: Partial<IFavoriteMongoModel> = { ...entity }
         const product = map.product?.[0]
@@ -19,9 +18,7 @@ export class FavoriteMapper {
         } as IFavorite
     }
 
-    static toMongoModelData(domainModel: IFavorite): Maybe<IFavoriteMongoModel> {
-        if (!domainModel) return null
-
+    static toMongoModelData(domainModel: IFavorite): IFavoriteMongoModel {
         const { id } = domainModel
         const map: Partial<IFavorite> = domainModel
 
