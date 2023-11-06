@@ -8,6 +8,7 @@ import { useProductModel } from '@modules/products/composables/use-product-model
 import { useNotifications } from '@shared/components/VNotifications/use-notifications'
 import { clone } from '@shared/helpers'
 import { CHANGES_SAVED, SAVING_ERROR } from '@shared/constants/notifications'
+import {Option} from '@modules/products/model/option.model'
 import {
     IOption,
     IProduct,
@@ -27,38 +28,40 @@ export const useProductVariants = () => {
 
     const { notify } = useNotifications()
 
-    const isVariantEditMode = ref(false)
-
-    const genVariantOptionPattern = (): IOption => ({
-        id: '',
-        variantId: '',
-        ownerId: '',
-        product: null,
-        name: '',
-        quantity: 0,
-        price: 0,
-        order: 0,
-        description: null,
-        url: null,
-        image: '',
-    })
+    const isEditMode = ref(false)
+    const optionProductLink = ref(null)
+    const optionModel = ref<IOption>(Option.create())
+    const currentVariant = ref<Maybe<IVariant>>(null)
 
     const mergedVariants = computed<IVariant[]>(() => {
         return Object.values(unref(model).variants.concat(unref(variantItems)).reduce((map, variant) => {
-            if (!map[variant.id]){
-                map[variant.id] = variant
-            }
+            map[variant.id] ??= variant
 
             return map
         }, {}))
     })
 
-    const onCreateProductVariantOption = async (option: IOption): Promise<void> => {
+    const setCurrentVariant = (variant: Maybe<IVariant>) => {
+        currentVariant.value = variant
+        optionModel.value = Option.create()
+
+        unref(optionModel).variantId = unref(currentVariant)!.id
+        isEditMode.value = false
+    }
+
+
+    const clearVariantOptionForm = () => {
+        isEditMode.value = false
+        optionProductLink.value = null
+        optionModel.value = Option.create()
+    }
+
+    const onCreateVariantOption = async (option: IOption): Promise<void> => {
         option.product = (option.product as IProduct)?.id ?? null
 
         try {
             await addNewVariantOption(option)
-            model.value.variants = clone(unref(product)!.variants!)
+            unref(model).variants = clone(unref(product)!.variants!)
 
             notify(CHANGES_SAVED)
         } catch {
@@ -66,10 +69,10 @@ export const useProductVariants = () => {
         }
     }
 
-    const onUpdateProductVariantOption = async (option: IOption): Promise<void> => {
+    const onUpdateVariantOption = async (option: IOption): Promise<void> => {
         try {
             await updateVariantOption(option)
-            model.value.variants = clone(unref(product)!.variants)
+            unref(model).variants = clone(unref(product)!.variants)
 
             notify(CHANGES_SAVED)
         } catch {
@@ -77,10 +80,10 @@ export const useProductVariants = () => {
         }
     }
 
-    const onDeleteProductVariantOption = async ({ option, variant }): Promise<void> => {
+    const onDeleteVariantOption = async ({ option, variant }): Promise<void> => {
         try {
             await deleteVariantOption({ option, variant })
-            model.value.variants = clone(unref(product)?.variants!)
+            unref(model).variants = clone(unref(product)?.variants!)
 
             notify(CHANGES_SAVED)
         } catch {
@@ -88,14 +91,17 @@ export const useProductVariants = () => {
         }
     }
 
-
     return {
+        optionModel,
         variantItems,
-        isVariantEditMode,
         mergedVariants,
-        genVariantOptionPattern,
-        onCreateProductVariantOption,
-        onUpdateProductVariantOption,
-        onDeleteProductVariantOption,
+        isEditMode,
+        optionProductLink,
+        currentVariant,
+        setCurrentVariant,
+        clearVariantOptionForm,
+        onCreateVariantOption,
+        onUpdateVariantOption,
+        onDeleteVariantOption,
     }
 }

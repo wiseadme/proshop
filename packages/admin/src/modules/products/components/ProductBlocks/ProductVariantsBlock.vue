@@ -13,12 +13,11 @@
     import { VSvg } from '@shared/components/VSvg'
     import { ItemsList } from '@shared/components/ItemsList'
     import { SvgPaths } from '@shared/enums/svg-paths'
-    import {
+    import type {
         IFilterGroup,
         IFilterItem,
         IOption,
         IProduct,
-        IVariant,
     } from '@proshop/types'
 
     const { model } = useProductModel()
@@ -26,21 +25,22 @@
 
     const {
         variantItems,
-        isVariantEditMode,
+        isEditMode,
         mergedVariants,
-        genVariantOptionPattern,
-        onUpdateProductVariantOption,
-        onCreateProductVariantOption,
-        onDeleteProductVariantOption,
+        optionModel,
+        optionProductLink,
+        currentVariant,
+        setCurrentVariant,
+        clearVariantOptionForm,
+        onUpdateVariantOption,
+        onCreateVariantOption,
+        onDeleteVariantOption,
     } = useProductVariants()
 
     const { filterItems, getFilterItems } = useFilterItemsService()
     const { filterGroups, getFilterGroupItems } = useFilterGroupService()
 
-    const currentVariant = ref<Maybe<IVariant>>(null)
     const filterGroup = ref<Maybe<IFilterGroup>>(null)
-    const optionModel = ref<IOption>(genVariantOptionPattern())
-    const optionProductLink = ref(null)
 
     const createOption = async (validate: () => Promise<boolean>) => {
         await validate()
@@ -48,38 +48,25 @@
         unref(optionModel)!.variantId = unref(currentVariant)!.id
         unref(optionModel)!.ownerId = unref(model)!.id
 
-        if (unref(isVariantEditMode)) {
-            await onUpdateProductVariantOption(unref(optionModel))
+        if (unref(isEditMode)) {
+            await onUpdateVariantOption(unref(optionModel))
         } else {
-            await onCreateProductVariantOption(unref(optionModel))
+            await onCreateVariantOption(unref(optionModel))
         }
 
         optionProductLink.value = null
     }
 
-    const setCurrentVariant = (variant: Maybe<IVariant>) => {
-        currentVariant.value = variant
-        optionModel.value = genVariantOptionPattern()
-        unref(optionModel).variantId = unref(currentVariant)!.id
-        isVariantEditMode.value = false
-    }
-
     const onDeleteOption = (option: IOption) => {
         unref(currentVariant)!.options = (unref(currentVariant)!.options as IOption[]).filter(it => it.id !== option.id)
-        onDeleteProductVariantOption({ variant: unref(currentVariant), option })
+        onDeleteVariantOption({ variant: unref(currentVariant), option })
     }
 
     const setOptionForEditing = (option: IOption) => {
-        isVariantEditMode.value = true
+        isEditMode.value = true
         optionModel.value = option
         optionModel.value.url = (option.product as IProduct)?.url
         optionModel.value.variantId = option.variantId
-    }
-
-    const clearVariantOptionForm = () => {
-        isVariantEditMode.value = false
-        optionProductLink.value = null
-        optionModel.value = genVariantOptionPattern()
     }
 
     const onSelectFilterItem = (item: IFilterItem) => {
@@ -100,14 +87,6 @@
 
     }, { immediate: true })
 
-    watch(() => unref(model).variants, (newVariants = []) => {
-        if (unref(currentVariant)) {
-            const variant = newVariants.find(it => it.id === unref(currentVariant)?.id)
-
-            setCurrentVariant(variant || unref(mergedVariants)[0])
-        }
-    }, { immediate: true })
-
     /**
      * @description Наблюдаем в режиме редактирования за вариантами продукта
      * и перезаписываем мапу существующих вариантов для редактирования
@@ -115,13 +94,19 @@
     watch(() => unref(model)?.variants, (variants) => {
         if (!variants || !variants.length) return
 
-        setCurrentVariant(unref(currentVariant) || variants[0])
+        if (unref(currentVariant)) {
+            const variant = variants.find(it => it.id === unref(currentVariant)!.id)
+
+            setCurrentVariant(variant || unref(mergedVariants)[0])
+        } else {
+            setCurrentVariant(unref(currentVariant) || variants[0])
+        }
 
     }, { immediate: true })
 
     watch(currentVariant, () => {
         filterGroup.value = null
-    }, {immediate: true})
+    }, { immediate: true })
 
 </script>
 <template>
