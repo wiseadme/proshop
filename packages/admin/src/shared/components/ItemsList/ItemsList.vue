@@ -4,7 +4,7 @@
         deletable = true,
         editable = true
     } = defineProps<{
-        modelValue: any
+        modelValue?: any
         items: T[]
         uniqueKey?: string
         deletable?: boolean

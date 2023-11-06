@@ -6,8 +6,8 @@
     } from 'vue'
     import { useFilterGroupService } from '@modules/filters/composables/use-filter-group-service'
     import { useFilterItemForm } from '@modules/filters/composables/use-filter-item-form'
-    import { IFilterGroup } from '@proshop/types'
     import { useFilterItemsService } from '@modules/filters/composables/use-filter-items-service'
+    import { IFilterGroup } from '@proshop/types'
 
     const { filterGroups, getFilterGroupItems } = useFilterGroupService()
     const { createFilterItem, getFilterItems } = useFilterItemsService()

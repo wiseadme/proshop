@@ -29,6 +29,20 @@ export const actions = {
         }
     },
 
+    async updateFilter(params: Partial<IFilterItem> = {}) {
+        try {
+            const { data } = await repository.update(params)
+
+            this.$patch(state => {
+                state.filterItems = state.filterItems.map(it => it.id === params.id ? data.data : it)
+            })
+
+            return data.data
+        } catch (err) {
+            return Promise.reject(err)
+        }
+    },
+
     async deleteFilter(id: string) {
         try {
             const { data } = await repository.delete(id)
