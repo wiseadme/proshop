@@ -29,8 +29,8 @@ export const useProductAttributes = createSharedComposable(() => {
     const { notify } = useNotifications()
 
     const attributes = ref<IAttribute[]>([])
-    const currentEditableAttribute = ref<Maybe<IAttribute>>(null)
     const availableAttributes = ref<IAttribute[]>([])
+    const currentEditableAttribute = ref<Maybe<IAttribute>>(null)
     const usedAttributes = ref<IAttribute[]>([])
     const isAttributeEditMode = ref(false)
 

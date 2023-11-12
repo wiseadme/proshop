@@ -1,4 +1,4 @@
-import mongoose, { Document } from 'mongoose'
+import mongoose from 'mongoose'
 import { inject, injectable } from 'inversify'
 import { CategoryModel } from '../model/category.model'
 import { TYPES } from '@common/schemes/di-types'
@@ -33,6 +33,7 @@ export class CategoryRepository implements ICategoryRepository {
         const categories = await CategoryModel
             .find(params.id ? { _id: params.id } : params)
             .populate('assets')
+            .populate('filters')
             .lean()
 
         return categories.map(ctg => CategoryMapper.toDomain(ctg))
@@ -50,6 +51,7 @@ export class CategoryRepository implements ICategoryRepository {
             { new: true },
         )
             .populate('assets')
+            .populate('filters')
             .lean() as ICategoryMongoModel
 
         return CategoryMapper.toDomain(updated)

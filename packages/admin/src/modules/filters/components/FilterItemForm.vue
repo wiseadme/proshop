@@ -1,5 +1,6 @@
 <script lang="ts" setup>
     import {
+        onMounted,
         ref,
         unref,
         watch,
@@ -15,10 +16,6 @@
 
     const selectedGroup = ref<Maybe<IFilterGroup>>(null)
 
-    if (!unref(filterGroups).length) {
-        getFilterGroupItems()
-    }
-
     const createFilter = (validate) => {
         validate().then(() => createFilterItem(unref(model)))
     }
@@ -27,6 +24,8 @@
         unref(model).groupId = group.id
         getFilterItems({ groupId: group.id })
     }
+
+    onMounted(getFilterGroupItems)
 
     watch(filterGroups, (groups) => {
         if (!groups.length) return

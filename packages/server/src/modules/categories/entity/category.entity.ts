@@ -12,6 +12,7 @@ export class Category implements ICategory {
     readonly seo: ICategory['seo']
     readonly conditions: ICategory['conditions']
     readonly length: ICategory['length']
+    readonly filters: ICategory['filters']
 
     constructor({
         id = '',
@@ -21,6 +22,7 @@ export class Category implements ICategory {
         length = 0,
         image = null,
         assets = [],
+        filters = [],
         parentId = null,
         conditions = {
             visible: true,
@@ -32,7 +34,7 @@ export class Category implements ICategory {
             keywords: null,
             metatags: [],
             schema: [],
-        },
+        }
     }: ICategory) {
         this.id = id
         this.title = title
@@ -41,6 +43,7 @@ export class Category implements ICategory {
         this.assets = assets
         this.parentId = parentId
         this.conditions = conditions
+        this.filters = filters
         this.seo = seo
         this.url = url || translator(this.title).toLowerCase()
         this.length = length

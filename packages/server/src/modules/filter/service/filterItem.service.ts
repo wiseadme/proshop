@@ -30,4 +30,15 @@ export class FilterItemService implements IFilterItemService {
     delete(id: string): Promise<boolean> {
         return this.repository.delete(id)
     }
+
+    async findByGroupIds(ids: string[]) {
+        const items = await this.repository.findByGroupIds(ids)
+
+        return items.reduce((map, filter) => {
+            map[filter.groupId] ??= []
+            map[filter.groupId].push(filter)
+
+            return map
+        }, {})
+    }
 }

@@ -1,6 +1,7 @@
 import { ISEOType } from './common'
 import { Maybe } from './utils'
 import { IAsset } from './asset'
+import { IFilterGroup } from './filter'
 
 export interface ICategoryConditions {
     visible: boolean
@@ -18,6 +19,7 @@ export interface ICategory {
     order?: number
     length: number
     conditions: ICategoryConditions
+    filters: (IFilterGroup | string)[]
 }
 
 export interface ICategoryMongoModel extends Omit<ICategory, 'id' | 'parent'>{

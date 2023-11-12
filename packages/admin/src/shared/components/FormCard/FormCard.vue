@@ -52,7 +52,7 @@
             <v-spacer/>
             <div
                 v-if="$slots.header"
-                class="form-card__header-right"
+                class="form-card__header-right d-flex align-center"
             >
                 <slot name="header"/>
             </div>
