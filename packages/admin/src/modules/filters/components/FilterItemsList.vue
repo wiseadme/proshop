@@ -1,34 +1,28 @@
 <script lang="ts" setup>
-    import {
-        ref,
-        unref,
-        watch
-    } from 'vue'
+    import { unref, watch } from 'vue'
     import { FormCard } from '@shared/components/FormCard'
     import { ItemsList } from '@shared/components/ItemsList'
 
     import { VSvg } from '@shared/components/VSvg'
     import { useFilterItemsService } from '@modules/filters/composables/use-filter-items-service'
     import { SvgPaths } from '@shared/enums/svg-paths'
-    import { useFilterItemForm } from '@modules/filters/composables/use-filter-item-form'
+    import { useFilterItems } from '@modules/filters/composables/use-filter-items'
     import { useFilterGroupService } from '@modules/filters/composables/use-filter-group-service'
     import { IFilterGroup } from '@proshop/types'
 
     const { filterItems, getFilterItems, deleteFilterItem } = useFilterItemsService()
-    const { toggleForm, onEditFilter } = useFilterItemForm()
+    const { filtersGroup, toggleForm, onEditFilter } = useFilterItems()
     const { filterGroups, getFilterGroupItems } = useFilterGroupService()
 
-    const selectedGroup = ref<Maybe<IFilterGroup>>(null)
-
     const onSelectGroup = (group: IFilterGroup) => {
-        selectedGroup.value = group
+        filtersGroup.value = group
         getFilterItems({ groupId: group.id })
     }
 
     watch(filterGroups, async (groups) => {
         if (!groups.length) await getFilterGroupItems()
 
-        selectedGroup.value = unref(filterGroups)[0]
+        filtersGroup.value = unref(filterGroups)[0]
     }, { immediate: true })
 
 </script>
@@ -53,7 +47,7 @@
         </template>
         <template #body>
             <v-select
-                v-model="selectedGroup"
+                v-model="filtersGroup"
                 label="Группа фильтров"
                 :items="filterGroups"
                 value-key="name"

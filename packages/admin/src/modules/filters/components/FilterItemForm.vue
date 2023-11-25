@@ -6,13 +6,13 @@
         watch,
     } from 'vue'
     import { useFilterGroupService } from '@modules/filters/composables/use-filter-group-service'
-    import { useFilterItemForm } from '@modules/filters/composables/use-filter-item-form'
+    import { useFilterItems } from '@modules/filters/composables/use-filter-items'
     import { useFilterItemsService } from '@modules/filters/composables/use-filter-items-service'
     import { IFilterGroup } from '@proshop/types'
 
     const { filterGroups, getFilterGroupItems } = useFilterGroupService()
     const { createFilterItem, getFilterItems } = useFilterItemsService()
-    const { model } = useFilterItemForm()
+    const { model } = useFilterItems()
 
     const selectedGroup = ref<Maybe<IFilterGroup>>(null)
 
