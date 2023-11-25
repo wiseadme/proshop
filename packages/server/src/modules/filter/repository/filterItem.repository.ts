@@ -1,4 +1,4 @@
-import mongoose, { Document } from 'mongoose'
+import mongoose from 'mongoose'
 import { inject, injectable } from 'inversify'
 import { TYPES } from '@common/schemes/di-types'
 import { FilterItemModel } from '@modules/filter/model/filterItem.model'
@@ -37,7 +37,11 @@ export class FilterItemRepository implements IFilterItemRepository {
     }
 
     async findByGroupIds(ids: string[]): Promise<IFilterItem[]> {
-        return FilterItemModel.find({ groupId: { $in: ids } })
+        const filters = await FilterItemModel
+            .find({ groupId: { $in: ids } })
+            .lean()
+
+        return filters.map((filter) => FilterItemMapper.toDomain(filter))
     }
 
     async update(updates: Partial<IFilterItem>): Promise<IFilterItem> {

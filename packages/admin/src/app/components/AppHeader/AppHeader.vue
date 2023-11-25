@@ -1,6 +1,6 @@
 <script setup lang="ts">
     import { useAuthService } from '@shared/composables/use-auth-service'
-    import ProductLogo from '@shared/components/ProductLogo.vue'
+    // import ProductLogo from '@shared/components/ProductLogo.vue'
 
     const { logout, user } = useAuthService()
 
@@ -13,7 +13,7 @@
         z-index="10"
     >
         <v-toolbar-logo>
-            <product-logo/>
+            <!--            <product-logo/>-->
         </v-toolbar-logo>
         <v-spacer/>
         <v-toolbar-items class="px-3">
