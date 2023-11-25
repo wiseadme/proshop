@@ -9,10 +9,20 @@
 
     const { model } = useCategoryModel()
 
+    const ctgGroupSymbol = Symbol.for('category')
+
     const {
         availableFilterGroups,
-        getFilterGroupItems
+        getFilterGroupItems,
+        onUpdateFilters
     } = useCategoryFilters()
+
+    // const onAddFilter = () => {
+    //
+    // }
+
+    const pullFunction = () => {
+    }
 
     onMounted(getFilterGroupItems)
 </script>
@@ -29,10 +39,12 @@
                 <template #body>
                     <draggable-items-list
                         v-model="model.filters"
-                        item-key="name"
+                        :group="ctgGroupSymbol"
+                        item-key="id"
+                        @add="onUpdateFilters"
                     >
                         <template #title="{item}">
-                            <span>{{ item }}</span>
+                            <span>{{ item.name }}</span>
                         </template>
                     </draggable-items-list>
                 </template>
@@ -49,7 +61,8 @@
                 <template #body>
                     <draggable-items-list
                         v-model="availableFilterGroups"
-                        item-key="name"
+                        item-key="id"
+                        :group="{ name: ctgGroupSymbol, pull: pullFunction }"
                     >
                         <template #title="{item}">
                             <span>{{ item.name }}</span>

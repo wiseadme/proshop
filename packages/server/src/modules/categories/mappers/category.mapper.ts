@@ -1,5 +1,6 @@
 import { IAssetMongoModel, ICategory, ICategoryMongoModel } from '@proshop/types'
 import { AssetMapper } from '@modules/asset/mappers/asset.mapper'
+import { FilterGroupMapper } from '@modules/filter/mappers/filterGroup.mapper'
 
 export class CategoryMapper {
     static toDomain(entity: ICategoryMongoModel): ICategory {
@@ -7,6 +8,7 @@ export class CategoryMapper {
         const map: Partial<ICategoryMongoModel> = { ...entity }
 
         map.assets = map.assets?.map(it => AssetMapper.toDomain(it as any))
+        map.filters = map.filters?.map(it => FilterGroupMapper.toDomain(it as any))
 
         delete map._id
 
