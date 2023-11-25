@@ -1,3 +1,4 @@
 export const INFO_BLOCK = 'info'
 export const IMAGES_BLOCK = 'images'
+export const FILTERS_BLOCK = 'filters'
 export const META_TAGS_BLOCK = 'meta-tags'

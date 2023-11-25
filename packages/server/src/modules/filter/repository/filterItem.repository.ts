@@ -36,6 +36,10 @@ export class FilterItemRepository implements IFilterItemRepository {
         return filters.map(filter => FilterItemMapper.toDomain(filter))
     }
 
+    async findByGroupIds(ids: string[]): Promise<IFilterItem[]> {
+        return FilterItemModel.find({ groupId: { $in: ids } })
+    }
+
     async update(updates: Partial<IFilterItem>): Promise<IFilterItem> {
         validateId(updates.id)
 

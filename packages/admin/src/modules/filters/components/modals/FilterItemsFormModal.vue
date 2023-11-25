@@ -1,20 +1,16 @@
 <script lang="ts" setup>
     import ModalCard from '@shared/components/Modals/ModalCard.vue'
-    import {
-        ref,
-        unref,
-        watch,
-    } from 'vue'
+    import { unref, watch } from 'vue'
     import { useFilterGroupService } from '@modules/filters/composables/use-filter-group-service'
-    import { useFilterItemForm } from '@modules/filters/composables/use-filter-item-form'
+    import { useFilterItems } from '@modules/filters/composables/use-filter-items'
     import { useFilterItemsService } from '@modules/filters/composables/use-filter-items-service'
     import { IFilterGroup } from '@proshop/types'
+    import { useFilterItemModel } from '@modules/filters/composables/use-filter-item-model'
 
     const { filterGroups, getFilterGroupItems } = useFilterGroupService()
     const { getFilterItems } = useFilterItemsService()
-    const { model, showForm, toggleForm, onSubmit } = useFilterItemForm()
-
-    const selectedGroup = ref<Maybe<IFilterGroup>>(null)
+    const { filtersGroup, showForm, onCloseForm, onSubmit } = useFilterItems()
+    const { model } = useFilterItemModel()
 
     if (!unref(filterGroups).length) {
         getFilterGroupItems()
@@ -28,8 +24,8 @@
     watch(filterGroups, (groups) => {
         if (!groups.length) return
 
-        selectedGroup.value = unref(filterGroups)[0]
-        onSelectGroup(unref(selectedGroup)!)
+        filtersGroup.value = unref(filterGroups)[0]
+        onSelectGroup(unref(filtersGroup)!)
     }, { immediate: true })
 
 </script>
@@ -49,14 +45,14 @@
                         round
                         color="grey lighten-1"
                         elevation="2"
-                        @click="toggleForm"
+                        @click="onCloseForm"
                     >
                         <v-icon>fas fa-times</v-icon>
                     </v-button>
                 </template>
                 <template #content>
                     <v-select
-                        v-model="selectedGroup"
+                        v-model="filtersGroup"
                         label="Группа фильтров *"
                         :items="filterGroups"
                         value-key="name"

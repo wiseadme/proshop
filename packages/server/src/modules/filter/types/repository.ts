@@ -19,4 +19,6 @@ export interface IFilterItemRepository {
     update(updates: Partial<IFilterItem>): Promise<IFilterItem>
 
     delete(id: string): Promise<boolean>
+
+    findByGroupIds(ids: string[]): Promise<IFilterItem[]>
 }

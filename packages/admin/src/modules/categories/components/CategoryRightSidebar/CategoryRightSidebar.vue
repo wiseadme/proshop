@@ -8,12 +8,17 @@
     import { SidebarTab } from '@shared/composables/use-right-sidebar'
     import { useRoute, useRouter } from 'vue-router'
     import { RouteNames } from '@modules/categories/enums/route-names'
-    import { IMAGES_BLOCK, INFO_BLOCK } from '@modules/categories/constants/sections'
+    import {
+        FILTERS_BLOCK,
+        IMAGES_BLOCK,
+        INFO_BLOCK
+    } from '@modules/categories/constants/sections'
     import { RightSidebar } from '@shared/components/RightSidebar'
     import { useCategoryModel } from '@modules/categories/composables/use-category-model'
 
     const CategoryInfo = markRaw(defineAsyncComponent(() => import('@modules/categories/components/CategoryBlocks/CategoryInfo.vue')))
     const CategoryImages = markRaw(defineAsyncComponent(() => import('@modules/categories/components/CategoryBlocks/CategoryImages.vue')))
+    const CategoryFilters = markRaw(defineAsyncComponent(() => import('@modules/categories/components/CategoryBlocks/CategoryFilters.vue')))
 
     const { model } = useCategoryModel()
 
@@ -33,6 +38,14 @@
             disabled: !Boolean(unref(model).id),
             independent: false,
             section: IMAGES_BLOCK,
+        },
+        {
+            component: CategoryFilters,
+            title: 'Фильтры категории',
+            isActive: true,
+            disabled: !Boolean(unref(model).id),
+            independent: false,
+            section: FILTERS_BLOCK,
         },
     ])
 

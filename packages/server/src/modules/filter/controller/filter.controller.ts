@@ -28,7 +28,9 @@ export class FilterController extends BaseController implements IController {
         this.router.get('/groups', this.getFilterGroups.bind(this))
         this.router.delete('/groups', this.deleteFilterGroup.bind(this))
         this.router.post('/items', this.createFilterItem.bind(this))
+        this.router.post('/items/facets', this.getGroupFilterItems.bind(this))
         this.router.get('/items', this.getFilterItems.bind(this))
+        this.router.patch('/items', this.updateFilterItem.bind(this))
         this.router.delete('/items', this.deleteFilterItem.bind(this))
     }
 
@@ -90,6 +92,26 @@ export class FilterController extends BaseController implements IController {
             this.send({ data, request, response })
         } catch (error) {
             // @ts-ignore
+            this.error({ error, request, next })
+        }
+    }
+
+    async getGroupFilterItems(request: Request<{}, {}, {groupIds: string[]}>, response: Response, next: NextFunction) {
+        try {
+            const data = await this.filterItemService.findByGroupIds(request.body.groupIds)
+
+            this.send({ data, request, response })
+        } catch (error) {
+            this.error({ error, request, next })
+        }
+    }
+
+    async updateFilterItem(request: Request<{}, {}, {}, { id: string }>, response: Response, next: NextFunction) {
+        try {
+            const data = await this.filterItemService.update(request.body)
+
+            this.send({ data, request, response })
+        } catch (error) {
             this.error({ error, request, next })
         }
     }

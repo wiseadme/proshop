@@ -32,6 +32,13 @@ const CategorySchema: Schema = new Schema<ICategoryMongoModel>({
         ref: 'Category',
         default: null,
     },
+    filters: {
+        type: [{
+            type: Schema.Types.ObjectId,
+            ref: 'FilterGroup',
+        }],
+        default: []
+    },
     order: {
         type: Number,
         default: 0,

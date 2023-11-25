@@ -1,23 +1,20 @@
 <script lang="ts" setup>
     import {
+        onMounted,
         ref,
         unref,
         watch,
     } from 'vue'
     import { useFilterGroupService } from '@modules/filters/composables/use-filter-group-service'
-    import { useFilterItemForm } from '@modules/filters/composables/use-filter-item-form'
+    import { useFilterItems } from '@modules/filters/composables/use-filter-items'
     import { useFilterItemsService } from '@modules/filters/composables/use-filter-items-service'
     import { IFilterGroup } from '@proshop/types'
 
     const { filterGroups, getFilterGroupItems } = useFilterGroupService()
     const { createFilterItem, getFilterItems } = useFilterItemsService()
-    const { model } = useFilterItemForm()
+    const { model } = useFilterItems()
 
     const selectedGroup = ref<Maybe<IFilterGroup>>(null)
-
-    if (!unref(filterGroups).length) {
-        getFilterGroupItems()
-    }
 
     const createFilter = (validate) => {
         validate().then(() => createFilterItem(unref(model)))
@@ -27,6 +24,8 @@
         unref(model).groupId = group.id
         getFilterItems({ groupId: group.id })
     }
+
+    onMounted(getFilterGroupItems)
 
     watch(filterGroups, (groups) => {
         if (!groups.length) return

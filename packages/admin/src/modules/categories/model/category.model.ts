@@ -10,6 +10,7 @@ export class Category implements ICategory {
     order: ICategory['order']
     seo: ICategory['seo']
     length: ICategory['length']
+    filters: ICategory['filters']
     conditions: ICategory['conditions']
 
     constructor({
@@ -21,6 +22,7 @@ export class Category implements ICategory {
         parentId = null,
         order = 0,
         length = 0,
+        filters = [],
         conditions = {
             visible: true,
             special: false,
@@ -38,6 +40,7 @@ export class Category implements ICategory {
         this.url = url
         this.image = image
         this.assets = assets
+        this.filters = filters
         this.parentId = parentId
         this.order = order
         this.seo = seo
