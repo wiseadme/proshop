@@ -3,12 +3,10 @@
     import { unref, watch } from 'vue'
     import { useFilterGroupService } from '@modules/filters/composables/use-filter-group-service'
     import { useFilterItems } from '@modules/filters/composables/use-filter-items'
-    import { useFilterItemsService } from '@modules/filters/composables/use-filter-items-service'
     import { IFilterGroup } from '@proshop/types'
     import { useFilterItemModel } from '@modules/filters/composables/use-filter-item-model'
 
     const { filterGroups, getFilterGroupItems } = useFilterGroupService()
-    const { getFilterItems } = useFilterItemsService()
     const { filtersGroup, showForm, onCloseForm, onSubmit } = useFilterItems()
     const { model } = useFilterItemModel()
 
@@ -18,14 +16,12 @@
 
     const onSelectGroup = (group: IFilterGroup) => {
         unref(model).groupId = group.id
-        getFilterItems({ groupId: group.id })
     }
 
-    watch(filterGroups, (groups) => {
-        if (!groups.length) return
+    watch(filtersGroup, (group) => {
+        if (!group) return
 
-        filtersGroup.value = unref(filterGroups)[0]
-        onSelectGroup(unref(filtersGroup)!)
+        onSelectGroup(group!)
     }, { immediate: true })
 
 </script>
