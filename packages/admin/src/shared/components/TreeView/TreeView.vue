@@ -16,7 +16,7 @@
     const treeConfig = { nodeWidth: 240, nodeHeight: 70, levelHeight: 200 }
 
     const onClick = (node) => {
-        if (node.hasChild) return
+        // if (node.hasChild) return
 
         emit('toggle', node)
     }
@@ -66,9 +66,9 @@
         >
             <template #node="{node}">
                 <div
-                    style="width: 200px; height: 100%;"
-                    class="app-border-radius elevation-2 white--text d-flex justify-center align-center"
-                    :class="{['grey lighten-1']: node.hasChild, success: value[node.id], secondary: !node.hasChild}"
+                    style="width: auto; min-width: 120px; max-width: 220px; height: 100%; text-align: center"
+                    class="app-border-radius elevation-2 white--text d-flex justify-center align-center px-4"
+                    :class="{/*['grey lighten-1']: node.hasChild, */success: value[node.id], secondary: !value[node.id]}"
                     @click.prevent="onClick(node)"
                 >
                     {{ node.title }}
