@@ -45,7 +45,7 @@ export class ProductsService extends ServiceHelpers implements IProductsService 
     }
 
     async getProducts(query: IRequestParams<IProductQuery>) {
-        const { id, url, category, name, page, count, desc, asc } = query
+        const { id, url, category, name, page, count, desc, asc, sku } = query
 
         const data: { items: IProduct[], total: number } = {
             items: [],
@@ -67,6 +67,12 @@ export class ProductsService extends ServiceHelpers implements IProductsService 
 
         if (url) {
             data.items = [await this.repository.findByUrl(url)]
+
+            return data
+        }
+
+        if (sku) {
+            data.items = [await this.repository.findBySKU(sku)]
 
             return data
         }

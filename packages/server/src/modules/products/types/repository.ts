@@ -11,6 +11,8 @@ export interface IProductsRepository {
 
     findByUrl(url: string): Promise<IProduct>
 
+    findBySKU(sku: string): Promise<IProduct>
+
     findByCategory(params: IRequestParams<IProductQuery>): Promise<IProduct[]>
 
     updateProduct(updates: Partial<IProduct>): Promise<IProduct>
