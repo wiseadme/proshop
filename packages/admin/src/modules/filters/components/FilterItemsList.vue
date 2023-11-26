@@ -2,12 +2,12 @@
     import { unref, watch } from 'vue'
     import { FormCard } from '@shared/components/FormCard'
     import { ItemsList } from '@shared/components/ItemsList'
-
     import { VSvg } from '@shared/components/VSvg'
+
     import { useFilterItemsService } from '@modules/filters/composables/use-filter-items-service'
-    import { SvgPaths } from '@shared/enums/svg-paths'
     import { useFilterItems } from '@modules/filters/composables/use-filter-items'
     import { useFilterGroupService } from '@modules/filters/composables/use-filter-group-service'
+    import { SvgPaths } from '@shared/enums/svg-paths'
     import { IFilterGroup } from '@proshop/types'
 
     const { filterItems, getFilterItems, deleteFilterItem } = useFilterItemsService()
@@ -23,6 +23,7 @@
         if (!groups.length) await getFilterGroupItems()
 
         filtersGroup.value = unref(filterGroups)[0]
+        await getFilterItems({ groupId: unref(filtersGroup)!.id })
     }, { immediate: true })
 
 </script>
