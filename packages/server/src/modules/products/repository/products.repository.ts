@@ -22,6 +22,7 @@ import { SkuGenerator } from '@common/plugins/sku-generator'
 
 // Constants
 import { DEFAULT_ITEMS_COUNT, DEFAULT_PAGE } from '@common/constants/counts'
+import * as queryString from 'querystring'
 
 @injectable()
 export class ProductsRepository extends RepositoryHelpers implements IProductsRepository {
@@ -75,6 +76,15 @@ export class ProductsRepository extends RepositoryHelpers implements IProductsRe
             .populate(this.getPopulateParams()) as IProductMongoModel[]
 
         return products.map(product => ProductMapper.toDomain(product))
+    }
+
+    async findBySKU(sku) {
+        const product = await ProductModel
+            .findOne({ sku })
+            .lean()
+            .populate(this.getPopulateParams()) as IProductMongoModel
+
+        return ProductMapper.toDomain(product)
     }
 
     async findByUrl(url: string) {

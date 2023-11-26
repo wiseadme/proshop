@@ -95,14 +95,7 @@ export class ProductsController extends BaseController implements IController {
         }
     }
 
-    async deleteProductAttribute(
-        request: Request<{}, {}, {
-            productId: string,
-            attributeId: string
-        }>,
-        response: Response,
-        next: NextFunction,
-    ) {
+    async deleteProductAttribute(request: Request<{}, {}, { productId: string, attributeId: string }>, response: Response, next: NextFunction,) {
         try {
             const data = await this.service.deleteAttribute(request.body)
 
@@ -112,14 +105,7 @@ export class ProductsController extends BaseController implements IController {
         }
     }
 
-    async addProductMetaTag(
-        request: Request<{}, {}, {
-            productId: string,
-            metaTag: IMetaTag
-        }>,
-        response: Response,
-        next: NextFunction,
-    ) {
+    async addProductMetaTag(request: Request<{}, {}, { productId: string, metaTag: IMetaTag }>, response: Response, next: NextFunction) {
         try {
             const data = await this.service.addMetaTag(request.body)
 
@@ -129,14 +115,7 @@ export class ProductsController extends BaseController implements IController {
         }
     }
 
-    async updateProductMetaTags(
-        request: Request<{}, {}, {
-            productId: string,
-            metaTags: IMetaTag[]
-        }>,
-        response: Response,
-        next: NextFunction,
-    ) {
+    async updateProductMetaTags(request: Request<{}, {}, { productId: string, metaTags: IMetaTag[] }>, response: Response, next: NextFunction) {
         try {
             const data = await this.service.updateMetaTags(request.body)
 
@@ -146,14 +125,7 @@ export class ProductsController extends BaseController implements IController {
         }
     }
 
-    async deleteProductMetaTag(
-        request: Request<{}, {}, {
-            productId: string,
-            metaTagId: string
-        }>,
-        response: Response,
-        next: NextFunction,
-    ) {
+    async deleteProductMetaTag(request: Request<{}, {}, { productId: string, metaTagId: string }>, response: Response, next: NextFunction) {
         try {
             const data = await this.service.deleteMetaTag(request.body)
 
@@ -173,11 +145,7 @@ export class ProductsController extends BaseController implements IController {
         }
     }
 
-    async deleteProductVariant(
-        request: Request<{}, {}, { variant: IVariant }>,
-        response: Response,
-        next: NextFunction,
-    ) {
+    async deleteProductVariant(request: Request<{}, {}, { variant: IVariant }>, response: Response, next: NextFunction) {
         try {
             const data = await this.service.deleteVariant(request.body)
 
@@ -187,11 +155,7 @@ export class ProductsController extends BaseController implements IController {
         }
     }
 
-    async addProductVariantOption(
-        request: Request<{}, {}, { option: IOption }>,
-        response: Response,
-        next: NextFunction,
-    ) {
+    async addProductVariantOption(request: Request<{}, {}, { option: IOption }>, response: Response, next: NextFunction) {
         try {
             const data = await this.service.addVariantOption(request.body)
 
@@ -201,11 +165,7 @@ export class ProductsController extends BaseController implements IController {
         }
     }
 
-    async deleteProductVariantOption(
-        request: Request<{}, {}, { option: IOption }>,
-        response: Response,
-        next: NextFunction,
-    ) {
+    async deleteProductVariantOption(request: Request<{}, {}, { option: IOption }>, response: Response, next: NextFunction) {
         try {
             const data = await this.service.deleteVariantOption(request.body)
 
