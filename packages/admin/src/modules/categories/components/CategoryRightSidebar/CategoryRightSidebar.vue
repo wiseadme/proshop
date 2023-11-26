@@ -9,6 +9,7 @@
     import { useRoute, useRouter } from 'vue-router'
     import { RouteNames } from '@modules/categories/enums/route-names'
     import {
+        CONDITIONS_BLOCK,
         FILTERS_BLOCK,
         IMAGES_BLOCK,
         INFO_BLOCK
@@ -19,6 +20,7 @@
     const CategoryInfo = markRaw(defineAsyncComponent(() => import('@modules/categories/components/CategoryBlocks/CategoryInfo.vue')))
     const CategoryImages = markRaw(defineAsyncComponent(() => import('@modules/categories/components/CategoryBlocks/CategoryImages.vue')))
     const CategoryFilters = markRaw(defineAsyncComponent(() => import('@modules/categories/components/CategoryBlocks/CategoryFilters.vue')))
+    const CategoryConditions = markRaw(defineAsyncComponent(() => import('@modules/categories/components/CategoryBlocks/CategoryConditions.vue')))
 
     const { model } = useCategoryModel()
 
@@ -46,6 +48,14 @@
             disabled: !Boolean(unref(model).id),
             independent: false,
             section: FILTERS_BLOCK,
+        },
+        {
+            component: CategoryConditions,
+            title: 'Состояние категории',
+            isActive: true,
+            disabled: !Boolean(unref(model).id),
+            independent: false,
+            section: CONDITIONS_BLOCK,
         },
     ])
 

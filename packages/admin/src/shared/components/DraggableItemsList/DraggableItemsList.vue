@@ -181,6 +181,4 @@
         </draggable>
     </v-list>
 </template>
-<style lang="scss" scoped>
-    @import "DraggableItemsList";
-</style>
+<style lang="scss" scoped src="./DraggableItemsList.scss"/>
