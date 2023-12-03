@@ -6,7 +6,7 @@ export type { ICategory, ICategoryConditions, ICategoryMongoModel } from './cate
 export type { ISEOType } from './common'
 export type { IOption, IOptionMongoModel, IOptionProduct } from './option'
 export type { IOrder, IOrderMongoModel, IOrderCustomer, IOrderStatuses, IOrderDelivery } from './order'
-export type { IProduct, IProductConditions, IProductQuery, IProductMongoModel } from './product'
+export type { IProduct, IProductParams, IProductConditions, IProductQuery, IProductMongoModel } from './product'
 export type { IVariant, IVariantMongoModel, IVariantOption } from './variant'
 export type { IRequestPagination, IRequestSort, IRequestParams } from './request'
 export type { IUser, IUserMongoModel, IUserPosition } from './user'

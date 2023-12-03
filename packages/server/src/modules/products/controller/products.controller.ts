@@ -7,7 +7,7 @@ import { ProductDTO } from '@modules/products/dto/product.dto'
 // Types
 import { ILogger } from '@/types/utils'
 import { IController } from '@/types'
-import { IAttribute, IMetaTag, IOption, IProduct, IVariant } from '@proshop/types'
+import { IAttribute, IMetaTag, IOption, IProduct, IProductParams, IVariant } from '@proshop/types'
 import { IProductsService } from '../types/service'
 
 // Helpers
@@ -42,7 +42,7 @@ export class ProductsController extends BaseController implements IController {
         this.router.patch('/metatags/delete', setMiddlewares({ roles: ['root'] }), this.deleteProductMetaTag.bind(this))
     }
 
-    async createProduct(request: Request<{}, {}, IProduct>, response: Response, next: NextFunction) {
+    async createProduct(request: Request<{}, {}, IProductParams>, response: Response, next: NextFunction) {
         try {
             const data = await this.service.createProduct(request.body)
 
@@ -64,7 +64,7 @@ export class ProductsController extends BaseController implements IController {
         }
     }
 
-    async updateProduct(request: Request<{}, {}, Partial<IProduct>>, response: Response, next: NextFunction) {
+    async updateProduct(request: Request<{}, {}, Partial<IProductParams>>, response: Response, next: NextFunction) {
 
         try {
             const data = await this.service.updateProduct(request.body)
@@ -85,7 +85,7 @@ export class ProductsController extends BaseController implements IController {
         }
     }
 
-    async addProductAttribute(request: Request<{}, {}, { productId: string, attribute: IAttribute }>, response: Response, next: NextFunction) {
+    async addProductAttribute(request: Request<{}, {}, { id: string, attribute: IAttribute }>, response: Response, next: NextFunction) {
         try {
             const data = await this.service.addAttribute(request.body)
 
@@ -95,7 +95,7 @@ export class ProductsController extends BaseController implements IController {
         }
     }
 
-    async deleteProductAttribute(request: Request<{}, {}, { productId: string, attributeId: string }>, response: Response, next: NextFunction,) {
+    async deleteProductAttribute(request: Request<{}, {}, { id: string, attributeId: string }>, response: Response, next: NextFunction,) {
         try {
             const data = await this.service.deleteAttribute(request.body)
 

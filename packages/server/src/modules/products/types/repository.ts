@@ -1,7 +1,16 @@
-import { IAttribute, IMetaTag, IOption, IProduct, IProductQuery, IRequestParams, IVariant } from '@proshop/types'
+import {
+    IAttribute,
+    IMetaTag,
+    IOption,
+    IProduct,
+    IProductParams,
+    IProductQuery,
+    IRequestParams,
+    IVariant,
+} from '@proshop/types'
 
 export interface IProductsRepository {
-    createProduct(product: IProduct): Promise<IProduct>
+    createProduct(product: IProductParams): Promise<IProduct>
 
     find(query: Partial<IProduct>): Promise<IProduct[]>
 
@@ -15,11 +24,11 @@ export interface IProductsRepository {
 
     findByCategory(params: IRequestParams<IProductQuery>): Promise<IProduct[]>
 
-    updateProduct(updates: Partial<IProduct>): Promise<IProduct>
+    updateProduct(updates: Partial<IProductParams>): Promise<IProduct>
 
     deleteProduct(id: string): Promise<boolean>
 
-    addAttribute(params: { productId: string, attribute: IAttribute }): Promise<IProduct>
+    addAttribute(params: { id: string, attribute: IAttribute }): Promise<IProduct>
 
     addVariant(params: { variant: IVariant }): Promise<IProduct>
 
@@ -29,7 +38,7 @@ export interface IProductsRepository {
 
     deleteVariantOption(params: { option: IOption }): Promise<IProduct>
 
-    deleteAttribute(params: { productId: string, attributeId: string }): Promise<IProduct>
+    deleteAttribute(params: { id: string, attributeId: string }): Promise<IProduct>
 
     addMetaTag(params: { productId: string, metaTag: IMetaTag }): Promise<IProduct>
 
