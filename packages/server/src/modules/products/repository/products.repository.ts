@@ -9,7 +9,7 @@ import {
     IAttribute,
     IMetaTag, IOption,
     IProduct,
-    IProductMongoModel,
+    IProductMongoModel, IProductParams,
     IProductQuery,
     IRequestParams,
     IVariant,
@@ -30,7 +30,7 @@ export class ProductsRepository extends RepositoryHelpers implements IProductsRe
         super()
     }
 
-    async createProduct(product: IProduct) {
+    async createProduct(product: IProductParams) {
         const productData = await new ProductModel({
             ...ProductMapper.toMongoModelData(product),
             _id: new mongoose.Types.ObjectId(),
@@ -120,7 +120,7 @@ export class ProductsRepository extends RepositoryHelpers implements IProductsRe
         return products.map(product => ProductMapper.toDomain(product))
     }
 
-    async updateProduct($set: Partial<IProduct>) {
+    async updateProduct($set: Partial<IProductParams>) {
         validateId($set.id)
 
         const updated = await ProductModel.findByIdAndUpdate(
@@ -140,10 +140,10 @@ export class ProductsRepository extends RepositoryHelpers implements IProductsRe
         return !!await ProductModel.findOneAndDelete({ _id: id })
     }
 
-    async addAttribute(params: { productId: string, attribute: IAttribute }) {
-        validateId(params.productId)
+    async addAttribute(params: { id: string, attribute: IAttribute }) {
+        validateId(params.id)
 
-        const product = await ProductModel.findOneAndUpdate({ _id: params.productId }, {
+        const product = await ProductModel.findOneAndUpdate({ _id: params.id }, {
             $push: { attributes: params.attribute },
         }, { new: true })
             .populate(this.getPopulateParams())
@@ -152,10 +152,10 @@ export class ProductsRepository extends RepositoryHelpers implements IProductsRe
         return ProductMapper.toDomain(product)
     }
 
-    async deleteAttribute(params: { productId: string, attributeId: string }) {
-        validateId(params.productId)
+    async deleteAttribute(params: { id: string, attributeId: string }) {
+        validateId(params.id)
 
-        const product = await ProductModel.findOneAndUpdate({ _id: params.productId }, {
+        const product = await ProductModel.findOneAndUpdate({ _id: params.id }, {
             $pull: { attributes: { id: params.attributeId } },
         }, { new: true })
             .populate(this.getPopulateParams())

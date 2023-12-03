@@ -5,9 +5,10 @@ import {
     IMetaTag,
     IOption,
     IProduct,
+    IProductParams,
     IProductQuery,
     IRequestParams,
-    IVariant,
+    IVariant
 } from '@proshop/types'
 
 class Repository {
@@ -19,7 +20,7 @@ class Repository {
         this.path = path
     }
 
-    createProduct(product: IProduct) {
+    createProduct(product: IProductParams) {
         return this.client.post(this.path, product)
     }
 
@@ -27,11 +28,11 @@ class Repository {
         return this.client.get(this.path, params ? { params } : {})
     }
 
-    updateProduct(updates) {
+    updateProduct(updates: Partial<IProductParams>) {
         return this.client.patch(this.path, updates)
     }
 
-    addAttribute(params: { productId: string, attribute: IAttribute }) {
+    addAttribute(params: { id: string, attribute: IAttribute }) {
         return this.client.patch(`${this.path}/attributes/add`, params)
     }
 
@@ -51,7 +52,7 @@ class Repository {
         return this.client.patch(`${this.path}/variants/option/delete`, { option })
     }
 
-    deleteAttribute(params: { productId: string, attributeId: string }) {
+    deleteAttribute(params: { id: string, attributeId: string }) {
         return this.client.patch(`${this.path}/attributes/delete`, params)
     }
 

@@ -14,7 +14,7 @@ import {
     ICategory,
     IMetaTag,
     IOption,
-    IProduct,
+    IProduct, IProductParams,
     IProductQuery,
     IRequestParams,
     IVariant,
@@ -32,16 +32,20 @@ export class ProductsService extends ServiceHelpers implements IProductsService 
         super()
     }
 
-    async createProduct(product: IProduct) {
+    async createProduct(product: IProductParams) {
         const item = await this.repository.createProduct(Product.create(product)) as IProduct
 
-        if (product.categories.length) {
-            for await (const category of product.categories as string[]) {
+        if (product.categories?.length) {
+            for await (const category of product.categories!) {
                 await this.gateway.category.updateCategory({ id: category, length: 1 })
             }
         }
 
         return item
+    }
+
+    async findById(id){
+
     }
 
     async getProducts(query: IRequestParams<IProductQuery>) {
@@ -97,7 +101,7 @@ export class ProductsService extends ServiceHelpers implements IProductsService 
         return data
     }
 
-    async updateProduct(updates: Partial<IProduct>) {
+    async updateProduct(updates: Partial<IProductParams>) {
         if (updates.categories) {
             const product = await this.repository.findById(updates.id!)
             const currentCategories = product.categories?.map(ctg => ctg.id)
@@ -108,13 +112,13 @@ export class ProductsService extends ServiceHelpers implements IProductsService 
             const updateCategoriesMap = this.getCategoriesMap(updates.categories)
             const productCategoriesMap = this.getCategoriesMap(currentCategories)
 
-            for await (const id of currentCategories as string[]) {
+            for await (const id of currentCategories) {
                 if (id && !updateCategoriesMap[id]) {
                     await this.gateway.category.updateCategory({ id, length: -1 })
                 }
             }
 
-            for await (const id of updates.categories as string[]) {
+            for await (const id of updates.categories) {
                 if (id && !productCategoriesMap[id]) {
                     await this.gateway.category.updateCategory({ id, length: 1 })
                 }
@@ -150,7 +154,7 @@ export class ProductsService extends ServiceHelpers implements IProductsService 
         return result
     }
 
-    async addAttribute(params: { productId: string, attribute: IAttribute }) {
+    async addAttribute(params: { id: string, attribute: IAttribute }) {
         return this.repository.addAttribute(params)
     }
 
@@ -170,7 +174,7 @@ export class ProductsService extends ServiceHelpers implements IProductsService 
         return this.repository.deleteVariantOption(params)
     }
 
-    async deleteAttribute(params: { productId: string, attributeId: string }) {
+    async deleteAttribute(params: { id: string, attributeId: string }) {
         return this.repository.deleteAttribute(params)
     }
 

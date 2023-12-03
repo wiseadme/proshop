@@ -28,23 +28,33 @@ export interface IProduct {
     name: string
     description: string
     price: number
-    currency: Maybe<ICurrency | string>
+    currency: Maybe<ICurrency>
     quantity: number
     image: Maybe<string>
     url: string
     sku: string
     seo: ISEOType
     unit: Maybe<IUnit>
-    categories: ICategory[] | string[]
-    assets: IAsset[] | string[]
+    categories: ICategory[]
+    assets: IAsset[]
     variants: IVariant[]
     attributes: IAttribute[]
     conditions: IProductConditions
-    related: IProduct[] | string[]
+    related: IProduct[]
 }
 
-export interface IProductMongoModel extends Omit<IProduct, 'id' | 'assets' | 'variants'> {
+export interface IProductParams extends Omit<IProduct, 'assets' | 'related' | 'categories' | 'currency'> {
+    assets?: string[]
+    related?: string[]
+    categories?: string[]
+    currency: string
+}
+
+export interface IProductMongoModel extends Omit<IProductParams, 'id' | 'assets' | 'variants' | 'related' | 'categories' | 'currency'> {
     _id: string
     assets?: string[] | IAsset[]
     variants?: string[] | IVariant[]
+    related?: string[] | IProduct[]
+    categories?: string[] | ICategory[]
+    currency: string | Maybe<ICurrency>
 }

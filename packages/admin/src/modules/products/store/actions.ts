@@ -4,15 +4,16 @@ import {
     IMetaTag,
     IOption,
     IProduct,
+    IProductParams,
     IProductQuery,
     IRequestParams,
-    IVariant,
+    IVariant
 } from '@proshop/types'
 
 const repository = useProductRepository()
 
 export const actions = {
-    async createProduct(product: IProduct) {
+    async createProduct(product: IProductParams) {
         try {
             const { data } = await repository.createProduct(product)
 
@@ -41,7 +42,7 @@ export const actions = {
         }
     },
 
-    async updateProduct(updates) {
+    async updateProduct(updates: Partial<IProductParams>) {
         try {
             const { data } = await repository.updateProduct(updates)
 
@@ -67,12 +68,12 @@ export const actions = {
         }
     },
 
-    async addAttribute(params: { productId: string, attribute: IAttribute }) {
+    async addAttribute(params: { id: string, attribute: IAttribute }) {
         try {
             const { data } = await repository.addAttribute(params)
 
             this.$patch((state) => {
-                state.products = state.products.map(it => it.id === params.productId ? data.data : it)
+                state.products = state.products.map(it => it.id === params.id ? data.data : it)
             })
 
             return data.data
@@ -81,12 +82,12 @@ export const actions = {
         }
     },
 
-    async deleteAttribute(params: { productId: string, attributeId: string }) {
+    async deleteAttribute(params: { id: string, attributeId: string }) {
         try {
             const { data } = await repository.deleteAttribute(params)
 
             this.$patch((state) => {
-                state.products = state.products.map(it => it.id === params.productId ? data.data : it)
+                state.products = state.products.map(it => it.id === params.id ? data.data : it)
             })
 
             return data.data

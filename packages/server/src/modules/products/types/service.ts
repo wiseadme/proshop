@@ -1,16 +1,16 @@
 import { LeanDocument } from 'mongoose'
-import { IAttribute, IMetaTag, IOption, IProduct, IRequestParams, IVariant } from '@proshop/types'
+import { IAttribute, IMetaTag, IOption, IProduct, IProductParams, IRequestParams, IVariant } from '@proshop/types'
 
 export interface IProductsService {
-    createProduct(product: IProduct): Promise<IProduct>
+    createProduct(product: IProductParams): Promise<IProduct>
 
     getProducts(query: IRequestParams<Partial<IProduct>>): Promise<{ items: IProduct[], total?: number }>,
 
-    updateProduct(updates: Partial<IProduct>): Promise<IProduct>
+    updateProduct(updates: Partial<IProductParams>): Promise<IProduct>
 
     deleteProduct(id: string): Promise<boolean>
 
-    addAttribute(params: { productId: string, attribute: IAttribute }): Promise<IProduct>
+    addAttribute(params: { id: string, attribute: IAttribute }): Promise<IProduct>
 
     addVariant(params: { variant: IVariant }): Promise<IProduct>
 
@@ -20,7 +20,7 @@ export interface IProductsService {
 
     deleteVariantOption(params: { option: IOption }): Promise<IProduct>
 
-    deleteAttribute(params: { productId: string, attributeId: string }): Promise<IProduct>
+    deleteAttribute(params: { id: string, attributeId: string }): Promise<IProduct>
 
     addMetaTag(params: { productId: string, metaTag: IMetaTag }): Promise<IProduct>
 

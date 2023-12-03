@@ -1,4 +1,4 @@
-import { IProduct, IProductMongoModel } from '@proshop/types'
+import { IProduct, IProductMongoModel, IProductParams } from '@proshop/types'
 import { CategoryMapper } from '@modules/categories/mappers/category.mapper'
 import { AssetMapper } from '@modules/asset/mappers/asset.mapper'
 import { VariantMapper } from '@modules/variant/mappers/variant.mapper'
@@ -21,7 +21,7 @@ export class ProductMapper {
         } as IProduct
     }
 
-    static toMongoModelData(domainModel: Partial<IProduct>): IProductMongoModel {
+    static toMongoModelData(domainModel: Partial<IProductParams>): IProductMongoModel {
         const map = { ...domainModel }
         const { id } = map
 
