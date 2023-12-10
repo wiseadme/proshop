@@ -30,13 +30,14 @@ export const useProductsTable = () => {
 
     const { setProductModel } = useProductModel()
 
-    const onUpdateTablePage = async (page: number) => {
+    const onUpdateTablePage = (page: number) => {
         pagination.setPage(page)
 
-        return getProducts({})
+        return getProducts()
     }
 
     const onUpdateTableRowsCount = (count: number) => {
+        pagination.setPage(1)
         pagination.setItemsCount(count)
     }
 
@@ -76,7 +77,6 @@ export const useProductsTable = () => {
 
         return router.push({
             name: RouteNames.PRODUCT_EDIT,
-
             params: {
                 action: CREATE,
                 section: INFO_BLOCK,

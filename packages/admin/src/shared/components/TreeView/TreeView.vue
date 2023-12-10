@@ -9,7 +9,7 @@
     }>()
 
     const emit = defineEmits<{
-        (e: 'toggle', val: T)
+        (e: 'toggle', val: T): void
     }>()
 
     const treeRef = ref<any>(null)

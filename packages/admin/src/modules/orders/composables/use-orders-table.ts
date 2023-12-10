@@ -10,13 +10,13 @@ export const useOrdersTable = () => {
     } = useOrdersService()
 
     const onUpdateTablePage = (page) => {
-        console.log('update page')
         pagination.setPage(page)
 
         return getOrders()
     }
 
     const onUpdateTableRowsCount = (count) => {
+        pagination.setPage(1)
         pagination.setItemsCount(count)
 
         return getOrders()

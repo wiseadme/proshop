@@ -45,7 +45,7 @@
                         displayColor: 'primary',
                         rowsPerPageText: 'кол-во строк',
                         totalRows: totalLength,
-                        rowsPerPageOptions: [20, 40, 60, 80]
+                        rowsPerPageOptions: [10, 20, 30, 40]
                     },
                     pagination: {
                         buttonsColor: 'primary',
@@ -108,13 +108,13 @@
                         class="elevation-2"
                         style="width: 40px; height: 40px; border-radius: 50px; overflow: hidden"
                     >
-                        <img
+                        <v-img
                             :src="row.image"
-                            :alt="row.name"
+                            lazy
                             style="width: auto; height: 100%; object-fit: contain"
-                        >
+                        />
                     </div>
-                    <span v-else>null</span>
+                    <span v-else>-</span>
                 </template>
             </v-data-table>
         </template>

@@ -197,7 +197,11 @@ export class ProductsRepository extends RepositoryHelpers implements IProductsRe
         }
 
         const product = await ProductModel
-            .findOneAndUpdate({ _id: params.productId }, { $set: { 'seo.metatags': Object.values(metaTagsMap) } }, { new: true })
+            .findOneAndUpdate(
+                { _id: params.productId },
+                { $set: { 'seo.metatags': Object.values(metaTagsMap) } },
+                { new: true }
+            )
             .populate(this.getPopulateParams())
             .lean() as IProductMongoModel
 
