@@ -54,7 +54,7 @@
                     counts: {
                         displayColor: 'primary',
                         rowsPerPageText: 'кол-во строк',
-                        rowsPerPageOptions: [ 20, 40, 60, 80 ],
+                        rowsPerPageOptions: [10, 20, 30, 40],
                         totalRows: totalLength,
                     },
                     pagination: {
