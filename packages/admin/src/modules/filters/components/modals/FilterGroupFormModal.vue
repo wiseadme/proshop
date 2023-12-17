@@ -3,8 +3,8 @@
     import { ModalCard } from '@shared/components/Modals'
 
     const {
-        attributes,
         model,
+        attributes,
         showGroupForm,
         linkedAttribute,
         onSubmit,
@@ -19,19 +19,9 @@
         overlay
     >
         <v-form v-slot="{validate}">
-            <modal-card>
+            <modal-card @close="showGroupForm = false">
                 <template #title>
                     Форма создания групп фильтров
-                </template>
-                <template #header>
-                    <v-button
-                        round
-                        color="grey lighten-1"
-                        elevation="2"
-                        @click="showGroupForm = false"
-                    >
-                        <v-icon>fas fa-times</v-icon>
-                    </v-button>
                 </template>
                 <template #content>
                     <v-select

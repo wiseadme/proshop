@@ -18,7 +18,10 @@
 <template>
     <form-card>
         <template #icon>
-            <v-svg :path="SvgPaths.TABLE_LIST"/>
+            <v-svg
+                :path="SvgPaths.TABLE_LIST"
+                view-box="0 -30 512 512"
+            />
         </template>
         <template #title>
             Таблица пользователей
@@ -87,6 +90,7 @@
                         <img
                             v-if="row.image"
                             style="height: 30px; width: auto"
+                            alt=""
                             :src="row.image"
                         />
                         <v-icon v-else>
