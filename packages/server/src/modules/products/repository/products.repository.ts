@@ -137,7 +137,9 @@ export class ProductsRepository extends RepositoryHelpers implements IProductsRe
     async deleteProduct(id: string) {
         validateId(id)
 
-        return !!await ProductModel.findOneAndDelete({ _id: id })
+        await ProductModel.findOneAndDelete({ _id: id })
+
+        return true
     }
 
     async addAttribute(params: { id: string, attribute: IAttribute }) {

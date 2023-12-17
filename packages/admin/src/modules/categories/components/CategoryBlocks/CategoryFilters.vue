@@ -43,6 +43,9 @@
                         <template #title="{item}">
                             <span>{{ item.name }}</span>
                         </template>
+                        <template #tooltip="{item}">
+                            <span>{{ item.name }}</span>
+                        </template>
                     </draggable-items-list>
                 </template>
             </form-card>
@@ -63,6 +66,9 @@
                         @add="onUpdateFilters"
                     >
                         <template #title="{item}">
+                            <span>{{ item.name }}</span>
+                        </template>
+                        <template #tooltip="{item}">
                             <span>{{ item.name }}</span>
                         </template>
                     </draggable-items-list>

@@ -32,19 +32,9 @@
         overlay
     >
         <v-form v-slot="{validate}">
-            <modal-card>
+            <modal-card @close="onCloseForm">
                 <template #title>
                     Форма создания фильтров
-                </template>
-                <template #header>
-                    <v-button
-                        round
-                        color="grey lighten-1"
-                        elevation="2"
-                        @click="onCloseForm"
-                    >
-                        <v-icon>fas fa-times</v-icon>
-                    </v-button>
                 </template>
                 <template #content>
                     <v-select

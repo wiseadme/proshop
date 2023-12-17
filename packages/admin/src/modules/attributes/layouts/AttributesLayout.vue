@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 </script>
 <template>
-    <v-main class="attribute-layout">
+    <div class="attributes-layout">
         <router-view />
-    </v-main>
+    </div>
 </template>

@@ -1,15 +1,13 @@
 <script lang="ts" setup>
     import UnitsList from '@modules/units/components/UnitsList.vue'
-    import UnitsFormModal from '@modules/units/components/UnitsFormModal.vue'
+    import { UnitsFormModal } from '@modules/units/components/modals'
 </script>
 <template>
-    <v-layout column>
+    <div class="units-page">
         <v-row>
             <v-col
                 xl="8"
                 lg="8"
-                md="12"
-                sm="12"
                 offset-xl="2"
                 offset-lg="2"
             >
@@ -17,7 +15,7 @@
             </v-col>
         </v-row>
         <units-form-modal/>
-    </v-layout>
+    </div>
 </template>
 <style lang="scss">
     .units {

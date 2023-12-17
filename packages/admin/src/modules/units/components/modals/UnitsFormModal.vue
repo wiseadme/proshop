@@ -48,7 +48,7 @@
                     </v-button>
                     <v-button
                         elevation="2"
-                        color="warning"
+                        color="secondary"
                         class="ml-2 app-border-radius"
                         width="120"
                         @click="clearUnitModel"

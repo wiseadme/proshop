@@ -14,19 +14,9 @@
         transition="scale-in"
     >
         <v-form v-slot="{validate}">
-            <modal-card>
+            <modal-card @close="isFormVisible = false">
                 <template #title>
                     Форма создания атрибутов товара
-                </template>
-                <template #header>
-                    <v-button
-                        round
-                        color="grey lighten-1"
-                        elevation="2"
-                        @click="isFormVisible = false"
-                    >
-                        <v-icon>fas fa-times</v-icon>
-                    </v-button>
                 </template>
                 <template #content>
                     <div class="attribute-form">
