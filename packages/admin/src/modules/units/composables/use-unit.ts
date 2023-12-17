@@ -3,13 +3,15 @@ import { Unit } from '@modules/units/model/unit.model'
 import { useUnitsService } from '@modules/units/composables/use-units-service'
 import { useLoadingState } from '@shared/composables/use-loading-state'
 import { IUnit } from '@proshop/types'
+import { createSharedComposable } from '@shared/features/create-shared-composable'
 
-export const useUnit = () => {
+export const useUnit = createSharedComposable(() => {
     const { updateUnit, createUnit, deleteUnit, setAsCurrent } = useUnitsService()
     const { loading, setLoadingState } = useLoadingState()
 
     const model = ref<IUnit>(Unit.create())
     const isEditMode = ref(false)
+    const showUnitForm = ref(false)
 
     const onSaveUnit = (validate) => {
         setLoadingState(true)
@@ -27,6 +29,7 @@ export const useUnit = () => {
 
     const onEditUnit = (item) => {
         isEditMode.value = true
+        showUnitForm.value = true
         setAsCurrent(item)
         model.value = Unit.create(item)
     }
@@ -39,9 +42,10 @@ export const useUnit = () => {
         model,
         loading,
         isEditMode,
+        showUnitForm,
         onSaveUnit,
         onEditUnit,
         clearUnitModel,
         onDeleteUnit,
     }
-}
+})

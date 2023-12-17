@@ -2,6 +2,10 @@
     import { VSvg } from '@shared/components/VSvg'
     import { SvgPaths } from '@shared/enums/svg-paths'
 
+    defineEmits<{
+        (e: 'close'): void
+    }>()
+
     const { width = 600 } = defineProps<{
         width?: number
     }>()
@@ -32,11 +36,15 @@
                 </h4>
             </div>
             <v-spacer/>
-            <div
-                v-if="$slots.header"
-                class="modal-card__header-btn"
-            >
-                <slot name="header"/>
+            <div class="modal-card__header-btn">
+                <v-button
+                    round
+                    color="grey lighten-1"
+                    elevation="2"
+                    @click="$emit('close')"
+                >
+                    <v-icon>fas fa-times</v-icon>
+                </v-button>
             </div>
         </v-card-title>
         <v-card-content>

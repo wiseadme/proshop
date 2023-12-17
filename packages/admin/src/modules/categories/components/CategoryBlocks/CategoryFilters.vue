@@ -17,10 +17,6 @@
         onUpdateFilters
     } = useCategoryFilters()
 
-    // const onAddFilter = () => {
-    //
-    // }
-
     const pullFunction = () => {
     }
 
@@ -42,6 +38,7 @@
                         :group="ctgGroupSymbol"
                         item-key="id"
                         @add="onUpdateFilters"
+                        @update="onUpdateFilters"
                     >
                         <template #title="{item}">
                             <span>{{ item.name }}</span>
@@ -63,6 +60,7 @@
                         v-model="availableFilterGroups"
                         item-key="id"
                         :group="{ name: ctgGroupSymbol, pull: pullFunction }"
+                        @add="onUpdateFilters"
                     >
                         <template #title="{item}">
                             <span>{{ item.name }}</span>
