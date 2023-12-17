@@ -9,11 +9,11 @@
     })
 </script>
 <template>
-    <v-main>
+    <div class="units-layout">
         <router-view v-slot="{ Component }">
             <transition name="fade">
                 <component :is="Component"/>
             </transition>
         </router-view>
-    </v-main>
+    </div>
 </template>

@@ -1,3 +1,5 @@
+import { IProduct } from '@proshop/types'
+
 export class ServiceHelpers {
     constructor() {
     }
@@ -8,5 +10,12 @@ export class ServiceHelpers {
 
             return acc
         }, {})
+    }
+
+    getResponseFormat(items: IProduct[], count = 0) {
+        return {
+            items,
+            count
+        }
     }
 }
