@@ -14,7 +14,6 @@
             <v-col
                 xl="8"
                 lg="8"
-                md="12"
                 offset-xl="2"
                 offset-lg="2"
             >
