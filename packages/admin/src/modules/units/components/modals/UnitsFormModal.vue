@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-    import {useUnit} from '@modules/units/composables/use-unit'
-    import ModalCard from '@shared/components/Modals/ModalCard.vue'
+    import { useUnit } from '@modules/units/composables/use-unit'
+    import { ModalCard } from '@shared/components/Modals'
 
     const {
         model,

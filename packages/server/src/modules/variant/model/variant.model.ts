@@ -17,7 +17,7 @@ const VariantSchema = new Schema<IVariantMongoModel>({
         default: null
     }
 }, {
-    timestamps: true,
+    timestamps: false,
 })
 
 export const VariantModel = model<IVariantMongoModel>('Variant', VariantSchema)
