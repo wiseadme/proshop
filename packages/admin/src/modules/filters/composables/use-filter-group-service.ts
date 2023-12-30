@@ -7,7 +7,12 @@ export const useFilterGroupService = () => {
     const _filterGroupsStore = useFilterGroupsStore()
     const _attributesStore = useAttributesStore()
 
-    const { createFilterGroup, getFilterGroups, deleteFilterGroup, updateFilterGroup } = _filterGroupsStore
+    const {
+        createFilterGroup,
+        getFilterGroups,
+        deleteFilterGroup,
+        updateFilterGroup
+    } = _filterGroupsStore
 
     const attributes = computed(() => _attributesStore.attributes)
     const filterGroups = computed(() => _filterGroupsStore.filterGroups)

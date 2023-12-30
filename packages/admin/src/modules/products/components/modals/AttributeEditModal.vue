@@ -5,12 +5,11 @@
         unref,
         watch,
     } from 'vue'
+    import { useProductModel } from '@modules/products/composables/use-product-model'
     import { useFilterGroupService } from '@modules/filters/composables/use-filter-group-service'
     import { useFilterItemsService } from '@modules/filters/composables/use-filter-items-service'
-    import { useProductModel } from '@modules/products/composables/use-product-model'
     import { useProductAttributes } from '@modules/products/composables/use-product-attributes'
     import { ModalCard } from '@shared/components/Modals'
-    import { IFilterGroup } from '@proshop/types'
 
     const { model } = useProductModel()
 
@@ -25,44 +24,35 @@
     } = useFilterItemsService()
 
     const {
-        currentEditableAttribute,
+        editable,
         attributeItems,
-        isAttributeEditMode,
+        isEditMode,
         onUpdateAttributes,
         onDiscardChanges,
     } = useProductAttributes()
 
     const attributesMap = ref({})
 
-    const attrFilterGroups = computed(() => unref(filterGroups).filter(group => group.attributeId === unref(currentEditableAttribute)?.id))
+    const attrFilterGroups = computed(() => unref(filterGroups).filter(({ attributeId }) => attributeId === unref(editable)?.id))
 
-    const onFocusGroupSelect = () => {
-        if (unref(filterGroups).length) return
+    const onFocusFilter = () => {
+        const { id } = unref(editable)!
+        const { group } = unref(attributesMap)[id]
 
-        getFilterGroupItems()
-    }
-
-    const onFocusFilter = (attrId: string) => {
-        const group = unref(attributesMap)[attrId].group as IFilterGroup
         getFilterItems({ groupId: group.id })
     }
 
-    const onBlurFilter = (attrId: string) => {
-        if (!unref(attributesMap)[attrId].item) {
-            return
-        }
+    const onSelectFilter = () => {
+        const { attributes } = unref(model)
+        const { id } = unref(editable)!
 
-        const attribute = unref(model).attributes.find(attr => attr.id === attrId)
-        attribute!.value = unref(attributesMap)[attrId].item.value
+        const attr = attributes.find(attr => attr.id === id)
+        attr!.value = unref(attributesMap)[id].item.value
     }
 
     watch(attributeItems, (attrs) => {
-        attrs?.reduce((map, it) => {
-            map[it.id] = {
-                isFilter: false,
-                group: { name: 'Нет' },
-                item: null,
-            }
+        attrs?.reduce((map, { id, key }) => {
+            map[id] = { key }
 
             return map
         }, attributesMap.value)
@@ -71,37 +61,29 @@
 </script>
 <template>
     <v-modal
-        v-model="isAttributeEditMode"
+        v-model="isEditMode"
         transition="scale-in"
         width="600"
         overlay
     >
         <modal-card
-            v-if="currentEditableAttribute"
+            v-if="editable"
             class="app-border-radius"
             elevation="2"
-            width="600px"
+            :width="600"
+            @close="onDiscardChanges"
         >
             <template #title>
-                <h5>Редатикрование атрибута {{ currentEditableAttribute.key }}</h5>
-            </template>
-            <template #header>
-                <v-button
-                    round
-                    color="grey lighten-1"
-                    elevation="2"
-                    @click="onDiscardChanges"
-                >
-                    <v-icon>fas fa-times</v-icon>
-                </v-button>
+                <h5>Редатикрование атрибута {{ editable.key }}</h5>
             </template>
             <template #content>
                 <v-select
-                    v-model="attributesMap[currentEditableAttribute.id].group"
+                    v-model="attributesMap[editable.id].group"
                     label="Группа фильтров"
                     value-key="name"
                     color="primary"
-                    @focus="onFocusGroupSelect"
+                    :loading="!filterGroups.length"
+                    @focus="getFilterGroupItems"
                 >
                     <template #select-list="{onSelect}">
                         <v-list active>
@@ -123,22 +105,21 @@
                     </template>
                 </v-select>
                 <v-text-field
-                    v-if="!attributesMap[currentEditableAttribute.id].group?.id"
-                    v-model="currentEditableAttribute.value"
-                    :label="currentEditableAttribute.key"
+                    v-if="!attributesMap[editable.id].group?.id"
+                    v-model="editable.value"
+                    :label="editable.key"
                     color="primary"
                 />
                 <v-select
                     v-else
-                    v-model="attributesMap[currentEditableAttribute.id].item"
+                    v-model="attributesMap[editable.id].item"
                     :items="filterItems"
-                    :label="`Фильтры для -> ${currentEditableAttribute.key}`"
+                    :label="`Фильтры для -> ${editable.key}`"
                     value-key="value"
                     color="primary"
-                    :disabled="!attributesMap[currentEditableAttribute.id].group"
-                    @focus="onFocusFilter(currentEditableAttribute.id)"
-                    @blur="onBlurFilter(currentEditableAttribute.id)"
-                    @select="onBlurFilter(currentEditableAttribute.id)"
+                    :disabled="!attributesMap[editable.id].group"
+                    @focus="onFocusFilter()"
+                    @select="onSelectFilter()"
                 />
             </template>
             <template #actions>
