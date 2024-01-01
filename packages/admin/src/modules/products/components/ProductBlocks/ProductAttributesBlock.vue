@@ -5,12 +5,12 @@
     // Components
     import { FormCard } from '@shared/components/FormCard'
     import { VSvg } from '@shared/components/VSvg'
-    import DraggableItemsList from '@shared/components/DraggableItemsList/DraggableItemsList.vue'
+    import { DraggableItemsList } from '@shared/components/DraggableItemsList'
     // Enums
     import { SvgPaths } from '@shared/enums/svg-paths'
+    import { ATTRIBUTE_DRAG_GROUP } from '@modules/products/constants/symbols'
 
     const { model } = useProductModel()
-    const groupSymbol = Symbol.for('attributes')
 
     const {
         availableAttributes,
@@ -41,7 +41,7 @@
                     <draggable-items-list
                         v-model="model.attributes"
                         item-key="key"
-                        :group="groupSymbol"
+                        :group="ATTRIBUTE_DRAG_GROUP"
                         class="draggable-container"
                         editable
                         @edit="setForEditing"
@@ -74,7 +74,7 @@
                     <draggable-items-list
                         v-model="availableAttributes"
                         item-key="key"
-                        :group="{ name: groupSymbol, pull: pullFunction }"
+                        :group="{ name: ATTRIBUTE_DRAG_GROUP, pull: pullFunction }"
                     >
                         <template #title="{item}">
                             {{ item.key }}

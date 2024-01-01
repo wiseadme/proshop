@@ -45,8 +45,8 @@
     const onSelectFilter = () => {
         const { attributes } = unref(model)
         const { id } = unref(editable)!
-
         const attr = attributes.find(attr => attr.id === id)
+
         attr!.value = unref(attributesMap)[id].item.value
     }
 

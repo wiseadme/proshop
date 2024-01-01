@@ -23,6 +23,7 @@ export const useVK = () => {
 
         return `${authUrl}?${searchParams.toString()}`
     }
+
     const getAccessToken = () => {
         return _store.getVKAccessToken({
             client_id: clientId,
