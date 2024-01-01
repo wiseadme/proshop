@@ -1,73 +1,86 @@
+import { createSharedComposable } from '@shared/features/create-shared-composable'
+import { useMetaTagsService } from '@modules/metatags/composables/use-meta-tags-service'
+import { IMetaTag } from '@proshop/types'
 import {
-    computed,
+    nextTick,
     ref,
     unref
 } from 'vue'
-import { useMetaTagsService } from '@modules/metatags/composables/use-meta-tags-service'
 import { clone } from '@shared/helpers'
-import { descriptorToMetaTag } from '@shared/helpers/metatag'
+import { useNotifications } from '@shared/components/VNotifications/use-notifications'
+import { MetaTag } from '@modules/metatags/model/metaTag.model'
+import { useMetaTagForm } from '@modules/metatags/composables/use-meta-tag-form'
+import {
+    META_TAG_DELETED,
+    META_TAG_DELETE_ERROR,
+    META_TAG_SAVED,
+    META_TAG_SAVING_ERROR,
+} from '@modules/metatags/constants/notifications'
 
-export const useMetaTag = () => {
-    const { setAsCurrent } = useMetaTagsService()
+export const useMetaTag = createSharedComposable(() => {
+    const {
+        setAsCurrent,
+        updateMetaTag,
+        createMetaTag,
+        deleteMetaTag,
+    } = useMetaTagsService()
 
+    const { toggleModal } = useMetaTagForm()
+
+    const { notify } = useNotifications()
+
+    const model = ref<IMetaTag>(MetaTag.create())
     const isEditMode = ref<boolean>(false)
-    const metaProps = ref({
-        props: {},
-        order: 0
-    })
-    const metaPropertyPattern = ref({
-        key: '',
-        value: ''
-    })
-
-    const displayMeta = computed(() => descriptorToMetaTag(unref(metaProps).props))
-    const isDescriptorHasKeys = computed(() => Object.keys(unref(metaProps).props).length)
-    const saveBtnTitle = computed(() => unref(isEditMode) ? 'Изменить' : 'Сохранить')
-
-    const clearMetaPattern = () => {
-        unref(metaPropertyPattern).key = ''
-        unref(metaPropertyPattern).value = ''
-    }
-
-    const clearMetaProps = () => {
-        unref(metaProps).props = {}
-        unref(metaProps).order = 0
-    }
 
     const clearAll = () => {
-        clearMetaPattern()
-        clearMetaProps()
-
-        isEditMode.value = false
         setAsCurrent(null)
+        model.value = MetaTag.create()
+        isEditMode.value = false
     }
 
-    const addPropsToMeta = async (validate) => {
-        await validate()
+    const onEditMetaTag = (item: IMetaTag) => {
+        setAsCurrent(item)
 
-        const key = unref(metaPropertyPattern).key.toLowerCase()
-        unref(metaProps).props[key] = unref(metaPropertyPattern).value
-        clearMetaPattern()
-    }
-
-    const onEditMetaTag = (metaTagDescriptor) => {
-        setAsCurrent(metaTagDescriptor)
-
-        unref(metaProps).props = clone(metaTagDescriptor.props)
-        unref(metaProps).order = metaTagDescriptor.order
+        unref(model).props = clone(item.props)
+        unref(model).order = item.order
 
         isEditMode.value = true
+        toggleModal(true)
+    }
+
+    const onDeleteMetaTag = async (item: IMetaTag) => {
+        try {
+            await deleteMetaTag(item.id)
+
+            notify(META_TAG_DELETED)
+        } catch (err) {
+            notify(META_TAG_DELETE_ERROR)
+        }
+    }
+
+    const onSaveMetaTag = async () => {
+        const action = unref(isEditMode) ? updateMetaTag : createMetaTag
+
+        try {
+            await action(unref(model))
+
+            await nextTick(() => {
+                clearAll()
+                isEditMode.value = false
+            })
+
+            notify(META_TAG_SAVED)
+        } catch (err) {
+            notify(META_TAG_SAVING_ERROR)
+        }
     }
 
     return {
-        displayMeta,
-        isDescriptorHasKeys,
-        saveBtnTitle,
+        model,
         isEditMode,
-        metaProps,
-        metaPropertyPattern,
-        addPropsToMeta,
         clearAll,
+        onSaveMetaTag,
+        onDeleteMetaTag,
         onEditMetaTag,
     }
-}
+})

@@ -3,7 +3,7 @@ import { state } from './state'
 import { actions } from './actions'
 
 export const useFilterGroupsStore = defineStore({
-    id: 'filter-groups',
+    id: 'filterGroups',
     state,
     actions,
 })
