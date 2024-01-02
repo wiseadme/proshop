@@ -1,16 +1,18 @@
+import { Response } from 'express'
 import { inject, injectable } from 'inversify'
-import { UserHelpers } from '@modules/user/helpers'
 import bcrypt from 'bcryptjs'
+import { config } from '@app/config'
+import { TYPES } from '@common/schemes/di-types'
 // Types
 import { IUserService } from '@modules/user/types/service'
-import { TYPES } from '@common/schemes/di-types'
 import { IUserRepository } from '@modules/user/types/repository'
-import { config } from '@app/config'
+import { IUser } from '@proshop/types'
 
+import { UserHelpers } from '@modules/user/helpers'
 import { genJWToken, isExpired } from '@common/helpers'
 
-const REFRESH_TOKEN_EXP = 60 * 60 * 12
-const ACCESS_TOKEN_EXP = 60 * 60
+import { ACCESS_TOKEN_EXP, REFRESH_TOKEN_EXP } from '@common/constants/counts'
+import { USER_TOKEN_KEY } from '@common/constants/cookie-keys'
 
 @injectable()
 export class UserService extends UserHelpers implements IUserService {
@@ -20,10 +22,10 @@ export class UserService extends UserHelpers implements IUserService {
         super()
     }
 
-    async login(user, res) {
+    async login(user: { username: string, password: string }, res: Response) {
         const { password, username } = user
 
-        const [candidate] = await this.repository.find({ username })
+        const [ candidate ] = await this.repository.find({ username })
 
         if (candidate) {
             const isPasswordValid = await bcrypt.compareSync(password, candidate.password)
@@ -58,10 +60,11 @@ export class UserService extends UserHelpers implements IUserService {
                     })
                 }
 
-                res.cookie('auth', accessToken, {
+                res.cookie(USER_TOKEN_KEY, accessToken, {
                     sameSite: true,
                     httpOnly: true,
                     maxAge: 100000000,
+                    secure: true,
                     path: '/',
                 })
 
@@ -81,8 +84,8 @@ export class UserService extends UserHelpers implements IUserService {
     }
 
     async logout(cookies, res) {
-        const [user] = await this.repository.find({
-            accessToken: cookies.auth,
+        const [ user ] = await this.repository.find({
+            accessToken: cookies[USER_TOKEN_KEY],
         })
 
         await this.repository.update({
@@ -91,13 +94,13 @@ export class UserService extends UserHelpers implements IUserService {
             refreshToken: null,
         })
 
-        res.clearCookie('auth')
+        res.clearCookie(USER_TOKEN_KEY)
 
         return true
     }
 
-    async create(user) {
-        const [checkedUser] = await this.repository.find({
+    async create(user: IUser) {
+        const [ checkedUser ] = await this.repository.find({
             phone: user.phone,
         })
 
@@ -121,8 +124,8 @@ export class UserService extends UserHelpers implements IUserService {
     }
 
     async refresh(cookies, res) {
-        const [user] = await this.repository.find({
-            accessToken: cookies.auth,
+        const [ user ] = await this.repository.find({
+            accessToken: cookies[USER_TOKEN_KEY],
         })
 
         if (user) {
@@ -148,10 +151,11 @@ export class UserService extends UserHelpers implements IUserService {
                 refreshToken,
             })
 
-            res.cookie('auth', accessToken, {
+            res.cookie(USER_TOKEN_KEY, accessToken, {
                 sameSite: true,
                 httpOnly: true,
                 maxAge: 999999,
+                secure: true,
                 path: '/',
             })
 
@@ -165,15 +169,15 @@ export class UserService extends UserHelpers implements IUserService {
     }
 
     async whoami(cookies) {
-        if (!cookies.auth) {
+        if (!cookies[USER_TOKEN_KEY]) {
             return Promise.reject({
                 status: 401,
                 message: 'Unauthorized',
             })
         }
 
-        const [user] = await this.repository.find({
-            accessToken: cookies.auth,
+        const [ user ] = await this.repository.find({
+            accessToken: cookies[USER_TOKEN_KEY],
         })
 
         if (user && isExpired(user.accessToken!)) {
@@ -186,7 +190,7 @@ export class UserService extends UserHelpers implements IUserService {
         return this.prepareUserResponseData(user)
     }
 
-    async deleteUser(id) {
+    async deleteUser(id: string) {
         return this.repository.delete(id)
     }
 }

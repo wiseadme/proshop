@@ -22,7 +22,6 @@
                 xl="6"
                 lg="6"
                 md="6"
-                sm="12"
             >
                 <form-card>
                     <template #icon>
@@ -71,7 +70,6 @@
                 xl="6"
                 lg="6"
                 md="6"
-                sm="12"
             >
                 <form-card>
                     <template #icon>
@@ -110,10 +108,6 @@
             </v-col>
             <v-col
                 class="mb-4"
-                xl="12"
-                lg="12"
-                md="12"
-                sm="12"
             >
                 <form-card>
                     <template #icon>

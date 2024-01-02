@@ -1,16 +1,19 @@
 import { ValidateMiddleware } from '@common/middlewares/validate.middleware'
 import { NextFunction, Request, Response } from 'express'
 import jwt from 'jsonwebtoken'
+import { USER_TOKEN_KEY } from '@common/constants/cookie-keys'
 
-type SetMiddlewareArguments = {
+interface MiddlewareArguments {
     dto?: any,
     protect?: boolean
     roles?: string[]
 }
 
-type ProtectMiddlewareArguments = {
+interface ProtectMiddlewareArguments {
     roles?: string[]
 }
+
+type MiddlewareFn = (req: Request, res: Response, next: NextFunction) => any
 
 export const parseJWToken = (token: string) => jwt.decode(token)
 
@@ -31,13 +34,13 @@ const protect = ({ roles }: ProtectMiddlewareArguments) => {
         let ret = true
 
         if (roles) {
-            const parsed = parseJWToken(cookies.auth)
+            const parsed = parseJWToken(cookies[USER_TOKEN_KEY])
             const userRoles = parsed.roles
 
             ret = roles.every(role => userRoles.includes(role))
         }
 
-        if (ret && !isExpired(cookies.auth)) {
+        if (ret && !isExpired(cookies[USER_TOKEN_KEY])) {
             next()
         } else {
             throw ({
@@ -48,8 +51,8 @@ const protect = ({ roles }: ProtectMiddlewareArguments) => {
     }
 }
 
-export const setMiddlewares = (props: SetMiddlewareArguments | null = null) => {
-    const middlewares: any[] = []
+export const setMiddlewares = (props: MiddlewareArguments | null = null) => {
+    const middlewares: MiddlewareFn[] = []
 
     props?.dto && middlewares.push(new ValidateMiddleware(props.dto).execute())
     props?.roles && middlewares.push(protect({ roles: props.roles }))
