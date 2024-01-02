@@ -29,7 +29,7 @@ export class ProductsController extends BaseController implements IController {
 
     public initRoutes() {
         this.router.post('/', setMiddlewares({ dto: ProductDTO, roles: ['root'] }), this.createProduct.bind(this))
-        this.router.get('/', setMiddlewares({}), this.getProducts.bind(this))
+        this.router.get('/', this.getProducts.bind(this))
         this.router.patch('/', setMiddlewares({ dto: ProductDTO, roles: ['root'] }), this.updateProduct.bind(this))
         this.router.delete('/', setMiddlewares({ roles: ['root'] }), this.deleteProduct.bind(this))
         this.router.patch('/attributes/add', setMiddlewares({ roles: ['root'] }), this.addProductAttribute.bind(this))

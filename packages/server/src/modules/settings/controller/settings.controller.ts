@@ -7,6 +7,7 @@ import { TYPES } from '@common/schemes/di-types'
 import { IMerchantService, ISettingsService, ISiteService } from '@modules/settings/types/service'
 import { IMerchant, ISite } from '@proshop/types'
 import { SETTINGS_MODULE_PATH } from '@common/constants/paths'
+import { setMiddlewares } from '@common/helpers'
 
 @injectable()
 export class SettingsController extends BaseController implements IController {
@@ -25,14 +26,14 @@ export class SettingsController extends BaseController implements IController {
 
     initRoutes() {
         this.router.get('/', this.getSettings.bind(this))
-        this.router.delete('/', this.deleteSettings.bind(this))
-        this.router.post('/merchant', this.createMerchant.bind(this))
+        this.router.delete('/', setMiddlewares({ roles: ['root'] }), this.deleteSettings.bind(this))
+        this.router.post('/merchant', setMiddlewares({ roles: ['root'] }), this.createMerchant.bind(this))
         this.router.get('/merchant', this.getMerchant.bind(this))
-        this.router.patch('/merchant', this.updateMerchant.bind(this))
-        this.router.delete('/merchant', this.deleteMerchant.bind(this))
-        this.router.post('/site', this.createSite.bind(this))
+        this.router.patch('/merchant', setMiddlewares({ roles: ['root'] }), this.updateMerchant.bind(this))
+        this.router.delete('/merchant', setMiddlewares({ roles: ['root'] }), this.deleteMerchant.bind(this))
+        this.router.post('/site', setMiddlewares({ roles: ['root'] }), this.createSite.bind(this))
         this.router.get('/site', this.getSite.bind(this))
-        this.router.patch('/site', this.updateSite.bind(this))
+        this.router.patch('/site', setMiddlewares({ roles: ['root'] }), this.updateSite.bind(this))
     }
 
     async getSettings(request: Request, response: Response, next: NextFunction) {

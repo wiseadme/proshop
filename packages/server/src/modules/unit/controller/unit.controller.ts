@@ -8,6 +8,7 @@ import { IController } from '@/types'
 import { IUnit } from '@proshop/types'
 import { IUnitService } from '@modules/unit/types/service'
 import { UNITS_MODULE_PATH } from '@common/constants/paths'
+import { setMiddlewares } from '@common/helpers'
 
 @injectable()
 export class UnitController extends BaseController implements IController {
@@ -23,10 +24,10 @@ export class UnitController extends BaseController implements IController {
     }
 
     initRoutes() {
-        this.router.post('/', this.createUnit.bind(this))
+        this.router.post('/', setMiddlewares({ roles: ['root'] }), this.createUnit.bind(this))
         this.router.get('/', this.getUnits.bind(this))
-        this.router.patch('/', this.updateUnit.bind(this))
-        this.router.delete('/', this.deleteUnit.bind(this))
+        this.router.patch('/', setMiddlewares({ roles: ['root'] }), this.updateUnit.bind(this))
+        this.router.delete('/', setMiddlewares({ roles: ['root'] }), this.deleteUnit.bind(this))
     }
 
     async createUnit(request: Request<{}, {}, IUnit>, response: Response, next: NextFunction) {

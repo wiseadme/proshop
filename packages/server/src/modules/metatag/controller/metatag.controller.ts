@@ -7,6 +7,8 @@ import { ILogger } from '@/types/utils'
 import { IController } from '@/types'
 import { IMetaTag } from '@proshop/types'
 import { META_TAGS_MODULE_PATH } from '@common/constants/paths'
+import { setMiddlewares } from '@common/helpers'
+import * as readline from 'readline'
 
 @injectable()
 export class MetaTagController extends BaseController implements IController {
@@ -22,10 +24,10 @@ export class MetaTagController extends BaseController implements IController {
     }
 
     initRoutes() {
-        this.router.post('/', this.createMetaTag.bind(this))
-        this.router.get('/', this.getMetaTags.bind(this))
-        this.router.patch('/', this.updateMetaTag.bind(this))
-        this.router.delete('/', this.deleteMetaTag.bind(this))
+        this.router.post('/', setMiddlewares({ roles: ['root'] }), this.createMetaTag.bind(this))
+        this.router.get('/', setMiddlewares({ roles: ['root', 'user', 'readonly'] }), this.getMetaTags.bind(this))
+        this.router.patch('/', setMiddlewares({ roles: ['root'] }), this.updateMetaTag.bind(this))
+        this.router.delete('/', setMiddlewares({ roles: ['root'] }), this.deleteMetaTag.bind(this))
     }
 
     async createMetaTag(request: Request<{}, {}, IMetaTag>, response: Response, next: NextFunction) {

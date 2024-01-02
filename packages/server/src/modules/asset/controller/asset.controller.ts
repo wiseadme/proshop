@@ -8,6 +8,7 @@ import { ILogger } from '@/types/utils'
 import { IController } from '@/types'
 import { IAssetsService } from '@modules/asset/types/service'
 import { ASSETS_MODULE_PATH } from '@common/constants/paths'
+import { setMiddlewares } from '@common/helpers'
 
 @injectable()
 export class AssetController extends BaseController implements IController {
@@ -23,10 +24,10 @@ export class AssetController extends BaseController implements IController {
     }
 
     initRoutes() {
-        this.router.post('/', this.uploadAsset.bind(this))
-        this.router.patch('/', this.updateAsset.bind(this))
-        this.router.patch('/many', this.updateAssets.bind(this))
-        this.router.delete('/', this.deleteImage.bind(this))
+        this.router.post('/', setMiddlewares({ roles: ['root'] }), this.uploadAsset.bind(this))
+        this.router.patch('/', setMiddlewares({ roles: ['root'] }), this.updateAsset.bind(this))
+        this.router.patch('/many', setMiddlewares({ roles: ['root'] }), this.updateAssets.bind(this))
+        this.router.delete('/', setMiddlewares({ roles: ['root'] }), this.deleteImage.bind(this))
     }
 
     async uploadAsset(request: Request, response: Response, next: NextFunction) {

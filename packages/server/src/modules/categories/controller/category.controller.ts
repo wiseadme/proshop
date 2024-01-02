@@ -11,6 +11,7 @@ import { ICategoryService } from '@modules/categories/types/service'
 // Schemes
 import { TYPES } from '@common/schemes/di-types'
 import { CATEGORIES_MODULE_PATH } from '@common/constants/paths'
+import { setMiddlewares } from '@common/helpers'
 
 @injectable()
 export class CategoryController extends BaseController implements IController {
@@ -27,9 +28,9 @@ export class CategoryController extends BaseController implements IController {
 
     public initRoutes() {
         this.router.get('/', this.getCategories.bind(this))
-        this.router.post('/', this.createCategory.bind(this))
-        this.router.patch('/', this.updateCategory.bind(this))
-        this.router.delete('/', this.deleteCategory.bind(this))
+        this.router.post('/', setMiddlewares({ roles: ['root'] }), this.createCategory.bind(this))
+        this.router.patch('/', setMiddlewares({ roles: ['root'] }), this.updateCategory.bind(this))
+        this.router.delete('/', setMiddlewares({ roles: ['root'] }), this.deleteCategory.bind(this))
     }
 
     async createCategory(request: Request<{}, {}, ICategory>, response: Response, next: NextFunction) {

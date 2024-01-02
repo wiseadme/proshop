@@ -79,12 +79,10 @@ RestClient.interceptors.request.use(async (config) => {
                 isInProgress = false
 
                 return config
-            } else {
-                await logout()
             }
+
+            return logout()
         }
-    } else {
-        return config
     }
 
     return config

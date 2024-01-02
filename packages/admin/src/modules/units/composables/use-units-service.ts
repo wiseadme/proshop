@@ -11,7 +11,7 @@ export const useUnitsService = createSharedComposable(() => {
     const _store = useUnitsStore()
     const unit = ref<Maybe<IUnit>>(null)
 
-    const units = computed(() => _store.units)
+    const units = computed(() => _store.units ?? [])
 
     const setAsCurrent = (item: IUnit) => {
         unit.value = item
