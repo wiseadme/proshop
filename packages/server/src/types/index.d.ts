@@ -33,6 +33,7 @@ export interface IConfig {
     accessSecret: string
     refreshSecret: string
     uploadsDir: string
+    websiteUrl: string
 }
 
 export interface IDb {

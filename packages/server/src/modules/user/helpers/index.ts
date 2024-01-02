@@ -1,10 +1,9 @@
-import {Document} from 'mongoose'
 import { IUser } from '@proshop/types'
 import { isExpired, parseJWToken } from '@common/helpers'
 
 export class UserHelpers {
     prepareUserResponseData(user: IUser): IUser {
-        const userData: Partial<IUser> = {
+        const data: Partial<IUser> = {
             id: user.id,
             firstName: user.firstName,
             secondName: user.secondName,
@@ -16,11 +15,11 @@ export class UserHelpers {
         }
 
         if (user.accessToken && !isExpired(user.accessToken)) {
-            userData.exp = parseJWToken(user.accessToken)?.exp
+            data.exp = parseJWToken(user.accessToken)?.exp
         } else {
-            delete userData.exp
+            delete data.exp
         }
 
-        return userData as IUser
+        return data as IUser
     }
 }
