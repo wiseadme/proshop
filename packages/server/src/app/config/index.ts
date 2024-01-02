@@ -16,6 +16,7 @@ export class Config implements IConfig {
     refreshSecret = process.env.REFRESH_TOKEN_SECRET_KEY!
     uploadsDir = process.env.UPLOADS_DIR!
     redisUrl = process.env.REDIS_URL
+    websiteUrl = process.env.WEBSITE_URL!
 }
 
 export const config = new Config()

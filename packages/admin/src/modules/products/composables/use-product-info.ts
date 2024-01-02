@@ -4,7 +4,7 @@ import { useProductsService } from '@modules/products/composables/use-products-s
 import { useNotifications } from '@shared/components/VNotifications/use-notifications'
 import { useRouter } from 'vue-router'
 import { RouteNames } from '@modules/products/enums/route-names'
-import { IProduct } from '@proshop/types'
+import { IProduct, IProductParams } from '@proshop/types'
 import { hasDiffs, hasValueDiffs } from '@shared/helpers/diffs.helpers'
 import {
     CHANGES_SAVED,
@@ -50,7 +50,7 @@ export const useProductInfo = () => {
 
     const onCreateProductInfo = async () => {
         try {
-            const data = await createProduct(unref(model))
+            const data = await createProduct(unref(model) as unknown as IProductParams)
 
             await goToEditProduct(data!)
 
@@ -82,7 +82,7 @@ export const useProductInfo = () => {
             await validate()
 
             unref(isEditMode) ? await onUpdateProductInfo() : await onCreateProductInfo()
-        } catch {
+        } catch (err) {
             notify(SAVING_ERROR)
         }
     }

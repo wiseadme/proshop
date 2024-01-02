@@ -1,4 +1,3 @@
-import { Document } from 'mongoose'
 import { Response } from 'express'
 import { IUser } from '@proshop/types'
 
@@ -7,7 +6,7 @@ type RegistrationAccessResponse = {
 }
 
 export interface IUserService {
-    login(params, res: Response): Promise<IUser>
+    login(params: { username: string, password: string }, res: Response): Promise<IUser>
 
     logout(cookies: Record<string, string>, res: Response): Promise<any>
 
