@@ -4,10 +4,11 @@ import { BaseController } from '@common/controller/base.controller'
 import { IController } from '@/types'
 import { TYPES } from '@common/schemes/di-types'
 import { IUserService } from '@modules/user/types/service'
+import { USER_MODULE_PATH } from '@common/constants/paths'
 
 @injectable()
 export class UserController extends BaseController implements IController {
-    public path: string = '/api/v1/user'
+    public path: string = USER_MODULE_PATH
     public router: Router = Router()
 
     constructor(

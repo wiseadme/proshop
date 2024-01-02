@@ -7,10 +7,11 @@ import { IController } from '@/types'
 import { ILogger } from '@/types/utils'
 import { IVariant } from '@proshop/types'
 import { IVariantService } from '../types/service'
+import { VARIANTS_MODULE_PATH } from '@common/constants/paths'
 
 @injectable()
 export class VariantController extends BaseController implements IController {
-    public path = '/api/v1/variant'
+    public path = VARIANTS_MODULE_PATH
     public router = Router()
 
     constructor(

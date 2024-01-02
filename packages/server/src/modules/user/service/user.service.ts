@@ -48,7 +48,7 @@ export class UserService extends UserHelpers implements IUserService {
                 res.cookie(USER_TOKEN_KEY, tokens.accessToken, {
                     sameSite: true,
                     httpOnly: true,
-                    secure: true,
+                    secure: false,
                     maxAge: COOKIE_MAX_AGE,
                     path: COOKIE_PATH,
                 })
@@ -128,7 +128,7 @@ export class UserService extends UserHelpers implements IUserService {
             res.cookie(USER_TOKEN_KEY, tokens.accessToken, {
                 sameSite: true,
                 httpOnly: true,
-                secure: true,
+                secure: false,
                 maxAge: COOKIE_MAX_AGE,
                 path: COOKIE_PATH,
             })
