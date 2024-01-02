@@ -7,10 +7,11 @@ import { IAsset } from '@proshop/types'
 import { ILogger } from '@/types/utils'
 import { IController } from '@/types'
 import { IAssetsService } from '@modules/asset/types/service'
+import { ASSETS_MODULE_PATH } from '@common/constants/paths'
 
 @injectable()
 export class AssetController extends BaseController implements IController {
-    path = '/api/v1/assets'
+    path = ASSETS_MODULE_PATH
     router = Router()
 
     constructor(

@@ -6,10 +6,11 @@ import { TYPES } from '@common/schemes/di-types'
 import { ILogger } from '@/types/utils'
 import { IController } from '@/types'
 import { IFavoritesService } from '@modules/favorites/types/service'
+import { FAVORITES_MODULE_PATH } from '@common/constants/paths'
 
 @injectable()
 export class FavoritesController extends BaseController implements IController {
-    public path = '/api/v1/favorites'
+    public path = FAVORITES_MODULE_PATH
     public router = Router()
 
     constructor(

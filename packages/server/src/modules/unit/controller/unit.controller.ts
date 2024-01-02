@@ -7,10 +7,11 @@ import { ILogger } from '@/types/utils'
 import { IController } from '@/types'
 import { IUnit } from '@proshop/types'
 import { IUnitService } from '@modules/unit/types/service'
+import { UNITS_MODULE_PATH } from '@common/constants/paths'
 
 @injectable()
 export class UnitController extends BaseController implements IController {
-    path = '/api/v1/unit'
+    path = UNITS_MODULE_PATH
     router = Router()
 
     constructor(

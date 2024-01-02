@@ -10,10 +10,11 @@ import { ICategoryService } from '@modules/categories/types/service'
 
 // Schemes
 import { TYPES } from '@common/schemes/di-types'
+import { CATEGORIES_MODULE_PATH } from '@common/constants/paths'
 
 @injectable()
 export class CategoryController extends BaseController implements IController {
-    public path = '/api/v1/category'
+    public path = CATEGORIES_MODULE_PATH
     public router = Router()
 
     constructor(

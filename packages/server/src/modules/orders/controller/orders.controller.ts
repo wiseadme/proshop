@@ -7,10 +7,11 @@ import { ILogger } from '@/types/utils'
 import { IController } from '@/types'
 import { IOrdersService } from '../types/service'
 import { IOrder } from '@proshop/types'
+import { ORDERS_MODULE_PATH } from '@common/constants/paths'
 
 @injectable()
 export class OrdersController extends BaseController implements IController {
-    public path = '/api/v1/orders'
+    public path = ORDERS_MODULE_PATH
     public router = Router()
 
     constructor(
