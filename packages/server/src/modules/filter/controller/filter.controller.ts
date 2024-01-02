@@ -8,6 +8,7 @@ import { IController } from '@/types'
 import { IFilterGroupService, IFilterItemService } from '@modules/filter/types/service'
 import { IFilterGroup, IFilterItem } from '@proshop/types'
 import { FILTERS_MODULE_PATH } from '@common/constants/paths'
+import { setMiddlewares } from '@common/helpers'
 
 @injectable()
 export class FilterController extends BaseController implements IController {
@@ -24,15 +25,15 @@ export class FilterController extends BaseController implements IController {
     }
 
     initRoutes() {
-        this.router.post('/groups', this.createFilterGroup.bind(this))
-        this.router.patch('/groups', this.updateFilterGroup.bind(this))
+        this.router.post('/groups', setMiddlewares({ roles: ['root'] }), this.createFilterGroup.bind(this))
+        this.router.patch('/groups', setMiddlewares({ roles: ['root'] }), this.updateFilterGroup.bind(this))
         this.router.get('/groups', this.getFilterGroups.bind(this))
-        this.router.delete('/groups', this.deleteFilterGroup.bind(this))
-        this.router.post('/items', this.createFilterItem.bind(this))
-        this.router.post('/items/facets', this.getGroupFilterItems.bind(this))
+        this.router.delete('/groups', setMiddlewares({ roles: ['root'] }), this.deleteFilterGroup.bind(this))
+        this.router.post('/items', setMiddlewares({ roles: ['root'] }), this.createFilterItem.bind(this))
+        this.router.post('/items/facets', setMiddlewares({ roles: ['root'] }), this.getGroupFilterItems.bind(this))
         this.router.get('/items', this.getFilterItems.bind(this))
-        this.router.patch('/items', this.updateFilterItem.bind(this))
-        this.router.delete('/items', this.deleteFilterItem.bind(this))
+        this.router.patch('/items', setMiddlewares({ roles: ['root'] }), this.updateFilterItem.bind(this))
+        this.router.delete('/items', setMiddlewares({ roles: ['root'] }), this.deleteFilterItem.bind(this))
     }
 
     async createFilterGroup(request: Request<{}, {}, IFilterGroup>, response: Response, next: NextFunction) {

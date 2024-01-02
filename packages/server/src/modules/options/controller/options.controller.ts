@@ -10,6 +10,7 @@ import { IOption } from '@proshop/types'
 import { ValidateMiddleware } from '@common/middlewares/validate.middleware'
 import { OptionDTO } from '@modules/options/dto/option.dto'
 import { OPTIONS_MODULE_PATH } from '@common/constants/paths'
+import { setMiddlewares } from '@common/helpers'
 
 @injectable()
 export class OptionsController extends BaseController implements IController {
@@ -25,10 +26,10 @@ export class OptionsController extends BaseController implements IController {
     }
 
     initRoutes() {
-        this.router.post('/', new ValidateMiddleware(OptionDTO).execute(), this.createOption.bind(this))
-        this.router.patch('/', this.updateOption.bind(this))
-        this.router.get('/', this.getOptions.bind(this))
-        this.router.delete('/', this.deleteOption.bind(this))
+        this.router.post('/', setMiddlewares({ roles: ['root'], dto: OptionDTO }), this.createOption.bind(this))
+        this.router.get('/', setMiddlewares({ roles: ['root', 'user', 'readonly'] }), this.getOptions.bind(this))
+        this.router.patch('/', setMiddlewares({ roles: ['root'] }), this.updateOption.bind(this))
+        this.router.delete('/', setMiddlewares({ roles: ['root'] }), this.deleteOption.bind(this))
     }
 
     async createOption(request: Request<{}, {}, IOption>, response: Response, next: NextFunction) {

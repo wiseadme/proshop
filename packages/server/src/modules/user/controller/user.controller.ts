@@ -5,6 +5,7 @@ import { IController } from '@/types'
 import { TYPES } from '@common/schemes/di-types'
 import { IUserService } from '@modules/user/types/service'
 import { USER_MODULE_PATH } from '@common/constants/paths'
+import { setMiddlewares } from '@common/helpers'
 
 @injectable()
 export class UserController extends BaseController implements IController {
@@ -21,11 +22,11 @@ export class UserController extends BaseController implements IController {
     initRoutes() {
         this.router.post('/login', this.login.bind(this))
         this.router.get('/logout', this.logout.bind(this))
-        this.router.post('/create', this.create.bind(this))
+        this.router.post('/create', setMiddlewares({ roles: ['root'] }), this.create.bind(this))
         this.router.get('/whoami', this.whoami.bind(this))
         this.router.get('/refresh', this.refresh.bind(this))
         this.router.get('/', this.getUsers.bind(this))
-        this.router.delete('/', this.deleteUser.bind(this))
+        this.router.delete('/', setMiddlewares({ roles: ['root'] }), this.deleteUser.bind(this))
     }
 
     async login(request: Request, response: Response, next: NextFunction) {

@@ -11,6 +11,7 @@ import { ICustomerService } from '../types/service'
 // Schemes
 import { TYPES } from '@common/schemes/di-types'
 import { CUSTOMERS_MODULE_PATH } from '@common/constants/paths'
+import { setMiddlewares } from '@common/helpers'
 
 @injectable()
 export class CustomerController extends BaseController implements IController {

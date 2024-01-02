@@ -1,5 +1,5 @@
 import { ValidateMiddleware } from '@common/middlewares/validate.middleware'
-import { NextFunction, Request, Response } from 'express'
+import { NextFunction, Request, response, Response } from 'express'
 import jwt from 'jsonwebtoken'
 import { USER_TOKEN_KEY } from '@common/constants/cookie-keys'
 import { config } from '@app/config'
@@ -41,46 +41,51 @@ export const genJWTokens = (payload: Record<string, any>) => ({
         secret: config.refreshSecret,
         expiresIn: REFRESH_TOKEN_EXP,
         payload,
-    })
+    }),
 })
 
-export const verifyJWToken = (token: string) => new Promise((resolve, reject) => {
-    jwt.verify(token, config.accessSecret, (err: any) => {
-        if (err) reject(false)
-
-        resolve(true)
-    })
+export const verifyJWToken = (token: string) => new Promise((resolve) => {
+    jwt.verify(token, config.accessSecret, (err: any) => resolve(!Boolean(err)))
 })
 
+const checkToken = async ({ cookies }: Request, response: Response, next: NextFunction) => {
+    try {
+        const isVerified = await verifyJWToken(cookies[USER_TOKEN_KEY])
+        const state = isExpired(cookies[USER_TOKEN_KEY])
+
+        next(!isVerified || state ? {
+            status: 401,
+            message: 'Unauthorized',
+        } : null)
+    } catch (err: any) {
+        next({
+            status: 501,
+            message: err.message ?? err ?? 'Server error',
+        })
+    }
+}
 const protect = ({ roles }: ProtectMiddlewareArguments) => {
-    return async ({ cookies }: Request, response: Response, next: NextFunction) => {
-
+    return ({ cookies }: Request, response: Response, next: NextFunction) => {
         try {
-            await verifyJWToken(cookies[USER_TOKEN_KEY])
-
             const parsed = parseJWToken(cookies[USER_TOKEN_KEY])
             const userRoles = parsed.roles
-            const ret = roles!.every(role => userRoles.includes(role))
+            const hasRights = roles!.some(role => userRoles.includes(role))
 
-            if (ret && !isExpired(cookies[USER_TOKEN_KEY])) {
-                return next()
-            }
-
-            response.status(403).json({
+            next(!hasRights ? {
                 status: 403,
                 message: 'Forbidden for this role',
-            })
+            } : null)
         } catch (err: any) {
-            response.status(501).json({
+            next({
                 status: 501,
-                message: err.message ?? err,
+                message: err.message ?? err ?? 'Server error',
             })
         }
     }
 }
 
 export const setMiddlewares = (props: MiddlewareArguments | null = null) => {
-    const middlewares: MiddlewareFn[] = []
+    const middlewares: MiddlewareFn[] = [checkToken]
 
     props?.dto && middlewares.push(new ValidateMiddleware(props.dto).execute())
     props?.roles && middlewares.push(protect({ roles: props.roles }))

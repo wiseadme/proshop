@@ -12,6 +12,7 @@ import { ValidateMiddleware } from '@common/middlewares/validate.middleware'
 import { Attribute } from '@modules/attribute/entity/attribute.entity'
 import { AttributeDTO } from '@modules/attribute/dto/attribute.dto'
 import { ATTRIBUTES_MODULE_PATH } from '@common/constants/paths'
+import { setMiddlewares } from '@common/helpers'
 
 @injectable()
 export class AttributeController extends BaseController implements IController {
@@ -27,10 +28,10 @@ export class AttributeController extends BaseController implements IController {
     }
 
     initRoutes() {
-        this.router.post('/', new ValidateMiddleware(AttributeDTO).execute(), this.createAttribute.bind(this))
-        this.router.get('/', this.getAttribute.bind(this))
-        this.router.patch('/', this.updateAttributes.bind(this))
-        this.router.delete('/', this.deleteAttribute.bind(this))
+        this.router.post('/', setMiddlewares({ roles: ['root'], dto: AttributeDTO }), this.createAttribute.bind(this))
+        this.router.get('/', setMiddlewares({ roles: ['root', 'user', 'readonly'] }), this.getAttribute.bind(this))
+        this.router.patch('/', setMiddlewares({ roles: ['root'] }), this.updateAttributes.bind(this))
+        this.router.delete('/', setMiddlewares({ roles: ['root'] }), this.deleteAttribute.bind(this))
     }
 
     async createAttribute(request: Request<{}, {}, IAttribute>, response: Response, next: NextFunction) {
