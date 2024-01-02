@@ -6,10 +6,11 @@ import { TYPES } from '@common/schemes/di-types'
 import { ILogger } from '@/types/utils'
 import { IController } from '@/types'
 import { IMetaTag } from '@proshop/types'
+import { META_TAGS_MODULE_PATH } from '@common/constants/paths'
 
 @injectable()
 export class MetaTagController extends BaseController implements IController {
-    public path = '/api/v1/metatag'
+    public path = META_TAGS_MODULE_PATH
     public router = Router()
 
     constructor(

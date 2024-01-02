@@ -7,10 +7,11 @@ import { ILogger } from '@/types/utils'
 import { IController } from '@/types'
 import { IFilterGroupService, IFilterItemService } from '@modules/filter/types/service'
 import { IFilterGroup, IFilterItem } from '@proshop/types'
+import { FILTERS_MODULE_PATH } from '@common/constants/paths'
 
 @injectable()
 export class FilterController extends BaseController implements IController {
-    public path = '/api/v1/filter'
+    public path = FILTERS_MODULE_PATH
     public router = Router()
 
     constructor(

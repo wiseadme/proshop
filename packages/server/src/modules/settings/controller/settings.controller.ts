@@ -6,10 +6,11 @@ import { ILogger } from '@/types/utils'
 import { TYPES } from '@common/schemes/di-types'
 import { IMerchantService, ISettingsService, ISiteService } from '@modules/settings/types/service'
 import { IMerchant, ISite } from '@proshop/types'
+import { SETTINGS_MODULE_PATH } from '@common/constants/paths'
 
 @injectable()
 export class SettingsController extends BaseController implements IController {
-    public path = '/api/v1/settings'
+    public path = SETTINGS_MODULE_PATH
     public router = Router()
 
     constructor(

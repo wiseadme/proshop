@@ -9,10 +9,11 @@ import { IOptionService } from '../types/service'
 import { IOption } from '@proshop/types'
 import { ValidateMiddleware } from '@common/middlewares/validate.middleware'
 import { OptionDTO } from '@modules/options/dto/option.dto'
+import { OPTIONS_MODULE_PATH } from '@common/constants/paths'
 
 @injectable()
 export class OptionsController extends BaseController implements IController {
-    public path = '/api/v1/options'
+    public path = OPTIONS_MODULE_PATH
     public router = Router()
 
     constructor(

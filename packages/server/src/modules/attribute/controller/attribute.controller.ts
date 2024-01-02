@@ -11,10 +11,11 @@ import { IAttribute } from '@proshop/types'
 import { ValidateMiddleware } from '@common/middlewares/validate.middleware'
 import { Attribute } from '@modules/attribute/entity/attribute.entity'
 import { AttributeDTO } from '@modules/attribute/dto/attribute.dto'
+import { ATTRIBUTES_MODULE_PATH } from '@common/constants/paths'
 
 @injectable()
 export class AttributeController extends BaseController implements IController {
-    public path = '/api/v1/attribute'
+    public path = ATTRIBUTES_MODULE_PATH
     public router = Router()
 
     constructor(

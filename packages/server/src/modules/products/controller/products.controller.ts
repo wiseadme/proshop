@@ -12,10 +12,11 @@ import { IProductsService } from '../types/service'
 
 // Helpers
 import { setMiddlewares } from '@common/helpers'
+import { PRODUCTS_MODULE_PATH } from '@common/constants/paths'
 
 @injectable()
 export class ProductsController extends BaseController implements IController {
-    public path: string = '/api/v1/products'
+    public path: string = PRODUCTS_MODULE_PATH
     public router: Router = Router()
 
     constructor(

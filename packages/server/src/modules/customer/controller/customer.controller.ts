@@ -10,10 +10,11 @@ import { ICustomerService } from '../types/service'
 
 // Schemes
 import { TYPES } from '@common/schemes/di-types'
+import { CUSTOMERS_MODULE_PATH } from '@common/constants/paths'
 
 @injectable()
 export class CustomerController extends BaseController implements IController {
-    public path = '/api/v1/customer'
+    public path = CUSTOMERS_MODULE_PATH
     public router = Router()
 
     constructor(
