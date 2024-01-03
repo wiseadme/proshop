@@ -6,6 +6,7 @@
         watch
     } from 'vue'
     import { useRoute, useRouter } from 'vue-router'
+    import {RouteNames as SettingsRouteNames} from '@modules/settings/enums/route-names'
 
     const router = useRouter()
     const route = useRoute()
@@ -88,12 +89,12 @@
             title: 'Конфигурация',
             icon: 'fas fa-cog',
             children: {
-                ['/settings/merchant']: {
+                [SettingsRouteNames.MERCHANT_SETTINGS]: {
                     title: 'Организация',
                     icon: 'fas fa-store-alt',
                     path: '/settings/merchant',
                 },
-                ['/settings/site']: {
+                [SettingsRouteNames.SITE_EDIT_PAGE]: {
                     title: 'Сайт',
                     icon: 'fas fa-store-alt',
                     path: '/settings/site',
@@ -120,7 +121,7 @@
         current.value = items[name]
 
         if (unref(current)?.children) {
-            current.value = items[name].children[route.path]
+            current.value = items[name].children[route.path] ?? items[name].children[route.name]
         }
 
     }, { immediate: true })

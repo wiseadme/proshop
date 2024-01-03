@@ -125,5 +125,5 @@
     </v-card>
 </template>
 <style lang="scss" scoped>
-
+    @import "vue-color-kit/dist/vue-color-kit.css";
 </style>
