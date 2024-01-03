@@ -38,10 +38,15 @@ export interface ISiteColors {
     disabled?: string
 }
 
+interface ISlider {
+    slides: string[]
+}
+
 export interface ISite {
     id: string
     colors?: ISiteColors
     layout?: string
+    slider?: ISlider
     components?: any
 }
 

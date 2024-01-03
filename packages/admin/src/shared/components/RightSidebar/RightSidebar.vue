@@ -1,9 +1,9 @@
 <script lang="ts" setup>
     import { useRightSidebar } from '@shared/composables/use-right-sidebar'
-    import { unref } from 'vue'
+    import { unref, watch } from 'vue'
     import { useRoute } from 'vue-router'
 
-    const { tabs } = defineProps<{
+    const props = defineProps<{
         tabs: any[]
     }>()
 
@@ -14,7 +14,7 @@
     const { activeItem, setActiveNavItem } = useRightSidebar()
     const route = useRoute()
 
-    const ind = unref(tabs).findIndex(tab => route.params.section === tab.section) || 0
+    const ind = unref(props.tabs).findIndex(tab => route.params.section === tab.section) || 0
 
     const onClick = (tab) => {
         if (tab.disabled) return
@@ -23,7 +23,9 @@
         emit('select-tab', tab)
     }
 
-    setActiveNavItem(unref(tabs)[ind || 0])
+    watch(() => props.tabs, (newTabs = []) => {
+        setActiveNavItem(newTabs[ind || 0])
+    }, { immediate: true })
 </script>
 <template>
     <div

@@ -5,8 +5,6 @@ import { RouteNames } from '@modules/settings/enums/route-names'
 export const settingsRoutes = [
     {
         path: 'settings',
-        component: () => import(/* webpackChunkName: "Page.SETTINGS" */ '@modules/settings/layouts/SettingsLayout.vue'),
-        name: RouteNames.SETTINGS,
         children: [
             ...merchantRoutes,
             ...siteRoutes,

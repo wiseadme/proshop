@@ -11,9 +11,9 @@ export interface SidebarTab {
 }
 
 export const useRightSidebar = createSharedComposable(() => {
-    const activeItem = ref<any>(null)
+    const activeItem = ref<Maybe<SidebarTab>>(null)
 
-    const setActiveNavItem = (item) => {
+    const setActiveNavItem = (item: SidebarTab) => {
         activeItem.value = item
     }
 

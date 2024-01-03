@@ -4,13 +4,10 @@
 
     const route = useRoute()
 
-    const isActionsMode = computed(() => route.params.action === 'edit' || route.params.action === 'create')
+    const isActionsMode = computed(() => Boolean(route.params.action))
 </script>
 <template>
-    <v-main
-        style="position: relative"
-        class="page-layout d-flex justify-space-between"
-    >
+    <v-main class="page-layout d-flex justify-space-between">
         <div :class="{['page-layout-content']: true, ['page-layout-content--with-sidebar']: isActionsMode}">
             <router-view/>
         </div>
@@ -26,6 +23,8 @@
     $gap: 10px;
 
     .page-layout {
+        position: relative;
+
         &-content {
             width: 100%;
 

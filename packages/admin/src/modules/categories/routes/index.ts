@@ -14,8 +14,8 @@ export const categoryRoutes = [
             {
                 path: ':action(edit|create)/:categoryId?/:section',
                 components: {
-                    default: () => import(/* webpackChunkName: "Page.ProductEditPage" */ '@modules/categories/pages/CategoryEditPage.vue'),
-                    right: () => import(/* webpackChunkName: "Page.ProductRightSidebar" */ '@modules/categories/components/CategoryRightSidebar/CategoryRightSidebar.vue'),
+                    default: () => import(/* webpackChunkName: "Page.CategoryEditPage" */ '@modules/categories/pages/CategoryEditPage.vue'),
+                    right: () => import(/* webpackChunkName: "Page.CategoryRightSidebar" */ '@modules/categories/components/CategoryRightSidebar/CategoryRightSidebar.vue'),
                 },
                 name: RouteNames.CATEGORY_EDIT,
             },

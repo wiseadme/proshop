@@ -10,6 +10,7 @@ const MerchantSchema: Schema = new Schema<IMerchantMongoModel>({
     name: {
         type: String,
         default: null,
+        required: true
     },
     currency: {
         type: {
