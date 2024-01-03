@@ -2,7 +2,6 @@ import { RouteNames } from '@modules/settings/enums/route-names'
 export const siteRoutes = [
     {
         path: 'site',
-        redirect: 'site/edit/colors',
         component: () => import(/* webpackChunkName: "Layout.PAGE" */ '@shared/layouts/PageLayout.vue'),
         name: RouteNames.SITE_SETTINGS,
         children: [
