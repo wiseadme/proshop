@@ -23,7 +23,7 @@
     import { RightSidebar } from '@shared/components/RightSidebar'
 
     const ProductAttributesBlock = markRaw(defineAsyncComponent(() => import('@modules/products/components/ProductBlocks/ProductAttributesBlock.vue')))
-    const ProductConditionsBlock = markRaw(defineAsyncComponent(() => import( '@modules/products/components/ProductBlocks/ProductConditionsBlock.vue')))
+    const ProductConditionsBlock = markRaw(defineAsyncComponent(() => import('@modules/products/components/ProductBlocks/ProductConditionsBlock.vue')))
     const ProductVariantsBlock = markRaw(defineAsyncComponent(() => import('@modules/products/components/ProductBlocks/ProductVariantsBlock.vue')))
     const ProductMetaTagsBlock = markRaw(defineAsyncComponent(() => import('@modules/products/components/ProductBlocks/ProductMetaTagsBlock.vue')))
     const ProductRelatedBlock = markRaw(defineAsyncComponent(() => import('@modules/products/components/ProductBlocks/ProductRelatedBlock.vue')))

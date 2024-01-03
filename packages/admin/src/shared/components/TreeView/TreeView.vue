@@ -78,5 +78,5 @@
     </div>
 </template>
 <style lang="scss" scoped>
-    @import "TreeView";
+    @import "./TreeView";
 </style>

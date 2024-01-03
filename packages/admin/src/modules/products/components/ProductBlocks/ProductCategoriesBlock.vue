@@ -1,7 +1,6 @@
 <script lang="ts" setup>
     import {
         computed,
-        nextTick,
         unref,
         watch,
     } from 'vue'
@@ -21,15 +20,17 @@
 
     const productCategories = computed<ICategory[]>(() => unref(product)?.categories as ICategory[])
 
+    let stopWatcher: () => void
+
     watch(productCategories, (items: ICategory[]) => {
         items?.forEach((ctg) => select(ctg))
     }, { immediate: true })
 
-    const stopWatcher = watch(categoryItems, (items) => {
+    stopWatcher = watch(categoryItems, (items) => {
         if (!items) return
 
         buildTreeItems(clone(unref(items)))
-        nextTick(stopWatcher)
+        setTimeout(stopWatcher)
     }, { immediate: true })
 
 </script>
@@ -58,7 +59,7 @@
         </v-col>
     </v-row>
 </template>
-<style lang="scss">
+<style lang="scss" scoped>
     .categories-group {
         cursor: pointer;
 

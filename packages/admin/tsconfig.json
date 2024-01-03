@@ -1,67 +1,50 @@
 {
   "compilerOptions": {
-    "target": "esnext",
-    "module": "esnext",
+    "target": "ES2020",
+    "useDefineForClassFields": true,
+    "module": "ESNext",
+    "lib": [
+      "ES2020",
+      "DOM",
+      "DOM.Iterable"
+    ],
+    "skipLibCheck": true,
+    /* Bundler mode */
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "preserve",
+    /* Linting */
     "strict": true,
-    "noImplicitAny": false,
-    "noImplicitThis": false,
-    "noEmitOnError": true,
-    "strictNullChecks": true,
-    "strictFunctionTypes": false,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noImplicitReturns": true,
-    "importHelpers": true,
-    "moduleResolution": "node",
-    "experimentalDecorators": true,
-    "esModuleInterop": true,
-    "resolveJsonModule": true,
-    "allowSyntheticDefaultImports": true,
-    "sourceMap": true,
-    "baseUrl": "./",
-    "outDir": "./dist",
+    "noFallthroughCasesInSwitch": true,
+    "types": [
+      "@types/node"
+    ],
     "paths": {
       "@/*": [
-        "src/*"
-      ],
-      "@app/*": [
-        "src/app/*"
-      ],
-      "@shared/*": [
-        "src/shared/*"
+        "./src/*"
       ],
       "@modules/*": [
-        "src/modules/*"
-      ]
+        "./src/modules/*"
+      ],
+      "@shared/*": [
+        "./src/shared/*"
+      ],
     },
-    "lib": [
-      "esnext",
-      "dom",
-      "dom.iterable",
-      "scripthost",
-      "webworker"
+    "include": [
+      "src/**/*.ts",
+      "src/**/*.d.ts",
+      "src/**/*.tsx",
+      "src/**/*.vue"
     ],
-    "typeRoots": [
-    ],
-    "types": [
-      "@vue/compiler-core/dist/compiler-core",
-      "@vue/compiler-dom/dist/compiler-dom",
-      "@vue/compiler-sfc/dist/compiler-sfc",
-      "@vue/compiler-ssr/dist/compiler-ssr",
-      "@vue/reactivity/dist/reactivity",
-      "@vue/runtime-core/dist/runtime-core",
-      "@vue/runtime-dom/dist/runtime-dom",
-      "vue/ref-macros",
-      "@types/node",
-      "cypress"
+    "references": [
+      {
+        "path": "./tsconfig.node.json"
+      }
     ]
-  },
-  "include": [
-    "**/*.ts",
-    "**/*.js",
-    "**/*.vue"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+  }
 }
