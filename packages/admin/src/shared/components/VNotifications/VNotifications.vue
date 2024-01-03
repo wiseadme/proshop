@@ -31,7 +31,7 @@
         error: ErrorNotification,
     }
 
-    let notifications = ref<Notify[]>([])
+    const notifications = ref<Notify[]>([])
     let isClickable = false
 
     const addNotification = (params: Notify) => {
@@ -84,7 +84,7 @@
             tag="div"
         >
             <component
-                :is="notifyComponents[notify.type]"
+                :is="notifyComponents[notify.type!]"
                 v-for="notify in notifications"
                 :key="notify.id"
                 :params="notify"

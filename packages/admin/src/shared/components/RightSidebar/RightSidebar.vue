@@ -28,9 +28,7 @@
     }, { immediate: true })
 </script>
 <template>
-    <div
-        class="sidebar sidebar--sticky grey lighten-2 white--text app-border-radius d-flex flex-column elevation-5 pt-2"
-    >
+    <div class="sidebar sidebar--sticky grey lighten-2 white--text app-border-radius d-flex flex-column elevation-5 pt-2">
         <v-card
             color="secondary"
             style="width: auto; font-size: .8rem"
@@ -48,7 +46,7 @@
                 :key="tab.title"
                 class="context-menu__item app-border-radius mb-1 white--text"
                 :class="{
-                    success: activeItem.title === tab.title,
+                    success: activeItem!.title === tab.title,
                     ['context-menu__item--disabled']: tab.disabled,
                     ['grey--text text--lighten-1']: tab.disabled,
                 }"

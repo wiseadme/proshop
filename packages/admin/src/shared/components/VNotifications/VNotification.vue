@@ -1,7 +1,7 @@
 <script lang="ts" setup>
     import { Notify } from '@shared/components/VNotifications/types'
 
-    const {params = {} as Notify, color = 'blue'} = defineProps<{
+    const { params = {} as Notify, color = 'blue' } = defineProps<{
         params: Notify
         color: string
     }>()

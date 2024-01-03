@@ -39,7 +39,11 @@ export default defineConfig({
             },
         }
     },
-    plugins: [vue()],
+    plugins: [vue({
+        script: {
+            propsDestructure: true
+        }
+    })],
     build: {
         minify: true,
         cssCodeSplit: true,

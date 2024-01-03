@@ -2,12 +2,13 @@ import { createSharedComposable } from '@shared/features/create-shared-composabl
 import { DefineComponent, ref } from 'vue'
 
 export interface SidebarTab {
-    component: InstanceType<DefineComponent<{}, {}, any>>
+    component: InstanceType<DefineComponent<any, any, any>>
     title: string
     isActive: boolean
     disabled: boolean
     independent: boolean
     section: string
+    modal: InstanceType<DefineComponent<any, any, any>>
 }
 
 export const useRightSidebar = createSharedComposable(() => {

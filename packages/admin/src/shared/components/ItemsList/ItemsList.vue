@@ -1,19 +1,21 @@
 <script lang="ts" setup generic="T">
+    type ListItem<S> = S & { id: string }
+
     const {
         uniqueKey = 'id',
         deletable = true,
-        editable = true
+        editable = true,
     } = defineProps<{
         modelValue?: any
-        items: T[]
+        items: ListItem<T>[]
         uniqueKey?: string
         deletable?: boolean
         editable?: boolean
     }>()
 
     defineEmits<{
-        (e: 'delete', value: T): void
-        (e: 'edit', value: T): void
+        (e: 'delete', value: ListItem<T>): void
+        (e: 'edit', value: ListItem<T>): void
     }>()
 </script>
 <template>
