@@ -67,11 +67,7 @@ export const useProductMetaTags = createSharedComposable(() => {
     }
 
     watch(modelMetaTags, (metaTags) => {
-        const map = metaTags.reduce((acc, it) => {
-            acc[it.id] = true
-
-            return acc
-        }, {})
+        const map = metaTags.reduce((acc, it) => ({ ...acc, [it.id]: true }), {})
 
         availableMetaTags.value = unref(metaTagItems)?.filter(it => !map[it.id]) || []
     }, { immediate: true })

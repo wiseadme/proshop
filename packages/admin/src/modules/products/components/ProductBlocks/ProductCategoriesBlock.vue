@@ -1,7 +1,6 @@
 <script lang="ts" setup>
     import {
         computed,
-        nextTick,
         unref,
         watch,
     } from 'vue'
@@ -25,11 +24,10 @@
         items?.forEach((ctg) => select(ctg))
     }, { immediate: true })
 
-    const stopWatcher = watch(categoryItems, (items) => {
+    watch(categoryItems, (items) => {
         if (!items) return
 
         buildTreeItems(clone(unref(items)))
-        nextTick(stopWatcher)
     }, { immediate: true })
 
 </script>
@@ -58,7 +56,7 @@
         </v-col>
     </v-row>
 </template>
-<style lang="scss">
+<style lang="scss" scoped>
     .categories-group {
         cursor: pointer;
 

@@ -6,11 +6,11 @@ export const useVK = () => {
     const _store = useVKStore()
     const route = useRoute()
 
-    const authUrl = process.env.VK_AUTH_URI
-    const secretKey = process.env.VK_SECRET_KEY
-    const clientId = process.env.VK_CLIENT_ID
-    const redirectUri = process.env.VK_REDIRECT_URI
-    const display = process.env.VK_DISPLAY
+    const authUrl = import.meta.env.VITE_VK_AUTH_URI
+    const secretKey = import.meta.env.VITE_VK_SECRET_KEY
+    const clientId = import.meta.env.VITE_VK_CLIENT_ID
+    const redirectUri = import.meta.env.VITE_VK_REDIRECT_URI
+    const display = import.meta.env.VITE_VK_DISPLAY
 
     const clientCode = computed(() => route.query.code)
 

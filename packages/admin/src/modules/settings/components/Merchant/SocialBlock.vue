@@ -10,15 +10,15 @@
         </v-card-title>
         <v-card-content>
             <v-text-field
-                v-model="model.social.vk"
+                v-model="model.social!.vk"
                 label="vk"
             />
             <v-text-field
-                v-model="model.social.facebook"
+                v-model="model.social!.facebook"
                 label="facebook"
             />
             <v-text-field
-                v-model="model.social.instagram"
+                v-model="model.social!.instagram"
                 label="instagram"
             />
         </v-card-content>

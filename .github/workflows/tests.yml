@@ -14,7 +14,7 @@ jobs:
           cache-name: cache-project-deps
         with:
           path: node_modules
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/yarn.lock') }}
       - name: install project deps
         if: steps.cache-project-deps.outputs.cache-hit != 'true'
         run: npm run setup

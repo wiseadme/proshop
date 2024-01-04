@@ -1,4 +1,4 @@
-<script lang="ts" setup generic="T extends {id: string, title: string, parentId: string, children: T[]}">
+<script lang="ts" setup generic="T extends {id: string, title: string, parentId: string, children: unknown[]}">
     import { ref, unref } from 'vue'
     import VueTree from '@ssthouse/vue3-tree-chart'
 
@@ -8,9 +8,7 @@
         isSubTree?: boolean
     }>()
 
-    const emit = defineEmits<{
-        (e: 'toggle', val: T): void
-    }>()
+    const emit = defineEmits<{ (e: 'toggle', val: T): void }>()
 
     const treeRef = ref<any>(null)
     const treeConfig = { nodeWidth: 240, nodeHeight: 70, levelHeight: 200 }
@@ -69,7 +67,7 @@
                     style="width: auto; min-width: 120px; max-width: 220px; height: 100%; text-align: center"
                     class="app-border-radius elevation-2 white--text d-flex justify-center align-center px-4"
                     :class="{/*['grey lighten-1']: node.hasChild, */success: value[node.id], secondary: !value[node.id]}"
-                    @click.prevent="onClick(node)"
+                    @click.prevent="onClick(node as T)"
                 >
                     {{ node.title }}
                 </div>
@@ -77,6 +75,6 @@
         </vue-tree>
     </div>
 </template>
-<style lang="scss" scoped>
-    @import "TreeView";
+<style lang="scss">
+    @import "./TreeView";
 </style>

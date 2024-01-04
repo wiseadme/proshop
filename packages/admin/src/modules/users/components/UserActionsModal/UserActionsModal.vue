@@ -188,11 +188,11 @@
                                 <h3>Должность пользователя</h3>
                             </div>
                             <v-text-field
-                                v-model="user.position.title"
+                                v-model="user.position!.title"
                                 label="Название должности"
                             />
                             <v-text-field
-                                v-model="user.position.department"
+                                v-model="user.position!.department"
                                 label="Отдел"
                             />
                         </v-col>

@@ -1,24 +1,20 @@
 import { createVueland } from 'vueland'
-
-import * as asyncComponents from 'vueland/lib/components/async-components'
+// import * as asyncComponents from 'vueland/lib/components/async-components'
 import * as directives from 'vueland/lib/directives'
-import {
-    VApp,
-    VList,
-    VListItem
-} from 'vueland/lib/components'
+import * as components from 'vueland/lib/components'
 
 import colors from 'vueland/lib/services/colors'
 
 import 'vueland/lib/styles/vueland-base.css'
 import 'vueland/lib/styles/themes/vueland-theme.css'
+// import { VApp, VList, VListItem } from 'vueland/lib/components'
 
-const components = {
-    ...asyncComponents,
-    VList,
-    VListItem,
-    VApp,
-}
+// const components = {
+//     ...asyncComponents,
+//     VList,
+//     VListItem,
+//     VApp,
+// }
 
 export const vueland = createVueland({
     components,

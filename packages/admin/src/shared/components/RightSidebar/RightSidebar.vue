@@ -1,6 +1,10 @@
 <script lang="ts" setup>
     import { useRightSidebar } from '@shared/composables/use-right-sidebar'
-    import { unref, watch } from 'vue'
+    import {
+        computed,
+        unref,
+        watch
+    } from 'vue'
     import { useRoute } from 'vue-router'
 
     const props = defineProps<{
@@ -14,7 +18,7 @@
     const { activeItem, setActiveNavItem } = useRightSidebar()
     const route = useRoute()
 
-    const ind = unref(props.tabs).findIndex(tab => route.params.section === tab.section) || 0
+    const ind = computed(() => unref(props.tabs).findIndex(tab => route.params.section === tab.section) || 0)
 
     const onClick = (tab) => {
         if (tab.disabled) return
@@ -24,13 +28,11 @@
     }
 
     watch(() => props.tabs, (newTabs = []) => {
-        setActiveNavItem(newTabs[ind || 0])
+        setActiveNavItem(newTabs[unref(ind)])
     }, { immediate: true })
 </script>
 <template>
-    <div
-        class="sidebar sidebar--sticky grey lighten-2 white--text app-border-radius d-flex flex-column elevation-5 pt-2"
-    >
+    <div class="sidebar sidebar--sticky grey lighten-2 white--text app-border-radius d-flex flex-column elevation-5 pt-2">
         <v-card
             color="secondary"
             style="width: auto; font-size: .8rem"
@@ -45,10 +47,10 @@
         >
             <v-list-item
                 v-for="tab in tabs"
-                :key="tab.title"
+                :key="tab.section"
                 class="context-menu__item app-border-radius mb-1 white--text"
                 :class="{
-                    success: activeItem.title === tab.title,
+                    success: activeItem!.section === tab.section,
                     ['context-menu__item--disabled']: tab.disabled,
                     ['grey--text text--lighten-1']: tab.disabled,
                 }"

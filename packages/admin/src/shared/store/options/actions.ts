@@ -1,10 +1,10 @@
 import { useOptionsRepository } from '@shared/repository/options.repository'
-import { IVariantOption } from '@modules/variants/types'
+import { IOption } from '@proshop/types'
 
 const repository = useOptionsRepository()
 
 export const actions = {
-    async createOption(option): Promise<IVariantOption>{
+    async createOption(option: IOption): Promise<IOption> {
         try {
             const { data } = await repository.create(option)
             return data.data
@@ -13,7 +13,7 @@ export const actions = {
         }
     },
 
-    async updateOption(updates){
+    async updateOption(updates: Partial<IOption>) {
         try {
             const { data } = await repository.update(updates)
             return data.data
@@ -22,12 +22,12 @@ export const actions = {
         }
     },
 
-    async deleteOption(id){
+    async deleteOption(id: string) {
         try {
             await repository.delete(id)
             return true
         } catch (error) {
             return Promise.reject(error)
         }
-    }
+    },
 }

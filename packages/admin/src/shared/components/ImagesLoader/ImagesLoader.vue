@@ -17,8 +17,8 @@
 
     const emit = defineEmits<{
         (e: 'load', value: File[]): void
-        (e: 'delete', value: IAsset): void
-        (e: 'update:main', value: IAsset): void
+        (e: 'delete', value: Maybe<IAsset>): void
+        (e: 'update:main', value: Maybe<IAsset>): void
         (e: 'update:order', value: IAsset[]): void
     }>()
 
@@ -123,7 +123,7 @@
             >
                 <v-list-item
                     class="images-menu__item"
-                    @click="$emit('update:main', currentImage)"
+                    @click="emit('update:main', currentImage)"
                 >
                     <v-list-item-title>
                         установить главным
@@ -131,7 +131,7 @@
                 </v-list-item>
                 <v-list-item
                     class="images-menu__item"
-                    @click="$emit('delete', currentImage)"
+                    @click="emit('delete', currentImage)"
                 >
                     <v-list-item-title>
                         удалить

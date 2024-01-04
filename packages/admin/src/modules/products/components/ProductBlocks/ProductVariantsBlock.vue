@@ -158,7 +158,7 @@
                                             </v-list-item-title>
                                         </v-list-item>
                                         <v-list-item
-                                            v-for="item in filterGroups.filter((group) => group.attributeId === currentVariant.attributeId)"
+                                            v-for="item in filterGroups.filter((group) => group.attributeId === currentVariant!.attributeId)"
                                             :key="item.id"
                                             @click="onSelect(item)"
                                         >
@@ -335,7 +335,7 @@
                         @edit="setOptionForEditing"
                     >
                         <template #title="{item}">
-                            {{ item.name }}
+                            {{ (item as IOption).name }}
                         </template>
                     </items-list>
                 </template>

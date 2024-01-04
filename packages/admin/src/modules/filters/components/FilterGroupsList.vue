@@ -5,6 +5,7 @@
     import { VSvg } from '@shared/components/VSvg'
     import { useFilterGroups } from '@modules/filters/composables/use-filter-groups'
     import { SvgPaths } from '@shared/enums/svg-paths'
+    import { IFilterGroup } from '@proshop/types'
 
     const {
         filterGroups,
@@ -43,7 +44,7 @@
                 @edit="onEditGroup"
             >
                 <template #title="{item}">
-                    <span>{{ item.name }}</span>
+                    <span>{{ (item as IFilterGroup).name }}</span>
                 </template>
             </items-list>
         </template>
