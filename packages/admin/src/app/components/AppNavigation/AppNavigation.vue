@@ -12,7 +12,7 @@
     const router = useRouter()
     const route = useRoute()
 
-    const items = markRaw({
+    const items: Record<string, any> = markRaw({
         dashboard: {
             title: 'Показатели',
             icon: 'fas fa-chart-pie',
@@ -122,7 +122,7 @@
         current.value = items[name]
 
         if (unref(current)?.children) {
-            current.value = items[name].children[route.path] ?? items[name].children[route.name]
+            current.value = items[name].children[route.path] ?? items[name].children[route.name!]
         }
 
     }, { immediate: true })

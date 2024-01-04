@@ -42,7 +42,7 @@
         attributeItems,
     } = useProductsService()
 
-    const tabs = computed<SidebarTab[]>(() => [
+    const tabs = computed<SidebarTab[]>(() => ([
         {
             component: ProductInfoBlock,
             title: 'Информация о товаре',
@@ -109,7 +109,7 @@
             section: CONDITIONS_BLOCK,
             independent: false,
         },
-    ])
+    ]))
 
     const route = useRoute()
     const router = useRouter()

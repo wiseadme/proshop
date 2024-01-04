@@ -6,6 +6,7 @@
     import { useCategoryFilters } from '@modules/categories/composables/use-category-filters'
     import { useCategoryModel } from '@modules/categories/composables/use-category-model'
     import { onMounted } from 'vue'
+    import { IFilterGroup } from '@proshop/types'
 
     const { model } = useCategoryModel()
 
@@ -41,10 +42,10 @@
                         @update="onUpdateFilters"
                     >
                         <template #title="{item}">
-                            <span>{{ item.name }}</span>
+                            <span>{{ (item as IFilterGroup).name }}</span>
                         </template>
                         <template #tooltip="{item}">
-                            <span>{{ item.name }}</span>
+                            <span>{{ (item as IFilterGroup).name }}</span>
                         </template>
                     </draggable-items-list>
                 </template>
@@ -66,10 +67,10 @@
                         @add="onUpdateFilters"
                     >
                         <template #title="{item}">
-                            <span>{{ item.name }}</span>
+                            <span>{{ (item as IFilterGroup).name }}</span>
                         </template>
                         <template #tooltip="{item}">
-                            <span>{{ item.name }}</span>
+                            <span>{{ (item as IFilterGroup).name }}</span>
                         </template>
                     </draggable-items-list>
                 </template>

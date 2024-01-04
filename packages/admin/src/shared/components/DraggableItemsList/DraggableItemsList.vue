@@ -14,7 +14,7 @@
         itemKey = 'id',
         itemClass = 'white',
     } = defineProps<{
-        modelValue: T[]
+        modelValue: Maybe<T[]>
         editable?: boolean
         deletable?: boolean
         itemKey?: string
@@ -23,15 +23,15 @@
     }>()
 
     const emit = defineEmits<{
-        (e: 'update:modelValue', value: OrderedItem<T>[]): void
-        (e: 'update', value: OrderedItem<T>[]): void
-        (e: 'change', value: OrderedItem<T>[]): void
+        (e: 'update:modelValue', value: T[]): void
+        (e: 'update', value: T[]): void
+        (e: 'change', value: T[]): void
         (e: 'remove', value: T): void
-        (e: 'delete', value: OrderedItem<T>): void
-        (e: 'edit', value: OrderedItem<T>): void
-        (e: 'sort', value: OrderedItem<T>): void
-        (e: 'add', value: OrderedItem<T>): void
-        (e: 'show-item-menu', value: OrderedItem<T>): void
+        (e: 'delete', value: T): void
+        (e: 'edit', value: T): void
+        (e: 'sort', value: T): void
+        (e: 'add', value: T): void
+        (e: 'show-item-menu', value: T): void
     }>()
 
     const draggableItem = ref()
@@ -40,17 +40,18 @@
         emit('remove', unref(draggableItem))
     }
 
-    const onDelete = (item: OrderedItem<T>) => emit('delete', item)
-    const onEdit = (item: OrderedItem<T>) => emit('edit', item)
+    const onDelete = (item: T) => emit('delete', item)
+
+    const onEdit = (item: T) => emit('edit', item)
 
     const items = computed({
         get: () => modelValue || [],
-        set: (val) => emit('update:modelValue', val as OrderedItem<T>[]),
+        set: (val) => emit('update:modelValue', val as T[]),
     })
 
     const onChange = () => {
         (unref(items) as OrderedItem<T>[]).forEach((it, i) => it.order = i)
-        emit('change', unref(items) as OrderedItem<T>[])
+        emit('change', unref(items) as T[])
     }
 
     const onAdd = (item: any) => {
@@ -113,13 +114,13 @@
                                     <v-list-item-title>
                                         <slot
                                             name="title"
-                                            :item="element"
+                                            :item="element as T"
                                         />
                                     </v-list-item-title>
                                     <v-list-item-subtitle>
                                         <slot
                                             name="subtitle"
-                                            :item="element"
+                                            :item="element as T"
                                         />
                                     </v-list-item-subtitle>
                                 </v-list-item-content>
@@ -141,7 +142,7 @@
                                                     clickable
                                                     color="primary"
                                                     v-on="listeners"
-                                                    @click="$emit('show-item-menu', element)"
+                                                    @click="$emit('show-item-menu', element as T)"
                                                 >
                                                     fas fa-bars
                                                 </v-icon>
@@ -157,7 +158,7 @@
                                                 </v-list-item>
                                                 <v-list-item
                                                     v-if="deletable"
-                                                    @click="onDelete(element)"
+                                                    @click="onDelete(element as T)"
                                                 >
                                                     <v-list-item-title>
                                                         Удалить
@@ -172,7 +173,7 @@
                         <span>
                             <slot
                                 name="tooltip"
-                                :item="element"
+                                :item="element as T"
                             />
                         </span>
                     </v-tooltip>

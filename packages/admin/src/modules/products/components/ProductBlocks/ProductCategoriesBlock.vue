@@ -20,13 +20,11 @@
 
     const productCategories = computed<ICategory[]>(() => unref(product)?.categories as ICategory[])
 
-    let stopWatcher: () => void
-
     watch(productCategories, (items: ICategory[]) => {
         items?.forEach((ctg) => select(ctg))
     }, { immediate: true })
 
-    stopWatcher = watch(categoryItems, (items) => {
+    const stopWatcher = watch(categoryItems, (items) => {
         if (!items) return
 
         buildTreeItems(clone(unref(items)))

@@ -149,9 +149,9 @@ export const useProductsService = createSharedComposable(() => {
     }
 
     const createProduct = async (product: IProductParams): Promise<IProduct> => {
-        if (!unref(merchant)?.id) return Promise.reject()
+        if (!unref(merchant)?.id) return Promise.reject(false)
 
-        product.currency = unref(merchant)?.id!
+        product.currency = unref(merchant)!.id!
 
         try {
             const data = await _productsStore.createProduct(product)
@@ -262,7 +262,7 @@ export const useProductsService = createSharedComposable(() => {
             const option = await createProductOption(data)
             const { variants } = unref(product)!
 
-            let variant = variants?.find(v => v.id === option.variantId)!
+            let variant = variants.find(v => v.id === option.variantId)
 
             if (!variant) {
                 variant = unref(variantItems)!.find(v => v.id === option.variantId) as IVariant

@@ -84,8 +84,8 @@
                 <v-col cols="12">
                     <address-map
                         class="app-border-radius"
-                        :coords="model.delivery.coords"
-                        :address="model.delivery.address"
+                        :coords="model.delivery!.coords"
+                        :address="model.delivery!.address"
                     />
                 </v-col>
             </v-row>
@@ -155,13 +155,13 @@
                         <v-list-item style="height: 80px">
                             <v-list-item-icon/>
                             <v-list-item-content style="width: 250px">
-                                {{ model.customer.name }}
+                                {{ model.customer?.name }}
                             </v-list-item-content>
                             <v-list-item-content style="width: 180px">
-                                {{ model.customer.phone }}
+                                {{ model.customer?.phone }}
                             </v-list-item-content>
                             <v-list-item-content style="width: 180px">
-                                {{ model.delivery.address }}
+                                {{ model.delivery?.address }}
                             </v-list-item-content>
                         </v-list-item>
                     </v-list>

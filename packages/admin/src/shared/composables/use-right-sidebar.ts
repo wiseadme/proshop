@@ -8,7 +8,7 @@ export interface SidebarTab {
     disabled: boolean
     independent: boolean
     section: string
-    modal: InstanceType<DefineComponent<any, any, any>>
+    modal?: InstanceType<DefineComponent<any, any, any>>
 }
 
 export const useRightSidebar = createSharedComposable(() => {

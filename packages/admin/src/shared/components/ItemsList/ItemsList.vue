@@ -1,12 +1,15 @@
 <script lang="ts" setup generic="T">
+    import { computed } from 'vue'
+
     type ListItem<S> = S & { id: string }
 
     const {
+        modelValue,
         uniqueKey = 'id',
         deletable = true,
         editable = true,
     } = defineProps<{
-        modelValue?: any
+        modelValue?: Maybe<ListItem<T>>
         items: ListItem<T>[]
         uniqueKey?: string
         deletable?: boolean
@@ -17,6 +20,8 @@
         (e: 'delete', value: ListItem<T>): void
         (e: 'edit', value: ListItem<T>): void
     }>()
+
+    const selectedItemId = computed(() => modelValue?.id ?? '')
 </script>
 <template>
     <v-list
@@ -27,7 +32,7 @@
             v-for="item in items"
             :key="item[uniqueKey]"
             class="my-1 mx-1 elevation-1 app-border-radius"
-            :class="[modelValue && modelValue.id === item.id ? 'primary white--text' : 'white']"
+            :class="[selectedItemId === item.id ? 'primary white--text' : 'white']"
         >
             <v-list-item-icon v-if="$slots.icon">
                 <slot
