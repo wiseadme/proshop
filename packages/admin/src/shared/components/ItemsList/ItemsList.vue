@@ -66,7 +66,7 @@
                         <template #activator="{on: listeners}">
                             <v-icon
                                 clickable
-                                :color="modelValue && modelValue.id === item.id ? 'white': 'primary'"
+                                :color="selectedItemId === item.id ? 'white': 'primary'"
                                 v-on="listeners"
                             >
                                 fas fa-bars

@@ -24,11 +24,10 @@
         items?.forEach((ctg) => select(ctg))
     }, { immediate: true })
 
-    const stopWatcher = watch(categoryItems, (items) => {
+    watch(categoryItems, (items) => {
         if (!items) return
 
         buildTreeItems(clone(unref(items)))
-        setTimeout(stopWatcher)
     }, { immediate: true })
 
 </script>
