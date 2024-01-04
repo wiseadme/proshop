@@ -5,7 +5,7 @@ import { IVariant } from '@proshop/types'
 export const useVariantsService = () => {
     const _store = useVariantsStore()
 
-    const variants = computed<Maybe<IVariant[]>>(() => _store.variants)
+    const variants = computed<IVariant[]>(() => _store.variants ?? [])
 
     const createVariant = (item: IVariant) => {
         return _store.create(item)

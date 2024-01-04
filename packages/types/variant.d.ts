@@ -17,11 +17,12 @@ export interface IVariantOption {
 export interface IVariant {
     id: string
     group: string,
-    options?: IOption[] | string[]
+    options?: IOption[]
     attributeId: string
     ownerId: Maybe<string>
 }
 
-export interface IVariantMongoModel extends Omit<IVariant, 'id'> {
+export interface IVariantMongoModel extends Omit<IVariant, 'id' | 'options'> {
     _id: string
+    options: IOption[] | string[]
 }

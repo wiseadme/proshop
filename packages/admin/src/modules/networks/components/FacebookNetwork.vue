@@ -2,12 +2,8 @@
     // import { ref } from 'vue'
     import { SvgPaths } from '@shared/enums/svg-paths'
     import { VSvg } from '@shared/components/VSvg'
-    import { useVK } from '@modules/networks/composables/use-vk'
-
-    const { url } = useVK()
 
     const onClick = () => {
-        console.log(url)
         // window.location.href = url
     }
 </script>

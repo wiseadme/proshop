@@ -5,7 +5,7 @@ export type TreeItem<T> = T & {
     title: string,
     parentId: string,
     children: T[],
-    hasChild: boolean
+    hasChild?: boolean
 }
 export const useTreeView = <T>() => {
     const treeItems = ref<TreeItem<T>[]>([])

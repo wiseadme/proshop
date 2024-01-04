@@ -7,6 +7,7 @@
     // Helpers
     import { descriptorToMetaTag } from '@shared/helpers/metatag'
     import { SvgPaths } from '@shared/enums/svg-paths'
+    import { IMetaTag } from '@proshop/types'
 
     const { model } = useProductModel()
 
@@ -44,10 +45,10 @@
                         @remove="onRemoveMetaTag"
                     >
                         <template #title="{item}">
-                            {{ descriptorToMetaTag(item.props) }}
+                            {{ descriptorToMetaTag((item as IMetaTag).props) }}
                         </template>
                         <template #tooltip="{item}">
-                            {{ descriptorToMetaTag(item.props) }}
+                            {{ descriptorToMetaTag((item as IMetaTag).props) }}
                         </template>
                     </draggable-items-list>
                 </template>
@@ -69,11 +70,11 @@
                     >
                         <template #title="{item}">
                             <span>
-                                {{ descriptorToMetaTag(item.props) }}
+                                {{ descriptorToMetaTag((item as IMetaTag).props) }}
                             </span>
                         </template>
                         <template #tooltip="{item}">
-                            {{ descriptorToMetaTag(item.props) }}
+                            {{ descriptorToMetaTag((item as IMetaTag).props) }}
                         </template>
                     </draggable-items-list>
                 </template>

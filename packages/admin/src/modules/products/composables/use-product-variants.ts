@@ -83,7 +83,7 @@ export const useProductVariants = () => {
     const onDeleteVariantOption = async ({ option, variant }): Promise<void> => {
         try {
             await deleteVariantOption({ option, variant })
-            unref(model).variants = clone(unref(product)?.variants!)
+            unref(model).variants = clone(unref(product)!.variants)
 
             notify(CHANGES_SAVED)
         } catch {

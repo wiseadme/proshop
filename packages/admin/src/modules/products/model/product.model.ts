@@ -3,6 +3,7 @@ import { IProduct } from '@proshop/types'
 export class Product implements IProduct {
     id: IProduct['id']
     name: IProduct['name']
+    sku: IProduct['sku']
     price: IProduct['price']
     quantity: IProduct['quantity']
     unit: IProduct['unit']
@@ -32,6 +33,7 @@ export class Product implements IProduct {
         variants = [],
         currency = null,
         url = '',
+        sku = '',
         related = [],
         conditions = {
             visible: true,
@@ -64,6 +66,7 @@ export class Product implements IProduct {
         this.related = related
         this.seo = seo
         this.url = url
+        this.sku = sku
     }
 
     static create(product = {} as IProduct) {
