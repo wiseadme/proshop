@@ -5,6 +5,14 @@
     position: sticky;
     top: $layout-padding-top;
   }
+
+  &__buttons {
+    flex: 0 0 auto;
+
+    &-wrapper {
+      flex-grow: 0;
+    }
+  }
 }
 
 .context-menu {

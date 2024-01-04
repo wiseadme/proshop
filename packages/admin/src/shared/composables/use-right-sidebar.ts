@@ -1,7 +1,7 @@
 import { createSharedComposable } from '@shared/features/create-shared-composable'
 import { DefineComponent, ref } from 'vue'
 
-export interface SidebarTab {
+export interface ISidebarTab {
     component: InstanceType<DefineComponent<any, any, any>>
     title: string
     isActive: boolean
@@ -12,9 +12,9 @@ export interface SidebarTab {
 }
 
 export const useRightSidebar = createSharedComposable(() => {
-    const activeItem = ref<Maybe<SidebarTab>>(null)
+    const activeItem = ref<Maybe<ISidebarTab>>(null)
 
-    const setActiveNavItem = (item: SidebarTab) => {
+    const setActiveNavItem = (item: ISidebarTab) => {
         activeItem.value = item
     }
 

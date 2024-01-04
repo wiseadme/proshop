@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-    import { useRightSidebar } from '@shared/composables/use-right-sidebar'
+    import { ISidebarTab, useRightSidebar } from '@shared/composables/use-right-sidebar'
     import {
         computed,
         unref,
@@ -20,7 +20,7 @@
 
     const ind = computed(() => unref(props.tabs).findIndex(tab => route.params.section === tab.section) || 0)
 
-    const onClick = (tab) => {
+    const onClick = (tab: ISidebarTab) => {
         if (tab.disabled) return
 
         setActiveNavItem(tab)
@@ -64,8 +64,13 @@
                 </v-list-item-title>
             </v-list-item>
         </v-list>
+        <v-row class="sidebar__buttons">
+            <v-col class="sidebar__buttons-wrapper d-flex">
+                <slot name="buttons"></slot>
+            </v-col>
+        </v-row>
     </div>
 </template>
 <style lang="scss" scoped>
-    @import "RightSideBar";
+    @import "./RightSideBar";
 </style>
