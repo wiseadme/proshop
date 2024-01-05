@@ -7,6 +7,9 @@ import * as fs from 'fs'
 
 type Maybe<T> = T | null
 
+const ALLOWED_MIME_TYPES = ['image/svg+xml', 'image/png', 'image/jpeg', 'image/jpg']
+const FILE_MAX_SIZE = 1024 * 1024 * 10
+
 class FileLoaderOptions {
     storage: Maybe<Options['storage']>
     fileFilter: Maybe<Options['fileFilter']>
@@ -48,11 +51,7 @@ class FileLoaderOptions {
 
     addFileFilter() {
         this.fileFilter = (req, file, cb) => {
-            if (
-                file.mimetype === 'image/png'
-                || file.mimetype === 'image/jpeg'
-                || file.mimetype === 'image/jpg'
-            ) {
+            if (ALLOWED_MIME_TYPES.includes(file.mimetype)) {
                 cb(null, true)
             } else {
                 cb(null, false)
@@ -61,7 +60,7 @@ class FileLoaderOptions {
     }
 
     addLimits() {
-        this.limits = { fileSize: 1024 * 1024 * 10 }
+        this.limits = { fileSize: FILE_MAX_SIZE }
     }
 }
 
@@ -75,11 +74,11 @@ export class FileLoaderMiddleware implements IFileLoaderMiddleware {
         this.plugin = multer(new FileLoaderOptions() as Options)
     }
 
-    loadSingle(fieldName) {
+    loadSingle(fieldName: string) {
         return this.plugin.single(fieldName)
     }
 
-    loadArray(fieldName, count) {
+    loadArray(fieldName: string, count: number) {
         return this.plugin.array(fieldName, count)
     }
 }
