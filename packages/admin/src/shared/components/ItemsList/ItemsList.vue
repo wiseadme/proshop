@@ -8,6 +8,7 @@
         uniqueKey = 'id',
         deletable = true,
         editable = true,
+        items = []
     } = defineProps<{
         modelValue?: Maybe<ListItem<T>>
         items: ListItem<T>[]
