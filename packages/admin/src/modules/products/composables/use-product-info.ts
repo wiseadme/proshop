@@ -17,12 +17,13 @@ import { INFO_BLOCK } from '@modules/products/constants/sections'
 const infoBlockKeys = ['description', 'name', 'price', 'quantity', 'seo', 'url', 'unit']
 
 export const useProductInfo = () => {
-    const { model, isEditMode } = useProductModel()
+    const { model, isEditMode, setProductModel } = useProductModel()
     const { product, createProduct, updateProductInfo } = useProductsService()
     const { notify } = useNotifications()
     const router = useRouter()
 
     const isLoading = ref(false)
+    const textEditorKey = ref<number>(0)
 
     const getInfoBlockUpdates = (): Partial<IProduct> => infoBlockKeys.reduce((updates, key) => {
         const values = {
@@ -87,9 +88,16 @@ export const useProductInfo = () => {
         }
     }
 
+    const onDismiss = () => {
+        setProductModel(unref(product))
+        textEditorKey.value += 1
+    }
+
     return {
         isEditMode,
         isLoading,
+        textEditorKey,
         onSubmit,
+        onDismiss,
     }
 }

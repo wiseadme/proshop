@@ -7,7 +7,7 @@
     } from 'vue'
     import { useProductModel } from '@modules/products/composables/use-product-model'
     import { useProductsService } from '@modules/products/composables/use-products-service'
-    import { SidebarTab } from '@shared/composables/use-right-sidebar'
+    import { ISidebarTab } from '@shared/composables/use-right-sidebar'
     import { useRoute, useRouter } from 'vue-router'
     import { RouteNames } from '@modules/products/enums/route-names'
     import {
@@ -42,7 +42,7 @@
         attributeItems,
     } = useProductsService()
 
-    const tabs = computed<SidebarTab[]>(() => ([
+    const tabs = computed<ISidebarTab[]>(() => ([
         {
             component: ProductInfoBlock,
             title: 'Информация о товаре',
@@ -114,7 +114,7 @@
     const route = useRoute()
     const router = useRouter()
 
-    const onSelectTab = (tab: SidebarTab) => {
+    const onSelectTab = (tab: ISidebarTab) => {
         router.push({
             name: RouteNames.PRODUCT_EDIT,
 

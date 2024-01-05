@@ -5,7 +5,7 @@
         markRaw,
         unref
     } from 'vue'
-    import { SidebarTab } from '@shared/composables/use-right-sidebar'
+    import { ISidebarTab } from '@shared/composables/use-right-sidebar'
     import { useRoute, useRouter } from 'vue-router'
     import { RouteNames } from '@modules/categories/enums/route-names'
     import {
@@ -22,9 +22,9 @@
     const CategoryFilters = markRaw(defineAsyncComponent(() => import('@modules/categories/components/CategoryBlocks/CategoryFilters.vue')))
     const CategoryConditions = markRaw(defineAsyncComponent(() => import('@modules/categories/components/CategoryBlocks/CategoryConditions.vue')))
 
-    const { model } = useCategoryModel()
+    const { model, isEditMode } = useCategoryModel()
 
-    const tabs = computed<SidebarTab[]>(() => [
+    const tabs = computed<ISidebarTab[]>(() => [
         {
             component: CategoryInfo,
             title: 'Информация о категории',
@@ -37,7 +37,7 @@
             component: CategoryImages,
             title: 'Изображения категории',
             isActive: true,
-            disabled: !Boolean(unref(model).id),
+            disabled: !unref(isEditMode),
             independent: false,
             section: IMAGES_BLOCK,
         },
@@ -45,7 +45,7 @@
             component: CategoryFilters,
             title: 'Фильтры категории',
             isActive: true,
-            disabled: !Boolean(unref(model).id),
+            disabled: !unref(isEditMode),
             independent: false,
             section: FILTERS_BLOCK,
         },
@@ -53,7 +53,7 @@
             component: CategoryConditions,
             title: 'Состояние категории',
             isActive: true,
-            disabled: !Boolean(unref(model).id),
+            disabled: !unref(isEditMode),
             independent: false,
             section: CONDITIONS_BLOCK,
         },
@@ -62,7 +62,7 @@
     const route = useRoute()
     const router = useRouter()
 
-    const onSelectTab = (tab: SidebarTab) => {
+    const onSelectTab = (tab: ISidebarTab) => {
         router.push({
             name: RouteNames.CATEGORY_EDIT,
             params: {

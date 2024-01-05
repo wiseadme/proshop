@@ -11,6 +11,7 @@ export const useSite = createSharedComposable(() => {
         getSite,
         updateSite
     } = useSiteService()
+
     const model = ref<ISite>(Site.create())
 
     watch(site, (siteConfig: ISite) => {
