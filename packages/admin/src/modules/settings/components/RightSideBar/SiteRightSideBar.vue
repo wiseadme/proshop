@@ -6,8 +6,8 @@
     } from 'vue'
     import { Sections } from '@modules/settings/enums/sections'
     import { RightSidebar } from '@shared/components/RightSidebar'
-    import { ISidebarTab } from '@shared/composables/use-right-sidebar.ts'
-    import { RouteNames } from '@modules/settings/enums/route-names.ts'
+    import { ISidebarTab } from '@shared/composables/use-right-sidebar'
+    import { RouteNames } from '@modules/settings/enums/route-names'
     import { router } from '@app/router'
     import { useRoute } from 'vue-router'
 
