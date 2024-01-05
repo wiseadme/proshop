@@ -19,19 +19,12 @@
         transition="scale-in"
         overlay
     >
-        <modal-card v-if="currentEditableMetaTag">
+        <modal-card
+            v-if="currentEditableMetaTag"
+            @close="closeEditModal"
+        >
             <template #title>
                 Редактирование мета тега
-            </template>
-            <template #header>
-                <v-button
-                    round
-                    color="grey lighten-1"
-                    elevation="2"
-                    @click="closeEditModal"
-                >
-                    <v-icon>fas fa-times</v-icon>
-                </v-button>
             </template>
             <template #content>
                 <v-text-field

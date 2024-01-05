@@ -11,6 +11,7 @@ const SiteSchema: Schema = new Schema<ISiteMongoModel>({
         success: String,
         warning: String,
         disabled: String,
+        error: String
     },
     slider: {
         slides: Array

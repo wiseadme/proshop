@@ -1,5 +1,5 @@
 .form-card {
-  overflow: visible;
+  overflow: hidden;
   border-radius: $border-radius;
   display: flex;
   flex-direction: column;
@@ -10,7 +10,7 @@
   }
 
   &__icon {
-    font-size: .9rem;
+    font-size: 0.9rem;
     padding: 0;
     min-height: 32px;
     border-radius: $border-radius;
@@ -21,19 +21,18 @@
   }
 
   &__title {
-    font-size: .8rem;
+    font-size: 0.8rem;
     border-bottom-left-radius: $border-radius;
     border-top-right-radius: $border-radius;
     font-weight: 700;
   }
-
 
   &__body {
     overflow-x: auto;
   }
 
   &__subtitle {
-    font-size: .7rem;
+    font-size: 0.7rem;
     padding: 0;
     min-height: 32px;
   }

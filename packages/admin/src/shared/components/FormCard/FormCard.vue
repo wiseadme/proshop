@@ -11,9 +11,9 @@
     <v-card
         :style="{width, height}"
         color=""
-        class="form-card"
+        class="form-card app-border-radius elevation-2"
     >
-        <v-card-title class="grey lighten-2 form-card__head py-4 elevation-2 mb-2 app-border-radius">
+        <v-card-title class="grey lighten-2 form-card__head py-4">
             <v-tooltip
                 v-if="$slots.tooltip"
                 right
@@ -68,14 +68,14 @@
             </div>
         </v-card-subtitle>
         <v-card-content
-            class="form-card__body white elevation-2 pa-4 app-border-radius"
+            class="form-card__body white pa-4"
             style="flex-grow: 1"
         >
             <slot name="body"/>
         </v-card-content>
         <v-card-actions
             v-if="$slots.actions"
-            class="white elevation-2 pa-4 mt-2 app-border-radius"
+            class="white py-4 px-6"
         >
             <slot name="actions"/>
         </v-card-actions>

@@ -13,6 +13,7 @@
 
     const ColorsBlock = markRaw(defineAsyncComponent(() => import('@modules/settings/components/Site/ColorsBlock.vue')))
     const SliderBlock = markRaw(defineAsyncComponent(() => import('@modules/settings/components/Site/SliderBlock.vue')))
+    const BrandBlock = markRaw(defineAsyncComponent(() => import('@modules/settings/components/Site/BrandBlock.vue')))
 
     const route = useRoute()
 
@@ -24,6 +25,14 @@
             disabled: false,
             independent: false,
             section: Sections.COLORS_BLOCK,
+        },
+        {
+            component: BrandBlock,
+            title: 'Брэнд и логотипы',
+            isActive: true,
+            disabled: false,
+            independent: false,
+            section: Sections.BRAND_BLOCK,
         },
         {
             component: SliderBlock,
@@ -52,22 +61,6 @@
     >
         <template #header>
             <div>Конфигурация сайта</div>
-        </template>
-        <template #buttons>
-            <v-button
-                class="my-4 app-border-radius mr-2"
-                width="120"
-                color="success"
-            >
-                Сохранить
-            </v-button>
-            <v-button
-                class="my-4 app-border-radius"
-                width="120"
-                color="secondary"
-            >
-                Отмена
-            </v-button>
         </template>
     </right-sidebar>
 </template>

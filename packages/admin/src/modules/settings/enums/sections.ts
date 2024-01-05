@@ -1,4 +1,5 @@
 export enum Sections {
     COLORS_BLOCK = 'colors',
-    SLIDER_BLOCK = 'slider'
+    SLIDER_BLOCK = 'slider',
+    BRAND_BLOCK = 'brand'
 }

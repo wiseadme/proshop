@@ -8,10 +8,7 @@
     const { setProductModel } = useProductModel()
     const { getProduct, onInit } = useProductsService()
     const { activeItem } = useRightSidebar()
-
     const route = useRoute()
-
-    const onEdit = () => {}
 
     onMounted(async () => {
         await onInit()
@@ -26,7 +23,6 @@
         <component
             :is="activeItem.component"
             v-if="activeItem"
-            @edit="onEdit"
         />
         <component
             :is="activeItem.modal"
