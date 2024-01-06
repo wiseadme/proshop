@@ -4,6 +4,8 @@ services:
     image: redis:alpine
     container_name: redis
     ports: [ "127.0.0.1:6379:6379" ]
+    environment:
+      - REDIS_REPLICATION_MODE=master
 
   mongo:
     image: mongo:5.0.14

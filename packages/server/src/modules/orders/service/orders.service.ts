@@ -1,6 +1,7 @@
-import { Document } from 'mongoose'
-import { id, inject, injectable } from 'inversify'
+import { inject, injectable } from 'inversify'
+import { Request } from 'express'
 import QRCode from 'qrcode'
+import customId from 'custom-id'
 import { TYPES } from '@common/schemes/di-types'
 // Types
 import { ILogger } from '@/types/utils'
@@ -9,7 +10,8 @@ import { IOrdersRepository } from '../types/repository'
 import { IOrder, IRequestParams } from '@proshop/types'
 import { Order } from '@modules/orders/entity/order.entity'
 import { IOrderGatewayService } from '@modules/orders/gateway/gateway.service'
-import customId from 'custom-id'
+import { OrderTypes } from '@modules/orders/di/di.types'
+import { IOrdersQueue } from '@modules/orders/queue/queue'
 
 @injectable()
 export class OrdersService implements IOrdersService {
@@ -17,7 +19,15 @@ export class OrdersService implements IOrdersService {
         @inject(TYPES.UTILS.ILogger) private logger: ILogger,
         @inject(TYPES.REPOSITORIES.IOrdersRepository) private repository: IOrdersRepository,
         @inject(TYPES.GATEWAYS.IOrderGatewayService) private gateway: IOrderGatewayService,
+        @inject(OrderTypes.ORDERS_QUEUE) private jobs: IOrdersQueue,
     ) {
+        this.jobs.queue.setJobProcessor(this.create.bind(this))
+    }
+
+    async processOrder(req: Request) {
+        const job = await this.jobs.queue.getJob(req.headers.jobId as string)
+
+        return await this.jobs.queue.waitJobResult(job!)
     }
 
     async create(order: IOrder) {
