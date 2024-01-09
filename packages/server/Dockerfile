@@ -17,5 +17,3 @@ COPY . /usr/src/app
 COPY dist /usr/src/app
 RUN npm install
 #COPY ./.env /usr/src/app/dist
-
-

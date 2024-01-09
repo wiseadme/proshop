@@ -1,8 +1,8 @@
 version: '3.9'
 services:
   server:
-    image: cr.yandex/crpjnimru3924065isot/proshop:server
-#    build: ./packages/server
+#    image: cr.yandex/crpjnimru3924065isot/proshop:server
+    build: ./packages/server
     container_name: server
     command: npm run start
     restart: unless-stopped
@@ -12,25 +12,33 @@ services:
       - MONGO_URI=mongodb://mongo1,mongo2,mongo3:27017/commerce
       - ACCESS_TOKEN_SECRET_KEY=menesilazerbaijanliyam
       - REFRESH_TOKEN_SECRET_KEY=esilsozmenasibudur
-      - REDIS_URL=redis://redis-cache:6379
+      - REDIS_URL=redis://redis-db:6379
+      - REDIS_HOST=localhost
+      - REDIS_PORT=6379
       - UPLOADS_DIR=/home/${USER}/www/uploads
     volumes:
       - uploads:/home/${USER}/www/uploads/
     depends_on:
+      - redis-db
       - mongo-setup
-      - redis-cache
     networks:
       - ecommerce
       - mongoNet
 
-  redis-cache:
-    image: redis:alpine
-    container_name: redis
-    ports: [ "127.0.0.1:6379:6379" ]
-    environment:
-      - REDIS_REPLICATION_MODE=master
-    networks:
-      - ecommerce
+  redis-db:
+    image: redis:latest
+    volumes:
+      - ./redis.conf:/usr/local/etc/redis/redis.conf
+    container_name: redis-server
+    hostname: redis-db
+    ports:
+      - "127.0.0.1:6379:6379"
+    command: ["redis-server", "--bind", "0.0.0.0", "--port", "6379", "--protected-mode", "no"]
+#    container_name: redis
+#    networks:
+#      - ecommerce
+#    environment:
+#       - REDIS_REPLICATION_MODE=master
 
   mongo1:
     image: mongo:5.0.14
@@ -78,8 +86,8 @@ services:
       - mongoNet
 
   admin:
-    image: cr.yandex/crpjnimru3924065isot/proshop:admin
-#    build: ./packages/admin
+#    image: cr.yandex/crpjnimru3924065isot/proshop:admin
+    build: ./packages/admin
     container_name: admin
     command: nginx -g "daemon off;"
     restart: unless-stopped

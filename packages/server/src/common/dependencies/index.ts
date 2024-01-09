@@ -126,7 +126,7 @@ export const container = new Container({ skipBaseClassChecks: true })
 // Globals
 container.bind<App>(TYPES.APPLICATION).to(App)
 container.bind<IDb>(TYPES.DB).to(DB)
-container.bind<IRedis>(TYPES.REDIS).to(RedisDb)
+// container.bind<IRedis>(TYPES.REDIS).to(RedisDb)
 container.bind<IConfig>(TYPES.CONFIG).to(Config)
 
 // Utils

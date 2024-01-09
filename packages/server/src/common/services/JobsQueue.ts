@@ -1,4 +1,5 @@
 import { Job, Queue, QueueEvents, Worker } from 'bullmq'
+import {redisClient} from '@app/redis/client'
 
 export interface IQueueConnectionOptions {
     redisHost: string
@@ -42,10 +43,7 @@ export class JobsQueue {
 
     initQueue() {
         this.queue = new Queue(this.options.queueName, {
-            connection: {
-                host: this.options.queueConnectOptions.redisHost,
-                port: Number(this.options.queueConnectOptions.redisPort),
-            },
+            connection: redisClient,
         })
     }
 
@@ -72,10 +70,7 @@ export class JobsQueue {
 
     initWorker() {
         this.worker = new Worker(this.options.queueName, this.jobProcessor.bind(this), {
-            connection: {
-                host: this.options.queueConnectOptions.redisHost,
-                port: Number(this.options.queueConnectOptions.redisPort),
-            },
+            connection: redisClient,
             ...this.options.workerOptions,
         })
     }

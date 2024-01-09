@@ -1,11 +1,14 @@
 version: '3'
 services:
-  redis-cache:
-    image: redis:alpine
-    container_name: redis
-    ports: [ "127.0.0.1:6379:6379" ]
-    environment:
-      - REDIS_REPLICATION_MODE=master
+  redis:
+    image: redis:latest
+    ports:
+     - "6379:6379"
+#    volumes:
+#     - ./redis.conf:/usr/local/etc/redis/redis.conf
+#    command: ["redis-server", "--bind", "redis", "--port", "6379"]
+#    environment:
+#      - REDIS_REPLICATION_MODE=master
 
   mongo:
     image: mongo:5.0.14
@@ -30,3 +33,7 @@ volumes:
   mongo_seed:
   uploads:
   certs:
+
+networks:
+  redis:
+    driver: bridge

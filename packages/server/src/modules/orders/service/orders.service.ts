@@ -12,6 +12,7 @@ import { Order } from '@modules/orders/entity/order.entity'
 import { IOrderGatewayService } from '@modules/orders/gateway/gateway.service'
 import { OrderTypes } from '@modules/orders/di/di.types'
 import { IOrdersQueue } from '@modules/orders/queue/queue'
+// import {redisClient} from '@app/redis/client'
 
 @injectable()
 export class OrdersService implements IOrdersService {
