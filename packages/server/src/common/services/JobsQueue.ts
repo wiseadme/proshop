@@ -1,9 +1,10 @@
 import { Job, Queue, QueueEvents, Worker } from 'bullmq'
-import {redisClient} from '@app/redis/client'
+import { redis } from '@app/redis/client'
+import Redis from 'ioredis'
 
-export interface IQueueConnectionOptions {
-    redisHost: string
-    redisPort: number | string
+export interface IQueueConnection {
+    host: string
+    port: number | string
 }
 
 export interface IJobRemoveOptions {
@@ -12,17 +13,10 @@ export interface IJobRemoveOptions {
     passReturnValue?: boolean
 }
 
-export interface IQueueWorkerOptions {
-    autorun?: boolean,
-    concurrency?: number,
-    runRetryDelay?: number
-}
-
 export interface IQueueOptions {
     queueName: string
-    queueConnectOptions: IQueueConnectionOptions
+    connection: IQueueConnection| Redis
     jobOptions: IJobRemoveOptions
-    workerOptions: IQueueWorkerOptions
 }
 
 export class JobsQueue {
@@ -37,48 +31,16 @@ export class JobsQueue {
 
         this.initQueue()
         this.initQueueEvents()
-        this.initWorker()
-        this.initWorkerListeners()
     }
 
     initQueue() {
         this.queue = new Queue(this.options.queueName, {
-            connection: redisClient,
+            connection: redis,
         })
     }
 
     initQueueEvents() {
         this.events = new QueueEvents(this.options.queueName)
-    }
-
-    async jobProcessor(job: Job) {
-        console.log(`Create order Job with id ${job.id}`)
-
-        try {
-            const data = await this.fn(job.data)
-            await job.updateProgress(100)
-
-            return data
-        } catch (err) {
-            console.log(err)
-        }
-    }
-
-    setJobProcessor(fn: (data: any) => Promise<any>) {
-        this.fn = fn
-    }
-
-    initWorker() {
-        this.worker = new Worker(this.options.queueName, this.jobProcessor.bind(this), {
-            connection: redisClient,
-            ...this.options.workerOptions,
-        })
-    }
-
-    initWorkerListeners() {
-        this.onComplete()
-        this.onActive()
-        this.onError()
     }
 
     addJob<T>(id: string, data: T, options = {}): Promise<Job<T>> {
@@ -99,25 +61,5 @@ export class JobsQueue {
 
     removeJob(id: string) {
         return this.queue.remove(id)
-    }
-
-    onComplete() {
-        this.worker.on('completed', async (job: Job, value: any) => {
-            console.debug(`Completed job with id ${job.id}`)
-
-            return value
-        })
-    }
-
-    onActive() {
-        this.worker.on('active', (job: Job<unknown>) => {
-            console.debug(`Completed job with id ${job.id}`)
-        })
-    }
-
-    onError() {
-        this.worker.on('error', (failedReason: Error) => {
-            console.error(`Job encountered an error`, failedReason)
-        })
     }
 }

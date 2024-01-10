@@ -22,7 +22,7 @@ export class OrdersService implements IOrdersService {
         @inject(TYPES.GATEWAYS.IOrderGatewayService) private gateway: IOrderGatewayService,
         @inject(OrderTypes.ORDERS_QUEUE) private jobs: IOrdersQueue,
     ) {
-        this.jobs.queue.setJobProcessor(this.create.bind(this))
+        this.jobs.worker.setJobProcessor(this.create.bind(this))
     }
 
     async processOrder(req: Request) {
