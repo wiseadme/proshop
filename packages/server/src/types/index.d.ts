@@ -34,6 +34,9 @@ export interface IConfig {
     refreshSecret: string
     uploadsDir: string
     websiteUrl: string
+    redisHost: string
+    redisPort: string
+    redisUrl: string
 }
 
 export interface IDb {

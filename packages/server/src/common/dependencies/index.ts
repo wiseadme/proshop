@@ -118,17 +118,20 @@ import { IConfig, IController, IDb, IRedis } from '@/types'
 import { IErrorRouteMiddleware, IExpressMiddleware, IFileLoaderMiddleware, IMiddleware } from '@/types/middlewares'
 import { AuthMiddleware } from '@common/middlewares/auth.middleware'
 import { FilterController } from '@modules/filter/controller/filter.controller'
+import { IOrdersQueue, OrdersQueue } from '@modules/orders/queue/queue'
+import { OrderTypes } from '@modules/orders/di/di.types'
 
 export const container = new Container({ skipBaseClassChecks: true })
 
 // Globals
 container.bind<App>(TYPES.APPLICATION).to(App)
 container.bind<IDb>(TYPES.DB).to(DB)
-container.bind<IRedis>(TYPES.REDIS).to(RedisDb)
+// container.bind<IRedis>(TYPES.REDIS).to(RedisDb)
 container.bind<IConfig>(TYPES.CONFIG).to(Config)
 
 // Utils
 container.bind<ILogger>(TYPES.UTILS.ILogger).to(LoggerService)
+container.bind<IOrdersQueue>(OrderTypes.ORDERS_QUEUE).to(OrdersQueue).inSingletonScope()
 
 // Services
 container.bind<ICategoryService>(TYPES.SERVICES.ICategoryService).to(CategoryService)

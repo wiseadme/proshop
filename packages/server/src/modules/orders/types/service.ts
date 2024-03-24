@@ -1,5 +1,5 @@
 import { IOrder } from '@proshop/types'
-import { id } from 'inversify'
+import { Request } from 'express'
 
 export interface IOrdersService {
     create(order: IOrder): Promise<IOrder>
@@ -9,4 +9,6 @@ export interface IOrdersService {
     update(updates: Partial<IOrder>): Promise<IOrder>
 
     delete(id: string): Promise<boolean>
+
+    processOrder(request: Request): Promise<any>
 }

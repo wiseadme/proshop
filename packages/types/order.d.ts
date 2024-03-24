@@ -34,7 +34,7 @@ export interface IOrder {
     items: Maybe<ICartItem[]>
     delivery: Maybe<IOrderDelivery>
     amount: number
-    customer: Maybe<IOrderCustomer>
+    customer: IOrderCustomer
     cart: Maybe<string>
     orderId: Maybe<string>
     qrcode: Maybe<string>

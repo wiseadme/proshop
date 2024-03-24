@@ -9,6 +9,7 @@ import { IOrdersService } from '../types/service'
 import { IOrder } from '@proshop/types'
 import { ORDERS_MODULE_PATH } from '@common/constants/paths'
 import { setMiddlewares } from '@common/helpers'
+import { queueMiddleware } from '@modules/orders/middleware/queue.middleware'
 
 @injectable()
 export class OrdersController extends BaseController implements IController {
@@ -24,15 +25,16 @@ export class OrdersController extends BaseController implements IController {
     }
 
     initRoutes() {
-        this.router.post('/', this.createOrder.bind(this))
+        this.router.post('/', queueMiddleware, this.createOrder.bind(this))
         this.router.get('/', this.getOrders.bind(this))
         this.router.patch('/', setMiddlewares({ roles: ['root'] }), this.updateOrder.bind(this))
         this.router.delete('/', setMiddlewares({ roles: ['root'] }), this.deleteOrder.bind(this))
     }
 
     async createOrder(request: Request<{}, {}, IOrder>, response: Response, next: NextFunction) {
+
         try {
-            const data = await this.service.create(request.body)
+            const data = await this.service.processOrder(request)
 
             this.send({ data, request, response })
         } catch (error) {
@@ -43,7 +45,6 @@ export class OrdersController extends BaseController implements IController {
     async getOrders(request: Request<{}, {}, {}, Partial<IOrder>>, response: Response, next: NextFunction) {
         try {
             const data = await this.service.read(request.query)
-
             // @ts-ignore
             this.send({ data, request, response })
         } catch (error) {
