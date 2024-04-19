@@ -1,9 +1,9 @@
 @function rem($pixels, $context: $mainFontSize) {
-  @if (unitless($pixels)) {
+  @if unitless($pixels) {
     $pixels: $pixels * 1px;
   }
 
-  @if (unitless($context)) {
+  @if unitless($context) {
     $context: $context * 1px;
   }
 
@@ -11,8 +11,8 @@
 }
 
 @mixin size($width, $height: $width) {
-  width: $width;
   height: $height;
+  width: $width;
 }
 
 @mixin flex(
@@ -21,18 +21,18 @@
   $align: center,
   $direction: row
 ) {
-  display: $type;
-  justify-content: $justify;
   align-items: $align;
+  display: $type;
   flex-direction: $direction;
+  justify-content: $justify;
 }
 
 @mixin scroll() {
   -ms-overflow-style: none;
 
   &::-webkit-scrollbar-button {
-    width: 0;
     height: 0;
+    width: 0;
   }
 
   &::-webkit-scrollbar-track {
@@ -40,18 +40,18 @@
   }
 
   &::-webkit-scrollbar-thumb {
-    background-color: rgba(246, 192, 57, 1);
+    background-color: rgb(246 192 57 / 100%);
     border-radius: 5px;
     width: 3px;
   }
 
   &::-webkit-resizer {
-    width: 5px;
     height: 0;
+    width: 5px;
   }
 
   &::-webkit-scrollbar {
-    width: 4px;
     height: 4px;
+    width: 4px;
   }
 }

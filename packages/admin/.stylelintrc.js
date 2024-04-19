@@ -1,23 +1,31 @@
-module.exports = {
+export default {
     extends: [
+        'stylelint-config-html',
         'stylelint-config-standard-scss',
-        'stylelint-config-recommended-vue'
+        'stylelint-config-recommended-vue/scss'
     ],
     plugins: [
-        'stylelint-plugin-import',
         'stylelint-order',
         'stylelint-scss'
     ],
+    customSyntax: 'postcss-scss',
+    overrides: [
+        {
+            'files': [ '**/*.vue' ],
+            'customSyntax': 'postcss-html'
+        },
+    ],
     rules: {
-        "indentation": 2,
-        "string-quotes": "double",
-        "no-duplicate-selectors": true,
-        "color-hex-case": "lower",
-        "color-hex-length": "long",
-        "color-named": "never",
-        "selector-no-qualifying-type": true,
-        "selector-max-combinators": 0,
-        "selector-combinator-space-after": "always",
-        "selector-attribute-quotes": "always"
+        'order/order': [ 'custom-properties', 'declarations' ],
+        'order/properties-alphabetical-order': true,
+        'no-duplicate-at-import-rules': true,
+        'no-duplicate-selectors': true,
+        'color-named': 'never',
+        'selector-no-qualifying-type': true,
+        'selector-max-combinators': 3,
+        'selector-attribute-quotes': 'always',
+        'selector-class-pattern': null,
+        'selector-pseudo-class-no-unknown': null,
+        'property-no-unknown': null
     },
 }

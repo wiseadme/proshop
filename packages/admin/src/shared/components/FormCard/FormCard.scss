@@ -1,29 +1,25 @@
 .form-card {
-  overflow: hidden;
   border-radius: $border-radius;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  overflow: hidden;
 
   &__head {
     position: relative;
   }
 
   &__icon {
-    font-size: 0.9rem;
-    padding: 0;
-    min-height: 32px;
     border-radius: $border-radius;
-
-    &-item {
-
-    }
+    font-size: 0.9rem;
+    min-height: 32px;
+    padding: 0;
   }
 
   &__title {
-    font-size: 0.8rem;
     border-bottom-left-radius: $border-radius;
     border-top-right-radius: $border-radius;
+    font-size: 0.8rem;
     font-weight: 700;
   }
 
@@ -33,7 +29,7 @@
 
   &__subtitle {
     font-size: 0.7rem;
-    padding: 0;
     min-height: 32px;
+    padding: 0;
   }
 }

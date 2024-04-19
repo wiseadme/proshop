@@ -23,5 +23,4 @@
     </v-layout>
 </template>
 <style lang="scss" scoped>
-    @import "@modules/products/components/ProductBlocks/styles/ProductImagesBlock";
 </style>

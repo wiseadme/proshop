@@ -4,15 +4,17 @@ import path from 'path'
 
 const isProd = process.env.NODE_ENV === 'production'
 
+const resolve = (str: string) => path.resolve(__dirname, str)
+
 // https://vitejs.dev/config/
 export default defineConfig({
     base: isProd ? '/admin' : '/',
     resolve: {
         alias: {
-            '@': path.resolve(__dirname, './src'),
-            '@modules': path.resolve(__dirname, './src/modules'),
-            '@shared': path.resolve(__dirname, './src/shared'),
-            '@app': path.resolve(__dirname, './src/app'),
+            '@': resolve('./src'),
+            '@modules': resolve('./src/modules'),
+            '@shared': resolve('./src/shared'),
+            '@app': resolve('./src/app'),
             vue: 'vue/dist/vue.esm-bundler.js',
         },
     },

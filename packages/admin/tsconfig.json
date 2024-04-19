@@ -31,7 +31,8 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     "types": [
-      "@types/node"
+      "@types/node",
+      "vite/client"
     ],
     "paths": {
       "@/*": [
@@ -45,18 +46,18 @@
       ],
       "@app/*": [
         "./src/app/*"
-      ],
-    },
-    "include": [
-      "src/**/*.ts",
-      "src/**/*.d.ts",
-      "src/**/*.tsx",
-      "src/**/*.vue"
-    ],
-    "references": [
-      {
-        "path": "./tsconfig.node.json"
-      }
-    ]
-  }
+      ]
+    }
+  },
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.d.ts",
+    "src/**/*.tsx",
+    "src/**/*.vue"
+  ],
+  "references": [
+    {
+      "path": "./tsconfig.node.json"
+    }
+  ]
 }
