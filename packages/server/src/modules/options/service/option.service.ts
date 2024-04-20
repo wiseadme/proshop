@@ -11,12 +11,13 @@ import { IEventBusService } from '@/types/services'
 import { DELETE_OPTION_EVENT } from '@common/constants/events'
 import { Option } from '@modules/options/entity/option.entity'
 import * as events from 'events'
+import { OPTION_IOC } from '@modules/options/di/di.types'
 
 @injectable()
 export class OptionService implements IOptionService {
     constructor(
         @inject(TYPES.UTILS.ILogger) private logger: ILogger,
-        @inject(TYPES.REPOSITORIES.IOptionRepository) private repository: IOptionRepository,
+        @inject(OPTION_IOC.IOptionRepository) private repository: IOptionRepository,
         @inject(TYPES.SERVICES.IEventBusService) private events: IEventBusService,
     ) {
     }

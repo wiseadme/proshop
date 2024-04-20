@@ -7,6 +7,7 @@ import { ILogger } from '@/types/utils'
 import { IController } from '@/types'
 import { IFavoritesService } from '@modules/favorites/types/service'
 import { FAVORITES_MODULE_PATH } from '@common/constants/paths'
+import { FAVORITES_IOC } from '@modules/favorites/di/di.types'
 
 @injectable()
 export class FavoritesController extends BaseController implements IController {
@@ -15,7 +16,7 @@ export class FavoritesController extends BaseController implements IController {
 
     constructor(
         @inject(TYPES.UTILS.ILogger) private logger: ILogger,
-        @inject(TYPES.SERVICES.IFavoritesService) private service: IFavoritesService,
+        @inject(FAVORITES_IOC.IFavoritesService) private service: IFavoritesService,
     ) {
         super()
         this.initRoutes()

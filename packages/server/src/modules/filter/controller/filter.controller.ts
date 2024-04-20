@@ -9,6 +9,7 @@ import { IFilterGroupService, IFilterItemService } from '@modules/filter/types/s
 import { IFilterGroup, IFilterItem } from '@proshop/types'
 import { FILTERS_MODULE_PATH } from '@common/constants/paths'
 import { setMiddlewares } from '@common/helpers'
+import { FILTER_IOC } from '@modules/filter/di/di.types'
 
 @injectable()
 export class FilterController extends BaseController implements IController {
@@ -17,8 +18,8 @@ export class FilterController extends BaseController implements IController {
 
     constructor(
         @inject(TYPES.UTILS.ILogger) private logger: ILogger,
-        @inject(TYPES.SERVICES.IFilterGroupService) private filterGroupService: IFilterGroupService,
-        @inject(TYPES.SERVICES.IFilterItemService) private filterItemService: IFilterItemService,
+        @inject(FILTER_IOC.IFilterGroupService) private filterGroupService: IFilterGroupService,
+        @inject(FILTER_IOC.IFilterItemService) private filterItemService: IFilterItemService,
     ) {
         super()
         this.initRoutes()

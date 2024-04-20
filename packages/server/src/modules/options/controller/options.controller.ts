@@ -7,10 +7,10 @@ import { ILogger } from '@/types/utils'
 import { IController } from '@/types'
 import { IOptionService } from '../types/service'
 import { IOption } from '@proshop/types'
-import { ValidateMiddleware } from '@common/middlewares/validate.middleware'
 import { OptionDTO } from '@modules/options/dto/option.dto'
 import { OPTIONS_MODULE_PATH } from '@common/constants/paths'
 import { setMiddlewares } from '@common/helpers'
+import { OPTION_IOC } from '@modules/options/di/di.types'
 
 @injectable()
 export class OptionsController extends BaseController implements IController {
@@ -19,7 +19,7 @@ export class OptionsController extends BaseController implements IController {
 
     constructor(
         @inject(TYPES.UTILS.ILogger) private logger: ILogger,
-        @inject(TYPES.SERVICES.IOptionService) private service: IOptionService,
+        @inject(OPTION_IOC.IOptionService) private service: IOptionService,
     ) {
         super()
         this.initRoutes()

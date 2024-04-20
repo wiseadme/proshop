@@ -12,12 +12,13 @@ import { IEventBusService } from '@/types/services'
 // Helpers
 import { CustomerHelpers } from '@modules/customer/helpers/customer.helpers'
 import { isExpired, parseJWToken } from '@common/helpers'
+import { CUSTOMER_IOC } from '@modules/customer/di/di.types'
 
 @injectable()
 export class CustomerService extends CustomerHelpers implements ICustomerService {
     constructor(
         @inject(TYPES.UTILS.ILogger) private logger: ILogger,
-        @inject(TYPES.REPOSITORIES.ICustomerRepository) private repository: ICustomerRepository,
+        @inject(CUSTOMER_IOC.ICustomerRepository) private repository: ICustomerRepository,
         @inject(TYPES.SERVICES.IEventBusService) private events: IEventBusService,
     ) {
         super()

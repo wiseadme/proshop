@@ -9,6 +9,7 @@ import { IController } from '@/types'
 import { IAssetsService } from '@modules/asset/types/service'
 import { ASSETS_MODULE_PATH } from '@common/constants/paths'
 import { setMiddlewares } from '@common/helpers'
+import { ASSET_IOC } from '@modules/asset/di/di.types'
 
 @injectable()
 export class AssetController extends BaseController implements IController {
@@ -17,7 +18,7 @@ export class AssetController extends BaseController implements IController {
 
     constructor(
         @inject(TYPES.UTILS.ILogger) private logger: ILogger,
-        @inject(TYPES.SERVICES.IAssetsService) private service: IAssetsService,
+        @inject(ASSET_IOC.IAssetsService) private service: IAssetsService,
     ) {
         super()
         this.initRoutes()

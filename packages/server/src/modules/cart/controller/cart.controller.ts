@@ -8,6 +8,7 @@ import { IController } from '@/types'
 import { ICartService } from '@modules/cart/types/service'
 import { ICart } from '@proshop/types'
 import { CARTS_MODULE_PATH } from '@common/constants/paths'
+import { CART_IOC } from '@modules/cart/di/di.types'
 
 @injectable()
 export class CartController extends BaseController implements IController {
@@ -16,7 +17,7 @@ export class CartController extends BaseController implements IController {
 
     constructor(
         @inject(TYPES.UTILS.ILogger) private logger: ILogger,
-        @inject(TYPES.SERVICES.ICartService) private service: ICartService,
+        @inject(CART_IOC.ICartService) private service: ICartService,
     ) {
         super()
         this.initRoutes()

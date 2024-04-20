@@ -13,6 +13,7 @@ import { IProductsService } from '../types/service'
 // Helpers
 import { setMiddlewares } from '@common/helpers'
 import { PRODUCTS_MODULE_PATH } from '@common/constants/paths'
+import { PRODUCTS_IOC } from '@modules/products/di/di.types'
 
 @injectable()
 export class ProductsController extends BaseController implements IController {
@@ -21,7 +22,7 @@ export class ProductsController extends BaseController implements IController {
 
     constructor(
         @inject(TYPES.UTILS.ILogger) private logger: ILogger,
-        @inject(TYPES.SERVICES.IProductsService) private service: IProductsService,
+        @inject(PRODUCTS_IOC.IProductsService) private service: IProductsService,
     ) {
         super()
         this.initRoutes()

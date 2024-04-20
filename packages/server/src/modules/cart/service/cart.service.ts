@@ -6,6 +6,7 @@ import { ICartService } from '../types/service'
 import { ICartRepository } from '../types/repository'
 import { ICart } from '@proshop/types'
 import { Cart } from '@modules/cart/entity/cart.entity'
+import { CART_IOC } from '@modules/cart/di/di.types'
 
 // import { ICartGatewayService } from '@modules/cart/gateway/gateway.service'
 
@@ -13,7 +14,7 @@ import { Cart } from '@modules/cart/entity/cart.entity'
 export class CartService implements ICartService {
     constructor(
         @inject(TYPES.UTILS.ILogger) private logger: ILogger,
-        @inject(TYPES.REPOSITORIES.ICartRepository) private repository: ICartRepository,
+        @inject(CART_IOC.ICartRepository) private repository: ICartRepository,
     ) {
     }
 

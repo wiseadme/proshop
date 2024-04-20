@@ -10,16 +10,16 @@ import { IOrdersRepository } from '../types/repository'
 import { IOrder, IRequestParams } from '@proshop/types'
 import { Order } from '@modules/orders/entity/order.entity'
 import { IOrderGatewayService } from '@modules/orders/gateway/gateway.service'
-import { OrderTypes } from '@modules/orders/di/di.types'
+import { ORDER_IOC } from '@modules/orders/di/di.types'
 import { IOrdersQueue } from '@modules/orders/queue/queue'
 
 @injectable()
 export class OrdersService implements IOrdersService {
     constructor(
         @inject(TYPES.UTILS.ILogger) private logger: ILogger,
-        @inject(TYPES.REPOSITORIES.IOrdersRepository) private repository: IOrdersRepository,
-        @inject(TYPES.GATEWAYS.IOrderGatewayService) private gateway: IOrderGatewayService,
-        @inject(OrderTypes.ORDERS_QUEUE) private jobs: IOrdersQueue,
+        @inject(ORDER_IOC.IOrdersRepository) private repository: IOrdersRepository,
+        @inject(ORDER_IOC.IOrderGatewayService) private gateway: IOrderGatewayService,
+        @inject(ORDER_IOC.IOrdersQueue) private jobs: IOrdersQueue,
     ) {
         this.jobs.worker.setJobProcessor(this.create.bind(this))
     }

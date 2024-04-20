@@ -6,12 +6,13 @@ import { ILogger } from '@/types/utils'
 import { IAttributeService } from '../types/service'
 import { IAttributeRepository } from '../types/repository'
 import { IAttribute } from '@proshop/types'
+import { ATTRIBUTE_IOC } from '@modules/attribute/di/di.types'
 
 @injectable()
 export class AttributeService implements IAttributeService {
     constructor(
         @inject(TYPES.UTILS.ILogger) private logger: ILogger,
-        @inject(TYPES.REPOSITORIES.IAttributeRepository) private repository: IAttributeRepository,
+        @inject(ATTRIBUTE_IOC.IAttributeRepository) private repository: IAttributeRepository,
     ) {
     }
 

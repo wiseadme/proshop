@@ -6,12 +6,13 @@ import { ILogger } from '@/types/utils'
 import { IFilterItemService } from '../types/service'
 import { IFilterItemRepository } from '../types/repository'
 import { IFilterItem } from '@proshop/types'
+import { FILTER_IOC } from '@modules/filter/di/di.types'
 
 @injectable()
 export class FilterItemService implements IFilterItemService {
     constructor(
         @inject(TYPES.UTILS.ILogger) private logger: ILogger,
-        @inject(TYPES.REPOSITORIES.IFilterItemRepository) private repository: IFilterItemRepository,
+        @inject(FILTER_IOC.IFilterItemRepository) private repository: IFilterItemRepository,
     ) {
     }
 

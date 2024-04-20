@@ -6,12 +6,13 @@ import { ILogger } from '@/types/utils'
 import { IFilterGroupService } from '../types/service'
 import { IFilterGroupRepository } from '../types/repository'
 import { IFilterGroup } from '@proshop/types'
+import { FILTER_IOC } from '@modules/filter/di/di.types'
 
 @injectable()
 export class FilterGroupService implements IFilterGroupService {
     constructor(
         @inject(TYPES.UTILS.ILogger) private logger: ILogger,
-        @inject(TYPES.REPOSITORIES.IFilterGroupRepository) private repository: IFilterGroupRepository,
+        @inject(FILTER_IOC.IFilterGroupRepository) private repository: IFilterGroupRepository,
     ) {
     }
 

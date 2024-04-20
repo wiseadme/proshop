@@ -12,6 +12,7 @@ import { ICategoryService } from '@modules/categories/types/service'
 import { TYPES } from '@common/schemes/di-types'
 import { CATEGORIES_MODULE_PATH } from '@common/constants/paths'
 import { setMiddlewares } from '@common/helpers'
+import { CATEGORY_IOC } from '@modules/categories/di/di.types'
 
 @injectable()
 export class CategoryController extends BaseController implements IController {
@@ -20,7 +21,7 @@ export class CategoryController extends BaseController implements IController {
 
     constructor(
         @inject(TYPES.UTILS.ILogger) private logger: ILogger,
-        @inject(TYPES.SERVICES.ICategoryService) private service: ICategoryService,
+        @inject(CATEGORY_IOC.ICategoryService) private service: ICategoryService,
     ) {
         super()
         this.initRoutes()

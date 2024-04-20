@@ -13,6 +13,7 @@ import { Attribute } from '@modules/attribute/entity/attribute.entity'
 import { AttributeDTO } from '@modules/attribute/dto/attribute.dto'
 import { ATTRIBUTES_MODULE_PATH } from '@common/constants/paths'
 import { setMiddlewares } from '@common/helpers'
+import { ATTRIBUTE_IOC } from '@modules/attribute/di/di.types'
 
 @injectable()
 export class AttributeController extends BaseController implements IController {
@@ -21,7 +22,7 @@ export class AttributeController extends BaseController implements IController {
 
     constructor(
         @inject(TYPES.UTILS.ILogger) private logger: ILogger,
-        @inject(TYPES.SERVICES.IAttributeService) private service: IAttributeService,
+        @inject(ATTRIBUTE_IOC.IAttributeService) private service: IAttributeService,
     ) {
         super()
         this.initRoutes()

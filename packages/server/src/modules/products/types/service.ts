@@ -1,4 +1,3 @@
-import { LeanDocument } from 'mongoose'
 import { IAttribute, IMetaTag, IOption, IProduct, IProductParams, IRequestParams, IVariant } from '@proshop/types'
 
 export interface IProductsService {

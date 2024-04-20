@@ -12,11 +12,12 @@ import {
     UPDATE_ASSETS_EVENT,
 } from '@common/constants/events'
 import { IAsset } from '@proshop/types'
+import { ASSET_IOC } from '@modules/asset/di/di.types'
 
 @injectable()
 export class AssetService implements IAssetsService {
     constructor(
-        @inject(TYPES.REPOSITORIES.IAssetsRepository) private repository: IAssetsRepository,
+        @inject(ASSET_IOC.IAssetsRepository) private repository: IAssetsRepository,
         @inject(TYPES.SERVICES.IEventBusService) private events: IEventBusService,
     ) {
         this.addEventListeners()

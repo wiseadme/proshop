@@ -1,12 +1,23 @@
-import { container } from '@common/dependencies'
-import { OrderTypes } from '@modules/orders/di/di.types'
+import { Request, Response, NextFunction } from 'express'
+import { Container } from 'inversify'
+
+import { ORDER_IOC } from '@modules/orders/di/di.types'
 import { IOrdersQueue } from '@modules/orders/queue/queue'
+import { IMiddleware } from '@/types/middlewares'
 
-export const queueMiddleware = async (req, res, next) => {
-    const jobs = container.get(OrderTypes.ORDERS_QUEUE) as IOrdersQueue
+export class QueueMiddleware implements IMiddleware {
+    #container: Container
 
-    const job = await jobs.queue.addJob(`${Date.now()}`, req.body)
-    req.headers.jobId = job.id
+    constructor(container: Container) {
+        this.#container = container
+    }
 
-    return next()
+    async execute(req: Request, res: Response, next: NextFunction) {
+        const jobs = this.#container.get(ORDER_IOC.IOrdersQueue) as IOrdersQueue
+
+        const job = await jobs.queue.addJob(`${ Date.now() }`, req.body)
+        req.headers.jobId = job.id
+
+        return next()
+    }
 }

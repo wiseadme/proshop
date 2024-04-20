@@ -5,14 +5,14 @@ import { TYPES } from '@common/schemes/di-types'
 import { ILogger } from '@/types/utils'
 import { IFavoritesService } from '@modules/favorites/types/service'
 import { IFavoritesRepository } from '@modules/favorites/types/repository'
-import { Favorite } from '@modules/favorites/entity/favorite.entity'
 import { parseJWToken } from '@common/helpers'
+import { FAVORITES_IOC } from '@modules/favorites/di/di.types'
 
 @injectable()
 export class FavoritesService implements IFavoritesService {
     constructor(
         @inject(TYPES.UTILS.ILogger) private logger: ILogger,
-        @inject(TYPES.REPOSITORIES.IFavoritesRepository) private repository: IFavoritesRepository,
+        @inject(FAVORITES_IOC.IFavoritesRepository) private repository: IFavoritesRepository,
     ) {
     }
 

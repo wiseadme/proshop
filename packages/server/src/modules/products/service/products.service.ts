@@ -9,7 +9,6 @@ import { ILogger } from '@/types/utils'
 import { IProductsRepository } from '../types/repository'
 import { IProductsService } from '../types/service'
 import {
-    IAsset,
     IAttribute,
     ICategory,
     IMetaTag,
@@ -19,15 +18,16 @@ import {
     IRequestParams,
     IVariant,
 } from '@proshop/types'
-import { IProductGatewayService } from '@modules/products/gateway/gateway.service'
+import { IProductsGatewayService } from '@modules/products/gateway/gateway.service'
 import { ServiceHelpers } from '@modules/products/helpers/service.helpers'
+import { PRODUCTS_IOC } from '@modules/products/di/di.types'
 
 @injectable()
 export class ProductsService extends ServiceHelpers implements IProductsService {
     constructor(
         @inject(TYPES.UTILS.ILogger) private logger: ILogger,
-        @inject(TYPES.REPOSITORIES.IProductsRepository) private repository: IProductsRepository,
-        @inject(TYPES.GATEWAYS.IProductGatewayService) private gateway: IProductGatewayService,
+        @inject(PRODUCTS_IOC.IProductsRepository) private repository: IProductsRepository,
+        @inject(PRODUCTS_IOC.IProductsGatewayService) private gateway: IProductsGatewayService,
     ) {
         super()
     }

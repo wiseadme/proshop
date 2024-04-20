@@ -14,13 +14,14 @@ import { IEventBusService } from '@/types/services'
 import { ILogger } from '@/types/utils'
 
 // Constants
-import { DELETE_CATEGORY_EVENT, UPDATE_CATEGORY_EVENT } from '@common/constants/events'
+import { DELETE_CATEGORY_EVENT } from '@common/constants/events'
+import { CATEGORY_IOC } from '@modules/categories/di/di.types'
 
 @injectable()
 export class CategoryService implements ICategoryService {
     constructor(
         @inject(TYPES.UTILS.ILogger) private logger: ILogger,
-        @inject(TYPES.REPOSITORIES.ICategoryRepository) private repository: ICategoryRepository,
+        @inject(CATEGORY_IOC.ICategoryRepository) private repository: ICategoryRepository,
         @inject(TYPES.SERVICES.IEventBusService) private events: IEventBusService,
     ) {
     }

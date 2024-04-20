@@ -9,26 +9,36 @@ import { IOrdersService } from '../types/service'
 import { IOrder } from '@proshop/types'
 import { ORDERS_MODULE_PATH } from '@common/constants/paths'
 import { setMiddlewares } from '@common/helpers'
-import { queueMiddleware } from '@modules/orders/middleware/queue.middleware'
+import { QueueMiddleware } from '@modules/orders/middleware/queue.middleware'
+import { container } from '@common/dependencies'
+import { ORDER_IOC } from '@modules/orders/di/di.types'
+
 
 @injectable()
 export class OrdersController extends BaseController implements IController {
     public path = ORDERS_MODULE_PATH
     public router = Router()
+    public middlewares: Record<string, any> = {}
 
     constructor(
         @inject(TYPES.UTILS.ILogger) private logger: ILogger,
-        @inject(TYPES.SERVICES.IOrdersService) private service: IOrdersService,
+        @inject(ORDER_IOC.IOrdersService) private service: IOrdersService,
     ) {
         super()
+        this.initMiddlewares()
         this.initRoutes()
     }
 
+    initMiddlewares() {
+        const queueMiddleware = new QueueMiddleware(container)
+        this.middlewares.createOrder = [ queueMiddleware.execute.bind(queueMiddleware) ]
+    }
+
     initRoutes() {
-        this.router.post('/', queueMiddleware, this.createOrder.bind(this))
+        this.router.post('/', this.middlewares.createOrder, this.createOrder.bind(this))
         this.router.get('/', this.getOrders.bind(this))
-        this.router.patch('/', setMiddlewares({ roles: ['root'] }), this.updateOrder.bind(this))
-        this.router.delete('/', setMiddlewares({ roles: ['root'] }), this.deleteOrder.bind(this))
+        this.router.patch('/', setMiddlewares({ roles: [ 'root' ] }), this.updateOrder.bind(this))
+        this.router.delete('/', setMiddlewares({ roles: [ 'root' ] }), this.deleteOrder.bind(this))
     }
 
     async createOrder(request: Request<{}, {}, IOrder>, response: Response, next: NextFunction) {

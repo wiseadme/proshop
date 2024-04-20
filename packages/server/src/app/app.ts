@@ -30,11 +30,7 @@ class App {
 
     private middleWares(middleWares: Array<any>) {
         middleWares.forEach(middleWare => {
-            if (middleWare.bind) {
-                this.app.use(middleWare.execute.bind(middleWare))
-            } else {
-                this.app.use(middleWare.execute)
-            }
+            this.app.use(middleWare.execute.bind(middleWare))
         })
     }
 
