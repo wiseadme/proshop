@@ -7,22 +7,19 @@ import { validateId } from '@common/utils/mongoose-validate-id'
 import { IProductsRepository } from '../types/repository'
 import {
     IAttribute,
-    IMetaTag, IOption,
+    IMetaTag,
     IProduct,
-    IProductMongoModel, IProductParams,
+    IProductMongoModel,
+    IProductParams,
     IProductQuery,
     IRequestParams,
-    IVariant,
 } from '@proshop/types'
 import { ILogger } from '@/types/utils'
 import { RepositoryHelpers } from '@modules/products/helpers/repository.helpers'
-
 import { ProductMapper } from '@modules/products/mappers/product.mapper'
-import { SkuGenerator } from '@common/plugins/sku-generator'
 
 // Constants
 import { DEFAULT_ITEMS_COUNT, DEFAULT_PAGE } from '@common/constants/counts'
-import * as queryString from 'querystring'
 
 @injectable()
 export class ProductsRepository extends RepositoryHelpers implements IProductsRepository {
@@ -215,62 +212,6 @@ export class ProductsRepository extends RepositoryHelpers implements IProductsRe
 
         const product = await ProductModel.findOneAndUpdate({ _id: params.productId }, {
             $pull: { 'seo.metatags': { id: params.metaTagId } },
-        }, { new: true })
-            .populate(this.getPopulateParams())
-            .lean() as IProductMongoModel
-
-        return ProductMapper.toDomain(product)
-    }
-
-    async addVariant(params: { variant: IVariant }) {
-        validateId(params.variant.ownerId)
-
-        const product = await ProductModel.findOneAndUpdate({ _id: params.variant.ownerId }, {
-            $push: { 'variants': params.variant },
-        }, { new: true })
-            .populate(this.getPopulateParams())
-            .lean() as IProductMongoModel
-
-        return ProductMapper.toDomain(product)
-    }
-
-    async deleteVariant(params: { variant: IVariant }): Promise<IProduct> {
-        validateId(params.variant.ownerId)
-
-        const product = await ProductModel.findOneAndUpdate({ _id: params.variant.ownerId }, {
-            $pull: { variants: { id: params.variant.id } },
-        }, { new: true })
-            .populate(this.getPopulateParams())
-            .lean() as IProductMongoModel
-
-        return ProductMapper.toDomain(product)
-    }
-
-    async addVariantOption(params: { option: IOption }) {
-        validateId(params.option.ownerId)
-
-        const product = await ProductModel.findOneAndUpdate({
-            _id: params.option.ownerId,
-            variants: {
-                $elemMatch: { id: params.option.variantId },
-            },
-        }, {
-            $push: { 'variants.$.options': params.option.id },
-        }, { new: true })
-            .populate(this.getPopulateParams())
-            .lean() as IProductMongoModel
-
-        return ProductMapper.toDomain(product)
-    }
-
-    async deleteVariantOption(params: { option: IOption }) {
-        validateId(params.option.ownerId)
-
-        const product = await ProductModel.findOneAndUpdate({
-            _id: params.option.ownerId,
-            variants: { $elemMatch: { id: params.option.variantId } },
-        }, {
-            $pull: { 'variants.$.options': params.option.id },
         }, { new: true })
             .populate(this.getPopulateParams())
             .lean() as IProductMongoModel

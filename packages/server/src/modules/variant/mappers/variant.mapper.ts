@@ -1,12 +1,9 @@
 import { IVariant, IVariantMongoModel } from '@proshop/types'
-import { OptionMapper } from '@modules/options/mappers/option.mapper'
 
 export class VariantMapper {
     static toDomain(entity: IVariantMongoModel): IVariant {
         const { _id } = entity
         const map: Partial<IVariantMongoModel> = { ...entity }
-
-        map.options = map.options?.map((option) => OptionMapper.toDomain(option))
 
         delete map._id
 

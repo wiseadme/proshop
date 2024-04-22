@@ -59,17 +59,22 @@
                 </template>
                 <template #content>
                     <v-text-field
-                        v-model.trim="model.group"
-                        label="Название группы"
+                        v-model.trim="model.name"
+                        label="Название группы*"
                         color="content"
                         :rules="[val => !!val || 'Обязательное поле']"
                     />
                     <v-select
                         v-model="linkedAttribute"
                         :items="attributes"
-                        label="Аттрибут привязки"
+                        label="Аттрибут привязки *"
                         value-key="key"
                         @select="onSelectAttribute"
+                    />
+                    <v-text-field
+                        v-model.trim="model.key"
+                        label="Ключ (на английском, необязательно)"
+                        color="content"
                     />
                 </template>
                 <template #actions>

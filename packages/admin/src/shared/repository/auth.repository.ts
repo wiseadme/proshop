@@ -1,7 +1,9 @@
-import { auth } from '@shared/api'
+// import { auth } from '@shared/api'
 import { IRest } from '@shared/types/app'
 import { IUser } from '@proshop/types'
 import { AxiosResponse } from 'axios'
+import { Client } from '@shared/plugins/client'
+import { authClient } from '@shared/api'
 
 export interface IAuthRepository {
     login(user: { username: string, password: string }): Promise<AxiosResponse<{ data: IUser, ok: boolean }>>
@@ -46,6 +48,6 @@ class Repository implements IAuthRepository {
 }
 
 export const useAuthRepository = () => new Repository({
-    client: auth.client,
+    client: new Client(authClient),
     path: '/api/v1/user',
 })

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-    import { unref, watch } from 'vue'
+    import { onBeforeMount, unref, watch } from 'vue'
     import { FormCard } from '@shared/components/FormCard'
     import { ItemsList } from '@shared/components/ItemsList'
     import { VSvg } from '@shared/components/VSvg'
@@ -9,21 +9,24 @@
     import { useFilterGroupService } from '@modules/filters/composables/use-filter-group-service'
     import { SvgPaths } from '@shared/enums/svg-paths'
     import { IFilterGroup } from '@proshop/types'
+    import { useFilterGroups } from '@modules/filters/composables/use-filter-groups.ts'
 
     const { filterItems, getFilterItems, deleteFilterItem } = useFilterItemsService()
     const { filtersGroup, toggleForm, onEditFilter } = useFilterItems()
-    const { filterGroups, getFilterGroupItems } = useFilterGroupService()
+    const { filterGroups } = useFilterGroups()
+    const { getFilterGroupItems } = useFilterGroupService()
 
     const onSelectGroup = (group: IFilterGroup) => {
         filtersGroup.value = group
         getFilterItems({ groupId: group.id })
     }
 
-    watch(filterGroups, async (groups) => {
-        if (!groups.length) await getFilterGroupItems()
+    onBeforeMount(async () => {
+        if (!unref(filterGroups).length) await getFilterGroupItems()
+    })
 
-        filtersGroup.value = unref(filterGroups)[0]
-        await getFilterItems({ groupId: unref(filtersGroup)!.id })
+    watch(filterGroups, async (groups) => {
+        filtersGroup.value = groups[0]
     }, { immediate: true })
 
 </script>

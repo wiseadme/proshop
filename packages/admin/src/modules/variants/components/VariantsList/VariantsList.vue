@@ -74,10 +74,10 @@
                 @edit="onEdit"
             >
                 <template #title="{item}">
-                    {{ (item as IVariant).group }}
+                    {{ (item as IVariant).name }}
                 </template>
                 <template #tooltip="{item}">
-                    {{ (item as IVariant).group }}
+                    {{ (item as IVariant).name }}
                 </template>
             </draggable-items-list>
         </template>

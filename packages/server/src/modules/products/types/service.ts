@@ -11,14 +11,6 @@ export interface IProductsService {
 
     addAttribute(params: { id: string, attribute: IAttribute }): Promise<IProduct>
 
-    addVariant(params: { variant: IVariant }): Promise<IProduct>
-
-    deleteVariant(params: { variant: IVariant }): Promise<IProduct>
-
-    addVariantOption(params: { option: IOption }): Promise<IProduct>
-
-    deleteVariantOption(params: { option: IOption }): Promise<IProduct>
-
     deleteAttribute(params: { id: string, attributeId: string }): Promise<IProduct>
 
     addMetaTag(params: { productId: string, metaTag: IMetaTag }): Promise<IProduct>

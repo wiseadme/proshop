@@ -15,7 +15,11 @@ export class GroupService implements IGroupService {
     ) {
     }
 
-    async create(group: IGroup) {
-        return await this.repository.create(group)
+    async createGroup(group: IGroup) {
+        return this.repository.createGroup(group)
+    }
+
+    async getGroups(params?: { id: string } | undefined): Promise<IGroup[]> {
+        return this.repository.getGroups(params)
     }
 }

@@ -4,12 +4,11 @@ export const orderRoutes = [
     {
         path: '/orders',
         component: () => import(/* webpackChunkName: "Page.ORDERS" */ '@modules/orders/layouts/OrdersLayout.vue'),
-        name: RouteNames.ORDERS,
         children: [
             {
                 path: '',
                 component: () => import(/* webpackChunkName: "Page.ORDERS_TABLE" */ '@modules/orders/pages/OrdersPage.vue'),
-                name: RouteNames.ORDERS_TABLE,
+                name: RouteNames.ORDERS,
             },
         ],
         meta: {

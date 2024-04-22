@@ -5,7 +5,7 @@ import { useAuthService } from '@shared/composables/use-auth-service'
 
 const baseURL = '/'
 
-const RestClient = axios.create({
+export const restClient = axios.create({
     headers: {
         'Content-Type': 'application/json',
         Accept: 'application/json',
@@ -16,7 +16,7 @@ const RestClient = axios.create({
     timeout: 10000,
 })
 
-const AuthClient = axios.create({
+export const authClient = axios.create({
     headers: {
         'Content-Type': 'application/json',
         Accept: 'application/json',
@@ -27,7 +27,7 @@ const AuthClient = axios.create({
     timeout: 10000,
 })
 
-const FilesClient = axios.create({
+export const filesClient = axios.create({
     headers: {
         'Content-Type': 'multipart/form-data',
     },
@@ -51,7 +51,7 @@ const wrapper = (action) => {
 }
 
 // @ts-ignore
-RestClient.interceptors.request.use(async (config) => {
+restClient.interceptors.request.use(async (config) => {
     const { user, refresh, logout } = useAuthService()
 
     if (!unref(user)) {
@@ -88,6 +88,6 @@ RestClient.interceptors.request.use(async (config) => {
     return config
 })
 
-export const file = new Client(FilesClient)
-export const rest = new Client(RestClient)
-export const auth = new Client(AuthClient)
+export const file = new Client(filesClient)
+export const rest = new Client(restClient)
+export const auth = new Client(authClient)

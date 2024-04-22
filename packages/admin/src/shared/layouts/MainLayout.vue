@@ -43,7 +43,7 @@
             getOrders()
         }
 
-        router.replace({ name: RouteNames.ORDERS_TABLE })
+        router.replace({ name: RouteNames.ORDERS })
     }
 
     watch(newOrders!, (newOrders: IOrder[]) => {

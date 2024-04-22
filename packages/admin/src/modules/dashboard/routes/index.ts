@@ -1,13 +1,12 @@
 export const dashboardRoutes = [
     {
-        path: '/',
+        path: 'dashboard',
         component: () => import(/* webpackChunkName: "Page.Proshop" */ '@modules/dashboard/layouts/DashboardLayout.vue'),
-        name: 'dashboard',
         children: [
             {
-                path: 'dashboard',
+                path: '',
                 component: () => import(/* webpackChunkName: "Page.Proshop" */ '@modules/dashboard/pages/DashboardPage.vue'),
-                name: 'dashboard-table',
+                name: 'dashboard',
             },
         ],
         meta: {

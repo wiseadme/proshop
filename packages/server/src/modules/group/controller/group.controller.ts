@@ -25,11 +25,12 @@ export class GroupController extends BaseController implements IController {
 
     initRoutes() {
         this.router.post('/', this.createGroup.bind(this))
+        this.router.get('/', this.getGroups.bind(this))
     }
 
     async createGroup(request: Request<{}, {}, IGroup>, response: Response, next: NextFunction) {
         try {
-            const data = await this.service.create(request.body)
+            const data = await this.service.createGroup(request.body)
 
             this.send({ data, request, response })
         } catch (error) {
@@ -37,16 +38,14 @@ export class GroupController extends BaseController implements IController {
         }
     }
 
-    async getGroup(request: Request<{}, {}, {}, Partial<IGroup>>, response: Response, next: NextFunction) {
-        // try {
-        //     const data = await this.service.read(request.query)
-        //
-        //     // @ts-ignore
-        //     this.send({ data, request, response })
-        // } catch (error) {
-        //     // @ts-ignore
-        //     this.error({ error, request, next })
-        // }
+    async getGroups(request: Request<{}, {}, {}, { id: string }>, response: Response, next: NextFunction) {
+        try {
+            const data = await this.service.getGroups(request.query)
+
+            this.send({ data, request, response })
+        } catch (error) {
+            this.error({ error, request, next })
+        }
     }
 
     async updateGroup(request: Request<{}, {}, IGroup>, response: Response, next: NextFunction) {

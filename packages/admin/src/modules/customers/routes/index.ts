@@ -1,17 +1,18 @@
+import { RouteNames } from '@modules/customers/enums/route-names.ts'
+
 export const customerRoutes = [
     {
-        path: '/customers',
+        path: 'customers',
         component: () => import(/* webpackChunkName: "Page.Proshop" */ '@modules/customers/layouts/CustomersLayout.vue'),
-        name: 'customers',
         children: [
             {
                 path: '',
                 component: () => import(/* webpackChunkName: "Page.Proshop" */ '@modules/customers/pages/CustomersPage.vue'),
-                name: 'customers-table'
+                name: RouteNames.CUSTOMERS
             }
         ],
         meta: {
-            name: 'customers'
+            name: RouteNames.CUSTOMERS
         }
     }
 ]
