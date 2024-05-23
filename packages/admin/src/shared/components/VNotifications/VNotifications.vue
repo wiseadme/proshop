@@ -91,8 +91,7 @@
                 class="my-1"
                 @click="onClick(notify)"
                 @destroy="removeNotification"
-            >
-            </component>
+            />
         </transition-group>
     </div>
 </template>

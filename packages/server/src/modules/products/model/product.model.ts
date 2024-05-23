@@ -1,5 +1,5 @@
 import { model, Schema } from 'mongoose'
-import { IProductMongoModel } from '@proshop/types'
+import { ICurrency, IProductMongoModel } from '@proshop/types'
 
 const ProductSchema = new Schema<IProductMongoModel>({
     _id: Schema.Types.ObjectId,
@@ -18,8 +18,8 @@ const ProductSchema = new Schema<IProductMongoModel>({
         required: true,
     },
     currency: {
-        type: Schema.Types.ObjectId,
-        ref: 'Merchant',
+        type: {} as ICurrency,
+        required: true,
         default: null,
     },
     quantity: {

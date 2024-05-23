@@ -25,6 +25,6 @@
             :is="activeItem.component"
             v-if="activeItem"
             @edit="onEdit"
-        ></component>
+        />
     </v-layout>
 </template>

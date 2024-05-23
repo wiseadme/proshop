@@ -1,5 +1,9 @@
 <script lang="ts" setup>
-    import { onBeforeMount, unref, watch } from 'vue'
+    import {
+        onBeforeMount,
+        unref,
+        watch
+    } from 'vue'
     import { FormCard } from '@shared/components/FormCard'
     import { ItemsList } from '@shared/components/ItemsList'
     import { VSvg } from '@shared/components/VSvg'

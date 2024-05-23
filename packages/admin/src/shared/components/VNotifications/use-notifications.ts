@@ -2,7 +2,7 @@ import { useEventEmitter } from './use-event-emitter'
 import { Notify } from './types'
 
 export const useNotifications = () => {
-    const DEFAULT_TIMEOUT = 1500
+    const DEFAULT_TIMEOUT = 3000
 
     const { emit } = useEventEmitter()
 

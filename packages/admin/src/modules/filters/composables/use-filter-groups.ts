@@ -46,7 +46,7 @@ export const useFilterGroups = createSharedComposable(() => {
                 await createFilterGroupItem(unref(model))
             }
         } catch (err) {
-
+            console.log(err)
         }
     }
 

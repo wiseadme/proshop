@@ -66,7 +66,7 @@
         </v-list>
         <v-row class="sidebar__buttons">
             <v-col class="sidebar__buttons-wrapper d-flex">
-                <slot name="buttons"></slot>
+                <slot name="buttons"/>
             </v-col>
         </v-row>
     </div>

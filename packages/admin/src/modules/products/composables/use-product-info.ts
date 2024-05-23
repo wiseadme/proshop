@@ -4,7 +4,7 @@ import { useProductsService } from '@modules/products/composables/use-products-s
 import { useNotifications } from '@shared/components/VNotifications/use-notifications'
 import { useRouter } from 'vue-router'
 import { RouteNames } from '@modules/products/enums/route-names'
-import { IProduct, IProductParams } from '@proshop/types'
+import { IProduct } from '@proshop/types'
 import { hasDiffs, hasValueDiffs } from '@shared/helpers/diffs.helpers'
 import {
     CHANGES_SAVED,
@@ -14,7 +14,7 @@ import {
 import { EDIT } from '@shared/constants/actions'
 import { INFO_BLOCK } from '@modules/products/constants/sections'
 
-const infoBlockKeys = ['description', 'name', 'price', 'quantity', 'seo', 'url', 'unit']
+const infoBlockKeys = [ 'description', 'name', 'price', 'quantity', 'seo', 'url', 'unit' ]
 
 export const useProductInfo = () => {
     const { model, isEditMode, setProductModel } = useProductModel()
@@ -51,13 +51,16 @@ export const useProductInfo = () => {
 
     const onCreateProductInfo = async () => {
         try {
-            const data = await createProduct(unref(model) as unknown as IProductParams)
+            const data = await createProduct(unref(model) as any)
 
             await goToEditProduct(data!)
 
             notify(CHANGES_SAVED)
-        } catch (err) {
-            notify(SAVING_ERROR)
+        } catch (err: any) {
+            notify({
+                ...SAVING_ERROR,
+                ...(err.message ? { text: err.message } : {}),
+            })
         }
     }
 
@@ -66,25 +69,33 @@ export const useProductInfo = () => {
 
         if (!Object.keys(updates).length) {
             notify(NO_CHANGES)
+        } else {
+            try {
+                await updateProductInfo(updates)
 
-            return
-        }
-
-        try {
-            await updateProductInfo(updates)
-            notify(CHANGES_SAVED)
-        } catch (err) {
-            notify(SAVING_ERROR)
+                notify(CHANGES_SAVED)
+            } catch (err) {
+                notify(SAVING_ERROR)
+            }
         }
     }
 
-    const onSubmit = async (validate) => {
-        try {
-            await validate()
+    const onSubmit = async (validate: () => Promise<boolean>) => {
 
-            unref(isEditMode) ? await onUpdateProductInfo() : await onCreateProductInfo()
-        } catch (err) {
-            notify(SAVING_ERROR)
+        try {
+            await validate().catch(() => {
+                throw new Error('Ошибка валидации: Заполните все обязательные поля')
+            })
+
+            unref(isEditMode)
+                ? await onUpdateProductInfo()
+                : await onCreateProductInfo()
+
+        } catch (err: any) {
+            notify({
+                ...SAVING_ERROR,
+                ...(err?.message ? { text: err.message } : {}),
+            })
         }
     }
 

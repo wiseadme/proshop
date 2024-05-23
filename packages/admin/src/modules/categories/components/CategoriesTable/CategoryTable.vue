@@ -53,8 +53,8 @@
             >
                 <template #toolbar>
                     <v-toolbar>
-                        <v-toolbar-logo></v-toolbar-logo>
-                        <v-spacer></v-spacer>
+                        <v-toolbar-logo/>
+                        <v-spacer/>
                         <v-toolbar-items>
                             <v-button
                                 color="primary"
@@ -110,7 +110,7 @@
                             v-if="row.image"
                             style="height: 30px; width: auto"
                             :src="row.image"
-                        />
+                        >
                         <v-icon v-else>
                             fas fa-box
                         </v-icon>

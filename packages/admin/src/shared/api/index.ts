@@ -19,7 +19,7 @@ export const restClient = axios.create({
 export const authClient = axios.create({
     headers: {
         'Content-Type': 'application/json',
-        Accept: 'application/json',
+        'Accept': 'application/json',
     },
     baseURL,
     withCredentials: true,
@@ -40,7 +40,7 @@ export const filesClient = axios.create({
 let isInProgress: boolean = false
 let response: any = null
 
-const wrapper = (action) => {
+const wrapper = (action: () => any) => {
     return async () => {
         if (!isInProgress) {
             isInProgress = true
@@ -50,8 +50,7 @@ const wrapper = (action) => {
     }
 }
 
-// @ts-ignore
-restClient.interceptors.request.use(async (config) => {
+restClient.interceptors.request.use(async (config): Promise<any> => {
     const { user, refresh, logout } = useAuthService()
 
     if (!unref(user)) {

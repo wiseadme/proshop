@@ -49,17 +49,17 @@
                         <v-card-content>
                             <v-row>
                                 <v-col cols="6">
-                                    <OrganizationBlock/>
+                                    <organization-block/>
                                 </v-col>
                                 <v-col cols="4">
-                                    <CurrenciesBlock/>
+                                    <currencies-block/>
                                 </v-col>
                                 <v-col
                                     cols="6"
                                     class="mt-4"
                                 >
-                                    <ContactsBlock/>
-                                    <SocialBlock/>
+                                    <contacts-block/>
+                                    <social-block/>
                                 </v-col>
                             </v-row>
                         </v-card-content>

@@ -95,7 +95,7 @@
                             v-if="row.qrcode"
                             style="height: 30px; width: auto"
                             :src="row.qrcode"
-                        />
+                        >
                         <v-icon v-else>
                             fas fa-box
                         </v-icon>

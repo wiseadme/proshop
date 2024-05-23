@@ -125,7 +125,7 @@
                                     </v-list-item-subtitle>
                                 </v-list-item-content>
 
-                                <v-spacer></v-spacer>
+                                <v-spacer/>
                                 <v-list-item-content
                                     v-if="editable || deletable"
                                     class="menu"

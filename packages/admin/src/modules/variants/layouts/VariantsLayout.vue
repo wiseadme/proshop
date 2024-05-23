@@ -3,7 +3,7 @@
     import SkeletonPreloader from '@shared/components/Preloader/SkeletonPreloader.vue'
 
     export default defineComponent({
-        name: 'variant-layout',
+        name: 'VariantLayout',
         components: {
             SkeletonPreloader
         },

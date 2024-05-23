@@ -20,7 +20,7 @@ class Repository {
         this.path = path
     }
 
-    createProduct(product: IProductParams) {
+    createProduct(product: Partial<IProduct>) {
         return this.client.post(this.path, product)
     }
 

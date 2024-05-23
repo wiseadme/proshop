@@ -19,7 +19,7 @@
                 typeable
             >
                 <template #prepend-icon>
-                    <v-icon icon="fas fa-time"></v-icon>
+                    <v-icon icon="fas fa-time"/>
                 </template>
                 <template #select-list="{onSelect}">
                     <v-list active>

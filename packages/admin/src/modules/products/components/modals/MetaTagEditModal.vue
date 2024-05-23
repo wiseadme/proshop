@@ -10,7 +10,7 @@
         closeEditModal,
     } = useProductMetaTags()
 
-    const metaTagKeys = computed<string[]>(() => Object.keys(unref(currentEditableMetaTag)?.props! || {}))
+    const metaTagKeys = computed<string[]>(() => Object.keys(unref(currentEditableMetaTag)?.props || {}))
 
 </script>
 <template>

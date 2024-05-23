@@ -1,7 +1,8 @@
 <script lang="ts" setup>
+
 </script>
 <template>
-    <div class="meta-tags-layout">
+    <div class="options-layout">
         <router-view v-slot="{ Component }">
             <transition
                 name="fade"
@@ -12,4 +13,3 @@
         </router-view>
     </div>
 </template>
-

@@ -47,7 +47,7 @@
                             v-if="row.image"
                             style="height: 30px; width: auto"
                             :src="row.image"
-                        />
+                        >
                         <v-icon v-else>
                             fas fa-box
                         </v-icon>

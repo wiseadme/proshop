@@ -58,13 +58,13 @@ export class RepositoryHelpers {
         }
     }
 
-    getCurrencyPopulateParams() {
-        return {
-            path: 'currency',
-            select: 'currency',
-            transform: (doc) => doc?.currency,
-        }
-    }
+    // getCurrencyPopulateParams() {
+    //     return {
+    //         path: 'currency',
+    //         select: 'currency',
+    //         transform: (doc) => doc?.currency,
+    //     }
+    // }
 
     getRelatedPopulateParams() {
         return {
@@ -72,7 +72,6 @@ export class RepositoryHelpers {
             select: 'name price url image categories currency',
             populate: [
                 this.getCategoriesPopulateParams(),
-                this.getCurrencyPopulateParams(),
             ],
             options: {
                 lean: true
@@ -86,7 +85,6 @@ export class RepositoryHelpers {
             this.getCategoriesPopulateParams(),
             this.getVariantsPopulateParams(),
             this.getRelatedPopulateParams(),
-            this.getCurrencyPopulateParams(),
         ]
     }
 

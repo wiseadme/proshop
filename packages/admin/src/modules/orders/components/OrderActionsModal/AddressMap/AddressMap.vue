@@ -73,7 +73,7 @@
         <div class="map-service__address elevation-2">
             <h3>{{ address }}</h3>
         </div>
-        <div id="map"></div>
+        <div id="map"/>
     </div>
 </template>
 <style lang="scss">
