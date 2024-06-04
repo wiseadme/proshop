@@ -13,7 +13,7 @@
     import { useFilterGroupService } from '@modules/filters/composables/use-filter-group-service'
     import { SvgPaths } from '@shared/enums/svg-paths'
     import { IFilterGroup } from '@proshop/types'
-    import { useFilterGroups } from '@modules/filters/composables/use-filter-groups.ts'
+    import { useFilterGroups } from '@modules/filters/composables/use-filter-groups'
 
     const { filterItems, getFilterItems, deleteFilterItem } = useFilterItemsService()
     const { filtersGroup, toggleForm, onEditFilter } = useFilterItems()

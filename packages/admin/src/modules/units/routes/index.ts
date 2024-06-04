@@ -1,4 +1,4 @@
-import { RouteNames } from '@modules/units/enums/route-names.ts'
+import { RouteNames } from '@modules/units/enums/route-names'
 
 export const unitRoutes = [
     {

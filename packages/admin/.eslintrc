@@ -39,6 +39,19 @@
             "error",
             4
         ],
+        "no-multiple-empty-lines": "error",
+        "no-console": "off",
+        "no-debugger": "error",
+        "no-unused-vars": "off",
+        "import/no-named-as-default": "off",
+        "import/extensions": [
+            "error",
+            "ignorePackages",
+            {
+                "js": "never",
+                "ts": "never"
+            }
+        ],
         "vue/script-indent": [
             "error",
             4,
@@ -47,11 +60,6 @@
                 "switchCase": 1
             }
         ],
-        "no-multiple-empty-lines": "error",
-        "no-console": "off",
-        "no-debugger": "error",
-        "no-unused-vars": "off",
-        "import/no-named-as-default": "off",
         "vue/html-quotes": "error",
         "vue/html-self-closing": ["error", {
             "html": {

@@ -1,4 +1,4 @@
-import { useGroupRepository } from '@modules/groups/repository/group.repository.ts'
+import { useGroupRepository } from '@modules/groups/repository/group.repository'
 import { IGroup } from '@proshop/types'
 
 const groupRepository = useGroupRepository()

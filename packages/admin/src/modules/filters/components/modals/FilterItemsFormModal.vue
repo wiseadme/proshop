@@ -3,7 +3,7 @@
     import { unref, watch } from 'vue'
     import { useFilterItems } from '@modules/filters/composables/use-filter-items'
     import { useFilterItemModel } from '@modules/filters/composables/use-filter-item-model'
-    import { useFilterGroups } from '@modules/filters/composables/use-filter-groups.ts'
+    import { useFilterGroups } from '@modules/filters/composables/use-filter-groups'
     import type { IFilterGroup } from '@proshop/types'
 
     const { filterGroups } = useFilterGroups()

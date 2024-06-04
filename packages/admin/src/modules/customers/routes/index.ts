@@ -1,4 +1,4 @@
-import { RouteNames } from '@modules/customers/enums/route-names.ts'
+import { RouteNames } from '@modules/customers/enums/route-names'
 
 export const customerRoutes = [
     {

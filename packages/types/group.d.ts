@@ -1,35 +1,28 @@
-export interface IGroup {
-    id: string
-    name: string
-    variants: IGroupVariant[]
-}
+import { IVariant } from './variant'
 
-export interface IGroupVariantOption {
+export interface IGroupOption {
     option: string
     productName: string
     image: string
     url: string
 }
 
-export interface IGroupVariant {
-    key: string
-    name: string
+export interface IGroup {
     id: string
-    items: IGroupVariantOption[]
+    variant: IVariant
+    options: IGroupOption[]
 }
 
-export interface IGroupMongoModel extends Omit<IGroup, 'id'> {
+export interface IGroupMongoModel extends Omit<IGroup, 'id' | 'variant'> {
     _id: string
+    variant: string | IVariant
 }
 
 // const group = {
 //     id: 'sjsjsjjs',
-//     variants: [{
-//         name: 'Colors',
-//         id: 'sjsskks',
-//         items: [{
+//     variant: IVariant
+//     items: [{
 //             option: 'red',
 //             product: 'some id'
-//         }]
 //     }]
 // }

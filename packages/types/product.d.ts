@@ -3,9 +3,9 @@ import { ISEOType } from './common'
 import { IUnit } from './unit'
 import { ICategory } from './category'
 import { IAsset } from './asset'
-import { IVariant } from './variant'
 import { IAttribute } from './attribute'
 import { ICurrency } from './currency'
+import { IGroup } from './group'
 
 export interface IProductQuery {
     id?: string,
@@ -37,7 +37,7 @@ export interface IProduct {
     unit: Maybe<IUnit>
     categories: ICategory[]
     assets: IAsset[]
-    variants: IVariant[]
+    variants: IGroup[]
     attributes: IAttribute[]
     conditions: IProductConditions
     related: IProduct[]
@@ -53,7 +53,7 @@ export interface IProductParams extends Omit<IProduct, 'assets' | 'related' | 'c
 export interface IProductMongoModel extends Omit<IProductParams, 'id' | 'assets' | 'variants' | 'related' | 'categories' | 'currency'> {
     _id: string
     assets?: string[] | IAsset[]
-    variants?: string[] | IVariant[]
+    variants?: string[] | IGroup[]
     related?: string[] | IProduct[]
     categories?: string[] | ICategory[]
     currency: string | Maybe<ICurrency>

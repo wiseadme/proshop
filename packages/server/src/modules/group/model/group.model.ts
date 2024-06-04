@@ -1,16 +1,15 @@
 import { model, Schema } from 'mongoose'
-import { IGroupMongoModel, IGroupVariant } from '@proshop/types'
+import { IGroupMongoModel, IGroupOption } from '@proshop/types'
 
 const GroupSchema: Schema = new Schema<IGroupMongoModel>({
     _id: Schema.Types.ObjectId,
-    name: {
-        type: String,
+    variant: {
+        type: Schema.Types.ObjectId,
+        ref: 'Variant',
         required: true,
-        unique: true,
-        index: true
-    },
-    variants: {
-        type: [] as IGroupVariant[],
+    } as any,
+    options: {
+        type: [] as IGroupOption[],
         default: [],
     },
 }, {

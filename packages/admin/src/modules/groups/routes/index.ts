@@ -1,17 +1,18 @@
+import { RouteNames } from '@modules/groups/enums/route-names'
+
 export const groupsRoutes = [
     {
-        path: '/groups',
+        path: 'groups',
         component: () => import(/* webpackChunkName: "Page.Proshop" */ '@modules/groups/layouts/GroupsLayout.vue'),
-        name: 'groups',
         children: [
             {
                 path: '',
                 component: () => import(/* webpackChunkName: "Page.Proshop" */ '@modules/groups/pages/GroupsPage.vue'),
-                name: 'groups-form'
+                name: RouteNames.Groups
             }
         ],
         meta: {
-            name: 'groups'
+            name: RouteNames.Groups
         }
     }
 ]

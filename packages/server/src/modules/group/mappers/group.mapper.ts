@@ -5,6 +5,8 @@ export class GroupMapper {
         const { _id } = entity
         const map: Partial<IGroupMongoModel> = { ...entity }
 
+        delete map._id
+
         return {
             id: _id,
             ...map,

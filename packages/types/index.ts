@@ -29,4 +29,4 @@ export type {
     ISite,
     ISiteMongoModel,
 } from './settings'
-export type { IGroup, IGroupVariant, IGroupMongoModel } from './group'
+export type { IGroup, IGroupOption, IGroupMongoModel } from './group'

@@ -1,4 +1,4 @@
-import { RouteNames } from '@modules/metatags/enums/route-names.ts'
+import { RouteNames } from '@modules/metatags/enums/route-names'
 
 export const metaTagRoutes = [
     {

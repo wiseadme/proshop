@@ -1,21 +1,29 @@
 import { useGroupsStore } from '@modules/groups/store'
+import { useVariantsService } from '@modules/variants/composables/use-variants-service'
 import { IGroup } from '@proshop/types'
-import { useVariantsService } from '@modules/variants/composables/use-variants-service.ts'
 
 export const useGroupsService = () => {
     const { createGroup: createNewGroup } = useGroupsStore()
     const { getVariants } = useVariantsService()
 
     const createGroup = async (group: IGroup) => {
-        return await createNewGroup(group)
+        try {
+            return await createNewGroup(group)
+        } catch (err) {
+            return Promise.reject(err)
+        }
     }
 
-    const loadInitItems = async () => {
-        await getVariants()
+    const loadVariants = async () => {
+        try {
+            await getVariants()
+        } catch (err) {
+            return Promise.reject(err)
+        }
     }
 
     return {
         createGroup,
-        loadInitItems
+        loadVariants
     }
 }

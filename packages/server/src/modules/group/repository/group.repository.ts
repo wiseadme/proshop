@@ -1,7 +1,7 @@
 import { IGroupRepository } from '@modules/group/types/repository'
 import { IGroup } from '@proshop/types'
 import { GroupModel } from '@modules/group/model/group.model'
-import { GroupMapper } from '@modules/group/mappers/mongo.mapper'
+import { GroupMapper } from '@modules/group/mappers/group.mapper'
 import mongoose from 'mongoose'
 import { injectable } from 'inversify'
 

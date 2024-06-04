@@ -1,17 +1,19 @@
 <script lang="ts" setup>
-    import { useGroupsService } from '@modules/groups/composables/use-groups-service.ts'
     import { onBeforeMount } from 'vue'
+    import { useGroupsService } from '@modules/groups/composables/use-groups-service'
+    import GroupsForm from '@modules/groups/components/GroupsForm.vue'
 
-    const { loadInitItems } = useGroupsService()
 
-    onBeforeMount(loadInitItems)
+    const { loadVariants } = useGroupsService()
+
+    onBeforeMount(loadVariants)
 
     // createGroup()
 </script>
 <template>
     <v-row>
         <v-col>
-            <h1>Groups page</h1>
+            <groups-form/>
         </v-col>
     </v-row>
 </template>

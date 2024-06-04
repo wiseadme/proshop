@@ -22,7 +22,9 @@ export const useAuthService = () => {
         username: string,
         password: string
     }) => loginUser(user).then(() => router.push({ name: RouteNames.MAIN }))
+
     const logout = async () => logoutUser().then(() => router.push({ name: RouteNames.LOGIN }))
+
     const check = async () => whoAmI()
         .then(() => {
             if (router.currentRoute.value.path.includes(RouteNames.AUTH)) {
@@ -35,8 +37,8 @@ export const useAuthService = () => {
         user,
         isAuthenticated,
         isChecked,
-        login,
         refresh,
+        login,
         logout,
         check,
     }

@@ -1,4 +1,4 @@
-import { RouteNames } from '@modules/variants/enums/route-names.ts'
+import { RouteNames } from '@modules/variants/enums/route-names'
 
 export const variantRoutes = [
     {
