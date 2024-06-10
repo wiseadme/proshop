@@ -2,9 +2,17 @@
     import { SvgPaths } from '@shared/enums/svg-paths'
     import { FormCard } from '@shared/components/FormCard'
     import { VSvg } from '@shared/components/VSvg'
-    import { useGroups } from "@modules/groups/composables/use-groups"
+    import { useGroupsDeps } from '@modules/groups/composables/use-groups-deps'
+    import { useGroupModel } from '@modules/groups/composables/use-group-model'
 
-    const { variants, model } = useGroups()
+    const { model } = useGroupModel()
+
+    const {
+        products,
+        variants,
+        onSearchProducts
+    } = useGroupsDeps()
+
 </script>
 <template>
     <form-card>
@@ -15,12 +23,25 @@
             Группы вариантов
         </template>
         <template #body>
-            <v-select
-                v-model="model.variant"
-                label="Вариант"
-                :items="variants"
-                value-key="name"
-            />
+            <v-row>
+                <v-col cols="6">
+                    <v-select
+                        v-model="model.variant"
+                        label="Вариант"
+                        :items="variants"
+                        value-key="name"
+                    />
+                </v-col>
+                <v-col cols="6">
+                    <v-autocomplete
+                        label="Поиск товара"
+                        typeable
+                        :items="products"
+                        value-key="name"
+                        @input="onSearchProducts"
+                    />
+                </v-col>
+            </v-row>
         </template>
     </form-card>
 </template>

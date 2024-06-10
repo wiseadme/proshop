@@ -9,6 +9,7 @@ export interface IGroupOption {
 
 export interface IGroup {
     id: string
+    name: string
     variant: IVariant
     options: IGroupOption[]
 }
@@ -17,12 +18,3 @@ export interface IGroupMongoModel extends Omit<IGroup, 'id' | 'variant'> {
     _id: string
     variant: string | IVariant
 }
-
-// const group = {
-//     id: 'sjsjsjjs',
-//     variant: IVariant
-//     items: [{
-//             option: 'red',
-//             product: 'some id'
-//     }]
-// }

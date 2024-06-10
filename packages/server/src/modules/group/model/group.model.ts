@@ -8,6 +8,11 @@ const GroupSchema: Schema = new Schema<IGroupMongoModel>({
         ref: 'Variant',
         required: true,
     } as any,
+    name: {
+        type: String,
+        unique: true,
+        default: `${Date.now()}`,
+    },
     options: {
         type: [] as IGroupOption[],
         default: [],
