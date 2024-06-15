@@ -37,54 +37,29 @@ export const filesClient = axios.create({
     timeout: 10000,
 })
 
-let isInProgress: boolean = false
-let response: any = null
-
-const wrapper = (action: () => any) => {
-    return async () => {
-        if (!isInProgress) {
-            isInProgress = true
-
-            return await action()
-        }
-    }
-}
+let controller: AbortController = {} as AbortController
+let promise: Promise<any> | null = null
 
 restClient.interceptors.request.use(async (config): Promise<any> => {
     const { user, refresh, logout } = useAuthService()
 
-    if (!unref(user)) {
-        await new Promise(resolve => {
-            const waitForUser = () => {
+    if (!unref(user) || unref(user)!.exp! * 1000 <= Date.now()) {
+        controller = new AbortController()
 
-                if (unref(user)) {
-                    return resolve(true)
-                }
+        promise ??= refresh().catch(logout)
 
-                setTimeout(waitForUser)
-            }
-
-            waitForUser()
-        })
-    }
-
-    if (unref(user)!.exp! * 1000 <= Date.now()) {
-        const makeOnce = wrapper(refresh)
-
-        if (!isInProgress) {
-            response = await makeOnce()
-
-            if (response && response.exp) {
-                isInProgress = false
-
-                return config
-            }
-
-            return logout()
+        try {
+            await promise
+            promise = null
+        } catch (err) {
+            controller.abort('Not authenticated request')
         }
     }
 
-    return config
+    return {
+        ...config,
+        controller: controller.signal
+    }
 })
 
 export const file = new Client(filesClient)
