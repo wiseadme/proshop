@@ -46,6 +46,6 @@ class Repository implements IAuthRepository {
 }
 
 export const useAuthRepository = () => new Repository({
-    client: auth.client,
+    client: auth?.client,
     path: '/api/v1/user',
 })

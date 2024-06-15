@@ -14,12 +14,9 @@
         onDeleteGroup
     } = useGroupsList()
 
-    const { isModalOpened } = useGroupsFormModal()
+    const { showFormModal } = useGroupsFormModal()
 
-    onBeforeMount(async () => {
-        await getGroups()
-        console.log(groups.value)
-    })
+    onBeforeMount(getGroups)
 </script>
 <template>
     <form-card>
@@ -35,7 +32,7 @@
                 elevation="2"
                 color="success"
                 width="120"
-                @click="isModalOpened = true"
+                @click="showFormModal = true"
             >
                 Добавить
             </v-button>

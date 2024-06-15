@@ -7,11 +7,13 @@ import {
     IProduct,
     IVariant
 } from '@proshop/types'
+import { useLogger } from '@shared/utils/logger'
 
 export const useGroupsDeps = () => {
     const { variants, getVariants } = useVariantsService()
     const { products, getProducts } = useProductsService()
     const { filterItems, getFilterItems } = useFilterItemsService()
+    const { logError } = useLogger()
 
     const onSearchProducts = async (value: string): Promise<IProduct[] | void> => {
         try {
@@ -21,7 +23,7 @@ export const useGroupsDeps = () => {
 
             return await getProducts({ name: value })
         } catch (err) {
-            console.log(err)
+            logError('Search results loading failed', err)
         }
     }
 
@@ -33,7 +35,7 @@ export const useGroupsDeps = () => {
 
             return await getVariants()
         } catch (err) {
-            console.log(err)
+            logError('Groups variants loading failed', err)
         }
     }
 
@@ -45,7 +47,7 @@ export const useGroupsDeps = () => {
 
             return await getFilterItems()
         } catch (err) {
-            console.log(err)
+            logError('Groups filter items loading failed', err)
         }
     }
 

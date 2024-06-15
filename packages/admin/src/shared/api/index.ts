@@ -48,12 +48,9 @@ restClient.interceptors.request.use(async (config): Promise<any> => {
 
         promise ??= refresh().catch(logout)
 
-        try {
-            await promise
-            promise = null
-        } catch (err) {
-            controller.abort('Not authenticated request')
-        }
+        await promise
+            .then(() => promise = null)
+            .catch(() => controller.abort('Not authenticated request'))
     }
 
     return {
