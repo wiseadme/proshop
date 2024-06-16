@@ -36,5 +36,5 @@ export class Repository implements IGroupsRepository {
 
 export const useGroupRepository = () => new Repository({
     client: rest,
-    path: '/api/v1/group'
+    path: '/api/v1/groups'
 })

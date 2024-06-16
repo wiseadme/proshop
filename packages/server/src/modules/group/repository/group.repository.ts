@@ -14,12 +14,15 @@ export class GroupRepository implements IGroupRepository {
         })
             .save()
 
-        return GroupMapper.toDomain(group)
+        await group.populate(['variant'])
+
+        return GroupMapper.toDomain(group.toObject())
     }
 
     async getGroups({ id }: { id: string }): Promise<IGroup[]> {
         const data = await GroupModel
-            .find( id && { _id: id } || {})
+            .find(id && { _id: id } || {})
+            .populate(['variant'])
             .lean()
 
         return data.map(it => GroupMapper.toDomain(it))

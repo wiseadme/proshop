@@ -1,5 +1,5 @@
 import { useGroupsStore } from '@modules/groups/store'
-import { IGroup } from '@proshop/types'
+import { IGroup, IVariant } from '@proshop/types'
 import { computed } from 'vue'
 
 export const useGroupsService = () => {
@@ -13,7 +13,10 @@ export const useGroupsService = () => {
 
     const createGroup = async (group: IGroup) => {
         try {
-            return await createNewGroup(group)
+            return await createNewGroup({
+                ...group,
+                variant: (group.variant as IVariant).id
+            })
         } catch (err) {
             return Promise.reject(err)
         }

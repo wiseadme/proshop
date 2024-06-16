@@ -1,14 +1,10 @@
-import {
-    IGroup,
-    IGroupOption,
-    IVariant
-} from '@proshop/types'
+import type { IGroup } from '@proshop/types'
 
 export class Group implements IGroup {
-    id: string
-    name: string
-    variant: Maybe<IVariant>
-    options: IGroupOption[]
+    id: IGroup['id']
+    name: IGroup['name']
+    variant: IGroup['variant']
+    options: IGroup['options']
 
     constructor({
         id = '',

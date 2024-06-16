@@ -1,6 +1,6 @@
 <script lang="ts" setup>
     import { unref } from 'vue'
-    import { useGroupsDeps } from '@modules/groups/composables/use-groups-deps'
+    import { useGroups } from '@modules/groups/composables/use-groups'
     import { useGroupModel } from '@modules/groups/composables/use-group-model'
     import type {
         IFilterItem,
@@ -9,7 +9,7 @@
     } from '@proshop/types'
 
     defineEmits<{
-        (e: 'create-item', value: IGroupOption)
+        (e: 'create-option', value: IGroupOption)
     }>()
 
     defineProps<{
@@ -23,7 +23,7 @@
     const {
         products,
         onSearchProducts
-    } = useGroupsDeps()
+    } = useGroups()
 
     const onOptionValueSelect = (filter: IFilterItem) => {
         unref(groupOptionModel).value = filter.value as string
@@ -68,7 +68,7 @@
                     elevation="2"
                     color="success"
                     class="app-border-radius"
-                    @click="$emit('create-item', groupOptionModel)"
+                    @click="$emit('create-option', groupOptionModel)"
                 />
             </v-col>
         </v-row>

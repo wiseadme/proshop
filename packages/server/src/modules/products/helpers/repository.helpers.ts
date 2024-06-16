@@ -70,9 +70,7 @@ export class RepositoryHelpers {
         return {
             path: 'related',
             select: 'name price url image categories currency',
-            populate: [
-                this.getCategoriesPopulateParams(),
-            ],
+            populate: [this.getCategoriesPopulateParams()],
             options: {
                 lean: true
             }

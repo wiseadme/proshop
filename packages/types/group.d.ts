@@ -12,7 +12,7 @@ export interface IGroupOption {
 export interface IGroup {
     id: string
     name: string
-    variant: Maybe<IVariant>
+    variant: Maybe<IVariant | string>
     options: IGroupOption[]
 }
 

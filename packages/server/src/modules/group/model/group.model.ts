@@ -20,6 +20,7 @@ const GroupSchema: Schema = new Schema<IGroupMongoModel>({
 }, {
     timestamps: false,
     strict: false,
+    versionKey: false
 })
 
 export const GroupModel = model<IGroupMongoModel>('Group', GroupSchema)

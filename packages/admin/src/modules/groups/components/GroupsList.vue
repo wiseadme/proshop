@@ -44,7 +44,7 @@
                 @edit="onEditGroup"
             >
                 <template #title="{item}">
-                    <span>{{ item?.value }}</span>
+                    <span>{{ item?.name }}</span>
                 </template>
             </items-list>
         </template>

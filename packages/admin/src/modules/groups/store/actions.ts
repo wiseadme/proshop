@@ -8,9 +8,11 @@ export const actions = {
         try {
             const { data } = await groupRepository.createGroup(group)
 
-            this.$patch({ group: data.data })
+            this.$patch((state) => {
+                state.groups.push(data.data)
+            })
 
-            return this.group
+            return data.data
         } catch (err) {
             return Promise.reject(err)
         }
