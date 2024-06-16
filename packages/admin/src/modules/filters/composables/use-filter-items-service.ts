@@ -8,7 +8,7 @@ export const useFilterItemsService = createSharedComposable(() => {
     const _store = useFilterItemsStore()
     const { createFilter, getFilters, deleteFilter, updateFilter } = _store
 
-    const filterItems = computed<IFilterItem[]>(() => _store.filterItems)
+    const filterItems = computed<IFilterItem[]>(() => _store.filterItems ?? [])
 
     const createFilterItem = (filter: IFilterItem) => createFilter(filter)
     const deleteFilterItem = (filter: IFilterItem) => deleteFilter(filter.id)

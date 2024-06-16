@@ -24,15 +24,15 @@ class Repository implements IAuthRepository {
         this.path = path
     }
 
-    async login(user: { username: string, password: string }) {
-        return this.client.post(`${ this.path }/login`, user)
+    async login(data: { username: string, password: string }) {
+        return this.client.post(`${ this.path }/login`, data)
     }
 
     async logout() {
         return this.client.get(`${ this.path }/logout`)
     }
 
-    async create(user) {
+    async create(user: IUser) {
         return this.client.post(`${ this.path }/create`, user)
     }
 

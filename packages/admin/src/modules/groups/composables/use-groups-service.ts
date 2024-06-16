@@ -9,7 +9,7 @@ export const useGroupsService = () => {
         getGroups: getAllGroups
     } = store
 
-    const readOnlyGroups = computed(() => store.groups)
+    const readOnlyGroups = computed(() => store.groups ?? [])
 
     const createGroup = async (group: IGroup) => {
         try {

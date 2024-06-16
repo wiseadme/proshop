@@ -1,10 +1,11 @@
 import { IVariant } from './variant'
 
 export interface IGroupOption {
-    option: string
+    value: string
     productName: string
     image: string
     url: string
+    quantity: number
 }
 
 export interface IGroup {

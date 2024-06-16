@@ -27,10 +27,10 @@ export class FilterGroupRepository implements IFilterGroupRepository {
         return FilterGroupMapper.toDomain(filterGroupData.toObject())
     }
 
-    async read(id?: string): Promise<IFilterGroup[]> {
-        id && validateId(id)
+    async read(params: Partial<IFilterGroup>): Promise<IFilterGroup[]> {
+        params.id && validateId(params.id)
 
-        const filterGroups = await FilterGroupModel.find(id ? { _id: id } : {}).lean()
+        const filterGroups = await FilterGroupModel.find(params).lean()
 
         return filterGroups.map(filterGroup => FilterGroupMapper.toDomain(filterGroup)) as IFilterGroup[]
     }

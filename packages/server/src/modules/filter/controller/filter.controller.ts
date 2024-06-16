@@ -49,7 +49,7 @@ export class FilterController extends BaseController implements IController {
 
     async getFilterGroups(request: Request<{}, {}, {}, { id?: string }>, response: Response, next: NextFunction) {
         try {
-            const data = await this.filterGroupService.read(request.query?.id)
+            const data = await this.filterGroupService.read(request.query)
 
             this.send({ data, request, response })
         } catch (error) {

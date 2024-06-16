@@ -6,7 +6,7 @@ const groupRepository = useGroupRepository()
 export const actions = {
     async createGroup(group: IGroup) {
         try {
-            const data = await groupRepository.createGroup(group)
+            const { data } = await groupRepository.createGroup(group)
 
             this.$patch({ group: data.data })
 
@@ -18,7 +18,7 @@ export const actions = {
 
     async getGroups(params = {}) {
         try {
-            const data = await groupRepository.getGroups(params)
+            const { data } = await groupRepository.getGroups(params)
 
             this.$patch({ groups: data.data })
 

@@ -25,14 +25,10 @@ export const useFilterGroupService = () => {
 
     const createFilterGroupItem = (filterGroup: IFilterGroup) => createFilterGroup(filterGroup)
 
-    const getFilterGroupItems = (params = {}) => {
-        if (unref(filterGroups)?.length) return
-
-        return getFilterGroups(params)
-    }
+    const getFilterGroupItems = (params = {}) => getFilterGroups(params)
 
     const deleteFilterGroupItem = (id: string) => deleteFilterGroup(id)
-    const updateFilterGroupItem = (updates) => updateFilterGroup(updates)
+    const updateFilterGroupItem = (updates: Partial<IFilterGroup>) => updateFilterGroup(updates)
 
     return {
         attributes,
