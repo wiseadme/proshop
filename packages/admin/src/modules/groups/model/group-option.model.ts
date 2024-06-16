@@ -5,20 +5,20 @@ export class GroupOption implements IGroupOption {
     public productName: string
     public image: string
     public url: string
-    public quantity: number
+    public isAvailable: boolean
 
     constructor({
         value = '',
         productName = '',
         image = '',
         url = '',
-        quantity = 0,
+        isAvailable = true,
     }) {
         this.value = value
         this.productName = productName
         this.image = image
         this.url = url
-        this.quantity = quantity
+        this.isAvailable = isAvailable
     }
 
     static create(option = {}) {

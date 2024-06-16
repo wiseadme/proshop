@@ -6,15 +6,18 @@ import {
 
 export class Group implements IGroup {
     id: string
-    variant: IVariant
+    name: string
+    variant: Maybe<IVariant>
     options: IGroupOption[]
 
     constructor({
         id = '',
-        variant = {} as IVariant,
-        options = [] as IGroupOption[],
+        name = '',
+        variant = null,
+        options = [],
     }: IGroup) {
         this.id = id
+        this.name = name
         this.variant = variant
         this.options = options
     }

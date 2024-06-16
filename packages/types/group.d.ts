@@ -1,17 +1,18 @@
 import { IVariant } from './variant'
+import { Maybe } from './utils'
 
 export interface IGroupOption {
     value: string
     productName: string
     image: string
     url: string
-    quantity: number
+    isAvailable?: boolean
 }
 
 export interface IGroup {
     id: string
     name: string
-    variant: IVariant
+    variant: Maybe<IVariant>
     options: IGroupOption[]
 }
 

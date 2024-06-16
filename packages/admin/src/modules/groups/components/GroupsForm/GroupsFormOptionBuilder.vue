@@ -1,0 +1,76 @@
+<script lang="ts" setup>
+    import { unref } from 'vue'
+    import { useGroupsDeps } from '@modules/groups/composables/use-groups-deps'
+    import { useGroupModel } from '@modules/groups/composables/use-group-model'
+    import type {
+        IFilterItem,
+        IGroupOption,
+        IProduct
+    } from '@proshop/types'
+
+    defineEmits<{
+        (e: 'create-item', value: IGroupOption)
+    }>()
+
+    defineProps<{
+        filters: IFilterItem[]
+    }>()
+
+    const {
+        optionModel: groupOptionModel
+    } = useGroupModel()
+
+    const {
+        products,
+        onSearchProducts
+    } = useGroupsDeps()
+
+    const onOptionValueSelect = (filter: IFilterItem) => {
+        unref(groupOptionModel).value = filter.value as string
+    }
+
+    const onSelect = ({ url, image, name, quantity }: IProduct) => {
+        unref(groupOptionModel).url = url
+        unref(groupOptionModel).image = image ?? ''
+        unref(groupOptionModel).isAvailable = Boolean(quantity)
+        unref(groupOptionModel).productName = name
+    }
+</script>
+<template>
+    <div class="groups-option-builder">
+        <v-row>
+            <v-col cols="4">
+                <v-select
+                    :model-value="groupOptionModel"
+                    label="Опция"
+                    :items="filters"
+                    value-key="value"
+                    @select="onOptionValueSelect"
+                />
+            </v-col>
+            <v-col cols="6">
+                <v-autocomplete
+                    label="Поиск товара"
+                    typeable
+                    :items="products"
+                    value-key="name"
+                    @input="onSearchProducts"
+                    @select="onSelect"
+                />
+            </v-col>
+            <v-col
+                cols="2"
+                class="d-flex align-center justify-center"
+            >
+                <v-button
+                    label="Добавить"
+                    style="width: 100%"
+                    elevation="2"
+                    color="success"
+                    class="app-border-radius"
+                    @click="$emit('create-item', groupOptionModel)"
+                />
+            </v-col>
+        </v-row>
+    </div>
+</template>
