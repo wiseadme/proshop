@@ -3,6 +3,7 @@ import { IGroupOption } from '@proshop/types'
 export class GroupOption implements IGroupOption {
     public value: string
     public productName: string
+    public description: string
     public image: string
     public url: string
     public isAvailable: boolean
@@ -10,6 +11,7 @@ export class GroupOption implements IGroupOption {
     constructor({
         value = '',
         productName = '',
+        description = '',
         image = '',
         url = '',
         isAvailable = true,
@@ -19,6 +21,7 @@ export class GroupOption implements IGroupOption {
         this.image = image
         this.url = url
         this.isAvailable = isAvailable
+        this.description = description
     }
 
     static create(option = {}) {

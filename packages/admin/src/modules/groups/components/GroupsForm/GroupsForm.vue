@@ -1,5 +1,6 @@
 <script lang="ts" setup>
     import {
+        computed,
         onMounted,
         ref,
         unref,
@@ -26,6 +27,7 @@
         filterItems,
         filterGroups,
         onCreateGroup,
+        onCreateGroupOption,
         getVariantItems,
         getOptionFilterItems,
         getOptionFilterGroups,
@@ -33,12 +35,13 @@
 
     const selectedFilterGroup = ref<Maybe<IFilterGroup>>(null)
 
+    const isVariantDisabled = computed(() => Boolean(unref(groupModel).id))
 
-    const onCreateOptionItem = (option) => {
-        console.log(option)
+    const onCreate = (validate: () => Promise<boolean>) => {
+        validate().then(() => onCreateGroup())
     }
 
-    watch(() => unref(groupModel).variant, (value: IVariant) => {
+    watch(() => unref(groupModel).variant?.id, (value: IVariant) => {
         getOptionFilterGroups({ attributeId: value.attributeId })
         selectedFilterGroup.value = null
     })
@@ -74,6 +77,7 @@
                             label="Вариант *"
                             :items="variants"
                             value-key="name"
+                            :disabled="isVariantDisabled"
                             :rules="[() => groupModel.variant || 'Выберите вариант объединения в группу']"
                         />
                     </v-col>
@@ -85,22 +89,35 @@
                         />
                     </v-col>
                 </v-row>
-                <v-row v-if="groupModel.id">
-                    <v-col>
-                        <v-select
-                            v-model="selectedFilterGroup"
-                            label="Группа фильтров *"
-                            :items="filterGroups"
-                            value-key="name"
-                            :rules="[() => selectedFilterGroup || 'Выберите группу фильтров']"
-                        />
-                    </v-col>
-                </v-row>
-                <groups-form-option-builder
-                    v-if="groupModel.id"
-                    :filters="filterItems"
-                    @create-option="onCreateOptionItem"
-                />
+                <div class="groups-option-filter">
+                    <v-row v-if="groupModel.id">
+                        <v-col>
+                            <v-select
+                                v-model="selectedFilterGroup"
+                                label="Группа фильтров *"
+                                :items="filterGroups"
+                                value-key="name"
+                                :rules="[() => selectedFilterGroup || 'Выберите группу фильтров']"
+                            />
+                        </v-col>
+                    </v-row>
+                </div>
+                <div class="groups-option-builder">
+                    <groups-form-option-builder
+                        v-if="groupModel.id && selectedFilterGroup"
+                        :filters="filterItems"
+                        @create-option="onCreateGroupOption"
+                    />
+                </div>
+                <div class="groups option-list">
+                    <div
+                        v-for="option of groupModel.options"
+                        :key="option.value"
+                    >
+                        <span>{{ option.value }}</span>
+                        <span>{{ option.productName }}</span>
+                    </div>
+                </div>
             </template>
             <template #actions>
                 <v-row>
@@ -111,7 +128,8 @@
                             width="120"
                             elevation="2"
                             class="app-border-radius"
-                            @click="onCreateGroup(validate)"
+                            :disabled="isVariantDisabled"
+                            @click="onCreate(validate)"
                         />
                     </v-col>
                 </v-row>

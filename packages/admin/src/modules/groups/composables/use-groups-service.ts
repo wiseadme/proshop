@@ -40,7 +40,7 @@ export const useGroupsService = () => {
         }
     }
 
-    const updateGroup = async (updates: Partial<IGroup>) => {
+    const updateGroup = async (updates: Partial<IGroup>): Promise<IGroup> => {
         try {
             return await updateGroupItem(updates)
         } catch (err) {

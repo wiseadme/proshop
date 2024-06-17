@@ -24,7 +24,7 @@ export const actions = {
 
             this.$patch({ groups: data.data })
 
-            return this.groups
+            return data.data
         } catch (err) {
             return Promise.reject(err)
         }
@@ -42,6 +42,8 @@ export const actions = {
                     return acc
                 }, [])
             })
+
+            return data.data
         } catch (err) {
             return Promise.reject(err)
         }

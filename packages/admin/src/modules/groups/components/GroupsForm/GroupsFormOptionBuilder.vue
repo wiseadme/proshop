@@ -8,7 +8,7 @@
         IProduct
     } from '@proshop/types'
 
-    defineEmits<{
+    const emit = defineEmits<{
         (e: 'create-option', value: IGroupOption)
     }>()
 
@@ -17,7 +17,7 @@
     }>()
 
     const {
-        optionModel: groupOptionModel
+        optionModel: groupOptionModel,
     } = useGroupModel()
 
     const {
@@ -35,42 +35,57 @@
         unref(groupOptionModel).isAvailable = Boolean(quantity)
         unref(groupOptionModel).productName = name
     }
+
+    const onCreateOption = (validate: () => Promise<boolean>) => {
+        validate().then(() => emit('create-option', unref(groupOptionModel)))
+    }
 </script>
 <template>
     <div class="groups-option-builder">
-        <v-row>
-            <v-col cols="4">
-                <v-select
-                    :model-value="groupOptionModel"
-                    label="Опция"
-                    :items="filters"
-                    value-key="value"
-                    @select="onOptionValueSelect"
-                />
-            </v-col>
-            <v-col cols="6">
-                <v-autocomplete
-                    label="Поиск товара"
-                    typeable
-                    :items="products"
-                    value-key="name"
-                    @input="onSearchProducts"
-                    @select="onSelect"
-                />
-            </v-col>
-            <v-col
-                cols="2"
-                class="d-flex align-center justify-center"
-            >
-                <v-button
-                    label="Добавить"
-                    style="width: 100%"
-                    elevation="2"
-                    color="success"
-                    class="app-border-radius"
-                    @click="$emit('create-option', groupOptionModel)"
-                />
-            </v-col>
-        </v-row>
+        <v-form v-slot="{validate}">
+            <v-row>
+                <v-col cols="4">
+                    <v-select
+                        :model-value="groupOptionModel"
+                        label="Опция"
+                        :items="filters"
+                        value-key="value"
+                        @select="onOptionValueSelect"
+                    />
+                </v-col>
+                <v-col cols="8">
+                    <v-autocomplete
+                        label="Поиск товара"
+                        typeable
+                        :items="products"
+                        value-key="name"
+                        :rules="[() => !!groupOptionModel.url || 'Выберите товар опции']"
+                        @input="onSearchProducts"
+                        @select="onSelect"
+                    />
+                </v-col>
+            </v-row>
+            <v-row>
+                <v-col cols="10">
+                    <v-text-field
+                        v-model="groupOptionModel.description"
+                        label="Описание"
+                    />
+                </v-col>
+                <v-col
+                    cols="2"
+                    class="d-flex align-center justify-center"
+                >
+                    <v-button
+                        label="Добавить"
+                        style="width: 100%"
+                        elevation="2"
+                        color="success"
+                        class="app-border-radius"
+                        @click="onCreateOption(validate)"
+                    />
+                </v-col>
+            </v-row>
+        </v-form>
     </div>
 </template>

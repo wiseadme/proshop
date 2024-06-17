@@ -3,6 +3,7 @@ import { Maybe } from './utils'
 
 export interface IGroupOption {
     value: string
+    description?: string
     productName: string
     image: string
     url: string

@@ -9,12 +9,15 @@ import { useGroupModel } from '@modules/groups/composables/use-group-model'
 import {
     IFilterGroup,
     IFilterItem,
+    IGroup,
+    IGroupOption,
     IProduct,
     IVariant
 } from '@proshop/types'
+import { Group } from '@modules/groups/model/group.model'
 
 export const useGroups = () => {
-    const { readOnlyGroups, createGroup } = useGroupsService()
+    const { readOnlyGroups, createGroup, updateGroup } = useGroupsService()
     const { variants, getVariants } = useVariantsService()
     const { products, getProducts } = useProductsService()
     const { filterItems, getFilterItems } = useFilterItemsService()
@@ -58,10 +61,24 @@ export const useGroups = () => {
         }
     }
 
-    const onCreateGroup = async (validate: () => Promise<boolean>) => {
+    const onCreateGroup = async () => {
         try {
-            await validate()
-            model.value = await createGroup(unref(model))
+            model.value = Group.create(await createGroup(unref(model)))
+        } catch (err) {
+            logError('Groups filter items loading failed', err)
+        }
+    }
+
+    const onCreateGroupOption = async (option: IGroupOption) => {
+        try {
+            const payload: Partial<IGroup> = {
+                id: unref(model).id,
+                options: [...unref(model).options, option]
+            }
+
+            const updated = await updateGroup(payload)
+
+            model.value = Group.create(updated)
         } catch (err) {
             logError('Groups filter items loading failed', err)
         }
@@ -77,6 +94,7 @@ export const useGroups = () => {
         getVariantItems,
         getOptionFilterItems,
         getOptionFilterGroups,
-        onSearchProducts
+        onSearchProducts,
+        onCreateGroupOption
     }
 }
