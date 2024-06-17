@@ -62,7 +62,6 @@ export const useGroups = () => {
         try {
             await validate()
             model.value = await createGroup(unref(model))
-            console.log(model.value)
         } catch (err) {
             logError('Groups filter items loading failed', err)
         }

@@ -1,9 +1,9 @@
 import { IGroupRepository } from '@modules/group/types/repository'
-import { IGroup } from '@proshop/types'
+import { IGroup, IGroupMongoModel } from '@proshop/types'
 import { GroupModel } from '@modules/group/model/group.model'
 import { GroupMapper } from '@modules/group/mappers/group.mapper'
 import mongoose from 'mongoose'
-import { injectable } from 'inversify'
+import { id, injectable } from 'inversify'
 
 @injectable()
 export class GroupRepository implements IGroupRepository {
@@ -26,5 +26,23 @@ export class GroupRepository implements IGroupRepository {
             .lean()
 
         return data.map(it => GroupMapper.toDomain(it))
+    }
+
+    async deleteGroup(id: string): Promise<boolean> {
+        await GroupModel.findByIdAndRemove(id)
+
+        return true
+    }
+
+    async updateGroup(updates: Partial<IGroup>): Promise<IGroup> {
+        const updated = await GroupModel
+            .findByIdAndUpdate(
+                { _id: updates.id },
+                { $set: updates },
+                { new: true },)
+            .populate(['variant'])
+            .lean() as IGroupMongoModel
+
+        return GroupMapper.toDomain(updated)
     }
 }

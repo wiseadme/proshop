@@ -6,7 +6,9 @@ export const useGroupsService = () => {
     const store = useGroupsStore()
     const {
         createGroup: createNewGroup,
-        getGroups: getAllGroups
+        getGroups: getAllGroups,
+        deleteGroup: deleteGroupItem,
+        updateGroup: updateGroupItem
     } = store
 
     const readOnlyGroups = computed(() => store.groups ?? [])
@@ -30,9 +32,27 @@ export const useGroupsService = () => {
         }
     }
 
+    const deleteGroup = async (id: string) => {
+        try {
+            return await deleteGroupItem(id)
+        } catch (err) {
+            return Promise.reject(err)
+        }
+    }
+
+    const updateGroup = async (updates: Partial<IGroup>) => {
+        try {
+            return await updateGroupItem(updates)
+        } catch (err) {
+            return Promise.reject(err)
+        }
+    }
+
     return {
         readOnlyGroups,
         createGroup,
         getGroups,
+        deleteGroup,
+        updateGroup,
     }
 }

@@ -4,8 +4,10 @@ import { IGroup } from '@proshop/types'
 import { AxiosResponse } from 'axios'
 
 interface IGroupsRepository {
-    createGroup: (group: IGroup) => Promise<AxiosResponse<{ data: IGroup, ok: boolean }>>
-    getGroups: (params: Partial<IGroup>) => Promise<AxiosResponse<{ data: IGroup[], ok: boolean }>>
+    createGroup(group: IGroup): Promise<AxiosResponse<{ data: IGroup, ok: boolean }>>
+    getGroups(params: Partial<IGroup>): Promise<AxiosResponse<{ data: IGroup[], ok: boolean }>>
+    updateGroup(updates: Partial<IGroup>): Promise<AxiosResponse<{ data: IGroup, ok: boolean }>>
+    deleteGroup(id: string): Promise<AxiosResponse<{ data: boolean, ok: boolean }>>
 }
 
 export class Repository implements IGroupsRepository {
@@ -25,13 +27,13 @@ export class Repository implements IGroupsRepository {
         return this.client.get(this.path, { query: params })
     }
 
-    // updateGroup(updates: Partial<IGroup>){
-    //     return this.client.patch(this.path, updates)
-    // }
-    //
-    // deleteGroup(id: string) {
-    //     return this.client.delete(this.path, { params: { id } })
-    // }
+    updateGroup(updates: Partial<IGroup>){
+        return this.client.patch(this.path, updates)
+    }
+
+    deleteGroup(id: string) {
+        return this.client.delete(this.path, { params: { id } })
+    }
 }
 
 export const useGroupRepository = () => new Repository({
