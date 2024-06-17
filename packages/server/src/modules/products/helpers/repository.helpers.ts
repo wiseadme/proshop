@@ -42,29 +42,13 @@ export class RepositoryHelpers {
         return {
             path: 'variants',
             populate: {
-                path: 'options',
-                select: '_id name product ownerId variantId quantity order price description',
-                options: {
-                    lean: true,
-                },
-                populate: {
-                    path: 'product',
-                    select: 'name url price quantity image',
-                    options: {
-                        lean: true
-                    }
-                }
+                path: 'variant',
             },
+            options: {
+                lean: true
+            }
         }
     }
-
-    // getCurrencyPopulateParams() {
-    //     return {
-    //         path: 'currency',
-    //         select: 'currency',
-    //         transform: (doc) => doc?.currency,
-    //     }
-    // }
 
     getRelatedPopulateParams() {
         return {

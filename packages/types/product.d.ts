@@ -37,7 +37,7 @@ export interface IProduct {
     unit: Maybe<IUnit>
     categories: ICategory[]
     assets: IAsset[]
-    variants: IGroup[]
+    variants: (IGroup | string)[]
     attributes: IAttribute[]
     conditions: IProductConditions
     related: IProduct[]

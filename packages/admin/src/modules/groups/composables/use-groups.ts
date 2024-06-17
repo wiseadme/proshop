@@ -19,7 +19,7 @@ import { Group } from '@modules/groups/model/group.model'
 export const useGroups = () => {
     const { readOnlyGroups, createGroup, updateGroup } = useGroupsService()
     const { variants, getVariants } = useVariantsService()
-    const { products, getProducts } = useProductsService()
+    const { products, getProducts, updateProduct } = useProductsService()
     const { filterItems, getFilterItems } = useFilterItemsService()
     const { filterGroups, getFilterGroupItems } = useFilterGroupService()
     const { model } = useGroupModel()
@@ -77,10 +77,24 @@ export const useGroups = () => {
             }
 
             const updated = await updateGroup(payload)
+            await updateOptionProduct(option)
 
             model.value = Group.create(updated)
         } catch (err) {
-            logError('Groups filter items loading failed', err)
+            logError('Groups option creating failed', err)
+        }
+    }
+
+    const updateOptionProduct = async (option: IGroupOption) => {
+        try {
+            const product = unref(products).find(it => it.url === option.url)!
+
+            await updateProduct({
+                id: product.id,
+                variants: [...product.variants.map(it => (it as IGroup).id), unref(model).id]
+            })
+        } catch (err) {
+            logError('Groups option product updating failed', err)
         }
     }
 

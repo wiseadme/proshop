@@ -1,7 +1,3 @@
-import { Maybe } from './utils'
-import { IAsset } from './asset'
-import { IProduct } from './product'
-
 export interface IOptionProduct {
     url: string
     image: string
@@ -10,20 +6,16 @@ export interface IOptionProduct {
 
 export interface IOption {
     id: string
-    name: string
-    variantId: string
-    ownerId: string
-    product: Maybe<IProduct | string>
-    price?: number
-    quantity?: number
-    order: number
-    url: Maybe<string>
-    description?: Maybe<string>
-    image: Maybe<string>
+    groupId: string
+    value: string
+    description?: string
+    productName: string
+    image: string
+    url: string
+    isAvailable?: boolean
+    order?: number
 }
 
-export interface IOptionMongoModel extends Omit<IOption, 'id' | 'assets' | 'product'> {
+export interface IOptionMongoModel extends Omit<IOption, 'id'> {
     _id: string
-    assets?: string[] | IAsset[]
-    product: Maybe<string>
 }

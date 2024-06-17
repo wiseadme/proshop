@@ -7,10 +7,6 @@ export interface IOptionRepository {
 
     find(params?: Partial<IOption>): Promise<IOption[]>
 
-    findById(id: string): Promise<IOption>
-
-    findMany(ids: string[]): Promise<IOption[]>
-
     update(updates: Partial<IOption>): Promise<IOption>
 
     delete(id: string): Promise<boolean>

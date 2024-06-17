@@ -30,7 +30,6 @@ export class ProductMapper {
         return {
             _id: id,
             ...map,
-            ...(map.variants ? { variants: map.variants?.map(variant => GroupMapper.toMongoModelData(variant)) } : {})
         } as IProductMongoModel
     }
 }

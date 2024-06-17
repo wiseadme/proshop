@@ -1,6 +1,9 @@
 import { useGroupsService } from '@modules/groups/composables/use-groups-service'
 import { useNotifications } from '@shared/components/VNotifications/use-notifications'
+import { useGroupModel } from '@modules/groups/composables/use-group-model'
+import { useGroupsFormModal } from '@modules/groups/composables/use-groups-form-modal'
 import { GROUP_DELETE_ERROR } from '@modules/groups/constants/notifications'
+import { Group } from '@modules/groups/model/group.model'
 import { IGroup } from '@proshop/types'
 
 export const useGroupsList = () => {
@@ -8,9 +11,11 @@ export const useGroupsList = () => {
         readOnlyGroups: groups,
         getGroups,
         deleteGroup,
-        updateGroup
     } = useGroupsService()
 
+    const {showFormModal} = useGroupsFormModal()
+
+    const { model } = useGroupModel()
     const { notify } = useNotifications()
 
     const onDeleteGroup = async (group: IGroup) => {
@@ -21,8 +26,9 @@ export const useGroupsList = () => {
         }
     }
 
-    const onEditGroup = (updates: Partial<IGroup>) => {
-        return updateGroup(updates)
+    const onEditGroup = (group: IGroup) => {
+        model.value = Group.create(group)
+        showFormModal.value = true
     }
 
     return {

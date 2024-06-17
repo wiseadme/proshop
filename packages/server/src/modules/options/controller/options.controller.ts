@@ -34,7 +34,7 @@ export class OptionsController extends BaseController implements IController {
 
     async createOption(request: Request<{}, {}, IOption>, response: Response, next: NextFunction) {
         try {
-            const data = await this.service.create(request.body)
+            const data = await this.service.createOption(request.body)
 
             this.send({ data, request, response })
         } catch (error) {
@@ -42,19 +42,21 @@ export class OptionsController extends BaseController implements IController {
         }
     }
 
-    async getOptions(request: Request<{}, {}, {}, { id?: string }>, response: Response, next: NextFunction) {
+    async getOptions(request: Request<{}, {}, {}, Partial<IOption>>, response: Response, next: NextFunction) {
         try {
-            const data = await this.service.find(request.query?.id)
+            const data = await this.service.findOptions(request.query)
 
+            // @ts-ignore
             this.send({ data, request, response })
         } catch (error) {
+            // @ts-ignore
             this.error({ error, request, next })
         }
     }
 
     async updateOption(request: Request<{}, {}, IOption>, response: Response, next: NextFunction) {
         try {
-            const data = await this.service.update(request.body)
+            const data = await this.service.updateOption(request.body)
 
             this.send({ data, request, response })
         } catch (error) {
@@ -64,7 +66,7 @@ export class OptionsController extends BaseController implements IController {
 
     async deleteOption(request: Request<{}, {}, {}, { id: string }>, response: Response, next: NextFunction) {
         try {
-            const data = await this.service.delete(request.query.id)
+            const data = await this.service.deleteOption(request.query.id)
 
             this.send({ data, request, response })
         } catch (error) {

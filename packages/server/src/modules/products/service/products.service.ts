@@ -79,22 +79,6 @@ export class ProductsService extends ServiceHelpers implements IProductsService 
         return this.repository.addAttribute(params)
     }
 
-    // async addVariant(params: { variant: IVariant }) {
-    //     return this.repository.addVariant(params)
-    // }
-    //
-    // async deleteVariant(params: { variant: IVariant }) {
-    //     return this.repository.deleteVariant(params)
-    // }
-    //
-    // async addVariantOption(params: { option: IOption }) {
-    //     return this.repository.addVariantOption(params)
-    // }
-    //
-    // async deleteVariantOption(params: { option: IOption }) {
-    //     return this.repository.deleteVariantOption(params)
-    // }
-
     async deleteAttribute(params: { id: string, attributeId: string }) {
         return this.repository.deleteAttribute(params)
     }
@@ -156,18 +140,12 @@ export class ProductsService extends ServiceHelpers implements IProductsService 
     }
 
     async deleteProduct(id: string) {
-        const { variants, categories } = await this.repository.findById(id)
+        const { categories } = await this.repository.findById(id)
         const result = await this.repository.deleteProduct(id)
         /**
          * @description - Удаляем всю статику связанную с товаром
          */
         await this.gateway.asset.deleteFiles(id)
-        /**
-         * @description - Удаляем варианты товара
-         */
-        // for await (const { options } of variants as IVariant[]) {
-        //     await this.gateway.option.deleteVariantOptions(options as IOption[])
-        // }
         /**
          * @description - Удаляем товар из категории
          */
