@@ -17,6 +17,12 @@ type NotifyActions = {
 
 type NotifyTypes = 'success' | 'warning' | 'error' | 'info' | 'simple'
 
+export enum NotificationTypes {
+    SUCCESS = 'success',
+    ERROR = 'error',
+    INFO = 'info',
+    WARNING = 'warning',
+}
 export type Notify = {
     id?: number
     title?: string

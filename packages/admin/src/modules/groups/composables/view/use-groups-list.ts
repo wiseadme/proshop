@@ -1,9 +1,9 @@
-import { useGroupsService } from '@modules/groups/composables/use-groups-service'
-import { useNotifications } from '@shared/components/VNotifications/use-notifications'
-import { useGroupModel } from '@modules/groups/composables/use-group-model'
-import { useGroupsFormModal } from '@modules/groups/composables/use-groups-form-modal'
-import { GROUP_DELETE_ERROR } from '@modules/groups/constants/notifications'
-import { Group } from '@modules/groups/model/group.model'
+import { useGroupsService } from '@modules/groups/composables/services/use-groups-service.ts'
+import { useNotifications } from '@shared/components/VNotifications/use-notifications.ts'
+import { useGroupModel } from '@modules/groups/composables/view/use-group-model.ts'
+import { useGroupsFormModal } from '@modules/groups/composables/view/use-groups-form-modal.ts'
+import { GROUP_DELETE_ERROR } from '@modules/groups/constants/notifications.ts'
+import { Group } from '@modules/groups/model/group.model.ts'
 import { IGroup } from '@proshop/types'
 
 export const useGroupsList = () => {

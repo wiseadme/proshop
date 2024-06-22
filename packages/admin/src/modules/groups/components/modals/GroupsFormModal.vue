@@ -1,6 +1,6 @@
 <script lang="ts" setup>
     import GroupsForm from '@modules/groups/components/GroupsForm/GroupsForm.vue'
-    import { useGroupsFormModal } from '@modules/groups/composables/use-groups-form-modal'
+    import { useGroupsFormModal } from '@modules/groups/composables/view/use-groups-form-modal'
 
     const { showFormModal } = useGroupsFormModal()
 

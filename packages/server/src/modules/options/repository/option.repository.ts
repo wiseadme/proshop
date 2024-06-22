@@ -48,7 +48,7 @@ export class OptionRepository implements IOptionRepository {
         return OptionMapper.toDomain(option)
     }
 
-    async delete(id) {
+    async delete(id: string) {
         validateId(id)
 
         return !!await OptionModel.findByIdAndDelete(id)

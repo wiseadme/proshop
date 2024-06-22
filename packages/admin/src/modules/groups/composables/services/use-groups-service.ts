@@ -1,6 +1,6 @@
-import { useGroupsStore } from '@modules/groups/store'
+import { DeepReadonly, computed } from 'vue'
+import { useGroupsStore } from '@modules/groups/store/groups'
 import { IGroup, IVariant } from '@proshop/types'
-import { computed } from 'vue'
 
 export const useGroupsService = () => {
     const store = useGroupsStore()
@@ -11,7 +11,7 @@ export const useGroupsService = () => {
         updateGroup: updateGroupItem
     } = store
 
-    const readOnlyGroups = computed(() => store.groups ?? [])
+    const readOnlyGroups = computed<DeepReadonly<IGroup>[]>(() => store.groups ?? [])
 
     const createGroup = async (group: IGroup) => {
         try {

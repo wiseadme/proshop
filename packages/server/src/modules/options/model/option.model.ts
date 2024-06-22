@@ -36,6 +36,7 @@ const OptionSchema = new Schema<IOptionMongoModel>({
     }
 }, {
     timestamps: false,
+    versionKey: false
 })
 
 export const OptionModel = model<IOptionMongoModel>('Option', OptionSchema)

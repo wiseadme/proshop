@@ -9,10 +9,12 @@
     import GroupsFormOptionBuilder from '@modules/groups/components/GroupsForm/GroupsFormOptionBuilder.vue'
     import { ModalCard } from '@shared/components/Modals'
     import { VSvg } from '@shared/components/VSvg'
-    import { useGroups } from '@modules/groups/composables/use-groups'
-    import { useGroupModel } from '@modules/groups/composables/use-group-model'
+    import { useGroups } from '@modules/groups/composables/view/use-groups'
+    import { useGroupModel } from '@modules/groups/composables/view/use-group-model'
+    import { useOptions } from '@modules/groups/composables/view/options/use-options'
     import { SvgPaths } from '@shared/enums/svg-paths'
-    import { IFilterGroup, IVariant } from '@proshop/types'
+    import type { IFilterGroup, IVariant } from '@proshop/types'
+    import { useGroupsFormModal } from '@modules/groups/composables/view/use-groups-form-modal.ts'
 
     defineEmits<{
         (e: 'close'): void
@@ -27,11 +29,18 @@
         filterItems,
         filterGroups,
         onCreateGroup,
-        onCreateGroupOption,
         getVariantItems,
         getOptionFilterItems,
         getOptionFilterGroups,
     } = useGroups()
+
+    const {
+        options,
+        onCreateOption,
+        getOptions
+    } = useOptions()
+
+    const {showFormModal} = useGroupsFormModal()
 
     const selectedFilterGroup = ref<Maybe<IFilterGroup>>(null)
 
@@ -52,8 +61,19 @@
         }
     })
 
-    onMounted(() => {
+    watch(showFormModal, (value) => {
+        if (!value) return
+
         getVariantItems()
+
+        // isEditMode и вынести в отдельный вотчер
+        if (unref(groupModel).id) {
+            getOptions({ groupId: unref(groupModel).id })
+        }
+
+    })
+
+    onMounted(() => {
     })
 
 </script>
@@ -106,12 +126,12 @@
                     <groups-form-option-builder
                         v-if="groupModel.id && selectedFilterGroup"
                         :filters="filterItems"
-                        @create-option="onCreateGroupOption"
+                        @create-option="onCreateOption"
                     />
                 </div>
                 <div class="groups option-list">
                     <div
-                        v-for="option of groupModel.options"
+                        v-for="option of options"
                         :key="option.value"
                     >
                         <span>{{ option.value }}</span>

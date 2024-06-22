@@ -1,24 +1,27 @@
 <script lang="ts" setup>
     import { unref } from 'vue'
-    import { useGroups } from '@modules/groups/composables/use-groups'
-    import { useGroupModel } from '@modules/groups/composables/use-group-model'
+    import { useGroups } from '@modules/groups/composables/view/use-groups'
+    import { useGroupModel } from '@modules/groups/composables/view/use-group-model'
+    import { useOptionModel } from '@modules/groups/composables/view/use-option-model'
     import type {
         IFilterItem,
         IGroupOption,
         IProduct
     } from '@proshop/types'
 
-    const emit = defineEmits<{
-        (e: 'create-option', value: IGroupOption)
-    }>()
-
     defineProps<{
         filters: IFilterItem[]
     }>()
 
+    const emit = defineEmits<{
+        (e: 'create-option', value: IGroupOption)
+    }>()
+
     const {
-        optionModel: groupOptionModel,
+        model: groupModel,
     } = useGroupModel()
+
+    const {optionModel} = useOptionModel()
 
     const {
         products,
@@ -26,18 +29,19 @@
     } = useGroups()
 
     const onOptionValueSelect = (filter: IFilterItem) => {
-        unref(groupOptionModel).value = filter.value as string
+        unref(optionModel).value = filter.value as string
     }
 
     const onSelect = ({ url, image, name, quantity }: IProduct) => {
-        unref(groupOptionModel).url = url
-        unref(groupOptionModel).image = image ?? ''
-        unref(groupOptionModel).isAvailable = Boolean(quantity)
-        unref(groupOptionModel).productName = name
+        unref(optionModel).url = url
+        unref(optionModel).image = image ?? ''
+        unref(optionModel).isAvailable = Boolean(quantity)
+        unref(optionModel).productName = name
+        unref(optionModel).groupId = unref(groupModel).id
     }
 
     const onCreateOption = (validate: () => Promise<boolean>) => {
-        validate().then(() => emit('create-option', unref(groupOptionModel)))
+        validate().then(() => emit('create-option', unref(optionModel)))
     }
 </script>
 <template>
@@ -46,7 +50,7 @@
             <v-row>
                 <v-col cols="4">
                     <v-select
-                        :model-value="groupOptionModel"
+                        :model-value="optionModel"
                         label="Опция"
                         :items="filters"
                         value-key="value"
@@ -59,7 +63,7 @@
                         typeable
                         :items="products"
                         value-key="name"
-                        :rules="[() => !!groupOptionModel.url || 'Выберите товар опции']"
+                        :rules="[() => !!optionModel.url || 'Выберите товар опции']"
                         @input="onSearchProducts"
                         @select="onSelect"
                     />
@@ -68,7 +72,7 @@
             <v-row>
                 <v-col cols="10">
                     <v-text-field
-                        v-model="groupOptionModel.description"
+                        v-model="optionModel.description"
                         label="Описание"
                     />
                 </v-col>

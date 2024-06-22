@@ -1,5 +1,5 @@
 <script lang="ts" setup generic="T">
-    import { computed } from 'vue'
+    import { DeepReadonly, computed } from 'vue'
 
     type ListItem<S> = S & { id: string }
 
@@ -11,7 +11,7 @@
         items = []
     } = defineProps<{
         modelValue?: Maybe<ListItem<T>>
-        items: ListItem<T>[]
+        items: (DeepReadonly<ListItem<T>> | ListItem<T>)[]
         uniqueKey?: string
         deletable?: boolean
         editable?: boolean

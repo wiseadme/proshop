@@ -3,18 +3,21 @@ import { useVariantsService } from '@modules/variants/composables/use-variants-s
 import { useProductsService } from '@modules/products/composables/use-products-service'
 import { useFilterItemsService } from '@modules/filters/composables/use-filter-items-service'
 import { useFilterGroupService } from '@modules/filters/composables/use-filter-group-service'
-import { useGroupsService } from '@modules/groups/composables/use-groups-service'
+import { useGroupsService } from '@modules/groups/composables/services/use-groups-service'
 import { useLogger } from '@shared/utils/logger'
-import { useGroupModel } from '@modules/groups/composables/use-group-model'
+import { useGroupModel } from '@modules/groups/composables/view/use-group-model'
 import {
     IFilterGroup,
     IFilterItem,
     IGroup,
     IGroupOption,
+    IOption,
     IProduct,
     IVariant
 } from '@proshop/types'
 import { Group } from '@modules/groups/model/group.model'
+import { useNotifications } from '@shared/components/VNotifications/use-notifications'
+import { GROUP_CREATE_ERROR } from '@modules/groups/constants/notifications.ts'
 
 export const useGroups = () => {
     const { readOnlyGroups, createGroup, updateGroup } = useGroupsService()
@@ -24,6 +27,8 @@ export const useGroups = () => {
     const { filterGroups, getFilterGroupItems } = useFilterGroupService()
     const { model } = useGroupModel()
     const { logError } = useLogger()
+    const { notify } = useNotifications()
+
 
     const onSearchProducts = async (value: string): Promise<IProduct[] | void> => {
         try {
@@ -65,11 +70,11 @@ export const useGroups = () => {
         try {
             model.value = Group.create(await createGroup(unref(model)))
         } catch (err) {
-            logError('Groups filter items loading failed', err)
+            notify(GROUP_CREATE_ERROR)
         }
     }
 
-    const onCreateGroupOption = async (option: IGroupOption) => {
+    const onCreateGroupOption = async (option: IOption) => {
         try {
             const payload: Partial<IGroup> = {
                 id: unref(model).id,

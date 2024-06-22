@@ -1,7 +1,7 @@
-import { useGroupRepository } from '@modules/groups/repository/group.repository'
+import { useGroupsRepository } from '@modules/groups/repository/groups.repository'
 import { IGroup } from '@proshop/types'
 
-const repository = useGroupRepository()
+const repository = useGroupsRepository()
 
 export const actions = {
     async createGroup(group: IGroup) {

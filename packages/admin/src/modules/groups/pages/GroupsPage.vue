@@ -1,6 +1,6 @@
 <script lang="ts" setup>
     import GroupsList from '@modules/groups/components/GroupsList.vue'
-    import GroupsFormModal from '../components/modals/GroupsFormModal.vue'
+    import GroupsFormModal from '@modules/groups/components/modals/GroupsFormModal.vue'
 
 </script>
 <template>

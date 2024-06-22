@@ -23,7 +23,7 @@ export class Option implements IOption {
         isAvailable = true
     }: IOption) {
         this.id = id
-        this.groupId = groupId,
+        this.groupId = groupId
         this.value = value
         this.order = order
         this.description = description
