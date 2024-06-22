@@ -1,17 +1,19 @@
 <script lang="ts" setup>
     import GroupsForm from '@modules/groups/components/GroupsForm/GroupsForm.vue'
-    import { useGroupsFormModal } from '@modules/groups/composables/view/use-groups-form-modal'
+    import {
+        useGroupsFormModal
+    } from '@modules/groups/composables/view/groups/use-groups-form-modal'
 
-    const { showFormModal } = useGroupsFormModal()
+    const { isGroupModalVisible } = useGroupsFormModal()
 
 </script>
 <template>
     <v-modal
-        v-model="showFormModal"
+        v-model="isGroupModalVisible"
         width="800"
         overlay
         transition="scale-in"
     >
-        <groups-form @close="showFormModal = false"/>
+        <groups-form @close="isGroupModalVisible = false"/>
     </v-modal>
 </template>

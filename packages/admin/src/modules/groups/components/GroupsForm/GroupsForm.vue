@@ -1,7 +1,6 @@
 <script lang="ts" setup>
     import {
         computed,
-        onMounted,
         ref,
         unref,
         watch
@@ -9,20 +8,18 @@
     import GroupsFormOptionBuilder from '@modules/groups/components/GroupsForm/GroupsFormOptionBuilder.vue'
     import { ModalCard } from '@shared/components/Modals'
     import { VSvg } from '@shared/components/VSvg'
-    import { useGroups } from '@modules/groups/composables/view/use-groups'
-    import { useGroupModel } from '@modules/groups/composables/view/use-group-model'
+    import { useGroups } from '@modules/groups/composables/view/groups/use-groups'
+    import { useGroupModel } from '@modules/groups/composables/view/groups/use-group-model'
     import { useOptions } from '@modules/groups/composables/view/options/use-options'
+    import { useGroupsFormModal } from '@modules/groups/composables/view/groups/use-groups-form-modal'
     import { SvgPaths } from '@shared/enums/svg-paths'
     import type { IFilterGroup, IVariant } from '@proshop/types'
-    import { useGroupsFormModal } from '@modules/groups/composables/view/use-groups-form-modal.ts'
 
     defineEmits<{
         (e: 'close'): void
     }>()
 
-    const {
-        model: groupModel,
-    } = useGroupModel()
+    const { model: groupModel } = useGroupModel()
 
     const {
         variants,
@@ -40,7 +37,7 @@
         getOptions
     } = useOptions()
 
-    const {showFormModal} = useGroupsFormModal()
+    const { isGroupModalVisible } = useGroupsFormModal()
 
     const selectedFilterGroup = ref<Maybe<IFilterGroup>>(null)
 
@@ -51,17 +48,19 @@
     }
 
     watch(() => unref(groupModel).variant?.id, (value: IVariant) => {
+        if (!value) return
+
         getOptionFilterGroups({ attributeId: value.attributeId })
         selectedFilterGroup.value = null
     })
 
     watch(selectedFilterGroup, (value: IFilterGroup) => {
-        if (value) {
-            getOptionFilterItems({ groupId: value.id })
-        }
+        if (value) return
+
+        getOptionFilterItems({ groupId: value.id })
     })
 
-    watch(showFormModal, (value) => {
+    watch(isGroupModalVisible, (value) => {
         if (!value) return
 
         getVariantItems()
@@ -73,8 +72,6 @@
 
     })
 
-    onMounted(() => {
-    })
 
 </script>
 <template>
@@ -129,14 +126,40 @@
                         @create-option="onCreateOption"
                     />
                 </div>
-                <div class="groups option-list">
-                    <div
-                        v-for="option of options"
-                        :key="option.value"
-                    >
-                        <span>{{ option.value }}</span>
-                        <span>{{ option.productName }}</span>
-                    </div>
+                <div class="groups option-list mt-4">
+                    <v-row>
+                        <v-col>
+                            <v-tooltip
+                                v-for="option of options"
+                                :key="option.id"
+                                offset-y="-10"
+                                color="white"
+                                elevation="2"
+                                top
+                            >
+                                <template #activator="{ on }">
+                                    <v-chip
+                                        color="success"
+                                        :title="option.value"
+                                        closable
+                                        class="mr-2 elevation-2"
+                                        style="max-height: 150px"
+                                        v-on="on"
+                                    />
+                                </template>
+                                <div class="option-description pa-2">
+                                    <div class="option-image">
+                                        <img
+                                            :src="option.image"
+                                            alt=""
+                                            style="width: 100px; height: 100px"
+                                        >
+                                    </div>
+                                    <span class="grey--text text--darken-3">{{ option.productName }}</span>
+                                </div>
+                            </v-tooltip>
+                        </v-col>
+                    </v-row>
                 </div>
             </template>
             <template #actions>
@@ -157,3 +180,8 @@
         </modal-card>
     </v-form>
 </template>
+<style lang="scss">
+    .v-tooltip {
+        max-height: 200px;
+    }
+</style>

@@ -6,6 +6,6 @@ export const useOptionModel = createSharedComposable(() => {
     const model = ref(Option.create())
 
     return {
-        optionModel: model
+        model
     }
 })

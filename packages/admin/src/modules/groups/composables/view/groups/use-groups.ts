@@ -5,30 +5,26 @@ import { useFilterItemsService } from '@modules/filters/composables/use-filter-i
 import { useFilterGroupService } from '@modules/filters/composables/use-filter-group-service'
 import { useGroupsService } from '@modules/groups/composables/services/use-groups-service'
 import { useLogger } from '@shared/utils/logger'
-import { useGroupModel } from '@modules/groups/composables/view/use-group-model'
-import {
+import { useGroupModel } from '@modules/groups/composables/view/groups/use-group-model'
+import { useNotifications } from '@shared/components/VNotifications/use-notifications'
+import { Group } from '@modules/groups/model/group.model'
+import { GROUP_CREATE_ERROR } from '@modules/groups/constants/notifications'
+import type {
     IFilterGroup,
     IFilterItem,
-    IGroup,
-    IGroupOption,
-    IOption,
     IProduct,
     IVariant
 } from '@proshop/types'
-import { Group } from '@modules/groups/model/group.model'
-import { useNotifications } from '@shared/components/VNotifications/use-notifications'
-import { GROUP_CREATE_ERROR } from '@modules/groups/constants/notifications.ts'
 
 export const useGroups = () => {
-    const { readOnlyGroups, createGroup, updateGroup } = useGroupsService()
+    const { readOnlyGroups, createGroup } = useGroupsService()
     const { variants, getVariants } = useVariantsService()
-    const { products, getProducts, updateProduct } = useProductsService()
+    const { products, getProducts } = useProductsService()
     const { filterItems, getFilterItems } = useFilterItemsService()
     const { filterGroups, getFilterGroupItems } = useFilterGroupService()
     const { model } = useGroupModel()
     const { logError } = useLogger()
     const { notify } = useNotifications()
-
 
     const onSearchProducts = async (value: string): Promise<IProduct[] | void> => {
         try {
@@ -74,35 +70,6 @@ export const useGroups = () => {
         }
     }
 
-    const onCreateGroupOption = async (option: IOption) => {
-        try {
-            const payload: Partial<IGroup> = {
-                id: unref(model).id,
-                options: [...unref(model).options, option]
-            }
-
-            const updated = await updateGroup(payload)
-            await updateOptionProduct(option)
-
-            model.value = Group.create(updated)
-        } catch (err) {
-            logError('Groups option creating failed', err)
-        }
-    }
-
-    const updateOptionProduct = async (option: IGroupOption) => {
-        try {
-            const product = unref(products).find(it => it.url === option.url)!
-
-            await updateProduct({
-                id: product.id,
-                variants: [...product.variants.map(it => (it as IGroup).id), unref(model).id]
-            })
-        } catch (err) {
-            logError('Groups option product updating failed', err)
-        }
-    }
-
     return {
         variants,
         products,
@@ -114,6 +81,5 @@ export const useGroups = () => {
         getOptionFilterItems,
         getOptionFilterGroups,
         onSearchProducts,
-        onCreateGroupOption
     }
 }

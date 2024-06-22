@@ -1,8 +1,8 @@
 <script lang="ts" setup>
     import { unref } from 'vue'
-    import { useGroups } from '@modules/groups/composables/view/use-groups'
-    import { useGroupModel } from '@modules/groups/composables/view/use-group-model'
-    import { useOptionModel } from '@modules/groups/composables/view/use-option-model'
+    import { useGroups } from '@modules/groups/composables/view/groups/use-groups'
+    import { useGroupModel } from '@modules/groups/composables/view/groups/use-group-model'
+    import { useOptionModel } from '@modules/groups/composables/view/options/use-option-model'
     import type {
         IFilterItem,
         IGroupOption,
@@ -17,11 +17,8 @@
         (e: 'create-option', value: IGroupOption)
     }>()
 
-    const {
-        model: groupModel,
-    } = useGroupModel()
-
-    const {optionModel} = useOptionModel()
+    const { model: groupModel } = useGroupModel()
+    const { model: optionModel } = useOptionModel()
 
     const {
         products,

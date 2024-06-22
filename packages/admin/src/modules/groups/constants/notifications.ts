@@ -7,9 +7,21 @@ export const OPTION_CREATE_SUCCESS: Notify = markRaw({
     type: NotificationTypes.SUCCESS
 })
 
+export const OPTION_DELETE_SUCCESS: Notify = markRaw({
+    title: 'Успешно!',
+    text: 'Опция удалена!',
+    type: NotificationTypes.SUCCESS
+})
+
 export const OPTION_CREATE_ERROR: Notify = markRaw({
     title: 'Ошибка',
     text: 'Опция не создана, возникла ошибка.',
+    type: NotificationTypes.ERROR
+})
+
+export const OPTION_DELETE_ERROR: Notify = markRaw({
+    title: 'Ошибка',
+    text: 'Опция не удалена, возникла ошибка.',
     type: NotificationTypes.ERROR
 })
 

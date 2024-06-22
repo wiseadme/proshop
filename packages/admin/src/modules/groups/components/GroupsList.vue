@@ -4,8 +4,11 @@
     import { ItemsList } from '@shared/components/ItemsList'
     import { VSvg } from '@shared/components/VSvg'
     import { SvgPaths } from '@shared/enums/svg-paths'
-    import { useGroupsList } from '@modules/groups/composables/view/use-groups-list'
-    import { useGroupsFormModal } from '@modules/groups/composables/view/use-groups-form-modal'
+    import { useGroupsList } from '@modules/groups/composables/view/groups/use-groups-list'
+    import {
+        useGroupsFormModal
+    } from '@modules/groups/composables/view/groups/use-groups-form-modal'
+    import { useGroupModel } from '@modules/groups/composables/view/groups/use-group-model'
 
     const {
         groups,
@@ -14,7 +17,13 @@
         onDeleteGroup
     } = useGroupsList()
 
-    const { showFormModal } = useGroupsFormModal()
+    const { isGroupModalVisible } = useGroupsFormModal()
+    const { clearModel } = useGroupModel()
+
+    const onOpenModal = () => {
+        clearModel()
+        isGroupModalVisible.value = true
+    }
 
     onBeforeMount(getGroups)
 </script>
@@ -32,7 +41,7 @@
                 elevation="2"
                 color="success"
                 width="120"
-                @click="showFormModal = true"
+                @click="onOpenModal"
             >
                 Добавить
             </v-button>
