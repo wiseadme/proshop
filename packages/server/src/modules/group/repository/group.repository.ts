@@ -19,6 +19,7 @@ export class GroupRepository implements IGroupRepository {
         return GroupMapper.toDomain(group.toObject())
     }
 
+    // TODO - реализовать пагинацию
     async getGroups({ id }: { id: string }): Promise<IGroup[]> {
         const data = await GroupModel
             .find(id && { _id: id } || {})

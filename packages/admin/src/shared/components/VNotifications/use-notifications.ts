@@ -1,12 +1,12 @@
 import { useEventEmitter } from './use-event-emitter'
 import { Notify } from './types'
 
-export const useNotifications = () => {
-    const DEFAULT_TIMEOUT = 3000
+const DEFAULT_TIMEOUT = 3000
 
+export const useNotifications = () => {
     const { emit } = useEventEmitter()
 
-    const notify = (params: Notify): number => {
+    const notify = (params: Notify) => {
         const notification = { ...params }
         notification.id = Date.now()
 
@@ -29,8 +29,6 @@ export const useNotifications = () => {
         } else {
             delete notification.time
         }
-
-        return notification.id
     }
 
     const remove = (id: number) => emit('remove', id)

@@ -1,6 +1,17 @@
 <script lang="ts" setup>
-    import GroupsList from '@modules/groups/components/GroupsList.vue'
-    import GroupsFormModal from '@modules/groups/components/modals/GroupsFormModal.vue'
+    import { defineAsyncComponent } from 'vue'
+
+    const GroupsModal = defineAsyncComponent({
+        loader: () => import('@modules/groups/components/modals/GroupsFormModal.vue')
+    })
+
+    const OptionsModal = defineAsyncComponent({
+        loader: () => import('@modules/groups/components/modals/OptionsFormModal.vue')
+    })
+
+    const GroupsList = defineAsyncComponent({
+        loader: () => import('@modules/groups/components/GroupsList.vue')
+    })
 
 </script>
 <template>
@@ -14,7 +25,8 @@
                     <groups-list/>
                 </v-col>
                 <v-col>
-                    <groups-form-modal/>
+                    <groups-modal/>
+                    <options-modal/>
                 </v-col>
             </v-row>
         </v-layout>

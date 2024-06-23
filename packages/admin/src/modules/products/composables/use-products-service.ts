@@ -164,7 +164,7 @@ export const useProductsService = createSharedComposable(() => {
     }
 
     const updateProduct = async (updates: Partial<IProductParams>): Promise<IProduct> => {
-        // updates.id = unref(product)!.id
+        updates.id = updates.id || unref(product)!.id
 
         try {
             const updated = await _productsStore.updateProduct(updates as Partial<IProductParams>)
@@ -200,10 +200,7 @@ export const useProductsService = createSharedComposable(() => {
 
     const updateProductAttributes = async (updates: { attributes: IAttribute[] }): Promise<IProduct> => {
         try {
-            return await updateProduct({
-                id: unref(product)!.id,
-                attributes: updates.attributes
-            })
+            return await updateProduct({ attributes: updates.attributes })
         } catch (err) {
             return Promise.reject(err)
         }

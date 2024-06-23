@@ -4,18 +4,18 @@ export class Group implements IGroup {
     id: IGroup['id']
     name: IGroup['name']
     variant: IGroup['variant']
-    options: IGroup['options']
+    hasOptions: IGroup['hasOptions']
 
     constructor({
         id = '',
         name = '',
         variant = null,
-        options = [],
+        hasOptions = false,
     }: IGroup) {
         this.id = id
         this.name = name
         this.variant = variant
-        this.options = options
+        this.hasOptions = hasOptions
     }
 
     static create(group = {} as IGroup): IGroup {

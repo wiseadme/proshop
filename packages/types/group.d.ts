@@ -14,7 +14,7 @@ export interface IGroup {
     id: string
     name: string
     variant: Maybe<IVariant | string>
-    options: IGroupOption[]
+    hasOptions?: boolean
 }
 
 export interface IGroupMongoModel extends Omit<IGroup, 'id' | 'variant'> {

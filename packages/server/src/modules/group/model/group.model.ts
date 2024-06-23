@@ -13,9 +13,9 @@ const GroupSchema: Schema = new Schema<IGroupMongoModel>({
         unique: true,
         default: `${Date.now()}`,
     },
-    options: {
-        type: [] as IGroupOption[],
-        default: [],
+    hasOptions: {
+        type: Boolean,
+        required :true
     },
 }, {
     timestamps: false,

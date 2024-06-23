@@ -1,0 +1,142 @@
+import {
+    computed,
+    ref,
+    unref
+} from 'vue'
+import { useOptionsService } from '@modules/groups/composables/services/use-options-service'
+import { useNotifications } from '@shared/components/VNotifications/use-notifications'
+import { useFilterItemsService } from '@modules/filters/composables/use-filter-items-service'
+import { useProductsService } from '@modules/products/composables/use-products-service'
+import { useFilterGroupService } from '@modules/filters/composables/use-filter-group-service'
+import { useLogger } from '@shared/utils/logger'
+// Constants
+import {
+    OPTION_CREATE_ERROR,
+    OPTION_CREATE_SUCCESS,
+    OPTION_DELETE_ERROR,
+    OPTION_DELETE_SUCCESS
+} from '@modules/groups/constants/notifications'
+// Types
+import type {
+    IFilterGroup,
+    IFilterItem,
+    IGroup,
+    IOption,
+    IProduct,
+    IVariant
+} from '@proshop/types'
+import { useGroupModel } from '@modules/groups/composables/view/use-group-model'
+import { useGroupsService } from '@modules/groups/composables/services/use-groups-service'
+
+export const useOptions = () => {
+    const {
+        readOnlyOptions,
+        createOption,
+        getOptions,
+        deleteOption,
+        clearOptions
+    } = useOptionsService()
+
+    const { filterItems, getFilterItems } = useFilterItemsService()
+    const { filterGroups, getFilterGroupItems } = useFilterGroupService()
+    const { products, getProducts, updateProduct } = useProductsService()
+    const { hasOptions, model: groupModel } = useGroupModel()
+    const { updateGroup } = useGroupsService()
+    const { logError } = useLogger()
+    const { notify } = useNotifications()
+
+    const optionProduct = ref<Maybe<IProduct>>(null)
+
+    const productGroups = computed<IGroup[]>(() => unref(optionProduct)?.variants as IGroup[] ?? [])
+
+    const productGroupsMap = computed<Record<string, boolean>>(() => unref(productGroups).reduce((map, {variant}) => {
+        map[(variant as IVariant)!.id] = true
+
+        return map
+    }, {}) ?? {})
+
+    const addProductGroup = () => {
+        unref(optionProduct)!.variants ??= []
+        const varIds = unref(productGroups).map((it: IGroup) => it.id)
+
+        varIds.push(unref(groupModel).id)
+
+        return updateProduct({
+            id: unref(optionProduct)!.id,
+            variants: varIds
+        })
+    }
+
+    const saveOption = async (option: IOption) => {
+        try {
+            await createOption(option)
+
+            if (!unref(productGroupsMap)[unref(groupModel).id]) {
+                await addProductGroup()
+            }
+
+            if (!unref(hasOptions)) {
+                await updateGroup({
+                    hasOptions: true,
+                    id: unref(groupModel).id
+                })
+            }
+
+            notify(OPTION_CREATE_SUCCESS)
+        } catch (err) {
+            notify(OPTION_CREATE_ERROR)
+        }
+    }
+
+    const onDeleteOption = async (option: IOption) => {
+        try {
+            await deleteOption(option.id)
+            notify(OPTION_DELETE_SUCCESS)
+        } catch (err) {
+            notify(OPTION_DELETE_ERROR)
+        }
+    }
+
+    const getOptionFilterGroups = async (params = {}): Promise<IFilterGroup[] | void> => {
+        try {
+            return await getFilterGroupItems(params)
+        } catch (err) {
+            logError('Filter groups items loading failed', err)
+        }
+    }
+
+    const getOptionFilterGroupItems = async (params = {}): Promise<IFilterItem[] | void> => {
+        try {
+            return await getFilterItems(params)
+        } catch (err) {
+            logError('Groups filter items loading failed', err)
+        }
+    }
+
+    const onSearchProducts = async (value: string): Promise<IProduct[] | void> => {
+        try {
+            if (value.length < 3) {
+                return
+            }
+
+            return await getProducts({ name: value })
+        } catch (err) {
+            logError('Search results loading failed', err)
+        }
+    }
+
+    return {
+        products,
+        filterItems,
+        filterGroups,
+        options: readOnlyOptions,
+        optionProduct,
+        getOptionFilterGroups,
+        getOptionFilterGroupItems,
+        getOptions,
+        saveOption,
+        onDeleteOption,
+        onSearchProducts,
+        clearOptions
+    }
+}

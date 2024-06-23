@@ -1,21 +1,21 @@
-import { IGroup, IGroupOption, IVariant } from '@proshop/types'
+import { IGroup, IVariant } from '@proshop/types'
 
 export class Group implements IGroup {
     readonly id: string
     readonly name: string
     readonly variant: IVariant
-    readonly options: IGroupOption[]
+    readonly hasOptions?: boolean
 
     constructor({
         id = '',
         name,
         variant,
-        options
+        hasOptions = false
     }) {
         this.id = id
         this.name = name
         this.variant = variant
-        this.options = options
+        this.hasOptions = hasOptions
     }
 
     static create(group: IGroup): IGroup {
