@@ -1,12 +1,18 @@
 import { unref } from 'vue'
-import { useVariantsService } from '@modules/variants/composables/use-variants-service'
+
 import { useGroupsService } from '@modules/groups/composables/services/use-groups-service'
-import { useLogger } from '@shared/utils/logger'
 import { useGroupModel } from '@modules/groups/composables/view/use-group-model'
+import { useVariantsService } from '@modules/variants/composables/use-variants-service'
+
 import { useNotifications } from '@shared/components/VNotifications/use-notifications'
+
 import { Group } from '@modules/groups/model/group.model'
-import { GROUP_CREATE_ERROR } from '@modules/groups/constants/notifications'
+
+import { useLogger } from '@shared/utils/logger'
+
 import type { IGroup, IVariant } from '@proshop/types'
+
+import { GROUP_CREATE_ERROR } from '@modules/groups/constants/notifications'
 
 export const useGroups = () => {
     const { readOnlyGroups, createGroup, updateGroup } = useGroupsService()

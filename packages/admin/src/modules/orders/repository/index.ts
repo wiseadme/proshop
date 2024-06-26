@@ -1,6 +1,7 @@
+import { IOrder } from '@proshop/types'
+
 import { rest } from '@shared/api'
 import { IItemsRepository, IRest } from '@shared/types/app'
-import { IOrder } from '@proshop/types'
 
 class Repository implements IItemsRepository<IOrder> {
     client: IRest<IOrder>

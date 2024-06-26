@@ -1,11 +1,13 @@
 <script lang="ts" setup>
-    import { ISidebarTab, useRightSidebar } from '@shared/composables/use-right-sidebar'
     import {
         computed,
         unref,
         watch
     } from 'vue'
+
     import { useRoute } from 'vue-router'
+
+    import { ISidebarTab, useRightSidebar } from '@shared/composables/use-right-sidebar'
 
     const props = defineProps<{
         tabs: any[]

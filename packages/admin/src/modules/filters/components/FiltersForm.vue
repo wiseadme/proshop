@@ -1,6 +1,7 @@
 <script lang="ts" setup>
-    import { useFilterGroupService } from '@modules/filters/composables/use-filter-group-service'
     import { onMounted } from 'vue'
+
+    import { useFilterGroupService } from '@modules/filters/composables/use-filter-group-service'
 
     const { getFilterGroupItems, filterGroups } = useFilterGroupService()
 

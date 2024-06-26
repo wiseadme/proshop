@@ -1,6 +1,8 @@
 import { ref } from 'vue'
-import { getOrderStatusName } from '@modules/orders/helpers'
+
 import { useOrdersService } from '@modules/orders/composables/use-orders-service'
+
+import { getOrderStatusName } from '@modules/orders/helpers'
 
 export const useOrdersTable = () => {
     const {

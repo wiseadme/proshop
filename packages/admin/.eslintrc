@@ -157,6 +157,70 @@
                 "max-len": 100,
                 "semi": false
             }
+        ],
+        "import/order": [
+            "error",
+            {
+                "groups": ["builtin", "external", "internal"],
+                "pathGroups": [
+                    {
+                        "pattern": "vue",
+                        "group": "external",
+                        "position": "before"
+                    },
+                    {
+                        "pattern": "@modules/**/composables/**",
+                        "group": "external",
+                        "position": "after"
+                    },
+                    {
+                        "pattern": "@shared/composables/**",
+                        "group": "external",
+                        "position": "after"
+                    },
+                    {
+                        "pattern": "@shared/components/**",
+                        "group": "external",
+                        "position": "after"
+                    },
+                    {
+                        "pattern": "@modules/**/components/**",
+                        "group": "external",
+                        "position": "after"
+                    },
+                    {
+                        "pattern": "@modules/**/repository/**",
+                        "group": "external",
+                        "position": "after"
+                    },
+                    {
+                        "pattern": "@modules/**/model/**",
+                        "group": "external",
+                        "position": "after"
+                    },
+                    {
+                        "pattern": "@shared/features/**",
+                        "group": "external",
+                        "position": "before"
+                    },
+                    {
+                        "pattern": "@shared/utils/**",
+                        "group": "external",
+                        "position": "after"
+                    },
+                    {
+                        "pattern": "@proshop/**",
+                        "group": "external",
+                        "position": "after"
+                    }
+                ],
+                "pathGroupsExcludedImportTypes": ["vue"],
+                "newlines-between": "always",
+                "alphabetize": {
+                    "order": "asc",
+                    "caseInsensitive": true
+                }
+            }
         ]
     },
     "overrides": [

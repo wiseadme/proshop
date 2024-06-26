@@ -1,8 +1,10 @@
 <script lang="ts" setup>
-    import { getProductConditionTitle } from '@modules/products/helpers'
     import { useProductModel } from '@modules/products/composables/use-product-model'
+
     import { FormCard } from '@shared/components/FormCard'
     import VSvg from '@shared/components/VSvg/VSvg.vue'
+
+    import { getProductConditionTitle } from '@modules/products/helpers'
     import { SvgPaths } from '@shared/enums/svg-paths'
 
     const { model } = useProductModel()

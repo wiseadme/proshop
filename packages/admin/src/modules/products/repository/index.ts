@@ -1,5 +1,3 @@
-import { rest } from '@shared/api'
-import { IRest } from '@shared/types/app'
 import {
     IAttribute,
     IMetaTag,
@@ -10,6 +8,9 @@ import {
     IRequestParams,
     IVariant
 } from '@proshop/types'
+
+import { rest } from '@shared/api'
+import { IRest } from '@shared/types/app'
 
 class Repository {
     client: IRest<IProduct>

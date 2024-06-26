@@ -1,14 +1,20 @@
 import { ref, unref } from 'vue'
-import { useCategoriesService } from '@modules/categories/composables/use-categories-service'
-import { ICategory } from '@proshop/types'
-import { useCategoryModel } from '@modules/categories/composables/use-category-model'
-import { RouteNames } from '@modules/categories/enums/route-names'
-import { CREATE } from '@shared/constants/actions'
-import { INFO_BLOCK } from '@modules/products/constants/sections'
+
 import { useRouter } from 'vue-router'
-import { CATEGORY_DELETED } from '@modules/categories/constants/notifications'
-import { SAVING_ERROR } from '@shared/constants/notifications'
+
+import { useCategoriesService } from '@modules/categories/composables/use-categories-service'
+import { useCategoryModel } from '@modules/categories/composables/use-category-model'
+
 import { useNotifications } from '@shared/components/VNotifications/use-notifications'
+
+import { ICategory } from '@proshop/types'
+
+import { CATEGORY_DELETED } from '@modules/categories/constants/notifications'
+import { RouteNames } from '@modules/categories/enums/route-names'
+import { INFO_BLOCK } from '@modules/products/constants/sections'
+import { CREATE } from '@shared/constants/actions'
+import { SAVING_ERROR } from '@shared/constants/notifications'
+
 
 export const useCategoriesTable = () => {
     const { categories, setAsCurrent, deleteCategory } = useCategoriesService()

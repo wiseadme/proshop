@@ -1,10 +1,16 @@
 <script lang="ts" setup>
     import { unref } from 'vue'
-    import AddressMap from '@modules/orders/components/OrderActionsModal/AddressMap/AddressMap.vue'
-    import { OrderProcessStatuses, OrderStatuses } from '@modules/orders/enums/status'
-    import { useNotifications } from '@shared/components/VNotifications/use-notifications'
+
     import { useOrders } from '@modules/orders/composables/use-orders'
+
+    import { useNotifications } from '@shared/components/VNotifications/use-notifications'
+
+    import AddressMap from '@modules/orders/components/OrderActionsModal/AddressMap/AddressMap.vue'
+
     import { ICartItem, IUser } from '@proshop/types'
+
+    import { OrderProcessStatuses, OrderStatuses } from '@modules/orders/enums/status'
+
 
     defineProps<{
         users: IUser[]

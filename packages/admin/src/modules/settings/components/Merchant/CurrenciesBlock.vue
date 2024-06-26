@@ -1,5 +1,6 @@
 <script lang="ts" setup>
     import { useMerchant } from '@modules/settings/composables/use-merchant'
+
     import currencies from '@shared/schemes/currencies.json'
 
     const { model } = useMerchant()

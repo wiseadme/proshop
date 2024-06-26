@@ -6,13 +6,18 @@
         unref,
         watch
     } from 'vue'
-    import { VSvg } from '@shared/components/VSvg'
-    import { useGroups } from '@modules/groups/composables/view/use-groups'
+
     import { useGroupModel } from '@modules/groups/composables/view/use-group-model'
-    import { useOptions } from '@modules/groups/composables/view/use-options'
+    import { useGroups } from '@modules/groups/composables/view/use-groups'
     import { useGroupsFormModal } from '@modules/groups/composables/view/use-groups-form-modal'
-    import { SvgPaths } from '@shared/enums/svg-paths'
+    import { useOptions } from '@modules/groups/composables/view/use-options'
+
+    import { VSvg } from '@shared/components/VSvg'
+
     import type { IFilterGroup, IVariant } from '@proshop/types'
+
+    import { SvgPaths } from '@shared/enums/svg-paths'
+
 
     const ModalCard = defineAsyncComponent({
         loader: () => import('@shared/components/Modals').then(({ ModalCard }) => ModalCard)

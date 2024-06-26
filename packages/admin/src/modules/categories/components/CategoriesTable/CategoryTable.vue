@@ -1,17 +1,16 @@
 <script lang="ts" setup>
-    import { VSvg } from '@shared/components/VSvg'
-    import { FormCard } from '@shared/components/FormCard'
-    // Composables
     import { useCategoriesService } from '@modules/categories/composables/use-categories-service'
     import { useCategoriesTable } from '@modules/categories/composables/use-categories-table'
-    // Enums
-    import { SvgPaths } from '@shared/enums/svg-paths'
-    import { RouteNames } from '@modules/categories/enums/route-names'
-    // Constants
-    import { CREATE, EDIT } from '@shared/constants/actions'
-    import { INFO_BLOCK } from '@modules/categories/constants/sections'
-    // Types
+
+    import { FormCard } from '@shared/components/FormCard'
+    import { VSvg } from '@shared/components/VSvg'
+
     import { ICategory } from '@proshop/types'
+
+    import { INFO_BLOCK } from '@modules/categories/constants/sections'
+    import { RouteNames } from '@modules/categories/enums/route-names'
+    import { CREATE, EDIT } from '@shared/constants/actions'
+    import { SvgPaths } from '@shared/enums/svg-paths'
 
     defineEmits<{
         (e: 'create:category'): void

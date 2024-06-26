@@ -1,12 +1,17 @@
 <script lang="ts" setup>
-    import { FormCard } from '@shared/components/FormCard'
-    import { VSvg } from '@shared/components/VSvg'
-    import { DraggableItemsList } from '@shared/components/DraggableItemsList'
-    import { SvgPaths } from '@shared/enums/svg-paths'
+    import { onMounted } from 'vue'
+
     import { useCategoryFilters } from '@modules/categories/composables/use-category-filters'
     import { useCategoryModel } from '@modules/categories/composables/use-category-model'
-    import { onMounted } from 'vue'
+
+    import { DraggableItemsList } from '@shared/components/DraggableItemsList'
+    import { FormCard } from '@shared/components/FormCard'
+    import { VSvg } from '@shared/components/VSvg'
+
     import { IFilterGroup } from '@proshop/types'
+
+    import { SvgPaths } from '@shared/enums/svg-paths'
+
 
     const { model } = useCategoryModel()
 

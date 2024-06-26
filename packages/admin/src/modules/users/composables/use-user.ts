@@ -1,4 +1,5 @@
 import { ref } from 'vue'
+
 import { User } from '@modules/users/model/user.model'
 
 export const useUser = () => {

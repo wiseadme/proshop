@@ -1,5 +1,6 @@
 <script lang="ts" setup>
-    import { useOptionsFormModal } from '@modules/groups/composables/view/use-options-form-modal.ts'
+    import { useOptionsFormModal } from '@modules/groups/composables/view/use-options-form-modal'
+
     import OptionsForm from '@modules/groups/components/OptionsForm/OptionsForm.vue'
 
     const { isOptionsModalVisible } = useOptionsFormModal()

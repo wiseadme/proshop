@@ -1,6 +1,7 @@
+import { IVariant } from '@proshop/types'
+
 import { rest } from '@shared/api'
 import { IRepository, IRest } from '@shared/types/app'
-import { IVariant } from '@proshop/types'
 
 export class Repository implements IRepository<IVariant> {
     client: IRest<IVariant>

@@ -4,16 +4,21 @@
         unref,
         watch
     } from 'vue'
+
+    import { useFilterGroupService } from '@modules/filters/composables/use-filter-group-service'
+    import { useFilterGroups } from '@modules/filters/composables/use-filter-groups'
+    import { useFilterItems } from '@modules/filters/composables/use-filter-items'
+    import { useFilterItemsService } from '@modules/filters/composables/use-filter-items-service'
+
     import { FormCard } from '@shared/components/FormCard'
     import { ItemsList } from '@shared/components/ItemsList'
     import { VSvg } from '@shared/components/VSvg'
 
-    import { useFilterItemsService } from '@modules/filters/composables/use-filter-items-service'
-    import { useFilterItems } from '@modules/filters/composables/use-filter-items'
-    import { useFilterGroupService } from '@modules/filters/composables/use-filter-group-service'
-    import { SvgPaths } from '@shared/enums/svg-paths'
+
     import { IFilterGroup } from '@proshop/types'
-    import { useFilterGroups } from '@modules/filters/composables/use-filter-groups'
+
+    import { SvgPaths } from '@shared/enums/svg-paths'
+
 
     const { filterItems, getFilterItems, deleteFilterItem } = useFilterItemsService()
     const { filtersGroup, toggleForm, onEditFilter } = useFilterItems()

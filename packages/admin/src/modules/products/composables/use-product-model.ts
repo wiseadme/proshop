@@ -4,11 +4,16 @@ import {
     unref,
     watch,
 } from 'vue'
-import { useProductsService } from '@modules/products/composables/use-products-service'
+
 import { createSharedComposable } from '@shared/features/create-shared-composable'
+
+import { useProductsService } from '@modules/products/composables/use-products-service'
+
 import { Product } from '@modules/products/model/product.model'
-import { clone } from '@shared/helpers'
+
 import { IProduct } from '@proshop/types'
+
+import { clone } from '@shared/helpers'
 
 export const useProductModel = createSharedComposable(() => {
     const { product } = useProductsService()

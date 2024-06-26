@@ -4,10 +4,14 @@ import {
     ref,
     unref
 } from 'vue'
-import { useOptionsRepository } from '@modules/groups/repository/options.repository'
+
 import { createSharedComposable } from '@shared/features/create-shared-composable'
-import { IOption } from '@proshop/types'
+
+import { useOptionsRepository } from '@modules/groups/repository/options.repository'
+
 import { useLogger } from '@shared/utils/logger'
+
+import { IOption } from '@proshop/types'
 
 export const useOptionsService = createSharedComposable(() => {
     const repository = useOptionsRepository()

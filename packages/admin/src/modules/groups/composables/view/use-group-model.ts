@@ -3,8 +3,11 @@ import {
     ref,
     unref
 } from 'vue'
+
 import { createSharedComposable } from '@shared/features/create-shared-composable'
+
 import { Group } from '@modules/groups/model/group.model'
+
 import type { IGroup } from '@proshop/types'
 
 export const useGroupModel = createSharedComposable(() => {

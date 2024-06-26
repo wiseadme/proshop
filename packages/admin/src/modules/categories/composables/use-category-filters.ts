@@ -4,11 +4,16 @@ import {
     unref,
     watch,
 } from 'vue'
-import { useFilterGroupService } from '@modules/filters/composables/use-filter-group-service'
-import { IFilterGroup } from '@proshop/types'
-import { useCategoryModel } from '@modules/categories/composables/use-category-model'
+
 import { useCategoriesService } from '@modules/categories/composables/use-categories-service'
+import { useCategoryModel } from '@modules/categories/composables/use-category-model'
+import { useFilterGroupService } from '@modules/filters/composables/use-filter-group-service'
+
 import { useNotifications } from '@shared/components/VNotifications/use-notifications'
+
+import { IFilterGroup } from '@proshop/types'
+
+
 import {
     CATEGORY_FILTERS_UPDATED,
     CATEGORY_SAVING_ERROR

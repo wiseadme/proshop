@@ -1,9 +1,12 @@
 <script lang="ts" setup>
+    import { useUsersService } from '@modules/users/composables/use-users-service'
+    import { useUsersTable } from '@modules/users/composables/use-users-table'
+
     import { FormCard } from '@shared/components/FormCard'
     import { VSvg } from '@shared/components/VSvg'
-    import { useUsersTable } from '@modules/users/composables/use-users-table'
-    import { useUsersService } from '@modules/users/composables/use-users-service'
+
     import { IUser } from '@proshop/types'
+
     import { SvgPaths } from '@shared/enums/svg-paths'
 
     defineEmits<{

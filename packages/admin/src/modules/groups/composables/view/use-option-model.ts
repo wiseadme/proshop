@@ -3,7 +3,9 @@ import {
     ref,
     unref
 } from 'vue'
+
 import { createSharedComposable } from '@shared/features/create-shared-composable'
+
 import { Option } from '@modules/groups/model/option.model'
 
 export const useOptionModel = createSharedComposable(() => {

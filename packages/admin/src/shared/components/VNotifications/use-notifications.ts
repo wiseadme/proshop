@@ -1,5 +1,5 @@
-import { useEventEmitter } from './use-event-emitter'
 import { Notify } from './types'
+import { useEventEmitter } from './use-event-emitter'
 
 const DEFAULT_TIMEOUT = 3000
 

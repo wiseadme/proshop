@@ -1,7 +1,9 @@
-import { IOption } from '@proshop/types'
-import { IRest } from '@shared/types/app'
 import { AxiosResponse } from 'axios'
+
+import { IOption } from '@proshop/types'
+
 import { rest } from '@shared/api'
+import { IRest } from '@shared/types/app'
 
 interface IOptionsRepository {
     createOption(option: IOption): Promise<AxiosResponse<{ data: IOption, ok: boolean }>>

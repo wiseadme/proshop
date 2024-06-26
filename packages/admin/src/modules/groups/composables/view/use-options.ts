@@ -3,20 +3,19 @@ import {
     ref,
     unref
 } from 'vue'
-import { useOptionsService } from '@modules/groups/composables/services/use-options-service'
-import { useNotifications } from '@shared/components/VNotifications/use-notifications'
-import { useFilterItemsService } from '@modules/filters/composables/use-filter-items-service'
-import { useProductsService } from '@modules/products/composables/use-products-service'
+
 import { useFilterGroupService } from '@modules/filters/composables/use-filter-group-service'
+import { useFilterItemsService } from '@modules/filters/composables/use-filter-items-service'
+import { useGroupsService } from '@modules/groups/composables/services/use-groups-service'
+import { useOptionsService } from '@modules/groups/composables/services/use-options-service'
+import { useGroupModel } from '@modules/groups/composables/view/use-group-model'
+import { useProductsService } from '@modules/products/composables/use-products-service'
+
+import { useNotifications } from '@shared/components/VNotifications/use-notifications'
+
 import { useLogger } from '@shared/utils/logger'
+
 // Constants
-import {
-    OPTION_CREATE_ERROR,
-    OPTION_CREATE_SUCCESS,
-    OPTION_DELETE_ERROR,
-    OPTION_DELETE_SUCCESS
-} from '@modules/groups/constants/notifications'
-// Types
 import type {
     IFilterGroup,
     IFilterItem,
@@ -25,8 +24,15 @@ import type {
     IProduct,
     IVariant
 } from '@proshop/types'
-import { useGroupModel } from '@modules/groups/composables/view/use-group-model'
-import { useGroupsService } from '@modules/groups/composables/services/use-groups-service'
+
+import {
+    OPTION_CREATE_ERROR,
+    OPTION_CREATE_SUCCESS,
+    OPTION_DELETE_ERROR,
+    OPTION_DELETE_SUCCESS
+} from '@modules/groups/constants/notifications'
+
+// Types
 
 export const useOptions = () => {
     const {

@@ -1,10 +1,14 @@
 <script lang="ts" setup>
     import { unref } from 'vue'
-    import { useVariantsService } from '@modules/variants/composables/use-variants-service'
+
     import { useAttributesService } from '@modules/attributes/composables/use-attributes-service'
     import { useVariant } from '@modules/variants/composables/use-variant'
+    import { useVariantsService } from '@modules/variants/composables/use-variants-service'
+
     import { ModalCard } from '@shared/components/Modals'
+
     import { Variant } from '@modules/variants/model/variant.model'
+
     import type { IAttribute } from '@proshop/types'
 
     const {

@@ -1,6 +1,7 @@
+import { IMerchant } from '@proshop/types'
+
 import { rest } from '@shared/api'
 import { IRepository, IRest } from '@shared/types/app'
-import { IMerchant } from '@proshop/types'
 
 class Repository implements IRepository<IMerchant> {
     client: IRest<IMerchant>

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-    import { VariantsList } from '@modules/variants/components/VariantsList'
     import { VariantFormModal } from '@modules/variants/components/modals'
+    import { VariantsList } from '@modules/variants/components/VariantsList'
 </script>
 <template>
     <div class="variants-page">

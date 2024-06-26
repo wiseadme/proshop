@@ -3,10 +3,14 @@ import {
     toRaw,
     unref,
 } from 'vue'
-import { IAsset } from '@proshop/types'
+
 import { useProductModel } from '@modules/products/composables/use-product-model'
 import { useProductsService } from '@modules/products/composables/use-products-service'
+
 import { useNotifications } from '@shared/components/VNotifications/use-notifications'
+
+import { IAsset } from '@proshop/types'
+
 import { CHANGES_SAVED, SAVING_ERROR } from '@shared/constants/notifications'
 
 export const useProductImages = () => {

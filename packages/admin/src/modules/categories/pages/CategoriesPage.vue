@@ -1,8 +1,11 @@
 <script lang="ts" setup>
-    import CategoryTable from '@modules/categories/components/CategoriesTable'
+    import { onBeforeMount } from 'vue'
+
     import { useCategoriesService } from '@modules/categories/composables/use-categories-service'
     import { useCategoriesTable } from '@modules/categories/composables/use-categories-table'
-    import { onBeforeMount } from 'vue'
+
+    import CategoryTable from '@modules/categories/components/CategoriesTable'
+
 
     const {
         categories,

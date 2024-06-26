@@ -1,5 +1,6 @@
-import { useFilesRepository } from '@shared/repository/files.repository'
 import { IAsset } from '@proshop/types'
+
+import { useFilesRepository } from '@shared/repository/files.repository'
 
 const repository = useFilesRepository()
 

@@ -1,7 +1,9 @@
+import { AxiosResponse } from 'axios'
+
+import { IGroup } from '@proshop/types'
+
 import { rest } from '@shared/api'
 import { IRest } from '@shared/types/app'
-import { IGroup } from '@proshop/types'
-import { AxiosResponse } from 'axios'
 
 interface IGroupsRepository {
     createGroup(group: IGroup): Promise<AxiosResponse<{ data: IGroup, ok: boolean }>>

@@ -1,6 +1,7 @@
+import { IOption } from '@proshop/types'
+
 import { rest } from '@shared/api'
 import { IRepository, IRest } from '@shared/types/app'
-import { IOption } from '@proshop/types'
 
 class Repository implements IRepository<IOption> {
     client: IRest<IOption>

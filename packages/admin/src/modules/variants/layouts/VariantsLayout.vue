@@ -1,9 +1,10 @@
 <script lang="ts">
     import { defineComponent } from 'vue'
+
     import SkeletonPreloader from '@shared/components/Preloader/SkeletonPreloader.vue'
 
     export default defineComponent({
-        name: 'VariantLayout',
+        name: 'variants-layout',
         components: {
             SkeletonPreloader
         },

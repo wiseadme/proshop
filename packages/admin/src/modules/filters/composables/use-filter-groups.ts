@@ -3,10 +3,14 @@ import {
     ref,
     unref,
 } from 'vue'
-import { useFilterGroupService } from '@modules/filters/composables/use-filter-group-service'
-import { FilterGroup } from '@modules/filters/model/filterGroup.model'
-import { IAttribute, IFilterGroup } from '@proshop/types'
+
 import { createSharedComposable } from '@shared/features/create-shared-composable'
+
+import { useFilterGroupService } from '@modules/filters/composables/use-filter-group-service'
+
+import { FilterGroup } from '@modules/filters/model/filterGroup.model'
+
+import { IAttribute, IFilterGroup } from '@proshop/types'
 
 export const useFilterGroups = createSharedComposable(() => {
     const {

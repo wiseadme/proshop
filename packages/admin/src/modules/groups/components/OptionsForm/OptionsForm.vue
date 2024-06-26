@@ -5,20 +5,25 @@
         unref,
         watch
     } from 'vue'
-    import { ModalCard } from '@shared/components/Modals'
-    import { VSvg } from '@shared/components/VSvg'
-    import OptionsFormOptionsList from '@modules/groups/components/OptionsForm/OptionsFormOptionsList.vue'
 
-    import { useOptions } from '@modules/groups/composables/view/use-options'
-    import { SvgPaths } from '@shared/enums/svg-paths'
     import { useGroupModel } from '@modules/groups/composables/view/use-group-model'
     import { useOptionModel } from '@modules/groups/composables/view/use-option-model'
+    import { useOptions } from '@modules/groups/composables/view/use-options'
+
+    import { ModalCard } from '@shared/components/Modals'
+    import { VSvg } from '@shared/components/VSvg'
+
+    import OptionsFormOptionsList from '@modules/groups/components/OptionsForm/OptionsFormOptionsList.vue'
+
     import type {
         IFilterGroup,
         IFilterItem,
         IOption,
         IProduct
     } from '@proshop/types'
+
+    import { SvgPaths } from '@shared/enums/svg-paths'
+
 
     defineEmits<{
         (e: 'close'): void

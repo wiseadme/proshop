@@ -1,6 +1,7 @@
-import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
 import path from 'path'
+
+import vue from '@vitejs/plugin-vue'
+import { defineConfig } from 'vite'
 
 const isProd = process.env.NODE_ENV === 'production'
 

@@ -1,4 +1,5 @@
 import { markRaw } from 'vue'
+
 import { NotificationTypes, Notify } from '@shared/components/VNotifications/types'
 
 export const OPTION_CREATE_SUCCESS: Notify = markRaw({

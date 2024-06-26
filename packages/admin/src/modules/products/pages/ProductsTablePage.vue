@@ -1,8 +1,9 @@
 <script lang="ts" setup>
     // Components
+    import { useProductsService } from '@modules/products/composables/use-products-service'
+
     import { ProductsTable } from '@modules/products/components/ProductsTable'
     // Composables
-    import { useProductsService } from '@modules/products/composables/use-products-service'
 
     const { getProducts } = useProductsService()
 

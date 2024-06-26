@@ -5,18 +5,20 @@
         unref,
         watch,
     } from 'vue'
+
     import { useRoute, useRouter } from 'vue-router'
-    import { RouteNames as SettingsRouteNames } from '@modules/settings/enums/route-names'
-    import { RouteNames as CategoriesRouteNames } from '@modules/categories/enums/route-names'
-    import { RouteNames as ProductsRouteNames } from '@modules/products/enums/route-names'
-    import { RouteNames as OrdersRouteNames } from '@modules/orders/enums/route-names'
-    import { RouteNames as CustomersRouteNames } from '@modules/customers/enums/route-names'
-    import { RouteNames as UsersRouteNames } from '@modules/users/enums/route-names'
+
     import { RouteNames as AttributesRouteNames } from '@modules/attributes/enums/route-names'
+    import { RouteNames as CategoriesRouteNames } from '@modules/categories/enums/route-names'
+    import { RouteNames as CustomersRouteNames } from '@modules/customers/enums/route-names'
     import { RouteNames as FiltersRouteNames } from '@modules/filters/enums/route-names'
-    import { RouteNames as UnitsRouteNames } from '@modules/units/enums/route-names'
-    import { RouteNames as VariantsRouteNames } from '@modules/variants/enums/route-names'
     import { RouteNames as MetaTagsRouteNames } from '@modules/metatags/enums/route-names'
+    import { RouteNames as OrdersRouteNames } from '@modules/orders/enums/route-names'
+    import { RouteNames as ProductsRouteNames } from '@modules/products/enums/route-names'
+    import { RouteNames as SettingsRouteNames } from '@modules/settings/enums/route-names'
+    import { RouteNames as UnitsRouteNames } from '@modules/units/enums/route-names'
+    import { RouteNames as UsersRouteNames } from '@modules/users/enums/route-names'
+    import { RouteNames as VariantsRouteNames } from '@modules/variants/enums/route-names'
 
     const router = useRouter()
     const route = useRoute()

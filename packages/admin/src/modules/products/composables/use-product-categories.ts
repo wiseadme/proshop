@@ -3,12 +3,18 @@ import {
     ref,
     unref,
 } from 'vue'
+
 import { useProductModel } from '@modules/products/composables/use-product-model'
-import { ICategory } from '@proshop/types'
 import { useProductsService } from '@modules/products/composables/use-products-service'
-import { useNotifications } from '@shared/components/VNotifications/use-notifications'
-import { CHANGES_SAVED, SAVING_ERROR } from '@shared/constants/notifications'
+
 import { TreeItem } from '@shared/composables/use-tree-view'
+
+import { useNotifications } from '@shared/components/VNotifications/use-notifications'
+
+import { ICategory } from '@proshop/types'
+
+import { CHANGES_SAVED, SAVING_ERROR } from '@shared/constants/notifications'
+
 
 export const useProductCategories = () => {
     const { model } = useProductModel()

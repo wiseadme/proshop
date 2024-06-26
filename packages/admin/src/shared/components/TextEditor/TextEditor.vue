@@ -1,5 +1,6 @@
 <script lang="ts" setup>
     import { computed } from 'vue'
+
     import { QuillEditor } from '@vueup/vue-quill'
 
     const { content } = defineProps<{ content: string }>()

@@ -1,9 +1,12 @@
 <script lang="ts" setup>
     import { useProductsTable } from '@modules/products/composables/use-products-table'
-    import { icons } from '@shared/enums/icons'
-    import { IProduct } from '@proshop/types'
+
     import { FormCard } from '@shared/components/FormCard'
     import { VSvg } from '@shared/components/VSvg'
+
+    import { IProduct } from '@proshop/types'
+
+    import { icons } from '@shared/enums/icons'
     import { SvgPaths } from '@shared/enums/svg-paths'
 
     defineEmits<{

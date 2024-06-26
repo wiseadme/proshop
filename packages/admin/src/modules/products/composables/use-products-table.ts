@@ -1,17 +1,22 @@
 import { ref } from 'vue'
+
 // Composables
-import { useProductsService } from '@modules/products/composables/use-products-service'
 import { useRouter } from 'vue-router'
+
 import { useProductModel } from '@modules/products/composables/use-product-model'
+import { useProductsService } from '@modules/products/composables/use-products-service'
+
 // Enums
-import { RouteNames } from '@modules/products/enums/route-names'
 // Types
-import { ICategory, IProduct } from '@proshop/types'
 import { useNotifications } from '@shared/components/VNotifications/use-notifications'
+
+import { ICategory, IProduct } from '@proshop/types'
+
 // Constants
-import { CREATE, EDIT } from '@shared//constants/actions'
-import { INFO_BLOCK } from '@modules/products/constants/sections'
 import { PRODUCT_DELETED, PRODUCT_DELETE_ERROR } from '@modules/products/constants/notifications'
+import { INFO_BLOCK } from '@modules/products/constants/sections'
+import { RouteNames } from '@modules/products/enums/route-names'
+import { CREATE, EDIT } from '@shared//constants/actions'
 
 export const useProductsTable = () => {
     const router = useRouter()

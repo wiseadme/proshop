@@ -1,11 +1,12 @@
 /// <reference types="vue/macros-global" />
+import { AxiosResponse } from 'axios'
+
 import {
     IAttribute,
     ICategory,
     IUnit,
     IVariant,
 } from '@proshop/types'
-import { AxiosResponse } from 'axios'
 
 export interface IRest<T = any>{
     get: (url: string, ...args: any) => Promise<AxiosResponse<{ data: any, ok: boolean }>>

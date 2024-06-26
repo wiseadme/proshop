@@ -1,5 +1,6 @@
-import { useUserStore } from "@modules/users/store"
 import { computed } from "vue"
+
+import { useUserStore } from "@modules/users/store"
 
 export const useUsersService = () => {
     const _store = useUserStore()

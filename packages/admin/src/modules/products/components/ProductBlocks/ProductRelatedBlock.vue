@@ -1,9 +1,10 @@
 <script lang="ts" setup>
-    import FormCard from '@shared/components/FormCard/FormCard.vue'
-    import VSvg from '@shared/components/VSvg/VSvg.vue'
-    import ItemsList from '@shared/components/ItemsList/ItemsList.vue'
-
     import { useProductRelated } from '@modules/products/composables/use-product-related'
+
+    import FormCard from '@shared/components/FormCard/FormCard.vue'
+    import ItemsList from '@shared/components/ItemsList/ItemsList.vue'
+    import VSvg from '@shared/components/VSvg/VSvg.vue'
+
     import { SvgPaths } from '@shared/enums/svg-paths'
 
     const {

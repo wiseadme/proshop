@@ -1,13 +1,16 @@
 <script lang="ts" setup>
     // Composables
-    import { useMetaTagForm } from '@modules/metatags/composables/use-meta-tag-form'
+    import { computed, unref } from 'vue'
+
     import { useMetaTag } from '@modules/metatags/composables/use-meta-tag'
+    import { useMetaTagForm } from '@modules/metatags/composables/use-meta-tag-form'
+
     // Components
     import { ModalCard } from '@shared/components/Modals'
     import { VSvg } from '@shared/components/VSvg'
+
     // Types
     import { SvgPaths } from '@shared/enums/svg-paths'
-    import { computed, unref } from 'vue'
     import { descriptorToMetaTag } from '@shared/helpers/metatag'
 
     const {

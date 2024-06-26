@@ -1,8 +1,11 @@
 // unref,
 import { computed } from 'vue'
-import { useFilterItemsStore } from '@modules/filters/store/filter-items'
-import { IFilterItem } from '@proshop/types'
+
 import { createSharedComposable } from '@shared/features/create-shared-composable'
+
+import { IFilterItem } from '@proshop/types'
+
+import { useFilterItemsStore } from '@modules/filters/store/filter-items'
 
 export const useFilterItemsService = createSharedComposable(() => {
     const _store = useFilterItemsStore()

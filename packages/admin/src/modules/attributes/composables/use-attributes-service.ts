@@ -1,7 +1,10 @@
 import { ref, watch } from 'vue'
+
 import { createSharedComposable } from '@shared/features/create-shared-composable'
-import { useAttributesStore } from '@modules/attributes/store'
+
 import { IAttribute } from '@proshop/types'
+
+import { useAttributesStore } from '@modules/attributes/store'
 
 export const useAttributesService = createSharedComposable(() => {
     const _store = useAttributesStore()

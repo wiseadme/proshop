@@ -1,5 +1,6 @@
-import { useOptionsRepository } from '@shared/repository/options.repository'
 import { IOption } from '@proshop/types'
+
+import { useOptionsRepository } from '@shared/repository/options.repository'
 
 const repository = useOptionsRepository()
 

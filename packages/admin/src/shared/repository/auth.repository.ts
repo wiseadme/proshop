@@ -1,7 +1,9 @@
-import { IRest } from '@shared/types/app'
-import { IUser } from '@proshop/types'
 import { AxiosResponse } from 'axios'
+
+import { IUser } from '@proshop/types'
+
 import { auth } from '@shared/api'
+import { IRest } from '@shared/types/app'
 
 export interface IAuthRepository {
     login(user: { username: string, password: string }): Promise<AxiosResponse<{ data: IUser, ok: boolean }>>

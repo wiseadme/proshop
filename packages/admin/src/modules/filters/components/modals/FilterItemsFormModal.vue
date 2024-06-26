@@ -1,9 +1,12 @@
 <script lang="ts" setup>
-    import ModalCard from '@shared/components/Modals/ModalCard.vue'
     import { unref, watch } from 'vue'
-    import { useFilterItems } from '@modules/filters/composables/use-filter-items'
-    import { useFilterItemModel } from '@modules/filters/composables/use-filter-item-model'
+
     import { useFilterGroups } from '@modules/filters/composables/use-filter-groups'
+    import { useFilterItemModel } from '@modules/filters/composables/use-filter-item-model'
+    import { useFilterItems } from '@modules/filters/composables/use-filter-items'
+
+    import ModalCard from '@shared/components/Modals/ModalCard.vue'
+
     import type { IFilterGroup } from '@proshop/types'
 
     const { filterGroups } = useFilterGroups()

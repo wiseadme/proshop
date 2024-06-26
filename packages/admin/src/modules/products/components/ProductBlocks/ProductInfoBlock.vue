@@ -1,11 +1,15 @@
 <script lang="ts" setup>
-    import { TextEditor } from '@shared/components/TextEditor'
-    import { FormCard } from '@shared/components/FormCard'
-    import { VSvg } from '@shared/components/VSvg'
+    import { useProductInfo } from '@modules/products/composables/use-product-info'
     import { useProductModel } from '@modules/products/composables/use-product-model'
     import { useProductsService } from '@modules/products/composables/use-products-service'
+
+    import { FormCard } from '@shared/components/FormCard'
+    import { TextEditor } from '@shared/components/TextEditor'
+    import { VSvg } from '@shared/components/VSvg'
+
+
     import { SvgPaths } from '@shared/enums/svg-paths'
-    import { useProductInfo } from '@modules/products/composables/use-product-info'
+
 
     const { unitItems } = useProductsService()
     const { model } = useProductModel()

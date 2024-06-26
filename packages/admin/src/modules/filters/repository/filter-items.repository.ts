@@ -1,6 +1,7 @@
+import { IFilterItem } from '@proshop/types'
+
 import { rest } from '@shared/api'
 import { IRepository, IRest } from '@shared/types/app'
-import { IFilterItem } from '@proshop/types'
 
 export class Repository implements IRepository<IFilterItem> {
     public path: string

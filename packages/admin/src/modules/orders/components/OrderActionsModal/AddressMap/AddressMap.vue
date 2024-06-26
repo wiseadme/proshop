@@ -1,5 +1,6 @@
 <script lang="ts" setup>
     import { watch } from 'vue'
+
     import { useYandexMaps } from '@shared/composables/use-yandex-maps'
 
     const {

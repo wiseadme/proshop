@@ -1,9 +1,14 @@
 import { ref, unref } from 'vue'
+
 import { createSharedComposable } from '@shared/features/create-shared-composable'
-import { useOrdersService } from '@modules/orders/composables/use-orders-service'
+
 import { useOrderActionsModal } from '@modules/orders/composables/use-order-actions-modal'
-import { IOrder } from '@proshop/types'
+import { useOrdersService } from '@modules/orders/composables/use-orders-service'
+
 import { Order } from '@modules/orders/model/order.model'
+
+import { IOrder } from '@proshop/types'
+
 
 export const useOrders = createSharedComposable(() => {
     const {

@@ -5,17 +5,23 @@
         markRaw,
         unref
     } from 'vue'
-    import { ISidebarTab } from '@shared/composables/use-right-sidebar'
+
     import { useRoute, useRouter } from 'vue-router'
-    import { RouteNames } from '@modules/categories/enums/route-names'
+
+    import { useCategoryModel } from '@modules/categories/composables/use-category-model'
+
+    import { ISidebarTab } from '@shared/composables/use-right-sidebar'
+
+    import { RightSidebar } from '@shared/components/RightSidebar'
+
     import {
         CONDITIONS_BLOCK,
         FILTERS_BLOCK,
         IMAGES_BLOCK,
         INFO_BLOCK
     } from '@modules/categories/constants/sections'
-    import { RightSidebar } from '@shared/components/RightSidebar'
-    import { useCategoryModel } from '@modules/categories/composables/use-category-model'
+    import { RouteNames } from '@modules/categories/enums/route-names'
+
 
     const CategoryInfo = markRaw(defineAsyncComponent(() => import('@modules/categories/components/CategoryBlocks/CategoryInfo.vue')))
     const CategoryImages = markRaw(defineAsyncComponent(() => import('@modules/categories/components/CategoryBlocks/CategoryImages.vue')))

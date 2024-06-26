@@ -4,17 +4,21 @@
         onMounted,
         watch,
     } from 'vue'
+
     import { useRouter } from 'vue-router'
-    import { usePolling } from '@shared/composables/use-polling'
-    import { useNotifications } from '@shared/components/VNotifications/use-notifications'
+
     import { useOrdersService } from '@modules/orders/composables/use-orders-service'
-    // Components
+
+    import { useAuthService } from '@shared/composables/use-auth-service'
+    import { usePolling } from '@shared/composables/use-polling'
+
+    import { useNotifications } from '@shared/components/VNotifications/use-notifications'
+    import VNotifications from '@shared/components/VNotifications/VNotifications.vue'
+
+    import { IOrder, Maybe } from '@proshop/types'
+
     import { AppHeader } from '@app/components/AppHeader'
     import { AppNavigation } from '@app/components/AppNavigation'
-    import VNotifications from '@shared/components/VNotifications/VNotifications.vue'
-    // Types
-    import { IOrder, Maybe } from '@proshop/types'
-    import { useAuthService } from '@shared/composables/use-auth-service'
     import { RouteNames } from '@modules/orders/enums/route-names'
 
     const router = useRouter()

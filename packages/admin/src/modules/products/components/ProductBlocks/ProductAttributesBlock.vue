@@ -2,13 +2,15 @@
     // Composables
     import { useProductAttributes } from '@modules/products/composables/use-product-attributes'
     import { useProductModel } from '@modules/products/composables/use-product-model'
+
     // Components
+    import { DraggableItemsList } from '@shared/components/DraggableItemsList'
     import { FormCard } from '@shared/components/FormCard'
     import { VSvg } from '@shared/components/VSvg'
-    import { DraggableItemsList } from '@shared/components/DraggableItemsList'
+
     // Enums
-    import { SvgPaths } from '@shared/enums/svg-paths'
     import { ATTRIBUTE_DRAG_GROUP } from '@modules/products/constants/symbols'
+    import { SvgPaths } from '@shared/enums/svg-paths'
 
     const { model } = useProductModel()
 

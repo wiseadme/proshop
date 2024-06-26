@@ -1,4 +1,3 @@
-import { useProductRepository } from '@modules/products/repository'
 import {
     IAttribute,
     IMetaTag,
@@ -7,6 +6,8 @@ import {
     IProductQuery,
     IRequestParams,
 } from '@proshop/types'
+
+import { useProductRepository } from '@modules/products/repository'
 
 const repository = useProductRepository()
 

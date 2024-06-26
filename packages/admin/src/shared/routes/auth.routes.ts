@@ -1,5 +1,5 @@
-import AuthPage from '@shared/pages/AuthPage.vue'
 import { RouteNames } from '@shared/enums/route-names'
+import AuthPage from '@shared/pages/AuthPage.vue'
 
 export const authRoutes = [
     {

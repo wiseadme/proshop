@@ -1,6 +1,7 @@
+import { IAttribute } from '@proshop/types'
+
 import { rest } from '@shared/api'
 import { IRepository, IRest } from '@shared/types/app'
-import { IAttribute } from '@proshop/types'
 
 export class Repository implements IRepository<IAttribute> {
     client: IRest<IAttribute>

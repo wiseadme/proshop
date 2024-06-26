@@ -1,10 +1,14 @@
 <script lang="ts" setup>
-    import { VSvg } from '@shared/components/VSvg'
-    import { FormCard } from '@shared/components/FormCard'
     import { useOrders } from '@modules/orders/composables/use-orders'
     import { useOrdersTable } from '@modules/orders/composables/use-orders-table'
-    import { SvgPaths } from '@shared/enums/svg-paths'
+
+    import { FormCard } from '@shared/components/FormCard'
+    import { VSvg } from '@shared/components/VSvg'
+
+
     import { IOrder } from '@proshop/types'
+
+    import { SvgPaths } from '@shared/enums/svg-paths'
 
     defineEmits<{
         (e: 'open:order', row: IOrder): void

@@ -1,6 +1,8 @@
 <script lang="ts" setup>
     import { useOptions } from '@modules/groups/composables/view/use-options'
+
     import type { IOption } from '@proshop/types'
+
 
     defineProps<{
         options: IOption[]

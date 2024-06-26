@@ -1,13 +1,18 @@
-import { useCategoriesService } from '@modules/categories/composables/use-categories-service'
-import { IAsset } from '@proshop/types'
-import { useNotifications } from '@shared/components/VNotifications/use-notifications'
-import { CHANGES_SAVED, SAVING_ERROR } from '@shared/constants/notifications'
 import { computed, unref } from 'vue'
+
+import { useCategoriesService } from '@modules/categories/composables/use-categories-service'
+import { useCategoryModel } from '@modules/categories/composables/use-category-model'
+
+import { useNotifications } from '@shared/components/VNotifications/use-notifications'
+
+import { IAsset } from '@proshop/types'
+
 import {
     CATEGORY_IMAGE_DELETED,
     CATEGORY_IMAGE_SAVED,
 } from '@modules/categories/constants/notifications'
-import { useCategoryModel } from '@modules/categories/composables/use-category-model'
+import { CHANGES_SAVED, SAVING_ERROR } from '@shared/constants/notifications'
+
 
 export const useCategoryImages = () => {
     const {

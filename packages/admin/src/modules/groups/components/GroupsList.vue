@@ -1,13 +1,16 @@
 <script lang="ts" setup>
     import { onBeforeMount } from 'vue'
+
+    import { useGroupModel } from '@modules/groups/composables/view/use-group-model'
+    import { useGroupsFormModal } from '@modules/groups/composables/view/use-groups-form-modal'
+    import { useGroupsList } from '@modules/groups/composables/view/use-groups-list'
+    import { useOptionsFormModal } from '@modules/groups/composables/view/use-options-form-modal'
+
     import { FormCard } from '@shared/components/FormCard'
     import { ItemsList } from '@shared/components/ItemsList'
     import { VSvg } from '@shared/components/VSvg'
+
     import { SvgPaths } from '@shared/enums/svg-paths'
-    import { useGroupsList } from '@modules/groups/composables/view/use-groups-list'
-    import { useGroupsFormModal } from '@modules/groups/composables/view/use-groups-form-modal'
-    import { useGroupModel } from '@modules/groups/composables/view/use-group-model'
-    import { useOptionsFormModal } from '@modules/groups/composables/view/use-options-form-modal'
 
     const {
         groups,

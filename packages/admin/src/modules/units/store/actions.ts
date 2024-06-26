@@ -1,6 +1,8 @@
-import { useUnitRepository } from '../repository/unit.repository'
 import { IUnit } from '@proshop/types'
+
 import { IUnitActions } from '@modules/units/types'
+
+import { useUnitRepository } from '../repository/unit.repository'
 
 const repository = useUnitRepository()
 

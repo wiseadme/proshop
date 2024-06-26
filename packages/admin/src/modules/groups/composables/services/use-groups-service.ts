@@ -3,10 +3,15 @@ import {
     Ref,
     ref,
 } from 'vue'
-import { IGroup, IVariant } from '@proshop/types'
-import { useGroupsRepository } from '@modules/groups/repository/groups.repository'
-import { useLogger } from '@shared/utils/logger'
+
 import { createSharedComposable } from '@shared/features/create-shared-composable'
+
+import { useGroupsRepository } from '@modules/groups/repository/groups.repository'
+
+import { useLogger } from '@shared/utils/logger'
+
+import { IGroup, IVariant } from '@proshop/types'
+
 
 export const useGroupsService = createSharedComposable(() => {
     const repository = useGroupsRepository()

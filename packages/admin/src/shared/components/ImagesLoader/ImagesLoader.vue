@@ -4,12 +4,16 @@
         unref,
         watch,
     } from 'vue'
+
+    import draggable from 'vuedraggable'
+
     import { FormCard } from '@shared/components/FormCard'
     import { VSvg } from '@shared/components/VSvg'
-    import { clone } from '@shared/helpers'
-    import { SvgPaths } from '@shared/enums/svg-paths'
+
     import { IAsset } from '@proshop/types'
-    import draggable from 'vuedraggable'
+
+    import { SvgPaths } from '@shared/enums/svg-paths'
+    import { clone } from '@shared/helpers'
 
     const { assets } = defineProps<{
         assets: IAsset[]

@@ -1,21 +1,29 @@
-import { createSharedComposable } from '@shared/features/create-shared-composable'
-import { useMetaTagsService } from '@modules/metatags/composables/use-meta-tags-service'
-import { IMetaTag } from '@proshop/types'
 import {
     nextTick,
     ref,
     unref
 } from 'vue'
-import { clone } from '@shared/helpers'
-import { useNotifications } from '@shared/components/VNotifications/use-notifications'
-import { MetaTag } from '@modules/metatags/model/metaTag.model'
+
+import { createSharedComposable } from '@shared/features/create-shared-composable'
+
 import { useMetaTagForm } from '@modules/metatags/composables/use-meta-tag-form'
+import { useMetaTagsService } from '@modules/metatags/composables/use-meta-tags-service'
+
+
+import { useNotifications } from '@shared/components/VNotifications/use-notifications'
+
+import { MetaTag } from '@modules/metatags/model/metaTag.model'
+
+import { IMetaTag } from '@proshop/types'
+
+
 import {
     META_TAG_DELETED,
     META_TAG_DELETE_ERROR,
     META_TAG_SAVED,
     META_TAG_SAVING_ERROR,
 } from '@modules/metatags/constants/notifications'
+import { clone } from '@shared/helpers'
 
 export const useMetaTag = createSharedComposable(() => {
     const {

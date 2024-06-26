@@ -1,4 +1,5 @@
 import { useCategoryRepository } from '@modules/categories/repository/category.repository'
+
 import { ICategory } from '@proshop/types'
 
 const repository = useCategoryRepository()

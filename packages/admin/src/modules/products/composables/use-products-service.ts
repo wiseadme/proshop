@@ -3,23 +3,12 @@ import {
     ref,
     unref,
 } from 'vue'
-// Features
+
 import { createSharedComposable } from '@shared/features/create-shared-composable'
+
 import { useRequestParams } from '@shared/composables/use-request-params'
 
 // Stores
-import { useProductStore } from '@modules/products/store'
-import { useAttributesStore } from '@modules/attributes/store'
-import { useCategoriesStore } from '@modules/categories/store'
-import { useVariantsStore } from '@modules/variants/store'
-import { useUnitsStore } from '@modules/units/store'
-import { useMetaTagsStore } from '@modules/metatags/store'
-import { useMerchantStore } from '@modules/settings/store/merchant'
-
-// Services
-import { useFilesService } from '@shared/services/files.service'
-
-// Types
 import {
     IAsset,
     IAttribute,
@@ -33,9 +22,16 @@ import {
     Maybe,
 } from '@proshop/types'
 
-// Helpers
-import { clone } from '@shared/helpers'
+import { useAttributesStore } from '@modules/attributes/store'
+import { useCategoriesStore } from '@modules/categories/store'
+import { useMetaTagsStore } from '@modules/metatags/store'
 import { getIds } from '@modules/products/helpers'
+import { useProductStore } from '@modules/products/store'
+import { useMerchantStore } from '@modules/settings/store/merchant'
+import { useUnitsStore } from '@modules/units/store'
+import { useVariantsStore } from '@modules/variants/store'
+import { clone } from '@shared/helpers'
+import { useFilesService } from '@shared/services/files.service'
 
 export const useProductsService = createSharedComposable(() => {
     const _productsStore = useProductStore()

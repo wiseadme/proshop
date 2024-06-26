@@ -1,7 +1,9 @@
 import { computed, unref } from 'vue'
+
+import { IAttribute, IFilterGroup } from '@proshop/types'
+
 import { useAttributesStore } from '@modules/attributes/store'
 import { useFilterGroupsStore } from '@modules/filters/store/filter-groups'
-import { IAttribute, IFilterGroup } from '@proshop/types'
 
 export const useFilterGroupService = () => {
     const _filterGroupsStore = useFilterGroupsStore()

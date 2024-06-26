@@ -1,4 +1,5 @@
 import { IOrderStatuses } from '@proshop/types'
+
 import { OrderStatuses } from '@modules/orders/enums/status'
 
 export const getOrderStatusName = (orderStatuses: IOrderStatuses): string => {

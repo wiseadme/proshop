@@ -1,7 +1,10 @@
 import { unref } from 'vue'
+
 import axios from 'axios'
-import { Client } from '@shared/plugins/client'
+
 import { useAuthService } from '@shared/composables/use-auth-service'
+
+import { Client } from '@shared/plugins/client'
 
 const baseURL = '/'
 

@@ -1,18 +1,23 @@
 import { ref, unref } from 'vue'
+
+import { useRouter } from 'vue-router'
+
 import { useProductModel } from '@modules/products/composables/use-product-model'
 import { useProductsService } from '@modules/products/composables/use-products-service'
+
 import { useNotifications } from '@shared/components/VNotifications/use-notifications'
-import { useRouter } from 'vue-router'
-import { RouteNames } from '@modules/products/enums/route-names'
+
 import { IProduct } from '@proshop/types'
-import { hasDiffs, hasValueDiffs } from '@shared/helpers/diffs.helpers'
+
+import { INFO_BLOCK } from '@modules/products/constants/sections'
+import { RouteNames } from '@modules/products/enums/route-names'
+import { EDIT } from '@shared/constants/actions'
 import {
     CHANGES_SAVED,
     NO_CHANGES,
     SAVING_ERROR,
 } from '@shared/constants/notifications'
-import { EDIT } from '@shared/constants/actions'
-import { INFO_BLOCK } from '@modules/products/constants/sections'
+import { hasDiffs, hasValueDiffs } from '@shared/helpers/diffs.helpers'
 
 const infoBlockKeys = [ 'description', 'name', 'price', 'quantity', 'seo', 'url', 'unit' ]
 
