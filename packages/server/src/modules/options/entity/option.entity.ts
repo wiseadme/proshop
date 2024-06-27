@@ -4,9 +4,10 @@ export class Option implements IOption {
     readonly id: string
     readonly groupId: string
     readonly value: string
-    readonly order?: number
+    readonly order: number
     readonly isAvailable: boolean
     readonly productName: string
+    readonly productId: string
     readonly image: string
     readonly url: string
     readonly description?: string
@@ -18,6 +19,7 @@ export class Option implements IOption {
         url = '',
         image = '',
         productName,
+        productId,
         value,
         groupId,
         isAvailable = true
@@ -30,6 +32,7 @@ export class Option implements IOption {
         this.image = image
         this.url = url
         this.productName = productName
+        this.productId = productId
         this.isAvailable = isAvailable
     }
 

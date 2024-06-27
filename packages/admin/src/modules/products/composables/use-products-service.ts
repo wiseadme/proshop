@@ -124,7 +124,7 @@ export const useProductsService = createSharedComposable(() => {
     }
 
     const getProduct = async (sku: string): Promise<IProduct> => {
-        const [ item ] = await _productsStore.getProducts({ sku })
+        const [item] = await _productsStore.getProducts({ sku })
 
         setAsCurrent(clone(item))
 
@@ -160,10 +160,8 @@ export const useProductsService = createSharedComposable(() => {
     }
 
     const updateProduct = async (updates: Partial<IProductParams>): Promise<IProduct> => {
-        updates.id = updates.id || unref(product)?.id
-
         try {
-            const updated = await _productsStore.updateProduct(updates as Partial<IProductParams>)
+            const updated = await _productsStore.updateProduct(updates)
             setAsCurrent(updated)
 
             return updated
@@ -196,7 +194,10 @@ export const useProductsService = createSharedComposable(() => {
 
     const updateProductAttributes = async (updates: { attributes: IAttribute[] }): Promise<IProduct> => {
         try {
-            return await updateProduct({ attributes: updates.attributes })
+            return await updateProduct({
+                id: unref(product)!.id,
+                attributes: updates.attributes
+            })
         } catch (err) {
             return Promise.reject(err)
         }
@@ -335,10 +336,10 @@ export const useProductsService = createSharedComposable(() => {
             }) as IAsset
 
             asset.main = !unref(product)?.assets.length
-            const assets = [ ...unref(product)!.assets, asset ] as IAsset[]
+            const assets = [...unref(product)!.assets, asset] as IAsset[]
 
             if (asset.main) {
-                await updateProductAssets([ asset ])
+                await updateProductAssets([asset])
             }
 
             return await updateProduct({
@@ -365,6 +366,7 @@ export const useProductsService = createSharedComposable(() => {
         }
 
         await updateProduct({
+            id: unref(product)!.id,
             assets: getIds(assets),
             ...(asset.main ? { image: assets.length ? assets[0].url : null } : {}),
         })

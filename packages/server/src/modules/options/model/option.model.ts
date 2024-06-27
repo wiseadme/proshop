@@ -22,6 +22,10 @@ const OptionSchema = new Schema<IOptionMongoModel>({
         type: String,
         required: true
     },
+    productId: {
+        type: String,
+        required: true
+    },
     image: {
         type: String,
         default: null

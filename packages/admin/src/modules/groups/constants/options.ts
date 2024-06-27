@@ -1,0 +1,1 @@
+export const SEARCH_INPUT_MIN_LENGTH = 3

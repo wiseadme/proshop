@@ -17,28 +17,28 @@ export const OPTION_DELETE_SUCCESS: Notify = markRaw({
 })
 
 export const OPTION_CREATE_ERROR: Notify = markRaw({
-    title: 'Ошибка',
+    title: 'Ошибка!',
     text: 'Опция не создана, возникла ошибка.',
     type: NotificationTypes.ERROR,
     closeOnClick: true
 })
 
 export const OPTION_DELETE_ERROR: Notify = markRaw({
-    title: 'Ошибка',
+    title: 'Ошибка!',
     text: 'Опция не удалена, возникла ошибка.',
     type: NotificationTypes.ERROR,
     closeOnClick: true
 })
 
 export const GROUP_CREATE_ERROR: Notify = markRaw({
-    title: 'Ошибка',
+    title: 'Ошибка!',
     text: 'Группа не создана, возникла ошибка.',
     type: NotificationTypes.ERROR,
     closeOnClick: true
 })
 
 export const GROUP_DELETE_ERROR: Notify = markRaw({
-    title: 'Ошибка',
+    title: 'Ошибка!',
     text: 'Группа не удалена, возникла ошибка.',
     type: NotificationTypes.ERROR,
     closeOnClick: true
@@ -47,6 +47,13 @@ export const GROUP_DELETE_ERROR: Notify = markRaw({
 export const GROUP_DELETE_WARNING: Notify = markRaw({
     title: 'Предупреждение!',
     text: 'Группа не может быть удалена, сначала удалите опции.',
+    type: NotificationTypes.WARNING,
+    closeOnClick: true
+})
+
+export const SEARCH_ERROR: Notify = markRaw({
+    title: 'Ошибка!',
+    text: 'Произошла ошибка, поиск не выполнен.',
     type: NotificationTypes.WARNING,
     closeOnClick: true
 })

@@ -15,10 +15,7 @@ import { useNotifications } from '@shared/components/VNotifications/use-notifica
 
 import { useLogger } from '@shared/utils/logger'
 
-// Constants
 import type {
-    IFilterGroup,
-    IFilterItem,
     IGroup,
     IOption,
     IProduct,
@@ -29,10 +26,10 @@ import {
     OPTION_CREATE_ERROR,
     OPTION_CREATE_SUCCESS,
     OPTION_DELETE_ERROR,
-    OPTION_DELETE_SUCCESS
+    OPTION_DELETE_SUCCESS,
+    SEARCH_ERROR
 } from '@modules/groups/constants/notifications'
-
-// Types
+import { SEARCH_INPUT_MIN_LENGTH } from '@modules/groups/constants/options'
 
 export const useOptions = () => {
     const {
@@ -116,31 +113,17 @@ export const useOptions = () => {
         }
     }
 
-    const getOptionFilterGroups = async (params = {}): Promise<IFilterGroup[] | void> => {
-        try {
-            return await getFilterGroupItems(params)
-        } catch (err) {
-            logError('Filter groups items loading failed', err)
-        }
-    }
-
-    const getOptionFilterGroupItems = async (params = {}): Promise<IFilterItem[] | void> => {
-        try {
-            return await getFilterItems(params)
-        } catch (err) {
-            logError('Groups filter items loading failed', err)
-        }
-    }
-
     const onSearchProducts = async (value: string): Promise<IProduct[] | void> => {
         try {
-            if (value.length < 3) {
+            if (value.length < SEARCH_INPUT_MIN_LENGTH) {
                 return
             }
 
             return await getProducts({ name: value })
         } catch (err) {
             logError('Search results loading failed', err)
+
+            notify(SEARCH_ERROR)
         }
     }
 
@@ -150,8 +133,8 @@ export const useOptions = () => {
         filterGroups,
         options: readOnlyOptions,
         optionProduct,
-        getOptionFilterGroups,
-        getOptionFilterGroupItems,
+        getFilterGroupItems,
+        getFilterItems,
         getOptions,
         saveOption,
         onDeleteOption,

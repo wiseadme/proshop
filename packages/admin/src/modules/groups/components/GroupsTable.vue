@@ -1,10 +1,7 @@
 <script lang="ts" setup>
     import { onBeforeMount } from 'vue'
 
-    import { useGroupModel } from '@modules/groups/composables/view/use-group-model'
-    import { useGroupsFormModal } from '@modules/groups/composables/view/use-groups-form-modal'
     import { useGroupsTable } from '@modules/groups/composables/view/use-groups-table'
-    import { useOptionsFormModal } from '@modules/groups/composables/view/use-options-form-modal'
 
     import { FormCard } from '@shared/components/FormCard'
     import { VSvg } from '@shared/components/VSvg'
@@ -81,6 +78,7 @@
                         top
                         color="grey darken-3"
                         offset-y="-10"
+                        elevation="2"
                     >
                         <template #activator="{ on }">
                             <v-button
@@ -99,6 +97,7 @@
                         top
                         color="grey darken-3"
                         offset-y="-10"
+                        elevation="2"
                     >
                         <template #activator="{ on }">
                             <v-button
@@ -113,15 +112,26 @@
                         </template>
                         <span>Редактировать опции</span>
                     </v-tooltip>
-                    <v-button
-                        class="ml-1"
-                        color="var(--error)"
+                    <v-tooltip
+                        top
+                        color="grey darken-3"
+                        offset-y="-10"
                         elevation="2"
-                        text
-                        @click="() => {}"
                     >
-                        <v-icon>fas fa-trash-alt</v-icon>
-                    </v-button>
+                        <template #activator="{ on }">
+                            <v-button
+                                class="ml-1"
+                                color="var(--error)"
+                                elevation="2"
+                                text
+                                v-on="on"
+                                @click="onDeleteGroup(row)"
+                            >
+                                <v-icon>fas fa-trash-alt</v-icon>
+                            </v-button>
+                        </template>
+                        <span>Удалить группу</span>
+                    </v-tooltip>
                 </template>
             </v-data-table>
         </template>

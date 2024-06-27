@@ -20,8 +20,8 @@ export const useGroupModel = createSharedComposable(() => {
         model.value = Group.create()
     }
 
-    const setModel = (value: IGroup): void => {
-        model.value = Group.create(value ?? {})
+    const setModel = (value?: IGroup): void => {
+        model.value = Group.create(value)
     }
 
     return {

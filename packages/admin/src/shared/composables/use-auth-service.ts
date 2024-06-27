@@ -23,7 +23,7 @@ export const useAuthService = () => {
     const login = async (user: {
         username: string,
         password: string
-    }) => loginUser(user).then(() => router.push({ name: RouteNames.MAIN }))
+    }) => loginUser(user).then(() => router.push({ name: RouteNames.DASHBOARD }))
 
     const logout = async () => logoutUser().then(() => router.push({ name: RouteNames.LOGIN }))
 

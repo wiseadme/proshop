@@ -1,14 +1,18 @@
 <script lang="ts" setup>
+    import { computed } from 'vue'
+
     import { useOptions } from '@modules/groups/composables/view/use-options'
 
     import type { IOption } from '@proshop/types'
 
 
-    defineProps<{
+    const props = defineProps<{
         options: IOption[]
     }>()
 
     const { onDeleteOption } = useOptions()
+
+    const options = computed(() => props.options.slice().sort((a, b) => a.order - b.order))
 </script>
 <template>
     <v-row>

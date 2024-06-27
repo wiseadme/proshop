@@ -63,8 +63,8 @@ export const useGroupsTable = () => {
         }
     }
 
-    const onOpenGroupModal = (group: Maybe<IGroup> = null) => {
-        setModel(group!)
+    const onOpenGroupModal = (group?: IGroup) => {
+        setModel(group)
         isGroupModalVisible.value = true
     }
 

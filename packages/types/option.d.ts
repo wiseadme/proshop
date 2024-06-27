@@ -14,7 +14,7 @@ export interface IOption {
     image: string
     url: string
     isAvailable?: boolean
-    order?: number
+    order: number
 }
 
 export interface IOptionMongoModel extends Omit<IOption, 'id'> {

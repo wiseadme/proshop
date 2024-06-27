@@ -62,10 +62,7 @@ export const useProductInfo = () => {
 
             notify(CHANGES_SAVED)
         } catch (err: any) {
-            notify({
-                ...SAVING_ERROR,
-                ...(err.message ? { text: err.message } : {}),
-            })
+            notify(SAVING_ERROR)
         }
     }
 

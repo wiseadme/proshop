@@ -4,7 +4,7 @@ import {
     IProduct,
     IProductParams,
     IProductQuery,
-    IRequestParams,
+    IRequestParams
 } from '@proshop/types'
 
 import { useProductRepository } from '@modules/products/repository'
@@ -45,9 +45,15 @@ export const actions = {
         try {
             const { data } = await repository.updateProduct(updates)
 
-            this.$patch((state) => {
-                state.products = state.products.map(it => it.id === updates.id ? data.data : it)
-            })
+            /**
+             * TODO - зарефакторить, if добавлен из - за вызова апдейта
+             * из другого модуля (groups), в то время как products не были проинициализированы
+             */
+            if (this.products) {
+                this.$patch((state) => {
+                    state.products = state.products.map(it => it.id === updates.id ? data.data : it)
+                })
+            }
 
             return data.data
         } catch (err) {

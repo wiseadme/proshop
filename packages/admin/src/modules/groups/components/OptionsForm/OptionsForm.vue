@@ -39,8 +39,8 @@
         filterGroups,
         products,
         optionProduct,
-        getOptionFilterGroups,
-        getOptionFilterGroupItems,
+        getFilterItems,
+        getFilterGroupItems,
         saveOption,
         onSearchProducts
     } = useOptions()
@@ -67,17 +67,17 @@
     }
 
     onMounted(() => {
-        getOptionFilterGroups()
+        getFilterGroupItems()
     })
 
     watch(() => unref(groupModel).variant?.id, (value) => {
         if (!unref(filterGroups).length) {
-            getOptionFilterGroups({ attributeId: value.attributeId })
+            getFilterGroupItems({ attributeId: value.attributeId })
         }
     })
 
     watch(selectedFilterGroup, (value) => {
-        value && getOptionFilterGroupItems({ groupId: unref(selectedFilterGroup)!.id })
+        value && getFilterItems({ groupId: unref(selectedFilterGroup)!.id })
     })
 
 </script>
@@ -135,23 +135,17 @@
                             </v-col>
                         </v-row>
                         <v-row>
-                            <v-col cols="10">
+                            <v-col cols="6">
                                 <v-text-field
                                     v-model="optionModel.description"
                                     label="Описание"
                                 />
                             </v-col>
-                            <v-col
-                                cols="2"
-                                class="d-flex align-center justify-center"
-                            >
-                                <v-button
-                                    label="Добавить"
-                                    style="width: 100%"
-                                    elevation="2"
-                                    color="success"
-                                    class="app-border-radius"
-                                    @click="onCreateOption(validate)"
+                            <v-col cols="6">
+                                <v-text-field
+                                    v-model="optionModel.order"
+                                    label="Порялковый номер"
+                                    type="number"
                                 />
                             </v-col>
                         </v-row>
@@ -163,6 +157,21 @@
                         />
                     </div>
                 </div>
+            </template>
+            <template #actions>
+                <v-row class="pb-4">
+                    <v-col>
+                        <v-button
+                            label="Создать опцию"
+                            :disabled="!selectedFilterGroup"
+                            width="120"
+                            elevation="2"
+                            color="success"
+                            class="app-border-radius"
+                            @click="onCreateOption(validate)"
+                        />
+                    </v-col>
+                </v-row>
             </template>
         </modal-card>
     </v-form>
