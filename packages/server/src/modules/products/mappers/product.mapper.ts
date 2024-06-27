@@ -11,7 +11,7 @@ export class ProductMapper {
         map.related = map.related?.map(pr => ProductMapper.toDomain(pr)) || entity.related
         map.categories = map.categories?.map(ctg => CategoryMapper.toDomain(ctg))
         map.assets = map.assets?.map(asset => AssetMapper.toDomain(asset))
-        map.variants = map.variants?.map(variant => GroupMapper.toDomain(variant))
+        map.groups = map.groups?.map(variant => GroupMapper.toDomain(variant))
 
         delete map._id
 

@@ -10,6 +10,7 @@ export interface IOption {
     value: string
     description?: string
     productName: string
+    productId: string
     image: string
     url: string
     isAvailable?: boolean

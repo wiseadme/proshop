@@ -57,6 +57,7 @@
         unref(optionModel).url = product.url
         unref(optionModel).image = product.image ?? ''
         unref(optionModel).isAvailable = Boolean(product.quantity)
+        unref(optionModel).productId = product.id
         unref(optionModel).productName = product.name
         unref(optionModel).groupId = unref(groupModel).id
     }

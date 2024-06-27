@@ -1,3 +1,3 @@
 export enum RouteNames {
-    Groups = 'groups'
+    GROUPS = 'groups'
 }

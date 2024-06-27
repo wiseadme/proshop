@@ -12,6 +12,7 @@
     import { RouteNames as CategoriesRouteNames } from '@modules/categories/enums/route-names'
     import { RouteNames as CustomersRouteNames } from '@modules/customers/enums/route-names'
     import { RouteNames as FiltersRouteNames } from '@modules/filters/enums/route-names'
+    import {RouteNames as GroupsRouteNames} from '@modules/groups/enums/route-names'
     import { RouteNames as MetaTagsRouteNames } from '@modules/metatags/enums/route-names'
     import { RouteNames as OrdersRouteNames } from '@modules/orders/enums/route-names'
     import { RouteNames as ProductsRouteNames } from '@modules/products/enums/route-names'
@@ -38,6 +39,11 @@
             title: 'Товары',
             icon: 'fas fa-boxes',
             name: ProductsRouteNames.PRODUCTS
+        },
+        [GroupsRouteNames.GROUPS]: {
+            title: 'Группировка вариантов',
+            icon: 'fas fa-object-group',
+            name: GroupsRouteNames.GROUPS,
         },
         [OrdersRouteNames.ORDERS]: {
             title: 'Заказы',
@@ -76,11 +82,6 @@
                     parent: 'filter',
                 },
             },
-        },
-        groups: {
-            title: 'Группировка вариантов',
-            icon: 'fas fa-object-group',
-            path: '/groups',
         },
         [UnitsRouteNames.UNITS]: {
             title: 'Измерения',

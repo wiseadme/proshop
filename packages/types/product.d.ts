@@ -37,7 +37,7 @@ export interface IProduct {
     unit: Maybe<IUnit>
     categories: ICategory[]
     assets: IAsset[]
-    variants: (IGroup | string)[]
+    groups: (IGroup | string)[]
     attributes: IAttribute[]
     conditions: IProductConditions
     related: IProduct[]
@@ -50,10 +50,10 @@ export interface IProductParams extends Omit<IProduct, 'assets' | 'related' | 'c
     currency: string
 }
 
-export interface IProductMongoModel extends Omit<IProductParams, 'id' | 'assets' | 'variants' | 'related' | 'categories' | 'currency'> {
+export interface IProductMongoModel extends Omit<IProductParams, 'id' | 'assets' | 'groups' | 'related' | 'categories' | 'currency'> {
     _id: string
     assets?: string[] | IAsset[]
-    variants?: string[] | IGroup[]
+    groups?: string[] | IGroup[]
     related?: string[] | IProduct[]
     categories?: string[] | ICategory[]
     currency: string | Maybe<ICurrency>

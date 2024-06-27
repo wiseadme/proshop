@@ -40,7 +40,7 @@ export class RepositoryHelpers {
 
     getVariantsPopulateParams() {
         return {
-            path: 'variants',
+            path: 'groups',
             populate: {
                 path: 'variant',
             },

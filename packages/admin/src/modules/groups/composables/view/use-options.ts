@@ -53,7 +53,7 @@ export const useOptions = () => {
 
     const optionProduct = ref<Maybe<IProduct>>(null)
 
-    const productGroups = computed<IGroup[]>(() => unref(optionProduct)?.variants as IGroup[] ?? [])
+    const productGroups = computed<IGroup[]>(() => unref(optionProduct)?.groups as IGroup[] ?? [])
 
     const productGroupsMap = computed<Record<string, boolean>>(() => unref(productGroups).reduce((map, {variant}) => {
         map[(variant as IVariant)!.id] = true
@@ -62,15 +62,25 @@ export const useOptions = () => {
     }, {}) ?? {})
 
     const addProductGroup = () => {
-        unref(optionProduct)!.variants ??= []
+        unref(optionProduct)!.groups ??= []
         const varIds = unref(productGroups).map((it: IGroup) => it.id)
 
         varIds.push(unref(groupModel).id)
 
         return updateProduct({
             id: unref(optionProduct)!.id,
-            variants: varIds
+            groups: varIds
         })
+    }
+
+    const deleteProductGroup = (option: IOption) => {
+        const varIds = unref(productGroups).filter((it: IGroup) => it.id !== option.groupId)
+
+        return updateProduct({
+            id: option.productId,
+            groups: varIds
+        })
+
     }
 
     const saveOption = async (option: IOption) => {
@@ -97,6 +107,9 @@ export const useOptions = () => {
     const onDeleteOption = async (option: IOption) => {
         try {
             await deleteOption(option.id)
+
+            await deleteProductGroup(option)
+
             notify(OPTION_DELETE_SUCCESS)
         } catch (err) {
             notify(OPTION_DELETE_ERROR)

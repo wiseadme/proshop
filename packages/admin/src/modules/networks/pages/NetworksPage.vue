@@ -6,6 +6,7 @@
     import VkNetwork from '@modules/networks/components/VKNetwork.vue'
 
     import { SvgPaths } from '@shared/enums/svg-paths'
+
 </script>
 <template>
     <v-row>

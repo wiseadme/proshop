@@ -12,7 +12,7 @@ export class ProductDTO {
     categories: IProduct['categories']
     seo: IProduct['seo']
     assets: IProduct['assets']
-    variants: IProduct['variants']
+    groups: IProduct['groups']
     attributes: IProduct['attributes']
     conditions: IProduct['conditions']
 }

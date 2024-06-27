@@ -88,7 +88,7 @@ const ProductSchema = new Schema<IProductMongoModel>({
         }],
         default: [],
     },
-    variants: {
+    groups: {
         type: [{
             type: Schema.Types.ObjectId,
             ref: 'Group'

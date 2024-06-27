@@ -5,6 +5,7 @@ export class Option implements IOption {
     public groupId: string
     public value: string
     public productName: string
+    public productId: string
     public description: string
     public image: string
     public url: string
@@ -16,6 +17,7 @@ export class Option implements IOption {
         groupId = '',
         value = '',
         productName = '',
+        productId = '',
         description = '',
         image = '',
         url = '',
@@ -26,6 +28,7 @@ export class Option implements IOption {
         this.groupId = groupId
         this.value = value
         this.productName = productName
+        this.productId = productId
         this.image = image
         this.url = url
         this.isAvailable = isAvailable

@@ -1,28 +1,15 @@
 <script lang="ts" setup>
-    import { defineAsyncComponent } from 'vue'
-
-    const GroupsModal = defineAsyncComponent({
-        loader: () => import('@modules/groups/components/modals/GroupsFormModal.vue')
-    })
-
-    const OptionsModal = defineAsyncComponent({
-        loader: () => import('@modules/groups/components/modals/OptionsFormModal.vue')
-    })
-
-    const GroupsList = defineAsyncComponent({
-        loader: () => import('@modules/groups/components/GroupsList.vue')
-    })
+    import GroupsTable from '@modules/groups/components/GroupsTable.vue'
+    import GroupsModal from '@modules/groups/components/modals/GroupsFormModal.vue'
+    import OptionsModal from '@modules/groups/components/modals/OptionsFormModal.vue'
 
 </script>
 <template>
     <div class="groups-page">
         <v-layout>
             <v-row>
-                <v-col
-                    cols="8"
-                    offset="2"
-                >
-                    <groups-list/>
+                <v-col cols="12">
+                    <groups-table/>
                 </v-col>
                 <v-col>
                     <groups-modal/>
