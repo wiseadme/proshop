@@ -5,10 +5,11 @@ import { PRODUCTS_IOC } from '@modules/products/di/di.types'
 import { ProductsController } from '@modules/products/controller/products.controller'
 import { ProductsService } from '@modules/products/service/products.service'
 import { IProductsService } from '@modules/products/types/service'
-import { IProductsRepository } from '@modules/products/types/repository'
+import { IProductsRepository, IProductMongoRepositoryHelpers } from '@modules/products/types/repository'
 import { ProductsRepository } from '@modules/products/repository/products.repository'
 import { IProductsGatewayService } from '@modules/products/gateway/gateway.service'
 import { GatewayService as ProductsGatewayService } from '@modules/products/gateway/gateway.service'
+import { MongoRepositoryHelpers } from '@modules/products/helpers/repository.helpers'
 
 export class ProductDependencies {
     #container: Container
@@ -23,6 +24,7 @@ export class ProductDependencies {
         this.#container.bind<IProductsService>(PRODUCTS_IOC.IProductsService).to(ProductsService)
         this.#container.bind<IProductsRepository>(PRODUCTS_IOC.IProductsRepository).to(ProductsRepository)
         this.#container.bind<IProductsGatewayService>(PRODUCTS_IOC.IProductsGatewayService).to(ProductsGatewayService)
+        this.#container.bind<IProductMongoRepositoryHelpers>(PRODUCTS_IOC.IProductMongoRepositoryHelpers).to(MongoRepositoryHelpers)
     }
 }
 

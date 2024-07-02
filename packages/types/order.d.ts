@@ -31,7 +31,7 @@ export interface IOrderDelivery {
 
 export interface IOrder {
     id: string
-    items: Maybe<ICartItem[]>
+    items: ICartItem[]
     delivery: Maybe<IOrderDelivery>
     amount: number
     customer: IOrderCustomer

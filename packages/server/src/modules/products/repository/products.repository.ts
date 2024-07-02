@@ -1,10 +1,10 @@
 import mongoose from 'mongoose'
 import { inject, injectable } from 'inversify'
-import { TYPES } from '@common/schemes/di-types'
 import { ProductModel } from '@modules/products/model/product.model'
 import { validateId } from '@common/utils/mongoose-validate-id'
 // Types
-import { IProductsRepository } from '../types/repository'
+import { IProductMongoRepositoryHelpers, IProductsRepository } from '@modules/products/types/repository'
+
 import {
     IAttribute,
     IMetaTag,
@@ -14,17 +14,18 @@ import {
     IProductQuery,
     IRequestParams,
 } from '@proshop/types'
-import { ILogger } from '@/types/utils'
-import { RepositoryHelpers } from '@modules/products/helpers/repository.helpers'
+
 import { ProductMapper } from '@modules/products/mappers/product.mapper'
 
 // Constants
 import { DEFAULT_ITEMS_COUNT, DEFAULT_PAGE } from '@common/constants/counts'
+import { PRODUCTS_IOC } from '@modules/products/di/di.types'
 
 @injectable()
-export class ProductsRepository extends RepositoryHelpers implements IProductsRepository {
-    constructor(@inject(TYPES.UTILS.ILogger) private logger: ILogger) {
-        super()
+export class ProductsRepository implements IProductsRepository {
+    constructor(
+        @inject(PRODUCTS_IOC.IProductMongoRepositoryHelpers) private helpers: IProductMongoRepositoryHelpers
+    ) {
     }
 
     async createProduct(product: IProductParams) {
@@ -34,7 +35,7 @@ export class ProductsRepository extends RepositoryHelpers implements IProductsRe
         })
             .save()
 
-        await productData.populate(this.getPopulateParams())
+        await productData.populate(this.helpers.getProductPopulateParams())
 
         return ProductMapper.toDomain(productData.toObject())
     }
@@ -43,14 +44,14 @@ export class ProductsRepository extends RepositoryHelpers implements IProductsRe
         const { page, count, desc, asc, key } = query
 
         const queryParams = {
-            ...this.getPaginationParams({ page, count }),
-            ...this.getSortParams({ desc, asc, key }),
+            ...this.helpers.getPaginationParams({ page, count }),
+            ...this.helpers.getSortParams({ desc, asc, key }),
         }
 
         const products = await ProductModel
             .find({}, [], queryParams)
             .lean()
-            .populate(this.getPopulateParams())
+            .populate(this.helpers.getProductPopulateParams())
 
         return products.map(product => ProductMapper.toDomain(product))
     }
@@ -61,7 +62,7 @@ export class ProductsRepository extends RepositoryHelpers implements IProductsRe
         const product = await ProductModel
             .findById(id)
             .lean()
-            .populate(this.getPopulateParams()) as IProductMongoModel
+            .populate(this.helpers.getProductPopulateParams()) as IProductMongoModel
 
         return ProductMapper.toDomain(product)
     }
@@ -70,7 +71,7 @@ export class ProductsRepository extends RepositoryHelpers implements IProductsRe
         const products = await ProductModel
             .find({ name: new RegExp(queryString, 'i') })
             .lean()
-            .populate(this.getPopulateParams()) as IProductMongoModel[]
+            .populate(this.helpers.getProductPopulateParams()) as IProductMongoModel[]
 
         return products.map(product => ProductMapper.toDomain(product))
     }
@@ -79,7 +80,7 @@ export class ProductsRepository extends RepositoryHelpers implements IProductsRe
         const product = await ProductModel
             .findOne({ sku })
             .lean()
-            .populate(this.getPopulateParams()) as IProductMongoModel
+            .populate(this.helpers.getProductPopulateParams()) as IProductMongoModel
 
         return ProductMapper.toDomain(product)
     }
@@ -88,7 +89,7 @@ export class ProductsRepository extends RepositoryHelpers implements IProductsRe
         const [product] = await ProductModel
             .find({ url })
             .lean()
-            .populate(this.getPopulateParams()) as IProductMongoModel[]
+            .populate(this.helpers.getProductPopulateParams()) as IProductMongoModel[]
 
         return ProductMapper.toDomain(product)
     }
@@ -102,7 +103,7 @@ export class ProductsRepository extends RepositoryHelpers implements IProductsRe
         count = DEFAULT_ITEMS_COUNT,
     }: IRequestParams<IProductQuery>) {
         const products = await ProductModel
-            .aggregate(this.prepareAggregateParams({
+            .aggregate(this.helpers.prepareAggregateParams({
                 count,
                 page,
                 category,
@@ -112,7 +113,7 @@ export class ProductsRepository extends RepositoryHelpers implements IProductsRe
             }))
             .exec()
 
-        await ProductModel.populate(products, this.getPopulateParams())
+        await ProductModel.populate(products, this.helpers.getProductPopulateParams())
 
         return products.map(product => ProductMapper.toDomain(product))
     }
@@ -126,7 +127,7 @@ export class ProductsRepository extends RepositoryHelpers implements IProductsRe
             { new: true },
         )
             .lean()
-            .populate(this.getPopulateParams()) as IProductMongoModel
+            .populate(this.helpers.getProductPopulateParams()) as IProductMongoModel
 
         return ProductMapper.toDomain(updated)
     }
@@ -145,7 +146,7 @@ export class ProductsRepository extends RepositoryHelpers implements IProductsRe
         const product = await ProductModel.findOneAndUpdate({ _id: params.id }, {
             $push: { attributes: params.attribute },
         }, { new: true })
-            .populate(this.getPopulateParams())
+            .populate(this.helpers.getProductPopulateParams())
             .lean() as IProductMongoModel
 
         return ProductMapper.toDomain(product)
@@ -157,7 +158,7 @@ export class ProductsRepository extends RepositoryHelpers implements IProductsRe
         const product = await ProductModel.findOneAndUpdate({ _id: params.id }, {
             $pull: { attributes: { id: params.attributeId } },
         }, { new: true })
-            .populate(this.getPopulateParams())
+            .populate(this.helpers.getProductPopulateParams())
             .lean() as IProductMongoModel
 
         return ProductMapper.toDomain(product)
@@ -170,7 +171,7 @@ export class ProductsRepository extends RepositoryHelpers implements IProductsRe
         const product = await ProductModel.findOneAndUpdate({ _id: productId }, {
             $push: { 'seo.metatags': metaTag },
         }, { new: true })
-            .populate(this.getPopulateParams())
+            .populate(this.helpers.getProductPopulateParams())
             .lean() as IProductMongoModel
 
         return ProductMapper.toDomain(product)
@@ -201,7 +202,7 @@ export class ProductsRepository extends RepositoryHelpers implements IProductsRe
                 { $set: { 'seo.metatags': Object.values(metaTagsMap) } },
                 { new: true }
             )
-            .populate(this.getPopulateParams())
+            .populate(this.helpers.getProductPopulateParams())
             .lean() as IProductMongoModel
 
         return ProductMapper.toDomain(product)
@@ -213,7 +214,7 @@ export class ProductsRepository extends RepositoryHelpers implements IProductsRe
         const product = await ProductModel.findOneAndUpdate({ _id: params.productId }, {
             $pull: { 'seo.metatags': { id: params.metaTagId } },
         }, { new: true })
-            .populate(this.getPopulateParams())
+            .populate(this.helpers.getProductPopulateParams())
             .lean() as IProductMongoModel
 
         return ProductMapper.toDomain(product)

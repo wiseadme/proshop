@@ -3,6 +3,7 @@ import { Request } from 'express'
 import QRCode from 'qrcode'
 import customId from 'custom-id'
 import { TYPES } from '@common/schemes/di-types'
+
 // Types
 import { ILogger } from '@/types/utils'
 import { IOrdersService } from '../types/service'
@@ -34,12 +35,25 @@ export class OrdersService implements IOrdersService {
 
     async create(order: IOrder) {
         const { customer: { name, phone } } = order
+
         order.orderId = customId({ name, email: phone, randomLength: 2 })
+
+        /**
+         * @description - уменьшаем кол - во товара в остатках товара
+         * на кол - во единиц указанное в заказе.
+         */
+        for (const item of order.items) {
+            await this.gateway.product.reduceProductQuantity({
+                id: item.product.id,
+                reduceBy: item.quantity,
+            })
+        }
         /**
          * @description - внутри метода используется метод render, для отрисвоки qrcode,
          * который возвращает promise, поэтому await не убираем
          * */
         order.qrcode = await QRCode.toDataURL(order.orderId)
+
         const created = await this.repository.create(Order.create(order))
 
         await this.gateway.cart.update({ id: created.cart!, orderId: created.orderId })

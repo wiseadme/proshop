@@ -1,5 +1,5 @@
 import { model, Schema } from 'mongoose'
-import { IGroupMongoModel, IGroupOption } from '@proshop/types'
+import { IGroupMongoModel } from '@proshop/types'
 
 const GroupSchema: Schema = new Schema<IGroupMongoModel>({
     _id: Schema.Types.ObjectId,
@@ -11,7 +11,7 @@ const GroupSchema: Schema = new Schema<IGroupMongoModel>({
     name: {
         type: String,
         unique: true,
-        default: `${Date.now()}`,
+        required :true
     },
     hasOptions: {
         type: Boolean,

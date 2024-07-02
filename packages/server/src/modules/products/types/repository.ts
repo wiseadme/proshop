@@ -40,3 +40,21 @@ export interface IProductsRepository {
 
     getDocumentsCount(params?: any): Promise<number>
 }
+
+export interface IProductMongoRepositoryHelpers {
+    getPaginationParams(...args: any[]): any
+
+    getSortParams(...args: any[]): any
+
+    getAssetsPopulateParams(): any
+
+    getCategoriesPopulateParams(): any
+
+    getVariantsPopulateParams(): any
+
+    getRelatedPopulateParams(): any
+
+    getProductPopulateParams(): any
+
+    prepareAggregateParams(...args: any[]): any
+}

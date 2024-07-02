@@ -23,14 +23,11 @@
         INFO_BLOCK,
         META_TAGS_BLOCK,
         RELATED_BLOCK,
-        VARIANTS_BLOCK,
     } from '@modules/products/constants/sections'
     import { RouteNames } from '@modules/products/enums/route-names'
 
-
     const ProductAttributesBlock = markRaw(defineAsyncComponent(() => import('@modules/products/components/ProductBlocks/ProductAttributesBlock.vue')))
     const ProductConditionsBlock = markRaw(defineAsyncComponent(() => import('@modules/products/components/ProductBlocks/ProductConditionsBlock.vue')))
-    const ProductVariantsBlock = markRaw(defineAsyncComponent(() => import('@modules/products/components/ProductBlocks/ProductVariantsBlock.vue')))
     const ProductMetaTagsBlock = markRaw(defineAsyncComponent(() => import('@modules/products/components/ProductBlocks/ProductMetaTagsBlock.vue')))
     const ProductRelatedBlock = markRaw(defineAsyncComponent(() => import('@modules/products/components/ProductBlocks/ProductRelatedBlock.vue')))
     const ProductInfoBlock = markRaw(defineAsyncComponent(() => import('@modules/products/components/ProductBlocks/ProductInfoBlock.vue')))
@@ -44,7 +41,6 @@
 
     const {
         categoryItems,
-        variantItems,
         attributeItems,
     } = useProductsService()
 
@@ -90,14 +86,6 @@
             section: META_TAGS_BLOCK,
             modal: MetaTagEditModal,
             independent: false,
-        },
-        {
-            component: ProductVariantsBlock,
-            title: 'Варианты товара',
-            isActive: false,
-            disabled: !unref(variantItems)?.length || !unref(model)?.id,
-            section: VARIANTS_BLOCK,
-            independent: true,
         },
         {
             component: ProductRelatedBlock,

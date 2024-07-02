@@ -1,6 +1,8 @@
-import { IProduct, Maybe } from '@proshop/types'
+import { injectable } from 'inversify'
+import { IProductMongoRepositoryHelpers } from '@modules/products/types/repository'
 
-export class RepositoryHelpers {
+@injectable()
+export class MongoRepositoryHelpers implements IProductMongoRepositoryHelpers {
     getPaginationParams({ page, count }) {
         return {
             skip: (Number(page) * Number(count)) - Number(count),
@@ -61,7 +63,7 @@ export class RepositoryHelpers {
         }
     }
 
-    getPopulateParams() {
+    getProductPopulateParams() {
         return [
             this.getAssetsPopulateParams(),
             this.getCategoriesPopulateParams(),

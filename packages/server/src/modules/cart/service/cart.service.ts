@@ -18,7 +18,7 @@ export class CartService implements ICartService {
     ) {
     }
 
-    async create(cart) {
+    async create(cart: ICart) {
         return await this.repository.create(Cart.create(cart))
     }
 
@@ -32,7 +32,7 @@ export class CartService implements ICartService {
         if (cart) return cart
 
         return Promise.reject({
-            message: 'Not found',
+            message: 'Cart not found',
             status: 404,
         })
     }
