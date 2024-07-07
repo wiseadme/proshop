@@ -97,9 +97,9 @@ const ProductSchema = new Schema<IProductMongoModel>({
     },
     conditions: {
         type: {
-            visible: Boolean,
-            countable: Boolean,
-            exists: Boolean,
+            isVisible: Boolean,
+            isCountable: Boolean,
+            isExists: Boolean,
             hasDiscounts: Boolean,
             hasActions: Boolean,
         },

@@ -79,14 +79,14 @@ export const useOrdersTable = () => {
             onSort: (col) => onSortColumn(col)
         },
         {
-            key: 'qrcode',
-            title: 'QRCode',
+            key: 'executor',
+            title: 'Исполнитель',
             width: '150',
             align: 'left',
             resizeable: true,
             sortable: true,
             filterable: true,
-            format: (row) => row.qrcode
+            format: (row) => row.executor
         }
     ])
 

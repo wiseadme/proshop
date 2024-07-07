@@ -36,9 +36,9 @@ export class Product implements IProduct {
         sku = '',
         related = [],
         conditions = {
-            visible: true,
-            countable: false,
-            exists: true,
+            isVisible: true,
+            isCountable: false,
+            isExists: true,
             hasDiscounts: false,
             hasActions: false,
         },

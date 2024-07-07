@@ -16,9 +16,9 @@ export interface IProductQuery {
 }
 
 export interface IProductConditions {
-    visible: boolean
-    countable: boolean
-    exists: boolean
+    isVisible: boolean
+    isCountable: boolean
+    isExists: boolean
     hasDiscounts: boolean
     hasActions: boolean
 }

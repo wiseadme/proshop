@@ -29,6 +29,8 @@ export const useNotifications = () => {
         } else {
             delete notification.time
         }
+
+        return notification.id
     }
 
     const remove = (id: number) => emit('remove', id)

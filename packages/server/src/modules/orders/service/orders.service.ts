@@ -39,20 +39,25 @@ export class OrdersService implements IOrdersService {
         order.orderId = customId({ name, email: phone, randomLength: 2 })
 
         /**
-         * @description - уменьшаем кол - во товара в остатках товара
+         * @description - уменьшаем кол - ва товара в остатках товара
          * на кол - во единиц указанное в заказе.
          */
         for (const item of order.items) {
+            if (!item.product.conditions.isCountable) {
+                continue
+            }
+
             await this.gateway.product.reduceProductQuantity({
                 id: item.product.id,
                 reduceBy: item.quantity,
             })
         }
+
         /**
          * @description - внутри метода используется метод render, для отрисвоки qrcode,
          * который возвращает promise, поэтому await не убираем
-         * */
-        order.qrcode = await QRCode.toDataURL(order.orderId)
+         */
+        order.qrcode = await QRCode.toString(order.orderId, { type: 'svg' })
 
         const created = await this.repository.create(Order.create(order))
 

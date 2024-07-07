@@ -13,6 +13,7 @@ import { IEventBusService } from '@/types/services'
 import { CustomerHelpers } from '@modules/customer/helpers/customer.helpers'
 import { isExpired, parseJWToken } from '@common/helpers'
 import { CUSTOMER_IOC } from '@modules/customer/di/di.types'
+import { CUSTOMER_TOKEN_KEY } from '@common/constants/cookie-keys'
 
 @injectable()
 export class CustomerService extends CustomerHelpers implements ICustomerService {
@@ -32,7 +33,7 @@ export class CustomerService extends CustomerHelpers implements ICustomerService
             const { name, phone, id } = created
 
             this.setResponseCookie({
-                key: 'user_token',
+                key: CUSTOMER_TOKEN_KEY,
                 value: this.genAccessToken({ name, phone, id }),
                 res: response,
             })
@@ -43,8 +44,8 @@ export class CustomerService extends CustomerHelpers implements ICustomerService
         }
     }
 
-    async whoami(cookies) {
-        const auth = cookies.user_token
+    async whoami(cookies: Record<string, string>) {
+        const auth = cookies[CUSTOMER_TOKEN_KEY]
 
         if (!auth || isExpired(auth)) {
             return Promise.reject({
@@ -65,7 +66,7 @@ export class CustomerService extends CustomerHelpers implements ICustomerService
         const { name, phone, id } = candidate
 
         this.setResponseCookie({
-            key: 'user_token',
+            key: CUSTOMER_TOKEN_KEY,
             value: this.genAccessToken({ name, phone, id }),
             res: response,
         })
@@ -74,7 +75,7 @@ export class CustomerService extends CustomerHelpers implements ICustomerService
     }
 
     async logoutCustomer(response: Response) {
-        response.clearCookie('user_token')
+        response.clearCookie(CUSTOMER_TOKEN_KEY)
     }
 
     async getCustomers(params: Partial<ICustomer>): Promise<(ICustomer)[]> {

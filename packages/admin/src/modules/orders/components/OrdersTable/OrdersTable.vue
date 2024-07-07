@@ -93,16 +93,9 @@
                         <v-icon>fas fa-trash-alt</v-icon>
                     </v-button>
                 </template>
-                <template #qrcode="{ row }">
+                <template #executor="{ row }">
                     <div class="d-flex justify-center align-center">
-                        <img
-                            v-if="row.qrcode"
-                            style="height: 30px; width: auto"
-                            :src="row.qrcode"
-                        >
-                        <v-icon v-else>
-                            fas fa-box
-                        </v-icon>
+                        <span v-if="row.executor">{{ row.executor.firstName + ' ' + row.executor.secondName }}</span>
                     </div>
                 </template>
                 <template #status="{ row, format }">

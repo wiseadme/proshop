@@ -52,7 +52,7 @@ export const useOptions = () => {
 
     const productGroups = computed<IGroup[]>(() => unref(optionProduct)?.groups as IGroup[] ?? [])
 
-    const productGroupsMap = computed<Record<string, boolean>>(() => unref(productGroups).reduce((map, {variant}) => {
+    const productGroupsMap = computed<Record<string, boolean>>(() => unref(productGroups).reduce((map, { variant }) => {
         map[(variant as IVariant)!.id] = true
 
         return map
@@ -70,12 +70,12 @@ export const useOptions = () => {
         })
     }
 
-    const deleteProductGroup = (option: IOption) => {
-        const varIds = unref(productGroups).filter((it: IGroup) => it.id !== option.groupId)
+    const deleteProductGroup = ({ groupId, productId }: IOption) => {
+        const groupIds = unref(productGroups).filter(({ id }) => id !== groupId)
 
         return updateProduct({
-            id: option.productId,
-            groups: varIds
+            id: productId,
+            groups: groupIds
         })
 
     }
@@ -104,7 +104,6 @@ export const useOptions = () => {
     const onDeleteOption = async (option: IOption) => {
         try {
             await deleteOption(option.id)
-
             await deleteProductGroup(option)
 
             notify(OPTION_DELETE_SUCCESS)

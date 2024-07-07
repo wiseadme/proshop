@@ -1,13 +1,19 @@
 <script lang="ts" setup>
+    import { unref, watch } from 'vue'
+
     import { useProductModel } from '@modules/products/composables/use-product-model'
 
     import { FormCard } from '@shared/components/FormCard'
     import VSvg from '@shared/components/VSvg/VSvg.vue'
 
-    import { getProductConditionTitle } from '@modules/products/helpers'
+    import { ProductConditions } from '@modules/products/enums/product-conditions'
     import { SvgPaths } from '@shared/enums/svg-paths'
 
     const { model } = useProductModel()
+
+    watch(() => unref(model).conditions, (value) => {
+        console.log(value)
+    })
 
 </script>
 <template>
@@ -27,16 +33,16 @@
                 <template #body>
                     <div class="d-flex flex-column">
                         <v-checkbox
-                            v-model="model.conditions.countable"
-                            :label="getProductConditionTitle('countable')"
+                            v-model="model.conditions.isCountable"
+                            :label="ProductConditions.IS_COUNTABLE"
                         />
                         <v-checkbox
-                            v-model="model.conditions.exists"
-                            :label="getProductConditionTitle('exists')"
+                            v-model="model.conditions.isExists"
+                            :label="ProductConditions.IS_EXISTS"
                         />
                         <v-checkbox
-                            v-model="model.conditions.visible"
-                            :label="getProductConditionTitle('visible')"
+                            v-model="model.conditions.isVisible"
+                            :label="ProductConditions.IS_VISIBLE"
                         />
                     </div>
                 </template>

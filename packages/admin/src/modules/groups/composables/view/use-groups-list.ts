@@ -23,15 +23,11 @@ export const useGroupsList = () => {
     const { model } = useGroupModel()
     const { notify } = useNotifications()
 
-    const onDeleteGroup = async (group: IGroup) => {
+    const onDeleteGroup = (group: IGroup) => {
         if (group.hasOptions) {
-            return notify(GROUP_DELETE_WARNING)
-        }
-
-        try {
-            await deleteGroup(group.id)
-        } catch (err) {
-            notify(GROUP_DELETE_ERROR)
+            notify(GROUP_DELETE_WARNING)
+        } else {
+            deleteGroup(group.id).catch(() => notify(GROUP_DELETE_ERROR))
         }
     }
 

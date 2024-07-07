@@ -7,7 +7,7 @@ const GroupSchema: Schema = new Schema<IGroupMongoModel>({
         type: Schema.Types.ObjectId,
         ref: 'Variant',
         required: true,
-    } as any,
+    },
     name: {
         type: String,
         unique: true,

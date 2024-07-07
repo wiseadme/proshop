@@ -62,7 +62,7 @@
                 setTimeout(() => {
                     newOrdersNotifyId = notify({
                         title: 'Новые заказы',
-                        text: `У вас ${notSeenCount} новых не просмотренных заказа`,
+                        text: `Количество непросмотренных заказов: ${notSeenCount}`,
                         type: 'success',
                         closeOnClick: false,
                         actions: {
