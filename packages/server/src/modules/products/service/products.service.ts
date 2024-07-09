@@ -140,7 +140,10 @@ export class ProductsService extends ServiceHelpers implements IProductsService 
         if (product.quantity >= reduceBy) {
             return await this.updateProduct({ id, quantity: product.quantity - reduceBy })
         } else {
-
+            return Promise.resolve({
+                message: 'Quantity must be greater than reducer value',
+                status: 500
+            })
         }
     }
 

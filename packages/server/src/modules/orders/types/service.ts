@@ -2,13 +2,13 @@ import { IOrder } from '@proshop/types'
 import { Request } from 'express'
 
 export interface IOrdersService {
-    create(order: IOrder): Promise<IOrder>
+    createOrder(order: IOrder): Promise<IOrder>
 
-    read(params?: Partial<IOrder>): Promise<{ items: Array<IOrder>, total: number }>,
+    getOrders(params?: Partial<IOrder>): Promise<{ items: Array<IOrder>, total: number }>,
 
-    update(updates: Partial<IOrder>): Promise<IOrder>
+    updateOrder(updates: Partial<IOrder>): Promise<IOrder>
 
-    delete(id: string): Promise<boolean>
+    deleteOrder(id: string): Promise<boolean>
 
     processOrder(request: Request): Promise<any>
 }

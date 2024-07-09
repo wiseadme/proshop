@@ -22,7 +22,7 @@ export class OrdersService implements IOrdersService {
         @inject(ORDER_IOC.IOrderGatewayService) private gateway: IOrderGatewayService,
         @inject(ORDER_IOC.IOrdersQueue) private jobs: IOrdersQueue,
     ) {
-        this.jobs.worker.setJobProcessor(this.create.bind(this))
+        this.jobs.worker.setJobProcessor(this.createOrder.bind(this))
     }
 
     async processOrder({ headers }: Request) {
@@ -33,10 +33,19 @@ export class OrdersService implements IOrdersService {
         return await this.jobs.queue.waitJobResult(job!)
     }
 
-    async create(order: IOrder) {
+    async createOrder(order: IOrder) {
         const { customer: { name, phone } } = order
 
         order.orderId = customId({ name, email: phone, randomLength: 2 })
+
+        order.qrcode = await QRCode.toString(order.orderId, { type: 'svg' })
+
+        const created = await this.repository.create(Order.create(order))
+
+        /**
+         * @description - привязываем к корзине номер заказа
+         */
+        await this.gateway.cart.update({ id: created.cart!, orderId: created.orderId })
 
         /**
          * @description - уменьшаем кол - ва товара в остатках товара
@@ -53,20 +62,10 @@ export class OrdersService implements IOrdersService {
             })
         }
 
-        /**
-         * @description - внутри метода используется метод render, для отрисвоки qrcode,
-         * который возвращает promise, поэтому await не убираем
-         */
-        order.qrcode = await QRCode.toString(order.orderId, { type: 'svg' })
-
-        const created = await this.repository.create(Order.create(order))
-
-        await this.gateway.cart.update({ id: created.cart!, orderId: created.orderId })
-
         return created
     }
 
-    async read(query: IRequestParams<Partial<IOrder> & { seen?: boolean }> = {}) {
+    async getOrders(query: IRequestParams<Partial<IOrder> & { seen?: boolean }> = {}) {
         const data = {
             items: [] as IOrder[],
             total: 1,
@@ -95,7 +94,7 @@ export class OrdersService implements IOrdersService {
         return data
     }
 
-    async update(updates: IOrder): Promise<IOrder> {
+    async updateOrder(updates: IOrder): Promise<IOrder> {
         const order = await this.repository.update(updates)
 
         if (order.status.cancelled || order.status.completed) {
@@ -105,7 +104,7 @@ export class OrdersService implements IOrdersService {
         return order
     }
 
-    async delete(id: string): Promise<boolean> {
+    async deleteOrder(id: string): Promise<boolean> {
         return await this.repository.delete(id)
     }
 }

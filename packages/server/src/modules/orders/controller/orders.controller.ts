@@ -54,7 +54,7 @@ export class OrdersController extends BaseController implements IController {
 
     async getOrders(request: Request<{}, {}, {}, Partial<IOrder>>, response: Response, next: NextFunction) {
         try {
-            const data = await this.service.read(request.query)
+            const data = await this.service.getOrders(request.query)
             // @ts-ignore
             this.send({ data, request, response })
         } catch (error) {
@@ -65,7 +65,7 @@ export class OrdersController extends BaseController implements IController {
 
     async updateOrder(request: Request<{}, {}, IOrder>, response: Response, next: NextFunction) {
         try {
-            const data = await this.service.update(request.body)
+            const data = await this.service.updateOrder(request.body)
 
             this.send({ data, request, response })
         } catch (error) {
@@ -75,7 +75,7 @@ export class OrdersController extends BaseController implements IController {
 
     async deleteOrder(request: Request<{}, {}, {}, { id: string }>, response: Response, next: NextFunction) {
         try {
-            const data = await this.service.delete(request.query.id)
+            const data = await this.service.deleteOrder(request.query.id)
 
             this.send({ data, request, response })
         } catch (error) {
