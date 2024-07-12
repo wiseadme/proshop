@@ -1,10 +1,11 @@
 import { IOrder } from '@proshop/types'
 import { Request } from 'express'
+import { IOrderResponse } from '@modules/orders/types/response'
 
 export interface IOrdersService {
     createOrder(order: IOrder): Promise<IOrder>
 
-    getOrders(params?: Partial<IOrder>): Promise<{ items: Array<IOrder>, total: number }>,
+    getOrders(params?: Partial<IOrder>): Promise<IOrderResponse>,
 
     updateOrder(updates: Partial<IOrder>): Promise<IOrder>
 

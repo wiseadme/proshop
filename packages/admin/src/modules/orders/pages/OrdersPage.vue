@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+    import { onBeforeMount } from 'vue'
+
     import { useOrderActionsModal } from '@modules/orders/composables/use-order-actions-modal'
     import { useOrders } from '@modules/orders/composables/use-orders'
 
@@ -15,7 +17,7 @@
 
     const { showModal } = useOrderActionsModal()
 
-    getUsers()
+    onBeforeMount(getUsers)
 
 </script>
 <template>

@@ -41,6 +41,7 @@ export interface IOrder {
     status: IOrderStatuses
     payment: Maybe<number>
     executor: Maybe<IUser | string>
+    createdAt?: Date
 }
 
 export interface IOrderMongoModel extends Omit<IOrder, 'id'>{

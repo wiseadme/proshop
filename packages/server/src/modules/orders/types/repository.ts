@@ -3,17 +3,17 @@ import { IOrder } from '@proshop/types'
 import { id } from 'inversify'
 
 export interface IOrdersRepository {
-    create(order: IOrder): Promise<IOrder>
+    createOrder(order: IOrder): Promise<IOrder>
 
-    find(params?: any): Promise<IOrder[]>
+    getOrders(params?: any): Promise<IOrder[]>
 
-    findById(id: string): Promise<IOrder>
+    getOrderById(id: string): Promise<IOrder>
 
-    findBySeen(seen: boolean): Promise<IOrder[]>
+    getOrdersByStatus(seen: boolean): Promise<IOrder[]>
 
-    update(updates: IOrder): Promise<IOrder>
+    updateOrder(updates: IOrder): Promise<IOrder>
 
-    delete(id: string): Promise<boolean>
+    deleteOrder(id: string): Promise<boolean>
 
     getDocumentsCount(): Promise<number>
 }

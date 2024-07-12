@@ -58,7 +58,7 @@ export const useOrdersService = createSharedComposable(() => {
         return unref(order)
     }
 
-    const deleteOrder = (orderId) => _store.delete(orderId)
+    const deleteOrder = (orderId: string) => _store.delete(orderId)
 
     return {
         order,

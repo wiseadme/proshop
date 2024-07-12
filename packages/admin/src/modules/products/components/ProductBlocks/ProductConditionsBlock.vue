@@ -1,7 +1,13 @@
 <script lang="ts" setup>
-    import { unref, watch } from 'vue'
+    import {
+        inject,
+        unref,
+        watch
+    } from 'vue'
 
     import { useProductModel } from '@modules/products/composables/use-product-model'
+
+    import { useButtonsPanel } from '@shared/composables/use-buttons-panel'
 
     import { FormCard } from '@shared/components/FormCard'
     import VSvg from '@shared/components/VSvg/VSvg.vue'
@@ -10,6 +16,15 @@
     import { SvgPaths } from '@shared/enums/svg-paths'
 
     const { model } = useProductModel()
+
+    const form = inject('$v_form', {}) as any
+
+    useButtonsPanel({
+        title: 'Управление состоянием',
+        onOk: () => form.validate(),
+        onDismiss: () => {
+        }
+    })
 
     watch(() => unref(model).conditions, (value) => {
         console.log(value)

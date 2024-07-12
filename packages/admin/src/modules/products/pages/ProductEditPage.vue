@@ -23,10 +23,12 @@
 </script>
 <template>
     <v-layout column>
-        <component
-            :is="activeItem.component"
-            v-if="activeItem"
-        />
+        <v-form>
+            <component
+                :is="activeItem.component"
+                v-if="activeItem"
+            />
+        </v-form>
         <component
             :is="activeItem.modal"
             v-if="activeItem && activeItem.modal"

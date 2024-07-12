@@ -2,7 +2,7 @@ import { RouteNames } from '@modules/orders/enums/route-names'
 
 export const orderRoutes = [
     {
-        path: '/orders',
+        path: 'orders/:orderId?',
         component: () => import(/* webpackChunkName: "Page.ORDERS" */ '@modules/orders/layouts/OrdersLayout.vue'),
         children: [
             {

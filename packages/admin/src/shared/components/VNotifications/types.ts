@@ -2,10 +2,12 @@ type NotifyActions = {
     buttons?: {
         ok?: {
             type: NotifyTypes,
+            label: string;
             handler: (...args: any) => any
         },
         dismiss?: {
             type: NotifyTypes,
+            label: string;
             handler: (...args: any) => any
         },
     }
