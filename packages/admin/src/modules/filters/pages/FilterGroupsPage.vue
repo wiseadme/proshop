@@ -1,13 +1,17 @@
 <script lang="ts" setup>
+    import { onBeforeMount } from 'vue'
+
     import { useFilterGroupService } from '@modules/filters/composables/use-filter-group-service'
 
     import FilterGroupsList from '@modules/filters/components/FilterGroupsList.vue'
     import FilterGroupFormModal from '@modules/filters/components/modals/FilterGroupFormModal.vue'
 
-    const { getFilterGroupAttributes, getFilterGroupItems } = useFilterGroupService()
+    const { getFilterGroupAttributes, getFilterGroups } = useFilterGroupService()
 
-    getFilterGroupAttributes()
-    getFilterGroupItems()
+    onBeforeMount(() => {
+        getFilterGroupAttributes()
+        getFilterGroups()
+    })
 </script>
 <template>
     <v-layout>

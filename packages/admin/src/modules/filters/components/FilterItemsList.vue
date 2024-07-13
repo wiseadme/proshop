@@ -22,10 +22,12 @@
     const { getFilterGroups } = useFilterGroupService()
 
     watch(filterGroups, ([group]) => {
+        filtersGroup.value = group
+
         if (group) {
-            filtersGroup.value = group
             getFilterItems({ groupId: group.id })
         }
+
     }, { immediate: true })
 
     onBeforeMount(async () => {

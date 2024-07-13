@@ -9397,10 +9397,10 @@ vuedraggable@^4.1.0:
   dependencies:
     sortablejs "1.14.0"
 
-vueland@^0.0.62:
-  version "0.0.62"
-  resolved "https://registry.yarnpkg.com/vueland/-/vueland-0.0.62.tgz#8cf6b026187b1c462e8f6de0faee8f761a0e2ff0"
-  integrity sha512-IdVbqBvI+pIvnfITTd6FIalULQfgGs3R1o5y8l/IK9wPSWmmwViM9AIPI14KMwnNWTdbD7Wu2EGCiRM2UyYDKQ==
+vueland@^0.0.63:
+  version "0.0.63"
+  resolved "https://registry.yarnpkg.com/vueland/-/vueland-0.0.63.tgz#cd382547a32a61304f645ee199f41f0e159b1725"
+  integrity sha512-MNxf86RoiiVOQulBfP1RZGrXuIb2vQApTJLEj9QQnlvB6YpqEl+77u6Y/0E0ESmiuMM8t5vS3i+Smk0JX+854g==
   dependencies:
     vue "^3.2.31"
 
