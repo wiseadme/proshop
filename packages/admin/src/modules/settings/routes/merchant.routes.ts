@@ -3,7 +3,7 @@ export const merchantRoutes = [
     {
         path: 'merchant',
         component: () => import(/* webpackChunkName: "Layout.PAGE" */  '@shared/layouts/PageLayout.vue'),
-        name: RouteNames.MERCHANT_SETTINGS,
+        // name: RouteNames.MERCHANT_SETTINGS,
         children: [
             {
                 path: '',

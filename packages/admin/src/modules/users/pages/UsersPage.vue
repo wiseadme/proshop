@@ -1,8 +1,10 @@
 <script lang="ts" setup>
     import { ref } from 'vue'
+
     import { useUsersService } from '@modules/users/composables/use-users-service'
-    import UsersTable from '@modules/users/components/UsersTable'
+
     import UserActionsModal from '@modules/users/components/UserActionsModal'
+    import UsersTable from '@modules/users/components/UsersTable'
 
     const { createUser, deleteUser, fetchUsers } = useUsersService()
     const openModal = ref(false)

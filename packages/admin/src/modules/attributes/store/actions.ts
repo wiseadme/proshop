@@ -1,5 +1,7 @@
 import { useAttributeRepository } from '@modules/attributes/repository/attribute.repository'
+
 import { IAttribute } from '@proshop/types'
+
 import { IAttributeActions } from '@modules/attributes/types'
 
 const repository = useAttributeRepository()

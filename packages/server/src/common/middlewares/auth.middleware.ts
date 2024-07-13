@@ -8,8 +8,6 @@ export class AuthMiddleware implements IMiddleware {
     execute(req: Request, res: Response, next: NextFunction) {
         const { auth } = req.cookies
 
-        // console.log(req.headers)
-
         if (!auth || isExpired(auth)) {
             // throw ({
             //   ok: false,

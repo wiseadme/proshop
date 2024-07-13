@@ -2,10 +2,9 @@ import { inject, injectable } from 'inversify'
 import { TYPES } from '@common/schemes/di-types'
 // Types
 import { ILogger } from '@/types/utils'
-import { Document } from 'mongoose'
 import { IVariant } from '@proshop/types'
-import { IVariantService } from '../types/service'
-import { IVariantRepository } from '../types/repository'
+import { IVariantService } from '@modules/variant/types/service'
+import { IVariantRepository } from '@modules/variant/types/repository'
 import { Variant } from '@modules/variant/entity/variant.entity'
 
 @injectable()

@@ -1,6 +1,7 @@
+import { IAsset } from '@proshop/types'
+
 import { file, rest } from '@shared/api'
 import { IRest } from '@shared/types/app'
-import { IAsset } from '@proshop/types'
 
 type CreateFileParams = {
     ownerId: string,

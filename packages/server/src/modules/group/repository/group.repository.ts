@@ -1,16 +1,49 @@
 import { IGroupRepository } from '@modules/group/types/repository'
-import { IGroup } from '@proshop/types'
+import { IGroup, IGroupMongoModel } from '@proshop/types'
 import { GroupModel } from '@modules/group/model/group.model'
-import { GroupMapper } from '@modules/group/mappers/mongo.mapper'
+import { GroupMapper } from '@modules/group/mappers/group.mapper'
 import mongoose from 'mongoose'
+import { id, injectable } from 'inversify'
 
+@injectable()
 export class GroupRepository implements IGroupRepository {
-    async create(model: IGroup): Promise<IGroup> {
-        const group = await GroupModel.create({
+    async createGroup(model: IGroup): Promise<IGroup> {
+        const group = await new GroupModel({
             ...GroupMapper.toMongoModelData(model),
             _id: new mongoose.Types.ObjectId(),
         })
+            .save()
 
-        return GroupMapper.toDomain(group)
+        await group.populate(['variant'])
+
+        return GroupMapper.toDomain(group.toObject())
+    }
+
+    // TODO - реализовать пагинацию
+    async getGroups({ id }: { id: string }): Promise<IGroup[]> {
+        const data = await GroupModel
+            .find(id && { _id: id } || {})
+            .populate(['variant'])
+            .lean()
+
+        return data.map(it => GroupMapper.toDomain(it))
+    }
+
+    async deleteGroup(id: string): Promise<boolean> {
+        await GroupModel.findByIdAndRemove(id)
+
+        return true
+    }
+
+    async updateGroup(updates: Partial<IGroup>): Promise<IGroup> {
+        const updated = await GroupModel
+            .findByIdAndUpdate(
+                { _id: updates.id },
+                { $set: updates },
+                { new: true },)
+            .populate(['variant'])
+            .lean() as IGroupMongoModel
+
+        return GroupMapper.toDomain(updated)
     }
 }

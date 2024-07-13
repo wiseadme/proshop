@@ -1,9 +1,15 @@
 import { ref, unref } from 'vue'
-import { Unit } from '@modules/units/model/unit.model'
-import { useUnitsService } from '@modules/units/composables/use-units-service'
-import { useLoadingState } from '@shared/composables/use-loading-state'
-import { IUnit } from '@proshop/types'
+
 import { createSharedComposable } from '@shared/features/create-shared-composable'
+
+import { useUnitsService } from '@modules/units/composables/use-units-service'
+
+import { useLoadingState } from '@shared/composables/use-loading-state'
+
+import { Unit } from '@modules/units/model/unit.model'
+
+import { IUnit } from '@proshop/types'
+
 
 export const useUnit = createSharedComposable(() => {
     const { updateUnit, createUnit, deleteUnit, setAsCurrent } = useUnitsService()

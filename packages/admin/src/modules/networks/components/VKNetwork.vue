@@ -1,9 +1,13 @@
 <script lang="ts" setup>
-    import { SvgPaths } from '@shared/enums/svg-paths'
-    import { VSvg } from '@shared/components/VSvg'
-    import { useVK } from '@modules/networks/composables/use-vk'
     import { onBeforeMount, unref } from 'vue'
+
     import { useRouter } from 'vue-router'
+
+    import { useVK } from '@modules/networks/composables/use-vk'
+
+    import { VSvg } from '@shared/components/VSvg'
+
+    import { SvgPaths } from '@shared/enums/svg-paths'
 
     const router = useRouter()
     const { getVKEnterURL, getAccessToken, clientCode } = useVK()

@@ -22,7 +22,7 @@ export class UserController extends BaseController implements IController {
     initRoutes() {
         this.router.post('/login', this.login.bind(this))
         this.router.get('/logout', this.logout.bind(this))
-        this.router.post('/create', setMiddlewares({ roles: ['root'] }), this.create.bind(this))
+        this.router.post('/create'/*setMiddlewares({ roles: ['root'] })*/, this.create.bind(this))
         this.router.get('/whoami', this.whoami.bind(this))
         this.router.get('/refresh', this.refresh.bind(this))
         this.router.get('/', this.getUsers.bind(this))

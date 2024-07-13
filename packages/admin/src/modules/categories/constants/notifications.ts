@@ -1,4 +1,5 @@
 import { markRaw } from 'vue'
+
 import { Notify } from '@shared/components/VNotifications/types'
 
 export const CATEGORY_DELETED: Notify = markRaw({

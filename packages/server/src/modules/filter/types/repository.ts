@@ -4,7 +4,7 @@ import { id } from 'inversify'
 export interface IFilterGroupRepository {
     create(filterGroup: IFilterGroup): Promise<IFilterGroup>
 
-    read(id?: string): Promise<IFilterGroup[]>
+    read(params: Partial<IFilterGroup>): Promise<IFilterGroup[]>
 
     update(updates: Partial<IFilterGroup>): Promise<IFilterGroup>
 

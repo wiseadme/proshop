@@ -1,14 +1,18 @@
 import { unref } from 'vue'
-import { useCategoryModel } from '@modules/categories/composables/use-category-model'
+
 import { useCategoriesService } from '@modules/categories/composables/use-categories-service'
+import { useCategoryModel } from '@modules/categories/composables/use-category-model'
+
 import { useNotifications } from '@shared/components/VNotifications/use-notifications'
-import { hasDiffs, hasValueDiffs } from '@shared/helpers/diffs.helpers'
+
+import { ICategory } from '@proshop/types'
+
 import {
     CHANGES_SAVED,
     NO_CHANGES,
     SAVING_ERROR,
 } from '@shared/constants/notifications'
-import { ICategory } from '@proshop/types'
+import { hasDiffs, hasValueDiffs } from '@shared/helpers/diffs.helpers'
 
 const infoBlockKeys = ['title', 'order', 'seo', 'url', 'parentId']
 

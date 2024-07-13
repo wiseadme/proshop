@@ -3,7 +3,7 @@ export const siteRoutes = [
     {
         path: 'site',
         component: () => import(/* webpackChunkName: "Layout.PAGE" */ '@shared/layouts/PageLayout.vue'),
-        name: RouteNames.SITE_SETTINGS,
+        // name: RouteNames.SITE_SETTINGS,
         children: [
             {
                 path: ':action(edit|create)/:section',
@@ -11,8 +11,11 @@ export const siteRoutes = [
                     default: () => import(/* webpackChunkName: "Page.SiteEditPage" */ '@modules/settings/pages/SiteEditPage.vue'),
                     right: () => import(/* webpackChunkName: "Page.SiteRightSideBar" */ '@modules/settings/components/RightSideBar/SiteRightSideBar.vue')
                 },
-                name: RouteNames.SITE_EDIT_PAGE,
+                name: RouteNames.SITE_SETTINGS,
             }
-        ]
+        ],
+        // meta: {
+        //     name: RouteNames.SITE_SETTINGS,
+        // }
     }
 ]

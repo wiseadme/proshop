@@ -1,12 +1,12 @@
-import { useEventEmitter } from './use-event-emitter'
 import { Notify } from './types'
+import { useEventEmitter } from './use-event-emitter'
+
+const DEFAULT_TIMEOUT = 3000
 
 export const useNotifications = () => {
-    const DEFAULT_TIMEOUT = 1500
-
     const { emit } = useEventEmitter()
 
-    const notify = (params: Notify): number => {
+    const notify = (params: Notify) => {
         const notification = { ...params }
         notification.id = Date.now()
 

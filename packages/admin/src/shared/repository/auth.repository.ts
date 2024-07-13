@@ -1,7 +1,9 @@
+import { AxiosResponse } from 'axios'
+
+import { IUser } from '@proshop/types'
+
 import { auth } from '@shared/api'
 import { IRest } from '@shared/types/app'
-import { IUser } from '@proshop/types'
-import { AxiosResponse } from 'axios'
 
 export interface IAuthRepository {
     login(user: { username: string, password: string }): Promise<AxiosResponse<{ data: IUser, ok: boolean }>>
@@ -24,15 +26,15 @@ class Repository implements IAuthRepository {
         this.path = path
     }
 
-    async login(user: { username: string, password: string }) {
-        return this.client.post(`${ this.path }/login`, user)
+    async login(data: { username: string, password: string }) {
+        return this.client.post(`${ this.path }/login`, data)
     }
 
     async logout() {
         return this.client.get(`${ this.path }/logout`)
     }
 
-    async create(user) {
+    async create(user: IUser) {
         return this.client.post(`${ this.path }/create`, user)
     }
 
@@ -46,6 +48,6 @@ class Repository implements IAuthRepository {
 }
 
 export const useAuthRepository = () => new Repository({
-    client: auth.client,
+    client: auth?.client,
     path: '/api/v1/user',
 })

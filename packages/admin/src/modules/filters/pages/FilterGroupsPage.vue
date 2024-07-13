@@ -1,7 +1,8 @@
 <script lang="ts" setup>
-    import FilterGroupFormModal from '@modules/filters/components/modals/FilterGroupFormModal.vue'
-    import FilterGroupsList from '@modules/filters/components/FilterGroupsList.vue'
     import { useFilterGroupService } from '@modules/filters/composables/use-filter-group-service'
+
+    import FilterGroupsList from '@modules/filters/components/FilterGroupsList.vue'
+    import FilterGroupFormModal from '@modules/filters/components/modals/FilterGroupFormModal.vue'
 
     const { getFilterGroupAttributes, getFilterGroupItems } = useFilterGroupService()
 

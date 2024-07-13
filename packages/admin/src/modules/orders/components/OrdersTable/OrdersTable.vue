@@ -1,10 +1,14 @@
 <script lang="ts" setup>
-    import { VSvg } from '@shared/components/VSvg'
-    import { FormCard } from '@shared/components/FormCard'
     import { useOrders } from '@modules/orders/composables/use-orders'
     import { useOrdersTable } from '@modules/orders/composables/use-orders-table'
-    import { SvgPaths } from '@shared/enums/svg-paths'
+
+    import { FormCard } from '@shared/components/FormCard'
+    import { VSvg } from '@shared/components/VSvg'
+
+
     import { IOrder } from '@proshop/types'
+
+    import { SvgPaths } from '@shared/enums/svg-paths'
 
     defineEmits<{
         (e: 'open:order', row: IOrder): void
@@ -89,16 +93,9 @@
                         <v-icon>fas fa-trash-alt</v-icon>
                     </v-button>
                 </template>
-                <template #qrcode="{ row }">
+                <template #executor="{ row }">
                     <div class="d-flex justify-center align-center">
-                        <img
-                            v-if="row.qrcode"
-                            style="height: 30px; width: auto"
-                            :src="row.qrcode"
-                        />
-                        <v-icon v-else>
-                            fas fa-box
-                        </v-icon>
+                        <span v-if="row.executor">{{ row.executor.firstName + ' ' + row.executor.secondName }}</span>
                     </div>
                 </template>
                 <template #status="{ row, format }">

@@ -1,10 +1,16 @@
 <script lang="ts" setup>
     import { unref } from 'vue'
-    import AddressMap from '@modules/orders/components/OrderActionsModal/AddressMap/AddressMap.vue'
-    import { OrderProcessStatuses, OrderStatuses } from '@modules/orders/enums/status'
-    import { useNotifications } from '@shared/components/VNotifications/use-notifications'
+
     import { useOrders } from '@modules/orders/composables/use-orders'
+
+    import { useNotifications } from '@shared/components/VNotifications/use-notifications'
+
+    import AddressMap from '@modules/orders/components/OrderActionsModal/AddressMap/AddressMap.vue'
+
     import { ICartItem, IUser } from '@proshop/types'
+
+    import { OrderProcessStatuses, OrderStatuses } from '@modules/orders/enums/status'
+
 
     defineProps<{
         users: IUser[]
@@ -61,19 +67,15 @@
         color="white"
     >
         <v-card-title
-            style="z-index: 10; justify-content: space-between"
+            style="z-index: 10;"
             class="white primary--text elevation-2"
         >
+            <div
+                style="width: 100px; height: 100px"
+                v-html="model.qrcode"
+            />
             <div>
                 <h5>Заказ № {{ model.orderId }}</h5>
-            </div>
-            <div>
-                <img
-                    v-if="model.qrcode"
-                    :src="model.qrcode"
-                    alt=""
-                    style="width: 120px; z-index: 0"
-                >
             </div>
         </v-card-title>
         <v-card-content

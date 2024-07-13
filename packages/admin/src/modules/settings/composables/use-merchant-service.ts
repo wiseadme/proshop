@@ -1,7 +1,10 @@
 import { computed, unref } from 'vue'
+
 import { createSharedComposable } from '@shared/features/create-shared-composable'
-import { useMerchantStore } from '@modules/settings/store/merchant'
+
 import { IMerchant } from '@proshop/types'
+
+import { useMerchantStore } from '@modules/settings/store/merchant'
 
 export const useMerchantService = createSharedComposable(() => {
     const _store = useMerchantStore()

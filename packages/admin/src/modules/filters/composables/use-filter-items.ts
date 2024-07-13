@@ -1,9 +1,14 @@
 import { ref, unref } from 'vue'
+
 import { createSharedComposable } from '@shared/features/create-shared-composable'
-import { IFilterGroup, IFilterItem } from '@proshop/types'
-import { useFilterItemsService } from '@modules/filters/composables/use-filter-items-service'
+
 import { useFilterItemModel } from '@modules/filters/composables/use-filter-item-model'
+import { useFilterItemsService } from '@modules/filters/composables/use-filter-items-service'
+
 import { useNotifications } from '@shared/components/VNotifications/use-notifications'
+
+import { IFilterGroup, IFilterItem } from '@proshop/types'
+
 import { CHANGES_SAVED, SAVING_ERROR } from '@shared/constants/notifications'
 
 export const useFilterItems = createSharedComposable(() => {

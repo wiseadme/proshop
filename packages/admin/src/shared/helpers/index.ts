@@ -15,7 +15,7 @@ export const getDifferences = (changed, origin) => {
     const diffs = {}
 
     for (const key in changed) {
-        if (changed[key] && changed.hasOwnProperty(key)) {
+        if (changed[key] && Object.hasOwn(changed, key)) {
             if (toJSON(changed[key]) !== toJSON(origin[key])) {
                 diffs[key] = changed[key]
             }

@@ -3,9 +3,12 @@ import {
     ref,
     unref,
 } from 'vue'
+
 import { createSharedComposable } from '@shared/features/create-shared-composable'
-import { useMetaTagsStore } from '@modules/metatags/store'
+
 import { IMetaTag, Maybe } from '@proshop/types'
+
+import { useMetaTagsStore } from '@modules/metatags/store'
 
 export const useMetaTagsService = createSharedComposable(() => {
     const _store = useMetaTagsStore()

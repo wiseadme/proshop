@@ -1,6 +1,7 @@
+import { ISettings } from '@proshop/types'
+
 import { rest } from '@shared/api'
 import { IRepository, IRest } from '@shared/types/app'
-import { ISettings } from '@proshop/types'
 
 class Repository implements IRepository<ISettings> {
     client: IRest<ISettings>

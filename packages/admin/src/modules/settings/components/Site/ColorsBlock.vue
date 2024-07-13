@@ -4,10 +4,14 @@
         ref,
         unref
     } from 'vue'
+
     import { ColorPicker } from 'vue-color-kit'
+
     import { useSite } from '@modules/settings/composables/use-site'
-    import { ISiteColors } from '@proshop/types'
+
     import { FormCard } from '@shared/components/FormCard'
+
+    import { ISiteColors } from '@proshop/types'
 
     type PaletteItem = {
         color: string

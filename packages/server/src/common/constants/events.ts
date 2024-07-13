@@ -1,6 +1,2 @@
 export const UPDATE_ASSETS_EVENT = 'update:assets'
-export const UPDATE_CATEGORY_EVENT = 'update:category'
 export const DELETE_CATEGORY_EVENT = 'delete:category'
-export const DELETE_PRODUCT_EVENT = 'delete:product'
-export const DELETE_OPTION_EVENT = 'delete:option'
-export const DELETE_CART_EVENT = 'delete:cart'

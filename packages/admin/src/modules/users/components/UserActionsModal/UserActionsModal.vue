@@ -5,9 +5,12 @@
         ref,
         unref,
     } from 'vue'
-    import { ROLES } from '@shared/constants/roles'
-    import { IOrder, IUser } from '@proshop/types'
+
     import { User } from '@modules/users/model/user.model'
+
+    import { IOrder, IUser } from '@proshop/types'
+
+    import { ROLES } from '@shared/constants/roles'
 
     const {
         modelValue,

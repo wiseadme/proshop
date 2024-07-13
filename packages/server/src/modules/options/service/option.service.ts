@@ -8,9 +8,7 @@ import { IOptionRepository } from '../types/repository'
 import { IOption } from '@proshop/types'
 import { IEventBusService } from '@/types/services'
 // Constants
-import { DELETE_OPTION_EVENT } from '@common/constants/events'
 import { Option } from '@modules/options/entity/option.entity'
-import * as events from 'events'
 import { OPTION_IOC } from '@modules/options/di/di.types'
 
 @injectable()
@@ -22,40 +20,19 @@ export class OptionService implements IOptionService {
     ) {
     }
 
-    create(option: IOption): Promise<IOption> {
+    createOption(option: IOption): Promise<IOption> {
         return this.repository.create(Option.create(option))
     }
 
-    find(id?: string): Promise<IOption[] | IOption> {
-        if (id) {
-            return this.repository.findById(id)
-        }
-
-        return this.repository.find()
+    findOptions(params: Partial<IOption>): Promise<IOption[] | IOption> {
+        return this.repository.find(params)
     }
 
-    findMany(ids: string[]): Promise<IOption[]> {
-        return this.repository.findMany(ids)
-    }
-
-    update(updates: Partial<IOption>): Promise<IOption> {
+    updateOption(updates: Partial<IOption>): Promise<IOption> {
         return this.repository.update(updates)
     }
 
-    delete(id: string): Promise<boolean> {
-        this.events.emit(DELETE_OPTION_EVENT, id)
+    deleteOption(id: string): Promise<boolean> {
         return this.repository.delete(id)
-    }
-
-    async deleteVariantOptions(options: IOption[]) {
-        try {
-            // for await (const option of options) {
-            await Promise.all(options.map(it => this.delete(it.id)))
-            // }
-
-            return true
-        } catch (err) {
-            return Promise.reject(err)
-        }
     }
 }

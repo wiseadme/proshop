@@ -1,13 +1,17 @@
-import type { IGroup, IGroupMongoModel } from '@proshop/types'
+import type { IGroup, IGroupMongoModel, IVariantMongoModel } from '@proshop/types'
+import { VariantMapper } from '@modules/variant/mappers/variant.mapper'
 
 export class GroupMapper {
     static toDomain(entity: IGroupMongoModel): IGroup {
         const { _id } = entity
         const map: Partial<IGroupMongoModel> = { ...entity }
 
+        delete map._id
+
         return {
             id: _id,
             ...map,
+            variant: VariantMapper.toDomain(map.variant as unknown as IVariantMongoModel),
         } as IGroup
     }
 

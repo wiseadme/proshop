@@ -1,13 +1,16 @@
 <script lang="ts" setup>
-    import VSvg from '@shared/components/VSvg/VSvg.vue'
-    import DraggableItemsList from '@shared/components/DraggableItemsList/DraggableItemsList.vue'
-    import { FormCard } from '@shared/components/FormCard/'
     import { useProductMetaTags } from '@modules/products/composables/use-product-metatags'
     import { useProductModel } from '@modules/products/composables/use-product-model'
+
+    import DraggableItemsList from '@shared/components/DraggableItemsList/DraggableItemsList.vue'
+    import { FormCard } from '@shared/components/FormCard/'
+    import VSvg from '@shared/components/VSvg/VSvg.vue'
+
     // Helpers
-    import { descriptorToMetaTag } from '@shared/helpers/metatag'
-    import { SvgPaths } from '@shared/enums/svg-paths'
     import { IMetaTag } from '@proshop/types'
+
+    import { SvgPaths } from '@shared/enums/svg-paths'
+    import { descriptorToMetaTag } from '@shared/helpers/metatag'
 
     const { model } = useProductModel()
 

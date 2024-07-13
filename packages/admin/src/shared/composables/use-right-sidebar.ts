@@ -1,5 +1,6 @@
-import { createSharedComposable } from '@shared/features/create-shared-composable'
 import { DefineComponent, ref } from 'vue'
+
+import { createSharedComposable } from '@shared/features/create-shared-composable'
 
 export interface ISidebarTab {
     component: InstanceType<DefineComponent<any, any, any>>

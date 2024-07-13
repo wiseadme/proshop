@@ -4,17 +4,24 @@
         unref,
         watch,
     } from 'vue'
-    import { useProductsService } from '@modules/products/composables/use-products-service'
+
+    import { useProduct } from '@modules/products/composables/use-product'
     import { useProductCategories } from '@modules/products/composables/use-product-categories'
-    import { FormCard } from '@shared/components/FormCard'
-    import { VSvg } from '@shared/components/VSvg'
-    import { ICategory } from '@proshop/types'
-    import { SvgPaths } from '@shared/enums/svg-paths'
-    import { TreeView } from '@shared/components/TreeView'
+    import { useProductsService } from '@modules/products/composables/use-products-service'
+
     import { useTreeView } from '@shared/composables/use-tree-view'
+
+    import { FormCard } from '@shared/components/FormCard'
+    import { TreeView } from '@shared/components/TreeView'
+    import { VSvg } from '@shared/components/VSvg'
+
+    import { ICategory } from '@proshop/types'
+
+    import { SvgPaths } from '@shared/enums/svg-paths'
     import { clone } from '@shared/helpers'
 
-    const { product, categoryItems } = useProductsService()
+    const { categoryItems } = useProductsService()
+    const { product } = useProduct()
     const { selectsMap, toggleCategory, select } = useProductCategories()
     const { treeItems, buildTreeItems } = useTreeView()
 

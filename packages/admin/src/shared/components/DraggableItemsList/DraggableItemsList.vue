@@ -4,6 +4,7 @@
         ref,
         unref,
     } from 'vue'
+
     import draggable from 'vuedraggable'
 
     type OrderedItem<S> = S & { order: number }
@@ -125,7 +126,7 @@
                                     </v-list-item-subtitle>
                                 </v-list-item-content>
 
-                                <v-spacer></v-spacer>
+                                <v-spacer/>
                                 <v-list-item-content
                                     v-if="editable || deletable"
                                     class="menu"

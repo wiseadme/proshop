@@ -1,19 +1,18 @@
-import { useProductRepository } from '@modules/products/repository'
 import {
     IAttribute,
     IMetaTag,
-    IOption,
     IProduct,
     IProductParams,
     IProductQuery,
-    IRequestParams,
-    IVariant
+    IRequestParams
 } from '@proshop/types'
+
+import { useProductRepository } from '@modules/products/repository'
 
 const repository = useProductRepository()
 
 export const actions = {
-    async createProduct(product: IProductParams) {
+    async createProduct(product: Partial<IProduct>) {
         try {
             const { data } = await repository.createProduct(product)
 
@@ -46,9 +45,15 @@ export const actions = {
         try {
             const { data } = await repository.updateProduct(updates)
 
-            this.$patch((state) => {
-                state.products = state.products.map(it => it.id === updates.id ? data.data : it)
-            })
+            /**
+             * TODO - зарефакторить, if добавлен из - за вызова апдейта
+             * из другого модуля (groups), в то время как products не были проинициализированы
+             */
+            if (this.products) {
+                this.$patch((state) => {
+                    state.products = state.products.map(it => it.id === updates.id ? data.data : it)
+                })
+            }
 
             return data.data
         } catch (err) {
@@ -130,62 +135,6 @@ export const actions = {
 
             this.$patch((state) => {
                 state.products = state.products.map(it => it.id === params.productId ? data.data : it)
-            })
-
-            return data.data
-        } catch (err) {
-            return Promise.reject(err)
-        }
-    },
-
-    async addVariant(variant: IVariant) {
-        try {
-            const { data } = await repository.addVariant(variant)
-
-            this.$patch((state) => {
-                state.products = state.products.map(it => it.id === variant.ownerId ? data.data : it)
-            })
-
-            return data.data
-        } catch (err) {
-            return Promise.reject(err)
-        }
-    },
-
-    async deleteVariant(variant: IVariant) {
-        try {
-            const { data } = await repository.deleteVariant(variant)
-
-            this.$patch((state) => {
-                state.products = state.products.map(it => it.id === variant.ownerId ? data.data : it)
-            })
-
-            return data.data
-        } catch (err) {
-            return Promise.reject(err)
-        }
-    },
-
-    async addVariantOption(option: IOption) {
-        try {
-            const { data } = await repository.addVariantOption(option)
-
-            this.$patch((state) => {
-                state.products = state.products.map(it => it.id === option.ownerId ? data.data : it)
-            })
-
-            return data.data
-        } catch (err) {
-            return Promise.reject(err)
-        }
-    },
-
-    async deleteVariantOption(option: IOption) {
-        try {
-            const { data } = await repository.deleteVariantOption(option)
-
-            this.$patch((state) => {
-                state.products = state.products.map(it => it.id === option.ownerId ? data.data : it)
             })
 
             return data.data

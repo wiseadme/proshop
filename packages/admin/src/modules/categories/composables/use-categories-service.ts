@@ -3,15 +3,18 @@ import {
     ref,
     unref,
 } from 'vue'
+
 import { createSharedComposable } from '@shared/features/create-shared-composable'
-import { useCategoriesStore } from '@modules/categories/store'
-import { useFilesService } from '@shared/services/files.service'
+
 import {
     IAsset,
     ICategory,
     Maybe,
 } from '@proshop/types'
+
+import { useCategoriesStore } from '@modules/categories/store'
 import { getIds } from '@modules/products/helpers'
+import { useFilesService } from '@shared/services/files.service'
 
 export const useCategoriesService = createSharedComposable(() => {
     const _store = useCategoriesStore()

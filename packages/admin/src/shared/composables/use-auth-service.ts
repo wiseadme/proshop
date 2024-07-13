@@ -1,8 +1,10 @@
 import { computed } from 'vue'
-import { useAuthStore } from '@shared/store/auth'
+
 import { IUser, Maybe } from '@proshop/types'
+
 import { router } from '@app/router'
 import { RouteNames } from '@shared/enums/route-names'
+import { useAuthStore } from '@shared/store/auth'
 
 export const useAuthService = () => {
     const _store = useAuthStore()
@@ -21,8 +23,10 @@ export const useAuthService = () => {
     const login = async (user: {
         username: string,
         password: string
-    }) => loginUser(user).then(() => router.push({ name: RouteNames.MAIN }))
+    }) => loginUser(user).then(() => router.push({ name: RouteNames.DASHBOARD }))
+
     const logout = async () => logoutUser().then(() => router.push({ name: RouteNames.LOGIN }))
+
     const check = async () => whoAmI()
         .then(() => {
             if (router.currentRoute.value.path.includes(RouteNames.AUTH)) {
@@ -35,8 +39,8 @@ export const useAuthService = () => {
         user,
         isAuthenticated,
         isChecked,
-        login,
         refresh,
+        login,
         logout,
         check,
     }

@@ -1,6 +1,7 @@
 import { defineStore } from 'nervue'
-import { state } from '@modules/settings/store/merchant/state'
+
 import { actions } from '@modules/settings/store/merchant/actions'
+import { state } from '@modules/settings/store/merchant/state'
 
 export const useMerchantStore = defineStore({
     id: 'merchant',

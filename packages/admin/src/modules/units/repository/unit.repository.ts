@@ -1,6 +1,7 @@
+import { IUnit } from '@proshop/types'
+
 import { rest } from '@shared/api'
 import { IRepository, IRest } from '@shared/types/app'
-import { IUnit } from '@proshop/types'
 
 export class Repository implements IRepository<IUnit> {
     client: IRest<IUnit>

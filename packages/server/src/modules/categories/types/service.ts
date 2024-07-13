@@ -6,7 +6,7 @@ export interface ICategoryService {
 
     getCategories(query: Partial<ICategory>): Promise<ICategory[]>;
 
-    updateCategory(updates: Partial<ICategory>): Promise<ICategory>;
+    updateCategory(updates: Partial<ICategory> & { reduceBy?: number, increaseBy?: number }): Promise<ICategory>;
 
     deleteCategory(id: string): Promise<boolean>;
 }

@@ -1,16 +1,16 @@
 <script lang="ts" setup>
     import { onBeforeMount } from 'vue'
 
-    import { useMetaTagsService } from '@modules/metatags/composables/use-meta-tags-service'
+    import { useMetaTag } from '@modules/metatags/composables/use-meta-tag'
     import { useMetaTagForm } from '@modules/metatags/composables/use-meta-tag-form'
+    import { useMetaTagsService } from '@modules/metatags/composables/use-meta-tags-service'
 
     import { DraggableItemsList } from '@shared/components/DraggableItemsList'
-    import { VSvg } from '@shared/components/VSvg'
     import { FormCard } from '@shared/components/FormCard'
+    import { VSvg } from '@shared/components/VSvg'
 
-    import { descriptorToMetaTag } from '@shared/helpers/metatag'
     import { SvgPaths } from '@shared/enums/svg-paths'
-    import { useMetaTag } from '@modules/metatags/composables/use-meta-tag'
+    import { descriptorToMetaTag } from '@shared/helpers/metatag'
 
     const { showFormModal } = useMetaTagForm()
     const { metaTags, fetchMetaTags } = useMetaTagsService()

@@ -16,7 +16,7 @@ export class Product implements IProductParams {
     readonly categories: IProductParams['categories']
     readonly seo: IProductParams['seo']
     readonly assets: IProductParams['assets']
-    readonly variants: IProductParams['variants']
+    readonly groups: IProductParams['groups']
     readonly attributes: IProductParams['attributes']
     readonly conditions: IProductParams['conditions']
     readonly related: IProductParams['related']
@@ -33,7 +33,7 @@ export class Product implements IProductParams {
         quantity,
         unit,
         url,
-        variants,
+        groups,
         categories,
         attributes,
         conditions,
@@ -52,7 +52,7 @@ export class Product implements IProductParams {
         this.sku = sku || SkuGenerator.generate({ url: this.url, id: customId({ name: this.url, randomLength: 5 }) })
         this.seo = seo
         this.assets = assets
-        this.variants = variants
+        this.groups = groups
         this.categories = categories
         this.attributes = attributes
         this.conditions = conditions

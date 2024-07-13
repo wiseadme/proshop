@@ -19,7 +19,7 @@ export class OrdersRepository implements IOrdersRepository {
     ) {
     }
 
-    async create(order: IOrder): Promise<IOrder> {
+    async createOrder(order: IOrder): Promise<IOrder> {
         const orderData = await new OrderModel({
             ...OrderMapper.toMongoModelData(order),
             _id: new Types.ObjectId(),
@@ -29,7 +29,7 @@ export class OrdersRepository implements IOrdersRepository {
         return OrderMapper.toDomain(orderData.toObject())
     }
 
-    async findById(id: string): Promise<IOrder> {
+    async getOrderById(id: string): Promise<IOrder> {
         const [order] = await OrderModel
             .find({ _id: id })
             .populate('customer')
@@ -45,7 +45,7 @@ export class OrdersRepository implements IOrdersRepository {
         return OrderMapper.toDomain(order)
     }
 
-    async findBySeen(seen: boolean): Promise<IOrder[]> {
+    async getOrdersByStatus(seen: boolean): Promise<IOrder[]> {
         const orders = await OrderModel
             .find({ 'status.seen': seen })
             .sort({ createdAt: -1 })
@@ -59,7 +59,7 @@ export class OrdersRepository implements IOrdersRepository {
         return orders.map(order => OrderMapper.toDomain(order))
     }
 
-    async find(params: IRequestParams<Partial<IOrder>> & { seen?: boolean }): Promise<IOrder[]> {
+    async getOrders(params: IRequestParams<Partial<IOrder>> & { seen?: boolean }): Promise<IOrder[]> {
         const {
             page = DEFAULT_PAGE,
             count = DEFAULT_ITEMS_COUNT,
@@ -80,7 +80,7 @@ export class OrdersRepository implements IOrdersRepository {
         return orders.map(order => OrderMapper.toDomain(order))
     }
 
-    async update(updates: IOrder): Promise<IOrder> {
+    async updateOrder(updates: IOrder): Promise<IOrder> {
         validateId(updates.id)
 
         const updated = await OrderModel.findByIdAndUpdate(
@@ -97,7 +97,7 @@ export class OrdersRepository implements IOrdersRepository {
         return OrderMapper.toDomain(updated)
     }
 
-    async delete(id) {
+    async deleteOrder(id: string) {
         return !!await OrderModel.findByIdAndDelete(id)
     }
 

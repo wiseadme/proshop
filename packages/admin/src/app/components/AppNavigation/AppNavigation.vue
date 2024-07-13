@@ -5,9 +5,21 @@
         unref,
         watch,
     } from 'vue'
+
     import { useRoute, useRouter } from 'vue-router'
-    import { RouteNames as SettingsRouteNames } from '@modules/settings/enums/route-names'
+
+    import { RouteNames as AttributesRouteNames } from '@modules/attributes/enums/route-names'
     import { RouteNames as CategoriesRouteNames } from '@modules/categories/enums/route-names'
+    import { RouteNames as CustomersRouteNames } from '@modules/customers/enums/route-names'
+    import { RouteNames as FiltersRouteNames } from '@modules/filters/enums/route-names'
+    import {RouteNames as GroupsRouteNames} from '@modules/groups/enums/route-names'
+    import { RouteNames as MetaTagsRouteNames } from '@modules/metatags/enums/route-names'
+    import { RouteNames as OrdersRouteNames } from '@modules/orders/enums/route-names'
+    import { RouteNames as ProductsRouteNames } from '@modules/products/enums/route-names'
+    import { RouteNames as SettingsRouteNames } from '@modules/settings/enums/route-names'
+    import { RouteNames as UnitsRouteNames } from '@modules/units/enums/route-names'
+    import { RouteNames as UsersRouteNames } from '@modules/users/enums/route-names'
+    import { RouteNames as VariantsRouteNames } from '@modules/variants/enums/route-names'
 
     const router = useRouter()
     const route = useRoute()
@@ -16,75 +28,80 @@
         dashboard: {
             title: 'Показатели',
             icon: 'fas fa-chart-pie',
-            path: '/dashboard',
+            name: 'dashboard',
         },
         [CategoriesRouteNames.CATEGORIES]: {
             title: 'Категории',
             icon: 'fas fa-cubes',
-            path: '/categories',
+            name: CategoriesRouteNames.CATEGORIES
         },
-        products: {
+        [ProductsRouteNames.PRODUCTS]: {
             title: 'Товары',
             icon: 'fas fa-boxes',
-            path: '/products',
+            name: ProductsRouteNames.PRODUCTS
         },
-        orders: {
+        [GroupsRouteNames.GROUPS]: {
+            title: 'Группировка вариантов',
+            icon: 'fas fa-object-group',
+            name: GroupsRouteNames.GROUPS,
+        },
+        [OrdersRouteNames.ORDERS]: {
             title: 'Заказы',
             icon: 'fas fa-folder',
-            path: '/orders',
+            name: OrdersRouteNames.ORDERS,
         },
-        customers: {
+        [CustomersRouteNames.CUSTOMERS]: {
             title: 'Клиенты',
             icon: 'fas fa-people-arrows',
-            path: '/customers',
+            name: CustomersRouteNames.CUSTOMERS,
         },
-        users: {
+        [UsersRouteNames.USERS]: {
             title: 'Сотрудники',
             icon: 'fas fa-user',
-            path: '/users',
+            name: UsersRouteNames.USERS,
         },
-        attributes: {
+        [AttributesRouteNames.ATTRIBUTES]: {
             title: 'Атрибуты',
             icon: 'fab fa-buffer',
-            path: '/attributes',
+            name: AttributesRouteNames.ATTRIBUTES,
         },
-        filter: {
+        [FiltersRouteNames.FILTER]: {
             title: 'Фильтры',
             icon: 'fas fa-list',
             children: {
-                ['/filter/groups']: {
+                [FiltersRouteNames.FILTER_GROUPS]: {
                     title: 'Группы фильтров',
                     icon: 'far fa-object-group',
-                    path: '/filter/groups',
+                    name: FiltersRouteNames.FILTER_GROUPS,
                     parent: 'filter',
                 },
-                ['/filter/items']: {
+                [FiltersRouteNames.FILTER_ITEMS]: {
                     title: 'Коллекции фильтров',
                     icon: 'far fa-object-group',
-                    path: '/filter/items',
+                    name: FiltersRouteNames.FILTER_ITEMS,
                     parent: 'filter',
                 },
             },
         },
-        units: {
+        [UnitsRouteNames.UNITS]: {
             title: 'Измерения',
             icon: 'fab fa-unity',
-            path: '/units',
+            name: UnitsRouteNames.UNITS,
         },
-        variants: {
+        [VariantsRouteNames.VARIANTS]: {
             title: 'Варианты',
             icon: 'far fa-object-ungroup',
-            path: '/variants',
+            name: VariantsRouteNames.VARIANTS,
         },
-        metatags: {
+        [MetaTagsRouteNames.META_TAGS]: {
             title: 'Мета теги',
             icon: 'fas fa-code',
-            path: '/metatags',
+            name: MetaTagsRouteNames.META_TAGS
         },
         networks: {
             title: 'Социальные сети',
             icon: 'fas fa-project-diagram',
-            path: '/networks',
+            name: 'networks',
         },
         [SettingsRouteNames.SETTINGS]: {
             title: 'Конфигурация',
@@ -93,12 +110,16 @@
                 [SettingsRouteNames.MERCHANT_SETTINGS]: {
                     title: 'Организация',
                     icon: 'fas fa-store-alt',
-                    path: '/settings/merchant',
+                    name: SettingsRouteNames.MERCHANT_SETTINGS,
                 },
-                [SettingsRouteNames.SITE_EDIT_PAGE]: {
+                [SettingsRouteNames.SITE_SETTINGS]: {
                     title: 'Сайт',
                     icon: 'fas fa-store-alt',
-                    path: '/settings/site/edit/colors',
+                    params: {
+                        action: 'edit',
+                        section: 'colors'
+                    },
+                    name: SettingsRouteNames.SITE_SETTINGS
                 },
             },
         },
@@ -111,8 +132,8 @@
 
     const current = ref<Maybe<any>>(null)
 
-    const onSelect = (it) => {
-        router.push(it.path)
+    const onSelect = ({ path, name, params = {} }) => {
+        router.push(name ? { name, params } : path)
     }
 
     watch(() => route.path, () => {
@@ -122,7 +143,7 @@
         current.value = items[name]
 
         if (unref(current)?.children) {
-            current.value = items[name].children[route.path] ?? items[name].children[route.name!]
+            current.value = items[name].children[route.name!] ?? items[name].children[route.name!]
         }
 
     }, { immediate: true })
@@ -144,7 +165,7 @@
                 <v-list-item
                     v-if="!it.children"
                     class="navigation-item pl-1 app-border-radius mb-1"
-                    :class="{'navigation-item--active elevation-2': current && (it.path === current.path)}"
+                    :class="{'navigation-item--active elevation-2': current && (it.name === current.name)}"
                     @click="onSelect(it)"
                 >
                     <v-list-item-icon>
@@ -161,13 +182,13 @@
                     :prepend-icon="it.icon"
                     :title="it.title"
                     class="navigation-item__group app-border-radius mb-1"
-                    :expand="current && Object.keys(it.children).some(key => current.path === it.children[key].path)"
+                    :expand="current && Object.keys(it.children).some(key => current.name === it.children[key].name)"
                 >
                     <v-list-item
                         v-for="child in it.children"
                         :key="child.title"
                         class="navigation-item app-border-radius mb-1"
-                        :class="{'navigation-item--active elevation-2': current && (child.path === current.path)}"
+                        :class="{'navigation-item--active elevation-2': current && (child.name === current.name)}"
                         @click="onSelect(child)"
                     >
                         <v-list-item-icon class="ml-1">

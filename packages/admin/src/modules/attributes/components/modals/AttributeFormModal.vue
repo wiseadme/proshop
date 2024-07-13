@@ -1,7 +1,8 @@
 <script lang="ts" setup>
-    import { ModalCard } from '@shared/components/Modals'
-    import { useAttributeModel } from '@modules/attributes/composables/use-attribute-model'
     import { useAttributeForm } from '@modules/attributes/composables/use-attribute-form'
+    import { useAttributeModel } from '@modules/attributes/composables/use-attribute-model'
+
+    import { ModalCard } from '@shared/components/Modals'
 
     const { model, setAttributeModel } = useAttributeModel()
     const { onSubmit, isFormVisible } = useAttributeForm()

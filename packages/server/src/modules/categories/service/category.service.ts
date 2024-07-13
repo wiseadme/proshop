@@ -30,7 +30,7 @@ export class CategoryService implements ICategoryService {
         return this.repository.createCategory(Category.create(category))
     }
 
-    async updateCategory(updates: Partial<ICategory>): Promise<ICategory> {
+    async updateCategory(updates: Partial<ICategory> & { reduceBy?: number, increaseBy?: number }): Promise<ICategory> {
         const [category] = await this.repository.getCategories({ id: updates.id })
 
         updates = Category.update(updates)
@@ -39,8 +39,12 @@ export class CategoryService implements ICategoryService {
          * @description - свойство length в объекте обновлений
          * является значением кол-ва позиций товаров в категории
          */
-        if (updates.length) {
-            updates.length = category.length + updates.length
+        if (updates.reduceBy) {
+            updates.length = category.length - updates.reduceBy
+        }
+
+        if (updates.increaseBy) {
+            updates.length = category.length + updates.increaseBy
         }
 
         return this.repository.updateCategory(updates)

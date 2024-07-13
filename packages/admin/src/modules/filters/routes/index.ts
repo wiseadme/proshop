@@ -2,7 +2,7 @@ import { RouteNames } from '@modules/filters/enums/route-names'
 
 export const filterRoutes = [
     {
-        path: '/filter',
+        path: 'filters',
         component: () => import(/* webpackChunkName: "Page.Proshop" */ '@modules/filters/layouts/FiltersLayout.vue'),
         name: RouteNames.FILTER,
         children: [

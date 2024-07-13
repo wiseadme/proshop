@@ -1,32 +1,32 @@
 import { useOptionsStore } from '@shared/store/options'
 
 export class Service {
-  private _store: ReturnType<typeof useOptionsStore>
-  static instance: Service
+    private _store: ReturnType<typeof useOptionsStore>
+    static instance: Service
 
-  constructor(store){
-      this._store = store
-  }
+    constructor(store){
+        this._store = store
+    }
 
-  async createOption(option){
-      return this._store.createOption(option)
-  }
+    async createOption(option){
+        return this._store.createOption(option)
+    }
 
-  async updateOption(updates){
-      return this._store.updateOption(updates)
-  }
+    async updateOption(updates){
+        return this._store.updateOption(updates)
+    }
 
-  async deleteOption(option){
-      return this._store.deleteOption(option.id)
-  }
+    async deleteOption(option){
+        return this._store.deleteOption(option.id)
+    }
 
-  static create(){
-      if (Service.instance) return Service.instance
+    static create(){
+        if (Service.instance) return Service.instance
 
-      Service.instance = new Service(useOptionsStore())
+        Service.instance = new Service(useOptionsStore())
 
-      return Service.instance
-  }
+        return Service.instance
+    }
 }
 
 

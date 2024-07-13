@@ -1,10 +1,11 @@
 <script lang="ts" setup>
-    import { useFilterGroupService } from '@modules/filters/composables/use-filter-group-service'
     import { onMounted } from 'vue'
 
-    const { getFilterGroupItems, filterGroups } = useFilterGroupService()
+    import { useFilterGroupService } from '@modules/filters/composables/use-filter-group-service'
 
-    onMounted(getFilterGroupItems)
+    const { getFilterGroups, filterGroups } = useFilterGroupService()
+
+    onMounted(getFilterGroups)
 </script>
 <template>
     <div class="filters">

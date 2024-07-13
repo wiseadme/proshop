@@ -1,15 +1,15 @@
-import { rest } from '@shared/api'
-import { IRest } from '@shared/types/app'
 import {
     IAttribute,
     IMetaTag,
-    IOption,
     IProduct,
+    IProductConditions,
     IProductParams,
     IProductQuery,
-    IRequestParams,
-    IVariant
+    IRequestParams
 } from '@proshop/types'
+
+import { rest } from '@shared/api'
+import { IRest } from '@shared/types/app'
 
 class Repository {
     client: IRest<IProduct>
@@ -20,7 +20,7 @@ class Repository {
         this.path = path
     }
 
-    createProduct(product: IProductParams) {
+    createProduct(product: Partial<IProduct>) {
         return this.client.post(this.path, product)
     }
 
@@ -34,22 +34,6 @@ class Repository {
 
     addAttribute(params: { id: string, attribute: IAttribute }) {
         return this.client.patch(`${this.path}/attributes/add`, params)
-    }
-
-    addVariant(variant: IVariant) {
-        return this.client.patch(`${this.path}/variants/add`, { variant })
-    }
-
-    deleteVariant(variant: IVariant) {
-        return this.client.patch(`${this.path}/variants/delete`, { variant })
-    }
-
-    addVariantOption(option: IOption) {
-        return this.client.patch(`${this.path}/variants/option/add`, { option })
-    }
-
-    deleteVariantOption(option: IOption) {
-        return this.client.patch(`${this.path}/variants/option/delete`, { option })
     }
 
     deleteAttribute(params: { id: string, attributeId: string }) {
@@ -66,6 +50,10 @@ class Repository {
 
     updateMetaTags(params: { productId: string, metaTags: IMetaTag [] }) {
         return this.client.patch(`${this.path}/metatags/update`, params)
+    }
+
+    updateConditions(params: { productId: string, conditions: IProductConditions }) {
+        return this.client.patch(`${this.path}/update`, params)
     }
 
     deleteProduct(id: string) {

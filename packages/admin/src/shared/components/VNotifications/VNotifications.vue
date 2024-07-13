@@ -4,8 +4,7 @@
         onMounted,
         ref,
     } from 'vue'
-    import { useEventEmitter } from './use-event-emitter'
-    import { Notify } from './types'
+
     import {
         ErrorNotification,
         InfoNotification,
@@ -13,6 +12,8 @@
         SuccessNotification,
         WarningNotification,
     } from './components'
+    import { Notify } from './types'
+    import { useEventEmitter } from './use-event-emitter'
 
     const { transition = 'fade', position = 'top right' } = defineProps<{
         transition?: string
@@ -91,8 +92,7 @@
                 class="my-1"
                 @click="onClick(notify)"
                 @destroy="removeNotification"
-            >
-            </component>
+            />
         </transition-group>
     </div>
 </template>

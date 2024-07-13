@@ -9,6 +9,7 @@ import { UserMapper } from '@modules/user/mappers/user.mapper'
 @injectable()
 export class UserRepository implements IUserRepository {
     async create(user: IUser): Promise<IUser> {
+        console.log(user)
         const userData = await new UserModel({
             ...UserMapper.toMongoModelData(user),
             _id: new mongoose.Types.ObjectId(),

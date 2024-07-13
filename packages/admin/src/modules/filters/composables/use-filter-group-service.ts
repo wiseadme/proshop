@@ -1,9 +1,30 @@
-import { computed, unref } from 'vue'
+import {
+    ComputedRef,
+    computed,
+    unref
+} from 'vue'
+
+import type { IAttribute, IFilterGroup } from '@proshop/types'
+
 import { useAttributesStore } from '@modules/attributes/store'
 import { useFilterGroupsStore } from '@modules/filters/store/filter-groups'
-import { IFilterGroup } from '@proshop/types'
 
-export const useFilterGroupService = () => {
+interface IUseFilterGroupService {
+    attributes: ComputedRef<IAttribute[]>
+    filterGroups: ComputedRef<IFilterGroup[]>
+
+    getFilterGroupAttributes(): Promise<void>
+
+    createFilterGroup(filter: IFilterGroup): Promise<IFilterGroup>
+
+    getFilterGroups(params?: Partial<IFilterGroup>): Promise<IFilterGroup[]>
+
+    updateFilterGroup(updates: Partial<IFilterGroup>): Promise<IFilterGroup>
+
+    deleteFilterGroup(id: string): Promise<boolean>
+}
+
+export const useFilterGroupService = (): IUseFilterGroupService => {
     const _filterGroupsStore = useFilterGroupsStore()
     const _attributesStore = useAttributesStore()
 
@@ -14,31 +35,22 @@ export const useFilterGroupService = () => {
         updateFilterGroup
     } = _filterGroupsStore
 
-    const attributes = computed(() => _attributesStore.attributes)
-    const filterGroups = computed(() => _filterGroupsStore.filterGroups)
+    const attributes = computed<IAttribute[]>(() => _attributesStore.attributes!)
+    const filterGroups = computed<IFilterGroup[]>(() => _filterGroupsStore.filterGroups)
 
-    const getFilterGroupAttributes = () => {
+    const getFilterGroupAttributes = async () => {
         if (unref(attributes)) return
 
-        return _attributesStore.read()
+        await _attributesStore.read()
     }
-
-    const createFilterGroupItem = (filterGroup: IFilterGroup) => createFilterGroup(filterGroup)
-    const getFilterGroupItems = (params = {}) => {
-        if (unref(filterGroups)?.length) return
-
-        return getFilterGroups(params)
-    }
-    const deleteFilterGroupItem = (id: string) => deleteFilterGroup(id)
-    const updateFilterGroupItem = (updates) => updateFilterGroup(updates)
 
     return {
         attributes,
         filterGroups,
         getFilterGroupAttributes,
-        createFilterGroupItem,
-        getFilterGroupItems,
-        updateFilterGroupItem,
-        deleteFilterGroupItem,
+        createFilterGroup,
+        getFilterGroups,
+        updateFilterGroup,
+        deleteFilterGroup,
     }
 }

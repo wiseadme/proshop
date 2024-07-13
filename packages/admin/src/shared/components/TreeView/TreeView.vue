@@ -1,5 +1,6 @@
 <script lang="ts" setup generic="T extends {id: string, title: string, parentId: string, children: unknown[]}">
     import { ref, unref } from 'vue'
+
     import VueTree from '@ssthouse/vue3-tree-chart'
 
     const { items = [], value = {} } = defineProps<{

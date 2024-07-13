@@ -1,17 +1,18 @@
+import { RouteNames } from '@modules/variants/enums/route-names'
+
 export const variantRoutes = [
     {
-        path: '/variants',
+        path: 'variants',
         component: () => import(/* webpackChunkName: "Page.Proshop" */ '@modules/variants/layouts/VariantsLayout.vue'),
-        name: 'variants',
         children: [
             {
                 path: '',
                 component: () => import(/* webpackChunkName: "Page.Proshop" */ '@modules/variants/pages/VariantsPage.vue'),
-                name: 'variant-table',
+                name: RouteNames.VARIANTS,
             },
         ],
         meta: {
-            name: 'variants'
+            name: RouteNames.VARIANTS,
         }
     },
 ]

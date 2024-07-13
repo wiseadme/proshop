@@ -1,5 +1,6 @@
 <script lang="ts">
     import { defineComponent } from 'vue'
+
     // @ts-ignore
     // eslint-disable-next-line import/no-unresolved
     import CardsPage from 'shop/cards'

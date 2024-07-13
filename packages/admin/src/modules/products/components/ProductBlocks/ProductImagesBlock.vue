@@ -1,6 +1,7 @@
 <script lang="ts" setup>
-    import { ImagesLoader } from '@shared/components/ImagesLoader'
     import { useProductImages } from '@modules/products/composables/use-product-images'
+
+    import { ImagesLoader } from '@shared/components/ImagesLoader'
 
     const {
         assets,

@@ -3,13 +3,17 @@ import {
     ref,
     unref
 } from 'vue'
+
+import { createSharedComposable } from '@shared/features/create-shared-composable'
+
+import { useRequestParams } from '@shared/composables/use-request-params'
+
 import {
     IOrder,
     IUser,
     Maybe
 } from '@proshop/types'
-import { createSharedComposable } from '@shared/features/create-shared-composable'
-import { useRequestParams } from '@shared/composables/use-request-params'
+
 // Stores
 import { useOrdersStore } from '@modules/orders/store'
 import { useUserStore } from '@modules/users/store'
@@ -54,7 +58,7 @@ export const useOrdersService = createSharedComposable(() => {
         return unref(order)
     }
 
-    const deleteOrder = (orderId) => _store.delete(orderId)
+    const deleteOrder = (orderId: string) => _store.delete(orderId)
 
     return {
         order,

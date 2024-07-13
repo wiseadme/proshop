@@ -1,12 +1,17 @@
 import { ref, unref } from 'vue'
-import { useAttributesService } from '@modules/attributes/composables/use-attributes-service'
+
+import { createSharedComposable } from '@shared/features/create-shared-composable'
+
 import { useAttributeModel } from '@modules/attributes/composables/use-attribute-model'
+import { useAttributesService } from '@modules/attributes/composables/use-attributes-service'
+
 import { useNotifications } from '@shared/components/VNotifications/use-notifications'
+
 import {
     ATTRIBUTE_CREATED,
     ATTRIBUTE_CREATE_ERROR,
 } from '@modules/attributes/constants/notifications'
-import { createSharedComposable } from '@shared/features/create-shared-composable'
+
 
 export const useAttributeForm = createSharedComposable(() => {
     const { createAttribute, updateAttribute } = useAttributesService()

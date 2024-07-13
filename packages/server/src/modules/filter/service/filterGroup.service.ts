@@ -20,8 +20,8 @@ export class FilterGroupService implements IFilterGroupService {
         return this.repository.create(FilterGroup.create(filterGroup))
     }
 
-    read(id?: string): Promise<IFilterGroup[]> {
-        return this.repository.read(id)
+    read(params: Partial<IFilterGroup>): Promise<IFilterGroup[]> {
+        return this.repository.read(params)
     }
 
     update(updates: Partial<IFilterGroup>): Promise<IFilterGroup> {

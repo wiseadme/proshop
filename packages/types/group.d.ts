@@ -1,13 +1,23 @@
+import { IVariant } from './variant'
+import { Maybe } from './utils'
+
+export interface IGroupOption {
+    value: string
+    description?: string
+    productName: string
+    image: string
+    url: string
+    isAvailable?: boolean
+}
+
 export interface IGroup {
     id: string
-    variants: Record<string, Record<string, IGroupVariant>>
+    name: string
+    variant: Maybe<IVariant | string>
+    hasOptions?: boolean
 }
 
-export interface IGroupVariant {
-    option: string
-    product: string
-}
-
-export interface IGroupMongoModel extends Omit<IGroup, 'id'> {
+export interface IGroupMongoModel extends Omit<IGroup, 'id' | 'variant'> {
     _id: string
+    variant: string | IVariant
 }

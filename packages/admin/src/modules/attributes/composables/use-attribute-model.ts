@@ -1,12 +1,17 @@
-import { createSharedComposable } from '@shared/features/create-shared-composable'
 import {
     computed,
     ref,
     unref,
     watch
 } from 'vue'
-import { Attribute } from '@modules/attributes/model/attribute.model'
+
+import { createSharedComposable } from '@shared/features/create-shared-composable'
+
 import { useAttributesService } from '@modules/attributes/composables/use-attributes-service'
+
+import { Attribute } from '@modules/attributes/model/attribute.model'
+
+
 import { IAttribute } from '@proshop/types'
 
 export const useAttributeModel = createSharedComposable(() => {

@@ -1,5 +1,11 @@
 import { IGroup } from '@proshop/types'
 
 export interface IGroupRepository {
-    create(model: IGroup): Promise<IGroup>
+    createGroup(model: IGroup): Promise<IGroup>
+
+    getGroups(params?: { id: string }): Promise<IGroup[]>
+
+    deleteGroup(id: string): Promise<boolean>
+
+    updateGroup(update: Partial<IGroup>): Promise<IGroup>
 }

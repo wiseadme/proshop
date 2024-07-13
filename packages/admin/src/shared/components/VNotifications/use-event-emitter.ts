@@ -4,19 +4,16 @@ export const useEventEmitter = createSharedComposable(() => {
     const events = {}
 
     const on = (event: string, fn: (...args: any[]) => any) => {
-        if (!events[event]) {
-            events[event] = []
-        }
-
+        events[event] ??= []
         events[event].push(fn)
     }
 
     const off = (event: string, fn: (...args: any[]) => any) => {
-        events[event].filter((cb) => cb !== fn)
+        events[event].filter((cb: (...args: any[]) => any) => cb !== fn)
     }
 
     const emit = (event: string, ...args: any[]) => {
-        events[event].forEach(fn => fn(...args))
+        events[event].forEach((fn: (...args: any[]) => any) => fn(...args))
     }
 
     return {

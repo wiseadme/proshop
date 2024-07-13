@@ -1,8 +1,11 @@
 import { createApp } from 'vue'
+
 import { createNervue } from 'nervue'
-import { router } from './router'
+
 import { vueland } from '@shared/plugins/vueland'
+
 import App from './App.vue'
+import { router } from './router'
 
 const nervue = createNervue()
 

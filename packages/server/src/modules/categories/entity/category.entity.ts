@@ -53,8 +53,10 @@ export class Category implements ICategory {
         return new Category(category as ICategory)
     }
 
-    static update(updates) {
-        if (updates.title && !updates.url) updates.url = translator(updates.title)
+    static update(updates: Partial<ICategory>) {
+        if (updates.title && !updates.url) {
+            updates.url = translator(updates.title)
+        }
 
         return updates
     }

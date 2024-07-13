@@ -3,28 +3,36 @@ import {
     unref,
     watch,
 } from 'vue'
-import { useProductsService } from '@modules/products/composables/use-products-service'
-import { useProductModel } from '@modules/products/composables/use-product-model'
-import { IAttribute } from '@proshop/types'
+
 import { createSharedComposable } from '@shared/features/create-shared-composable'
+
+import { useProduct } from '@modules/products/composables/use-product'
+import { useProductModel } from '@modules/products/composables/use-product-model'
+import { useProductsService } from '@modules/products/composables/use-products-service'
+
 import { useNotifications } from '@shared/components/VNotifications/use-notifications'
-import { hasValueDiffs } from '@shared/helpers/diffs.helpers'
+
+import { IAttribute, IProduct } from '@proshop/types'
+
+
 import {
     CHANGES_SAVED,
     NO_CHANGES,
     SAVING_ERROR,
 } from '@shared/constants/notifications'
+import { hasValueDiffs } from '@shared/helpers/diffs.helpers'
 
 export const useProductAttributes = createSharedComposable(() => {
     const { model, setProductModel } = useProductModel()
 
     const {
-        product,
         attributeItems,
         addProductAttribute,
         deleteProductAttribute,
         updateProductAttributes,
     } = useProductsService()
+
+    const { product, setCurrentProduct } = useProduct()
 
     const { notify } = useNotifications()
 
@@ -45,13 +53,18 @@ export const useProductAttributes = createSharedComposable(() => {
     })
 
     const onDiscardChanges = () => {
-        setProductModel(unref(product)!)
+        setProductModel(unref(product) as IProduct)
         isEditMode.value = false
     }
 
     const onRemoveAttribute = async (attribute: IAttribute) => {
         try {
-            await deleteProductAttribute(attribute.id)
+            const updatedProduct = await deleteProductAttribute({
+                id: unref(product)!.id,
+                attributeId: attribute.id
+            })
+
+            setCurrentProduct(updatedProduct)
 
             notify(CHANGES_SAVED)
         } catch (err) {
@@ -61,7 +74,12 @@ export const useProductAttributes = createSharedComposable(() => {
 
     const onAddAttribute = async (attribute: IAttribute) => {
         try {
-            await addProductAttribute(attribute)
+            const updatedProduct = await addProductAttribute({
+                id: unref(product)!.id,
+                attribute
+            })
+
+            setCurrentProduct(updatedProduct)
 
             notify(CHANGES_SAVED)
         } catch (err) {
@@ -79,7 +97,12 @@ export const useProductAttributes = createSharedComposable(() => {
         const attributes = unref(model).attributes
 
         try {
-            await updateProductAttributes({ attributes })
+            const updatedProduct = await updateProductAttributes({
+                id: unref(product)!.id,
+                attributes
+            })
+
+            setCurrentProduct(updatedProduct)
 
             notify(CHANGES_SAVED)
         } catch (err) {

@@ -5,10 +5,12 @@
         unref,
         watch,
     } from 'vue'
-    import { useProductModel } from '@modules/products/composables/use-product-model'
+
     import { useFilterGroupService } from '@modules/filters/composables/use-filter-group-service'
     import { useFilterItemsService } from '@modules/filters/composables/use-filter-items-service'
     import { useProductAttributes } from '@modules/products/composables/use-product-attributes'
+    import { useProductModel } from '@modules/products/composables/use-product-model'
+
     import { ModalCard } from '@shared/components/Modals'
 
     const { model } = useProductModel()

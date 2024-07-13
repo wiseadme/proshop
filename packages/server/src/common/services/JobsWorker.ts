@@ -48,7 +48,7 @@ export class JobsWorker {
     }
 
     async jobProcessor(job: Job) {
-        console.log(`Create order Job with id ${job.id}`)
+        console.log(`Create Job with id ${job.id}`)
 
         try {
             const data = await this.fn(job.data)

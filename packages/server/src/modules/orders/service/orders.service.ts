@@ -3,6 +3,7 @@ import { Request } from 'express'
 import QRCode from 'qrcode'
 import customId from 'custom-id'
 import { TYPES } from '@common/schemes/di-types'
+
 // Types
 import { ILogger } from '@/types/utils'
 import { IOrdersService } from '../types/service'
@@ -10,8 +11,10 @@ import { IOrdersRepository } from '../types/repository'
 import { IOrder, IRequestParams } from '@proshop/types'
 import { Order } from '@modules/orders/entity/order.entity'
 import { IOrderGatewayService } from '@modules/orders/gateway/gateway.service'
-import { ORDER_IOC } from '@modules/orders/di/di.types'
 import { IOrdersQueue } from '@modules/orders/queue/queue'
+import { IOrderResponse } from '@modules/orders/types/response'
+import { ORDER_IOC } from '@modules/orders/di/di.types'
+
 
 @injectable()
 export class OrdersService implements IOrdersService {
@@ -21,7 +24,7 @@ export class OrdersService implements IOrdersService {
         @inject(ORDER_IOC.IOrderGatewayService) private gateway: IOrderGatewayService,
         @inject(ORDER_IOC.IOrdersQueue) private jobs: IOrdersQueue,
     ) {
-        this.jobs.worker.setJobProcessor(this.create.bind(this))
+        this.jobs.worker.setJobProcessor(this.createOrder.bind(this))
     }
 
     async processOrder({ headers }: Request) {
@@ -32,52 +35,67 @@ export class OrdersService implements IOrdersService {
         return await this.jobs.queue.waitJobResult(job!)
     }
 
-    async create(order: IOrder) {
+    async createOrder(order: IOrder) {
         const { customer: { name, phone } } = order
-        order.orderId = customId({ name, email: phone, randomLength: 2 })
-        /**
-         * @description - внутри метода используется метод render, для отрисвоки qrcode,
-         * который возвращает promise, поэтому await не убираем
-         * */
-        order.qrcode = await QRCode.toDataURL(order.orderId)
-        const created = await this.repository.create(Order.create(order))
 
+        order.orderId = customId({ name, email: phone, randomLength: 2 })
+
+        order.qrcode = await QRCode.toString(order.orderId, { type: 'svg' })
+
+        const created = await this.repository.createOrder(Order.create(order))
+
+        /**
+         * @description - привязываем к корзине номер заказа
+         */
         await this.gateway.cart.update({ id: created.cart!, orderId: created.orderId })
+
+        /**
+         * @description - уменьшаем кол - ва товара в остатках товара
+         * на кол - во единиц указанное в заказе.
+         */
+        for (const item of order.items) {
+            if (!item.product.conditions.isCountable) {
+                continue
+            }
+
+            await this.gateway.product.reduceProductQuantity({
+                id: item.product.id,
+                reduceBy: item.quantity,
+            })
+        }
 
         return created
     }
 
-    async read(query: IRequestParams<Partial<IOrder> & { seen?: boolean }> = {}) {
-        const data = {
-            items: [] as IOrder[],
-            total: 1,
-        }
-
-        if (query.length) {
-            data.total = await this.repository.getDocumentsCount()
-        }
-
+    async getOrders(query: IRequestParams<Partial<IOrder> & { seen?: boolean }> = {}): Promise<IOrderResponse> {
         if (query.seen !== undefined) {
-            data.items = await this.repository.findBySeen(query.seen)
-            data.total = data.items.length
+            const orders = await this.repository.getOrdersByStatus(query.seen)
 
-            return data
+            return {
+                items: orders,
+                total: orders.length
+            }
         }
 
         if (query.id) {
-            const order = await this.repository.findById(query.id)
-            data.items = [order]
+            const order = await this.repository.getOrderById(query.id)
 
-            return data
+            return {
+                items: [order],
+                total: 1,
+            }
         }
 
-        data.items = await this.repository.find(query)
+        const [items, total] = await Promise.all([
+            this.repository.getOrders(query),
+            this.repository.getDocumentsCount()
+        ])
 
-        return data
+        return { items, total }
     }
 
-    async update(updates: IOrder): Promise<IOrder> {
-        const order = await this.repository.update(updates)
+    async updateOrder(updates: IOrder): Promise<IOrder> {
+        const order = await this.repository.updateOrder(updates)
 
         if (order.status.cancelled || order.status.completed) {
             await this.gateway.cart.delete(order.cart!)
@@ -86,7 +104,7 @@ export class OrdersService implements IOrdersService {
         return order
     }
 
-    async delete(id: string): Promise<boolean> {
-        return await this.repository.delete(id)
+    async deleteOrder(id: string): Promise<boolean> {
+        return await this.repository.deleteOrder(id)
     }
 }

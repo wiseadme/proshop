@@ -1,5 +1,6 @@
-import { IFilterItem } from '@proshop/types'
 import { useFilterItemsRepository } from '@modules/filters/repository/filter-items.repository'
+
+import { IFilterItem } from '@proshop/types'
 
 const repository = useFilterItemsRepository()
 export const actions = {
@@ -7,7 +8,7 @@ export const actions = {
         try {
             const { data } = await repository.create(filterItem)
 
-            this.$patch(state => {
+            this.$patch((state) => {
                 state.filterItems.push(data.data)
             })
 
@@ -33,7 +34,7 @@ export const actions = {
         try {
             const { data } = await repository.update(params)
 
-            this.$patch(state => {
+            this.$patch((state) => {
                 state.filterItems = state.filterItems.map(it => it.id === params.id ? data.data : it)
             })
 
@@ -47,7 +48,7 @@ export const actions = {
         try {
             const { data } = await repository.delete(id)
 
-            this.$patch(state => {
+            this.$patch((state) => {
                 state.filterItems = state.filterItems.filter(filter => filter.id !== id)
             })
 

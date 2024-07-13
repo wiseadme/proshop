@@ -1,26 +1,44 @@
 import { computed } from 'vue'
-import { useVariantsStore } from '@modules/variants/store'
+
 import { IVariant } from '@proshop/types'
+
+import { useVariantsStore } from '@modules/variants/store'
 
 export const useVariantsService = () => {
     const _store = useVariantsStore()
 
     const variants = computed<IVariant[]>(() => _store.variants ?? [])
 
-    const createVariant = (item: IVariant) => {
-        return _store.create(item)
+    const createVariant = async (item: IVariant) => {
+        try {
+            return await _store.create(item)
+        } catch (err) {
+            return Promise.reject(err)
+        }
     }
 
-    const updateVariant = (updates: Partial<IVariant>) => {
-        return _store.update(updates)
+    const updateVariant = async (updates: Partial<IVariant>) => {
+        try {
+            return await _store.update(updates)
+        } catch (err) {
+            return Promise.reject(err)
+        }
     }
 
-    const deleteVariant = (id: string) => {
-        return _store.delete(id)
+    const deleteVariant = async (id: string) => {
+        try {
+            return await _store.delete(id)
+        } catch (err) {
+            return Promise.reject(err)
+        }
     }
 
-    const getVariants = (params = {}) => {
-        return _store.read(params)
+    const getVariants = async (params = {}) => {
+        try {
+            return await _store.read(params)
+        } catch (err) {
+            return Promise.reject(err)
+        }
     }
 
     return {

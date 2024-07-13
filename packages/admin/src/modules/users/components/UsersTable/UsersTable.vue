@@ -1,9 +1,12 @@
 <script lang="ts" setup>
+    import { useUsersService } from '@modules/users/composables/use-users-service'
+    import { useUsersTable } from '@modules/users/composables/use-users-table'
+
     import { FormCard } from '@shared/components/FormCard'
     import { VSvg } from '@shared/components/VSvg'
-    import { useUsersTable } from '@modules/users/composables/use-users-table'
-    import { useUsersService } from '@modules/users/composables/use-users-service'
+
     import { IUser } from '@proshop/types'
+
     import { SvgPaths } from '@shared/enums/svg-paths'
 
     defineEmits<{
@@ -45,8 +48,8 @@
             >
                 <template #toolbar>
                     <v-toolbar>
-                        <v-toolbar-logo></v-toolbar-logo>
-                        <v-spacer></v-spacer>
+                        <v-toolbar-logo/>
+                        <v-spacer/>
                         <v-toolbar-items>
                             <v-button
                                 color="primary"
@@ -92,7 +95,7 @@
                             style="height: 30px; width: auto"
                             alt=""
                             :src="row.image"
-                        />
+                        >
                         <v-icon v-else>
                             fas fa-box
                         </v-icon>

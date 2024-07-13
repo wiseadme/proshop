@@ -1,4 +1,5 @@
 import { useFilterGroupsRepository } from '@modules/filters/repository/filter-groups.repository'
+
 import { IFilterGroup } from '@proshop/types'
 
 const repository = useFilterGroupsRepository()
@@ -17,7 +18,7 @@ export const actions = {
         }
     },
 
-    async getFilterGroups(params) {
+    async getFilterGroups(params = {}) {
         try {
             const { data } = await repository.read(params)
 

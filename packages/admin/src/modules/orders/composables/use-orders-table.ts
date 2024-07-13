@@ -1,6 +1,10 @@
 import { ref } from 'vue'
-import { getOrderStatusName } from '@modules/orders/helpers'
+
 import { useOrdersService } from '@modules/orders/composables/use-orders-service'
+
+import { IOrder } from '@proshop/types'
+
+import { getOrderStatusName } from '@modules/orders/helpers'
 
 export const useOrdersTable = () => {
     const {
@@ -9,13 +13,13 @@ export const useOrdersTable = () => {
         getOrders,
     } = useOrdersService()
 
-    const onUpdateTablePage = (page) => {
+    const onUpdateTablePage = (page: number) => {
         pagination.setPage(page)
 
         return getOrders()
     }
 
-    const onUpdateTableRowsCount = (count) => {
+    const onUpdateTableRowsCount = (count: number) => {
         pagination.setPage(1)
         pagination.setItemsCount(count)
 
@@ -43,7 +47,7 @@ export const useOrdersTable = () => {
             resizeable: true,
             sortable: true,
             filterable: true,
-            format: (row) => new Date(row.createdAt).toLocaleString(),
+            format: (row: IOrder) => new Date(row.createdAt!).toLocaleString(),
             onSort: (col) => onSortColumn(col)
         },
         {
@@ -53,7 +57,7 @@ export const useOrdersTable = () => {
             resizeable: true,
             sortable: true,
             filterable: true,
-            format: (row) => row.orderId,
+            format: (row: IOrder) => row.orderId,
             onSort: (col) => onSortColumn(col)
         },
         {
@@ -63,7 +67,7 @@ export const useOrdersTable = () => {
             resizeable: true,
             sortable: true,
             filterable: true,
-            format: (row) => row.amount,
+            format: (row: IOrder) => row.amount,
             emit: true
         },
         {
@@ -73,18 +77,18 @@ export const useOrdersTable = () => {
             resizeable: true,
             sortable: true,
             filterable: true,
-            format: (row) => getOrderStatusName(row.status),
+            format: (row: IOrder) => getOrderStatusName(row.status),
             onSort: (col) => onSortColumn(col)
         },
         {
-            key: 'qrcode',
-            title: 'QRCode',
+            key: 'executor',
+            title: 'Исполнитель',
             width: '150',
             align: 'left',
             resizeable: true,
             sortable: true,
             filterable: true,
-            format: (row) => row.qrcode
+            format: (row: IOrder) => row.executor
         }
     ])
 

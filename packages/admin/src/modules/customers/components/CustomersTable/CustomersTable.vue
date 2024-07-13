@@ -1,8 +1,10 @@
 <script lang="ts" setup>
-    import { VSvg } from '@shared/components/VSvg'
-    import { FormCard } from '@shared/components/FormCard'
-    import { useCustomersTable } from '@modules/customers/composables/use-customers-table'
     import { useCustomers } from '@modules/customers/composables/use-customers'
+    import { useCustomersTable } from '@modules/customers/composables/use-customers-table'
+
+    import { FormCard } from '@shared/components/FormCard'
+    import { VSvg } from '@shared/components/VSvg'
+
     import { SvgPaths } from '@shared/enums/svg-paths'
 
     const { cols } = useCustomersTable()
@@ -47,7 +49,7 @@
                             v-if="row.image"
                             style="height: 30px; width: auto"
                             :src="row.image"
-                        />
+                        >
                         <v-icon v-else>
                             fas fa-box
                         </v-icon>

@@ -1,14 +1,20 @@
 <script lang="ts" setup>
     import { onBeforeMount, unref } from 'vue'
-    import { useVariantsService } from '@modules/variants/composables/use-variants-service'
+
     import { useAttributesService } from '@modules/attributes/composables/use-attributes-service'
     import { useVariant } from '@modules/variants/composables/use-variant'
+    import { useVariantsService } from '@modules/variants/composables/use-variants-service'
+
+    import { DraggableItemsList } from '@shared/components/DraggableItemsList'
     import { FormCard } from '@shared/components/FormCard'
     import { VSvg } from '@shared/components/VSvg'
-    import { DraggableItemsList } from '@shared/components/DraggableItemsList'
-    import { SvgPaths } from '@shared/enums/svg-paths'
+
+
     import { Variant } from '@modules/variants/model/variant.model'
+
     import type { IVariant } from '@proshop/types'
+
+    import { SvgPaths } from '@shared/enums/svg-paths'
 
     const {
         variants,
@@ -74,10 +80,10 @@
                 @edit="onEdit"
             >
                 <template #title="{item}">
-                    {{ (item as IVariant).group }}
+                    {{ (item as IVariant).name }}
                 </template>
                 <template #tooltip="{item}">
-                    {{ (item as IVariant).group }}
+                    {{ (item as IVariant).name }}
                 </template>
             </draggable-items-list>
         </template>

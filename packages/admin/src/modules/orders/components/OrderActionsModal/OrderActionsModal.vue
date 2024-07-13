@@ -1,8 +1,10 @@
 <script lang="ts" setup>
     import { useOrderActionsModal } from '@modules/orders/composables/use-order-actions-modal'
     import { useOrders } from '@modules/orders/composables/use-orders'
-    import { OrderDocument } from './OrderDocument'
+
     import { IOrder, IUser } from '@proshop/types'
+
+    import { OrderDocument } from './OrderDocument'
 
     const { users = [] } = defineProps<{ users: IUser[] }>()
 

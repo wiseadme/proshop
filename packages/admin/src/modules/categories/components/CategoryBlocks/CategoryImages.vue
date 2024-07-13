@@ -1,8 +1,11 @@
 <script lang="ts" setup>
-    import { ImagesLoader } from '@shared/components/ImagesLoader'
+    import { computed, unref } from 'vue'
+
     import { useCategoriesService } from '@modules/categories/composables/use-categories-service'
     import { useCategoryImages } from '@modules/categories/composables/use-category-images'
-    import { computed, unref } from 'vue'
+
+    import { ImagesLoader } from '@shared/components/ImagesLoader'
+
 
     const {
         onUpdateImagesOrders,

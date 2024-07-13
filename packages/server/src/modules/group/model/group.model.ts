@@ -1,28 +1,26 @@
 import { model, Schema } from 'mongoose'
-import { IGroupMongoModel, IGroupVariant } from '@proshop/types'
-
-/** Пример группировки опций варианта */
-
-// const variants = {
-//     colors: {
-//         option: 'option id',
-//         name: 'option name',
-//         product: 'product id'
-//     },
-//     memory: {
-//
-//     }
-// }
+import { IGroupMongoModel } from '@proshop/types'
 
 const GroupSchema: Schema = new Schema<IGroupMongoModel>({
     _id: Schema.Types.ObjectId,
-    variants: {
-        type: {} as Record<string, IGroupVariant>,
-        default: {},
+    variant: {
+        type: Schema.Types.ObjectId,
+        ref: 'Variant',
+        required: true,
+    },
+    name: {
+        type: String,
+        unique: true,
+        required :true
+    },
+    hasOptions: {
+        type: Boolean,
+        required :true
     },
 }, {
     timestamps: false,
     strict: false,
+    versionKey: false
 })
 
 export const GroupModel = model<IGroupMongoModel>('Group', GroupSchema)
