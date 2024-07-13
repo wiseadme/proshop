@@ -3,6 +3,7 @@ import { ref } from 'vue'
 // Composables
 import { useRouter } from 'vue-router'
 
+import { useProduct } from '@modules/products/composables/use-product'
 import { useProductModel } from '@modules/products/composables/use-product-model'
 import { useProductsService } from '@modules/products/composables/use-products-service'
 
@@ -26,14 +27,13 @@ export const useProductsTable = () => {
         sort,
         totalLength,
         products,
-        setAsCurrent,
         deleteProduct,
         getProducts,
     } = useProductsService()
 
-    const { notify } = useNotifications()
-
+    const { setCurrentProduct } = useProduct()
     const { setProductModel } = useProductModel()
+    const { notify } = useNotifications()
 
     const onUpdateTablePage = (page: number) => {
         pagination.setPage(page)
@@ -78,7 +78,7 @@ export const useProductsTable = () => {
 
     const onCreateRow = () => {
         setProductModel(null)
-        setAsCurrent(null)
+        setCurrentProduct(null)
 
         return router.push({
             name: RouteNames.PRODUCT_EDIT,

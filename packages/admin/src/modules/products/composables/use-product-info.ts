@@ -2,6 +2,7 @@ import { ref, unref } from 'vue'
 
 import { useRouter } from 'vue-router'
 
+import { useProduct } from '@modules/products/composables/use-product'
 import { useProductModel } from '@modules/products/composables/use-product-model'
 import { useProductsService } from '@modules/products/composables/use-products-service'
 
@@ -19,11 +20,12 @@ import {
 } from '@shared/constants/notifications'
 import { hasDiffs, hasValueDiffs } from '@shared/helpers/diffs.helpers'
 
-const infoBlockKeys = [ 'description', 'name', 'price', 'quantity', 'seo', 'url', 'unit' ]
+const infoBlockKeys = ['description', 'name', 'price', 'quantity', 'seo', 'url', 'unit']
 
 export const useProductInfo = () => {
     const { model, isEditMode, setProductModel } = useProductModel()
-    const { product, createProduct, updateProductInfo } = useProductsService()
+    const { createProduct, updateProductInfo } = useProductsService()
+    const { product, setCurrentProduct } = useProduct()
     const { notify } = useNotifications()
     const router = useRouter()
 
@@ -56,9 +58,11 @@ export const useProductInfo = () => {
 
     const onCreateProductInfo = async () => {
         try {
-            const data = await createProduct(unref(model) as any)
+            const product = await createProduct(unref(model))
 
-            await goToEditProduct(data!)
+            setCurrentProduct(product)
+
+            await goToEditProduct(product!)
 
             notify(CHANGES_SAVED)
         } catch (err: any) {
@@ -73,7 +77,10 @@ export const useProductInfo = () => {
             notify(NO_CHANGES)
         } else {
             try {
-                await updateProductInfo(updates)
+                updates.id = unref(product)!.id
+                const updatedProduct = await updateProductInfo(updates)
+
+                setCurrentProduct(updatedProduct)
 
                 notify(CHANGES_SAVED)
             } catch (err) {
@@ -102,7 +109,7 @@ export const useProductInfo = () => {
     }
 
     const onDismiss = () => {
-        setProductModel(unref(product))
+        setProductModel(unref(product) as IProduct)
         textEditorKey.value += 1
     }
 

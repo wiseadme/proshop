@@ -4,6 +4,7 @@ import {
     unref,
 } from 'vue'
 
+import { useProduct } from '@modules/products/composables/use-product'
 import { useProductModel } from '@modules/products/composables/use-product-model'
 import { useProductsService } from '@modules/products/composables/use-products-service'
 
@@ -19,6 +20,8 @@ export const useProductRelated = () => {
         getProducts,
         updateProductRelatedProducts,
     } = useProductsService()
+
+    const { setCurrentProduct } = useProduct()
 
     const { notify } = useNotifications()
     const { model } = useProductModel()
@@ -43,7 +46,9 @@ export const useProductRelated = () => {
         relatedProduct.value = null
 
         try {
-            await updateProductRelatedProducts({ related })
+            const product = await updateProductRelatedProducts({ related })
+
+            setCurrentProduct(product)
 
             notify(CHANGES_SAVED)
         } catch (err) {
@@ -57,7 +62,9 @@ export const useProductRelated = () => {
         related = related.filter((it) => it.id !== item.id)
 
         try {
-            await updateProductRelatedProducts({ related })
+            const product = await updateProductRelatedProducts({ related })
+
+            setCurrentProduct(product)
 
             notify(CHANGES_SAVED)
         } catch (err) {

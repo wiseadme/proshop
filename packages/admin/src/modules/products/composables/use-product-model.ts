@@ -7,7 +7,7 @@ import {
 
 import { createSharedComposable } from '@shared/features/create-shared-composable'
 
-import { useProductsService } from '@modules/products/composables/use-products-service'
+import { useProduct } from '@modules/products/composables/use-product'
 
 import { Product } from '@modules/products/model/product.model'
 
@@ -16,7 +16,7 @@ import { IProduct } from '@proshop/types'
 import { clone } from '@shared/helpers'
 
 export const useProductModel = createSharedComposable(() => {
-    const { product } = useProductsService()
+    const { product } = useProduct()
 
     const model = ref<IProduct>(Product.create())
 
@@ -35,7 +35,7 @@ export const useProductModel = createSharedComposable(() => {
     const modelMetaTags = computed(() => unref(model).seo.metatags)
 
     watch(product, (newProduct) => {
-        setProductModel(newProduct!)
+        setProductModel(newProduct! as IProduct)
     }, { immediate: true })
 
     return {

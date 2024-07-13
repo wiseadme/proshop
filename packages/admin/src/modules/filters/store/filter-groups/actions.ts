@@ -18,7 +18,7 @@ export const actions = {
         }
     },
 
-    async getFilterGroups(params) {
+    async getFilterGroups(params = {}) {
         try {
             const { data } = await repository.read(params)
 

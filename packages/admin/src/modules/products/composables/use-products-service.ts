@@ -30,7 +30,6 @@ import { useProductStore } from '@modules/products/store'
 import { useMerchantStore } from '@modules/settings/store/merchant'
 import { useUnitsStore } from '@modules/units/store'
 import { useVariantsStore } from '@modules/variants/store'
-import { clone } from '@shared/helpers'
 import { useFilesService } from '@shared/services/files.service'
 
 export const useProductsService = createSharedComposable(() => {
@@ -51,7 +50,6 @@ export const useProductsService = createSharedComposable(() => {
 
     const _filesService = useFilesService()
 
-    const product = ref<Maybe<IProduct>>(null)
     const isLoading = ref(true)
 
     const products = computed<IProduct[]>(() => _productsStore.products || [])
@@ -62,10 +60,6 @@ export const useProductsService = createSharedComposable(() => {
     const metaTagItems = computed<IMetaTag[]>(() => _metaTagsStore.metaTags || [])
     const totalLength = computed<number>(() => _productsStore.totalLength)
     const merchant = computed<Maybe<IMerchant>>(() => _merchantStore.merchant)
-
-    const setAsCurrent = (item: Maybe<IProduct>) => {
-        product.value = clone(item!)
-    }
 
     const getMerchant = async (): Promise<IMerchant> => {
         if (unref(merchant)?.id) {
@@ -126,8 +120,6 @@ export const useProductsService = createSharedComposable(() => {
     const getProduct = async (sku: string): Promise<IProduct> => {
         const [item] = await _productsStore.getProducts({ sku })
 
-        setAsCurrent(clone(item))
-
         return item
     }
 
@@ -150,10 +142,7 @@ export const useProductsService = createSharedComposable(() => {
         try {
             product.currency = unref(merchant)!.currency
 
-            const data = await _productsStore.createProduct(product)
-            setAsCurrent(data)
-
-            return data
+            return await _productsStore.createProduct(product)
         } catch (err) {
             return Promise.reject(err)
         }
@@ -161,19 +150,16 @@ export const useProductsService = createSharedComposable(() => {
 
     const updateProduct = async (updates: Partial<IProductParams>): Promise<IProduct> => {
         try {
-            const updated = await _productsStore.updateProduct(updates)
-            setAsCurrent(updated)
-
-            return updated
+            return await _productsStore.updateProduct(updates)
         } catch (err) {
             return Promise.reject(err)
         }
     }
 
-    const updateProductRelatedProducts = async (updates: { related: IProduct[] }): Promise<IProduct> => {
+    const updateProductRelatedProducts = async (updates: { id: string, related: IProduct[] }): Promise<IProduct> => {
         try {
             return await updateProduct({
-                id: unref(product)!.id,
+                ...updates,
                 related: getIds(updates.related!),
             })
         } catch (err) {
@@ -181,10 +167,10 @@ export const useProductsService = createSharedComposable(() => {
         }
     }
 
-    const updateProductCategories = async (updates: { categories: ICategory[] }): Promise<IProduct> => {
+    const updateProductCategories = async (updates: { id: string, categories: ICategory[] }): Promise<IProduct> => {
         try {
             return await updateProduct({
-                id: unref(product)!.id,
+                ...updates,
                 categories: getIds(updates.categories!)
             })
         } catch (err) {
@@ -192,50 +178,31 @@ export const useProductsService = createSharedComposable(() => {
         }
     }
 
-    const updateProductAttributes = async (updates: { attributes: IAttribute[] }): Promise<IProduct> => {
+    const updateProductAttributes = async (updates: { id: string, attributes: IAttribute[] }): Promise<IProduct> => {
         try {
-            return await updateProduct({
-                id: unref(product)!.id,
-                attributes: updates.attributes
-            })
+            return await updateProduct(updates)
         } catch (err) {
             return Promise.reject(err)
         }
     }
 
-    const addProductAttribute = async (attr: IAttribute): Promise<IProduct> => {
+    const addProductAttribute = async (updates: { id: string, attribute: IAttribute }): Promise<IProduct> => {
         try {
-            const updatedProduct = await _productsStore.addAttribute({
-                id: unref(product)!.id,
-                attribute: attr,
-            })
-
-            setAsCurrent(updatedProduct)
-
-            return updatedProduct
+            return await _productsStore.addAttribute(updates)
         } catch (err) {
             return Promise.reject(err)
         }
     }
 
-    const deleteProductAttribute = async (id: string): Promise<IProduct> => {
+    const deleteProductAttribute = async (params: { id: string, attributeId: string }): Promise<IProduct> => {
         try {
-            const updatedProduct = await _productsStore.deleteAttribute({
-                id: unref(product)!.id,
-                attributeId: id,
-            })
-
-            setAsCurrent(updatedProduct)
-
-            return updatedProduct
+            return await _productsStore.deleteAttribute(params)
         } catch (err) {
             return Promise.reject(err)
         }
     }
 
     const updateProductInfo = async (updates: Partial<IProduct>): Promise<IProduct> => {
-        updates.id = unref(product)!.id
-
         try {
             return await updateProduct(updates as Partial<IProductParams>)
         } catch (err) {
@@ -243,37 +210,33 @@ export const useProductsService = createSharedComposable(() => {
         }
     }
 
-    const updateProductMetaTags = async (metaTags: IMetaTag[]): Promise<IProduct> => {
+    const updateProductMetaTags = async (params: { id: string, metaTags: IMetaTag[] }): Promise<IProduct> => {
         try {
             return await _productsStore.updateMetaTags({
-                productId: unref(product)!.id,
-                metaTags,
+                productId: params.id,
+                metaTags: params.metaTags,
             })
         } catch (err) {
             return Promise.reject(err)
         }
     }
 
-    const addProductMetaTag = async (metaTag: IMetaTag): Promise<IProduct> => {
+    const addProductMetaTag = async (params: { id: string, metaTag: IMetaTag }): Promise<IProduct> => {
         try {
-            const updatedProduct = await _productsStore.addMetaTag({
-                productId: unref(product)!.id,
-                metaTag: metaTag,
+            return await _productsStore.addMetaTag({
+                productId: params.id,
+                metaTag: params.metaTag,
             })
-
-            setAsCurrent(updatedProduct)
-
-            return updatedProduct
         } catch (err) {
             return Promise.reject(err)
         }
     }
 
-    const deleteProductMetaTag = async (metaTag: IMetaTag): Promise<IProduct> => {
+    const deleteProductMetaTag = async (params: { id: string, metaTag: IMetaTag }): Promise<IProduct> => {
         try {
             return await _productsStore.deleteMetaTag({
-                productId: unref(product)!.id,
-                metaTagId: metaTag.id,
+                productId: params.id,
+                metaTagId: params.metaTag.id,
             })
         } catch (err) {
             return Promise.reject(err)
@@ -328,15 +291,15 @@ export const useProductsService = createSharedComposable(() => {
         }
     }
 
-    const uploadProductImage = async (file: File): Promise<IProduct> => {
+    const uploadProductImage = async (params: { id: string, file: File, assets: IAsset[] }): Promise<IProduct> => {
         try {
             const asset = await loadImage({
-                ownerId: unref(product)!.id,
-                file,
+                ownerId: params.id,
+                file: params.file,
             }) as IAsset
 
-            asset.main = !unref(product)?.assets.length
-            const assets = [...unref(product)!.assets, asset] as IAsset[]
+            asset.main = !params.assets.length
+            const assets = [...params.assets, asset] as IAsset[]
 
             if (asset.main) {
                 await updateProductAssets([asset])
@@ -353,22 +316,22 @@ export const useProductsService = createSharedComposable(() => {
         }
     }
 
-    const deleteProductImage = async (asset: IAsset) => {
-        await _filesService.deleteFile(asset)
+    const deleteProductImage = async (params: { asset: IAsset, assets: IAsset[] }): Promise<IProduct> => {
+        await _filesService.deleteFile(params.asset)
 
-        const assets = (unref(product)!.assets as IAsset[])?.filter(it => it.id !== asset.id)
+        const assets = params.assets.filter(it => it.id !== params.asset.id)
 
-        if (assets.length && asset.main) {
+        if (assets.length && params.asset.main) {
             assets[0] = await updateImageAsset({
                 id: assets[0].id,
                 main: true,
             })
         }
 
-        await updateProduct({
-            id: unref(product)!.id,
+        return await updateProduct({
+            id: params.asset.ownerId,
             assets: getIds(assets),
-            ...(asset.main ? { image: assets.length ? assets[0].url : null } : {}),
+            ...(params.asset.main ? { image: assets.length ? assets[0].url : null } : {}),
         })
     }
 
@@ -390,7 +353,6 @@ export const useProductsService = createSharedComposable(() => {
         isLoading,
         sort,
         pagination,
-        product,
         products,
         attributeItems,
         categoryItems,
@@ -408,7 +370,6 @@ export const useProductsService = createSharedComposable(() => {
         getProducts,
         getProduct,
         getCategoryProducts,
-        setAsCurrent,
         createProduct,
         addProductAttribute,
         addProductMetaTag,

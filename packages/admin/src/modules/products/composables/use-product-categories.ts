@@ -4,6 +4,7 @@ import {
     unref,
 } from 'vue'
 
+import { useProduct } from '@modules/products/composables/use-product'
 import { useProductModel } from '@modules/products/composables/use-product-model'
 import { useProductsService } from '@modules/products/composables/use-products-service'
 
@@ -21,6 +22,8 @@ export const useProductCategories = () => {
     const { notify } = useNotifications()
 
     const { categoryItems, updateProductCategories } = useProductsService()
+    const { product, setCurrentProduct } = useProduct()
+
     const selectsMap = ref({})
 
     const categoriesMap = computed(() => unref(categoryItems)?.reduce((map, it) => {
@@ -50,7 +53,10 @@ export const useProductCategories = () => {
         const { categories } = unref(model)
 
         try {
-            await updateProductCategories({ categories })
+            const { id } = unref(product)!
+            const updatedProduct = await updateProductCategories({ id, categories })
+
+            setCurrentProduct(updatedProduct)
 
             notify(CHANGES_SAVED)
         } catch (err) {

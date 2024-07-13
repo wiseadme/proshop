@@ -14,29 +14,25 @@
     import { ItemsList } from '@shared/components/ItemsList'
     import { VSvg } from '@shared/components/VSvg'
 
-
-    import { IFilterGroup } from '@proshop/types'
-
     import { SvgPaths } from '@shared/enums/svg-paths'
-
 
     const { filterItems, getFilterItems, deleteFilterItem } = useFilterItemsService()
     const { filtersGroup, toggleForm, onEditFilter } = useFilterItems()
     const { filterGroups } = useFilterGroups()
-    const { getFilterGroupItems } = useFilterGroupService()
+    const { getFilterGroups } = useFilterGroupService()
 
-    const onSelectGroup = (group: IFilterGroup) => {
-        filtersGroup.value = group
-        getFilterItems({ groupId: group.id })
-    }
+    watch(filterGroups, ([group]) => {
+        if (group) {
+            filtersGroup.value = group
+            getFilterItems({ groupId: group.id })
+        }
+    }, { immediate: true })
 
     onBeforeMount(async () => {
-        if (!unref(filterGroups).length) await getFilterGroupItems()
+        if (!unref(filterGroups).length) {
+            await getFilterGroups()
+        }
     })
-
-    watch(filterGroups, async (groups) => {
-        filtersGroup.value = groups[0]
-    }, { immediate: true })
 
 </script>
 <template>
@@ -64,7 +60,6 @@
                 label="Группа фильтров"
                 :items="filterGroups"
                 value-key="name"
-                @select="onSelectGroup"
             />
             <items-list
                 :items="filterItems"

@@ -16,9 +16,9 @@ export const useFilterGroups = createSharedComposable(() => {
     const {
         filterGroups,
         attributes,
-        createFilterGroupItem,
-        deleteFilterGroupItem,
-        updateFilterGroupItem,
+        createFilterGroup,
+        deleteFilterGroup,
+        updateFilterGroup,
     } = useFilterGroupService()
 
     const model = ref<IFilterGroup>(FilterGroup.create({}))
@@ -27,11 +27,11 @@ export const useFilterGroups = createSharedComposable(() => {
 
     const isGroupEditMode = computed(() => Boolean(unref(model).id))
 
-    const onSelectAttribute = (attribute) => {
+    const onSelectAttribute = (attribute: IAttribute) => {
         unref(model).attributeId = attribute.id
     }
 
-    const onDeleteGroup = (group: IFilterGroup) => deleteFilterGroupItem(group.id)
+    const onDeleteGroup = (group: IFilterGroup) => deleteFilterGroup(group.id)
 
     const onEditGroup = (group: IFilterGroup) => {
         showGroupForm.value = true
@@ -40,14 +40,14 @@ export const useFilterGroups = createSharedComposable(() => {
         linkedAttribute.value = unref(attributes)?.find(attr => attr.id === group.attributeId) ?? null
     }
 
-    const onSubmit = async (validate) => {
+    const onSubmit = async (validate: () => Promise<void>) => {
         try {
             await validate()
 
             if (unref(isGroupEditMode)) {
-                await updateFilterGroupItem(unref(model))
+                await updateFilterGroup(unref(model))
             } else {
-                await createFilterGroupItem(unref(model))
+                await createFilterGroup(unref(model))
             }
         } catch (err) {
             console.log(err)

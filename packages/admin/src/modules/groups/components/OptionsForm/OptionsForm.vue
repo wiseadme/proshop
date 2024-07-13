@@ -40,7 +40,7 @@
         products,
         optionProduct,
         getFilterItems,
-        getFilterGroupItems,
+        getFilterGroups,
         saveOption,
         onSearchProducts
     } = useOptions()
@@ -67,12 +67,12 @@
     }
 
     onMounted(() => {
-        getFilterGroupItems()
+        getFilterGroups()
     })
 
     watch(() => unref(groupModel).variant?.id, (value) => {
         if (!unref(filterGroups).length) {
-            getFilterGroupItems({ attributeId: value.attributeId })
+            getFilterGroups({ attributeId: value.attributeId })
         }
     })
 

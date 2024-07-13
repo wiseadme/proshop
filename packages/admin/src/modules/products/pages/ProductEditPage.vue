@@ -3,6 +3,7 @@
 
     import { useRoute } from 'vue-router'
 
+    import { useProduct } from '@modules/products/composables/use-product'
     import { useProductModel } from '@modules/products/composables/use-product-model'
     import { useProductsService } from '@modules/products/composables/use-products-service'
 
@@ -10,6 +11,7 @@
 
     const { setProductModel } = useProductModel()
     const { getProduct, onInit } = useProductsService()
+    const { setCurrentProduct } = useProduct()
     const { activeItem } = useRightSidebar()
     const route = useRoute()
 
@@ -17,7 +19,11 @@
         await onInit()
 
         if (route.params.sku) {
-            setProductModel(await getProduct(route.params.sku as string))
+            const product = await getProduct(route.params.sku as string)
+
+            setCurrentProduct(product)
+
+            setProductModel(product)
         }
     })
 </script>

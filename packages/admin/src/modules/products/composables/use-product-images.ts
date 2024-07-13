@@ -4,6 +4,7 @@ import {
     unref,
 } from 'vue'
 
+import { useProduct } from '@modules/products/composables/use-product'
 import { useProductModel } from '@modules/products/composables/use-product-model'
 import { useProductsService } from '@modules/products/composables/use-products-service'
 
@@ -14,7 +15,7 @@ import { IAsset } from '@proshop/types'
 import { CHANGES_SAVED, SAVING_ERROR } from '@shared/constants/notifications'
 
 export const useProductImages = () => {
-    const { model } = useProductModel()
+    const { model, setProductModel } = useProductModel()
 
     const {
         updateProductAssets,
@@ -23,6 +24,8 @@ export const useProductImages = () => {
         updateProductMainImage,
     } = useProductsService()
 
+    const { product, setCurrentProduct } = useProduct()
+
     const { notify } = useNotifications()
 
     const assets = computed<IAsset[]>(() => (unref(model)?.assets || []) as IAsset[])
@@ -30,7 +33,13 @@ export const useProductImages = () => {
 
     const onLoadImage = async ([file]) => {
         try {
-            await uploadProductImage(file)
+            const updatedProduct = await uploadProductImage({
+                id: unref(product)!.id,
+                assets: unref(product)!.assets as IAsset[],
+                file
+            })
+
+            setCurrentProduct(updatedProduct)
 
             notify(CHANGES_SAVED)
         } catch (err) {
@@ -38,9 +47,14 @@ export const useProductImages = () => {
         }
     }
 
-    const onDeleteImage = async (image: IAsset) => {
+    const onDeleteImage = async (asset: IAsset) => {
         try {
-            await deleteProductImage(image)
+            const updatedProduct = await deleteProductImage({
+                asset,
+                assets: unref(product)!.assets as IAsset[],
+            })
+
+            setCurrentProduct(updatedProduct)
 
             notify(CHANGES_SAVED)
         } catch (err) {
@@ -56,7 +70,11 @@ export const useProductImages = () => {
 
         try {
             await updateProductAssets([mainAsset, currentMainAsset])
-            await updateProductMainImage(mainAsset)
+
+            const updatedProduct = await updateProductMainImage(mainAsset)
+
+            setCurrentProduct(updatedProduct)
+            setProductModel(updatedProduct)
 
             notify(CHANGES_SAVED)
         } catch (err) {

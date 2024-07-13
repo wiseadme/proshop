@@ -26,10 +26,6 @@
         }
     })
 
-    watch(() => unref(model).conditions, (value) => {
-        console.log(value)
-    })
-
 </script>
 <template>
     <v-row class="app-border-radius">

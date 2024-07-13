@@ -3,9 +3,9 @@
 
     import { useFilterGroupService } from '@modules/filters/composables/use-filter-group-service'
 
-    const { getFilterGroupItems, filterGroups } = useFilterGroupService()
+    const { getFilterGroups, filterGroups } = useFilterGroupService()
 
-    onMounted(getFilterGroupItems)
+    onMounted(getFilterGroups)
 </script>
 <template>
     <div class="filters">

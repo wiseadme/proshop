@@ -6,6 +6,7 @@ import {
 
 import { createSharedComposable } from '@shared/features/create-shared-composable'
 
+import { useProduct } from '@modules/products/composables/use-product'
 import { useProductModel } from '@modules/products/composables/use-product-model'
 import { useProductsService } from '@modules/products/composables/use-products-service'
 
@@ -26,6 +27,8 @@ export const useProductMetaTags = createSharedComposable(() => {
         deleteProductMetaTag,
     } = useProductsService()
 
+    const { product, setCurrentProduct } = useProduct()
+
     const { notify } = useNotifications()
 
     const currentEditableMetaTag = ref<Maybe<IMetaTag>>(null)
@@ -43,7 +46,12 @@ export const useProductMetaTags = createSharedComposable(() => {
         unref(model).seo.metatags.forEach((it, i) => it.order = i)
 
         try {
-            await updateProductMetaTags(unref(model).seo.metatags)
+            const updatedProduct = await updateProductMetaTags({
+                id: unref(product)!.id,
+                metaTags: unref(model).seo.metatags
+            })
+
+            setCurrentProduct(updatedProduct)
 
             notify(CHANGES_SAVED)
         } catch (err) {
@@ -54,7 +62,12 @@ export const useProductMetaTags = createSharedComposable(() => {
     /** TODO - исправить поведение по ордерам метатегов при дропе в конкретное место, а не в конец массива */
     const onAddMetaTag = async (metaTag: IMetaTag) => {
         try {
-            await addProductMetaTag(metaTag)
+            const updatedProduct = await addProductMetaTag({
+                id: unref(product)!.id,
+                metaTag
+            })
+
+            setCurrentProduct(updatedProduct)
 
             notify(CHANGES_SAVED)
         } catch (err) {
@@ -64,7 +77,12 @@ export const useProductMetaTags = createSharedComposable(() => {
 
     const onRemoveMetaTag = async (metaTag: IMetaTag) => {
         try {
-            await deleteProductMetaTag(metaTag)
+            const updatedProduct = await deleteProductMetaTag({
+                id: unref(product)!.id,
+                metaTag
+            })
+
+            setCurrentProduct(updatedProduct)
 
             notify(CHANGES_SAVED)
         } catch (err) {

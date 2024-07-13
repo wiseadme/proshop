@@ -5,6 +5,7 @@
         watch,
     } from 'vue'
 
+    import { useProduct } from '@modules/products/composables/use-product'
     import { useProductCategories } from '@modules/products/composables/use-product-categories'
     import { useProductsService } from '@modules/products/composables/use-products-service'
 
@@ -19,7 +20,8 @@
     import { SvgPaths } from '@shared/enums/svg-paths'
     import { clone } from '@shared/helpers'
 
-    const { product, categoryItems } = useProductsService()
+    const { categoryItems } = useProductsService()
+    const { product } = useProduct()
     const { selectsMap, toggleCategory, select } = useProductCategories()
     const { treeItems, buildTreeItems } = useTreeView()
 

@@ -41,7 +41,7 @@ export const useOptions = () => {
     } = useOptionsService()
 
     const { filterItems, getFilterItems } = useFilterItemsService()
-    const { filterGroups, getFilterGroupItems } = useFilterGroupService()
+    const { filterGroups, getFilterGroups } = useFilterGroupService()
     const { products, getProducts, updateProduct } = useProductsService()
     const { hasOptions, model: groupModel } = useGroupModel()
     const { updateGroup } = useGroupsService()
@@ -132,7 +132,7 @@ export const useOptions = () => {
         filterGroups,
         options: readOnlyOptions,
         optionProduct,
-        getFilterGroupItems,
+        getFilterGroups,
         getFilterItems,
         getOptions,
         saveOption,
