@@ -40,7 +40,7 @@ export class UserRepository implements IUserRepository {
         return { updated: UserMapper.toDomain(updated) }
     }
 
-    async delete(id) {
+    async delete(id: string) {
         validateId(id)
 
         await UserModel.findByIdAndDelete(id)

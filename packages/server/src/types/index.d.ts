@@ -23,7 +23,6 @@ export type ErrorOptions = {
 export interface IController {
     path: string
     router: Router
-    middlewares?: any
     initRoutes: () => void
 }
 

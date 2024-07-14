@@ -1,4 +1,4 @@
-import { ICart, ICartItem } from './cart'
+import { ICartItem } from './cart'
 import { IUser } from './user'
 import { Maybe } from './utils'
 
@@ -35,7 +35,7 @@ export interface IOrder {
     delivery: Maybe<IOrderDelivery>
     amount: number
     customer: IOrderCustomer
-    cart: Maybe<string>
+    cartId: Maybe<string>
     orderId: Maybe<string>
     qrcode: Maybe<string>
     status: IOrderStatuses

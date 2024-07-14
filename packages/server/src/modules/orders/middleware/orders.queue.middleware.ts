@@ -5,7 +5,7 @@ import { ORDER_IOC } from '@modules/orders/di/di.types'
 import { IOrdersQueue } from '@modules/orders/queue/queue'
 import { IMiddleware } from '@/types/middlewares'
 
-export class QueueMiddleware implements IMiddleware {
+export class OrdersQueueMiddleware implements IMiddleware {
     #container: Container
 
     constructor(container: Container) {

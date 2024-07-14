@@ -10,6 +10,8 @@ import { useFilterGroupService } from '@modules/filters/composables/use-filter-g
 
 import { FilterGroup } from '@modules/filters/model/filterGroup.model'
 
+import { useLogger } from '@shared/utils/logger'
+
 import { IAttribute, IFilterGroup } from '@proshop/types'
 
 export const useFilterGroups = createSharedComposable(() => {
@@ -20,6 +22,8 @@ export const useFilterGroups = createSharedComposable(() => {
         deleteFilterGroup,
         updateFilterGroup,
     } = useFilterGroupService()
+
+    const { logError } = useLogger()
 
     const model = ref<IFilterGroup>(FilterGroup.create({}))
     const linkedAttribute = ref<Maybe<IAttribute>>(null)
@@ -50,7 +54,7 @@ export const useFilterGroups = createSharedComposable(() => {
                 await createFilterGroup(unref(model))
             }
         } catch (err) {
-            console.log(err)
+            logError('Filter group operation failed', err)
         }
     }
 

@@ -14,6 +14,7 @@ import { IOrderGatewayService } from '@modules/orders/gateway/gateway.service'
 import { IOrdersQueue } from '@modules/orders/queue/queue'
 import { IOrderResponse } from '@modules/orders/types/response'
 import { ORDER_IOC } from '@modules/orders/di/di.types'
+import { PaginatableResponse } from '@common/models/PaginatableResponse'
 
 
 @injectable()
@@ -47,7 +48,7 @@ export class OrdersService implements IOrdersService {
         /**
          * @description - привязываем к корзине номер заказа
          */
-        await this.gateway.cart.update({ id: created.cart!, orderId: created.orderId })
+        await this.gateway.cart.update({ id: created.cartId!, orderId: created.orderId })
 
         /**
          * @description - уменьшаем кол - ва товара в остатках товара
@@ -71,19 +72,13 @@ export class OrdersService implements IOrdersService {
         if (query.seen !== undefined) {
             const orders = await this.repository.getOrdersByStatus(query.seen)
 
-            return {
-                items: orders,
-                total: orders.length
-            }
+            return new PaginatableResponse({ items: orders })
         }
 
         if (query.id) {
             const order = await this.repository.getOrderById(query.id)
 
-            return {
-                items: [order],
-                total: 1,
-            }
+            return new PaginatableResponse({ items: [order] })
         }
 
         const [items, total] = await Promise.all([
@@ -91,17 +86,34 @@ export class OrdersService implements IOrdersService {
             this.repository.getDocumentsCount()
         ])
 
-        return { items, total }
+        return new PaginatableResponse({ items, total })
     }
 
     async updateOrder(updates: IOrder): Promise<IOrder> {
         const order = await this.repository.updateOrder(updates)
 
-        if (order.status.cancelled || order.status.completed) {
-            await this.gateway.cart.delete(order.cart!)
+        if (order.status.completed) {
+            await this.gateway.cart.delete(order.cartId!)
         }
 
         return order
+    }
+
+    async disbandOrder(id: string) {
+        const order = await this.repository.getOrderById(id)
+
+        for (const item of order.items) {
+            if (!item.product.conditions.isCountable) {
+                continue
+            }
+
+            await this.gateway.product.increaseProductQuantity({
+                id: item.product.id,
+                increaseBy: item.quantity,
+            })
+        }
+
+        return await this.gateway.cart.delete(order.cartId!)
     }
 
     async deleteOrder(id: string): Promise<boolean> {

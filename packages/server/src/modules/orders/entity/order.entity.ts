@@ -1,10 +1,10 @@
-import { ICartItem, IOrder } from '@proshop/types'
+import { IOrder } from '@proshop/types'
 
 export class Order implements IOrder {
     readonly id: IOrder['id']
     readonly items: IOrder['items']
     readonly amount: IOrder['amount']
-    readonly cart: IOrder['cart']
+    readonly cartId: IOrder['cartId']
     readonly orderId: IOrder['orderId']
     readonly delivery: IOrder['delivery']
     readonly customer: IOrder['customer']
@@ -21,7 +21,7 @@ export class Order implements IOrder {
         orderId = null,
         delivery = null,
         qrcode = null,
-        cart = '',
+        cartId = null,
         payment = null,
         executor = null,
         status = {
@@ -43,7 +43,7 @@ export class Order implements IOrder {
         this.customer = customer
         this.qrcode = qrcode
         this.status = status
-        this.cart = cart
+        this.cartId = cartId
         this.payment = payment
         this.executor = executor
     }

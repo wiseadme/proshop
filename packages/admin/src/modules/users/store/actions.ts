@@ -34,12 +34,12 @@ export const actions = {
         }
     },
 
-    async deleteUser(id) {
+    async deleteUser(id: string) {
         try {
             await repository.delete(id)
 
             this.$patch(state => {
-                state.users = state.users.filter(u => u._id !== id)
+                state.users = state.users.filter((user) => user.id !== id)
             })
 
             return true

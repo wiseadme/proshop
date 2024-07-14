@@ -11,5 +11,7 @@ export interface IOrdersService {
 
     deleteOrder(id: string): Promise<boolean>
 
+    disbandOrder(id: string): Promise<boolean>
+
     processOrder(request: Request): Promise<any>
 }
