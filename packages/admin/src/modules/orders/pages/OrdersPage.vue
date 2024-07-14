@@ -1,6 +1,4 @@
 <script lang="ts" setup>
-    import { onBeforeMount } from 'vue'
-
     import { useOrderActionsModal } from '@modules/orders/composables/use-order-actions-modal'
     import { useOrders } from '@modules/orders/composables/use-orders'
 
@@ -9,15 +7,10 @@
 
     const {
         orders,
-        order,
-        users,
-        getUsers,
         onOpenOrder,
     } = useOrders()
 
     const { showModal } = useOrderActionsModal()
-
-    onBeforeMount(getUsers)
 
 </script>
 <template>
@@ -27,13 +20,7 @@
                 :rows="orders"
                 @open:order="onOpenOrder"
             />
-            <order-actions-modal
-                v-if="users"
-                v-model="showModal"
-                :order="order"
-                :users="users"
-                @close="showModal = false"
-            />
+            <order-actions-modal v-model="showModal"/>
         </v-col>
     </v-row>
 </template>

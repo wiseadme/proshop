@@ -17,6 +17,7 @@ interface IOrderStatuses {
     inDelivery: boolean
     completed: boolean
     cancelled: boolean
+    disbanded: boolean
 }
 
 export interface IOrderDelivery {

@@ -92,7 +92,7 @@ export class OrdersService implements IOrdersService {
     async updateOrder(updates: IOrder): Promise<IOrder> {
         const order = await this.repository.updateOrder(updates)
 
-        if (order.status.completed) {
+        if (order.status.completed || order.status.cancelled) {
             await this.gateway.cart.delete(order.cartId!)
         }
 
@@ -113,7 +113,7 @@ export class OrdersService implements IOrdersService {
             })
         }
 
-        return await this.gateway.cart.delete(order.cartId!)
+        return true
     }
 
     async deleteOrder(id: string): Promise<boolean> {

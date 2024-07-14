@@ -1,10 +1,11 @@
-import { ref, unref } from 'vue'
+import { unref } from 'vue'
 
 import { createSharedComposable } from '@shared/features/create-shared-composable'
 
 import { useRouter } from 'vue-router'
 
 import { useOrderActionsModal } from '@modules/orders/composables/use-order-actions-modal'
+import { useOrderModel } from '@modules/orders/composables/use-order-model'
 import { useOrdersService } from '@modules/orders/composables/use-orders-service'
 
 import { Order } from '@modules/orders/model/order.model'
@@ -15,40 +16,31 @@ import { RouteNames } from '@modules/orders/enums/route-names'
 
 export const useOrders = createSharedComposable(() => {
     const {
-        order,
         orders,
-        users,
         totalLength,
-        sort,
         pagination,
-        getUsers,
+        sort,
         updateOrder,
-        setAsCurrent,
         deleteOrder
     } = useOrdersService()
 
-    const { openOrder } = useOrderActionsModal()
-
-    const model = ref<IOrder>({} as IOrder)
     const router = useRouter()
+    const { openOrder } = useOrderActionsModal()
+    const { setOrderModel } = useOrderModel()
 
     const onUpdateOrder = async (updates: Partial<IOrder>) => {
-        const order = await updateOrder(updates) as IOrder
-
-        setAsCurrent(order)
+        return await updateOrder(updates)
     }
 
     const onOpenOrder = async (item: IOrder) => {
-        setAsCurrent(item)
-
         if (!item.status.seen) {
             item.status.seen = true
 
             const order = await updateOrder({ status: unref(item).status })
 
-            model.value = Order.create(order!)
+            setOrderModel(Order.create(order!))
         } else {
-            model.value = Order.create(unref(item)!)
+            setOrderModel(Order.create(unref(item)!))
         }
 
         await router.push({
@@ -63,14 +55,10 @@ export const useOrders = createSharedComposable(() => {
     const onDeleteOrder = (order: IOrder) => deleteOrder(order.id)
 
     return {
-        model,
-        order,
         orders,
-        users,
         totalLength,
-        sort,
         pagination,
-        getUsers,
+        sort,
         onOpenOrder,
         onUpdateOrder,
         onDeleteOrder

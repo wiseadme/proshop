@@ -2,7 +2,7 @@ import { IOrder } from '@proshop/types'
 
 export class Order implements IOrder {
     id: IOrder['id']
-    cart: IOrder['cart']
+    cartId: IOrder['cartId']
     amount: IOrder['amount']
     orderId: IOrder['orderId']
     payment: IOrder['payment']
@@ -17,7 +17,7 @@ export class Order implements IOrder {
         id = '',
         amount = 0,
         orderId,
-        cart,
+        cartId,
         payment,
         customer,
         status,
@@ -27,7 +27,7 @@ export class Order implements IOrder {
         executor = null,
     }: IOrder) {
         this.id = id
-        this.cart = cart
+        this.cartId = cartId
         this.customer = customer
         this.status = status
         this.items = items

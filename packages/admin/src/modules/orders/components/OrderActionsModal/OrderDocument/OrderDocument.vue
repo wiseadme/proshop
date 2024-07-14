@@ -1,33 +1,38 @@
 <script lang="ts" setup>
-    import { unref } from 'vue'
+    import {
+        computed,
+        onBeforeMount,
+        unref,
+    } from 'vue'
 
+    import { useOrderDeps } from '@modules/orders/composables/use-order-deps'
+    import { useOrderModel } from '@modules/orders/composables/use-order-model'
     import { useOrders } from '@modules/orders/composables/use-orders'
 
     import { useNotifications } from '@shared/components/VNotifications/use-notifications'
 
     import AddressMap from '@modules/orders/components/OrderActionsModal/AddressMap/AddressMap.vue'
 
-    import { ICartItem, IUser } from '@proshop/types'
+    import { ICartItem } from '@proshop/types'
 
     import { OrderProcessStatuses, OrderStatuses } from '@modules/orders/enums/status'
 
+    defineEmits<{ (e: 'close'): void }>()
 
-    defineProps<{
-        users: IUser[]
-    }>()
-
-    const emit = defineEmits<{ (e: 'close'): void }>()
-
-    const { model, onUpdateOrder } = useOrders()
+    const { onUpdateOrder } = useOrders()
+    const { model } = useOrderModel()
+    const { users, fetchUsers } = useOrderDeps()
     const { notify } = useNotifications()
 
-    const checkProcessStatusKey = (key: string) => (OrderProcessStatuses[key] && !unref(model).executor)
+    const statuses = computed(() => Object.keys(unref(model).status))
+
+    const isExecutorExists = (key: string) => (OrderProcessStatuses[key] && !unref(model).executor)
     const getProductPrice = (item: ICartItem) => item.variant?.option?.price || item.product.price
 
-    const changeOrderStatus = (statusKey) => {
-        const { status: statuses, executor } = unref(model)
+    const onChangeOrderStatus = (statusKey: string) => {
+        const { status, executor } = unref(model)
 
-        if (statuses[statusKey]) {
+        if (status[statusKey]) {
             return notify({
                 title: 'Информация',
                 text: `Заказ уже имеет статус "${OrderStatuses[statusKey]}"`,
@@ -36,7 +41,7 @@
             })
         }
 
-        if (checkProcessStatusKey(statusKey)) {
+        if (isExecutorExists(statusKey)) {
             return notify({
                 title: 'Информация',
                 text: 'Необходимо выбрать исполнителя заказа',
@@ -45,19 +50,22 @@
             })
         }
 
-        if (
-            statusKey === OrderProcessStatuses.ready && !statuses.inProcess
-            || statusKey === OrderProcessStatuses.completed && !statuses.ready
+        if (statusKey === OrderProcessStatuses.ready && !status.inProcess
+            || statusKey === OrderProcessStatuses.completed && !status.ready
         ) {
             return
         }
 
-        statuses[statusKey] = true
+        status[statusKey] = true
 
-        return onUpdateOrder(Object.assign({}, { status: statuses }, executor ? { executor } : {}))
+        return onUpdateOrder(Object.assign({}, { status }, executor ? { executor } : {}))
     }
 
-    const onClose = () => emit('close')
+    onBeforeMount(() => {
+        if (!unref(users).length) {
+            fetchUsers()
+        }
+    })
 </script>
 <template>
     <v-card
@@ -67,15 +75,25 @@
         color="white"
     >
         <v-card-title
-            style="z-index: 10;"
+            style="width: 100%; justify-content: space-between"
             class="white primary--text elevation-2"
         >
-            <div
-                style="width: 100px; height: 100px"
-                v-html="model.qrcode"
-            />
-            <div>
-                <h5>Заказ № {{ model.orderId }}</h5>
+            <div class="order-header-left d-flex align-center">
+                <div
+                    style="width: 100px; height: 100px"
+                    v-html="model.qrcode"
+                />
+                <div>
+                    <h5>Заказ № {{ model.orderId }}</h5>
+                </div>
+            </div>
+            <div class="order-header-right">
+                <v-button
+                    class="app-border-radius"
+                    label="Отменить заказ"
+                    elevation="2"
+                    color="error"
+                />
             </div>
         </v-card-title>
         <v-card-content
@@ -173,12 +191,10 @@
                 class="mt-4 mx-2 statuses white app-border-radius"
                 style="overflow: hidden"
             >
-                <template
-                    v-for="it in Object.keys(model.status)"
-                    :key="it"
-                >
+                <template v-for="it in statuses">
                     <v-col
                         v-if="it !== 'cancelled'"
+                        :key="it"
                         class="pa-2 d-flex justify-center align-center statuses__step"
                         :class="{
                             ['statuses__step--done-after']: model.status[it] && it !== OrderProcessStatuses.completed,
@@ -204,7 +220,7 @@
                                 :color="!model.status[it] ? 'grey lighten-2' : 'success'"
                                 style="z-index: 1"
                                 round
-                                @click="changeOrderStatus(it)"
+                                @click="onChangeOrderStatus(it)"
                             >
                                 <v-icon
                                     size="14"
@@ -237,7 +253,7 @@
                 elevation="2"
                 class="app-border-radius"
                 width="120"
-                @click="onClose"
+                @click="$emit('close')"
             >
                 закрыть
             </v-button>

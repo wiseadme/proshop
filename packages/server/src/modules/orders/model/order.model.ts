@@ -51,6 +51,7 @@ const OrderSchema = new Schema<IOrderMongoModel>({
             inDelivery: Boolean,
             completed: Boolean,
             cancelled: Boolean,
+            disbanded: Boolean,
         },
         _id: false,
     },

@@ -1,26 +1,23 @@
 import {
-    computed,
+    DeepReadonly,
+    Ref,
     ref,
-    unref
 } from 'vue'
 
 import { createSharedComposable } from '@shared/features/create-shared-composable'
 
+import { useOrdersRepository } from '@modules/orders/composables/use-orders-repository'
+
 import { useRequestParams } from '@shared/composables/use-request-params'
 
-import {
-    IOrder,
-    IUser,
-    Maybe
-} from '@proshop/types'
+import { useLogger } from '@shared/utils/logger'
 
-// Stores
-import { useOrdersStore } from '@modules/orders/store'
-import { useUserStore } from '@modules/users/store'
+import { IOrder, IUser } from '@proshop/types'
+
 
 export const useOrdersService = createSharedComposable(() => {
-    const _store = useOrdersStore()
-    const _usersStore = useUserStore()
+    const repository = useOrdersRepository()
+
     const {
         sort,
         pagination,
@@ -28,50 +25,76 @@ export const useOrdersService = createSharedComposable(() => {
         getPaginationParams,
     } = useRequestParams()
 
-    const order = ref<Maybe<IOrder>>(null)
+    const { logError } = useLogger()
 
-    const orders = computed<Maybe<IOrder[]>>(() => _store.orders)
-    const newOrders = computed<Maybe<IOrder[]>>(() => _store.newOrders)
-    const users = computed<Maybe<IUser[]>>(() => _usersStore.users)
-    const totalLength = computed(() => _store.totalLength)
+    const _orders = ref<IOrder[]>([])
+    const _newOrders = ref<IOrder[]>([])
+    const _total = ref(0)
 
-    const getUsers = () => unref(users) ? unref(users) : _usersStore.fetchUsers()
-    const setAsCurrent = (item: IOrder) => order.value = item
-    // const createOrder = (order: IOrder) => _store.create(order)
-    const getOrders = (params: Partial<IOrder> = {}) => _store.read({
-        ...params,
-        ...getSortParams(),
-        ...getPaginationParams()
-    })
+    const getOrders = async (params: Partial<IOrder> = {}) => {
+        try {
+            const { data } = await repository.getOrders({
+                ...params,
+                ...getSortParams(),
+                ...getPaginationParams()
+            })
 
-    const getNewOrders = () => _store.read({ seen: false })
+            _orders.value = data.data.items
+            _total.value = data.data.total
+        } catch (err) {
+            logError('OrdersService: orders loading failed', err)
 
-    const updateOrder = async (updates: Partial<IOrder>) => {
-        if (updates.executor) {
-            updates.executor = (updates.executor as IUser).id
+            return Promise.reject(err)
         }
-        order.value = await _store.update({
-            id: unref(order)!.id,
-            ...updates
-        })
-
-        return unref(order)
     }
 
-    const deleteOrder = (orderId: string) => _store.delete(orderId)
+    const getNewOrders = async () => {
+        try {
+            const { data } = await repository.getOrders({ seen: false })
+
+            _newOrders.value = data.data.items
+        } catch (err) {
+            logError('OrdersService: new orders loading failed', err)
+
+            return Promise.reject(err)
+        }
+    }
+
+    const updateOrder = async (updates: Partial<IOrder>) => {
+        try {
+            if (updates.executor) {
+                updates.executor = (updates.executor as IUser).id
+            }
+
+            const { data } = await repository.updateOrder(updates)
+
+            return data.data
+        } catch (err) {
+            logError('OrdersService: order updating failed', err)
+
+            return Promise.reject(err)
+        }
+    }
+
+    const deleteOrder = async (id: string) => {
+        try {
+            const { data } = await repository.deleteOrder(id)
+
+            return data.data
+        } catch (err) {
+            logError('OrdersService: order deleting failed', err)
+
+            return Promise.reject(err)
+        }
+    }
 
     return {
-        order,
-        orders,
-        users,
+        orders: _orders as Ref<DeepReadonly<IOrder>[]>,
+        newOrders: _newOrders as Ref<DeepReadonly<IOrder>[]>,
+        totalLength: _total as Ref<Readonly<number>>,
         sort,
-        newOrders,
         pagination,
-        totalLength,
-        getUsers,
         getOrders,
-        // createOrder,
-        setAsCurrent,
         getNewOrders,
         updateOrder,
         deleteOrder
