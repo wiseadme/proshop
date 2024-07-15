@@ -82,7 +82,7 @@ export const useOptionsService = createSharedComposable(() => {
     }
 
     return {
-        readOnlyOptions: _options as Ref<DeepReadonly<IOption>[]>,
+        options: _options as Ref<DeepReadonly<IOption>[]>,
         createOption,
         getOptions,
         updateOption,

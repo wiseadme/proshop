@@ -33,7 +33,7 @@ import { SEARCH_INPUT_MIN_LENGTH } from '@modules/groups/constants/options'
 
 export const useOptions = () => {
     const {
-        readOnlyOptions,
+        options,
         createOption,
         getOptions,
         deleteOption,
@@ -130,7 +130,7 @@ export const useOptions = () => {
         products,
         filterItems,
         filterGroups,
-        options: readOnlyOptions,
+        options,
         optionProduct,
         getFilterGroups,
         getFilterItems,

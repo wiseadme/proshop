@@ -4,9 +4,9 @@ import { createSharedComposable } from '@shared/features/create-shared-composabl
 
 import { useRouter } from 'vue-router'
 
-import { useOrderActionsModal } from '@modules/orders/composables/use-order-actions-modal'
-import { useOrderModel } from '@modules/orders/composables/use-order-model'
-import { useOrdersService } from '@modules/orders/composables/use-orders-service'
+import { useOrdersService } from '@modules/orders/composables/service/use-orders-service'
+import { useOrderActionsModal } from '@modules/orders/composables/view/use-order-actions-modal'
+import { useOrderModel } from '@modules/orders/composables/view/use-order-model'
 
 import { Order } from '@modules/orders/model/order.model'
 

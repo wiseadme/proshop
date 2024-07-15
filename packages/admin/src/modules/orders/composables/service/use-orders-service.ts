@@ -6,7 +6,7 @@ import {
 
 import { createSharedComposable } from '@shared/features/create-shared-composable'
 
-import { useOrdersRepository } from '@modules/orders/composables/use-orders-repository'
+import { useOrdersRepository } from '@modules/orders/composables/repository/use-orders-repository'
 
 import { useRequestParams } from '@shared/composables/use-request-params'
 

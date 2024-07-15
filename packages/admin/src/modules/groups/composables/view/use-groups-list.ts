@@ -13,7 +13,7 @@ import { GROUP_DELETE_ERROR, GROUP_DELETE_WARNING } from '@modules/groups/consta
 
 export const useGroupsList = () => {
     const {
-        readOnlyGroups: groups,
+        groups,
         getGroups,
         deleteGroup,
     } = useGroupsService()

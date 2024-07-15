@@ -15,7 +15,7 @@ export const useGroupsTable = () => {
     const { notify } = useNotifications()
 
     const {
-        readOnlyGroups: rows,
+        groups: rows,
         getGroups,
         deleteGroup,
     } = useGroupsService()

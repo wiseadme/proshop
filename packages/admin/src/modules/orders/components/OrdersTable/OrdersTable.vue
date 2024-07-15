@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-    import { useOrders } from '@modules/orders/composables/use-orders'
-    import { useOrdersTable } from '@modules/orders/composables/use-orders-table'
+    import { useOrders } from '@modules/orders/composables/view/use-orders'
+    import { useOrdersTable } from '@modules/orders/composables/view/use-orders-table'
 
     import { FormCard } from '@shared/components/FormCard'
     import { VSvg } from '@shared/components/VSvg'

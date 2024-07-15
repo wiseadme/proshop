@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-    import { useOrderActionsModal } from '@modules/orders/composables/use-order-actions-modal'
-    import { useOrders } from '@modules/orders/composables/use-orders'
+    import { useOrderActionsModal } from '@modules/orders/composables/view/use-order-actions-modal'
+    import { useOrders } from '@modules/orders/composables/view/use-orders'
 
     import OrderActionsModal from '@modules/orders/components/OrderActionsModal'
     import OrdersTable from '@modules/orders/components/OrdersTable'

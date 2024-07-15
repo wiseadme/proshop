@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-    import { useOrderActionsModal } from '@modules/orders/composables/use-order-actions-modal'
+    import { useOrderActionsModal } from '@modules/orders/composables/view/use-order-actions-modal'
 
     import { IOrder } from '@proshop/types'
 

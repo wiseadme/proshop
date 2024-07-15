@@ -1,6 +1,6 @@
 import { ref } from 'vue'
 
-import { useOrdersService } from '@modules/orders/composables/use-orders-service'
+import { useOrdersService } from '@modules/orders/composables/service/use-orders-service'
 
 import { IOrder } from '@proshop/types'
 

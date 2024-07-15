@@ -6,7 +6,7 @@ import {
 
 import { createSharedComposable } from '@shared/features/create-shared-composable'
 
-import { useGroupsRepository } from '@modules/groups/repository/groups.repository'
+import { useGroupsRepository } from '@modules/groups/composables/repository/use-groups-repository'
 
 import { useLogger } from '@shared/utils/logger'
 
@@ -78,7 +78,7 @@ export const useGroupsService = createSharedComposable(() => {
     }
 
     return {
-        readOnlyGroups: _groups as Ref<DeepReadonly<IGroup>[]>,
+        groups: _groups as Ref<DeepReadonly<IGroup>[]>,
         createGroup,
         getGroups,
         deleteGroup,

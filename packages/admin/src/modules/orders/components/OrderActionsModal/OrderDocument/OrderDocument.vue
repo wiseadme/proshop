@@ -5,9 +5,9 @@
         unref,
     } from 'vue'
 
-    import { useOrderDeps } from '@modules/orders/composables/use-order-deps'
-    import { useOrderModel } from '@modules/orders/composables/use-order-model'
-    import { useOrders } from '@modules/orders/composables/use-orders'
+    import { useOrderDeps } from '@modules/orders/composables/view/use-order-deps'
+    import { useOrderModel } from '@modules/orders/composables/view/use-order-model'
+    import { useOrders } from '@modules/orders/composables/view/use-orders'
 
     import { useNotifications } from '@shared/components/VNotifications/use-notifications'
 
