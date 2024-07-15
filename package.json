@@ -20,9 +20,6 @@
     "type": "git",
     "url": "https://github.com/wiseadme/proshop"
   },
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com"
-  },
   "workspaces": [
     "packages/admin",
     "packages/server",
