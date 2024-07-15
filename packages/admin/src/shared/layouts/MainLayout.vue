@@ -5,6 +5,7 @@
         watch,
     } from 'vue'
 
+
     import { useRouter } from 'vue-router'
 
     import { useOrdersService } from '@modules/orders/composables/service/use-orders-service'
@@ -15,7 +16,7 @@
     import { useNotifications } from '@shared/components/VNotifications/use-notifications'
     import VNotifications from '@shared/components/VNotifications/VNotifications.vue'
 
-    import { IOrder, Maybe } from '@proshop/types'
+    import type { IOrder, Maybe } from '@proshop-app/types'
 
     import { AppHeader } from '@app/components/AppHeader'
     import { AppNavigation } from '@app/components/AppNavigation'
