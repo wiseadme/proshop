@@ -33,6 +33,7 @@ export class Order implements IOrder {
             seen: false,
             completed: false,
             cancelled: false,
+            disbanded: false
         },
     }: IOrder) {
         this.id = id

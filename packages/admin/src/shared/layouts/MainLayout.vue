@@ -7,7 +7,7 @@
 
     import { useRouter } from 'vue-router'
 
-    import { useOrdersService } from '@modules/orders/composables/use-orders-service'
+    import { useOrdersService } from '@modules/orders/composables/service/use-orders-service'
 
     import { useAuthService } from '@shared/composables/use-auth-service'
     import { usePolling } from '@shared/composables/use-polling'
