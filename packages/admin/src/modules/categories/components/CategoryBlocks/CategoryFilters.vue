@@ -8,7 +8,7 @@
     import { FormCard } from '@shared/components/FormCard'
     import { VSvg } from '@shared/components/VSvg'
 
-    import { IFilterGroup } from '@proshop/types'
+    import type { IFilterGroup } from '@proshop-app/types'
 
     import { SvgPaths } from '@shared/enums/svg-paths'
 
@@ -19,14 +19,14 @@
 
     const {
         availableFilterGroups,
-        getFilterGroupItems,
+        getFilterGroups,
         onUpdateFilters
     } = useCategoryFilters()
 
     const pullFunction = () => {
     }
 
-    onMounted(getFilterGroupItems)
+    onMounted(getFilterGroups)
 </script>
 <template>
     <v-row>

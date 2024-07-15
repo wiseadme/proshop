@@ -3,7 +3,7 @@ import { computed } from 'vue'
 
 import { createSharedComposable } from '@shared/features/create-shared-composable'
 
-import { IFilterItem } from '@proshop/types'
+import type { IFilterItem } from '@proshop-app/types'
 
 import { useFilterItemsStore } from '@modules/filters/store/filter-items'
 

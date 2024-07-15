@@ -5,7 +5,7 @@ import { useCategoryModel } from '@modules/categories/composables/use-category-m
 
 import { useNotifications } from '@shared/components/VNotifications/use-notifications'
 
-import { ICategory } from '@proshop/types'
+import type { ICategory } from '@proshop-app/types'
 
 import {
     CHANGES_SAVED,

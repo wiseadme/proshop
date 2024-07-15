@@ -1,6 +1,6 @@
 import { useFilterItemsRepository } from '@modules/filters/repository/filter-items.repository'
 
-import { IFilterItem } from '@proshop/types'
+import { IFilterItem } from '@proshop-app/types'
 
 const repository = useFilterItemsRepository()
 export const actions = {

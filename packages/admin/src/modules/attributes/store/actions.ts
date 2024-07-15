@@ -1,6 +1,6 @@
 import { useAttributeRepository } from '@modules/attributes/repository/attribute.repository'
 
-import { IAttribute } from '@proshop/types'
+import { IAttribute } from '@proshop-app/types'
 
 import { IAttributeActions } from '@modules/attributes/types'
 
@@ -31,7 +31,7 @@ export const actions: IAttributeActions = {
         }
     },
 
-    async update(updates: Array<IAttribute>) {
+    async update(updates: IAttribute[]) {
         try {
             const { data } = await repository.update(updates)
 

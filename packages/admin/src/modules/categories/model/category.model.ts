@@ -1,4 +1,4 @@
-import { ICategory } from '@proshop/types'
+import { ICategory } from '@proshop-app/types'
 
 export class Category implements ICategory {
     id: ICategory['id']

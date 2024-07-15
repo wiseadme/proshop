@@ -7,7 +7,7 @@ import { useCategoryModel } from '@modules/categories/composables/use-category-m
 
 import { useNotifications } from '@shared/components/VNotifications/use-notifications'
 
-import { ICategory } from '@proshop/types'
+import type { ICategory } from '@proshop-app/types'
 
 import { CATEGORY_DELETED } from '@modules/categories/constants/notifications'
 import { RouteNames } from '@modules/categories/enums/route-names'

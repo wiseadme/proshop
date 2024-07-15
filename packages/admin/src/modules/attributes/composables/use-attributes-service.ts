@@ -2,7 +2,7 @@ import { ref, watch } from 'vue'
 
 import { createSharedComposable } from '@shared/features/create-shared-composable'
 
-import { IAttribute } from '@proshop/types'
+import { IAttribute } from '@proshop-app/types'
 
 import { useAttributesStore } from '@modules/attributes/store'
 

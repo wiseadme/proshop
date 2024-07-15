@@ -1,4 +1,4 @@
-import { IAttribute } from '@proshop/types'
+import { IAttribute } from '@proshop-app/types'
 
 import { rest } from '@shared/api'
 import { IRepository, IRest } from '@shared/types/app'
@@ -12,24 +12,24 @@ export class Repository implements IRepository<IAttribute> {
         this.path = path
     }
 
-    create(attribute){
+    create(attribute: IAttribute) {
         return this.client.post(this.path, attribute)
     }
 
-    read(id = ''){
+    read(id = '') {
         return this.client.get(this.path, { query: { id } })
     }
 
-    update(updates){
+    update(updates: IAttribute[]) {
         return this.client.patch(this.path, updates)
     }
 
-    delete(id){
+    delete(id: string) {
         return this.client.delete(this.path, { params: { id } })
     }
 }
 
 export const useAttributeRepository = () => new Repository({
-    client:  rest,
+    client: rest,
     path: '/api/v1/attribute'
 })

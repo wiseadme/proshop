@@ -4,7 +4,7 @@ import {
     unref
 } from 'vue'
 
-import type { IAttribute, IFilterGroup } from '@proshop/types'
+import type { IAttribute, IFilterGroup } from '@proshop-app/types'
 
 import { useAttributesStore } from '@modules/attributes/store'
 import { useFilterGroupsStore } from '@modules/filters/store/filter-groups'

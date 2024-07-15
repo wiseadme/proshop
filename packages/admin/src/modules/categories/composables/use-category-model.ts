@@ -11,7 +11,7 @@ import { useCategoriesService } from '@modules/categories/composables/use-catego
 
 import { Category } from '@modules/categories/model/category.model'
 
-import { ICategory } from '@proshop/types'
+import type { ICategory } from '@proshop-app/types'
 
 import { clone } from '@shared/helpers'
 

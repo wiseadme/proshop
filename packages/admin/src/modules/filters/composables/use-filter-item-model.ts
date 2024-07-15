@@ -4,7 +4,7 @@ import { createSharedComposable } from '@shared/features/create-shared-composabl
 
 import { FilterItem } from '@modules/filters/model/filterItem.model'
 
-import { IFilterItem } from '@proshop/types'
+import type { IFilterItem } from '@proshop-app/types'
 
 export const useFilterItemModel = createSharedComposable(() => {
     const model = ref(FilterItem.create())

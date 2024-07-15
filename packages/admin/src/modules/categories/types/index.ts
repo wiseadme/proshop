@@ -1,4 +1,4 @@
-import { ICategory } from '@proshop/types'
+import { ICategory } from '@proshop-app/types'
 
 export interface ICategoryState {
   categories: Maybe<Array<ICategory>>

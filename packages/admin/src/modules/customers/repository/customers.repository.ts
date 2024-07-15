@@ -1,4 +1,4 @@
-import { ICustomer } from '@proshop/types'
+import type { ICustomer } from '@proshop-app/types'
 
 import { rest } from '@shared/api'
 import { IRepository, IRest } from '@shared/types/app'

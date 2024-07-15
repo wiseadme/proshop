@@ -5,7 +5,7 @@ import { useCategoryModel } from '@modules/categories/composables/use-category-m
 
 import { useNotifications } from '@shared/components/VNotifications/use-notifications'
 
-import { IAsset } from '@proshop/types'
+import type { IAsset } from '@proshop-app/types'
 
 import {
     CATEGORY_IMAGE_DELETED,

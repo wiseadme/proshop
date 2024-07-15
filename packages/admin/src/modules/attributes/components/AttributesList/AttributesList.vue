@@ -9,7 +9,7 @@
     import { FormCard } from '@shared/components/FormCard'
     import { VSvg } from '@shared/components/VSvg'
 
-    import { IAttribute } from '@proshop/types'
+    import { IAttribute } from '@proshop-app/types'
 
     import { SvgPaths } from '@shared/enums/svg-paths'
 

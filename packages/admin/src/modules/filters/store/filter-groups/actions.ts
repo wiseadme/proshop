@@ -1,6 +1,6 @@
 import { useFilterGroupsRepository } from '@modules/filters/repository/filter-groups.repository'
 
-import { IFilterGroup } from '@proshop/types'
+import type { IFilterGroup } from '@proshop-app/types'
 
 const repository = useFilterGroupsRepository()
 export const actions = {

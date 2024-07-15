@@ -7,7 +7,7 @@ import { useFilterItemsService } from '@modules/filters/composables/use-filter-i
 
 import { useNotifications } from '@shared/components/VNotifications/use-notifications'
 
-import { IFilterGroup, IFilterItem } from '@proshop/types'
+import { IFilterGroup, IFilterItem } from '@proshop-app/types'
 
 import { CHANGES_SAVED, SAVING_ERROR } from '@shared/constants/notifications'
 

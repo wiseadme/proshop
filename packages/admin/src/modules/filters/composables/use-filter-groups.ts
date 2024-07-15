@@ -12,7 +12,7 @@ import { FilterGroup } from '@modules/filters/model/filterGroup.model'
 
 import { useLogger } from '@shared/utils/logger'
 
-import { IAttribute, IFilterGroup } from '@proshop/types'
+import type { IAttribute, IFilterGroup } from '@proshop-app/types'
 
 export const useFilterGroups = createSharedComposable(() => {
     const {

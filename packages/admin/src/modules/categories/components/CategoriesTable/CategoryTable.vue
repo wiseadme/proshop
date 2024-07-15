@@ -5,7 +5,7 @@
     import { FormCard } from '@shared/components/FormCard'
     import { VSvg } from '@shared/components/VSvg'
 
-    import { ICategory } from '@proshop/types'
+    import { ICategory } from '@proshop-app/types'
 
     import { INFO_BLOCK } from '@modules/categories/constants/sections'
     import { RouteNames } from '@modules/categories/enums/route-names'

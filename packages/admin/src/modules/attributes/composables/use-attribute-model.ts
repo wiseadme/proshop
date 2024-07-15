@@ -12,7 +12,7 @@ import { useAttributesService } from '@modules/attributes/composables/use-attrib
 import { Attribute } from '@modules/attributes/model/attribute.model'
 
 
-import { IAttribute } from '@proshop/types'
+import { IAttribute } from '@proshop-app/types'
 
 export const useAttributeModel = createSharedComposable(() => {
     const { attribute } = useAttributesService()

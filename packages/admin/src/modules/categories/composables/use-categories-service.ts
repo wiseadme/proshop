@@ -6,11 +6,11 @@ import {
 
 import { createSharedComposable } from '@shared/features/create-shared-composable'
 
-import {
+import type {
     IAsset,
     ICategory,
     Maybe,
-} from '@proshop/types'
+} from '@proshop-app/types'
 
 import { useCategoriesStore } from '@modules/categories/store'
 import { getIds } from '@modules/products/helpers'

@@ -2,7 +2,7 @@ import { computed } from 'vue'
 
 import { createSharedComposable } from '@shared/features/create-shared-composable'
 
-import { ICustomer, Maybe } from '@proshop/types'
+import { ICustomer, Maybe } from '@proshop-app/types'
 
 import { useCustomersStore } from '@modules/customers/store'
 

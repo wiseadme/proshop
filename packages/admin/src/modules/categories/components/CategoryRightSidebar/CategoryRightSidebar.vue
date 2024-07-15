@@ -10,7 +10,7 @@
 
     import { useCategoryModel } from '@modules/categories/composables/use-category-model'
 
-    import { ISidebarTab } from '@shared/composables/use-right-sidebar'
+    import type { ISidebarTab } from '@shared/composables/use-right-sidebar'
 
     import { RightSidebar } from '@shared/components/RightSidebar'
 

@@ -8,7 +8,7 @@
     import { VSvg } from '@shared/components/VSvg'
 
 
-    import { IFilterGroup } from '@proshop/types'
+    import { IFilterGroup } from '@proshop-app/types'
 
     import { SvgPaths } from '@shared/enums/svg-paths'
 

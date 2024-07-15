@@ -7,7 +7,7 @@
 
     import ModalCard from '@shared/components/Modals/ModalCard.vue'
 
-    import type { IFilterGroup } from '@proshop/types'
+    import type { IFilterGroup } from '@proshop-app/types'
 
     const { filterGroups } = useFilterGroups()
     const { filtersGroup, showForm, onCloseForm, onSubmit } = useFilterItems()

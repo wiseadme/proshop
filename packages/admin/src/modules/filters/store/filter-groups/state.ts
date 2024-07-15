@@ -1,4 +1,4 @@
-import { IFilterGroup, IFilterItem } from '@proshop/types'
+import type { IFilterGroup, IFilterItem } from '@proshop-app/types'
 
 export const state = () => ({
     filterGroups: [] as IFilterGroup[],
