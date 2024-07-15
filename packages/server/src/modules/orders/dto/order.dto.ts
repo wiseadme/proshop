@@ -1,4 +1,4 @@
-import { IOrder } from '@proshop/types'
+import { IOrder } from '@proshop-app/types'
 
 export class OrderDTO {
     cart?: IOrder['cart']

@@ -10,7 +10,7 @@ import { useOrderModel } from '@modules/orders/composables/view/use-order-model'
 
 import { Order } from '@modules/orders/model/order.model'
 
-import { IOrder } from '@proshop/types'
+import type { IOrder } from '@proshop-app/types'
 
 import { RouteNames } from '@modules/orders/enums/route-names'
 

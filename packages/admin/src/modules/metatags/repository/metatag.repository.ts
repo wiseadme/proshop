@@ -1,4 +1,4 @@
-import { IMetaTag } from '@proshop/types'
+import type { IMetaTag } from '@proshop-app/types'
 
 import { rest } from '@shared/api'
 import { IRepository, IRest } from '@shared/types/app'

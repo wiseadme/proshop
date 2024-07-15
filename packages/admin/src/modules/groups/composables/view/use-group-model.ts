@@ -8,7 +8,7 @@ import { createSharedComposable } from '@shared/features/create-shared-composabl
 
 import { Group } from '@modules/groups/model/group.model'
 
-import type { IGroup } from '@proshop/types'
+import type { IGroup } from '@proshop-app/types'
 
 export const useGroupModel = createSharedComposable(() => {
     const model = ref<IGroup>(Group.create())

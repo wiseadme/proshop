@@ -1,5 +1,5 @@
 import { Document, model, Schema } from 'mongoose'
-import { ICategory, ICategoryMongoModel } from '@proshop/types'
+import { ICategory, ICategoryMongoModel } from '@proshop-app/types'
 
 const CategorySchema: Schema = new Schema<ICategoryMongoModel>({
     _id: Schema.Types.ObjectId,

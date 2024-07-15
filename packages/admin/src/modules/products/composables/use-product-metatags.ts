@@ -12,7 +12,7 @@ import { useProductsService } from '@modules/products/composables/use-products-s
 
 import { useNotifications } from '@shared/components/VNotifications/use-notifications'
 
-import { IMetaTag, Maybe } from '@proshop/types'
+import type { IMetaTag, Maybe } from '@proshop-app/types'
 
 
 import { CHANGES_SAVED, SAVING_ERROR } from '@shared/constants/notifications'

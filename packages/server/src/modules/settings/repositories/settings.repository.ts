@@ -1,6 +1,6 @@
-import mongoose, { Document, LeanDocument } from 'mongoose'
+import mongoose from 'mongoose'
 import { ISettingsRepository } from '@modules/settings/types/repository'
-import { ISettings, ISettingsMongoModel, Maybe } from '@proshop/types'
+import { ISettings, ISettingsMongoModel, Maybe } from '@proshop-app/types'
 
 import { SettingsModel } from '@modules/settings/models/settings.model'
 import { injectable } from 'inversify'

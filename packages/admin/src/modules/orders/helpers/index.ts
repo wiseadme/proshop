@@ -1,4 +1,4 @@
-import { IOrderStatuses } from '@proshop/types'
+import type { IOrderStatuses } from '@proshop-app/types'
 
 import { OrderStatuses } from '@modules/orders/enums/status'
 

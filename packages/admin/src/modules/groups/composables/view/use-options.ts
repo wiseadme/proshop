@@ -20,7 +20,7 @@ import type {
     IOption,
     IProduct,
     IVariant
-} from '@proshop/types'
+} from '@proshop-app/types'
 
 import {
     OPTION_CREATE_ERROR,

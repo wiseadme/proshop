@@ -4,7 +4,7 @@ import { TYPES } from '@common/schemes/di-types'
 
 // Types
 import { ILogger } from '@/types/utils'
-import { IFavorite } from '@proshop/types'
+import { IFavorite } from '@proshop-app/types'
 import { FavoriteModel } from '@modules/favorites/model/favorite.model'
 import { IFavoritesRepository } from '@modules/favorites/types/repository'
 

@@ -11,7 +11,7 @@ import { useOptionsRepository } from '@modules/groups/repository/options.reposit
 
 import { useLogger } from '@shared/utils/logger'
 
-import { IOption } from '@proshop/types'
+import type { IOption } from '@proshop-app/types'
 
 export const useOptionsService = createSharedComposable(() => {
     const repository = useOptionsRepository()

@@ -20,7 +20,7 @@
         IFilterItem,
         IOption,
         IProduct
-    } from '@proshop/types'
+    } from '@proshop-app/types'
 
     import { SvgPaths } from '@shared/enums/svg-paths'
 

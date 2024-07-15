@@ -15,7 +15,7 @@ import {
     IProductParams,
     IProductQuery,
     IRequestParams,
-} from '@proshop/types'
+} from '@proshop-app/types'
 import { IProductsGatewayService } from '@modules/products/gateway/gateway.service'
 import { ServiceHelpers, IResponseItems } from '@modules/products/helpers/service.helpers'
 import { PRODUCTS_IOC } from '@modules/products/di/di.types'

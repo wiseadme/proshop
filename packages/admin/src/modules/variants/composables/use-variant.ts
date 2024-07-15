@@ -4,7 +4,7 @@ import { createSharedComposable } from '@shared/features/create-shared-composabl
 
 import { Variant } from '@modules/variants/model/variant.model'
 
-import { IAttribute } from '@proshop/types'
+import type { IAttribute } from '@proshop-app/types'
 
 export const useVariant = createSharedComposable(() => {
     const model = ref(Variant.create())

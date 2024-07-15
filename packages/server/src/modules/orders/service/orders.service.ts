@@ -6,9 +6,9 @@ import { TYPES } from '@common/schemes/di-types'
 
 // Types
 import { ILogger } from '@/types/utils'
-import { IOrdersService } from '../types/service'
-import { IOrdersRepository } from '../types/repository'
-import { IOrder, IRequestParams } from '@proshop/types'
+import { IOrdersService } from '@modules/orders/types/service'
+import { IOrdersRepository } from '@modules/orders/types/repository'
+import { IOrder, IRequestParams } from '@proshop-app/types'
 import { Order } from '@modules/orders/entity/order.entity'
 import { IOrderGatewayService } from '@modules/orders/gateway/gateway.service'
 import { IOrdersQueue } from '@modules/orders/queue/queue'

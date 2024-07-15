@@ -1,4 +1,4 @@
-import { ICategory } from '@proshop/types'
+import { ICategory } from '@proshop-app/types'
 import { translator } from '@common/utils/translator'
 
 export class Category implements ICategory {

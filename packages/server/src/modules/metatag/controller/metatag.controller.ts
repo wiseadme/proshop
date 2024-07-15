@@ -5,7 +5,7 @@ import { TYPES } from '@common/schemes/di-types'
 // Types
 import { ILogger } from '@/types/utils'
 import { IController } from '@/types'
-import { IMetaTag } from '@proshop/types'
+import { IMetaTag } from '@proshop-app/types'
 import { META_TAGS_MODULE_PATH } from '@common/constants/paths'
 import { setMiddlewares } from '@common/helpers'
 import { META_TAG_IOC } from '@modules/metatag/di/di.types'

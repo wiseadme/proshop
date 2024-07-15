@@ -9,7 +9,7 @@
 
     import { Variant } from '@modules/variants/model/variant.model'
 
-    import type { IAttribute } from '@proshop/types'
+    import type { IAttribute } from '@proshop-app/types'
 
     const {
         createVariant,

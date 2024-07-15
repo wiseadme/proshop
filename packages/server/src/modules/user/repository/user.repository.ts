@@ -1,9 +1,9 @@
 import { injectable } from 'inversify'
 import { IUserRepository } from '@modules/user/types/repository'
 import { UserModel } from '@modules/user/model/user.model'
-import mongoose, { Document } from 'mongoose'
+import mongoose from 'mongoose'
 import { validateId } from '@common/utils/mongoose-validate-id'
-import { IUser, IUserMongoModel } from '@proshop/types'
+import { IUser, IUserMongoModel } from '@proshop-app/types'
 import { UserMapper } from '@modules/user/mappers/user.mapper'
 
 @injectable()

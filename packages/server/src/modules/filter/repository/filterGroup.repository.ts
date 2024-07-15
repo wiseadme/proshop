@@ -5,7 +5,7 @@ import { FilterGroupModel } from '@modules/filter/model/filterGroup.model'
 import { validateId } from '@common/utils/mongoose-validate-id'
 // Types
 import { ILogger } from '@/types/utils'
-import { IFilterGroup, IFilterGroupMongoModel } from '@proshop/types'
+import { IFilterGroup, IFilterGroupMongoModel } from '@proshop-app/types'
 import { IFilterGroupRepository } from '../types/repository'
 import { FilterGroupMapper } from '@modules/filter/mappers/filterGroup.mapper'
 

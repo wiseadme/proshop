@@ -1,6 +1,6 @@
 import { useMerchantRepository } from '@modules/settings/repository/merchant.repository'
 
-import { IMerchant } from '@proshop/types'
+import type { IMerchant } from '@proshop-app/types'
 
 const repository = useMerchantRepository()
 export const actions = {

@@ -8,7 +8,7 @@
 
     import { User } from '@modules/users/model/user.model'
 
-    import { IOrder, IUser } from '@proshop/types'
+    import type { IOrder, IUser } from '@proshop-app/types'
 
     import { ROLES } from '@shared/constants/roles'
 

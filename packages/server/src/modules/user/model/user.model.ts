@@ -1,5 +1,5 @@
 import { model, Schema } from 'mongoose'
-import { IUserMongoModel } from '@proshop/types'
+import { IUserMongoModel } from '@proshop-app/types'
 
 const UserSchema = new Schema<IUserMongoModel>({
     _id: Schema.Types.ObjectId,

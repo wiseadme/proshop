@@ -7,7 +7,7 @@
     import VSvg from '@shared/components/VSvg/VSvg.vue'
 
     // Helpers
-    import { IMetaTag } from '@proshop/types'
+    import type { IMetaTag } from '@proshop-app/types'
 
     import { SvgPaths } from '@shared/enums/svg-paths'
     import { descriptorToMetaTag } from '@shared/helpers/metatag'

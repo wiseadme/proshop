@@ -1,4 +1,4 @@
-import { IOrder } from '@proshop/types'
+import type { IOrder } from '@proshop-app/types'
 
 import { rest } from '@shared/api'
 

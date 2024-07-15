@@ -1,4 +1,4 @@
-import { IProduct } from '@proshop/types'
+import type { IProduct } from '@proshop-app/types'
 
 export class Product implements IProduct {
     id: IProduct['id']

@@ -1,4 +1,4 @@
-import { IUser } from '@proshop/types'
+import type { IUser } from '@proshop-app/types'
 
 export class User implements IUser {
     id: IUser['id']

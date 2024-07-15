@@ -1,4 +1,4 @@
-import { IMerchant, ISettings, ISite, Maybe } from '@proshop/types'
+import { IMerchant, ISettings, ISite, Maybe } from '@proshop-app/types'
 
 export interface IMerchantRepository {
     create(merchant: IMerchant): Promise<IMerchant>

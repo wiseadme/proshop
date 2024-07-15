@@ -1,4 +1,4 @@
-import { IOption } from '@proshop/types'
+import { IOption } from '@proshop-app/types'
 
 export class Option implements IOption {
     public id: string

@@ -1,6 +1,4 @@
-import { Document } from 'mongoose'
-import { IAttribute } from '@proshop/types'
-import { id } from 'inversify'
+import { IAttribute } from '@proshop-app/types'
 
 export interface IAttributeRepository {
     create(attribute: IAttribute): Promise<IAttribute>

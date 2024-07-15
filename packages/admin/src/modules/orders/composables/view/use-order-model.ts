@@ -4,7 +4,7 @@ import { createSharedComposable } from '@shared/features/create-shared-composabl
 
 import { Order } from '@modules/orders/model/order.model'
 
-import { IOrder } from '@proshop/types'
+import type { IOrder } from '@proshop-app/types'
 
 export const useOrderModel = createSharedComposable(() => {
     const model = ref<IOrder>(Order.create())

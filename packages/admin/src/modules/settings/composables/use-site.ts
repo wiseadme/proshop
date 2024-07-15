@@ -6,7 +6,7 @@ import { useSiteService } from '@modules/settings/composables/use-site-service'
 
 import { Site } from '@modules/settings/model/site.model'
 
-import { ISite } from '@proshop/types'
+import type { ISite } from '@proshop-app/types'
 
 export const useSite = createSharedComposable(() => {
     const {

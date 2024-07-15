@@ -6,7 +6,7 @@ import { CartMapper } from '@modules/cart/mappers/cart.mapper'
 // Types
 import { ILogger } from '@/types/utils'
 import { ICartRepository } from '../types/repository'
-import { ICart, ICartMongoModel } from '@proshop/types'
+import type { ICart, ICartMongoModel } from '@proshop-app/types'
 import { CartModel } from '@modules/cart/model/cart.model'
 
 @injectable()

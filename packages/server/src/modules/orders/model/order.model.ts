@@ -1,5 +1,5 @@
 import { model, Schema } from 'mongoose'
-import { ICartItem, IOrderMongoModel } from '@proshop/types'
+import { ICartItem, IOrderMongoModel } from '@proshop-app/types'
 
 const OrderSchema = new Schema<IOrderMongoModel>({
     _id: Schema.Types.ObjectId,

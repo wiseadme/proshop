@@ -5,7 +5,7 @@ import { BaseController } from '@common/controller/base.controller'
 // Types
 import { IController } from '@/types'
 import { ILogger } from '@/types/utils'
-import { ICustomer } from '@proshop/types'
+import type { ICustomer } from '@proshop-app/types'
 import { ICustomerService } from '../types/service'
 
 // Schemes

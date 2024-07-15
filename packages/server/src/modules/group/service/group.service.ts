@@ -3,7 +3,7 @@ import { TYPES } from '@common/schemes/di-types'
 import { GROUP_IOC } from '@modules/group/di/di.types'
 // Types
 import { ILogger } from '@/types/utils'
-import { IGroup } from '@proshop/types'
+import { IGroup } from '@proshop-app/types'
 import { IGroupService } from '@modules/group/types/service'
 import { IGroupRepository } from '@modules/group/types/repository'
 

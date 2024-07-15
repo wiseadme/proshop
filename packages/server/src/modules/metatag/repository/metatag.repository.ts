@@ -3,7 +3,7 @@ import { injectable } from 'inversify'
 import { MetaTagModel } from '@modules/metatag/model/metatag.model'
 import { validateId } from '@common/utils/mongoose-validate-id'
 import { IMetaTagRepository } from '@modules/metatag/types/repository'
-import { IMetaTag, IMetaTagMongoModel } from '@proshop/types'
+import { IMetaTag, IMetaTagMongoModel } from '@proshop-app/types'
 import { MetatagMapper } from '@modules/metatag/mappers/metatag.mapper'
 
 @injectable()

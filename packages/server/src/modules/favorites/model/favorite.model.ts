@@ -1,5 +1,5 @@
 import { model, Schema } from 'mongoose'
-import { IFavoriteMongoModel } from '@proshop/types/mongo'
+import { IFavoriteMongoModel } from '@proshop-app/types'
 
 const FavoriteSchema = new Schema<IFavoriteMongoModel>({
     _id: Schema.Types.ObjectId,

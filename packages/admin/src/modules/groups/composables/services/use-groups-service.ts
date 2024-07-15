@@ -10,7 +10,7 @@ import { useGroupsRepository } from '@modules/groups/composables/repository/use-
 
 import { useLogger } from '@shared/utils/logger'
 
-import { IGroup, IVariant } from '@proshop/types'
+import type { IGroup, IVariant } from '@proshop-app/types'
 
 export const useGroupsService = createSharedComposable(() => {
     const repository = useGroupsRepository()

@@ -11,7 +11,7 @@ import { useMerchantService } from '@modules/settings/composables/use-merchant-s
 
 import { Merchant } from '@modules/settings/model/merchant.model'
 
-import { IMerchant } from '@proshop/types'
+import type { IMerchant } from '@proshop-app/types'
 
 export const useMerchant = createSharedComposable(() => {
     const { merchant, createMerchantSettings, getMerchantSettings, updateMerchantSettings } = useMerchantService()

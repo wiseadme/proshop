@@ -1,4 +1,4 @@
-import { ICart, ICartMongoModel } from '@proshop/types'
+import type { ICart, ICartMongoModel } from '@proshop-app/types'
 import { ProductMapper } from '@modules/products/mappers/product.mapper'
 
 export class CartMapper {

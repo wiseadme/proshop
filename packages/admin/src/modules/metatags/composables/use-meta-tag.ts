@@ -14,8 +14,7 @@ import { useNotifications } from '@shared/components/VNotifications/use-notifica
 
 import { MetaTag } from '@modules/metatags/model/metaTag.model'
 
-import { IMetaTag } from '@proshop/types'
-
+import type { IMetaTag } from '@proshop-app/types'
 
 import {
     META_TAG_DELETED,

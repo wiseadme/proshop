@@ -1,4 +1,4 @@
-import { ICart } from '@proshop/types'
+import type { ICart } from '@proshop-app/types'
 
 export class CartDTO {
     items: ICart['items']

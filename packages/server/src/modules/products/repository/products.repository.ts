@@ -13,7 +13,7 @@ import {
     IProductParams,
     IProductQuery,
     IRequestParams,
-} from '@proshop/types'
+} from '@proshop-app/types'
 
 import { ProductMapper } from '@modules/products/mappers/product.mapper'
 

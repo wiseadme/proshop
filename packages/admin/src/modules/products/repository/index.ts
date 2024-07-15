@@ -1,4 +1,4 @@
-import {
+import type {
     IAttribute,
     IMetaTag,
     IProduct,
@@ -6,7 +6,7 @@ import {
     IProductParams,
     IProductQuery,
     IRequestParams
-} from '@proshop/types'
+} from '@proshop-app/types'
 
 import { rest } from '@shared/api'
 import { IRest } from '@shared/types/app'

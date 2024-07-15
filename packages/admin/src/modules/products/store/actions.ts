@@ -1,11 +1,11 @@
-import {
+import type {
     IAttribute,
     IMetaTag,
     IProduct,
     IProductParams,
     IProductQuery,
-    IRequestParams
-} from '@proshop/types'
+    IRequestParams,
+} from '@proshop-app/types'
 
 import { useProductRepository } from '@modules/products/repository'
 

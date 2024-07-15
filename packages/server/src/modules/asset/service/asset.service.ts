@@ -10,7 +10,7 @@ import {
     DELETE_CATEGORY_EVENT,
     UPDATE_ASSETS_EVENT,
 } from '@common/constants/events'
-import { IAsset } from '@proshop/types'
+import type { IAsset } from '@proshop-app/types'
 import { ASSET_IOC } from '@modules/asset/di/di.types'
 
 @injectable()

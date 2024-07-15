@@ -1,6 +1,6 @@
 import { computed } from "vue"
 
-import { IUser } from '@proshop/types'
+import { IUser } from '@proshop-app/types'
 
 import { useUserStore } from "@modules/users/store"
 

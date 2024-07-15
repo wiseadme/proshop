@@ -8,7 +8,7 @@ import { useProductsService } from '@modules/products/composables/use-products-s
 
 import { useNotifications } from '@shared/components/VNotifications/use-notifications'
 
-import { IProduct } from '@proshop/types'
+import type { IProduct } from '@proshop-app/types'
 
 import { INFO_BLOCK } from '@modules/products/constants/sections'
 import { RouteNames } from '@modules/products/enums/route-names'

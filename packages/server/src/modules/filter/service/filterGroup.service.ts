@@ -5,7 +5,7 @@ import {FilterGroup} from '@modules/filter/entity/filterGroup.entity'
 import { ILogger } from '@/types/utils'
 import { IFilterGroupService } from '../types/service'
 import { IFilterGroupRepository } from '../types/repository'
-import { IFilterGroup } from '@proshop/types'
+import { IFilterGroup } from '@proshop-app/types'
 import { FILTER_IOC } from '@modules/filter/di/di.types'
 
 @injectable()

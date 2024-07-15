@@ -1,4 +1,4 @@
-import { IOption, IOptionMongoModel } from '@proshop/types'
+import { IOption, IOptionMongoModel } from '@proshop-app/types'
 
 export class OptionMapper {
     static toDomain(entity: IOptionMongoModel): IOption {

@@ -1,5 +1,5 @@
 import { model, Schema } from 'mongoose'
-import { IGroupMongoModel } from '@proshop/types'
+import { IGroupMongoModel } from '@proshop-app/types'
 
 const GroupSchema: Schema = new Schema<IGroupMongoModel>({
     _id: Schema.Types.ObjectId,

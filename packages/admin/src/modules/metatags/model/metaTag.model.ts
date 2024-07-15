@@ -1,4 +1,4 @@
-import { IMetaTag } from '@proshop/types'
+import type { IMetaTag } from '@proshop-app/types'
 
 export class MetaTag {
     id: string

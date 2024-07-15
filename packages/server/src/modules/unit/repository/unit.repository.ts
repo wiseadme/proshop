@@ -1,12 +1,12 @@
 import mongoose, { Document } from 'mongoose'
 import { inject, injectable } from 'inversify'
 import { TYPES } from '@common/schemes/di-types'
-import { UnitModel } from '../model/unit.model'
+import { UnitModel } from '@modules/unit/model/unit.model'
 import { UnitsMapper } from '@modules/unit/mappers/units.mapper'
 
 // Types
 import { ILogger } from '@/types/utils'
-import { IUnit, IUnitMongoModel } from '@proshop/types'
+import { IUnit, IUnitMongoModel } from '@proshop-app/types'
 import { IUnitRepository } from '@modules/unit/types/repository'
 import { validateId } from '@common/utils/mongoose-validate-id'
 

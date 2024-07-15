@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { IAsset } from '@proshop/types'
+import { IAsset } from '@proshop-app/types'
 
 export interface IAssetsService {
     saveFile(req: Request, res: Response): Promise<{ url: string }>

@@ -1,4 +1,4 @@
-import { IGroup, IVariant } from '@proshop/types'
+import { IGroup, IVariant } from '@proshop-app/types'
 
 export class Group implements IGroup {
     readonly id: string

@@ -2,7 +2,7 @@ import mongoose from 'mongoose'
 import { injectable } from 'inversify'
 import { validateId } from '@common/utils/mongoose-validate-id'
 import { ISiteRepository } from '@modules/settings/types/repository'
-import { ISite, ISiteMongoModel, Maybe } from '@proshop/types'
+import { ISite, ISiteMongoModel, Maybe } from '@proshop-app/types'
 import { SiteModel } from '@modules/settings/models/site.model'
 import { SiteMapper } from '@modules/settings/mappers/site.mapper'
 

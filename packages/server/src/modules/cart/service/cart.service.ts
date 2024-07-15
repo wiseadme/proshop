@@ -4,7 +4,7 @@ import { TYPES } from '@common/schemes/di-types'
 import { ILogger } from '@/types/utils'
 import { ICartService } from '../types/service'
 import { ICartRepository } from '../types/repository'
-import { ICart } from '@proshop/types'
+import type { ICart } from '@proshop-app/types'
 import { Cart } from '@modules/cart/entity/cart.entity'
 import { CART_IOC } from '@modules/cart/di/di.types'
 

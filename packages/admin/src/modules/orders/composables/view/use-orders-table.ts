@@ -2,7 +2,7 @@ import { ref } from 'vue'
 
 import { useOrdersService } from '@modules/orders/composables/service/use-orders-service'
 
-import { IOrder } from '@proshop/types'
+import type { IOrder } from '@proshop-app/types'
 
 import { getOrderStatusName } from '@modules/orders/helpers'
 

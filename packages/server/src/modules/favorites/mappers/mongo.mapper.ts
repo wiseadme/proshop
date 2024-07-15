@@ -1,5 +1,4 @@
-import type { IFavorite, IFavoriteMongoModel, Maybe } from '@proshop/types'
-import { id } from 'inversify'
+import type { IFavorite, IFavoriteMongoModel } from '@proshop-app/types'
 
 export class FavoriteMapper {
     static toDomain(entity: IFavoriteMongoModel): IFavorite {

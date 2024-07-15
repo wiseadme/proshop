@@ -8,8 +8,7 @@ import { useLoadingState } from '@shared/composables/use-loading-state'
 
 import { Unit } from '@modules/units/model/unit.model'
 
-import { IUnit } from '@proshop/types'
-
+import type { IUnit } from '@proshop-app/types'
 
 export const useUnit = createSharedComposable(() => {
     const { updateUnit, createUnit, deleteUnit, setAsCurrent } = useUnitsService()

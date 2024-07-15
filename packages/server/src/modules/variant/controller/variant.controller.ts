@@ -5,8 +5,8 @@ import { TYPES } from '@common/schemes/di-types'
 import { BaseController } from '@common/controller/base.controller'
 import { IController } from '@/types'
 import { ILogger } from '@/types/utils'
-import { IVariant } from '@proshop/types'
-import { IVariantService } from '../types/service'
+import { IVariant } from '@proshop-app/types'
+import { IVariantService } from '@modules/variant/types/service'
 import { VARIANTS_MODULE_PATH } from '@common/constants/paths'
 
 @injectable()

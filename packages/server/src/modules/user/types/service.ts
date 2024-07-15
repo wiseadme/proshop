@@ -1,5 +1,5 @@
 import { Response } from 'express'
-import { IUser } from '@proshop/types'
+import { IUser } from '@proshop-app/types'
 
 type RegistrationAccessResponse = {
     access_token: string

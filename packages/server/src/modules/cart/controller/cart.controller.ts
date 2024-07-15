@@ -6,7 +6,7 @@ import { TYPES } from '@common/schemes/di-types'
 import { ILogger } from '@/types/utils'
 import { IController } from '@/types'
 import { ICartService } from '@modules/cart/types/service'
-import { ICart } from '@proshop/types'
+import type { ICart } from '@proshop-app/types'
 import { CARTS_MODULE_PATH } from '@common/constants/paths'
 import { CART_IOC } from '@modules/cart/di/di.types'
 

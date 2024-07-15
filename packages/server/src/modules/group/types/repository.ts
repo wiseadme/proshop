@@ -1,4 +1,4 @@
-import { IGroup } from '@proshop/types'
+import { IGroup } from '@proshop-app/types'
 
 export interface IGroupRepository {
     createGroup(model: IGroup): Promise<IGroup>

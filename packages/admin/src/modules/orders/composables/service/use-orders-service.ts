@@ -12,8 +12,7 @@ import { useRequestParams } from '@shared/composables/use-request-params'
 
 import { useLogger } from '@shared/utils/logger'
 
-import { IOrder, IUser } from '@proshop/types'
-
+import type { IOrder, IUser } from '@proshop-app/types'
 
 export const useOrdersService = createSharedComposable(() => {
     const repository = useOrdersRepository()

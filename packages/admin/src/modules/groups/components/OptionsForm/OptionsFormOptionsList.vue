@@ -3,7 +3,7 @@
 
     import { useOptions } from '@modules/groups/composables/view/use-options'
 
-    import type { IOption } from '@proshop/types'
+    import type { IOption } from '@proshop-app/types'
 
 
     const props = defineProps<{

@@ -5,9 +5,9 @@ import { TYPES } from '@common/schemes/di-types'
 import { Customer } from '@modules/customer/entity/customer.entity'
 // Types
 import { ILogger } from '@/types/utils'
-import { ICustomerService } from '../types/service'
-import { ICustomerRepository } from '../types/repository'
-import { ICustomer } from '@proshop/types'
+import { ICustomerService } from '@modules/customer/types/service'
+import { ICustomerRepository } from '@modules/customer/types/repository'
+import { ICustomer } from '@proshop-app/types'
 import { IEventBusService } from '@/types/services'
 // Helpers
 import { CustomerHelpers } from '@modules/customer/helpers/customer.helpers'

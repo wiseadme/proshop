@@ -1,4 +1,4 @@
-import { IAttribute, IAttributeMongoModel } from '@proshop/types'
+import type { IAttribute, IAttributeMongoModel } from '@proshop-app/types'
 
 export class AttributeMapper {
     static toDomain(entity: IAttributeMongoModel): IAttribute {

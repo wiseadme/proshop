@@ -10,7 +10,7 @@
     import { FormCard } from '@shared/components/FormCard'
     import { VSvg } from '@shared/components/VSvg'
 
-    import { IAsset } from '@proshop/types'
+    import type { IAsset } from '@proshop-app/types'
 
     import { SvgPaths } from '@shared/enums/svg-paths'
     import { clone } from '@shared/helpers'

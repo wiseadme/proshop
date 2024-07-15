@@ -1,5 +1,5 @@
 import { model, Schema } from 'mongoose'
-import { IVariantMongoModel } from '@proshop/types'
+import { IVariantMongoModel } from '@proshop-app/types'
 
 const VariantSchema = new Schema<IVariantMongoModel>({
     _id: Schema.Types.ObjectId,

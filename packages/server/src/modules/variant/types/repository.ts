@@ -1,6 +1,4 @@
-import { Document } from 'mongoose'
-import { IVariant } from '@proshop/types'
-import { id } from 'inversify'
+import { IVariant } from '@proshop-app/types'
 
 export interface IVariantRepository {
     create(variant: IVariant): Promise<IVariant>

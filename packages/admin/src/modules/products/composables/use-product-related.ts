@@ -10,16 +10,17 @@ import { useProductsService } from '@modules/products/composables/use-products-s
 
 import { useNotifications } from '@shared/components/VNotifications/use-notifications'
 
-import { IProduct } from '@proshop/types'
+import type { IProduct } from '@proshop-app/types'
 
 import { CHANGES_SAVED, SAVING_ERROR } from '@shared/constants/notifications'
 
 export const useProductRelated = () => {
     const {
-        product,
         getProducts,
         updateProductRelatedProducts,
     } = useProductsService()
+
+    const { product } = useProduct()
 
     const { setCurrentProduct } = useProduct()
 
@@ -40,13 +41,13 @@ export const useProductRelated = () => {
     }
 
     const onAddToRelated = async () => {
-        const { related } = unref(model) as { related: IProduct[] }
+        const { related, id } = unref(model)
 
         related.push(unref(relatedProduct)!)
         relatedProduct.value = null
 
         try {
-            const product = await updateProductRelatedProducts({ related })
+            const product = await updateProductRelatedProducts({ id, related })
 
             setCurrentProduct(product)
 
@@ -57,12 +58,12 @@ export const useProductRelated = () => {
     }
 
     const onDeleteRelated = async (item: IProduct) => {
-        let { related } = unref(model) as { related: IProduct[] }
+        let { id, related } = unref(model)
 
         related = related.filter((it) => it.id !== item.id)
 
         try {
-            const product = await updateProductRelatedProducts({ related })
+            const product = await updateProductRelatedProducts({ id, related })
 
             setCurrentProduct(product)
 

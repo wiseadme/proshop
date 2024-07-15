@@ -1,4 +1,4 @@
-import { IFavorite } from '@proshop/types'
+import { IFavorite } from '@proshop-app/types'
 
 export interface IFavoritesRepository {
     create(favorite: Partial<IFavorite>): Promise<IFavorite>

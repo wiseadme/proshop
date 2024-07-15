@@ -1,5 +1,5 @@
-import { Document, model, Schema } from 'mongoose'
-import { IAttributeMongoModel } from '@proshop/types'
+import { model, Schema } from 'mongoose'
+import type { IAttributeMongoModel } from '@proshop-app/types'
 
 const AttributeSchema = new Schema<IAttributeMongoModel>({
     _id: Schema.Types.ObjectId,

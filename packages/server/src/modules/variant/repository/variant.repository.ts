@@ -5,7 +5,7 @@ import { VariantModel } from '@modules/variant/model/variant.model'
 import { Types } from 'mongoose'
 import { validateId } from '@common/utils/mongoose-validate-id'
 import { ILogger } from '@/types/utils'
-import { IVariant, IVariantMongoModel } from '@proshop/types'
+import { IVariant, IVariantMongoModel } from '@proshop-app/types'
 import { IVariantRepository } from '../types/repository'
 import { VariantMapper } from '@modules/variant/mappers/variant.mapper'
 

@@ -1,6 +1,6 @@
 import { AxiosResponse } from 'axios'
 
-import { IOption } from '@proshop/types'
+import type { IOption } from '@proshop-app/types'
 
 import { rest } from '@shared/api'
 import { IRest } from '@shared/types/app'

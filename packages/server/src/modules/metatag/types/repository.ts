@@ -1,4 +1,4 @@
-import { IMetaTag } from '@proshop/types'
+import { IMetaTag } from '@proshop-app/types'
 import { Document } from 'mongoose'
 import { id } from 'inversify'
 

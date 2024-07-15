@@ -1,4 +1,4 @@
-import { IProduct, IProductMongoModel, IProductParams } from '@proshop/types'
+import { IProduct, IProductMongoModel, IProductParams } from '@proshop-app/types'
 import { CategoryMapper } from '@modules/categories/mappers/category.mapper'
 import { AssetMapper } from '@modules/asset/mappers/asset.mapper'
 import {GroupMapper} from '@modules/group/mappers/group.mapper'

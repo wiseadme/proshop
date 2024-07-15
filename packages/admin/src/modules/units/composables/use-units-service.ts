@@ -6,7 +6,7 @@ import {
 
 import { createSharedComposable } from '@shared/features/create-shared-composable'
 
-import { IUnit } from '@proshop/types'
+import type { IUnit } from '@proshop-app/types'
 
 import { useUnitsStore } from '@modules/units/store'
 

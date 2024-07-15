@@ -1,4 +1,4 @@
-import { IMerchant, IMerchantMongoModel, Maybe } from '@proshop/types'
+import { IMerchant, IMerchantMongoModel, Maybe } from '@proshop-app/types'
 
 export class MerchantMapper {
     static toDomain(entity: IMerchantMongoModel): Maybe<IMerchant> {

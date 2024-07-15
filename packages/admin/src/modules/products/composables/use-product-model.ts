@@ -11,7 +11,7 @@ import { useProduct } from '@modules/products/composables/use-product'
 
 import { Product } from '@modules/products/model/product.model'
 
-import { IProduct } from '@proshop/types'
+import type { IProduct } from '@proshop-app/types'
 
 import { clone } from '@shared/helpers'
 

@@ -11,7 +11,7 @@
 
     import { FormCard } from '@shared/components/FormCard'
 
-    import { ISiteColors } from '@proshop/types'
+    import type { ISiteColors } from '@proshop-app/types'
 
     type PaletteItem = {
         color: string

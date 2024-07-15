@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken'
 import { USER_TOKEN_KEY } from '@common/constants/cookie-keys'
 import { config } from '@app/config'
 import { ACCESS_TOKEN_EXP, REFRESH_TOKEN_EXP } from '@common/constants/counts'
-import { Maybe } from '@proshop/types'
+import { Maybe } from '@proshop-app/types'
 
 interface MiddlewareArguments {
     dto?: any,

@@ -1,4 +1,4 @@
-import type { IGroup } from '@proshop/types'
+import type { IGroup } from '@proshop-app/types'
 
 export class Group implements IGroup {
     id: IGroup['id']

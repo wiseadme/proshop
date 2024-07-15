@@ -3,9 +3,9 @@ import { id, inject, injectable } from 'inversify'
 import { TYPES } from '@common/schemes/di-types'
 // Types
 import { ILogger } from '@/types/utils'
-import { IOptionService } from '../types/service'
-import { IOptionRepository } from '../types/repository'
-import { IOption } from '@proshop/types'
+import { IOptionService } from '@modules/options/types/service'
+import { IOptionRepository } from '@modules/options/types/repository'
+import { IOption } from '@proshop-app/types'
 import { IEventBusService } from '@/types/services'
 // Constants
 import { Option } from '@modules/options/entity/option.entity'

@@ -10,7 +10,7 @@ import { Group } from '@modules/groups/model/group.model'
 
 import { useLogger } from '@shared/utils/logger'
 
-import type { IGroup, IVariant } from '@proshop/types'
+import type { IGroup, IVariant } from '@proshop-app/types'
 
 import { GROUP_CREATE_ERROR } from '@modules/groups/constants/notifications'
 

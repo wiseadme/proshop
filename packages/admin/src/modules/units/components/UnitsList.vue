@@ -10,7 +10,6 @@
 
     import { SvgPaths } from '@shared/enums/svg-paths'
 
-
     const { units, getUnits } = useUnitsService()
 
     const {

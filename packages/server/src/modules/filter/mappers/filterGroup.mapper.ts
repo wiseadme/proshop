@@ -1,4 +1,4 @@
-import { IFilterGroup, IFilterGroupMongoModel } from '@proshop/types'
+import { IFilterGroup, IFilterGroupMongoModel } from '@proshop-app/types'
 
 export class FilterGroupMapper {
     static toDomain(entity: IFilterGroupMongoModel): IFilterGroup {

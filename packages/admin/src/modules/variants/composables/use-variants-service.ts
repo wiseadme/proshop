@@ -1,6 +1,6 @@
 import { computed } from 'vue'
 
-import { IVariant } from '@proshop/types'
+import { IVariant } from '@proshop-app/types'
 
 import { useVariantsStore } from '@modules/variants/store'
 

@@ -1,5 +1,5 @@
 import { model, Schema } from 'mongoose'
-import { IFilterItemMongoModel } from '@proshop/types'
+import type { IFilterItemMongoModel } from '@proshop-app/types'
 
 const FilterItemSchema = new Schema<IFilterItemMongoModel>({
     _id: Schema.Types.ObjectId,

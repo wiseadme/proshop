@@ -1,5 +1,5 @@
 import { IGroupRepository } from '@modules/group/types/repository'
-import { IGroup, IGroupMongoModel } from '@proshop/types'
+import { IGroup, IGroupMongoModel } from '@proshop-app/types'
 import { GroupModel } from '@modules/group/model/group.model'
 import { GroupMapper } from '@modules/group/mappers/group.mapper'
 import mongoose from 'mongoose'

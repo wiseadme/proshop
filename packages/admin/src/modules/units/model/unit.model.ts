@@ -1,4 +1,4 @@
-import { IUnit } from '@proshop/types'
+import type { IUnit } from '@proshop-app/types'
 
 export class Unit implements IUnit {
     id: string
@@ -9,13 +9,13 @@ export class Unit implements IUnit {
         id = '',
         value = '',
         meta = ''
-    }){
+    }) {
         this.id = id
         this.value = value
         this.meta = meta
     }
 
-    static create(unit = {}){
+    static create(unit = {}) {
         return new Unit(unit)
     }
 }

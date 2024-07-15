@@ -1,6 +1,6 @@
 import { AxiosResponse } from 'axios'
 
-import { IGroup } from '@proshop/types'
+import type { IGroup } from '@proshop-app/types'
 
 import { rest } from '@shared/api'
 

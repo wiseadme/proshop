@@ -1,5 +1,4 @@
-import { ICategory } from '@proshop/types'
-import { Document } from 'mongoose'
+import { ICategory } from '@proshop-app/types'
 
 export interface ICategoryService {
     createCategory(category: ICategory): Promise<ICategory>;

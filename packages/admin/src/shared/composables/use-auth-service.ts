@@ -1,6 +1,6 @@
 import { computed } from 'vue'
 
-import { IUser, Maybe } from '@proshop/types'
+import type { IUser, Maybe } from '@proshop-app/types'
 
 import { router } from '@app/router'
 import { RouteNames } from '@shared/enums/route-names'

@@ -1,4 +1,4 @@
-import { IFavorite, IProduct } from '@proshop/types'
+import { IFavorite, IProduct } from '@proshop-app/types'
 
 export class Favorite implements IFavorite{
     readonly id: string

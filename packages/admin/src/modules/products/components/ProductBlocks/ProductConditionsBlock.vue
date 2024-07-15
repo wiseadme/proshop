@@ -1,9 +1,5 @@
 <script lang="ts" setup>
-    import {
-        inject,
-        unref,
-        watch
-    } from 'vue'
+    import { inject } from 'vue'
 
     import { useProductModel } from '@modules/products/composables/use-product-model'
 

@@ -7,7 +7,7 @@ import { useNotifications } from '@shared/components/VNotifications/use-notifica
 
 import { Group } from '@modules/groups/model/group.model'
 
-import type { IGroup } from '@proshop/types'
+import type { IGroup } from '@proshop-app/types'
 
 import { GROUP_DELETE_ERROR, GROUP_DELETE_WARNING } from '@modules/groups/constants/notifications'
 

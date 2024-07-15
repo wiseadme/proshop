@@ -2,7 +2,7 @@ import { computed, unref } from 'vue'
 
 import { createSharedComposable } from '@shared/features/create-shared-composable'
 
-import { IMerchant } from '@proshop/types'
+import { IMerchant } from '@proshop-app/types'
 
 import { useMerchantStore } from '@modules/settings/store/merchant'
 

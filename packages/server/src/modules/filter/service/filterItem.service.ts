@@ -5,7 +5,7 @@ import { FilterItem } from '@modules/filter/entity/filterItem.entity'
 import { ILogger } from '@/types/utils'
 import { IFilterItemService } from '../types/service'
 import { IFilterItemRepository } from '../types/repository'
-import { IFilterItem } from '@proshop/types'
+import { IFilterItem } from '@proshop-app/types'
 import { FILTER_IOC } from '@modules/filter/di/di.types'
 
 @injectable()

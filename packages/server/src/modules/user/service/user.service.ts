@@ -5,7 +5,7 @@ import { TYPES } from '@common/schemes/di-types'
 // Types
 import { IUserService } from '@modules/user/types/service'
 import { IUserRepository } from '@modules/user/types/repository'
-import { IUser } from '@proshop/types'
+import { IUser } from '@proshop-app/types'
 
 import { UserHelpers } from '@modules/user/helpers'
 import { genJWTokens, isExpired } from '@common/helpers'

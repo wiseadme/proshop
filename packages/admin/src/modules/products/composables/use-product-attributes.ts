@@ -12,7 +12,7 @@ import { useProductsService } from '@modules/products/composables/use-products-s
 
 import { useNotifications } from '@shared/components/VNotifications/use-notifications'
 
-import { IAttribute, IProduct } from '@proshop/types'
+import type { IAttribute, IProduct } from '@proshop-app/types'
 
 
 import {

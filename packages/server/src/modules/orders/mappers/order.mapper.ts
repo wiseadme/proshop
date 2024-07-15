@@ -1,4 +1,4 @@
-import { ICustomerMongoModel, IOrder, IOrderMongoModel } from '@proshop/types'
+import { ICustomerMongoModel, IOrder, IOrderMongoModel } from '@proshop-app/types'
 import { CustomerMapper } from '@modules/customer/mappers/customer.mapper'
 import { UserMapper } from '@modules/user/mappers/user.mapper'
 

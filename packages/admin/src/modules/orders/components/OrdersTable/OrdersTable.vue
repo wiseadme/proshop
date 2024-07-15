@@ -6,7 +6,7 @@
     import { VSvg } from '@shared/components/VSvg'
 
 
-    import { IOrder } from '@proshop/types'
+    import type { IOrder } from '@proshop-app/types'
 
     import { SvgPaths } from '@shared/enums/svg-paths'
 

@@ -1,4 +1,4 @@
-import { IAssetMongoModel, ICategory, ICategoryMongoModel } from '@proshop/types'
+import { IAssetMongoModel, ICategory, ICategoryMongoModel } from '@proshop-app/types'
 import { AssetMapper } from '@modules/asset/mappers/asset.mapper'
 import { FilterGroupMapper } from '@modules/filter/mappers/filterGroup.mapper'
 

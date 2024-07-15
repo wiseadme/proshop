@@ -8,8 +8,7 @@ import { createSharedComposable } from '@shared/features/create-shared-composabl
 
 import { useRequestParams } from '@shared/composables/use-request-params'
 
-// Stores
-import {
+import type {
     IAsset,
     IAttribute,
     ICategory,
@@ -20,7 +19,7 @@ import {
     IUnit,
     IVariant,
     Maybe,
-} from '@proshop/types'
+} from '@proshop-app/types'
 
 import { useAttributesStore } from '@modules/attributes/store'
 import { useCategoriesStore } from '@modules/categories/store'

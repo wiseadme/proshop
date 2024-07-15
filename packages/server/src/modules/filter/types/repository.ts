@@ -1,4 +1,4 @@
-import { IFilterGroup, IFilterItem } from '@proshop/types'
+import { IFilterGroup, IFilterItem } from '@proshop-app/types'
 import { id } from 'inversify'
 
 export interface IFilterGroupRepository {

@@ -1,6 +1,4 @@
-import { Document } from 'mongoose'
-import { IOrder } from '@proshop/types'
-import { id } from 'inversify'
+import { IOrder } from '@proshop-app/types'
 
 export interface IOrdersRepository {
     createOrder(order: IOrder): Promise<IOrder>

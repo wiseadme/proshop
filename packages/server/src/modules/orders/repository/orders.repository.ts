@@ -5,7 +5,7 @@ import { validateId } from '@common/utils/mongoose-validate-id'
 // Types
 import { ILogger } from '@/types/utils'
 import { IOrdersRepository } from '../types/repository'
-import { IOrder, IOrderMongoModel, IRequestParams } from '@proshop/types'
+import { IOrder, IOrderMongoModel, IRequestParams } from '@proshop-app/types'
 import { OrderModel } from '@modules/orders/model/order.model'
 import { OrderMapper } from '@modules/orders/mappers/order.mapper'
 

@@ -3,7 +3,7 @@ import { id, injectable } from 'inversify'
 import { CustomerModel } from '@modules/customer/model/customer.model'
 import { validateId } from '@common/utils/mongoose-validate-id'
 import { ICustomerRepository } from '@modules/customer/types/repository'
-import { ICustomer, ICustomerMongoModel } from '@proshop/types'
+import { ICustomer, ICustomerMongoModel } from '@proshop-app/types'
 import { CustomerMapper } from '@modules/customer/mappers/customer.mapper'
 
 @injectable()
