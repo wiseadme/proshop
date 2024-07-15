@@ -1,23 +1,24 @@
-import { IAuthRepository, useAuthRepository } from '@shared/repository/auth.repository'
+import { useAuthRepository } from '@shared/composables/repository/use-auth-repository'
 
-const repository: IAuthRepository = useAuthRepository()
+const repository = useAuthRepository()
+
 export const actions = {
-    async loginUser(user: {username: string, password: string}){
+    async loginUser(user: { username: string, password: string }) {
         try {
             const { data } = await repository.login(user)
 
             this.$patch(state => {
-                state.user = data.data
+                state.user = data
                 state.isAuthenticated = true
             })
 
-            return data.data
+            return data
         } catch (error) {
             return Promise.reject(error)
         }
     },
 
-    async logoutUser(){
+    async logoutUser() {
         try {
             if (this.user) await repository.logout()
 
@@ -33,17 +34,17 @@ export const actions = {
         }
     },
 
-    async whoAmI(){
+    async whoAmI() {
         try {
             const { data } = await repository.whoAmI()
 
             this.$patch(state => {
-                state.user = data?.data
+                state.user = data
                 state.isAuthenticated = true
                 state.isChecked = true
             })
 
-            return data.data
+            return data
         } catch (err) {
             this.isChecked = true
 
@@ -51,16 +52,16 @@ export const actions = {
         }
     },
 
-    async refresh(){
+    async refresh() {
         try {
-            const { data } = await repository.refresh()
+            const { data } = await repository.refreshToken()
 
             this.$patch(state => {
-                state.user = data.data
+                state.user = data
                 state.isAuthenticated = true
             })
 
-            return data.data
+            return data
         } catch (err) {
             return Promise.reject(err)
         }

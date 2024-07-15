@@ -1,6 +1,6 @@
 import { AxiosResponse } from 'axios'
 
-import { IUser } from '@proshop/types'
+import { IUser } from '@proshop-app/types'
 
 import { auth } from '@shared/api'
 import { IRest } from '@shared/types/app'
