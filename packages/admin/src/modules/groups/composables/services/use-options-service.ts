@@ -7,7 +7,7 @@ import {
 
 import { createSharedComposable } from '@shared/features/create-shared-composable'
 
-import { useOptionsRepository } from '@modules/groups/repository/options.repository'
+import { useOptionsRepository } from '@modules/groups/composables/repository/use-options-repository'
 
 import { useLogger } from '@shared/utils/logger'
 
@@ -23,9 +23,9 @@ export const useOptionsService = createSharedComposable(() => {
         try {
             const { data } = await repository.createOption(option)
 
-            unref(_options).push(data.data)
+            unref(_options).push(data)
 
-            return data.data
+            return data
         } catch (err) {
             logError('Options Service: option creating failed', err)
 
@@ -37,7 +37,7 @@ export const useOptionsService = createSharedComposable(() => {
         try {
             const { data } = await repository.getOptions(params)
 
-            _options.value = data.data
+            _options.value = data
         } catch (err) {
             logError('Options Service: options fetching failed', err)
 
@@ -50,12 +50,12 @@ export const useOptionsService = createSharedComposable(() => {
             const { data } = await repository.updateOption(option)
 
             _options.value = unref(_options).reduce((acc, it) => {
-                acc.push(it.id === option.id ? data.data : it)
+                acc.push(it.id === option.id ? data : it)
 
                 return acc
             }, [] as IOption[])
 
-            return data.data
+            return data
         } catch (err) {
             logError('Options Service: option updating failed', err)
 
@@ -69,7 +69,7 @@ export const useOptionsService = createSharedComposable(() => {
 
             _options.value = unref(_options).filter((option) => option.id !== id)
 
-            return data.data
+            return data
         } catch (err) {
             logError('Options Service: option deleting failed', err)
 
@@ -87,6 +87,7 @@ export const useOptionsService = createSharedComposable(() => {
         getOptions,
         updateOption,
         deleteOption,
-        clearOptions
+        clearOptions,
+        cancelRequests: repository.cancel
     }
 })

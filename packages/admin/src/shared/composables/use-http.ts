@@ -3,6 +3,7 @@ import { createSharedComposable } from '@shared/features/create-shared-composabl
 interface IRequestOptions extends RequestInit {
     url: string
     body?: any
+    data?: any
     params?: Record<string, any>
 }
 
@@ -49,11 +50,15 @@ export const useHttp = (): IHttpModule => {
                 redirect: options.redirect ?? 'manual',
                 signal: controller.signal,
                 headers: options.headers ?? {},
-                url: options.url
+                url: options.url,
             }
 
             if (options.body) {
                 normalizedOptions.body = JSON.stringify(options.body)
+            }
+
+            if (options.data) {
+                normalizedOptions.body = options.data
             }
 
             if (beforeRequest.length) {

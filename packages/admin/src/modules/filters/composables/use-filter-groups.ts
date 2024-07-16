@@ -6,6 +6,7 @@ import {
 
 import { createSharedComposable } from '@shared/features/create-shared-composable'
 
+import { useAttributesService } from '@modules/attributes/composables/use-attributes-service'
 import { useFilterGroupService } from '@modules/filters/composables/use-filter-group-service'
 
 import { FilterGroup } from '@modules/filters/model/filterGroup.model'
@@ -17,11 +18,13 @@ import type { IAttribute, IFilterGroup } from '@proshop-app/types'
 export const useFilterGroups = createSharedComposable(() => {
     const {
         filterGroups,
-        attributes,
+        getFilterGroups,
         createFilterGroup,
         deleteFilterGroup,
         updateFilterGroup,
     } = useFilterGroupService()
+
+    const { attributes, getAttributes } = useAttributesService()
 
     const { logError } = useLogger()
 
@@ -42,6 +45,12 @@ export const useFilterGroups = createSharedComposable(() => {
         model.value = FilterGroup.create(group)
 
         linkedAttribute.value = unref(attributes)?.find(attr => attr.id === group.attributeId) ?? null
+    }
+
+    const getFilterGroupAttributes = () => {
+        if (unref(attributes)) return
+
+        return getAttributes()
     }
 
     const onSubmit = async (validate: () => Promise<void>) => {
@@ -68,5 +77,7 @@ export const useFilterGroups = createSharedComposable(() => {
         onSelectAttribute,
         onDeleteGroup,
         onEditGroup,
+        getFilterGroups,
+        getFilterGroupAttributes,
     }
 })

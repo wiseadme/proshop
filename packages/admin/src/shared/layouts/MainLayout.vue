@@ -9,9 +9,9 @@
 
     import { useOrdersService } from '@modules/orders/composables/service/use-orders-service'
 
+    import { useAuthInterceptor } from '@shared/composables/use-auth-interceptor'
     import { useAuthService } from '@shared/composables/use-auth-service'
     import { useSharedHttp } from '@shared/composables/use-http'
-    import { useAuthInterceptor } from '@shared/composables/use-interceptor'
     import { usePolling } from '@shared/composables/use-polling'
 
     import { useNotifications } from '@shared/components/VNotifications/use-notifications'

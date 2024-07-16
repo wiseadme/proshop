@@ -1,19 +1,21 @@
 import {
-    ComputedRef,
-    computed,
+    DeepReadonly,
+    Ref,
+    ref,
     unref
 } from 'vue'
 
-import type { IAttribute, IFilterGroup } from '@proshop-app/types'
+import {
+    useFilterGroupsRepository
+} from '@modules/filters/composables/repository/use-filter-groups-repository'
 
-import { useAttributesStore } from '@modules/attributes/store'
-import { useFilterGroupsStore } from '@modules/filters/store/filter-groups'
+import { useLogger } from '@shared/utils/logger'
+
+import type { IFilterGroup } from '@proshop-app/types'
+
 
 interface IUseFilterGroupService {
-    attributes: ComputedRef<IAttribute[]>
-    filterGroups: ComputedRef<IFilterGroup[]>
-
-    getFilterGroupAttributes(): Promise<void>
+    filterGroups: Ref<DeepReadonly<IFilterGroup>[]>
 
     createFilterGroup(filter: IFilterGroup): Promise<IFilterGroup>
 
@@ -22,35 +24,80 @@ interface IUseFilterGroupService {
     updateFilterGroup(updates: Partial<IFilterGroup>): Promise<IFilterGroup>
 
     deleteFilterGroup(id: string): Promise<boolean>
+
+    cancelRequests(reason?: string): void
 }
 
 export const useFilterGroupService = (): IUseFilterGroupService => {
-    const _filterGroupsStore = useFilterGroupsStore()
-    const _attributesStore = useAttributesStore()
+    const repository = useFilterGroupsRepository()
+    const { logError } = useLogger()
 
-    const {
-        createFilterGroup,
-        getFilterGroups,
-        deleteFilterGroup,
-        updateFilterGroup
-    } = _filterGroupsStore
+    const _filterGroups = ref<IFilterGroup[]>([])
 
-    const attributes = computed<IAttribute[]>(() => _attributesStore.attributes!)
-    const filterGroups = computed<IFilterGroup[]>(() => _filterGroupsStore.filterGroups)
+    const createFilterGroup = async (group: IFilterGroup): Promise<IFilterGroup> => {
+        try {
+            const { data } = await repository.createFilterGroup(group)
 
-    const getFilterGroupAttributes = async () => {
-        if (unref(attributes)) return
+            _filterGroups.value.push(data)
 
-        await _attributesStore.read()
+            return data
+        } catch (err) {
+            logError('Filter Groups Service: group creating failed', err)
+
+            return Promise.reject(err)
+        }
+    }
+
+    const getFilterGroups = async (params?: Partial<IFilterGroup>): Promise<IFilterGroup[]> => {
+        try {
+            const { data } = await repository.getFilterGroups(params)
+
+            _filterGroups.value = data
+
+            return data
+        } catch (err) {
+            logError('Filter Groups Service: groups loading failed', err)
+
+            return Promise.reject(err)
+        }
+    }
+
+    const updateFilterGroup = async (updates: Partial<IFilterGroup>): Promise<IFilterGroup> => {
+        try {
+            const { data } = await repository.updateFilterGroup(updates)
+
+            _filterGroups.value = unref(_filterGroups).map(group => {
+                return group.id === updates.id ? data : group
+            })
+
+            return data
+        } catch (err) {
+            logError('Filter Groups Service: group updating failed', err)
+
+            return Promise.reject(err)
+        }
+    }
+
+    const deleteFilterGroup = async (id: string): Promise<boolean> => {
+        try {
+            const { data } = await repository.deleteFilterGroup(id)
+
+            _filterGroups.value = unref(_filterGroups).filter(item => item.id !== id)
+
+            return data
+        } catch (err) {
+            logError('Filter Groups Service: group deleting failed', err)
+
+            return Promise.reject(err)
+        }
     }
 
     return {
-        attributes,
-        filterGroups,
-        getFilterGroupAttributes,
+        filterGroups: _filterGroups as Ref<DeepReadonly<IFilterGroup>[]>,
         createFilterGroup,
         getFilterGroups,
         updateFilterGroup,
         deleteFilterGroup,
+        cancelRequests: repository.cancel
     }
 }

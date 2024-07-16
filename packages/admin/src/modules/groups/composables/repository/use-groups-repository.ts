@@ -1,43 +1,66 @@
-import { AxiosResponse } from 'axios'
+import { useSharedHttp } from '@shared/composables/use-http'
 
 import type { IGroup } from '@proshop-app/types'
 
-import { rest } from '@shared/api'
-
 interface IGroupsRepository {
-    createGroup(group: IGroup): Promise<AxiosResponse<{ data: IGroup, ok: boolean }>>
+    createGroup(group: IGroup): Promise<{ data: IGroup, ok: boolean }>
 
-    getGroups(params: Partial<IGroup>): Promise<AxiosResponse<{ data: IGroup[], ok: boolean }>>
+    getGroups(params: Partial<IGroup>): Promise<{ data: IGroup[], ok: boolean }>
 
-    updateGroup(updates: Partial<IGroup>): Promise<AxiosResponse<{ data: IGroup, ok: boolean }>>
+    updateGroup(updates: Partial<IGroup>): Promise<{ data: IGroup, ok: boolean }>
 
-    deleteGroup(id: string): Promise<AxiosResponse<{ data: boolean, ok: boolean }>>
+    deleteGroup(id: string): Promise<{ data: boolean, ok: boolean }>
+
+    cancel(): void
 }
 
-const path = '/api/v1/groups'
-
 export const useGroupsRepository = (): IGroupsRepository => {
+    const { request, cancel } = useSharedHttp()
 
-    const createGroup = (group: IGroup) => {
-        return rest.post(path, group)
-    }
+    const createGroup = (group: IGroup) => request({
+        url: '/api/v1/groups',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+        },
+        method: 'POST',
+        credentials: 'same-origin',
+        cache: 'no-cache',
+        body: group
+    })
 
-    const getGroups = (params: Partial<IGroup>) => {
-        return rest.get(path, { query: params })
-    }
+    const getGroups = (params: Partial<IGroup>) => request({
+        url: '/api/v1/groups',
+        credentials: 'same-origin',
+        cache: 'no-cache',
+        params
+    })
 
-    const updateGroup = (updates: Partial<IGroup>) => {
-        return rest.patch(path, updates)
-    }
+    const updateGroup = (updates: Partial<IGroup>) => request({
+        url: '/api/v1/groups',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+        },
+        method: 'PATCH',
+        credentials: 'same-origin',
+        cache: 'no-cache',
+        body: updates
+    })
 
-    const deleteGroup = (id: string) => {
-        return rest.delete(path, { params: { id } })
-    }
+    const deleteGroup = (id: string) => request({
+        url: '/api/v1/groups',
+        method: 'DELETE',
+        credentials: 'same-origin',
+        cache: 'no-cache',
+        params: { id }
+    })
 
     return {
         createGroup,
         getGroups,
         updateGroup,
-        deleteGroup
+        deleteGroup,
+        cancel
     }
 }

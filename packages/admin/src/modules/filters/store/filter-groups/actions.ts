@@ -1,18 +1,21 @@
-import { useFilterGroupsRepository } from '@modules/filters/repository/filter-groups.repository'
+import {
+    useFilterGroupsRepository
+} from '@modules/filters/composables/repository/use-filter-groups-repository'
 
 import type { IFilterGroup } from '@proshop-app/types'
 
 const repository = useFilterGroupsRepository()
+
 export const actions = {
     async createFilterGroup(filter: IFilterGroup) {
         try {
-            const { data } = await repository.create(filter)
+            const { data } = await repository.createFilterGroup(filter)
 
             this.$patch(state => {
-                state.filterGroups.push(data.data)
+                state.filterGroups.push(data)
             })
 
-            return data.data
+            return data
         } catch (err) {
             return Promise.reject(err)
         }
@@ -20,13 +23,13 @@ export const actions = {
 
     async getFilterGroups(params = {}) {
         try {
-            const { data } = await repository.read(params)
+            const { data } = await repository.getFilterGroups(params)
 
             this.$patch(state => {
-                state.filterGroups = data.data
+                state.filterGroups = data
             })
 
-            return data.data
+            return data
         } catch (err) {
             return Promise.reject(err)
         }
@@ -34,13 +37,13 @@ export const actions = {
 
     async deleteFilterGroup(id: string) {
         try {
-            const { data } = await repository.delete(id)
+            const { data } = await repository.deleteFilterGroup(id)
 
             this.$patch(state => {
                 state.filterGroups = state.filterGroups.filter(group => group.id !== id)
             })
 
-            return data.data
+            return data
         } catch (err) {
             return Promise.reject(err)
         }
@@ -48,17 +51,17 @@ export const actions = {
 
     async updateFilterGroup(updates) {
         try {
-            const { data } = await repository.update(updates)
+            const { data } = await repository.updateFilterGroup(updates)
 
             this.$patch(state => {
                 state.filterGroups = state.filterGroups.map((group) => {
-                    if (data.data.id === group.id) return data.data
+                    if (data.data.id === group.id) return data
 
                     return group
                 })
             })
 
-            return data.data
+            return data
         } catch (err) {
             return Promise.reject(err)
         }

@@ -25,9 +25,9 @@ export const useGroupsService = createSharedComposable(() => {
                 variant: (group.variant as IVariant).id
             })
 
-            _groups.value.push(data.data)
+            _groups.value.push(data)
 
-            return data.data
+            return data
         } catch (err) {
             logError('Groups Service: group creating failed', err)
 
@@ -39,7 +39,7 @@ export const useGroupsService = createSharedComposable(() => {
         try {
             const { data } = await repository.getGroups(params)
 
-            _groups.value = data.data
+            _groups.value = data
         } catch (err) {
             logError('Groups Service: groups fetching failed', err)
 
@@ -64,12 +64,12 @@ export const useGroupsService = createSharedComposable(() => {
             const { data } = await repository.updateGroup(updates)
 
             _groups.value = _groups.value.reduce((acc, it) => {
-                acc.push(it.id === updates.id ? data.data : it)
+                acc.push(it.id === updates.id ? data : it)
 
                 return acc
             }, [] as IGroup[])
 
-            return data.data
+            return data
         } catch (err) {
             logError('Groups Service: group updating failed', err)
 
@@ -83,5 +83,6 @@ export const useGroupsService = createSharedComposable(() => {
         getGroups,
         deleteGroup,
         updateGroup,
+        cancelRequests: repository.cancel
     }
 })
