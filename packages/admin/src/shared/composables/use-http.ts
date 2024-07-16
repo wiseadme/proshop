@@ -1,5 +1,17 @@
+import { createSharedComposable } from '@shared/features/create-shared-composable'
+
+interface IRequestOptions extends RequestInit {
+    url: string
+    body?: any
+    params?: Record<string, any>
+}
+
+export interface IRequestContext extends IRequestOptions {
+    cancel: (reason?: string) => void
+}
+
 interface IInterceptor {
-    (options: RequestInit & { params?: any }, cancel: () => void): Promise<any>
+    (context: IRequestContext): Promise<any>
 }
 
 interface IInterceptorHooks {
@@ -8,7 +20,15 @@ interface IInterceptorHooks {
     }
 }
 
-export const useHttp = () => {
+export interface IHttpModule {
+    request(options?: IRequestOptions): Promise<any>
+
+    hooks: IInterceptorHooks
+
+    cancel(): void
+}
+
+export const useHttp = (): IHttpModule => {
     const beforeRequest: IInterceptor[] = []
 
     const hooks: IInterceptorHooks = {
@@ -19,31 +39,32 @@ export const useHttp = () => {
 
     const controller = new AbortController()
 
-    const cancel = () => controller.abort()
+    const cancel = (reason?: string) => controller.abort(reason ?? '')
 
-    const request = async (path: string, options: RequestInit & { params?: any } = {}) => {
+    const request = async (options: IRequestOptions) => {
         try {
-            const normalizedOptions: Record<string, any> = {
+            const normalizedOptions: IRequestOptions = {
                 method: options.method ?? 'GET',
                 credentials: options.credentials ?? 'same-origin',
                 redirect: options.redirect ?? 'manual',
                 signal: controller.signal,
                 headers: options.headers ?? {},
+                url: options.url
             }
 
-            if (options.method === 'POST') {
-                normalizedOptions.body = options.body
+            if (options.body) {
+                normalizedOptions.body = JSON.stringify(options.body)
             }
 
             if (beforeRequest.length) {
                 for await (const fn of beforeRequest) {
-                    await fn({ ...normalizedOptions, params: options.params ?? {} }, cancel)
+                    await fn({ ...normalizedOptions, params: options.params ?? {}, cancel })
                 }
             }
 
-            const queryParams = options.params ? new URLSearchParams(options.params).toString() : ''
+            const queryParams = options.params ? `?${new URLSearchParams(options.params).toString()}` : ''
 
-            const response = await fetch(path + queryParams, normalizedOptions)
+            const response = await fetch(normalizedOptions.url + queryParams, normalizedOptions)
 
             if (response.ok) {
                 return await response.json()
@@ -58,10 +79,11 @@ export const useHttp = () => {
         }
     }
 
-
     return {
         hooks,
         request,
         cancel
     }
 }
+
+export const useSharedHttp = createSharedComposable(useHttp)

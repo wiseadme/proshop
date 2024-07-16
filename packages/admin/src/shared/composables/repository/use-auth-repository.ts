@@ -2,56 +2,57 @@ import { useHttp } from '@shared/composables/use-http'
 
 import { IUser } from '@proshop-app/types'
 
-interface ILoginData {
+export interface ILoginData {
     username: string
     password: string
 }
 
-interface IAuthRepository {
-    createUser(data: IUser): Promise<{ data: { data: IUser } }>
+export interface IAuthRepository {
+    createUser(data: IUser): Promise<{ data: IUser, ok: boolean }>
 
-    login(data: ILoginData): Promise<{ data: { data: IUser } }>
+    login(data: ILoginData): Promise<{ data: IUser, ok: boolean }>
 
-    logout(): Promise<{ data: { data: boolean } }>
+    logout(): Promise<{ data: boolean, ok: boolean }>
 
-    refreshToken(): Promise<{ data: { data: IUser } }>
+    refreshToken(): Promise<{ data: IUser, ok: boolean }>
 
-    whoAmI(): Promise<{ data: { data: IUser } }>
+    whoAmI(): Promise<{ data: IUser, ok: boolean }>
 
     cancelAll(): void
 }
 
 export const useAuthRepository = (): IAuthRepository => {
-    const http = useHttp()
+    const { request, cancel } = useHttp()
 
-    http.hooks.beforeRequest.use(async (options, cancel) => {
-        console.log(options, cancel)
-    })
-
-    const login = (data: ILoginData) => http.request('/api/v1/user/login', {
+    const login = (data: ILoginData) => request({
+        url: '/api/v1/user/login',
         headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
         },
         method: 'POST',
-        body: JSON.stringify(data),
+        credentials: 'same-origin',
+        body: data,
     })
 
-    const createUser = (data: IUser) => http.request('/api/v1/user/create', {
+    const createUser = (data: IUser) => request({
+        url: '/api/v1/user/create',
         headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
         },
-        body: JSON.stringify(data),
+        method: 'POST',
+        credentials: 'same-origin',
+        body: data,
     })
 
-    const refreshToken = () => http.request('/api/v1/user/refresh')
+    const refreshToken = () => request({ url: '/api/v1/user/refresh', credentials: 'same-origin', })
 
-    const logout = () => http.request('/api/v1/user/logout')
+    const logout = () => request({ url: '/api/v1/user/logout', credentials: 'same-origin', })
 
-    const whoAmI = () => http.request('/api/v1/user/whoAmI')
+    const whoAmI = () => request({ url: '/api/v1/user/whoAmI', credentials: 'same-origin', })
 
-    const cancelAll = () => http.cancel()
+    const cancelAll = () => cancel()
 
     return {
         createUser,

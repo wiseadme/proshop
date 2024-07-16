@@ -1,4 +1,6 @@
-import { useAttributeRepository } from '@modules/attributes/repository/attribute.repository'
+import {
+    useAttributeRepository
+} from '@modules/attributes/composables/repository/use-attribute-repository'
 
 import { IAttribute } from '@proshop-app/types'
 
@@ -9,9 +11,9 @@ const repository = useAttributeRepository()
 export const actions: IAttributeActions = {
     async create(attribute: IAttribute) {
         try {
-            const { data } = await repository.create(attribute)
-            this.attributes.push(data.data)
-            return data.data
+            const { data } = await repository.createAttribute(attribute)
+            this.attributes.push(data)
+            return data
         } catch (err) {
             return Promise.reject(err)
         }
@@ -19,10 +21,10 @@ export const actions: IAttributeActions = {
 
     async read(id?: string) {
         try {
-            const { data } = await repository.read(id)
+            const { data } = await repository.getAttributes(id ? { id } : {})
 
             this.$patch(state => {
-                state.attributes = data?.data
+                state.attributes = data
             })
 
             return this.attributes
@@ -33,10 +35,10 @@ export const actions: IAttributeActions = {
 
     async update(updates: IAttribute[]) {
         try {
-            const { data } = await repository.update(updates)
+            const { data } = await repository.updateAttribute(updates)
 
             this.$patch(state => {
-                state.attributes = data.data
+                state.attributes = data
             })
 
             return this.attributes
@@ -47,13 +49,13 @@ export const actions: IAttributeActions = {
 
     async delete(id: string) {
         try {
-            const { data } = await repository.delete(id)
+            const { data } = await repository.deleteAttribute(id)
 
             this.$patch(state => {
                 state.attributes = state.attributes.filter(it => it.id !== id)
             })
 
-            return data.data
+            return data
         } catch (err) {
             return Promise.reject(err)
         }

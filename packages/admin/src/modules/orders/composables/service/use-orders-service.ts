@@ -38,8 +38,8 @@ export const useOrdersService = createSharedComposable(() => {
                 ...getPaginationParams()
             })
 
-            _orders.value = data.data.items
-            _total.value = data.data.total
+            _orders.value = data.items
+            _total.value = data.total
         } catch (err) {
             logError('OrdersService: orders loading failed', err)
 
@@ -51,7 +51,7 @@ export const useOrdersService = createSharedComposable(() => {
         try {
             const { data } = await repository.getOrders({ seen: false })
 
-            _newOrders.value = data.data.items
+            _newOrders.value = data.items
         } catch (err) {
             logError('OrdersService: new orders loading failed', err)
 
@@ -67,7 +67,7 @@ export const useOrdersService = createSharedComposable(() => {
 
             const { data } = await repository.updateOrder(updates)
 
-            return data.data
+            return data
         } catch (err) {
             logError('OrdersService: order updating failed', err)
 
@@ -79,7 +79,7 @@ export const useOrdersService = createSharedComposable(() => {
         try {
             const { data } = await repository.deleteOrder(id)
 
-            return data.data
+            return data
         } catch (err) {
             logError('OrdersService: order deleting failed', err)
 

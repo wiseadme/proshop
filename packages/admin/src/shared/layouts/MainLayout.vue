@@ -5,12 +5,13 @@
         watch,
     } from 'vue'
 
-
     import { useRouter } from 'vue-router'
 
     import { useOrdersService } from '@modules/orders/composables/service/use-orders-service'
 
     import { useAuthService } from '@shared/composables/use-auth-service'
+    import { useSharedHttp } from '@shared/composables/use-http'
+    import { useAuthInterceptor } from '@shared/composables/use-interceptor'
     import { usePolling } from '@shared/composables/use-polling'
 
     import { useNotifications } from '@shared/components/VNotifications/use-notifications'
@@ -26,6 +27,8 @@
     const { newOrders, getNewOrders, getOrders } = useOrdersService()
     const { notify, remove } = useNotifications()
     const { user } = useAuthService()
+
+    useAuthInterceptor(useSharedHttp())
 
     const { stopPolling, startPolling } = usePolling({
         handler: () => getNewOrders(),

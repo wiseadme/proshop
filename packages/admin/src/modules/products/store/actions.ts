@@ -1,3 +1,7 @@
+import {
+    useProductRepository
+} from '@modules/products/composables/repository/use-products-repository'
+
 import type {
     IAttribute,
     IMetaTag,
@@ -7,20 +11,18 @@ import type {
     IRequestParams,
 } from '@proshop-app/types'
 
-import { useProductRepository } from '@modules/products/repository'
-
 const repository = useProductRepository()
 
 export const actions = {
-    async createProduct(product: Partial<IProduct>) {
+    async createProduct(product: IProduct) {
         try {
             const { data } = await repository.createProduct(product)
 
             this.$patch((state) => {
-                state.products.push(data.data)
+                state.products.push(data)
             })
 
-            return data.data
+            return data
         } catch (err) {
             return Promise.reject(err)
         }
@@ -31,11 +33,11 @@ export const actions = {
             const { data } = await repository.getProducts(params)
 
             this.$patch(state => {
-                state.products = data.data?.items
-                state.totalLength = data.data?.total
+                state.products = data?.items
+                state.totalLength = data?.total
             })
 
-            return data.data?.items
+            return data?.items
         } catch (err) {
             return Promise.reject(err)
         }
@@ -51,11 +53,11 @@ export const actions = {
              */
             if (this.products) {
                 this.$patch((state) => {
-                    state.products = state.products.map(it => it.id === updates.id ? data.data : it)
+                    state.products = state.products.map(it => it.id === updates.id ? data : it)
                 })
             }
 
-            return data.data
+            return data
         } catch (err) {
             return Promise.reject(err)
         }
@@ -63,11 +65,11 @@ export const actions = {
 
     async deleteProduct(product: IProduct) {
         try {
-            const response = await repository.deleteProduct(product.id)
+            const { data } = await repository.deleteProduct(product.id)
             this.products = this.products.filter(it => it.id !== product.id)
             this.totalLength -= 1
 
-            return response?.data.data
+            return data
         } catch (err) {
             return Promise.reject(err)
         }
@@ -78,10 +80,10 @@ export const actions = {
             const { data } = await repository.addAttribute(params)
 
             this.$patch((state) => {
-                state.products = state.products.map(it => it.id === params.id ? data.data : it)
+                state.products = state.products.map(it => it.id === params.id ? data : it)
             })
 
-            return data.data
+            return data
         } catch (err) {
             return Promise.reject(err)
         }
@@ -92,10 +94,10 @@ export const actions = {
             const { data } = await repository.deleteAttribute(params)
 
             this.$patch((state) => {
-                state.products = state.products.map(it => it.id === params.id ? data.data : it)
+                state.products = state.products.map(it => it.id === params.id ? data : it)
             })
 
-            return data.data
+            return data
         } catch (err) {
             return Promise.reject(err)
         }
@@ -106,10 +108,10 @@ export const actions = {
             const { data } = await repository.addMetaTag(params)
 
             this.$patch((state) => {
-                state.products = state.products.map(it => it.id === params.productId ? data.data : it)
+                state.products = state.products.map(it => it.id === params.productId ? data : it)
             })
 
-            return data.data
+            return data
         } catch (err) {
             return Promise.reject(err)
         }
@@ -120,10 +122,10 @@ export const actions = {
             const { data } = await repository.updateMetaTags(params)
 
             this.$patch((state) => {
-                state.products = state.products.map(it => it.id === params.productId ? data.data : it)
+                state.products = state.products.map(it => it.id === params.productId ? data : it)
             })
 
-            return data.data
+            return data
         } catch (err) {
             return Promise.reject(err)
         }
@@ -134,10 +136,10 @@ export const actions = {
             const { data } = await repository.deleteMetaTag(params)
 
             this.$patch((state) => {
-                state.products = state.products.map(it => it.id === params.productId ? data.data : it)
+                state.products = state.products.map(it => it.id === params.productId ? data : it)
             })
 
-            return data.data
+            return data
         } catch (err) {
             return Promise.reject(err)
         }

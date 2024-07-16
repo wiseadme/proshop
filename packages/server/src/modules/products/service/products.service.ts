@@ -66,7 +66,13 @@ export class ProductsService extends ServiceHelpers implements IProductsService 
         return this.formatToResponse([item], 1)
     }
 
-    async findByCategory({ category, page, count, desc, asc }: Partial<IRequestParams<IProductQuery>>): Promise<IResponseItems> {
+    async findByCategory({
+        category,
+        page,
+        count,
+        desc,
+        asc
+    }: Partial<IRequestParams<IProductQuery>>): Promise<IResponseItems> {
         const [found] = await this.gateway.category.getCategories({ url: category })
         const items = await this.repository.findByCategory({ category, page, count, desc, asc })
 
