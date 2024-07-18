@@ -16,7 +16,6 @@ import { IOrderResponse } from '@modules/orders/types/response'
 import { ORDER_IOC } from '@modules/orders/di/di.types'
 import { PaginatableResponse } from '@common/models/PaginatableResponse'
 
-
 @injectable()
 export class OrdersService implements IOrdersService {
     constructor(
@@ -89,7 +88,7 @@ export class OrdersService implements IOrdersService {
         return new PaginatableResponse({ items, total })
     }
 
-    async updateOrder(updates: IOrder): Promise<IOrder> {
+    async updateOrder(updates: Partial<IOrder>): Promise<IOrder> {
         const order = await this.repository.updateOrder(updates)
 
         if (order.status.completed || order.status.cancelled) {

@@ -9,7 +9,7 @@ export interface IOrdersRepository {
 
     getOrdersByStatus(seen: boolean): Promise<IOrder[]>
 
-    updateOrder(updates: IOrder): Promise<IOrder>
+    updateOrder(updates: Partial<IOrder>): Promise<IOrder>
 
     deleteOrder(id: string): Promise<boolean>
 

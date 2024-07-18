@@ -28,7 +28,7 @@ export class CustomerRepository implements ICustomerRepository {
     }
 
     async update(updates: Partial<ICustomer>) {
-        validateId(updates.id)
+        validateId(updates.id!)
 
         const updated = await CustomerModel.findByIdAndUpdate(
             { _id: updates.id },

@@ -45,7 +45,7 @@ export class FilterItemRepository implements IFilterItemRepository {
     }
 
     async update(updates: Partial<IFilterItem>): Promise<IFilterItem> {
-        validateId(updates.id)
+        validateId(updates.id!)
 
         const option = await FilterItemModel.findByIdAndUpdate(
             { _id: updates.id },

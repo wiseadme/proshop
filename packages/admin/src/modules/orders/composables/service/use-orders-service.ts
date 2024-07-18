@@ -2,6 +2,7 @@ import {
     DeepReadonly,
     Ref,
     ref,
+    unref
 } from 'vue'
 
 import { createSharedComposable } from '@shared/features/create-shared-composable'
@@ -41,7 +42,7 @@ export const useOrdersService = createSharedComposable(() => {
             _orders.value = data.items
             _total.value = data.total
         } catch (err) {
-            logError('OrdersService: orders loading failed', err)
+            logError('Orders Service: orders loading failed', err)
 
             return Promise.reject(err)
         }
@@ -53,7 +54,7 @@ export const useOrdersService = createSharedComposable(() => {
 
             _newOrders.value = data.items
         } catch (err) {
-            logError('OrdersService: new orders loading failed', err)
+            logError('Orders Service: new orders loading failed', err)
 
             return Promise.reject(err)
         }
@@ -67,9 +68,11 @@ export const useOrdersService = createSharedComposable(() => {
 
             const { data } = await repository.updateOrder(updates)
 
+            _orders.value = unref(_orders).map(item => item.id === data.id ? data : item)
+
             return data
         } catch (err) {
-            logError('OrdersService: order updating failed', err)
+            logError('Orders Service: order updating failed', err)
 
             return Promise.reject(err)
         }
@@ -79,9 +82,11 @@ export const useOrdersService = createSharedComposable(() => {
         try {
             const { data } = await repository.deleteOrder(id)
 
+            _orders.value = unref(_orders).filter(item => item.id !== id)
+
             return data
         } catch (err) {
-            logError('OrdersService: order deleting failed', err)
+            logError('Orders Service: order deleting failed', err)
 
             return Promise.reject(err)
         }

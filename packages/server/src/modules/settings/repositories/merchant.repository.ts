@@ -36,7 +36,7 @@ export class MerchantRepository implements IMerchantRepository {
     }
 
     async update(updates: Partial<IMerchant>) {
-        validateId(updates.id)
+        validateId(updates.id!)
 
         const updated = await MerchantModel.findByIdAndUpdate(
             { _id: updates.id },

@@ -30,7 +30,7 @@ export class GroupRepository implements IGroupRepository {
     }
 
     async deleteGroup(id: string): Promise<boolean> {
-        await GroupModel.findByIdAndRemove(id)
+        await GroupModel.findByIdAndDelete(id)
 
         return true
     }

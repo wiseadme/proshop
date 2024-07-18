@@ -80,8 +80,8 @@ export class OrdersRepository implements IOrdersRepository {
         return orders.map(order => OrderMapper.toDomain(order))
     }
 
-    async updateOrder(updates: IOrder): Promise<IOrder> {
-        validateId(updates.id)
+    async updateOrder(updates: Partial<IOrder>): Promise<IOrder> {
+        validateId(updates.id!)
 
         const updated = await OrderModel.findByIdAndUpdate(
             { _id: updates.id },

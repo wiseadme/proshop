@@ -40,13 +40,10 @@ export class CategoryRepository implements ICategoryRepository {
     }
 
     async updateCategory(updates: Partial<ICategory>) {
-        const { id } = updates
-        validateId(updates.id)
-
-        delete updates.id
+        validateId(updates.id!)
 
         const updated = await CategoryModel.findByIdAndUpdate(
-            { _id: id },
+            { _id: updates.id },
             { $set: updates },
             { new: true },
         )

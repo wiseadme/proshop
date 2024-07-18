@@ -52,7 +52,7 @@ export class AssetRepository implements IAssetsRepository {
     }
 
     async update(updates: Partial<IAsset>) {
-        validateId(updates.id)
+        validateId(updates.id!)
 
         const updated = await AssetModel.findByIdAndUpdate(
             { _id: updates.id },
@@ -67,7 +67,7 @@ export class AssetRepository implements IAssetsRepository {
     async updateMany(assets: Partial<IAsset>[]) {
         const asset = assets[0]
 
-        validateId(asset.id)
+        validateId(asset.id!)
 
         for await (const asset of assets) {
             await AssetModel.findByIdAndUpdate({ _id: asset.id }, asset)

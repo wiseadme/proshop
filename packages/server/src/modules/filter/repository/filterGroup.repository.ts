@@ -36,7 +36,7 @@ export class FilterGroupRepository implements IFilterGroupRepository {
     }
 
     async update(updates: Partial<IFilterGroup>): Promise<IFilterGroup> {
-        validateId(updates.id)
+        validateId(updates.id!)
 
         const filterGroup = await FilterGroupModel.findByIdAndUpdate(
             { _id: updates.id },

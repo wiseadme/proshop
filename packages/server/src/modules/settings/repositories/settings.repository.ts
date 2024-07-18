@@ -31,7 +31,7 @@ export class SettingsRepository implements ISettingsRepository {
     }
 
     async update(updates: Partial<ISettings>) {
-        validateId(updates.id)
+        validateId(updates.id!)
 
         const payload = SettingsMapper.toMongoModelData(updates) as ISettingsMongoModel
 

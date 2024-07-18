@@ -27,7 +27,7 @@ export class MetaTagRepository implements IMetaTagRepository {
     }
 
     async update(updates: Partial<IMetaTag>) {
-        validateId(updates.id)
+        validateId(updates.id!)
 
         const updated = await MetaTagModel.findByIdAndUpdate(
             { _id: updates.id },

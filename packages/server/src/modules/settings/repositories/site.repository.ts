@@ -24,7 +24,7 @@ export class SiteRepository implements ISiteRepository {
     }
 
     async update(updates: Partial<ISite>) {
-        validateId(updates.id)
+        validateId(updates.id!)
 
         const updated = await SiteModel.findByIdAndUpdate(
             { _id: updates.id },

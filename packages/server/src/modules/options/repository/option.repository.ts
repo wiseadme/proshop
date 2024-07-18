@@ -35,7 +35,7 @@ export class OptionRepository implements IOptionRepository {
     }
 
     async update(updates: Partial<IOption>): Promise<IOption> {
-        validateId(updates.id)
+        validateId(updates.id!)
 
         const option = await OptionModel
             .findByIdAndUpdate(

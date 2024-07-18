@@ -35,7 +35,7 @@ export class UnitRepository implements IUnitRepository {
     }
 
     async update(updates: Partial<IUnit>) {
-        validateId(updates.id)
+        validateId(updates.id!)
 
         const updated = await UnitModel.findByIdAndUpdate(
             { _id: updates.id },

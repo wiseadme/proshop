@@ -32,13 +32,13 @@ export class VariantRepository implements IVariantRepository {
         return variants.map(variant => VariantMapper.toDomain(variant))
     }
 
-    async update($set: Partial<IVariant>) {
+    async update(updates: Partial<IVariant>) {
 
-        validateId($set.id)
+        validateId(updates.id!)
 
         const updated = await VariantModel.findByIdAndUpdate(
-            { _id: $set.id },
-            { $set },
+            { _id: updates.id },
+            { $set: updates },
             { new: true },
         )
             .lean() as IVariantMongoModel

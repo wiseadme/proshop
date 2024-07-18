@@ -27,7 +27,6 @@
     const statuses = computed(() => Object.keys(unref(model).status))
 
     const isExecutorExists = (key: string) => (OrderProcessStatuses[key] && !unref(model).executor)
-    const getProductPrice = (item: ICartItem) => item.variant?.option?.price || item.product.price
 
     const onChangeOrderStatus = (statusKey: string) => {
         const { status, executor } = unref(model)
@@ -59,6 +58,13 @@
         status[statusKey] = true
 
         return onUpdateOrder(Object.assign({}, { status }, executor ? { executor } : {}))
+    }
+
+    const onCancelOrder = () => {
+        const { status, id } = unref(model)
+        status.cancelled = true
+
+        onUpdateOrder({ status, id })
     }
 
     onBeforeMount(() => {
@@ -93,6 +99,7 @@
                     label="Отменить заказ"
                     elevation="2"
                     color="error"
+                    @click="onCancelOrder"
                 />
             </div>
         </v-card-title>
@@ -139,13 +146,13 @@
                                 <span>{{ it.product.name }}</span>
                             </v-list-item-content>
                             <v-list-item-content style="width: 120px">
-                                <span>{{ getProductPrice(it) }}</span>
+                                <span>{{ it.product.price }}</span>
                             </v-list-item-content>
                             <v-list-item-content style="width: 80px">
                                 <span>{{ it.quantity }}</span>
                             </v-list-item-content>
                             <v-list-item-content style="width: 80px">
-                                <span>{{ getProductPrice(it) * it.quantity }}</span>
+                                <span>{{ it.product.price * it.quantity }}</span>
                             </v-list-item-content>
                         </v-list-item>
                         <v-list-item class="grey lighten-2">

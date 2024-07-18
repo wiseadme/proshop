@@ -53,8 +53,9 @@ export class OrdersController extends BaseController implements IController {
         }
     }
 
-    async updateOrder(request: Request<{}, {}, IOrder>, response: Response, next: NextFunction) {
+    async updateOrder(request: Request<{}, {}, Partial<IOrder>>, response: Response, next: NextFunction) {
         try {
+            console.log('body', request.body)
             const data = await this.service.updateOrder(request.body)
 
             this.send({ data, request, response })
