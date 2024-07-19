@@ -1,5 +1,3 @@
-import { unref } from 'vue'
-
 import { createSharedComposable } from '@shared/features/create-shared-composable'
 
 import { useRouter } from 'vue-router'
@@ -32,24 +30,19 @@ export const useOrders = createSharedComposable(() => {
         return await updateOrder(updates)
     }
 
-    const onOpenOrder = async (item: IOrder) => {
-        if (!item.status.seen) {
-            item.status.seen = true
+    const onOpenOrder = async (order: IOrder) => {
+        const { status, id, orderId } = order
 
-            const order = await updateOrder({ status: unref(item).status })
-
-            setOrderModel(Order.create(order!))
-        } else {
-            setOrderModel(Order.create(unref(item)!))
+        if (!status.seen) {
+            status.seen = true
+            order = await updateOrder({ id, status })
         }
 
-        await router.push({
-            name: RouteNames.ORDERS, params: {
-                orderId: item.orderId,
-            }
-        })
+        setOrderModel(Order.create(order))
 
-        openOrder()
+        router
+            .push({ name: RouteNames.ORDERS, params: { orderId } })
+            .then(openOrder)
     }
 
     const onDeleteOrder = (order: IOrder) => deleteOrder(order.id)

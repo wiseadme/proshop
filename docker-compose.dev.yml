@@ -24,11 +24,14 @@ services:
     container_name: nginx
     command: nginx -g "daemon off;"
     ports:
-      - "80:80"
+      - "3020:3020"
     volumes:
       - ./nginx/nginx.dev.conf:/etc/nginx/nginx.conf
-      - ./certs:/home/certs
       - uploads:/var/lib/docker/volumes/proshop_uploads/_data
+
+    hostname: '127.0.0.1'
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
 volumes:
   mongo_seed:

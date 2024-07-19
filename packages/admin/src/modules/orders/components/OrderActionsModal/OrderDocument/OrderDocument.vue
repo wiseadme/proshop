@@ -13,8 +13,6 @@
 
     import AddressMap from '@modules/orders/components/OrderActionsModal/AddressMap/AddressMap.vue'
 
-    import { ICartItem } from '@proshop-app/types'
-
     import { OrderProcessStatuses, OrderStatuses } from '@modules/orders/enums/status'
 
     defineEmits<{ (e: 'close'): void }>()

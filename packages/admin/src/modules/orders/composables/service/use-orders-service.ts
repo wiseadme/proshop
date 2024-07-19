@@ -60,7 +60,7 @@ export const useOrdersService = createSharedComposable(() => {
         }
     }
 
-    const updateOrder = async (updates: Partial<IOrder>) => {
+    const updateOrder = async (updates: Partial<IOrder>): Promise<IOrder> => {
         try {
             if (updates.executor) {
                 updates.executor = (updates.executor as IUser).id

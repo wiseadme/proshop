@@ -31,6 +31,7 @@ const OrderSchema = new Schema<IOrderMongoModel>({
             message: String,
         },
         default: null,
+        _id: false
     },
     customer: {
         type: Schema.Types.ObjectId,
