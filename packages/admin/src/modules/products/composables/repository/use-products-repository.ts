@@ -44,15 +44,11 @@ export const useProductRepository = (): IProductRepository => {
             'Accept': 'application/json',
         },
         method: 'POST',
-        credentials: 'same-origin',
-        cache: 'no-cache',
         body: product
     })
 
     const getProducts = (params: IRequestParams<IProductQuery> = {}) => request({
         url: '/api/v1/products',
-        cache: 'no-cache',
-        credentials: 'same-origin',
         params
     })
 
@@ -63,16 +59,12 @@ export const useProductRepository = (): IProductRepository => {
             'Accept': 'application/json',
         },
         method: 'PATCH',
-        credentials: 'same-origin',
-        cache: 'no-cache',
         body: updates,
     })
 
     const deleteProduct = (id: string) => request({
         url: '/api/v1/products',
         method: 'DELETE',
-        credentials: 'same-origin',
-        cache: 'no-cache',
         params: { id }
     })
 
@@ -83,8 +75,6 @@ export const useProductRepository = (): IProductRepository => {
             'Accept': 'application/json',
         },
         method: 'PATCH',
-        credentials: 'same-origin',
-        cache: 'no-cache',
         body: data,
     })
 
@@ -95,8 +85,6 @@ export const useProductRepository = (): IProductRepository => {
             'Accept': 'application/json',
         },
         method: 'PATCH',
-        credentials: 'same-origin',
-        cache: 'no-cache',
         body: data,
     })
 
@@ -107,8 +95,6 @@ export const useProductRepository = (): IProductRepository => {
             'Accept': 'application/json',
         },
         method: 'PATCH',
-        credentials: 'same-origin',
-        cache: 'no-cache',
         body: data,
     })
 
@@ -119,8 +105,6 @@ export const useProductRepository = (): IProductRepository => {
             'Accept': 'application/json',
         },
         method: 'PATCH',
-        credentials: 'same-origin',
-        cache: 'no-cache',
         body: data,
     })
 
@@ -131,8 +115,6 @@ export const useProductRepository = (): IProductRepository => {
             'Accept': 'application/json',
         },
         method: 'PATCH',
-        credentials: 'same-origin',
-        cache: 'no-cache',
         body: data,
     })
 

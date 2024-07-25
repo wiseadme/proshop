@@ -11,16 +11,12 @@ export const useAttributeRepository = () => {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
         },
-        credentials: 'same-origin',
         method: 'POST',
-        cache: 'no-cache',
         body: attr
     })
 
     const getAttributes = (params: Partial<IAttribute> = {}) => request({
         url: '/api/v1/attribute',
-        cache: 'no-cache',
-        credentials: 'same-origin',
         params,
     })
 
@@ -31,16 +27,12 @@ export const useAttributeRepository = () => {
             'Accept': 'application/json',
         },
         method: 'PATCH',
-        credentials: 'same-origin',
-        cache: 'no-cache',
         body: updates,
     })
 
     const deleteAttribute = (id: string) => request({
         url: '/api/v1/attribute',
         method: 'DELETE',
-        cache: 'no-cache',
-        credentials: 'same-origin',
         params: { id },
     })
 

@@ -24,15 +24,11 @@ export const useGroupsRepository = (): IGroupsRepository => {
             'Accept': 'application/json',
         },
         method: 'POST',
-        credentials: 'same-origin',
-        cache: 'no-cache',
         body: group
     })
 
     const getGroups = (params: Partial<IGroup>) => request({
         url: '/api/v1/groups',
-        credentials: 'same-origin',
-        cache: 'no-cache',
         params
     })
 
@@ -43,16 +39,12 @@ export const useGroupsRepository = (): IGroupsRepository => {
             'Accept': 'application/json',
         },
         method: 'PATCH',
-        credentials: 'same-origin',
-        cache: 'no-cache',
         body: updates
     })
 
     const deleteGroup = (id: string) => request({
         url: '/api/v1/groups',
         method: 'DELETE',
-        credentials: 'same-origin',
-        cache: 'no-cache',
         params: { id }
     })
 

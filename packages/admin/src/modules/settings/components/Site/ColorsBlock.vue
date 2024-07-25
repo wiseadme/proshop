@@ -43,7 +43,7 @@
 
     }
 
-    const onContextMenu = (e, item) => {
+    const onContextMenu = (e: MouseEvent, item: PaletteItem) => {
         selected.value = item
         positionX.value = e.clientX
         positionY.value = e.clientY
@@ -142,7 +142,7 @@
                                 :color="item.color"
                                 @contextmenu.prevent="onContextMenu($event, item)"
                             >
-                                <div class="d-flex flex-column">
+                                <div class="grey--text text--lighten-3 d-flex flex-column">
                                     <div class="colors__item-name">
                                         {{ item.name }}
                                     </div>

@@ -8,9 +8,9 @@
     import { SvgPaths } from '@shared/enums/svg-paths'
 
     const { cols } = useCustomersTable()
-    const { customers, fetchCustomers } = useCustomers()
+    const { customers, loadCustomers } = useCustomers()
 
-    fetchCustomers()
+    loadCustomers()
 
 </script>
 <template>

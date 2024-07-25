@@ -68,7 +68,9 @@ export const useOrdersService = createSharedComposable(() => {
 
             const { data } = await repository.updateOrder(updates)
 
-            _orders.value = unref(_orders).map(item => item.id === data.id ? data : item)
+            _orders.value = unref(_orders).map(item => {
+                return item.id === data.id ? data : item
+            })
 
             return data
         } catch (err) {

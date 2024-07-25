@@ -12,15 +12,11 @@ export const useFilterGroupsRepository = () => {
             'Accept': 'application/json',
         },
         method: 'POST',
-        credentials: 'same-origin',
-        cache: 'no-cache',
         body: group
     })
 
     const getFilterGroups = (params?: Partial<IFilterGroup>) => request({
         url: '/api/v1/filter/groups',
-        credentials: 'same-origin',
-        cache: 'no-cache',
         params
     })
 
@@ -31,16 +27,12 @@ export const useFilterGroupsRepository = () => {
             'Accept': 'application/json',
         },
         method: 'PATCH',
-        credentials: 'same-origin',
-        cache: 'no-cache',
         body: updates
     })
 
     const deleteFilterGroup = (id: string) => request({
         url: '/api/v1/filter/groups',
         method: 'DELETE',
-        credentials: 'same-origin',
-        cache: 'no-cache',
         params: { id }
     })
 

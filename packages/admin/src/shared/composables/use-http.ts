@@ -50,6 +50,7 @@ export const useHttp = (): IHttpModule => {
                 redirect: options.redirect ?? 'manual',
                 signal: controller.signal,
                 headers: options.headers ?? {},
+                cache: options.cache ?? 'no-cache',
                 url: options.url,
             }
 
