@@ -24,11 +24,11 @@ services:
     container_name: nginx
     command: nginx -g "daemon off;"
     ports:
-      - "3020:3020"
+      - "3002:3002"
     volumes:
       - ./nginx/nginx.dev.conf:/etc/nginx/nginx.conf
-      - uploads:/var/lib/docker/volumes/proshop_uploads/_data
-
+      - uploads:/var/lib/docker/volumes/proshop_uploads/_data:ro
+      - /home/wiseadme/www/uploads:/var/lib/docker/volumes/proshop_uploads/_data:rw
     hostname: '127.0.0.1'
     extra_hosts:
       - "host.docker.internal:host-gateway"
@@ -38,6 +38,6 @@ volumes:
   uploads:
   certs:
 
-networks:
-  redis:
-    driver: bridge
+#networks:
+#  redis:
+#    driver: bridge

@@ -3,11 +3,13 @@ import path from 'path'
 import vue from '@vitejs/plugin-vue'
 import { defineConfig } from 'vite'
 
+// @ts-ignore
+import { printUrls } from './cli/print-urls'
+
 const isProd = process.env.NODE_ENV === 'production'
 
 const resolve = (str: string) => path.resolve(__dirname, str)
 
-// https://vitejs.dev/config/
 export default defineConfig({
     base: isProd ? '/admin' : '/',
     resolve: {
@@ -29,27 +31,17 @@ export default defineConfig({
         },
     },
     server: {
+        host: '0.0.0.0',
         port: 8081,
-        proxy: {
-            '/api/v1': {
-                target: 'http://localhost:5001',
-                ws: false,
-                secure: false,
-                changeOrigin: true
-            },
-            '/uploads': {
-                target: 'http://localhost/',
-                ws: false,
-                secure: false,
-                changeOrigin: true
-            },
-        }
     },
-    plugins: [vue({
-        script: {
-            propsDestructure: true
-        }
-    })],
+    plugins: [
+        vue({
+            script: {
+                propsDestructure: true
+            }
+        }),
+        printUrls
+    ],
     build: {
         minify: true,
         cssCodeSplit: true,
