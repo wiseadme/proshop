@@ -1,8 +1,11 @@
 import {
+    DeepReadonly,
     computed,
     ref,
-    unref,
+    unref
 } from 'vue'
+
+import { useMerchantService } from '@modules/settings/composables/use-merchant-service'
 
 import { createSharedComposable } from '@shared/composables/features/create-shared-composable'
 import { useRequestParams } from '@shared/composables/use-request-params'
@@ -17,7 +20,6 @@ import type {
     IProductParams,
     IUnit,
     IVariant,
-    Maybe,
 } from '@proshop-app/types'
 
 import { useAttributesStore } from '@modules/attributes/store'
@@ -25,7 +27,6 @@ import { useCategoriesStore } from '@modules/categories/store'
 import { useMetaTagsStore } from '@modules/metatags/store'
 import { getIds } from '@modules/products/helpers'
 import { useProductStore } from '@modules/products/store'
-import { useMerchantStore } from '@modules/settings/store/merchant'
 import { useUnitsStore } from '@modules/units/store'
 import { useVariantsStore } from '@modules/variants/store'
 import { useFilesService } from '@shared/services/files.service'
@@ -37,7 +38,7 @@ export const useProductsService = createSharedComposable(() => {
     const _variantsStore = useVariantsStore()
     const _unitsStore = useUnitsStore()
     const _metaTagsStore = useMetaTagsStore()
-    const _merchantStore = useMerchantStore()
+    const merchantService = useMerchantService()
 
     const {
         sort,
@@ -57,14 +58,14 @@ export const useProductsService = createSharedComposable(() => {
     const unitItems = computed<IUnit[]>(() => _unitsStore.units || [])
     const metaTagItems = computed<IMetaTag[]>(() => _metaTagsStore.metaTags || [])
     const totalLength = computed<number>(() => _productsStore.totalLength)
-    const merchant = computed<Maybe<IMerchant>>(() => _merchantStore.merchant)
+    const merchant = computed<Maybe<DeepReadonly<IMerchant>>>(() => merchantService.merchant.value)
 
-    const getMerchant = async (): Promise<IMerchant> => {
-        if (unref(merchant)?.id) {
-            return unref(merchant)!
+    const getMerchant = async (): Promise<DeepReadonly<IMerchant>> => {
+        if (!unref(merchant)?.id) {
+            await merchantService.getMerchantSettings()
         }
 
-        return _merchantStore.getMerchant()
+        return unref(merchant)!
     }
 
     const getAttributes = async (): Promise<IAttribute[]> => {

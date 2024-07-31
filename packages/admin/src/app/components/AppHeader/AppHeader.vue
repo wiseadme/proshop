@@ -9,7 +9,7 @@
     <v-toolbar
         fixed
         class="elevation-3"
-        color="var(--secondary)"
+        color="white"
         z-index="10"
     >
         <v-toolbar-logo>
@@ -25,9 +25,9 @@
                     icon="fas fa-user-circle"
                     class="mx-2"
                     size="24"
-                    color="white"
+                    color="success"
                 />
-                <h4 class="pb-1 white--text">
+                <h4 class="pb-1 secondary--text">
                     {{ user.username }}
                 </h4>
             </div>
@@ -36,7 +36,7 @@
                     class="mx-3"
                     icon="fas fa-sign-out-alt"
                     size="20"
-                    color="primary"
+                    color="secondary"
                     clickable
                     @click="logout"
                 />
@@ -44,6 +44,4 @@
         </v-toolbar-items>
     </v-toolbar>
 </template>
-<style lang="scss">
-    @import 'AppHeader';
-</style>
+<style lang="scss" src="./AppHeader.scss"/>

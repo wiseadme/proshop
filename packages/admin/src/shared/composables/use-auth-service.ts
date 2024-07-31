@@ -54,7 +54,7 @@ export const useAuthService = () => {
         try {
             await whoAmI()
 
-            if (unref(route).name === RouteNames.AUTH) {
+            if (unref(route).name === RouteNames.LOGIN) {
                 return router.replace({ name: RouteNames.DASHBOARD })
             }
         } catch (err) {

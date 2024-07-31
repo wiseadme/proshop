@@ -1,4 +1,4 @@
-declare module 'vueland' {
+declare module '@shared/types/vueland' {
     export const createVueland: any
 }
 declare module 'vueland/lib/components' {

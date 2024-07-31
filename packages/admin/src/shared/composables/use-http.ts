@@ -11,6 +11,10 @@ export interface IRequestContext extends IRequestOptions {
     cancel: (reason?: string) => void
 }
 
+export interface IResponse<T> extends Response {
+    data: T
+}
+
 interface IInterceptor {
     (context: IRequestContext): Promise<any>
 }
@@ -22,7 +26,7 @@ interface IInterceptorHooks {
 }
 
 export interface IHttpModule {
-    request(options?: IRequestOptions): Promise<any>
+    request<T = any>(options?: IRequestOptions): Promise<IResponse<T>>
 
     hooks: IInterceptorHooks
 
@@ -42,7 +46,7 @@ export const useHttp = (): IHttpModule => {
 
     const cancel = (reason?: string) => controller.abort(reason ?? '')
 
-    const request = async (options: IRequestOptions) => {
+    const request = async <T = any>(options: IRequestOptions) => {
         try {
             const normalizedOptions: IRequestOptions = {
                 method: options.method ?? 'GET',
@@ -73,7 +77,14 @@ export const useHttp = (): IHttpModule => {
             const response = await fetch(normalizedOptions.url + queryParams, normalizedOptions)
 
             if (response.ok) {
-                return await response.json()
+                return {
+                    url: response.url,
+                    headers: response.headers ?? {},
+                    status: response.status,
+                    statusText: response.statusText,
+                    ...await response.json(),
+                } as Promise<IResponse<T>>
+
             }
 
             return Promise.reject({

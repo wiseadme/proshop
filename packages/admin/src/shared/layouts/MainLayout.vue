@@ -47,7 +47,7 @@
         newOrdersNotifyId = null
         notSeenCount = 0
 
-        if (router.currentRoute.value.path.includes('/order')) {
+        if (router.currentRoute.value.name === RouteNames.ORDERS) {
             getOrders()
         }
 
@@ -85,7 +85,7 @@
         <app-navigation/>
         <v-main
             class="main-layout"
-            style="padding: 66px 10px 10px 247px; width: 100%;"
+            style="padding: 72px 10px 10px 247px; width: 100%;"
         >
             <router-view/>
         </v-main>
