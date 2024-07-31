@@ -4,9 +4,10 @@ import {
     ref,
 } from 'vue'
 
-import { createSharedComposable } from '@shared/features/create-shared-composable'
-
 import { useGroupsRepository } from '@modules/groups/composables/repository/use-groups-repository'
+
+import { createSharedComposable } from '@shared/composables/features/create-shared-composable'
+
 
 import { useLogger } from '@shared/utils/logger'
 

@@ -7,7 +7,9 @@ import {
 
 import { useCategoriesService } from '@modules/categories/composables/use-categories-service'
 import { useCategoryModel } from '@modules/categories/composables/use-category-model'
-import { useFilterGroupService } from '@modules/filters/composables/use-filter-group-service'
+import {
+    useFilterGroupService
+} from '@modules/filters/composables/services/use-filter-group-service.ts'
 
 import { useNotifications } from '@shared/components/VNotifications/use-notifications'
 

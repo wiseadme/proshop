@@ -5,9 +5,10 @@ import {
     unref
 } from 'vue'
 
-import { createSharedComposable } from '@shared/features/create-shared-composable'
-
 import { useOptionsRepository } from '@modules/groups/composables/repository/use-options-repository'
+
+import { createSharedComposable } from '@shared/composables/features/create-shared-composable'
+
 
 import { useLogger } from '@shared/utils/logger'
 

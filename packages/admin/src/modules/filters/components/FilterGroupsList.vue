@@ -1,7 +1,7 @@
 <script lang="ts" setup>
     import { ref } from 'vue'
 
-    import { useFilterGroups } from '@modules/filters/composables/use-filter-groups'
+    import { useFilterGroups } from '@modules/filters/composables/view/use-filter-groups'
 
     import { FormCard } from '@shared/components/FormCard'
     import { ItemsList } from '@shared/components/ItemsList'

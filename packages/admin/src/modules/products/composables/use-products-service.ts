@@ -4,8 +4,7 @@ import {
     unref,
 } from 'vue'
 
-import { createSharedComposable } from '@shared/features/create-shared-composable'
-
+import { createSharedComposable } from '@shared/composables/features/create-shared-composable'
 import { useRequestParams } from '@shared/composables/use-request-params'
 
 import type {
@@ -133,7 +132,7 @@ export const useProductsService = createSharedComposable(() => {
         }
     }
 
-    const createProduct = async (product: Partial<IProduct>): Promise<IProduct> => {
+    const createProduct = async (product: IProduct): Promise<IProduct> => {
         if (!unref(merchant)?.id) return Promise.reject({
             message: 'Для начала необходимо создать Merchant',
         })

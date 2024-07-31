@@ -1,9 +1,11 @@
 import { ref, unref } from 'vue'
 
-import { createSharedComposable } from '@shared/features/create-shared-composable'
+import {
+    useFilterItemsService
+} from '@modules/filters/composables/services/use-filter-items-service'
+import { useFilterItemModel } from '@modules/filters/composables/view/use-filter-item-model'
 
-import { useFilterItemModel } from '@modules/filters/composables/use-filter-item-model'
-import { useFilterItemsService } from '@modules/filters/composables/use-filter-items-service'
+import { createSharedComposable } from '@shared/composables/features/create-shared-composable'
 
 import { useNotifications } from '@shared/components/VNotifications/use-notifications'
 

@@ -1,8 +1,9 @@
 import { ref, watch } from 'vue'
 
-import { createSharedComposable } from '@shared/features/create-shared-composable'
-
 import { useSiteService } from '@modules/settings/composables/use-site-service'
+
+import { createSharedComposable } from '@shared/composables/features/create-shared-composable'
+
 
 import { Site } from '@modules/settings/model/site.model'
 

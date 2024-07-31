@@ -31,7 +31,6 @@ export const useAuthRepository = (): IAuthRepository => {
             'Accept': 'application/json',
         },
         method: 'POST',
-        credentials: 'same-origin',
         body: data,
     })
 
@@ -42,15 +41,14 @@ export const useAuthRepository = (): IAuthRepository => {
             'Accept': 'application/json',
         },
         method: 'POST',
-        credentials: 'same-origin',
         body: data,
     })
 
-    const refreshToken = () => request({ url: '/api/v1/user/refresh', credentials: 'same-origin', })
+    const refreshToken = () => request({ url: '/api/v1/user/refresh' })
 
-    const logout = () => request({ url: '/api/v1/user/logout', credentials: 'same-origin', })
+    const logout = () => request({ url: '/api/v1/user/logout' })
 
-    const whoAmI = () => request({ url: '/api/v1/user/whoAmI', credentials: 'same-origin', })
+    const whoAmI = () => request({ url: '/api/v1/user/whoAmI' })
 
     const cancelAll = () => cancel()
 

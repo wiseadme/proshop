@@ -5,9 +5,10 @@ import {
     watch,
 } from 'vue'
 
-import { createSharedComposable } from '@shared/features/create-shared-composable'
-
 import { useCategoriesService } from '@modules/categories/composables/use-categories-service'
+
+import { createSharedComposable } from '@shared/composables/features/create-shared-composable'
+
 
 import { Category } from '@modules/categories/model/category.model'
 

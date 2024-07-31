@@ -1,8 +1,9 @@
 import { ref } from 'vue'
 
-import { createSharedComposable } from '@shared/features/create-shared-composable'
-
 import { useRouter } from 'vue-router'
+
+import { createSharedComposable } from '@shared/composables/features/create-shared-composable'
+
 
 import { RouteNames } from '@modules/orders/enums/route-names'
 

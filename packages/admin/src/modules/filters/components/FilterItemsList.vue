@@ -5,14 +5,20 @@
         watch
     } from 'vue'
 
-    import { useFilterGroupService } from '@modules/filters/composables/use-filter-group-service'
-    import { useFilterGroups } from '@modules/filters/composables/use-filter-groups'
-    import { useFilterItems } from '@modules/filters/composables/use-filter-items'
-    import { useFilterItemsService } from '@modules/filters/composables/use-filter-items-service'
+    import {
+        useFilterGroupService
+    } from '@modules/filters/composables/services/use-filter-group-service'
+    import {
+        useFilterItemsService
+    } from '@modules/filters/composables/services/use-filter-items-service'
+    import { useFilterGroups } from '@modules/filters/composables/view/use-filter-groups'
+    import { useFilterItems } from '@modules/filters/composables/view/use-filter-items'
 
     import { FormCard } from '@shared/components/FormCard'
     import { ItemsList } from '@shared/components/ItemsList'
     import { VSvg } from '@shared/components/VSvg'
+
+    import { IFilterGroup } from '@proshop-app/types'
 
     import { SvgPaths } from '@shared/enums/svg-paths'
 
@@ -23,11 +29,12 @@
 
     watch(filterGroups, ([group]) => {
         filtersGroup.value = group
+    }, { immediate: true })
 
+    watch(filtersGroup, (group: IFilterGroup) => {
         if (group) {
             getFilterItems({ groupId: group.id })
         }
-
     }, { immediate: true })
 
     onBeforeMount(async () => {
@@ -65,7 +72,7 @@
             />
             <items-list
                 :items="filterItems"
-                @delete="deleteFilterItem"
+                @delete="deleteFilterItem($event.id)"
                 @edit="onEditFilter"
             >
                 <template #title="{item}">

@@ -16,18 +16,11 @@
 
     defineEmits<{ (e: 'close'): void }>()
 
-    const { onUpdateOrder, onChangeOrderStatus } = useOrders()
+    const { onCancelOrder, onChangeOrderStatus } = useOrders()
     const { model } = useOrderModel()
     const { users, fetchUsers } = useOrderDeps()
 
     const statuses = computed(() => Object.keys(unref(model).status))
-
-    const onCancelOrder = () => {
-        const { status, id } = unref(model)
-        status.cancelled = true
-
-        onUpdateOrder({ status, id })
-    }
 
     onBeforeMount(() => {
         if (!unref(users).length) {

@@ -4,10 +4,11 @@ import {
     unref
 } from 'vue'
 
-import { createSharedComposable } from '@shared/features/create-shared-composable'
 
 import { useMetaTagForm } from '@modules/metatags/composables/use-meta-tag-form'
 import { useMetaTagsService } from '@modules/metatags/composables/use-meta-tags-service'
+
+import { createSharedComposable } from '@shared/composables/features/create-shared-composable'
 
 
 import { useNotifications } from '@shared/components/VNotifications/use-notifications'

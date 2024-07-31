@@ -6,6 +6,8 @@
         unref,
     } from 'vue'
 
+    import { useVModel } from '@shared/composables/features/use-v-model'
+
     import { User } from '@modules/users/model/user.model'
 
     import type { IOrder, IUser } from '@proshop-app/types'
@@ -13,7 +15,6 @@
     import { ROLES } from '@shared/constants/roles'
 
     const {
-        modelValue,
         isUpdate,
     } = defineProps<{
         modelValue: boolean
@@ -23,16 +24,16 @@
 
     const emit = defineEmits<{
         (e: 'create:user', user: IUser): void
-        (e: 'update:modelValue', val: boolean): void
     }>()
 
     const user = ref<IUser>(User.create())
     const confirmPassword = ref('')
+    const isModalShown = useVModel()
 
     const rules = markRaw({
         firstName: [val => !!val || 'Обязательное поле'],
         secondName: [val => !!val || 'Обязательное поле'],
-        phone: [val => val && val.length === 9 || 'Не менее 9-ти символов'],
+        phone: [val => val && val.length === 11 || 'Не менее 11-ти символов'],
         password: [val => val && val.length >= 8 || 'Не менее 8-ми символов'],
         confirmPassword: [val => val === unref(user).password || 'Пароли не совпадают'],
     })
@@ -44,13 +45,6 @@
     })
 
     const computedModalHeader = computed(() => isUpdate ? 'Редактирование пользователя' : 'Создание пользователя')
-
-    const computedShowModal = computed({
-        get: () => modelValue,
-        set: (val) => {
-            emit('update:modelValue', val)
-        },
-    })
 
     const createUser = (validate) => {
         validate()
@@ -74,7 +68,7 @@
 </script>
 <template>
     <v-modal
-        v-model="computedShowModal"
+        v-model="isModalShown"
         width="70%"
         transition="scale-in"
         overlay
@@ -129,14 +123,14 @@
                             <v-text-field
                                 v-model="user.password"
                                 :rules="rules.password"
-                                label="Пароль"
+                                label="Пароль *"
                             />
                         </v-col>
                         <v-col cols="6">
                             <v-text-field
                                 v-model="confirmPassword"
                                 :rules="rules.confirmPassword"
-                                label="Повторите пароль"
+                                label="Повторите пароль *"
                             />
                         </v-col>
                     </v-row>
@@ -213,7 +207,7 @@
                     <v-button
                         color="warning"
                         width="120"
-                        @click="$emit('update:modelValue', false)"
+                        @click="isModalShown = false"
                     >
                         отмена
                     </v-button>

@@ -1,6 +1,6 @@
 import { ref, watch } from 'vue'
 
-import { createSharedComposable } from '@shared/features/create-shared-composable'
+import { createSharedComposable } from '@shared/composables/features/create-shared-composable'
 
 import { IAttribute } from '@proshop-app/types'
 

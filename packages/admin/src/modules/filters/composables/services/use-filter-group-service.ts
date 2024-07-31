@@ -9,6 +9,8 @@ import {
     useFilterGroupsRepository
 } from '@modules/filters/composables/repository/use-filter-groups-repository'
 
+import { createSharedComposable } from '@shared/composables/features/create-shared-composable'
+
 import { useLogger } from '@shared/utils/logger'
 
 import type { IFilterGroup } from '@proshop-app/types'
@@ -28,7 +30,7 @@ interface IUseFilterGroupService {
     cancelRequests(reason?: string): void
 }
 
-export const useFilterGroupService = (): IUseFilterGroupService => {
+export const useFilterGroupService = createSharedComposable((): IUseFilterGroupService => {
     const repository = useFilterGroupsRepository()
     const { logError } = useLogger()
 
@@ -100,4 +102,4 @@ export const useFilterGroupService = (): IUseFilterGroupService => {
         deleteFilterGroup,
         cancelRequests: repository.cancel
     }
-}
+})

@@ -4,11 +4,12 @@ import {
     ref
 } from 'vue'
 
-import { createSharedComposable } from '@shared/features/create-shared-composable'
-
 import {
     useCustomersRepository
 } from '@modules/customers/composables/repository/use-customers-repository'
+
+import { createSharedComposable } from '@shared/composables/features/create-shared-composable'
+
 
 import { useLogger } from '@shared/utils/logger'
 

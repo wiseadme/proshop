@@ -4,7 +4,7 @@ import {
     ref
 } from 'vue'
 
-import { createSharedComposable } from '@shared/features/create-shared-composable'
+import { createSharedComposable } from '@shared/composables/features/create-shared-composable'
 
 import type { IProduct } from '@proshop-app/types'
 

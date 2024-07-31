@@ -1,6 +1,6 @@
 import { ref } from 'vue'
 
-import { createSharedComposable } from '@shared/features/create-shared-composable'
+import { createSharedComposable } from '@shared/composables/features/create-shared-composable'
 
 import { Order } from '@modules/orders/model/order.model'
 

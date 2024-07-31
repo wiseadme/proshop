@@ -1,7 +1,7 @@
 <script lang="ts" setup>
     import { onBeforeMount } from 'vue'
 
-    import { useFilterGroups } from '@modules/filters/composables/use-filter-groups'
+    import { useFilterGroups } from '@modules/filters/composables/view/use-filter-groups.ts'
 
     import FilterGroupsList from '@modules/filters/components/FilterGroupsList.vue'
     import FilterGroupFormModal from '@modules/filters/components/modals/FilterGroupFormModal.vue'

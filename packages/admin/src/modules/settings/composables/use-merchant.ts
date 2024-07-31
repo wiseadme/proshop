@@ -5,9 +5,10 @@ import {
     watch
 } from 'vue'
 
-import { createSharedComposable } from '@shared/features/create-shared-composable'
-
 import { useMerchantService } from '@modules/settings/composables/use-merchant-service'
+
+import { createSharedComposable } from '@shared/composables/features/create-shared-composable'
+
 
 import { Merchant } from '@modules/settings/model/merchant.model'
 

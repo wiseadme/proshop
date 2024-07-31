@@ -19,13 +19,14 @@ export const getOrderStatusName = (orderStatuses: IOrderStatuses): string => {
     }, '')
 }
 
-export const isNeedExecutor = (key: string, model: IOrder) => (OrderProcessStatuses[key] && !unref(model).executor)
+export const isNeedExecutor = (key: string, model: IOrder): boolean => {
+    return OrderProcessStatuses[key] && !unref(model).executor
+}
 
 export const checkOrderStatusStep = (statusKey: string, statuses: Record<OrderStatus, boolean>): boolean => {
     const statusIndex = orderStatusSteps.findIndex(status => status === statusKey)
 
     /** TODO - доработать что если заказ уже выполнен, то отменить нельзя */
-
     if (statusIndex === 0 || statusKey === OrderStatus.CANCELLED) {
         return true
     }

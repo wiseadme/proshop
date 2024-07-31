@@ -6,8 +6,12 @@
         watch,
     } from 'vue'
 
-    import { useFilterGroupService } from '@modules/filters/composables/use-filter-group-service'
-    import { useFilterItemsService } from '@modules/filters/composables/use-filter-items-service'
+    import {
+        useFilterGroupService
+    } from '@modules/filters/composables/services/use-filter-group-service.ts'
+    import {
+        useFilterItemsService
+    } from '@modules/filters/composables/services/use-filter-items-service.ts'
     import { useProductAttributes } from '@modules/products/composables/use-product-attributes'
     import { useProductModel } from '@modules/products/composables/use-product-model'
 

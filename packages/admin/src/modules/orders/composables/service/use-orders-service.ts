@@ -5,10 +5,9 @@ import {
     unref
 } from 'vue'
 
-import { createSharedComposable } from '@shared/features/create-shared-composable'
-
 import { useOrdersRepository } from '@modules/orders/composables/repository/use-orders-repository'
 
+import { createSharedComposable } from '@shared/composables/features/create-shared-composable'
 import { useRequestParams } from '@shared/composables/use-request-params'
 
 import { useLogger } from '@shared/utils/logger'

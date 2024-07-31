@@ -4,10 +4,13 @@ import {
     unref,
 } from 'vue'
 
-import { createSharedComposable } from '@shared/features/create-shared-composable'
 
 import { useAttributesService } from '@modules/attributes/composables/use-attributes-service'
-import { useFilterGroupService } from '@modules/filters/composables/use-filter-group-service'
+import {
+    useFilterGroupService
+} from '@modules/filters/composables/services/use-filter-group-service'
+
+import { createSharedComposable } from '@shared/composables/features/create-shared-composable'
 
 import { FilterGroup } from '@modules/filters/model/filterGroup.model'
 

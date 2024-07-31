@@ -1,16 +1,13 @@
 <script lang="ts" setup generic="T">
-    import {
-        computed,
-        ref,
-        unref,
-    } from 'vue'
+    import { ref, unref } from 'vue'
 
     import draggable from 'vuedraggable'
+
+    import { useVModel } from '@shared/composables/features/use-v-model'
 
     type OrderedItem<S> = S & { order: number }
 
     const {
-        modelValue,
         editable = false,
         itemKey = 'id',
         itemClass = 'white',
@@ -24,7 +21,6 @@
     }>()
 
     const emit = defineEmits<{
-        (e: 'update:modelValue', value: T[]): void
         (e: 'update', value: T[]): void
         (e: 'change', value: T[]): void
         (e: 'remove', value: T): void
@@ -45,10 +41,7 @@
 
     const onEdit = (item: T) => emit('edit', item)
 
-    const items = computed({
-        get: () => modelValue || [],
-        set: (val) => emit('update:modelValue', val as T[]),
-    })
+    const items = useVModel()
 
     const onChange = () => {
         (unref(items) as OrderedItem<T>[]).forEach((it, i) => it.order = i)
@@ -56,7 +49,7 @@
     }
 
     const onAdd = (item: any) => {
-        const value = modelValue![item.newIndex as number] as OrderedItem<T>
+        const value = items![item.newIndex as number] as OrderedItem<T>
         value.order = Number(item.newIndex)
         emit('add', value)
     }
@@ -70,7 +63,7 @@
     }
 
     const onDragStart = (item) => {
-        draggableItem.value = modelValue![item.oldIndex]
+        draggableItem.value = items![item.oldIndex]
     }
 </script>
 <template>

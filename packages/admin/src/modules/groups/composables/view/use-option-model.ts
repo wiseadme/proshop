@@ -4,7 +4,7 @@ import {
     unref
 } from 'vue'
 
-import { createSharedComposable } from '@shared/features/create-shared-composable'
+import { createSharedComposable } from '@shared/composables/features/create-shared-composable'
 
 import { Option } from '@modules/groups/model/option.model'
 

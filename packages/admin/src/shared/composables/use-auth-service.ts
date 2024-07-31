@@ -33,6 +33,8 @@ export const useAuthService = () => {
             return router.push({ name: RouteNames.DASHBOARD })
         } catch (err) {
             logError('Authentication error', err)
+
+            return Promise.reject(err)
         }
     }
 
@@ -43,6 +45,8 @@ export const useAuthService = () => {
             return router.push({ name: RouteNames.LOGIN })
         } catch (err) {
             logError('Logout error', err)
+
+            return Promise.reject(err)
         }
     }
 
@@ -50,13 +54,13 @@ export const useAuthService = () => {
         try {
             await whoAmI()
 
-            if (unref(route).path.includes(RouteNames.AUTH)) {
+            if (unref(route).name === RouteNames.AUTH) {
                 return router.replace({ name: RouteNames.DASHBOARD })
             }
         } catch (err) {
             logError('Identification failed', err)
 
-            return logout()
+            return refresh().catch(logout)
         }
     }
 

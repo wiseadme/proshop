@@ -8,14 +8,14 @@ export const usePolling = ({
     let timerId: any = null
 
     const startPolling = () => {
-        const makeRequest = () => {
+        const executeHandler = () => {
             timerId = setTimeout(() => {
                 handler()
-                makeRequest()
+                executeHandler()
             }, timeout)
         }
 
-        makeRequest()
+        executeHandler()
     }
 
     const stopPolling = () => {

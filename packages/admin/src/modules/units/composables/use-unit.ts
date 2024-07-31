@@ -1,9 +1,8 @@
 import { ref, unref } from 'vue'
 
-import { createSharedComposable } from '@shared/features/create-shared-composable'
-
 import { useUnitsService } from '@modules/units/composables/use-units-service'
 
+import { createSharedComposable } from '@shared/composables/features/create-shared-composable'
 import { useLoadingState } from '@shared/composables/use-loading-state'
 
 import { Unit } from '@modules/units/model/unit.model'
