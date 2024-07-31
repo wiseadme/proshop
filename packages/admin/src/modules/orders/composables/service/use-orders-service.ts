@@ -13,7 +13,7 @@ import { useRequestParams } from '@shared/composables/use-request-params'
 
 import { useLogger } from '@shared/utils/logger'
 
-import type { IOrder, IUser } from '@proshop-app/types'
+import type { IOrder } from '@proshop-app/types'
 
 export const useOrdersService = createSharedComposable(() => {
     const repository = useOrdersRepository()
@@ -62,10 +62,6 @@ export const useOrdersService = createSharedComposable(() => {
 
     const updateOrder = async (updates: Partial<IOrder>): Promise<IOrder> => {
         try {
-            if (updates.executor) {
-                updates.executor = (updates.executor as IUser).id
-            }
-
             const { data } = await repository.updateOrder(updates)
 
             _orders.value = unref(_orders).map(item => {

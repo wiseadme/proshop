@@ -9,54 +9,18 @@
     import { useOrderModel } from '@modules/orders/composables/view/use-order-model'
     import { useOrders } from '@modules/orders/composables/view/use-orders'
 
-    import { useNotifications } from '@shared/components/VNotifications/use-notifications'
-
     import AddressMap from '@modules/orders/components/OrderActionsModal/AddressMap/AddressMap.vue'
 
-    import { OrderProcessStatuses, OrderStatuses } from '@modules/orders/enums/status'
+    import { orderStatusLabels } from '@modules/orders/constants/statuses'
+    import { OrderProcessStatuses } from '@modules/orders/enums/status'
 
     defineEmits<{ (e: 'close'): void }>()
 
-    const { onUpdateOrder } = useOrders()
+    const { onUpdateOrder, onChangeOrderStatus } = useOrders()
     const { model } = useOrderModel()
     const { users, fetchUsers } = useOrderDeps()
-    const { notify } = useNotifications()
 
     const statuses = computed(() => Object.keys(unref(model).status))
-
-    const isExecutorExists = (key: string) => (OrderProcessStatuses[key] && !unref(model).executor)
-
-    const onChangeOrderStatus = (statusKey: string) => {
-        const { status, executor } = unref(model)
-
-        if (status[statusKey]) {
-            return notify({
-                title: 'Информация',
-                text: `Заказ уже имеет статус "${OrderStatuses[statusKey]}"`,
-                type: 'warning',
-                closeOnClick: true,
-            })
-        }
-
-        if (isExecutorExists(statusKey)) {
-            return notify({
-                title: 'Информация',
-                text: 'Необходимо выбрать исполнителя заказа',
-                type: 'warning',
-                closeOnClick: true,
-            })
-        }
-
-        if (statusKey === OrderProcessStatuses.ready && !status.inProcess
-            || statusKey === OrderProcessStatuses.completed && !status.ready
-        ) {
-            return
-        }
-
-        status[statusKey] = true
-
-        return onUpdateOrder(Object.assign({}, { status }, executor ? { executor } : {}))
-    }
 
     const onCancelOrder = () => {
         const { status, id } = unref(model)
@@ -218,7 +182,7 @@
                                 class="mb-5 px-1 elevation-1 grey--text text--darken-3"
                                 color="white"
                             >
-                                <span>{{ OrderStatuses[it] }}</span>
+                                <span>{{ orderStatusLabels[it] }}</span>
                             </v-chip>
                             <v-button
                                 class="elevation-2 my-1"

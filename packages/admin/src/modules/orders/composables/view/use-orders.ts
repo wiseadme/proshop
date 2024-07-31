@@ -12,10 +12,15 @@ import { useNotifications } from '@shared/components/VNotifications/use-notifica
 
 import { Order } from '@modules/orders/model/order.model'
 
-import type { IOrder } from '@proshop-app/types'
+import type { IOrder, IUser } from '@proshop-app/types'
 
-import { ORDER_UPDATE_ERROR } from '@modules/orders/constants/notifications'
+import {
+    ORDER_EXECUTOR_NOT_SELECTED_WARNING,
+    ORDER_STATUS_ALREADY_EXISTS_ERROR,
+    ORDER_UPDATE_ERROR
+} from '@modules/orders/constants/notifications'
 import { RouteNames } from '@modules/orders/enums/route-names'
+import { checkOrderStatusStep, isNeedExecutor } from '@modules/orders/helpers'
 
 export const useOrders = createSharedComposable(() => {
     const {
@@ -36,9 +41,31 @@ export const useOrders = createSharedComposable(() => {
     const onUpdateOrder = async (updates: Partial<IOrder>) => {
         try {
             await updateOrder(updates)
-        } catch (err) {
+        } catch {
             notify(ORDER_UPDATE_ERROR)
         }
+    }
+
+    const onChangeOrderStatus = (statusKey: string) => {
+        const { status, executor, id } = unref(model)
+
+        const isValidStep = checkOrderStatusStep(statusKey, status)
+
+        if (!isValidStep) {
+            return notify(ORDER_STATUS_ALREADY_EXISTS_ERROR)
+        }
+
+        if (isNeedExecutor(statusKey, unref(model))) {
+            return notify(ORDER_EXECUTOR_NOT_SELECTED_WARNING)
+        }
+
+        status[statusKey] = true
+
+        return onUpdateOrder({
+            status,
+            id,
+            executor: (executor as IUser)?.id ?? null
+        })
     }
 
     const onOpenOrder = async (order: IOrder) => {
@@ -65,6 +92,7 @@ export const useOrders = createSharedComposable(() => {
         totalLength,
         onOpenOrder,
         onUpdateOrder,
+        onChangeOrderStatus,
         onDeleteOrder
     }
 })

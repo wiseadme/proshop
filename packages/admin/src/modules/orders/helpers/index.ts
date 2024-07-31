@@ -1,18 +1,38 @@
-import type { IOrderStatuses } from '@proshop-app/types'
+import { unref } from 'vue'
 
-import { OrderStatuses } from '@modules/orders/enums/status'
+import type { IOrder, IOrderStatuses } from '@proshop-app/types'
+
+import { orderStatusLabels, orderStatusSteps } from '@modules/orders/constants/statuses'
+import { OrderProcessStatuses, OrderStatus } from '@modules/orders/enums/status'
 
 export const getOrderStatusName = (orderStatuses: IOrderStatuses): string => {
-    let statusName = ''
+    return orderStatusSteps.reduce((res, key) => {
+        if (orderStatuses[key]) {
+            res = orderStatusLabels[key]
+        }
 
-    if (orderStatuses.created) statusName = OrderStatuses.created
-    if (orderStatuses.seen) statusName = OrderStatuses.seen
-    if (orderStatuses.confirmed) statusName = OrderStatuses.confirmed
-    if (orderStatuses.inProcess) statusName = OrderStatuses.inProcess
-    if (orderStatuses.ready) statusName = OrderStatuses.ready
-    if (orderStatuses.inDelivery) statusName = OrderStatuses.inDelivery
-    if (orderStatuses.completed) statusName = OrderStatuses.completed
-    if (orderStatuses.cancelled) statusName = OrderStatuses.cancelled
+        if (orderStatuses[OrderStatus.CANCELLED]) {
+            res = orderStatusLabels.cancelled
+        }
 
-    return statusName
+        return res
+    }, '')
+}
+
+export const isNeedExecutor = (key: string, model: IOrder) => (OrderProcessStatuses[key] && !unref(model).executor)
+
+export const checkOrderStatusStep = (statusKey: string, statuses: Record<OrderStatus, boolean>): boolean => {
+    const statusIndex = orderStatusSteps.findIndex(status => status === statusKey)
+
+    /** TODO - доработать что если заказ уже выполнен, то отменить нельзя */
+
+    if (statusIndex === 0 || statusKey === OrderStatus.CANCELLED) {
+        return true
+    }
+
+    const status = orderStatusSteps[statusIndex]
+    const prevStatus = orderStatusSteps[statusIndex - 1]
+    const nextStatus = orderStatusSteps[statusIndex + 1]
+
+    return !statuses[status] && statuses[prevStatus] && !statuses[nextStatus]
 }

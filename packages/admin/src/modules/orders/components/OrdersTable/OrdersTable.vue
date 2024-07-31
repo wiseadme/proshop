@@ -26,14 +26,15 @@
         onUpdateTablePage,
     } = useOrdersTable()
 
-    const getOrderStatusClasses = (row: IOrder) => ({
-        'primary': row.status.created && !row.status.seen,
-        'blue lighten-1': row.status.seen && !row.status.confirmed,
-        'teal accent-3': row.status.confirmed && !row.status.inProcess,
-        'lime': row.status.inProcess && !row.status.ready,
-        'purple': row.status.ready && !row.status.inDelivery,
-        'pink lighten-3': row.status.inDelivery && !row.status.completed,
-        'disabled': row.status.seen && row.status.completed,
+    const getOrderStatusClasses = ({status}: IOrder) => ({
+        'primary': !status.cancelled && status.created && !status.seen,
+        'blue lighten-1': !status.cancelled && status.seen && !status.confirmed,
+        'teal accent-3': !status.cancelled && status.confirmed && !status.inProcess,
+        'lime': !status.cancelled && status.inProcess && !status.ready,
+        'purple': !status.cancelled && status.ready && !status.inDelivery,
+        'pink lighten-3': !status.cancelled && status.inDelivery && !status.completed,
+        'disabled': !status.cancelled && status.seen && status.completed,
+        'red darken-1': status.cancelled
     })
 
 </script>
