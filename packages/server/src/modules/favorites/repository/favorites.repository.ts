@@ -32,6 +32,8 @@ export class FavoritesRepository implements IFavoritesRepository {
             .populate('product', ['name', 'image', 'price'])
             .lean()
 
+        console.log(favorites)
+
         return favorites.length ? favorites.map(it => FavoriteMapper.toDomain(it)) : []
     }
 

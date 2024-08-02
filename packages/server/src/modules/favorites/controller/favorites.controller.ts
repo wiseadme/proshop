@@ -8,6 +8,7 @@ import { IController } from '@/types'
 import { IFavoritesService } from '@modules/favorites/types/service'
 import { FAVORITES_MODULE_PATH } from '@common/constants/paths'
 import { FAVORITES_IOC } from '@modules/favorites/di/di.types'
+import { IFavorite } from '@proshop-app/types'
 
 @injectable()
 export class FavoritesController extends BaseController implements IController {
@@ -41,7 +42,7 @@ export class FavoritesController extends BaseController implements IController {
         }
     }
 
-    async getFavorites(request: Request<{}, {}, { userId: string }>, response: Response, next: NextFunction) {
+    async getFavorites(request: Request<{}, {}, {}>, response: Response, next: NextFunction) {
         try {
             const data = await this.service.getFavorites(request.cookies)
 
