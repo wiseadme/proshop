@@ -49,7 +49,8 @@
     }
 
     const onAdd = (item: any) => {
-        const value = items![item.newIndex as number] as OrderedItem<T>
+        console.log(item)
+        const value = unref(items)[item.newIndex as number] as OrderedItem<T>
         value.order = Number(item.newIndex)
         emit('add', value)
     }
@@ -76,7 +77,7 @@
             :item-key="itemKey"
             :group="group"
             class="draggable-container"
-            @add="onAdd"
+            @add="onAdd($event)"
             @start="onDragStart"
             @sort="onSort"
             @remove="onRemove"

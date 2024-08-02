@@ -34,7 +34,7 @@ export const genJWToken = ({ payload, secret, expiresIn }): string => {
     return jwt.sign(payload, secret, { expiresIn })
 }
 
-export const genJWTokens = (payload: Record<string, any>) => ({
+export const genJWTokens = (payload: Record<string, any>): { accessToken: string, refreshToken: string } => ({
     accessToken: genJWToken({
         secret: config.accessSecret,
         expiresIn: ACCESS_TOKEN_EXP,
@@ -47,7 +47,7 @@ export const genJWTokens = (payload: Record<string, any>) => ({
     }),
 })
 
-export const verifyJWToken = (token: string) => new Promise((resolve) => {
+export const verifyJWToken = (token: string): Promise<boolean> => new Promise((resolve) => {
     jwt.verify(token, config.accessSecret, (err: any) => resolve(!Boolean(err)))
 })
 

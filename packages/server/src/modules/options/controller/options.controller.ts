@@ -27,7 +27,7 @@ export class OptionsController extends BaseController implements IController {
 
     initRoutes() {
         this.router.post('/', setMiddlewares({ roles: ['root'], dto: OptionDTO }), this.createOption.bind(this))
-        this.router.get('/', setMiddlewares({ roles: ['root', 'user', 'readonly'] }), this.getOptions.bind(this))
+        this.router.get('/', this.getOptions.bind(this))
         this.router.patch('/', setMiddlewares({ roles: ['root'] }), this.updateOption.bind(this))
         this.router.delete('/', setMiddlewares({ roles: ['root'] }), this.deleteOption.bind(this))
     }

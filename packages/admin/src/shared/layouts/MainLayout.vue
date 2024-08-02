@@ -85,7 +85,7 @@
         <app-navigation/>
         <v-main
             class="main-layout"
-            style="padding: 72px 10px 10px 247px; width: 100%;"
+            style="padding: 76px 10px 10px 247px; width: 100%;"
         >
             <router-view/>
         </v-main>

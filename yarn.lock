@@ -1418,6 +1418,11 @@
   resolved "https://npm.pkg.github.com/download/@proshop-app/types/0.0.6/44460bf338ddc04613803bbc5396e8c1845e8882#44460bf338ddc04613803bbc5396e8c1845e8882"
   integrity sha512-y16SXIoKQsb5893xBfv0kIzlZ0FNDsLe6JUzyj8VGm5ttkx40zqONcHupcDAE4ruzyQERpQR5sRtZc+XF0tkuw==
 
+"@proshop-app/types@^0.0.9":
+  version "0.0.9"
+  resolved "https://npm.pkg.github.com/download/@proshop-app/types/0.0.9/3053ecf0fe427732235e3ddbfa7487f568f13709#3053ecf0fe427732235e3ddbfa7487f568f13709"
+  integrity sha512-nxw/FZcSsmxPOFvUNwig1zqEFc/Bhdc2pHGd5bh3DVLOfBTnfQeS1iVw4/66QW6soeV3Jn5YeZ6kTDyi7yf5rw==
+
 "@rollup/rollup-android-arm-eabi@4.14.3":
   version "4.14.3"
   resolved "https://registry.yarnpkg.com/@rollup/rollup-android-arm-eabi/-/rollup-android-arm-eabi-4.14.3.tgz#bddf05c3387d02fac04b6b86b3a779337edfed75"

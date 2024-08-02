@@ -9,7 +9,6 @@ import { UserMapper } from '@modules/user/mappers/user.mapper'
 @injectable()
 export class UserRepository implements IUserRepository {
     async create(user: IUser): Promise<IUser> {
-        console.log(user)
         const userData = await new UserModel({
             ...UserMapper.toMongoModelData(user),
             _id: new mongoose.Types.ObjectId(),
@@ -19,9 +18,11 @@ export class UserRepository implements IUserRepository {
         return UserMapper.toDomain(userData.toObject())
     }
 
-    async find(params): Promise<IUser[]> {
+    async find(params: Partial<IUser>): Promise<IUser[]> {
+        const { id } = params
+
         const users = await UserModel
-            .find(params)
+            .find(id ? UserMapper.toMongoModelData(params as IUser) : params)
             .lean() as IUserMongoModel[]
 
         return users.map(user => UserMapper.toDomain(user))

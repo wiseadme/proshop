@@ -1,6 +1,7 @@
 <script lang="ts" setup>
     import { inject } from 'vue'
 
+    import { useProductConditions } from '@modules/products/composables/use-product-conditions'
     import { useProductModel } from '@modules/products/composables/use-product-model'
 
     import { useButtonsPanel } from '@shared/composables/use-buttons-panel'
@@ -12,12 +13,13 @@
     import { SvgPaths } from '@shared/enums/svg-paths'
 
     const { model } = useProductModel()
+    const { onUpdateConditions } = useProductConditions()
 
     const form = inject('$v_form', {}) as any
 
     useButtonsPanel({
         title: 'Управление состоянием',
-        onOk: () => form.validate(),
+        onOk: () => form.validate().then(onUpdateConditions),
         onDismiss: () => {
         }
     })
