@@ -114,7 +114,7 @@ export class UserService extends UserHelpers implements IUserService {
             id: this.getUserIdFromToken(cookies[USER_TOKEN_KEY]),
         })
 
-        if (user) {
+        if (user && !this.isExpired(user.refreshToken!)) {
             const userInfo = this.prepareUserResponseData(user)
 
             delete userInfo.exp

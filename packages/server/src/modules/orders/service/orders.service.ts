@@ -54,12 +54,12 @@ export class OrdersService implements IOrdersService {
          * на кол - во единиц указанное в заказе.
          */
         for (const item of order.items) {
-            if (!item.product.conditions.isCountable) {
+            if (!item.isCountable) {
                 continue
             }
 
             await this.gateway.product.reduceProductQuantity({
-                id: item.product.id,
+                id: item.id,
                 reduceBy: item.quantity,
             })
         }
@@ -102,12 +102,12 @@ export class OrdersService implements IOrdersService {
         const order = await this.repository.getOrderById(id)
 
         for (const item of order.items) {
-            if (!item.product.conditions.isCountable) {
+            if (!item.isCountable) {
                 continue
             }
 
             await this.gateway.product.increaseProductQuantity({
-                id: item.product.id,
+                id: item.id,
                 increaseBy: item.quantity,
             })
         }

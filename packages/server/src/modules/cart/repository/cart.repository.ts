@@ -30,7 +30,7 @@ export class CartRepository implements ICartRepository {
         validateId(id)
 
         const carts = await CartModel
-            .find<ICartMongoModel[]>({ ownerId: id, orderId: null })
+            .find<ICartMongoModel[]>({ customerId: id, orderId: null })
             .lean()
 
         return carts.map(cart => CartMapper.toDomain(cart))[0]

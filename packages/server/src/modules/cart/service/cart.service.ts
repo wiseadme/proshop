@@ -23,11 +23,11 @@ export class CartService implements ICartService {
     }
 
     async read(params: Partial<ICart>): Promise<ICart> {
-        if (!params.ownerId) {
+        if (!params.customerId) {
             return await this.repository.read(params)
         }
 
-        const cart = await this.repository.findByOwnerId(params.ownerId)
+        const cart = await this.repository.findByOwnerId(params.customerId)
 
         if (cart) return cart
 
@@ -45,11 +45,10 @@ export class CartService implements ICartService {
             updates.totalUniqueItems = updates.items.length
 
             updates.items.forEach(it => {
-                const { variant, product, quantity } = it
-                const price = variant?.option.price ?? product.price
+                const { price, quantity } = it
 
                 it.amount = quantity * price!
-                updates.amount! += it.amount
+                updates.amount! += quantity * price!
                 updates.totalItems! += quantity
             })
         }

@@ -30,4 +30,8 @@ export class UserHelpers {
     generateTokens(user: IUser) {
         return genJWTokens(user)
     }
+
+    isExpired(token: string) {
+        return isExpired(token)
+    }
 }
