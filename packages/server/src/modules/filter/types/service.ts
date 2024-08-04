@@ -12,13 +12,13 @@ export interface IFilterGroupService {
 }
 
 export interface IFilterItemService {
-    create(filterItem: IFilterItem): Promise<IFilterItem>
+    createFilterItem(filterItem: IFilterItem): Promise<IFilterItem>
 
-    read(params: Partial<IFilterItem>): Promise<IFilterItem[]>,
+    getFilterItems(params: Partial<IFilterItem>): Promise<IFilterItem[]>,
 
-    update(updates: Partial<IFilterItem>): Promise<IFilterItem>
+    updateFilterItem(updates: Partial<IFilterItem>): Promise<IFilterItem>
 
-    delete(id: string): Promise<boolean>
+    deleteFilterItem(id: string): Promise<boolean>
 
-    findByGroupIds(ids: string[]): Promise<Record<string, IFilterItem[]>>
+    getFilterItemsByGroupIds(ids: string[]): Promise<Record<string, IFilterItem[]>>
 }

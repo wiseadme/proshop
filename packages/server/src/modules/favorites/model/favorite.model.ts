@@ -16,6 +16,7 @@ const FavoriteSchema = new Schema<IFavoriteMongoModel>({
 }, {
     timestamps: false,
     virtuals: true,
+    versionKey: false,
 })
 
 FavoriteSchema.virtual('product', {

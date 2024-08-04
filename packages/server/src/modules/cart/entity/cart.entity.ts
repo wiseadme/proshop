@@ -12,13 +12,11 @@ export class Cart implements ICart {
 
     constructor({
         id = '',
-        items,
-        currency = null,
-        customerId = null,
+        items = [],
+        customerId = '',
         orderId = null
     }: ICart) {
         this.id = id
-        this.currency = currency
         this.customerId = customerId
         this.totalUniqueItems = 0
         this.totalItems = items.length

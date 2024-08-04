@@ -30,9 +30,9 @@ export class CartController extends BaseController implements IController {
         this.router.delete('/', this.deleteCart.bind(this))
     }
 
-    async createCart(request: Request<{}, {}, ICart>, response: Response, next: NextFunction) {
+    async createCart(request: Request<{}, {}, Partial<ICart>>, response: Response, next: NextFunction) {
         try {
-            const data = await this.service.create(request.body)
+            const data = await this.service.create(request.body as ICart)
 
             this.send({ data, request, response })
         } catch (error) {

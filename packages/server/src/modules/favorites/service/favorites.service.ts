@@ -20,10 +20,14 @@ export class FavoritesService implements IFavoritesService {
     async addToFavorites({ cookies, sku }: { cookies: Request['cookies'], sku: string }) {
         const parsed = parseJWToken(cookies[CUSTOMER_TOKEN_KEY])
 
-        return this.repository.create({
+        const data = await this.repository.create({
             userId: parsed.id,
             sku,
         })
+
+        console.log(data)
+
+        return data
     }
 
     async getFavorites(cookies) {

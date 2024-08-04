@@ -18,8 +18,8 @@ export class CartService implements ICartService {
     ) {
     }
 
-    async create(cart: ICart) {
-        return await this.repository.create(Cart.create(cart))
+    async create(cart: Partial<ICart>) {
+        return await this.repository.create(Cart.create(cart as ICart))
     }
 
     async read(params: Partial<ICart>): Promise<ICart> {
@@ -43,6 +43,8 @@ export class CartService implements ICartService {
             updates.amount = 0
             updates.totalItems = 0
             updates.totalUniqueItems = updates.items.length
+
+            updates.items = updates.items.filter(it => it.quantity > 0)
 
             updates.items.forEach(it => {
                 const { price, quantity } = it

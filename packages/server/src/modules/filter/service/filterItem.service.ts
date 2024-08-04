@@ -16,23 +16,23 @@ export class FilterItemService implements IFilterItemService {
     ) {
     }
 
-    create(filterItem: IFilterItem): Promise<IFilterItem> {
+    createFilterItem(filterItem: IFilterItem): Promise<IFilterItem> {
         return this.repository.create(FilterItem.create(filterItem))
     }
 
-    read(params: Partial<IFilterItem>): Promise<IFilterItem[]> {
+    getFilterItems(params: Partial<IFilterItem>): Promise<IFilterItem[]> {
         return this.repository.read(params)
     }
 
-    update(updates: Partial<IFilterItem>): Promise<IFilterItem> {
+    updateFilterItem(updates: Partial<IFilterItem>): Promise<IFilterItem> {
         return this.repository.update(updates)
     }
 
-    delete(id: string): Promise<boolean> {
+    deleteFilterItem(id: string): Promise<boolean> {
         return this.repository.delete(id)
     }
 
-    async findByGroupIds(ids: string[]) {
+    async getFilterItemsByGroupIds(ids: string[]) {
         const items = await this.repository.findByGroupIds(ids)
 
         return items.reduce((map, filter) => {

@@ -15,10 +15,6 @@ const CartSchema = new Schema<ICartMongoModel>({
         type: Number,
         default: 0,
     },
-    currency: {
-        type: Object,
-        default: null,
-    },
     amount: {
         type: Number,
         default: 0,
@@ -26,13 +22,12 @@ const CartSchema = new Schema<ICartMongoModel>({
     customerId: {
         type: Schema.Types.ObjectId,
         ref: 'User',
-        default: null,
     },
     orderId: {
         type: String,
         default: null,
     },
-}, {
+} as any, {
     timestamps: true,
 })
 

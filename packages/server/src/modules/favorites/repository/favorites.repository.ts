@@ -19,20 +19,19 @@ export class FavoritesRepository implements IFavoritesRepository {
 
     async create(favorite: IFavorite): Promise<IFavorite> {
         const favoriteData = await new FavoriteModel({
-            ...favorite,
+            ...FavoriteMapper.toMongoModelData(favorite),
             _id: new mongoose.Types.ObjectId(),
-        }).save()
+        })
+            .save()
 
-        return favoriteData.toObject()
+        return FavoriteMapper.toDomain(favoriteData.toObject())
     }
 
     async read(userId: string): Promise<IFavorite[]> {
         const favorites = await FavoriteModel
             .find({ userId })
-            .populate('product', ['name', 'image', 'price'])
+            // .populate('product', ['name', 'image', 'price', 'url'])
             .lean()
-
-        console.log(favorites)
 
         return favorites.length ? favorites.map(it => FavoriteMapper.toDomain(it)) : []
     }
