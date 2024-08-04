@@ -65,7 +65,7 @@ export class Product implements IProductParams {
     }
 
     static update(updates) {
-        if (updates.name) updates.url = translator(updates.name)
+        if (updates.name) updates.url = translator(updates.name.toLowerCase())
 
         return updates
     }

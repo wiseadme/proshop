@@ -23,18 +23,7 @@ export class CartService implements ICartService {
     }
 
     async read(params: Partial<ICart>): Promise<ICart> {
-        if (!params.customerId) {
-            return await this.repository.read(params)
-        }
-
-        const cart = await this.repository.findByOwnerId(params.customerId)
-
-        if (cart) return cart
-
-        return Promise.reject({
-            message: 'Cart not found',
-            status: 404,
-        })
+        return await this.repository.findByOwnerId(params.customerId!)
     }
 
     async update(updates: Partial<ICart>): Promise<ICart> {
