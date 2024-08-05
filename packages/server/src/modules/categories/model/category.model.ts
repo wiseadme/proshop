@@ -1,5 +1,5 @@
-import { Document, model, Schema } from 'mongoose'
-import { ICategory, ICategoryMongoModel } from '@proshop-app/types'
+import { model, Schema } from 'mongoose'
+import { ICategoryMongoModel, IMetaTag } from '@proshop-app/types'
 
 const CategorySchema: Schema = new Schema<ICategoryMongoModel>({
     _id: Schema.Types.ObjectId,
@@ -24,8 +24,8 @@ const CategorySchema: Schema = new Schema<ICategoryMongoModel>({
         title: String,
         description: String,
         keywords: String,
-        metatags: Array,
-        schema: Array,
+        metatags: [] as IMetaTag[],
+        schema: [] as any[],
     },
     parentId: {
         type: Schema.Types.ObjectId,
@@ -44,8 +44,10 @@ const CategorySchema: Schema = new Schema<ICategoryMongoModel>({
         default: 0,
     },
     conditions: {
-        visible: Boolean,
-        special: Boolean,
+        isVisible: Boolean,
+        isSpecial: Boolean,
+        isMain: Boolean,
+        isSub: Boolean
     },
     length: {
         type: Number,

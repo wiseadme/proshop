@@ -24,8 +24,10 @@ export class Category implements ICategory {
         length = 0,
         filters = [],
         conditions = {
-            visible: true,
-            special: false,
+            isVisible: true,
+            isSpecial: false,
+            isMain: false,
+            isSub: false
         },
         seo = {
             title: null,

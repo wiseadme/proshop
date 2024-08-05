@@ -25,8 +25,10 @@ export class Category implements ICategory {
         filters = [],
         parentId = null,
         conditions = {
-            visible: true,
-            special: false,
+            isVisible: true,
+            isSpecial: false,
+            isMain: false,
+            isSub: false
         },
         seo = {
             title: null,
@@ -42,11 +44,16 @@ export class Category implements ICategory {
         this.image = image
         this.assets = assets
         this.parentId = parentId
-        this.conditions = conditions
         this.filters = filters
         this.seo = seo
         this.url = url || translator(this.title).toLowerCase()
         this.length = length
+        this.conditions = {
+            isVisible: conditions.isVisible,
+            isSpecial: conditions.isSpecial,
+            isMain: conditions.isMain,
+            isSub: !!this.parentId,
+        }
     }
 
     static create(category: ICategory) {

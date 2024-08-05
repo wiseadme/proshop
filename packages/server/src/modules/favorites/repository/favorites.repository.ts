@@ -8,7 +8,7 @@ import { IFavorite } from '@proshop-app/types'
 import { FavoriteModel } from '@modules/favorites/model/favorite.model'
 import { IFavoritesRepository } from '@modules/favorites/types/repository'
 
-import {FavoriteMapper} from '@modules/favorites/mappers/mongo.mapper'
+import { FavoriteMapper } from '@modules/favorites/mappers/mongo.mapper'
 
 @injectable()
 export class FavoritesRepository implements IFavoritesRepository {
@@ -17,7 +17,7 @@ export class FavoritesRepository implements IFavoritesRepository {
     ) {
     }
 
-    async create(favorite: IFavorite): Promise<IFavorite> {
+    async create(favorite: IFavorite & { userId: string }): Promise<IFavorite> {
         const favoriteData = await new FavoriteModel({
             ...FavoriteMapper.toMongoModelData(favorite),
             _id: new mongoose.Types.ObjectId(),
@@ -30,7 +30,6 @@ export class FavoritesRepository implements IFavoritesRepository {
     async read(userId: string): Promise<IFavorite[]> {
         const favorites = await FavoriteModel
             .find({ userId })
-            // .populate('product', ['name', 'image', 'price', 'url'])
             .lean()
 
         return favorites.length ? favorites.map(it => FavoriteMapper.toDomain(it)) : []

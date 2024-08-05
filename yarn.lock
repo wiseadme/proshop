@@ -1413,10 +1413,10 @@
     node-addon-api "^3.2.1"
     node-gyp-build "^4.3.0"
 
-"@proshop-app/types@^0.0.27":
-  version "0.0.27"
-  resolved "https://npm.pkg.github.com/download/@proshop-app/types/0.0.27/3043fc746c86d7670297594625e7744b0f1307db#3043fc746c86d7670297594625e7744b0f1307db"
-  integrity sha512-MVrq5N6lPYcRX5jNvupgyWI67JpN3LuGux0Oil0dcaa/JnsJombI97nIFdX0lE2+/8xUnPIwP182rv9qErDH5w==
+"@proshop-app/types@^0.0.32":
+  version "0.0.32"
+  resolved "https://npm.pkg.github.com/download/@proshop-app/types/0.0.32/79be7c28acfcdaa47c1450f37f138cf8d252ae75#79be7c28acfcdaa47c1450f37f138cf8d252ae75"
+  integrity sha512-jrqDkpwy3Z5z8rUjZqceSp59jJfqLeGDme1J8TyO4sBVs/OoSw5AKv7tI8oPcPpIzWV4ztLKClHtpAsFbkrWuA==
 
 "@rollup/rollup-android-arm-eabi@4.14.3":
   version "4.14.3"

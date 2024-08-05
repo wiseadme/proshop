@@ -1,7 +1,7 @@
 import { IFavorite } from '@proshop-app/types'
 
 export interface IFavoritesRepository {
-    create(favorite: Partial<IFavorite>): Promise<IFavorite>
+    create(favorite: IFavorite & { userId: string }): Promise<IFavorite>
 
     read(userId: string): Promise<IFavorite[]>
 
