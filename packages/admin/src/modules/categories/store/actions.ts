@@ -2,7 +2,7 @@ import {
     useCategoryRepository
 } from '@modules/categories/composables/repository/use-category-repository'
 
-import type { ICategory } from '@proshop-app/types'
+import type { ICategory, ICategoryParams } from '@proshop-app/types'
 
 const repository = useCategoryRepository()
 
@@ -19,7 +19,7 @@ export const actions = {
         }
     },
 
-    async updateCategory(updates) {
+    async updateCategory(updates: Partial<ICategoryParams>) {
         try {
             const { data } = await repository.updateCategory(updates)
 

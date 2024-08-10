@@ -12,12 +12,11 @@ import type { ICategory } from '@proshop-app/types'
 import { CATEGORY_DELETED } from '@modules/categories/constants/notifications'
 import { RouteNames } from '@modules/categories/enums/route-names'
 import { INFO_BLOCK } from '@modules/products/constants/sections'
-import { CREATE } from '@shared/constants/actions'
+import { CREATE, EDIT } from '@shared/constants/actions'
 import { SAVING_ERROR } from '@shared/constants/notifications'
 
-
 export const useCategoriesTable = () => {
-    const { categories, setAsCurrent, deleteCategory } = useCategoriesService()
+    const { categories, deleteCategory } = useCategoriesService()
     const { setCategoryModel } = useCategoryModel()
     const { notify } = useNotifications()
     const router = useRouter()
@@ -109,8 +108,7 @@ export const useCategoriesTable = () => {
     }
 
     const onCreateRow = () => {
-        setCategoryModel(null)
-        setAsCurrent(null)
+        setCategoryModel()
 
         return router.push({
             name: RouteNames.CATEGORY_EDIT,
@@ -122,9 +120,23 @@ export const useCategoriesTable = () => {
         })
     }
 
+    const onEditRow = (row: ICategory) => {
+        setCategoryModel(row)
+
+        return router.push({
+            name: RouteNames.CATEGORY_EDIT,
+            params: {
+                action: EDIT,
+                categoryId: row.id,
+                section: INFO_BLOCK
+            }
+        })
+    }
+
     return {
         cols,
         onCreateRow,
         onDeleteRow,
+        onEditRow,
     }
 }

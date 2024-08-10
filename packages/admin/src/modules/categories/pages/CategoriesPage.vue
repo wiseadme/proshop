@@ -6,13 +6,11 @@
 
     import CategoryTable from '@modules/categories/components/CategoriesTable'
 
-
     const {
         categories,
         getCategories
     } = useCategoriesService()
 
-    const {onDeleteRow} = useCategoriesTable()
     const { cols } = useCategoriesTable()
 
     onBeforeMount(async () => {
@@ -27,7 +25,6 @@
                 <category-table
                     :cols="cols"
                     :rows="categories"
-                    @delete:category="onDeleteRow"
                 />
             </v-col>
         </v-row>

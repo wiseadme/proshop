@@ -44,10 +44,13 @@ const CategorySchema: Schema = new Schema<ICategoryMongoModel>({
         default: 0,
     },
     conditions: {
+        isMain: Boolean,
         isVisible: Boolean,
         isSpecial: Boolean,
-        isMain: Boolean,
-        isSub: Boolean
+        isSub: Boolean,
+        isInNav: Boolean,
+        isCatalog: Boolean,
+        isTop: Boolean,
     },
     length: {
         type: Number,

@@ -1,5 +1,4 @@
-import { useHttp } from '@shared/composables/use-http'
-
+import { useHttp } from '@proshop-app/composables'
 import { IUser } from '@proshop-app/types'
 
 export interface ILoginData {

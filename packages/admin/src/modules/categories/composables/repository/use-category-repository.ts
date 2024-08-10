@@ -1,6 +1,6 @@
 import { useSharedHttp } from '@shared/composables/use-http'
 
-import { ICategory } from '@proshop-app/types'
+import { ICategory, ICategoryParams } from '@proshop-app/types'
 
 export const useCategoryRepository = () => {
     const { request, cancel } = useSharedHttp()
@@ -20,7 +20,7 @@ export const useCategoryRepository = () => {
         params
     })
 
-    const updateCategory = (updates: Partial<ICategory>) => request({
+    const updateCategory = (updates: Partial<ICategoryParams>) => request({
         url: '/api/v1/category',
         headers: {
             'Content-Type': 'application/json',

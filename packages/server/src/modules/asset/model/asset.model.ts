@@ -19,10 +19,6 @@ const AssetSchema: Schema = new Schema<IAssetMongoModel>({
         type: String,
         required: true,
     },
-    main: {
-        type: Boolean,
-        default: false,
-    },
     order: {
         type: Number,
         default: 0
