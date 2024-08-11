@@ -22,9 +22,8 @@ jobs:
           path: node_modules
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/yarn.lock') }}
       - name: install project deps
-        uses: actions/setup-node@v3
         if: steps.cache-modules.outputs.cache-hit != 'true'
-      - run: |
+        run: |
           echo "start setting npm ${GITHUB_TOKEN}"
           npm set @proshop-app:registry=https://npm.pkg.github.com
           npm set "//npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}"
