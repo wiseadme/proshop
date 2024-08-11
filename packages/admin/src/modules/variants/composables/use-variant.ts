@@ -1,10 +1,10 @@
 import { ref } from 'vue'
 
-import { createSharedComposable } from '@shared/features/create-shared-composable'
+import { createSharedComposable } from '@shared/composables/features/create-shared-composable'
 
 import { Variant } from '@modules/variants/model/variant.model'
 
-import { IAttribute } from '@proshop/types'
+import type { IAttribute } from '@proshop-app/types'
 
 export const useVariant = createSharedComposable(() => {
     const model = ref(Variant.create())

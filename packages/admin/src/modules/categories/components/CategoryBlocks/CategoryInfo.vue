@@ -7,7 +7,7 @@
 
     import { FormCard } from '@shared/components/FormCard'
 
-    import { ICategory } from '@proshop/types'
+    import type { ICategory } from '@proshop-app/types'
 
 
     const { model } = useCategoryModel()

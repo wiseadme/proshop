@@ -1,6 +1,5 @@
-import { Document } from 'mongoose'
 import { Response } from 'express'
-import { ICustomer } from '@proshop/types'
+import { ICustomer } from '@proshop-app/types'
 
 export interface ICustomerService {
   createCustomer(res: Response, customer: ICustomer): Promise<ICustomer>

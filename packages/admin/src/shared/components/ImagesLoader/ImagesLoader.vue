@@ -10,13 +10,14 @@
     import { FormCard } from '@shared/components/FormCard'
     import { VSvg } from '@shared/components/VSvg'
 
-    import { IAsset } from '@proshop/types'
+    import type { IAsset } from '@proshop-app/types'
 
     import { SvgPaths } from '@shared/enums/svg-paths'
     import { clone } from '@shared/helpers'
 
-    const { assets } = defineProps<{
+    const props = defineProps<{
         assets: IAsset[]
+        main: Maybe<string>
     }>()
 
     const emit = defineEmits<{
@@ -49,8 +50,8 @@
         emit('update:order', unref(clonedItems))
     }
 
-    watch(() => assets, (value) => {
-        clonedItems.value = clone(value)
+    watch(() => props.assets.length, () => {
+        clonedItems.value = clone(props.assets)
     }, { immediate: true })
 
 </script>
@@ -86,7 +87,7 @@
                                 <div class="d-flex">
                                     <div
                                         class="image mr-2 mb-2 white elevation-2"
-                                        :class="{'product-image--main': element.main}"
+                                        :class="{'product-image--main': element.url === main}"
                                         style="height: 150px; width: 150px; overflow: hidden; position: relative; border-radius: 10px; padding: 0"
                                         @contextmenu.prevent="onImageContextMenu($event, element)"
                                     >

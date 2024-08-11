@@ -1,5 +1,4 @@
-import { ICart, ICartMongoModel } from '@proshop/types'
-import { ProductMapper } from '@modules/products/mappers/product.mapper'
+import type { ICart, ICartMongoModel } from '@proshop-app/types'
 
 export class CartMapper {
     static toDomain(entity: ICartMongoModel): ICart {
@@ -7,11 +6,6 @@ export class CartMapper {
         const map: Partial<ICartMongoModel> = entity
 
         delete map._id
-
-        map.items = map.items?.map(it => {
-            it.product = ProductMapper.toDomain(it.product as any)
-            return it
-        })
 
         return {
             id: _id,

@@ -4,11 +4,11 @@ import { TYPES } from '@common/schemes/di-types'
 
 // Types
 import { ILogger } from '@/types/utils'
-import { IFavorite } from '@proshop/types'
+import { IFavorite } from '@proshop-app/types'
 import { FavoriteModel } from '@modules/favorites/model/favorite.model'
 import { IFavoritesRepository } from '@modules/favorites/types/repository'
 
-import {FavoriteMapper} from '@modules/favorites/mappers/mongo.mapper'
+import { FavoriteMapper } from '@modules/favorites/mappers/mongo.mapper'
 
 @injectable()
 export class FavoritesRepository implements IFavoritesRepository {
@@ -17,19 +17,19 @@ export class FavoritesRepository implements IFavoritesRepository {
     ) {
     }
 
-    async create(favorite: IFavorite): Promise<IFavorite> {
+    async create(favorite: IFavorite & { userId: string }): Promise<IFavorite> {
         const favoriteData = await new FavoriteModel({
-            ...favorite,
+            ...FavoriteMapper.toMongoModelData(favorite),
             _id: new mongoose.Types.ObjectId(),
-        }).save()
+        })
+            .save()
 
-        return favoriteData.toObject()
+        return FavoriteMapper.toDomain(favoriteData.toObject())
     }
 
     async read(userId: string): Promise<IFavorite[]> {
         const favorites = await FavoriteModel
             .find({ userId })
-            .populate('product', ['name', 'image', 'price'])
             .lean()
 
         return favorites.length ? favorites.map(it => FavoriteMapper.toDomain(it)) : []

@@ -5,13 +5,14 @@ import {
     unref
 } from 'vue'
 
-import { createSharedComposable } from '@shared/features/create-shared-composable'
+import { useOptionsRepository } from '@modules/groups/composables/repository/use-options-repository'
 
-import { useOptionsRepository } from '@modules/groups/repository/options.repository'
+import { createSharedComposable } from '@shared/composables/features/create-shared-composable'
+
 
 import { useLogger } from '@shared/utils/logger'
 
-import { IOption } from '@proshop/types'
+import type { IOption } from '@proshop-app/types'
 
 export const useOptionsService = createSharedComposable(() => {
     const repository = useOptionsRepository()
@@ -23,9 +24,9 @@ export const useOptionsService = createSharedComposable(() => {
         try {
             const { data } = await repository.createOption(option)
 
-            unref(_options).push(data.data)
+            unref(_options).push(data)
 
-            return data.data
+            return data
         } catch (err) {
             logError('Options Service: option creating failed', err)
 
@@ -37,7 +38,7 @@ export const useOptionsService = createSharedComposable(() => {
         try {
             const { data } = await repository.getOptions(params)
 
-            _options.value = data.data
+            _options.value = data
         } catch (err) {
             logError('Options Service: options fetching failed', err)
 
@@ -50,12 +51,12 @@ export const useOptionsService = createSharedComposable(() => {
             const { data } = await repository.updateOption(option)
 
             _options.value = unref(_options).reduce((acc, it) => {
-                acc.push(it.id === option.id ? data.data : it)
+                acc.push(it.id === option.id ? data : it)
 
                 return acc
             }, [] as IOption[])
 
-            return data.data
+            return data
         } catch (err) {
             logError('Options Service: option updating failed', err)
 
@@ -69,7 +70,7 @@ export const useOptionsService = createSharedComposable(() => {
 
             _options.value = unref(_options).filter((option) => option.id !== id)
 
-            return data.data
+            return data
         } catch (err) {
             logError('Options Service: option deleting failed', err)
 
@@ -82,11 +83,12 @@ export const useOptionsService = createSharedComposable(() => {
     }
 
     return {
-        readOnlyOptions: _options as Ref<DeepReadonly<IOption>[]>,
+        options: _options as Ref<DeepReadonly<IOption>[]>,
         createOption,
         getOptions,
         updateOption,
         deleteOption,
-        clearOptions
+        clearOptions,
+        cancelRequests: repository.cancel
     }
 })

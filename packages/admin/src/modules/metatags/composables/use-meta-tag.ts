@@ -4,18 +4,18 @@ import {
     unref
 } from 'vue'
 
-import { createSharedComposable } from '@shared/features/create-shared-composable'
 
 import { useMetaTagForm } from '@modules/metatags/composables/use-meta-tag-form'
 import { useMetaTagsService } from '@modules/metatags/composables/use-meta-tags-service'
+
+import { createSharedComposable } from '@shared/composables/features/create-shared-composable'
 
 
 import { useNotifications } from '@shared/components/VNotifications/use-notifications'
 
 import { MetaTag } from '@modules/metatags/model/metaTag.model'
 
-import { IMetaTag } from '@proshop/types'
-
+import type { IMetaTag } from '@proshop-app/types'
 
 import {
     META_TAG_DELETED,

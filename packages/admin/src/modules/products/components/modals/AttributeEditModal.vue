@@ -6,8 +6,12 @@
         watch,
     } from 'vue'
 
-    import { useFilterGroupService } from '@modules/filters/composables/use-filter-group-service'
-    import { useFilterItemsService } from '@modules/filters/composables/use-filter-items-service'
+    import {
+        useFilterGroupService
+    } from '@modules/filters/composables/services/use-filter-group-service'
+    import {
+        useFilterItemsService
+    } from '@modules/filters/composables/services/use-filter-items-service'
     import { useProductAttributes } from '@modules/products/composables/use-product-attributes'
     import { useProductModel } from '@modules/products/composables/use-product-model'
 
@@ -17,7 +21,7 @@
 
     const {
         filterGroups,
-        getFilterGroupItems,
+        getFilterGroups,
     } = useFilterGroupService()
 
     const {
@@ -85,7 +89,7 @@
                     value-key="name"
                     color="primary"
                     :loading="!filterGroups.length"
-                    @focus="getFilterGroupItems"
+                    @focus="getFilterGroups()"
                 >
                     <template #select-list="{onSelect}">
                         <v-list active>

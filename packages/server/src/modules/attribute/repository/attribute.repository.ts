@@ -5,7 +5,7 @@ import { AttributeModel } from '@modules/attribute/model/attribute.model'
 import { validateId } from '@common/utils/mongoose-validate-id'
 // Types
 import { ILogger } from '@/types/utils'
-import { IAttribute, IAttributeMongoModel } from '@proshop/types'
+import { IAttribute, IAttributeMongoModel } from '@proshop-app/types'
 import { IAttributeRepository } from '../types/repository'
 import { AttributeMapper } from '@modules/attribute/mappers/attribute.mapper'
 

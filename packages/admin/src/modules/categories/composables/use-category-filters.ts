@@ -7,11 +7,13 @@ import {
 
 import { useCategoriesService } from '@modules/categories/composables/use-categories-service'
 import { useCategoryModel } from '@modules/categories/composables/use-category-model'
-import { useFilterGroupService } from '@modules/filters/composables/use-filter-group-service'
+import {
+    useFilterGroupService
+} from '@modules/filters/composables/services/use-filter-group-service'
 
 import { useNotifications } from '@shared/components/VNotifications/use-notifications'
 
-import { IFilterGroup } from '@proshop/types'
+import { IFilterGroup } from '@proshop-app/types'
 
 
 import {
@@ -20,7 +22,7 @@ import {
 } from '@modules/categories/constants/notifications'
 
 export const useCategoryFilters = () => {
-    const { filterGroups, getFilterGroupItems } = useFilterGroupService()
+    const { filterGroups, getFilterGroups } = useFilterGroupService()
     const { model } = useCategoryModel()
     const { updateCategory } = useCategoriesService()
     const { notify } = useNotifications()
@@ -55,7 +57,7 @@ export const useCategoryFilters = () => {
 
     return {
         availableFilterGroups,
-        getFilterGroupItems,
+        getFilterGroups,
         onUpdateFilters,
     }
 }

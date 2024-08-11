@@ -5,7 +5,7 @@ import { IController } from '@/types'
 import { ILogger } from '@/types/utils'
 import { TYPES } from '@common/schemes/di-types'
 import { IMerchantService, ISettingsService, ISiteService } from '@modules/settings/types/service'
-import { IMerchant, ISite } from '@proshop/types'
+import { IMerchant, ISite } from '@proshop-app/types'
 import { SETTINGS_MODULE_PATH } from '@common/constants/paths'
 import { setMiddlewares } from '@common/helpers'
 

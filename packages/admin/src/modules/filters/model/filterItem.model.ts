@@ -1,4 +1,4 @@
-import { IFilterItem } from '@proshop/types'
+import type { IFilterItem } from '@proshop-app/types'
 
 export class FilterItem implements IFilterItem{
     public id: string

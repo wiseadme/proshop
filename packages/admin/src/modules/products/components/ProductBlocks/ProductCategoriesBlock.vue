@@ -15,7 +15,7 @@
     import { TreeView } from '@shared/components/TreeView'
     import { VSvg } from '@shared/components/VSvg'
 
-    import { ICategory } from '@proshop/types'
+    import type { ICategory } from '@proshop-app/types'
 
     import { SvgPaths } from '@shared/enums/svg-paths'
     import { clone } from '@shared/helpers'

@@ -1,5 +1,5 @@
 import { IGroupRepository } from '@modules/group/types/repository'
-import { IGroup, IGroupMongoModel } from '@proshop/types'
+import { IGroup, IGroupMongoModel } from '@proshop-app/types'
 import { GroupModel } from '@modules/group/model/group.model'
 import { GroupMapper } from '@modules/group/mappers/group.mapper'
 import mongoose from 'mongoose'
@@ -30,7 +30,7 @@ export class GroupRepository implements IGroupRepository {
     }
 
     async deleteGroup(id: string): Promise<boolean> {
-        await GroupModel.findByIdAndRemove(id)
+        await GroupModel.findByIdAndDelete(id)
 
         return true
     }

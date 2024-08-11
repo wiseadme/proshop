@@ -4,9 +4,9 @@ import {
     unref,
 } from 'vue'
 
-import { createSharedComposable } from '@shared/features/create-shared-composable'
+import { createSharedComposable } from '@shared/composables/features/create-shared-composable'
 
-import { IMetaTag, Maybe } from '@proshop/types'
+import type { IMetaTag, Maybe } from '@proshop-app/types'
 
 import { useMetaTagsStore } from '@modules/metatags/store'
 

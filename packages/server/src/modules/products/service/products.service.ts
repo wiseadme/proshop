@@ -15,7 +15,7 @@ import {
     IProductParams,
     IProductQuery,
     IRequestParams,
-} from '@proshop/types'
+} from '@proshop-app/types'
 import { IProductsGatewayService } from '@modules/products/gateway/gateway.service'
 import { ServiceHelpers, IResponseItems } from '@modules/products/helpers/service.helpers'
 import { PRODUCTS_IOC } from '@modules/products/di/di.types'
@@ -66,7 +66,13 @@ export class ProductsService extends ServiceHelpers implements IProductsService 
         return this.formatToResponse([item], 1)
     }
 
-    async findByCategory({ category, page, count, desc, asc }: Partial<IRequestParams<IProductQuery>>): Promise<IResponseItems> {
+    async findByCategory({
+        category,
+        page,
+        count,
+        desc,
+        asc
+    }: Partial<IRequestParams<IProductQuery>>): Promise<IResponseItems> {
         const [found] = await this.gateway.category.getCategories({ url: category })
         const items = await this.repository.findByCategory({ category, page, count, desc, asc })
 

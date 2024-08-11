@@ -8,6 +8,8 @@ import { IFavoritesRepository } from '@modules/favorites/types/repository'
 import { parseJWToken } from '@common/helpers'
 import { FAVORITES_IOC } from '@modules/favorites/di/di.types'
 import { CUSTOMER_TOKEN_KEY } from '@common/constants/cookie-keys'
+import { Favorite } from '@modules/favorites/entity/favorite.entity'
+import { IFavorite } from '@proshop-app/types'
 
 @injectable()
 export class FavoritesService implements IFavoritesService {
@@ -21,8 +23,8 @@ export class FavoritesService implements IFavoritesService {
         const parsed = parseJWToken(cookies[CUSTOMER_TOKEN_KEY])
 
         return this.repository.create({
+            ...Favorite.create({ sku } as IFavorite),
             userId: parsed.id,
-            sku,
         })
     }
 

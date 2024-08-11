@@ -31,3 +31,15 @@ export const CATEGORY_IMAGE_DELETED: Notify = markRaw({
     text: 'Картинка категории успешно удалена!',
     type: 'success',
 })
+
+export const CATEGORY_CONDITION_UPDATED: Notify = markRaw({
+    title: 'Успешно изменено',
+    text: 'Состояние категории успешно изменено!',
+    type: 'success',
+})
+
+export const CATEGORY_CONDITION_UPDATING_ERROR: Notify = markRaw({
+    title: 'Ошибка изменения',
+    text: 'Состояние категории неизменено. Произошла ошибка!',
+    type: 'error',
+})

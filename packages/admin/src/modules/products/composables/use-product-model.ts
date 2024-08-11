@@ -5,13 +5,14 @@ import {
     watch,
 } from 'vue'
 
-import { createSharedComposable } from '@shared/features/create-shared-composable'
-
 import { useProduct } from '@modules/products/composables/use-product'
+
+import { createSharedComposable } from '@shared/composables/features/create-shared-composable'
+
 
 import { Product } from '@modules/products/model/product.model'
 
-import { IProduct } from '@proshop/types'
+import type { IProduct } from '@proshop-app/types'
 
 import { clone } from '@shared/helpers'
 

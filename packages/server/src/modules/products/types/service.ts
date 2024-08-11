@@ -1,4 +1,4 @@
-import { IAttribute, IMetaTag, IProduct, IProductParams, IRequestParams } from '@proshop/types'
+import { IAttribute, IMetaTag, IProduct, IProductParams, IRequestParams } from '@proshop-app/types'
 
 export interface IProductsService {
     createProduct(product: IProductParams): Promise<IProduct>

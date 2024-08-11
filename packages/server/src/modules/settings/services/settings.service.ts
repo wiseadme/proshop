@@ -4,7 +4,7 @@ import { TYPES } from '@common/schemes/di-types'
 import { ILogger } from '@/types/utils'
 import { IMerchantService, ISettingsService, ISiteService } from '@modules/settings/types/service'
 import { ISettingsRepository } from '@modules/settings/types/repository'
-import { IMerchant, ISettings, ISite } from '@proshop/types'
+import { IMerchant, ISettings, ISite } from '@proshop-app/types'
 
 @injectable()
 export class SettingsService implements ISettingsService {

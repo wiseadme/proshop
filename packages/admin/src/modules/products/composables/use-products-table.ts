@@ -11,7 +11,7 @@ import { useProductsService } from '@modules/products/composables/use-products-s
 // Types
 import { useNotifications } from '@shared/components/VNotifications/use-notifications'
 
-import { ICategory, IProduct } from '@proshop/types'
+import type { ICategory, IProduct } from '@proshop-app/types'
 
 // Constants
 import { PRODUCT_DELETED, PRODUCT_DELETE_ERROR } from '@modules/products/constants/notifications'

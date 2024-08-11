@@ -1,4 +1,4 @@
-import { IFilterItem, IFilterItemMongoModel } from '@proshop/types'
+import { IFilterItem, IFilterItemMongoModel } from '@proshop-app/types'
 
 export class FilterItemMapper {
     static toDomain(entity: IFilterItemMongoModel): IFilterItem {

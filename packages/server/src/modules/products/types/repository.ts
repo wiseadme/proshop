@@ -1,13 +1,11 @@
 import {
     IAttribute,
     IMetaTag,
-    IOption,
     IProduct,
     IProductParams,
     IProductQuery,
     IRequestParams,
-    IVariant,
-} from '@proshop/types'
+} from '@proshop-app/types'
 
 export interface IProductsRepository {
     createProduct(product: IProductParams): Promise<IProduct>

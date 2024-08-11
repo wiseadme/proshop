@@ -12,7 +12,7 @@ import { TreeItem } from '@shared/composables/use-tree-view'
 
 import { useNotifications } from '@shared/components/VNotifications/use-notifications'
 
-import { ICategory } from '@proshop/types'
+import type { ICategory } from '@proshop-app/types'
 
 import { CHANGES_SAVED, SAVING_ERROR } from '@shared/constants/notifications'
 

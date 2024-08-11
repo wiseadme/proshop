@@ -4,15 +4,16 @@ import {
     watch,
 } from 'vue'
 
-import { createSharedComposable } from '@shared/features/create-shared-composable'
 
 import { useProduct } from '@modules/products/composables/use-product'
 import { useProductModel } from '@modules/products/composables/use-product-model'
 import { useProductsService } from '@modules/products/composables/use-products-service'
 
+import { createSharedComposable } from '@shared/composables/features/create-shared-composable'
+
 import { useNotifications } from '@shared/components/VNotifications/use-notifications'
 
-import { IAttribute, IProduct } from '@proshop/types'
+import type { IAttribute, IProduct } from '@proshop-app/types'
 
 
 import {

@@ -5,7 +5,7 @@ import { OptionModel } from '@modules/options/model/option.model'
 import { validateId } from '@common/utils/mongoose-validate-id'
 // Types
 import { ILogger } from '@/types/utils'
-import { IOption, IOptionMongoModel } from '@proshop/types'
+import { IOption, IOptionMongoModel } from '@proshop-app/types'
 import { IOptionRepository } from '../types/repository'
 import { OptionMapper } from '@modules/options/mappers/option.mapper'
 
@@ -35,7 +35,7 @@ export class OptionRepository implements IOptionRepository {
     }
 
     async update(updates: Partial<IOption>): Promise<IOption> {
-        validateId(updates.id)
+        validateId(updates.id!)
 
         const option = await OptionModel
             .findByIdAndUpdate(

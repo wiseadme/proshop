@@ -1,6 +1,4 @@
-import { Document } from 'mongoose'
-import { IOrder } from '@proshop/types'
-import { id } from 'inversify'
+import { IOrder } from '@proshop-app/types'
 
 export interface IOrdersRepository {
     createOrder(order: IOrder): Promise<IOrder>
@@ -11,7 +9,7 @@ export interface IOrdersRepository {
 
     getOrdersByStatus(seen: boolean): Promise<IOrder[]>
 
-    updateOrder(updates: IOrder): Promise<IOrder>
+    updateOrder(updates: Partial<IOrder>): Promise<IOrder>
 
     deleteOrder(id: string): Promise<boolean>
 

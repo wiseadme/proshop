@@ -1,4 +1,4 @@
-import { IOrder } from '@proshop/types'
+import { IOrder } from '@proshop-app/types'
 
 export class Order implements IOrder {
     readonly id: IOrder['id']
@@ -33,6 +33,7 @@ export class Order implements IOrder {
             seen: false,
             completed: false,
             cancelled: false,
+            disbanded: false
         },
     }: IOrder) {
         this.id = id

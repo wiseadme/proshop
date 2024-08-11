@@ -1,4 +1,4 @@
-import type { IGroup, IGroupMongoModel, IVariantMongoModel } from '@proshop/types'
+import type { IGroup, IGroupMongoModel, IVariantMongoModel } from '@proshop-app/types'
 import { VariantMapper } from '@modules/variant/mappers/variant.mapper'
 
 export class GroupMapper {

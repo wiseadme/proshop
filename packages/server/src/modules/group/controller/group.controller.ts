@@ -6,7 +6,7 @@ import { TYPES } from '@common/schemes/di-types'
 import { ILogger } from '@/types/utils'
 import { IController } from '@/types'
 import { GROUP_MODULE_PATH } from '@common/constants/paths'
-import { IGroup } from '@proshop/types'
+import { IGroup } from '@proshop-app/types'
 import { GROUP_IOC } from '@modules/group/di/di.types'
 import { IGroupService } from '@modules/group/types/service'
 

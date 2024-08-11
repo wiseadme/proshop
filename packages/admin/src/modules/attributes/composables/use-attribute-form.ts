@@ -1,9 +1,10 @@
 import { ref, unref } from 'vue'
 
-import { createSharedComposable } from '@shared/features/create-shared-composable'
 
 import { useAttributeModel } from '@modules/attributes/composables/use-attribute-model'
 import { useAttributesService } from '@modules/attributes/composables/use-attributes-service'
+
+import { createSharedComposable } from '@shared/composables/features/create-shared-composable'
 
 import { useNotifications } from '@shared/components/VNotifications/use-notifications'
 

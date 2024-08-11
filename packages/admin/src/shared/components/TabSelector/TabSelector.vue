@@ -1,16 +1,15 @@
 <script lang="ts" setup>
     import { useRouter } from 'vue-router'
 
+    import { useVModel } from '@shared/composables/features/use-v-model'
+
     const { tabs } = defineProps<{
         modelValue: any
         tabs: any[]
     }>()
 
-    const emit = defineEmits<{
-        (e: 'update:modelValue', value: any): void
-    }>()
-
     const router = useRouter()
+    const selectedTab = useVModel()
 
     const onClick = (newTab) => {
         router.push({
@@ -21,7 +20,7 @@
             }
         })
 
-        emit('update:modelValue', newTab)
+        selectedTab.value = newTab
     }
 
 </script>
@@ -31,16 +30,18 @@
             <v-button
                 v-for="tab in tabs"
                 :key="tab.section"
-                :color="tab.title === modelValue.title ? 'primary': 'white'"
-                :elevation="tab.title === modelValue.title ? 2 : 0"
+                :color="tab.title === selectedTab.title ? 'primary': 'white'"
+                :elevation="tab.title === selectedTab.title ? 2 : 0"
                 :disabled="tab.disabled"
                 class="mr-1 px-4"
                 @click="onClick(tab)"
             >
                 <span
                     :style="{fontSize: 'calc(100vw / 1920 * 15)'}"
-                    :class="[tab.title === modelValue.title ? 'white--text' : 'secondary--text']"
-                >{{ tab.title }}</span>
+                    :class="[tab.title === selectedTab.title ? 'white--text' : 'secondary--text']"
+                >
+                    {{ tab.title }}
+                </span>
             </v-button>
         </div>
         <div class="tab-selector__content pt-6">

@@ -1,12 +1,12 @@
 <script lang="ts" setup>
     import { onBeforeMount } from 'vue'
 
-    import { useFilterGroupService } from '@modules/filters/composables/use-filter-group-service'
+    import { useFilterGroups } from '@modules/filters/composables/view/use-filter-groups.ts'
 
     import FilterGroupsList from '@modules/filters/components/FilterGroupsList.vue'
     import FilterGroupFormModal from '@modules/filters/components/modals/FilterGroupFormModal.vue'
 
-    const { getFilterGroupAttributes, getFilterGroups } = useFilterGroupService()
+    const { getFilterGroupAttributes, getFilterGroups } = useFilterGroups()
 
     onBeforeMount(() => {
         getFilterGroupAttributes()
@@ -22,7 +22,7 @@
                 offset-xl="2"
                 offset-lg="2"
             >
-                <filter-groups-list />
+                <filter-groups-list/>
             </v-col>
         </v-row>
         <filter-group-form-modal/>

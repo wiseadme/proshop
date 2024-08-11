@@ -55,7 +55,7 @@ export class MongoRepositoryHelpers implements IProductMongoRepositoryHelpers {
     getRelatedPopulateParams() {
         return {
             path: 'related',
-            select: 'name price url image categories currency',
+            select: 'name price url image categories currency conditions sku',
             populate: [this.getCategoriesPopulateParams()],
             options: {
                 lean: true

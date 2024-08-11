@@ -5,8 +5,8 @@ import { TYPES } from '@common/schemes/di-types'
 // Types
 import { ILogger } from '@/types/utils'
 import { IController } from '@/types'
-import { IOptionService } from '../types/service'
-import { IOption } from '@proshop/types'
+import { IOptionService } from '@modules/options/types/service'
+import { IOption } from '@proshop-app/types'
 import { OptionDTO } from '@modules/options/dto/option.dto'
 import { OPTIONS_MODULE_PATH } from '@common/constants/paths'
 import { setMiddlewares } from '@common/helpers'
@@ -27,7 +27,7 @@ export class OptionsController extends BaseController implements IController {
 
     initRoutes() {
         this.router.post('/', setMiddlewares({ roles: ['root'], dto: OptionDTO }), this.createOption.bind(this))
-        this.router.get('/', setMiddlewares({ roles: ['root', 'user', 'readonly'] }), this.getOptions.bind(this))
+        this.router.get('/', this.getOptions.bind(this))
         this.router.patch('/', setMiddlewares({ roles: ['root'] }), this.updateOption.bind(this))
         this.router.delete('/', setMiddlewares({ roles: ['root'] }), this.deleteOption.bind(this))
     }

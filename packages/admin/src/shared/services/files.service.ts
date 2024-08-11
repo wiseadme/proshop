@@ -1,6 +1,6 @@
 import { Store } from 'nervue'
 
-import { IAsset } from '@proshop/types'
+import { IAsset } from '@proshop-app/types'
 
 import { useFilesStore } from '@shared/store/files'
 

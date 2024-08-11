@@ -15,7 +15,6 @@
     import { RouteNames } from '@modules/settings/enums/route-names'
     import { Sections } from '@modules/settings/enums/sections'
 
-
     const ColorsBlock = markRaw(defineAsyncComponent(() => import('@modules/settings/components/Site/ColorsBlock.vue')))
     const SliderBlock = markRaw(defineAsyncComponent(() => import('@modules/settings/components/Site/SliderBlock.vue')))
     const BrandBlock = markRaw(defineAsyncComponent(() => import('@modules/settings/components/Site/BrandBlock.vue')))

@@ -1,4 +1,4 @@
-import { IOrder } from '@proshop/types'
+import { IOrder } from '@proshop-app/types'
 import { Request } from 'express'
 import { IOrderResponse } from '@modules/orders/types/response'
 

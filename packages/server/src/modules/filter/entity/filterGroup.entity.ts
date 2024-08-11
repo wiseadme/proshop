@@ -1,4 +1,4 @@
-import { IFilterGroup } from '@proshop/types'
+import { IFilterGroup } from '@proshop-app/types'
 
 export class FilterGroup implements IFilterGroup {
     readonly id: string

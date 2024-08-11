@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken'
 import { USER_TOKEN_KEY } from '@common/constants/cookie-keys'
 import { config } from '@app/config'
 import { ACCESS_TOKEN_EXP, REFRESH_TOKEN_EXP } from '@common/constants/counts'
-import { Maybe } from '@proshop/types'
+import { Maybe } from '@proshop-app/types'
 
 interface MiddlewareArguments {
     dto?: any,
@@ -34,7 +34,7 @@ export const genJWToken = ({ payload, secret, expiresIn }): string => {
     return jwt.sign(payload, secret, { expiresIn })
 }
 
-export const genJWTokens = (payload: Record<string, any>) => ({
+export const genJWTokens = (payload: Record<string, any>): { accessToken: string, refreshToken: string } => ({
     accessToken: genJWToken({
         secret: config.accessSecret,
         expiresIn: ACCESS_TOKEN_EXP,
@@ -47,7 +47,7 @@ export const genJWTokens = (payload: Record<string, any>) => ({
     }),
 })
 
-export const verifyJWToken = (token: string) => new Promise((resolve) => {
+export const verifyJWToken = (token: string): Promise<boolean> => new Promise((resolve) => {
     jwt.verify(token, config.accessSecret, (err: any) => resolve(!Boolean(err)))
 })
 

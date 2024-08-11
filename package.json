@@ -16,6 +16,10 @@
     "docker:build": "lerna run build && docker compose build",
     "lint:fix": "lerna run lint:fix"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wiseadme/proshop"
+  },
   "workspaces": [
     "packages/admin",
     "packages/server",

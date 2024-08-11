@@ -1,4 +1,4 @@
-import { IAttribute } from '@proshop/types'
+import type { IAttribute } from '@proshop-app/types'
 
 export class Attribute implements IAttribute {
     readonly id: string

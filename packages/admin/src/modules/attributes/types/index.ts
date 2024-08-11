@@ -1,4 +1,4 @@
-import { IAttribute } from '@proshop/types'
+import { IAttribute } from '@proshop-app/types'
 
 export interface IAttributeState {
     attributes: Maybe<IAttribute[]>

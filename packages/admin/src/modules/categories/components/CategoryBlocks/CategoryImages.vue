@@ -1,22 +1,24 @@
 <script lang="ts" setup>
     import { computed, unref } from 'vue'
 
-    import { useCategoriesService } from '@modules/categories/composables/use-categories-service'
     import { useCategoryImages } from '@modules/categories/composables/use-category-images'
+    import { useCategoryModel } from '@modules/categories/composables/use-category-model'
 
     import { ImagesLoader } from '@shared/components/ImagesLoader'
 
-
     const {
+        assets,
         onUpdateImagesOrders,
         onUpdateMainImage,
         onUploadCategoryImage,
         onDeleteCategoryImage,
     } = useCategoryImages()
 
-    const { category } = useCategoriesService()
+    const { model } = useCategoryModel()
 
-    const assets = computed(() => unref(category)?.assets?.sort((a, b) => a.order - b.order) || [])
+    console.log(model)
+
+    const sortedAssets = computed(() => unref(assets).slice().sort((a, b) => a.order - b.order) || [])
 
     const onLoadImage = ([file]) => {
         if (!file) return
@@ -27,7 +29,8 @@
 <template>
     <v-layout>
         <images-loader
-            :assets="assets"
+            :assets="sortedAssets"
+            :main="model.image"
             @delete="onDeleteCategoryImage"
             @load="onLoadImage"
             @update:main="onUpdateMainImage"

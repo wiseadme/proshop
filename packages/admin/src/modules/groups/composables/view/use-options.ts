@@ -4,8 +4,12 @@ import {
     unref
 } from 'vue'
 
-import { useFilterGroupService } from '@modules/filters/composables/use-filter-group-service'
-import { useFilterItemsService } from '@modules/filters/composables/use-filter-items-service'
+import {
+    useFilterGroupService
+} from '@modules/filters/composables/services/use-filter-group-service.ts'
+import {
+    useFilterItemsService
+} from '@modules/filters/composables/services/use-filter-items-service.ts'
 import { useGroupsService } from '@modules/groups/composables/services/use-groups-service'
 import { useOptionsService } from '@modules/groups/composables/services/use-options-service'
 import { useGroupModel } from '@modules/groups/composables/view/use-group-model'
@@ -20,7 +24,7 @@ import type {
     IOption,
     IProduct,
     IVariant
-} from '@proshop/types'
+} from '@proshop-app/types'
 
 import {
     OPTION_CREATE_ERROR,
@@ -33,7 +37,7 @@ import { SEARCH_INPUT_MIN_LENGTH } from '@modules/groups/constants/options'
 
 export const useOptions = () => {
     const {
-        readOnlyOptions,
+        options,
         createOption,
         getOptions,
         deleteOption,
@@ -130,7 +134,7 @@ export const useOptions = () => {
         products,
         filterItems,
         filterGroups,
-        options: readOnlyOptions,
+        options,
         optionProduct,
         getFilterGroups,
         getFilterItems,

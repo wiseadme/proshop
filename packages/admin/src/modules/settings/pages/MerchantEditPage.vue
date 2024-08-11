@@ -12,7 +12,6 @@
     import OrganizationBlock from '@modules/settings/components/Merchant/OrganizationBlock.vue'
     import SocialBlock from '@modules/settings/components/Merchant/SocialBlock.vue'
 
-
     const {
         isEditMode,
         createMerchant,

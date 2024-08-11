@@ -1,13 +1,13 @@
 <script lang="ts" setup>
     import { unref, watch } from 'vue'
 
-    import { useFilterGroups } from '@modules/filters/composables/use-filter-groups'
-    import { useFilterItemModel } from '@modules/filters/composables/use-filter-item-model'
-    import { useFilterItems } from '@modules/filters/composables/use-filter-items'
+    import { useFilterGroups } from '@modules/filters/composables/view/use-filter-groups'
+    import { useFilterItemModel } from '@modules/filters/composables/view/use-filter-item-model'
+    import { useFilterItems } from '@modules/filters/composables/view/use-filter-items'
 
     import ModalCard from '@shared/components/Modals/ModalCard.vue'
 
-    import type { IFilterGroup } from '@proshop/types'
+    import type { IFilterGroup } from '@proshop-app/types'
 
     const { filterGroups } = useFilterGroups()
     const { filtersGroup, showForm, onCloseForm, onSubmit } = useFilterItems()

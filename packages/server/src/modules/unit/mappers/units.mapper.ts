@@ -1,4 +1,4 @@
-import { IAttribute, IUnit, IUnitMongoModel } from '@proshop/types'
+import { IAttribute, IUnit, IUnitMongoModel } from '@proshop-app/types'
 
 export class UnitsMapper {
     static toDomain(entity: IUnitMongoModel): IUnit {

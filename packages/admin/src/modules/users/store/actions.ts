@@ -1,6 +1,6 @@
 import { useUsersRepository } from '@modules/users/repository/users.repository'
 
-import { IUser } from '@proshop/types'
+import type { IUser } from '@proshop-app/types'
 
 const repository = useUsersRepository()
 

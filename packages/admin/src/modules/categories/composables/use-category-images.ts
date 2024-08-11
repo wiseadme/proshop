@@ -5,28 +5,29 @@ import { useCategoryModel } from '@modules/categories/composables/use-category-m
 
 import { useNotifications } from '@shared/components/VNotifications/use-notifications'
 
-import { IAsset } from '@proshop/types'
+import type { IAsset } from '@proshop-app/types'
 
 import {
     CATEGORY_IMAGE_DELETED,
     CATEGORY_IMAGE_SAVED,
 } from '@modules/categories/constants/notifications'
+import { getIds } from '@modules/products/helpers'
 import { CHANGES_SAVED, SAVING_ERROR } from '@shared/constants/notifications'
+import { useFilesService } from '@shared/services/files.service'
 
 
 export const useCategoryImages = () => {
     const {
-        category,
         updateCategoryImagesOrders,
-        updateCategoryMainImage,
-        uploadCategoryImage,
-        deleteCategoryImage,
+        updateCategory,
     } = useCategoriesService()
+
+    const filesService = useFilesService()
 
     const { model } = useCategoryModel()
     const { notify } = useNotifications()
 
-    const mainImage = computed(() => (unref(category)?.assets as IAsset[]).find(it => it.main))
+    const assets = computed(() => unref(model).assets ?? [])
 
     const onUpdateImagesOrders = async (assets: IAsset[]) => {
         try {
@@ -40,8 +41,21 @@ export const useCategoryImages = () => {
 
     const onUploadCategoryImage = async (file: File) => {
         try {
-            await uploadCategoryImage(file)
-            unref(model).image = unref(category)!.image
+            const { formData, fileName } = filesService.createFormData(file)
+
+            const asset = await filesService.uploadFile({
+                fileName,
+                formData,
+                ownerId: unref(model).id
+            })
+
+            unref(model).assets.push(asset)
+
+            await updateCategory({
+                id: unref(model).id,
+                image: unref(model).assets[0].url,
+                assets: getIds(unref(model).assets)
+            })
 
             notify(CATEGORY_IMAGE_SAVED)
         } catch (err) {
@@ -51,7 +65,14 @@ export const useCategoryImages = () => {
 
     const onDeleteCategoryImage = async (asset: IAsset) => {
         try {
-            await deleteCategoryImage(asset)
+            await filesService.deleteFile(asset)
+
+            unref(model).assets = unref(assets).filter(it => it.id !== asset.id)
+
+            await updateCategory({
+                id: asset.ownerId,
+                assets: getIds(unref(assets)),
+            })
 
             notify(CATEGORY_IMAGE_DELETED)
         } catch {
@@ -61,7 +82,12 @@ export const useCategoryImages = () => {
 
     const onUpdateMainImage = async (asset: IAsset) => {
         try {
-            await updateCategoryMainImage(asset)
+            await updateCategory({
+                id: asset.ownerId,
+                image: asset.url,
+            })
+
+            unref(model).image = asset.url
 
             notify(CHANGES_SAVED)
         } catch (err) {
@@ -70,7 +96,7 @@ export const useCategoryImages = () => {
     }
 
     return {
-        mainImage,
+        assets,
         onUpdateImagesOrders,
         onUploadCategoryImage,
         onDeleteCategoryImage,

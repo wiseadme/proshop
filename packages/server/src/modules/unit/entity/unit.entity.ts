@@ -1,4 +1,4 @@
-import { IUnit } from '@proshop/types'
+import { IUnit } from '@proshop-app/types'
 
 export class Unit implements IUnit {
     readonly id: string

@@ -1,5 +1,5 @@
 import { translator } from '@common/utils/translator'
-import { IProduct, IProductParams } from '@proshop/types'
+import { IProductParams } from '@proshop-app/types'
 import { SkuGenerator } from '@common/plugins/sku-generator'
 import customId from 'custom-id'
 
@@ -65,7 +65,7 @@ export class Product implements IProductParams {
     }
 
     static update(updates) {
-        if (updates.name) updates.url = translator(updates.name)
+        if (updates.name) updates.url = translator(updates.name.toLowerCase())
 
         return updates
     }

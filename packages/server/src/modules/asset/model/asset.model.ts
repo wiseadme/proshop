@@ -1,5 +1,5 @@
 import { model, Schema } from 'mongoose'
-import { IAssetMongoModel } from '@proshop/types'
+import type { IAssetMongoModel } from '@proshop-app/types'
 
 const AssetSchema: Schema = new Schema<IAssetMongoModel>({
     _id: Schema.Types.ObjectId,
@@ -19,13 +19,9 @@ const AssetSchema: Schema = new Schema<IAssetMongoModel>({
         type: String,
         required: true,
     },
-    main: {
-        type: Boolean,
-        default: false,
-    },
     order: {
-      type: Number,
-      default: 0
+        type: Number,
+        default: 0
     },
 }, {
     timestamps: true,

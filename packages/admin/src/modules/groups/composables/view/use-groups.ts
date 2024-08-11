@@ -10,12 +10,12 @@ import { Group } from '@modules/groups/model/group.model'
 
 import { useLogger } from '@shared/utils/logger'
 
-import type { IGroup, IVariant } from '@proshop/types'
+import type { IGroup, IVariant } from '@proshop-app/types'
 
 import { GROUP_CREATE_ERROR } from '@modules/groups/constants/notifications'
 
 export const useGroups = () => {
-    const { readOnlyGroups, createGroup, updateGroup } = useGroupsService()
+    const { groups, createGroup, updateGroup } = useGroupsService()
     const { variants, getVariants } = useVariantsService()
     const { model } = useGroupModel()
     const { logError } = useLogger()
@@ -50,7 +50,7 @@ export const useGroups = () => {
 
     return {
         variants,
-        groups: readOnlyGroups,
+        groups,
         onCreateGroup,
         onUpdateGroup,
         getVariantItems,

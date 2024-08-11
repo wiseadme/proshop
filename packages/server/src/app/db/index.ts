@@ -16,6 +16,9 @@ export class DB implements IDb {
         mongoose.connect(config.dbUri, {
             useNewUrlParser: true,
         } as MongooseOptions)
+            .then(() => {
+                mongoose.set('strictQuery', false)
+            })
 
         this.addListeners()
     }

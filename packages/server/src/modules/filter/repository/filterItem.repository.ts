@@ -5,7 +5,7 @@ import { FilterItemModel } from '@modules/filter/model/filterItem.model'
 import { validateId } from '@common/utils/mongoose-validate-id'
 // Types
 import { ILogger } from '@/types/utils'
-import { IFilterItem, IFilterItemMongoModel } from '@proshop/types'
+import { IFilterItem, IFilterItemMongoModel } from '@proshop-app/types'
 import { IFilterItemRepository } from '../types/repository'
 import { FilterItemMapper } from '@modules/filter/mappers/filterItem.mapper'
 
@@ -45,7 +45,7 @@ export class FilterItemRepository implements IFilterItemRepository {
     }
 
     async update(updates: Partial<IFilterItem>): Promise<IFilterItem> {
-        validateId(updates.id)
+        validateId(updates.id!)
 
         const option = await FilterItemModel.findByIdAndUpdate(
             { _id: updates.id },

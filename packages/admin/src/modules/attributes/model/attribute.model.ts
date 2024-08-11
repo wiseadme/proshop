@@ -1,4 +1,4 @@
-import { IAttribute } from '@proshop/types'
+import { IAttribute } from '@proshop-app/types'
 
 export class Attribute implements IAttribute {
     id: IAttribute['id']

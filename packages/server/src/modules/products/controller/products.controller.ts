@@ -7,8 +7,8 @@ import { ProductDTO } from '@modules/products/dto/product.dto'
 // Types
 import { ILogger } from '@/types/utils'
 import { IController } from '@/types'
-import { IAttribute, IMetaTag, IOption, IProduct, IProductParams, IVariant } from '@proshop/types'
-import { IProductsService } from '../types/service'
+import { IAttribute, IMetaTag, IProduct, IProductParams } from '@proshop-app/types'
+import { IProductsService } from '@modules/products/types/service'
 
 // Helpers
 import { setMiddlewares } from '@common/helpers'

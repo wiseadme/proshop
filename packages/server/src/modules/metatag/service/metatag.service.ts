@@ -4,7 +4,7 @@ import { TYPES } from '@common/schemes/di-types'
 import { ILogger } from '@/types/utils'
 import { IMetaTagService } from '@modules/metatag/types/service'
 import { IMetaTagRepository } from '@modules/metatag/types/repository'
-import { IMetaTag } from '@proshop/types'
+import { IMetaTag } from '@proshop-app/types'
 import { IEventBusService } from '@/types/services'
 import { META_TAG_IOC } from '@modules/metatag/di/di.types'
 

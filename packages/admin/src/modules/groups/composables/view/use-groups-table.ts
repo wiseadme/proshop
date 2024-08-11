@@ -7,7 +7,7 @@ import { useOptionsFormModal } from '@modules/groups/composables/view/use-option
 
 import { useNotifications } from '@shared/components/VNotifications/use-notifications'
 
-import { IGroup, IVariant } from '@proshop/types'
+import { IGroup, IVariant } from '@proshop-app/types'
 
 import { GROUP_DELETE_ERROR, GROUP_DELETE_WARNING } from '@modules/groups/constants/notifications'
 
@@ -15,7 +15,7 @@ export const useGroupsTable = () => {
     const { notify } = useNotifications()
 
     const {
-        readOnlyGroups: rows,
+        groups: rows,
         getGroups,
         deleteGroup,
     } = useGroupsService()

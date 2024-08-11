@@ -6,7 +6,7 @@
     import UserActionsModal from '@modules/users/components/UserActionsModal'
     import UsersTable from '@modules/users/components/UsersTable'
 
-    import { IUser } from '@proshop/types'
+    import type { IUser } from '@proshop-app/types'
 
     const { createUser, deleteUser, fetchUsers } = useUsersService()
     const openModal = ref(false)

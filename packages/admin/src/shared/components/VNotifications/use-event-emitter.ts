@@ -1,4 +1,4 @@
-import { createSharedComposable } from '@shared/features/create-shared-composable'
+import { createSharedComposable } from '@shared/composables/features/create-shared-composable'
 
 export const useEventEmitter = createSharedComposable(() => {
     const events = {}

@@ -14,6 +14,18 @@ export const PRODUCT_DELETE_ERROR: Notify = markRaw({
     type: 'error'
 })
 
+export const PRODUCT_CONDITIONS_UPDATED: Notify = markRaw({
+    title: 'Сохранение товара',
+    text: 'Состояние товара успешно изменено.',
+    type: 'success'
+})
+
+export const PRODUCT_CONDITIONS_UPDATE_ERROR: Notify = markRaw({
+    title: 'Ошибка изменений',
+    text: 'Состояние товара не изменено.',
+    type: 'error'
+})
+
 export const PRODUCT_IMAGE_SAVED: Notify = markRaw({
     title: 'Сохранено',
     text: 'Картинка товара успешно сохранена!',

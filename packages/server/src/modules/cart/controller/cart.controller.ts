@@ -6,7 +6,7 @@ import { TYPES } from '@common/schemes/di-types'
 import { ILogger } from '@/types/utils'
 import { IController } from '@/types'
 import { ICartService } from '@modules/cart/types/service'
-import { ICart } from '@proshop/types'
+import type { ICart } from '@proshop-app/types'
 import { CARTS_MODULE_PATH } from '@common/constants/paths'
 import { CART_IOC } from '@modules/cart/di/di.types'
 
@@ -30,9 +30,9 @@ export class CartController extends BaseController implements IController {
         this.router.delete('/', this.deleteCart.bind(this))
     }
 
-    async createCart(request: Request<{}, {}, ICart>, response: Response, next: NextFunction) {
+    async createCart(request: Request<{}, {}, Partial<ICart>>, response: Response, next: NextFunction) {
         try {
-            const data = await this.service.create(request.body)
+            const data = await this.service.create(request.body as ICart)
 
             this.send({ data, request, response })
         } catch (error) {
@@ -40,7 +40,8 @@ export class CartController extends BaseController implements IController {
         }
     }
 
-    async getCart(request: Request<{}, {}, {}, { id?: string }>, response: Response, next: NextFunction) {
+    async getCart(request: Request<{}, {}, {}>, response: Response, next: NextFunction) {
+        console.log(request.cookies)
         try {
             const data = await this.service.read(request.query)
 

@@ -4,7 +4,7 @@
     import { FormCard } from '@shared/components/FormCard'
     import { VSvg } from '@shared/components/VSvg'
 
-    import { IProduct } from '@proshop/types'
+    import type { IProduct } from '@proshop-app/types'
 
     import { icons } from '@shared/enums/icons'
     import { SvgPaths } from '@shared/enums/svg-paths'

@@ -1,5 +1,5 @@
 import { Document, model, Schema } from 'mongoose'
-import { IUnit } from '@proshop/types'
+import type { IUnit } from '@proshop-app/types'
 
 const UnitSchema = new Schema<Document & IUnit>({
     _id: Schema.Types.ObjectId,

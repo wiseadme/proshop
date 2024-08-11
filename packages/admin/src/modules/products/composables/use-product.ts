@@ -4,9 +4,9 @@ import {
     ref
 } from 'vue'
 
-import { createSharedComposable } from '@shared/features/create-shared-composable'
+import { createSharedComposable } from '@shared/composables/features/create-shared-composable'
 
-import { IProduct } from '@proshop/types'
+import type { IProduct } from '@proshop-app/types'
 
 interface IUseProduct {
     product: DeepReadonly<Ref<Maybe<IProduct>>>

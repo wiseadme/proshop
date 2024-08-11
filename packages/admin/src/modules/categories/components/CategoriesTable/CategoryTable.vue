@@ -5,21 +5,10 @@
     import { FormCard } from '@shared/components/FormCard'
     import { VSvg } from '@shared/components/VSvg'
 
-    import { ICategory } from '@proshop/types'
-
-    import { INFO_BLOCK } from '@modules/categories/constants/sections'
-    import { RouteNames } from '@modules/categories/enums/route-names'
-    import { CREATE, EDIT } from '@shared/constants/actions'
     import { SvgPaths } from '@shared/enums/svg-paths'
 
-    defineEmits<{
-        (e: 'create:category'): void
-        (e: 'edit:category', row: ICategory): void
-        (e: 'delete:category', row: ICategory): void
-    }>()
-
     const { categories } = useCategoriesService()
-    const { cols } = useCategoriesTable()
+    const { cols, onEditRow, onCreateRow, onDeleteRow } = useCategoriesTable()
 </script>
 <template>
     <form-card>
@@ -58,12 +47,7 @@
                             <v-button
                                 color="primary"
                                 elevation="5"
-                                @click="$router.push({
-                                    name: RouteNames.CATEGORY_EDIT,
-                                    params: {
-                                        action: CREATE,
-                                        section: INFO_BLOCK
-                                    }})"
+                                @click="onCreateRow"
                             >
                                 <v-icon
                                     size="14"
@@ -83,13 +67,7 @@
                         color="var(--primary)"
                         elevation="2"
                         text
-                        @click="$router.push({
-                            name: RouteNames.CATEGORY_EDIT,
-                            params: {
-                                action: EDIT,
-                                categoryId: row.id,
-                                section: INFO_BLOCK
-                            }})"
+                        @click="onEditRow(row)"
                     >
                         <v-icon>fas fa-pen</v-icon>
                     </v-button>
@@ -98,7 +76,7 @@
                         color="var(--error)"
                         elevation="2"
                         text
-                        @click="$emit('delete:category', row)"
+                        @click="onDeleteRow(row)"
                     >
                         <v-icon>fas fa-trash-alt</v-icon>
                     </v-button>

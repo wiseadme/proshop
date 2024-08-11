@@ -5,8 +5,8 @@ import { TYPES } from '@common/schemes/di-types'
 // Types
 import { ILogger } from '@/types/utils'
 import { IController } from '@/types'
-import { IOrdersService } from '../types/service'
-import { IOrder } from '@proshop/types'
+import { IOrdersService } from '@modules/orders/types/service'
+import { IOrder } from '@proshop-app/types'
 import { ORDERS_MODULE_PATH } from '@common/constants/paths'
 import { ORDER_IOC } from '@modules/orders/di/di.types'
 import { IOrdersMiddlewaresHelper } from '@modules/orders/helpers/middlewares.helper'
@@ -53,8 +53,9 @@ export class OrdersController extends BaseController implements IController {
         }
     }
 
-    async updateOrder(request: Request<{}, {}, IOrder>, response: Response, next: NextFunction) {
+    async updateOrder(request: Request<{}, {}, Partial<IOrder>>, response: Response, next: NextFunction) {
         try {
+            console.log('body', request.body)
             const data = await this.service.updateOrder(request.body)
 
             this.send({ data, request, response })

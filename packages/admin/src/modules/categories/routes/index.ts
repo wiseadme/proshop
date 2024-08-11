@@ -3,7 +3,7 @@ import { RouteNames } from '@modules/categories/enums/route-names'
 export const categoryRoutes = [
     {
         path: 'categories',
-        component: () => import(/* webpackChunkName: "Layout.CATEGORIES" */  '@shared/layouts/PageLayout.vue'),
+        component: () => import(/* ChunkName: "Layout.CATEGORIES" */  '@shared/layouts/PageLayout.vue'),
         children: [
             {
                 path: '',

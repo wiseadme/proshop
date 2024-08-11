@@ -24,17 +24,20 @@ services:
     container_name: nginx
     command: nginx -g "daemon off;"
     ports:
-      - "80:80"
+      - "3002:3002"
     volumes:
       - ./nginx/nginx.dev.conf:/etc/nginx/nginx.conf
-      - ./certs:/home/certs
-      - uploads:/var/lib/docker/volumes/proshop_uploads/_data
+      - uploads:/var/lib/docker/volumes/proshop_uploads/_data:ro
+      - /home/wiseadme/www/uploads:/var/lib/docker/volumes/proshop_uploads/_data:rw
+    hostname: '127.0.0.1'
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
 volumes:
   mongo_seed:
   uploads:
   certs:
 
-networks:
-  redis:
-    driver: bridge
+#networks:
+#  redis:
+#    driver: bridge

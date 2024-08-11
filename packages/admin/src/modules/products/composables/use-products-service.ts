@@ -1,15 +1,16 @@
 import {
+    DeepReadonly,
     computed,
     ref,
-    unref,
+    unref
 } from 'vue'
 
-import { createSharedComposable } from '@shared/features/create-shared-composable'
+import { useMerchantService } from '@modules/settings/composables/use-merchant-service'
 
+import { createSharedComposable } from '@shared/composables/features/create-shared-composable'
 import { useRequestParams } from '@shared/composables/use-request-params'
 
-// Stores
-import {
+import type {
     IAsset,
     IAttribute,
     ICategory,
@@ -19,15 +20,13 @@ import {
     IProductParams,
     IUnit,
     IVariant,
-    Maybe,
-} from '@proshop/types'
+} from '@proshop-app/types'
 
 import { useAttributesStore } from '@modules/attributes/store'
 import { useCategoriesStore } from '@modules/categories/store'
 import { useMetaTagsStore } from '@modules/metatags/store'
 import { getIds } from '@modules/products/helpers'
 import { useProductStore } from '@modules/products/store'
-import { useMerchantStore } from '@modules/settings/store/merchant'
 import { useUnitsStore } from '@modules/units/store'
 import { useVariantsStore } from '@modules/variants/store'
 import { useFilesService } from '@shared/services/files.service'
@@ -39,7 +38,7 @@ export const useProductsService = createSharedComposable(() => {
     const _variantsStore = useVariantsStore()
     const _unitsStore = useUnitsStore()
     const _metaTagsStore = useMetaTagsStore()
-    const _merchantStore = useMerchantStore()
+    const merchantService = useMerchantService()
 
     const {
         sort,
@@ -59,14 +58,14 @@ export const useProductsService = createSharedComposable(() => {
     const unitItems = computed<IUnit[]>(() => _unitsStore.units || [])
     const metaTagItems = computed<IMetaTag[]>(() => _metaTagsStore.metaTags || [])
     const totalLength = computed<number>(() => _productsStore.totalLength)
-    const merchant = computed<Maybe<IMerchant>>(() => _merchantStore.merchant)
+    const merchant = computed<Maybe<DeepReadonly<IMerchant>>>(() => merchantService.merchant.value)
 
-    const getMerchant = async (): Promise<IMerchant> => {
-        if (unref(merchant)?.id) {
-            return unref(merchant)!
+    const getMerchant = async (): Promise<DeepReadonly<IMerchant>> => {
+        if (!unref(merchant)?.id) {
+            await merchantService.getMerchantSettings()
         }
 
-        return _merchantStore.getMerchant()
+        return unref(merchant)!
     }
 
     const getAttributes = async (): Promise<IAttribute[]> => {
@@ -134,7 +133,7 @@ export const useProductsService = createSharedComposable(() => {
         }
     }
 
-    const createProduct = async (product: Partial<IProduct>): Promise<IProduct> => {
+    const createProduct = async (product: IProduct): Promise<IProduct> => {
         if (!unref(merchant)?.id) return Promise.reject({
             message: 'Для начала необходимо создать Merchant',
         })

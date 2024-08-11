@@ -1,4 +1,4 @@
-import { IMerchant } from '@proshop/types'
+import { IMerchant } from '@proshop-app/types'
 
 export class Merchant implements IMerchant {
     readonly id: IMerchant['id']

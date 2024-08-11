@@ -1,4 +1,4 @@
-import { IVariant, Maybe } from '@proshop/types'
+import { IVariant, Maybe } from '@proshop-app/types'
 
 export class Variant implements IVariant{
     readonly id: string

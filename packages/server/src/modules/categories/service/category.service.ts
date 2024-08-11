@@ -1,15 +1,15 @@
 import { inject, injectable } from 'inversify'
 
 // Entity
-import { Category } from '../entity/category.entity'
+import { Category } from '@modules/categories/entity/category.entity'
 
 // Schemes
 import { TYPES } from '@common/schemes/di-types'
 
 // Types
-import { ICategory } from '@proshop/types'
-import { ICategoryService } from '../types/service'
-import { ICategoryRepository } from '../types/repository'
+import { ICategory } from '@proshop-app/types'
+import { ICategoryService } from '@modules/categories/types/service'
+import { ICategoryRepository } from '@modules/categories/types/repository'
 import { IEventBusService } from '@/types/services'
 import { ILogger } from '@/types/utils'
 

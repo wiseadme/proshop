@@ -1,4 +1,4 @@
-import { IVariant, IVariantMongoModel } from '@proshop/types'
+import { IVariant, IVariantMongoModel } from '@proshop-app/types'
 
 export class VariantMapper {
     static toDomain(entity: IVariantMongoModel): IVariant {

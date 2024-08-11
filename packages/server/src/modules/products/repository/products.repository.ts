@@ -13,7 +13,7 @@ import {
     IProductParams,
     IProductQuery,
     IRequestParams,
-} from '@proshop/types'
+} from '@proshop-app/types'
 
 import { ProductMapper } from '@modules/products/mappers/product.mapper'
 
@@ -119,7 +119,7 @@ export class ProductsRepository implements IProductsRepository {
     }
 
     async updateProduct($set: Partial<IProductParams>) {
-        validateId($set.id)
+        validateId($set.id!)
 
         const updated = await ProductModel.findByIdAndUpdate(
             { _id: $set.id },

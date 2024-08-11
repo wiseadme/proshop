@@ -1,4 +1,4 @@
-import { ICustomer, ICustomerMongoModel } from '@proshop/types'
+import { ICustomer, ICustomerMongoModel } from '@proshop-app/types'
 
 export class CustomerMapper {
     static toDomain(entity: ICustomerMongoModel): ICustomer {

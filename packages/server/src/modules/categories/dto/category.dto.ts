@@ -1,4 +1,4 @@
-import { ICategory, ICategoryConditions } from '@proshop/types'
+import { ICategory, ICategoryConditions } from '@proshop-app/types'
 
 export class CategoryDTO {
     url: string

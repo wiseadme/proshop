@@ -1,14 +1,14 @@
 <script lang="ts" setup>
     import { ref } from 'vue'
 
-    import { useFilterGroups } from '@modules/filters/composables/use-filter-groups'
+    import { useFilterGroups } from '@modules/filters/composables/view/use-filter-groups'
 
     import { FormCard } from '@shared/components/FormCard'
     import { ItemsList } from '@shared/components/ItemsList'
     import { VSvg } from '@shared/components/VSvg'
 
 
-    import { IFilterGroup } from '@proshop/types'
+    import { IFilterGroup } from '@proshop-app/types'
 
     import { SvgPaths } from '@shared/enums/svg-paths'
 

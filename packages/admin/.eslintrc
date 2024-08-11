@@ -209,7 +209,7 @@
                         "position": "after"
                     },
                     {
-                        "pattern": "@proshop/**",
+                        "pattern": "@proshop-app/**",
                         "group": "external",
                         "position": "after"
                     }

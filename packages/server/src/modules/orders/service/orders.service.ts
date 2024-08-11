@@ -6,16 +6,15 @@ import { TYPES } from '@common/schemes/di-types'
 
 // Types
 import { ILogger } from '@/types/utils'
-import { IOrdersService } from '../types/service'
-import { IOrdersRepository } from '../types/repository'
-import { IOrder, IRequestParams } from '@proshop/types'
+import { IOrdersService } from '@modules/orders/types/service'
+import { IOrdersRepository } from '@modules/orders/types/repository'
+import { IOrder, IRequestParams } from '@proshop-app/types'
 import { Order } from '@modules/orders/entity/order.entity'
 import { IOrderGatewayService } from '@modules/orders/gateway/gateway.service'
 import { IOrdersQueue } from '@modules/orders/queue/queue'
 import { IOrderResponse } from '@modules/orders/types/response'
 import { ORDER_IOC } from '@modules/orders/di/di.types'
 import { PaginatableResponse } from '@common/models/PaginatableResponse'
-
 
 @injectable()
 export class OrdersService implements IOrdersService {
@@ -55,12 +54,12 @@ export class OrdersService implements IOrdersService {
          * на кол - во единиц указанное в заказе.
          */
         for (const item of order.items) {
-            if (!item.product.conditions.isCountable) {
+            if (!item.isCountable) {
                 continue
             }
 
             await this.gateway.product.reduceProductQuantity({
-                id: item.product.id,
+                id: item.id,
                 reduceBy: item.quantity,
             })
         }
@@ -89,10 +88,10 @@ export class OrdersService implements IOrdersService {
         return new PaginatableResponse({ items, total })
     }
 
-    async updateOrder(updates: IOrder): Promise<IOrder> {
+    async updateOrder(updates: Partial<IOrder>): Promise<IOrder> {
         const order = await this.repository.updateOrder(updates)
 
-        if (order.status.completed) {
+        if (order.status.completed || order.status.cancelled) {
             await this.gateway.cart.delete(order.cartId!)
         }
 
@@ -103,17 +102,17 @@ export class OrdersService implements IOrdersService {
         const order = await this.repository.getOrderById(id)
 
         for (const item of order.items) {
-            if (!item.product.conditions.isCountable) {
+            if (!item.isCountable) {
                 continue
             }
 
             await this.gateway.product.increaseProductQuantity({
-                id: item.product.id,
+                id: item.id,
                 increaseBy: item.quantity,
             })
         }
 
-        return await this.gateway.cart.delete(order.cartId!)
+        return true
     }
 
     async deleteOrder(id: string): Promise<boolean> {

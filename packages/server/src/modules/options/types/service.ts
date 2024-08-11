@@ -1,6 +1,4 @@
-import { Document } from 'mongoose'
-import { IOption } from '@proshop/types'
-import { id } from 'inversify'
+import { IOption } from '@proshop-app/types'
 
 export interface IOptionService {
     createOption(option: IOption): Promise<IOption>

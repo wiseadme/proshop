@@ -1,4 +1,4 @@
-import { ISite } from '@proshop/types'
+import type { ISite } from '@proshop-app/types'
 
 export class Site implements ISite {
     public id: ISite['id']
