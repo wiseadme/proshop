@@ -24,7 +24,6 @@ jobs:
       - name: install project deps
         if: steps.cache-modules.outputs.cache-hit != 'true'
         run: |
-          echo "start setting npm ${GITHUB_TOKEN}"
           npm set @proshop-app:registry=https://npm.pkg.github.com
           npm set "//npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}"
           npm run setup
@@ -35,12 +34,12 @@ jobs:
         with:
           registry: ${{ secrets.YANDEX_REGISTRY_NAME }}
           username: json_key
-          password: ${{ secrets.YANDEX_CLIENT_TOKEN }}
+          password: ${{ secrets.YANDEX_KEY_JSON }}
       - name: Build and push docker image
         uses: docker/build-push-action@v5
         with:
           context: ./packages/admin
           file: ./packages/admin/Dockerfile
           push: true
-          tags: ${{ secrets.YANDEX_REGISTRY_NAME }}/${{ secrets.YANDEX_REGISTRY_ID }}/${{ secrets.YANDEX_REGISTRY_NAME }}:${{ secrets.ADMIN_IMAGE_TAG }}
+          tags: ${{ secrets.YANDEX_REGISTRY_NAME }}/${{ secrets.YANDEX_REGISTRY_ID }}/${{ secrets.YANDEX_REGISTRY_REPO_NAME }}:${{ secrets.ADMIN_IMAGE_TAG }}
 
