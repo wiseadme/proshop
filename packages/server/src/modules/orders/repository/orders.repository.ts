@@ -97,6 +97,7 @@ export class OrdersRepository implements IOrdersRepository {
         return !!await OrderModel.findByIdAndDelete(id)
     }
 
+
     async getDocumentsCount() {
         return OrderModel.countDocuments({})
     }
