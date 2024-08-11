@@ -33,10 +33,17 @@ const OrderSchema = new Schema<IOrderMongoModel>({
         default: null,
         _id: false
     },
-    customer: {
-        type: Schema.Types.ObjectId,
-        ref: 'Customer',
-        default: null,
+    customerName: {
+        type: String,
+        default: "",
+    },
+    customerPhone: {
+        type: String,
+        required: true,
+    },
+    customerId: {
+        type: String,
+        required: true,
     },
     qrcode: {
         type: String,

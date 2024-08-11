@@ -52,8 +52,8 @@ export class CartRepository implements ICartRepository {
         return CartMapper.toDomain(carts[0])
     }
 
-    async update(updates: ICart): Promise<ICart> {
-        validateId(updates.id)
+    async update(updates: Partial<ICart>): Promise<ICart> {
+        validateId(updates.id!)
 
         const updated = await CartModel
             .findByIdAndUpdate(

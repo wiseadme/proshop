@@ -20,8 +20,8 @@ const CartSchema = new Schema<ICartMongoModel>({
         default: 0,
     },
     customerId: {
-        type: Schema.Types.ObjectId,
-        ref: 'User',
+        type: String,
+        default: ''
     },
     orderId: {
         type: String,

@@ -7,7 +7,6 @@ export class OrderMapper {
         const _id = entity?._id
         const map: Partial<IOrderMongoModel> = entity
 
-        map.customer = CustomerMapper.toDomain(map.customer as ICustomerMongoModel)
         map.executor = map.executor ? UserMapper.toDomain(map.executor as any) : null
 
         delete map._id

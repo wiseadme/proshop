@@ -32,7 +32,6 @@ export class OrdersRepository implements IOrdersRepository {
     async getOrderById(id: string): Promise<IOrder> {
         const [order] = await OrderModel
             .find({ _id: id })
-            .populate('customer')
             .populate({
                 path: 'executor',
                 select: 'firstName secondName roles phone',
@@ -49,7 +48,6 @@ export class OrdersRepository implements IOrdersRepository {
         const orders = await OrderModel
             .find({ 'status.seen': seen })
             .sort({ createdAt: -1 })
-            .populate('customer')
             .populate({
                 path: 'executor',
                 select: 'firstName secondName roles phone',
@@ -70,7 +68,6 @@ export class OrdersRepository implements IOrdersRepository {
             .skip((page * count) - count)
             .limit(count)
             .sort({ createdAt: -1 })
-            .populate('customer')
             .populate({
                 path: 'executor',
                 select: 'firstName secondName roles phone',
@@ -88,7 +85,6 @@ export class OrdersRepository implements IOrdersRepository {
             { $set: updates },
             { new: true },
         )
-            .populate('customer')
             .populate({
                 path: 'executor',
                 select: 'firstName secondName roles phone',

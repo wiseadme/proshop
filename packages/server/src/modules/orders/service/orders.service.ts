@@ -36,13 +36,15 @@ export class OrdersService implements IOrdersService {
     }
 
     async createOrder(order: IOrder) {
-        const { customer: { name, phone } } = order
+        const { customerName, customerPhone } = order
 
-        order.orderId = customId({ name, email: phone, randomLength: 2 })
+        order.orderId = customId({ name: customerName, email: customerPhone, randomLength: 2 })
 
         order.qrcode = await QRCode.toString(order.orderId, { type: 'svg' })
 
         const created = await this.repository.createOrder(Order.create(order))
+
+        console.log('created', created)
 
         /**
          * @description - привязываем к корзине номер заказа

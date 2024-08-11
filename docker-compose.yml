@@ -1,8 +1,8 @@
 version: '3.9'
 services:
   server:
-    #    image: cr.yandex/crpjnimru3924065isot/proshop:server
-    build: ./packages/server
+    image: cr.yandex/crp4qt6l07lpv7i3k7ir/itbooks:server
+#    build: ./packages/server
     container_name: server
     command: npm run start
     restart: unless-stopped
@@ -88,8 +88,8 @@ services:
       - mongoNet
 
   admin:
-    #    image: cr.yandex/crpjnimru3924065isot/proshop:admin
-    build: ./packages/admin
+    image: cr.yandex/crp4qt6l07lpv7i3k7ir/itbooks:admin
+#    build: ./packages/admin
     container_name: admin
     command: nginx -g "daemon off;"
     restart: unless-stopped
@@ -99,7 +99,7 @@ services:
       - ecommerce
 
   shop:
-    image: cr.yandex/crpjnimru3924065isot/proshop:shop
+    image: cr.yandex/crp4qt6l07lpv7i3k7ir/itbooks:shop
     container_name: shop-app
     restart: unless-stopped
     command: pm2-runtime ".output/server/index.mjs"
