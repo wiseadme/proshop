@@ -9,7 +9,6 @@
 
     import type { ICategory } from '@proshop-app/types'
 
-
     const { model } = useCategoryModel()
     const {
         categories,
