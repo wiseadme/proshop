@@ -27,14 +27,14 @@ jobs:
       - name: Log in to Registry
         uses: docker/login-action@343f7c4344506bcbf9b4de18042ae17996df046d
         with:
-          registry: ${{ secrets.YR }}
+          registry: ${{ secrets.YANDEX_REGISTRY_NAME }}
           username: json_key
-          password: ${{ secrets.YCR_TOKEN }}
+          password: ${{ secrets.YANDEX_CLIENT_TOKEN }}
       - name: Build and push docker image
         uses: docker/build-push-action@v5
         with:
           context: ./packages/admin
           file: ./packages/admin/Dockerfile
           push: true
-          tags: ${{ secrets.YR }}/${{ secrets.YR_ID }}/${{ secrets.YR_NAME }}:${{ secrets.ADMIN_IMAGE_TAG }}
+          tags: ${{ secrets.YANDEX_REGISTRY_NAME }}/${{ secrets.YANDEX_REGISTRY_ID }}/${{ secrets.YANDEX_REGISTRY_NAME }}:${{ secrets.ADMIN_IMAGE_TAG }}
 
