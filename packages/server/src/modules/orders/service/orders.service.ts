@@ -44,8 +44,6 @@ export class OrdersService implements IOrdersService {
 
         const created = await this.repository.createOrder(Order.create(order))
 
-        console.log('created', created)
-
         /**
          * @description - привязываем к корзине номер заказа
          */
