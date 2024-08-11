@@ -1,6 +1,8 @@
-import { useVariantRepository } from '../repository/variant.repository'
-import { IVariant } from '@proshop/types'
+import type { IVariant } from '@proshop-app/types'
+
 import { IVariantActions } from '@modules/variants/types'
+
+import { useVariantRepository } from '../repository/variant.repository'
 
 const repository = useVariantRepository()
 

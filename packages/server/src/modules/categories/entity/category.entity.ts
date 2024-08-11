@@ -1,4 +1,4 @@
-import { ICategory } from '@proshop/types'
+import { ICategory } from '@proshop-app/types'
 import { translator } from '@common/utils/translator'
 
 export class Category implements ICategory {
@@ -25,8 +25,13 @@ export class Category implements ICategory {
         filters = [],
         parentId = null,
         conditions = {
-            visible: true,
-            special: false,
+            isVisible: true,
+            isSpecial: false,
+            isMain: false,
+            isSub: !!parentId,
+            isInNav: false,
+            isCatalog: false,
+            isTop: false
         },
         seo = {
             title: null,
@@ -42,19 +47,21 @@ export class Category implements ICategory {
         this.image = image
         this.assets = assets
         this.parentId = parentId
-        this.conditions = conditions
         this.filters = filters
         this.seo = seo
         this.url = url || translator(this.title).toLowerCase()
         this.length = length
+        this.conditions = conditions
     }
 
     static create(category: ICategory) {
         return new Category(category as ICategory)
     }
 
-    static update(updates) {
-        if (updates.title && !updates.url) updates.url = translator(updates.title)
+    static update(updates: Partial<ICategory>) {
+        if (updates.title && !updates.url) {
+            updates.url = translator(updates.title)
+        }
 
         return updates
     }

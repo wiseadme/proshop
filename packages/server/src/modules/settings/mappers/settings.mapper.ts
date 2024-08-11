@@ -1,6 +1,4 @@
-import { ISettingsMongoModel, ISettings, IMerchantMongoModel, ISiteMongoModel, Maybe } from '@proshop/types'
-import { MerchantMapper } from '@modules/settings/mappers/merchant.mapper'
-import { SiteMapper } from '@modules/settings/mappers/site.mapper'
+import { ISettingsMongoModel, ISettings, Maybe } from '@proshop-app/types'
 
 export class SettingsMapper {
     static toDomain(entity: ISettingsMongoModel): Maybe<ISettings> {

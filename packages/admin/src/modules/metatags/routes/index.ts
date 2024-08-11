@@ -1,17 +1,18 @@
+import { RouteNames } from '@modules/metatags/enums/route-names'
+
 export const metaTagRoutes = [
     {
-        path: '/metatags',
-        component: () => import(/* webpackChunkName: "Page.Proshop" */ '@modules/metatags/layouts/MetaTagsLayout.vue'),
-        name: 'metatags',
+        path: 'metatags',
+        component: () => import(/* ChunkName: "Page.Proshop" */ '@modules/metatags/layouts/MetaTagsLayout.vue'),
         children: [
             {
                 path: '',
-                component: () => import(/* webpackChunkName: "Page.Proshop" */ '@modules/metatags/pages/MetaTagsPage.vue'),
-                name: 'metatags-table'
+                component: () => import(/* ChunkName: "Page.Proshop" */ '@modules/metatags/pages/MetaTagsPage.vue'),
+                name: RouteNames.META_TAGS,
             }
         ],
         meta: {
-            name: 'metatags'
+            name: RouteNames.META_TAGS,
         }
     }
 ]

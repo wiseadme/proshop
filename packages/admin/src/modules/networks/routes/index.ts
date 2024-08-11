@@ -1,13 +1,12 @@
 export const networksRoutes = [
     {
-        path: '/networks',
-        component: () => import(/* webpackChunkName: "Page.Proshop" */ '@modules/networks/layouts/NetworksLayout.vue'),
-        name: 'networks',
+        path: 'networks',
+        component: () => import(/* webpackChunkName: "Page.NetworksLayout" */ '@modules/networks/layouts/NetworksLayout.vue'),
         children: [
             {
                 path: '',
-                component: () => import(/* webpackChunkName: "Page.Proshop" */ '@modules/networks/pages/NetworksPage.vue'),
-                name: 'networks-table',
+                component: () => import(/* webpackChunkName: "Page.NetworksPage" */ '@modules/networks/pages/NetworksPage.vue'),
+                name: 'networks',
             },
         ],
         meta: {

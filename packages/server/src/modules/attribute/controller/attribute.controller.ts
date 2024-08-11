@@ -1,18 +1,16 @@
-
 import { BaseController } from '@common/controller/base.controller'
 import { NextFunction, Request, Response, Router } from 'express'
 import { inject, injectable } from 'inversify'
 import { TYPES } from '@common/schemes/di-types'
-// Types
 import { ILogger } from '@/types/utils'
 import { IController } from '@/types'
 import { IAttributeService } from '../types/service'
-import { IAttribute } from '@proshop/types'
-import { ValidateMiddleware } from '@common/middlewares/validate.middleware'
 import { Attribute } from '@modules/attribute/entity/attribute.entity'
 import { AttributeDTO } from '@modules/attribute/dto/attribute.dto'
 import { ATTRIBUTES_MODULE_PATH } from '@common/constants/paths'
 import { setMiddlewares } from '@common/helpers'
+import { ATTRIBUTE_IOC } from '@modules/attribute/di/di.types'
+import type { IAttribute } from '@proshop-app/types'
 
 @injectable()
 export class AttributeController extends BaseController implements IController {
@@ -21,7 +19,7 @@ export class AttributeController extends BaseController implements IController {
 
     constructor(
         @inject(TYPES.UTILS.ILogger) private logger: ILogger,
-        @inject(TYPES.SERVICES.IAttributeService) private service: IAttributeService,
+        @inject(ATTRIBUTE_IOC.IAttributeService) private service: IAttributeService,
     ) {
         super()
         this.initRoutes()

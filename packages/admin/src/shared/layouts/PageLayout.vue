@@ -1,18 +1,19 @@
 <script lang="ts" setup>
     import { computed } from 'vue'
+
     import { useRoute } from 'vue-router'
 
     const route = useRoute()
 
-    const isActionsMode = computed(() => Boolean(route.params.action))
+    const isEditMode = computed(() => Boolean(route.params.action))
 </script>
 <template>
     <v-main class="page-layout d-flex justify-space-between">
-        <div :class="{['page-layout-content']: true, ['page-layout-content--with-sidebar']: isActionsMode}">
+        <div :class="{['page-layout-content']: true, ['page-layout-content--with-sidebar']: isEditMode}">
             <router-view/>
         </div>
         <div
-            v-if="isActionsMode"
+            v-if="isEditMode"
             class="page-layout-right-sidebar"
         >
             <router-view name="right"/>

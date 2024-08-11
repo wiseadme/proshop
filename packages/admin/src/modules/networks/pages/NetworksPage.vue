@@ -1,9 +1,12 @@
 <script lang="ts" setup>
     import FormCard from '@shared/components/FormCard/FormCard.vue'
     import VSvg from '@shared/components/VSvg/VSvg.vue'
-    import VkNetwork from '@modules/networks/components/VKNetwork.vue'
+
     import FacebookNetwork from '@modules/networks/components/FacebookNetwork.vue'
+    import VkNetwork from '@modules/networks/components/VKNetwork.vue'
+
     import { SvgPaths } from '@shared/enums/svg-paths'
+
 </script>
 <template>
     <v-row>

@@ -1,6 +1,8 @@
 <script lang="ts" setup>
-    import { ImagesLoader } from '@shared/components/ImagesLoader'
     import { useProductImages } from '@modules/products/composables/use-product-images'
+    import { useProductModel } from '@modules/products/composables/use-product-model'
+
+    import { ImagesLoader } from '@shared/components/ImagesLoader'
 
     const {
         assets,
@@ -10,11 +12,14 @@
         updateImagesOrders
     } = useProductImages()
 
+    const { model } = useProductModel()
+
 </script>
 <template>
     <v-layout>
         <images-loader
             :assets="assets.sort((a, b) => a.order - b.order)"
+            :main="model.image"
             @load="onLoadImage"
             @update:main="setAsMainImage"
             @update:order="updateImagesOrders"
@@ -23,5 +28,4 @@
     </v-layout>
 </template>
 <style lang="scss" scoped>
-    @import "@modules/products/components/ProductBlocks/styles/ProductImagesBlock";
 </style>

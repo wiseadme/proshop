@@ -1,13 +1,18 @@
 <script lang="ts" setup>
     import { onMounted, unref } from 'vue'
+
+    import { useAttributeForm } from '@modules/attributes/composables/use-attribute-form'
+    import { useAttributeModel } from '@modules/attributes/composables/use-attribute-model'
+    import { useAttributesService } from '@modules/attributes/composables/use-attributes-service'
+
     import { DraggableItemsList } from '@shared/components/DraggableItemsList'
     import { FormCard } from '@shared/components/FormCard'
     import { VSvg } from '@shared/components/VSvg'
-    import { useAttributesService } from '@modules/attributes/composables/use-attributes-service'
-    import { IAttribute } from '@proshop/types'
+
+    import { IAttribute } from '@proshop-app/types'
+
     import { SvgPaths } from '@shared/enums/svg-paths'
-    import { useAttributeForm } from '@modules/attributes/composables/use-attribute-form'
-    import { useAttributeModel } from '@modules/attributes/composables/use-attribute-model'
+
 
     const {
         attributes,

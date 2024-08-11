@@ -1,5 +1,4 @@
-import { ICustomer } from '@proshop/types'
-import { id } from 'inversify'
+import { ICustomer } from '@proshop-app/types'
 
 export interface ICustomerRepository {
     create(customer: ICustomer): Promise<ICustomer>

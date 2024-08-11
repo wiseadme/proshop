@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-    import { AttributeFormModal } from '@modules/attributes/components/modals'
     import { AttributesList } from '@modules/attributes/components/AttributesList'
+    import { AttributeFormModal } from '@modules/attributes/components/modals'
 
 </script>
 <template>

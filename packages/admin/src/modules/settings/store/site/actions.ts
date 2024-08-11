@@ -1,5 +1,6 @@
 import { useSiteRepository } from '@modules/settings/repository/site.repository'
-import { ISite } from '@proshop/types'
+
+import type { ISite } from '@proshop-app/types'
 
 const repository = useSiteRepository()
 

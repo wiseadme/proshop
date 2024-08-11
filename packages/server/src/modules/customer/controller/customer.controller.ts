@@ -5,13 +5,14 @@ import { BaseController } from '@common/controller/base.controller'
 // Types
 import { IController } from '@/types'
 import { ILogger } from '@/types/utils'
-import { ICustomer } from '@proshop/types'
+import type { ICustomer } from '@proshop-app/types'
 import { ICustomerService } from '../types/service'
 
 // Schemes
 import { TYPES } from '@common/schemes/di-types'
 import { CUSTOMERS_MODULE_PATH } from '@common/constants/paths'
 import { setMiddlewares } from '@common/helpers'
+import { CUSTOMER_IOC } from '@modules/customer/di/di.types'
 
 @injectable()
 export class CustomerController extends BaseController implements IController {
@@ -20,7 +21,7 @@ export class CustomerController extends BaseController implements IController {
 
     constructor(
         @inject(TYPES.UTILS.ILogger) private logger: ILogger,
-        @inject(TYPES.SERVICES.ICustomerService) private service: ICustomerService,
+        @inject(CUSTOMER_IOC.ICustomerService) private service: ICustomerService,
     ) {
         super()
         this.initRoutes()

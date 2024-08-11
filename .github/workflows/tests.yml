@@ -5,6 +5,8 @@ on:
 jobs:
   install_deps:
     runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.PSDEPS_ACCESS_TOKEN }}
     steps:
       - uses: actions/checkout@v3
       - name: cache project deps
@@ -17,7 +19,11 @@ jobs:
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/yarn.lock') }}
       - name: install project deps
         if: steps.cache-project-deps.outputs.cache-hit != 'true'
-        run: npm run setup
+        run: |
+          echo "start setting npm ${GITHUB_TOKEN}"
+          npm set @proshop-app:registry=https://npm.pkg.github.com
+          npm set "//npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}"
+          npm run setup
       - name: build project
         run: npm run build
 

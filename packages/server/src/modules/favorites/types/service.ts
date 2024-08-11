@@ -1,4 +1,4 @@
-import { IFavorite } from '@proshop/types'
+import { IFavorite } from '@proshop-app/types'
 
 export interface IFavoritesService {
     addToFavorites(productId): Promise<IFavorite>

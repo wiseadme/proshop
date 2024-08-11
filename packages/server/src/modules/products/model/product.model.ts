@@ -1,5 +1,5 @@
 import { model, Schema } from 'mongoose'
-import { IProductMongoModel } from '@proshop/types'
+import { ICurrency, IProductMongoModel } from '@proshop-app/types'
 
 const ProductSchema = new Schema<IProductMongoModel>({
     _id: Schema.Types.ObjectId,
@@ -18,8 +18,8 @@ const ProductSchema = new Schema<IProductMongoModel>({
         required: true,
     },
     currency: {
-        type: Schema.Types.ObjectId,
-        ref: 'Merchant',
+        type: {} as ICurrency,
+        required: true,
         default: null,
     },
     quantity: {
@@ -88,27 +88,18 @@ const ProductSchema = new Schema<IProductMongoModel>({
         }],
         default: [],
     },
-    variants: {
-        type: [
-            {
-                id: String,
-                group: String,
-                attributeId: String,
-                ownerId: String,
-                options: [{
-                    type: Schema.Types.ObjectId,
-                    ref: 'Option',
-                }],
-                _id: false,
-            },
-        ],
+    groups: {
+        type: [{
+            type: Schema.Types.ObjectId,
+            ref: 'Group'
+        }],
         default: [],
     },
     conditions: {
         type: {
-            visible: Boolean,
-            countable: Boolean,
-            exists: Boolean,
+            isVisible: Boolean,
+            isCountable: Boolean,
+            isExists: Boolean,
             hasDiscounts: Boolean,
             hasActions: Boolean,
         },

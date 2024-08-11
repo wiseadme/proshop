@@ -1,7 +1,9 @@
 <script lang="ts" setup>
     import { computed, unref } from 'vue'
-    import { ModalCard } from '@shared/components/Modals'
+
     import { useProductMetaTags } from '@modules/products/composables/use-product-metatags'
+
+    import { ModalCard } from '@shared/components/Modals'
 
     const {
         currentEditableMetaTag,
@@ -10,7 +12,7 @@
         closeEditModal,
     } = useProductMetaTags()
 
-    const metaTagKeys = computed<string[]>(() => Object.keys(unref(currentEditableMetaTag)?.props! || {}))
+    const metaTagKeys = computed<string[]>(() => Object.keys(unref(currentEditableMetaTag)?.props || {}))
 
 </script>
 <template>

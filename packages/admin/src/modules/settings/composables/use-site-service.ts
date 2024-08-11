@@ -1,6 +1,8 @@
-import { useSiteStore } from '@modules/settings/store/site'
 import { computed } from 'vue'
-import { ISite } from '@proshop/types'
+
+import type { ISite } from '@proshop-app/types'
+
+import { useSiteStore } from '@modules/settings/store/site'
 
 export const useSiteService = () => {
     const _store = useSiteStore()

@@ -23,7 +23,6 @@ export type ErrorOptions = {
 export interface IController {
     path: string
     router: Router
-    middlewares?: any
     initRoutes: () => void
 }
 
@@ -34,6 +33,9 @@ export interface IConfig {
     refreshSecret: string
     uploadsDir: string
     websiteUrl: string
+    redisHost: string
+    redisPort: string
+    redisUrl: string
 }
 
 export interface IDb {

@@ -1,4 +1,4 @@
-import { IUser, IUserMongoModel } from '@proshop/types'
+import { IUser, IUserMongoModel } from '@proshop-app/types'
 
 export class UserMapper {
     static toDomain(entity: IUserMongoModel): IUser {

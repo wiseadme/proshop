@@ -5,10 +5,11 @@ import { TYPES } from '@common/schemes/di-types'
 // Types
 import { ILogger } from '@/types/utils'
 import { IController } from '@/types'
-import { IOrdersService } from '../types/service'
-import { IOrder } from '@proshop/types'
+import { IOrdersService } from '@modules/orders/types/service'
+import { IOrder } from '@proshop-app/types'
 import { ORDERS_MODULE_PATH } from '@common/constants/paths'
-import { setMiddlewares } from '@common/helpers'
+import { ORDER_IOC } from '@modules/orders/di/di.types'
+import { IOrdersMiddlewaresHelper } from '@modules/orders/helpers/middlewares.helper'
 
 @injectable()
 export class OrdersController extends BaseController implements IController {
@@ -17,22 +18,24 @@ export class OrdersController extends BaseController implements IController {
 
     constructor(
         @inject(TYPES.UTILS.ILogger) private logger: ILogger,
-        @inject(TYPES.SERVICES.IOrdersService) private service: IOrdersService,
+        @inject(ORDER_IOC.IOrdersService) private service: IOrdersService,
+        @inject(ORDER_IOC.IOrdersMiddlewaresHelper) private middlewares: IOrdersMiddlewaresHelper,
     ) {
         super()
         this.initRoutes()
     }
 
     initRoutes() {
-        this.router.post('/', this.createOrder.bind(this))
         this.router.get('/', this.getOrders.bind(this))
-        this.router.patch('/', setMiddlewares({ roles: ['root'] }), this.updateOrder.bind(this))
-        this.router.delete('/', setMiddlewares({ roles: ['root'] }), this.deleteOrder.bind(this))
+        this.router.post('/', this.middlewares.getCreateOrderMiddlewares(), this.createOrder.bind(this))
+        this.router.get('/disband', this.middlewares.getDisbandOrderMiddlewares(), this.disbandOrder.bind(this))
+        this.router.patch('/', this.middlewares.getUpdateOrderMiddlewares(), this.updateOrder.bind(this))
+        this.router.delete('/', this.middlewares.getDeleteOrderMiddlewares(), this.deleteOrder.bind(this))
     }
 
     async createOrder(request: Request<{}, {}, IOrder>, response: Response, next: NextFunction) {
         try {
-            const data = await this.service.create(request.body)
+            const data = await this.service.processOrder(request)
 
             this.send({ data, request, response })
         } catch (error) {
@@ -40,21 +43,30 @@ export class OrdersController extends BaseController implements IController {
         }
     }
 
-    async getOrders(request: Request<{}, {}, {}, Partial<IOrder>>, response: Response, next: NextFunction) {
+    async getOrders(request: Request<{}, {}, {}, Record<keyof IOrder, any>>, response: Response, next: NextFunction) {
         try {
-            const data = await this.service.read(request.query)
+            const data = await this.service.getOrders(request.query)
 
-            // @ts-ignore
             this.send({ data, request, response })
         } catch (error) {
-            // @ts-ignore
             this.error({ error, request, next })
         }
     }
 
-    async updateOrder(request: Request<{}, {}, IOrder>, response: Response, next: NextFunction) {
+    async updateOrder(request: Request<{}, {}, Partial<IOrder>>, response: Response, next: NextFunction) {
         try {
-            const data = await this.service.update(request.body)
+            console.log('body', request.body)
+            const data = await this.service.updateOrder(request.body)
+
+            this.send({ data, request, response })
+        } catch (error) {
+            this.error({ error, request, next })
+        }
+    }
+
+    async disbandOrder(request: Request<{}, {}, {}, { id: string }>, response: Response, next: NextFunction) {
+        try {
+            const data = await this.service.disbandOrder(request.query.id)
 
             this.send({ data, request, response })
         } catch (error) {
@@ -64,7 +76,7 @@ export class OrdersController extends BaseController implements IController {
 
     async deleteOrder(request: Request<{}, {}, {}, { id: string }>, response: Response, next: NextFunction) {
         try {
-            const data = await this.service.delete(request.query.id)
+            const data = await this.service.deleteOrder(request.query.id)
 
             this.send({ data, request, response })
         } catch (error) {

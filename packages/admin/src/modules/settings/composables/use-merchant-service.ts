@@ -1,34 +1,66 @@
-import { computed, unref } from 'vue'
-import { createSharedComposable } from '@shared/features/create-shared-composable'
-import { useMerchantStore } from '@modules/settings/store/merchant'
-import { IMerchant } from '@proshop/types'
+import {
+    DeepReadonly,
+    Ref,
+    ref
+} from 'vue'
+
+import {
+    useMerchantRepository
+} from '@modules/settings/composables/repository/use-merchant-repository'
+
+import { createSharedComposable } from '@shared/composables/features/create-shared-composable'
+
+import { useLogger } from '@shared/utils/logger'
+
+import { IMerchant } from '@proshop-app/types'
 
 export const useMerchantService = createSharedComposable(() => {
-    const _store = useMerchantStore()
-    const {createMerchant, updateMerchant, getMerchant} = _store
+    const repository = useMerchantRepository()
+    const { logError } = useLogger()
 
-    const merchant = computed<Maybe<IMerchant>>(() => _store.merchant)
+    const _merchant = ref<Maybe<IMerchant>>(null)
 
-    const createMerchantSettings = (merchant: IMerchant) => {
-        return createMerchant(merchant)
+    const createMerchantSettings = async (merchant: IMerchant) => {
+        try {
+            const { data } = await repository.createMerchant(merchant)
+
+            _merchant.value = data
+        } catch (err) {
+            logError('Merchant Service: merchant creating failed', err)
+
+            return Promise.reject(err)
+        }
     }
 
-    const getMerchantSettings = () => {
-        if (unref(merchant)) return
+    const getMerchantSettings = async () => {
+        try {
+            const { data } = await repository.getMerchant()
 
-        return getMerchant()
+            _merchant.value = data
+        } catch (err) {
+            logError('Merchant Service: merchant loading failed', err)
+
+            return Promise.reject(err)
+        }
     }
 
-    const updateMerchantSettings = (updates: Partial<IMerchant>) => {
-        updates.id = unref(merchant)?.id
+    const updateMerchantSettings = async (updates: Partial<IMerchant>) => {
+        try {
+            const { data } = await repository.updateMerchant(updates)
 
-        return updateMerchant(updates)
+            _merchant.value = data
+        } catch (err) {
+            logError('Merchant Service: merchant updating failed', err)
+
+            return Promise.reject(err)
+        }
     }
 
     return {
-        merchant,
+        merchant: _merchant as Ref<DeepReadonly<IMerchant>>,
         createMerchantSettings,
         getMerchantSettings,
-        updateMerchantSettings
+        updateMerchantSettings,
+        cancelRequests: repository.cancel
     }
 })

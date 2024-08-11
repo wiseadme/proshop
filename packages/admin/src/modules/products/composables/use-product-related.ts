@@ -3,18 +3,26 @@ import {
     ref,
     unref,
 } from 'vue'
-import { useProductsService } from '@modules/products/composables/use-products-service'
-import { IProduct } from '@proshop/types'
+
+import { useProduct } from '@modules/products/composables/use-product'
 import { useProductModel } from '@modules/products/composables/use-product-model'
+import { useProductsService } from '@modules/products/composables/use-products-service'
+
 import { useNotifications } from '@shared/components/VNotifications/use-notifications'
+
+import type { IProduct } from '@proshop-app/types'
+
 import { CHANGES_SAVED, SAVING_ERROR } from '@shared/constants/notifications'
 
 export const useProductRelated = () => {
     const {
-        product,
         getProducts,
         updateProductRelatedProducts,
     } = useProductsService()
+
+    const { product } = useProduct()
+
+    const { setCurrentProduct } = useProduct()
 
     const { notify } = useNotifications()
     const { model } = useProductModel()
@@ -33,13 +41,15 @@ export const useProductRelated = () => {
     }
 
     const onAddToRelated = async () => {
-        const { related } = unref(model) as { related: IProduct[] }
+        const { related, id } = unref(model)
 
         related.push(unref(relatedProduct)!)
         relatedProduct.value = null
 
         try {
-            await updateProductRelatedProducts({ related })
+            const product = await updateProductRelatedProducts({ id, related })
+
+            setCurrentProduct(product)
 
             notify(CHANGES_SAVED)
         } catch (err) {
@@ -48,12 +58,14 @@ export const useProductRelated = () => {
     }
 
     const onDeleteRelated = async (item: IProduct) => {
-        let { related } = unref(model) as { related: IProduct[] }
+        let { id, related } = unref(model)
 
         related = related.filter((it) => it.id !== item.id)
 
         try {
-            await updateProductRelatedProducts({ related })
+            const product = await updateProductRelatedProducts({ id, related })
+
+            setCurrentProduct(product)
 
             notify(CHANGES_SAVED)
         } catch (err) {

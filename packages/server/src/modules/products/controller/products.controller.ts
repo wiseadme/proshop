@@ -7,12 +7,13 @@ import { ProductDTO } from '@modules/products/dto/product.dto'
 // Types
 import { ILogger } from '@/types/utils'
 import { IController } from '@/types'
-import { IAttribute, IMetaTag, IOption, IProduct, IProductParams, IVariant } from '@proshop/types'
-import { IProductsService } from '../types/service'
+import { IAttribute, IMetaTag, IProduct, IProductParams } from '@proshop-app/types'
+import { IProductsService } from '@modules/products/types/service'
 
 // Helpers
 import { setMiddlewares } from '@common/helpers'
 import { PRODUCTS_MODULE_PATH } from '@common/constants/paths'
+import { PRODUCTS_IOC } from '@modules/products/di/di.types'
 
 @injectable()
 export class ProductsController extends BaseController implements IController {
@@ -21,7 +22,7 @@ export class ProductsController extends BaseController implements IController {
 
     constructor(
         @inject(TYPES.UTILS.ILogger) private logger: ILogger,
-        @inject(TYPES.SERVICES.IProductsService) private service: IProductsService,
+        @inject(PRODUCTS_IOC.IProductsService) private service: IProductsService,
     ) {
         super()
         this.initRoutes()
@@ -33,10 +34,6 @@ export class ProductsController extends BaseController implements IController {
         this.router.patch('/', setMiddlewares({ dto: ProductDTO, roles: ['root'] }), this.updateProduct.bind(this))
         this.router.delete('/', setMiddlewares({ roles: ['root'] }), this.deleteProduct.bind(this))
         this.router.patch('/attributes/add', setMiddlewares({ roles: ['root'] }), this.addProductAttribute.bind(this))
-        this.router.patch('/variants/add', setMiddlewares({ roles: ['root'] }), this.addProductVariant.bind(this))
-        this.router.patch('/variants/delete', setMiddlewares({ roles: ['root'] }), this.deleteProductVariant.bind(this))
-        this.router.patch('/variants/option/add', setMiddlewares({ roles: ['root'] }), this.addProductVariantOption.bind(this))
-        this.router.patch('/variants/option/delete', setMiddlewares({ roles: ['root'] }), this.deleteProductVariantOption.bind(this))
         this.router.patch('/attributes/delete', setMiddlewares({ roles: ['root'] }), this.deleteProductAttribute.bind(this))
         this.router.patch('/metatags/add', setMiddlewares({ roles: ['root'] }), this.addProductMetaTag.bind(this))
         this.router.patch('/metatags/update', setMiddlewares({ roles: ['root'] }), this.updateProductMetaTags.bind(this))
@@ -129,46 +126,6 @@ export class ProductsController extends BaseController implements IController {
     async deleteProductMetaTag(request: Request<{}, {}, { productId: string, metaTagId: string }>, response: Response, next: NextFunction) {
         try {
             const data = await this.service.deleteMetaTag(request.body)
-
-            this.send({ data, request, response })
-        } catch (error) {
-            this.error({ error, request, next })
-        }
-    }
-
-    async addProductVariant(request: Request<{}, {}, { variant: IVariant }>, response: Response, next: NextFunction) {
-        try {
-            const data = await this.service.addVariant(request.body)
-
-            this.send({ data, request, response })
-        } catch (error) {
-            this.error({ error, request, next })
-        }
-    }
-
-    async deleteProductVariant(request: Request<{}, {}, { variant: IVariant }>, response: Response, next: NextFunction) {
-        try {
-            const data = await this.service.deleteVariant(request.body)
-
-            this.send({ data, request, response })
-        } catch (error) {
-            this.error({ error, request, next })
-        }
-    }
-
-    async addProductVariantOption(request: Request<{}, {}, { option: IOption }>, response: Response, next: NextFunction) {
-        try {
-            const data = await this.service.addVariantOption(request.body)
-
-            this.send({ data, request, response })
-        } catch (error) {
-            this.error({ error, request, next })
-        }
-    }
-
-    async deleteProductVariantOption(request: Request<{}, {}, { option: IOption }>, response: Response, next: NextFunction) {
-        try {
-            const data = await this.service.deleteVariantOption(request.body)
 
             this.send({ data, request, response })
         } catch (error) {

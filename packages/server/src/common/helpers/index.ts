@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken'
 import { USER_TOKEN_KEY } from '@common/constants/cookie-keys'
 import { config } from '@app/config'
 import { ACCESS_TOKEN_EXP, REFRESH_TOKEN_EXP } from '@common/constants/counts'
+import { Maybe } from '@proshop-app/types'
 
 interface MiddlewareArguments {
     dto?: any,
@@ -20,6 +21,8 @@ type MiddlewareFn = (req: Request, res: Response, next: NextFunction) => any
 export const parseJWToken = (token: string) => jwt.decode(token)
 
 export const isExpired = (token: string): boolean => {
+    if (!token) return false
+
     const { exp } = parseJWToken(token)
 
     return Date.now() >= (exp * 1000)
@@ -31,7 +34,7 @@ export const genJWToken = ({ payload, secret, expiresIn }): string => {
     return jwt.sign(payload, secret, { expiresIn })
 }
 
-export const genJWTokens = (payload: Record<string, any>) => ({
+export const genJWTokens = (payload: Record<string, any>): { accessToken: string, refreshToken: string } => ({
     accessToken: genJWToken({
         secret: config.accessSecret,
         expiresIn: ACCESS_TOKEN_EXP,
@@ -44,11 +47,11 @@ export const genJWTokens = (payload: Record<string, any>) => ({
     }),
 })
 
-export const verifyJWToken = (token: string) => new Promise((resolve) => {
+export const verifyJWToken = (token: string): Promise<boolean> => new Promise((resolve) => {
     jwt.verify(token, config.accessSecret, (err: any) => resolve(!Boolean(err)))
 })
 
-const checkToken = async ({ cookies }: Request, response: Response, next: NextFunction) => {
+export const checkToken = async ({ cookies }: Request, response: Response, next: NextFunction) => {
     try {
         const isVerified = await verifyJWToken(cookies[USER_TOKEN_KEY])
         const state = isExpired(cookies[USER_TOKEN_KEY])
@@ -64,7 +67,8 @@ const checkToken = async ({ cookies }: Request, response: Response, next: NextFu
         })
     }
 }
-const protect = ({ roles }: ProtectMiddlewareArguments) => {
+
+export const protect = ({ roles }: ProtectMiddlewareArguments) => {
     return ({ cookies }: Request, response: Response, next: NextFunction) => {
         try {
             const parsed = parseJWToken(cookies[USER_TOKEN_KEY])
@@ -84,7 +88,7 @@ const protect = ({ roles }: ProtectMiddlewareArguments) => {
     }
 }
 
-export const setMiddlewares = (props: MiddlewareArguments | null = null) => {
+export const setMiddlewares = (props: Maybe<MiddlewareArguments> = null) => {
     const middlewares: MiddlewareFn[] = [checkToken]
 
     props?.dto && middlewares.push(new ValidateMiddleware(props.dto).execute())

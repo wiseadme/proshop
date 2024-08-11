@@ -1,8 +1,12 @@
 <script lang="ts" setup>
     import { ref } from 'vue'
+
     import { useUsersService } from '@modules/users/composables/use-users-service'
-    import UsersTable from '@modules/users/components/UsersTable'
+
     import UserActionsModal from '@modules/users/components/UserActionsModal'
+    import UsersTable from '@modules/users/components/UsersTable'
+
+    import type { IUser } from '@proshop-app/types'
 
     const { createUser, deleteUser, fetchUsers } = useUsersService()
     const openModal = ref(false)
@@ -11,11 +15,11 @@
         openModal.value = true
     }
 
-    const onDeleteUser = (user) => {
+    const onDeleteUser = (user: IUser) => {
         deleteUser(user)
     }
 
-    const onCreateUser = (user) => {
+    const onCreateUser = (user: IUser) => {
         createUser(user).then(() => openModal.value = false)
     }
 

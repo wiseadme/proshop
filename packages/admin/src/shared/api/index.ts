@@ -1,11 +1,14 @@
 import { unref } from 'vue'
+
 import axios from 'axios'
-import { Client } from '@shared/plugins/client'
+
 import { useAuthService } from '@shared/composables/use-auth-service'
+
+import { Client } from '@shared/plugins/client'
 
 const baseURL = '/'
 
-const RestClient = axios.create({
+export const restClient = axios.create({
     headers: {
         'Content-Type': 'application/json',
         Accept: 'application/json',
@@ -16,10 +19,10 @@ const RestClient = axios.create({
     timeout: 10000,
 })
 
-const AuthClient = axios.create({
+export const authClient = axios.create({
     headers: {
         'Content-Type': 'application/json',
-        Accept: 'application/json',
+        'Accept': 'application/json',
     },
     baseURL,
     withCredentials: true,
@@ -27,7 +30,7 @@ const AuthClient = axios.create({
     timeout: 10000,
 })
 
-const FilesClient = axios.create({
+export const filesClient = axios.create({
     headers: {
         'Content-Type': 'multipart/form-data',
     },
@@ -37,57 +40,28 @@ const FilesClient = axios.create({
     timeout: 10000,
 })
 
-let isInProgress: boolean = false
-let response: any = null
+let controller: AbortController = {} as AbortController
+let promise: Promise<any> | null = null
 
-const wrapper = (action) => {
-    return async () => {
-        if (!isInProgress) {
-            isInProgress = true
-
-            return await action()
-        }
-    }
-}
-
-// @ts-ignore
-RestClient.interceptors.request.use(async (config) => {
+restClient.interceptors.request.use(async (config): Promise<any> => {
     const { user, refresh, logout } = useAuthService()
 
-    if (!unref(user)) {
-        await new Promise(resolve => {
-            const waitForUser = () => {
+    if (!unref(user) || unref(user)!.exp! * 1000 <= Date.now()) {
+        controller = new AbortController()
 
-                if (unref(user)) {
-                    return resolve(true)
-                }
+        promise ??= refresh().catch(logout)
 
-                setTimeout(waitForUser)
-            }
-
-            waitForUser()
-        })
+        await promise
+            .then(() => promise = null)
+            .catch(() => controller.abort('Not authenticated request'))
     }
 
-    if (unref(user)!.exp! * 1000 <= Date.now()) {
-        const makeOnce = wrapper(refresh)
-
-        if (!isInProgress) {
-            response = await makeOnce()
-
-            if (response && response.exp) {
-                isInProgress = false
-
-                return config
-            }
-
-            return logout()
-        }
+    return {
+        ...config,
+        controller: controller.signal
     }
-
-    return config
 })
 
-export const file = new Client(FilesClient)
-export const rest = new Client(RestClient)
-export const auth = new Client(AuthClient)
+export const file = new Client(filesClient)
+export const rest = new Client(restClient)
+export const auth = new Client(authClient)

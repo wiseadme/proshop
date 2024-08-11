@@ -4,7 +4,7 @@ import { TYPES } from '@common/schemes/di-types'
 
 // Types
 import { ILogger } from '@/types/utils'
-import { IMerchant, IMerchantMongoModel } from '@proshop/types'
+import { IMerchant, IMerchantMongoModel } from '@proshop-app/types'
 import { IMerchantRepository } from '@modules/settings/types/repository'
 import { validateId } from '@common/utils/mongoose-validate-id'
 import { MerchantModel } from '@modules/settings/models/merchant.model'
@@ -36,7 +36,7 @@ export class MerchantRepository implements IMerchantRepository {
     }
 
     async update(updates: Partial<IMerchant>) {
-        validateId(updates.id)
+        validateId(updates.id!)
 
         const updated = await MerchantModel.findByIdAndUpdate(
             { _id: updates.id },

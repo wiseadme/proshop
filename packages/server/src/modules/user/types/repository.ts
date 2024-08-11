@@ -1,5 +1,4 @@
-import { Document } from 'mongoose'
-import { IUser } from '@proshop/types'
+import { IUser } from '@proshop-app/types'
 
 export interface IUserRepository {
     create(params): Promise<IUser>

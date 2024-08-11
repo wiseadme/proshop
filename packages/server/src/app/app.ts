@@ -13,7 +13,7 @@ class App {
 
     constructor(
         @inject(TYPES.DB) private db: IDb,
-        @inject(TYPES.REDIS) private redis: IRedis,
+        // @inject(TYPES.REDIS) private redis: IRedis,
         @inject(TYPES.UTILS.ILogger) private logger: ILogger,
         @inject(TYPES.MIDDLEWARES.IErrorRouteMiddleware) private errorRouteMiddleware: IErrorRouteMiddleware,
         @multiInject(TYPES.CONTROLLERS.IController) private controllers: IController[],
@@ -25,16 +25,12 @@ class App {
         this.middleWares(middlewares)
         this.routes(controllers)
         this.db.connect()
-        this.redis.connect()
+        // this.redis.connect()
     }
 
     private middleWares(middleWares: Array<any>) {
         middleWares.forEach(middleWare => {
-            if (middleWare.bind) {
-                this.app.use(middleWare.execute.bind(middleWare))
-            } else {
-                this.app.use(middleWare.execute)
-            }
+            this.app.use(middleWare.execute.bind(middleWare))
         })
     }
 

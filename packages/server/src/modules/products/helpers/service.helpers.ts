@@ -1,10 +1,15 @@
-import { IProduct } from '@proshop/types'
+import { IProduct } from '@proshop-app/types'
+
+export interface IResponseItems {
+    items: IProduct[]
+    count: number
+}
 
 export class ServiceHelpers {
     constructor() {
     }
 
-    getCategoriesMap(categories) {
+    getCategoriesMap(categories: string[]) {
         return categories.reduce((acc, categoryId) => {
             acc[categoryId] = true
 
@@ -12,7 +17,7 @@ export class ServiceHelpers {
         }, {})
     }
 
-    getResponseFormat(items: IProduct[], count = 0) {
+    formatToResponse(items: IProduct[], count = 0): IResponseItems {
         return {
             items,
             count

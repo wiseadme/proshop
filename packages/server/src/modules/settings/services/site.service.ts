@@ -4,7 +4,7 @@ import { TYPES } from '@common/schemes/di-types'
 import { ILogger } from '@/types/utils'
 import { ISiteService } from '@modules/settings/types/service'
 import { ISiteRepository } from '@modules/settings/types/repository'
-import { ISite } from '@proshop/types'
+import { ISite } from '@proshop-app/types'
 
 @injectable()
 export class SiteService implements ISiteService {

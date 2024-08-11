@@ -1,4 +1,5 @@
 import { markRaw } from 'vue'
+
 import { Notify } from '@shared/components/VNotifications/types'
 
 export const CATEGORY_DELETED: Notify = markRaw({
@@ -29,4 +30,16 @@ export const CATEGORY_IMAGE_DELETED: Notify = markRaw({
     title: 'Успешно удалено',
     text: 'Картинка категории успешно удалена!',
     type: 'success',
+})
+
+export const CATEGORY_CONDITION_UPDATED: Notify = markRaw({
+    title: 'Успешно изменено',
+    text: 'Состояние категории успешно изменено!',
+    type: 'success',
+})
+
+export const CATEGORY_CONDITION_UPDATING_ERROR: Notify = markRaw({
+    title: 'Ошибка изменения',
+    text: 'Состояние категории неизменено. Произошла ошибка!',
+    type: 'error',
 })

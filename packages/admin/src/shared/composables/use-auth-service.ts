@@ -1,11 +1,18 @@
-import { computed } from 'vue'
-import { useAuthStore } from '@shared/store/auth'
-import { IUser, Maybe } from '@proshop/types'
+import { computed, unref } from 'vue'
+
+import type { ILoginData } from '@shared/composables/repository/use-auth-repository'
+
+import { useLogger } from '@shared/utils/logger'
+
+import type { IUser, Maybe } from '@proshop-app/types'
+
 import { router } from '@app/router'
 import { RouteNames } from '@shared/enums/route-names'
+import { useAuthStore } from '@shared/store/auth'
 
 export const useAuthService = () => {
     const _store = useAuthStore()
+    const { logError } = useLogger()
 
     const {
         whoAmI,
@@ -17,26 +24,52 @@ export const useAuthService = () => {
     const user = computed(() => _store.user as Maybe<IUser>)
     const isAuthenticated = computed(() => _store.isAuthenticated)
     const isChecked = computed(() => _store.isChecked)
+    const route = computed(() => unref(router.currentRoute))
 
-    const login = async (user: {
-        username: string,
-        password: string
-    }) => loginUser(user).then(() => router.push({ name: RouteNames.MAIN }))
-    const logout = async () => logoutUser().then(() => router.push({ name: RouteNames.LOGIN }))
-    const check = async () => whoAmI()
-        .then(() => {
-            if (router.currentRoute.value.path.includes(RouteNames.AUTH)) {
-                router.replace({ name: RouteNames.DASHBOARD })
+    const login = async (user: ILoginData) => {
+        try {
+            await loginUser(user)
+
+            return router.push({ name: RouteNames.DASHBOARD })
+        } catch (err) {
+            logError('Authentication error', err)
+
+            return Promise.reject(err)
+        }
+    }
+
+    const logout = async () => {
+        try {
+            await logoutUser()
+
+            return router.push({ name: RouteNames.LOGIN })
+        } catch (err) {
+            logError('Logout error', err)
+
+            return Promise.reject(err)
+        }
+    }
+
+    const check = async () => {
+        try {
+            await whoAmI()
+
+            if (unref(route).name === RouteNames.LOGIN) {
+                return router.replace({ name: RouteNames.DASHBOARD })
             }
-        })
-        .catch(logout)
+        } catch (err) {
+            logError('Identification failed', err)
+
+            return refresh().catch(logout)
+        }
+    }
 
     return {
         user,
         isAuthenticated,
         isChecked,
-        login,
         refresh,
+        login,
         logout,
         check,
     }

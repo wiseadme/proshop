@@ -5,11 +5,16 @@
         markRaw,
         unref,
     } from 'vue'
+
+    import { useRoute, useRouter } from 'vue-router'
+
     import { useProductModel } from '@modules/products/composables/use-product-model'
     import { useProductsService } from '@modules/products/composables/use-products-service'
+
     import { ISidebarTab } from '@shared/composables/use-right-sidebar'
-    import { useRoute, useRouter } from 'vue-router'
-    import { RouteNames } from '@modules/products/enums/route-names'
+
+    import { RightSidebar } from '@shared/components/RightSidebar'
+
     import {
         ATTRIBUTES_BLOCK,
         CATEGORIES_BLOCK,
@@ -18,19 +23,16 @@
         INFO_BLOCK,
         META_TAGS_BLOCK,
         RELATED_BLOCK,
-        VARIANTS_BLOCK,
     } from '@modules/products/constants/sections'
-    import { RightSidebar } from '@shared/components/RightSidebar'
+    import { RouteNames } from '@modules/products/enums/route-names'
 
     const ProductAttributesBlock = markRaw(defineAsyncComponent(() => import('@modules/products/components/ProductBlocks/ProductAttributesBlock.vue')))
     const ProductConditionsBlock = markRaw(defineAsyncComponent(() => import('@modules/products/components/ProductBlocks/ProductConditionsBlock.vue')))
-    const ProductVariantsBlock = markRaw(defineAsyncComponent(() => import('@modules/products/components/ProductBlocks/ProductVariantsBlock.vue')))
     const ProductMetaTagsBlock = markRaw(defineAsyncComponent(() => import('@modules/products/components/ProductBlocks/ProductMetaTagsBlock.vue')))
     const ProductRelatedBlock = markRaw(defineAsyncComponent(() => import('@modules/products/components/ProductBlocks/ProductRelatedBlock.vue')))
     const ProductInfoBlock = markRaw(defineAsyncComponent(() => import('@modules/products/components/ProductBlocks/ProductInfoBlock.vue')))
     const ProductImagesBlock = markRaw(defineAsyncComponent(() => import('@modules/products/components/ProductBlocks/ProductImagesBlock.vue')))
     const ProductCategoriesBlock = markRaw(defineAsyncComponent(() => import('@modules/products/components/ProductBlocks/ProductCategoriesBlock.vue')))
-
     const AttributeEditModal = markRaw(defineAsyncComponent(() => import('@modules/products/components/modals/AttributeEditModal.vue')))
     const MetaTagEditModal = markRaw(defineAsyncComponent(() => import('@modules/products/components/modals/MetaTagEditModal.vue')))
 
@@ -38,7 +40,6 @@
 
     const {
         categoryItems,
-        variantItems,
         attributeItems,
     } = useProductsService()
 
@@ -84,14 +85,6 @@
             section: META_TAGS_BLOCK,
             modal: MetaTagEditModal,
             independent: false,
-        },
-        {
-            component: ProductVariantsBlock,
-            title: 'Варианты товара',
-            isActive: false,
-            disabled: !unref(variantItems)?.length || !unref(model)?.id,
-            section: VARIANTS_BLOCK,
-            independent: true,
         },
         {
             component: ProductRelatedBlock,

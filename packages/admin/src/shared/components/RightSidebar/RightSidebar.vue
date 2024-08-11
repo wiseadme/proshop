@@ -1,11 +1,13 @@
 <script lang="ts" setup>
-    import { ISidebarTab, useRightSidebar } from '@shared/composables/use-right-sidebar'
     import {
         computed,
         unref,
         watch
     } from 'vue'
+
     import { useRoute } from 'vue-router'
+
+    import { ISidebarTab, useRightSidebar } from '@shared/composables/use-right-sidebar'
 
     const props = defineProps<{
         tabs: any[]
@@ -66,7 +68,7 @@
         </v-list>
         <v-row class="sidebar__buttons">
             <v-col class="sidebar__buttons-wrapper d-flex">
-                <slot name="buttons"></slot>
+                <slot name="buttons"/>
             </v-col>
         </v-row>
     </div>

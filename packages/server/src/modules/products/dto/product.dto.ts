@@ -1,4 +1,4 @@
-import { IProduct } from '@proshop/types'
+import { IProduct } from '@proshop-app/types'
 
 export class ProductDTO {
     id: IProduct['id']
@@ -12,7 +12,7 @@ export class ProductDTO {
     categories: IProduct['categories']
     seo: IProduct['seo']
     assets: IProduct['assets']
-    variants: IProduct['variants']
+    groups: IProduct['groups']
     attributes: IProduct['attributes']
     conditions: IProduct['conditions']
 }

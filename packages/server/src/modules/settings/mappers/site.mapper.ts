@@ -1,4 +1,4 @@
-import { ISite, ISiteMongoModel, Maybe } from '@proshop/types'
+import { ISite, ISiteMongoModel, Maybe } from '@proshop-app/types'
 
 export class SiteMapper {
     static toDomain(entity: ISiteMongoModel): Maybe<ISite> {

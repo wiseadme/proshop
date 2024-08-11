@@ -1,4 +1,4 @@
-import { ICustomerMongoModel, IOrder, IOrderMongoModel } from '@proshop/types'
+import { ICustomerMongoModel, IOrder, IOrderMongoModel } from '@proshop-app/types'
 import { CustomerMapper } from '@modules/customer/mappers/customer.mapper'
 import { UserMapper } from '@modules/user/mappers/user.mapper'
 
@@ -7,7 +7,7 @@ export class OrderMapper {
         const _id = entity?._id
         const map: Partial<IOrderMongoModel> = entity
 
-        map.customer = map.customer ? CustomerMapper.toDomain(map.customer as ICustomerMongoModel) : null
+        map.customer = CustomerMapper.toDomain(map.customer as ICustomerMongoModel)
         map.executor = map.executor ? UserMapper.toDomain(map.executor as any) : null
 
         delete map._id

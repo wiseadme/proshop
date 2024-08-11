@@ -1,13 +1,11 @@
 import {
     IAttribute,
     IMetaTag,
-    IOption,
     IProduct,
     IProductParams,
     IProductQuery,
     IRequestParams,
-    IVariant,
-} from '@proshop/types'
+} from '@proshop-app/types'
 
 export interface IProductsRepository {
     createProduct(product: IProductParams): Promise<IProduct>
@@ -30,14 +28,6 @@ export interface IProductsRepository {
 
     addAttribute(params: { id: string, attribute: IAttribute }): Promise<IProduct>
 
-    addVariant(params: { variant: IVariant }): Promise<IProduct>
-
-    deleteVariant(params: { variant: IVariant }): Promise<IProduct>
-
-    addVariantOption(params: { option: IOption }): Promise<IProduct>
-
-    deleteVariantOption(params: { option: IOption }): Promise<IProduct>
-
     deleteAttribute(params: { id: string, attributeId: string }): Promise<IProduct>
 
     addMetaTag(params: { productId: string, metaTag: IMetaTag }): Promise<IProduct>
@@ -47,4 +37,22 @@ export interface IProductsRepository {
     deleteMetaTag(params: { productId: string, metaTagId: string }): Promise<IProduct>
 
     getDocumentsCount(params?: any): Promise<number>
+}
+
+export interface IProductMongoRepositoryHelpers {
+    getPaginationParams(...args: any[]): any
+
+    getSortParams(...args: any[]): any
+
+    getAssetsPopulateParams(): any
+
+    getCategoriesPopulateParams(): any
+
+    getVariantsPopulateParams(): any
+
+    getRelatedPopulateParams(): any
+
+    getProductPopulateParams(): any
+
+    prepareAggregateParams(...args: any[]): any
 }

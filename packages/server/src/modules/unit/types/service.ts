@@ -1,6 +1,4 @@
-import { Document } from 'mongoose'
-import { IUnit } from '@proshop/types'
-import { id } from 'inversify'
+import { IUnit } from '@proshop-app/types'
 
 export interface IUnitService {
     create(unit: IUnit): Promise<IUnit>

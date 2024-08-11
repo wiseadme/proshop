@@ -1,7 +1,8 @@
 <script lang="ts" setup>
     // import { ref } from 'vue'
-    import { SvgPaths } from '@shared/enums/svg-paths'
     import { VSvg } from '@shared/components/VSvg'
+
+    import { SvgPaths } from '@shared/enums/svg-paths'
 
     const onClick = () => {
         // window.location.href = url

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-    import UnitsList from '@modules/units/components/UnitsList.vue'
     import { UnitsFormModal } from '@modules/units/components/modals'
+    import UnitsList from '@modules/units/components/UnitsList.vue'
 </script>
 <template>
     <div class="units-page">

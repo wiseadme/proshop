@@ -3,5 +3,4 @@ export class AssetDTO {
     type: string
     fileName: string
     ownerId: string
-    main: boolean
 }

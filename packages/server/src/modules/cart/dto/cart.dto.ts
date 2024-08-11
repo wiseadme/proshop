@@ -1,4 +1,4 @@
-import { ICart } from '@proshop/types'
+import type { ICart } from '@proshop-app/types'
 
 export class CartDTO {
     items: ICart['items']
@@ -6,5 +6,5 @@ export class CartDTO {
     totalUniqueItems: ICart['totalUniqueItems']
     amount: ICart['amount']
     currency: ICart['currency']
-    ownerId?: ICart['ownerId']
+    customerId: ICart['customerId']
 }

@@ -2,19 +2,19 @@ import { inject, injectable } from 'inversify'
 import { TYPES } from '@common/schemes/di-types'
 import { ILogger } from '@/types/utils'
 import { IRedis } from '@/types'
-import { redisClient } from '@app/redis/client'
-import { RedisClientType, RedisFunctions, RedisModules, RedisScripts } from 'redis'
+import { redis } from '@app/redis/client'
+import Redis from 'ioredis'
 
 @injectable()
 export class RedisDb implements IRedis {
-    client: RedisClientType<RedisModules, RedisFunctions, RedisScripts> = redisClient
+    client: Redis = redis
 
     constructor(
         @inject(TYPES.UTILS.ILogger) private logger: ILogger
     ) {}
     connect() {
         this.client.connect()
-        this.client.flushDb()
+        // this.client.flushDb()
         this.addListeners()
     }
 

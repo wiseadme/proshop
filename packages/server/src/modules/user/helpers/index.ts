@@ -1,5 +1,5 @@
-import { IUser } from '@proshop/types'
-import { isExpired, parseJWToken } from '@common/helpers'
+import { IUser } from '@proshop-app/types'
+import { isExpired, parseJWToken, genJWTokens } from '@common/helpers'
 
 export class UserHelpers {
     prepareUserResponseData(user: IUser): IUser {
@@ -21,5 +21,17 @@ export class UserHelpers {
         }
 
         return data as IUser
+    }
+
+    getUserIdFromToken(token: string): string {
+        return parseJWToken(token)?.id
+    }
+
+    generateTokens(user: IUser) {
+        return genJWTokens(user)
+    }
+
+    isExpired(token: string) {
+        return isExpired(token)
     }
 }

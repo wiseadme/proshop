@@ -1,6 +1,4 @@
-import { Document } from 'mongoose'
-import { ICart } from '@proshop/types'
-import { id } from 'inversify'
+import { ICart } from '@proshop-app/types'
 
 export interface ICartService {
     create(cart: ICart): Promise<ICart>

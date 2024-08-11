@@ -1,5 +1,5 @@
 import { model, Schema } from 'mongoose'
-import { ISiteMongoModel } from '@proshop/types'
+import { ISiteMongoModel } from '@proshop-app/types'
 
 const SiteSchema: Schema = new Schema<ISiteMongoModel>({
     _id: Schema.Types.ObjectId,
@@ -12,9 +12,6 @@ const SiteSchema: Schema = new Schema<ISiteMongoModel>({
         warning: String,
         disabled: String,
         error: String
-    },
-    slider: {
-        slides: Array
     },
     layout: {
         type: String,

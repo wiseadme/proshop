@@ -1,6 +1,7 @@
+import type { IUnit } from '@proshop-app/types'
+
 import { rest } from '@shared/api'
 import { IRepository, IRest } from '@shared/types/app'
-import { IUnit } from '@proshop/types'
 
 export class Repository implements IRepository<IUnit> {
     client: IRest<IUnit>
@@ -19,7 +20,7 @@ export class Repository implements IRepository<IUnit> {
         return this.client.get(this.path, { query: params })
     }
 
-    update(updates){
+    update(updates) {
         return this.client.patch(this.path, updates)
     }
 

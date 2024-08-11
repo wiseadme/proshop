@@ -1,9 +1,9 @@
 import { injectable } from 'inversify'
 import { IUserRepository } from '@modules/user/types/repository'
 import { UserModel } from '@modules/user/model/user.model'
-import mongoose, { Document } from 'mongoose'
+import mongoose from 'mongoose'
 import { validateId } from '@common/utils/mongoose-validate-id'
-import { IUser, IUserMongoModel } from '@proshop/types'
+import { IUser, IUserMongoModel } from '@proshop-app/types'
 import { UserMapper } from '@modules/user/mappers/user.mapper'
 
 @injectable()
@@ -18,9 +18,11 @@ export class UserRepository implements IUserRepository {
         return UserMapper.toDomain(userData.toObject())
     }
 
-    async find(params): Promise<IUser[]> {
+    async find(params: Partial<IUser>): Promise<IUser[]> {
+        const { id } = params
+
         const users = await UserModel
-            .find(params)
+            .find(id ? UserMapper.toMongoModelData(params as IUser) : params)
             .lean() as IUserMongoModel[]
 
         return users.map(user => UserMapper.toDomain(user))
@@ -39,7 +41,7 @@ export class UserRepository implements IUserRepository {
         return { updated: UserMapper.toDomain(updated) }
     }
 
-    async delete(id) {
+    async delete(id: string) {
         validateId(id)
 
         await UserModel.findByIdAndDelete(id)

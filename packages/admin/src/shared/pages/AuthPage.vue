@@ -4,11 +4,14 @@
         ref,
         unref
     } from 'vue'
+
     import { useAuthService } from '@shared/composables/use-auth-service'
-    import { icons } from '@shared/enums/icons'
+
     import ProductLogo from '@shared/components/ProductLogo.vue'
 
-    const {login} = useAuthService()
+    import { icons } from '@shared/enums/icons'
+
+    const { login } = useAuthService()
 
     const username = ref('')
     const password = ref('')
@@ -17,8 +20,11 @@
     const passwordFieldType = computed(() => unref(isPasswordHidden) ? 'password' : 'text')
     const passwordToggleIcon = computed(() => unref(isPasswordHidden) ? icons.EYE_SLASH : icons.EYE)
 
-    const loginUser = (validate) => {
-        validate().then(() => login({ username: unref(username), password: unref(password) }))
+    const loginUser = (validate: () => Promise<boolean>) => {
+        validate().then(() => login({
+            username: unref(username),
+            password: unref(password)
+        }))
     }
 </script>
 <template>

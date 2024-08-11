@@ -2,7 +2,7 @@ import {
     IProduct,
     IProductQuery,
     IRequestParams
-} from '@proshop/types'
+} from '@proshop-app/types'
 
 export interface IProductState {
   products: Maybe<IProduct[]>

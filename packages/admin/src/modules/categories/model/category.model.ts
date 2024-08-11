@@ -1,4 +1,4 @@
-import { ICategory } from '@proshop/types'
+import { ICategory } from '@proshop-app/types'
 
 export class Category implements ICategory {
     id: ICategory['id']
@@ -24,8 +24,13 @@ export class Category implements ICategory {
         length = 0,
         filters = [],
         conditions = {
-            visible: true,
-            special: false,
+            isVisible: true,
+            isSpecial: false,
+            isMain: false,
+            isSub: !!parentId,
+            isInNav: false,
+            isCatalog: false,
+            isTop: false
         },
         seo = {
             title: null,

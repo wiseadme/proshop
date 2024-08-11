@@ -1,4 +1,4 @@
-import { IProduct } from '@proshop/types'
+import type { IProduct } from '@proshop-app/types'
 
 export class Product implements IProduct {
     id: IProduct['id']
@@ -13,7 +13,7 @@ export class Product implements IProduct {
     image: IProduct['image']
     assets: IProduct['assets']
     attributes: IProduct['attributes']
-    variants: IProduct['variants']
+    groups: IProduct['groups']
     currency: IProduct['currency']
     seo: IProduct['seo']
     url: IProduct['url']
@@ -30,15 +30,15 @@ export class Product implements IProduct {
         image = null,
         assets = [],
         attributes = [],
-        variants = [],
+        groups = [],
         currency = null,
         url = '',
         sku = '',
         related = [],
         conditions = {
-            visible: true,
-            countable: false,
-            exists: true,
+            isVisible: true,
+            isCountable: false,
+            isExists: true,
             hasDiscounts: false,
             hasActions: false,
         },
@@ -60,7 +60,7 @@ export class Product implements IProduct {
         this.categories = categories
         this.description = description
         this.attributes = attributes
-        this.variants = variants
+        this.groups = groups
         this.conditions = conditions
         this.currency = currency
         this.related = related

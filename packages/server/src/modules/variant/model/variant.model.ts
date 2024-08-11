@@ -1,9 +1,9 @@
 import { model, Schema } from 'mongoose'
-import { IVariantMongoModel } from '@proshop/types'
+import { IVariantMongoModel } from '@proshop-app/types'
 
 const VariantSchema = new Schema<IVariantMongoModel>({
     _id: Schema.Types.ObjectId,
-    group: {
+    name: {
         type: String,
         required: true,
         unique: true
@@ -12,12 +12,13 @@ const VariantSchema = new Schema<IVariantMongoModel>({
         type: String,
         default: null
     },
-    ownerId: {
+    key: {
         type: String,
         default: null
     }
 }, {
     timestamps: false,
+    versionKey: false
 })
 
 export const VariantModel = model<IVariantMongoModel>('Variant', VariantSchema)

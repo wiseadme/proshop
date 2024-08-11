@@ -9,6 +9,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.PSDEPS_ACCESS_TOKEN }}
     steps:
       - uses: actions/checkout@v3
       - name: cache modules
@@ -21,20 +23,24 @@ jobs:
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/yarn.lock') }}
       - name: install project deps
         if: steps.cache-modules.outputs.cache-hit != 'true'
-        run: npm run setup
+        run: |
+          echo "start setting npm ${GITHUB_TOKEN}"
+          npm set @proshop-app:registry=https://npm.pkg.github.com
+          npm set "//npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}"
+          npm run setup
       - name: build projects
         run: npm run build:client
       - name: Log in to Registry
         uses: docker/login-action@343f7c4344506bcbf9b4de18042ae17996df046d
         with:
-          registry: ${{ secrets.YR }}
+          registry: ${{ secrets.YANDEX_REGISTRY_NAME }}
           username: json_key
-          password: ${{ secrets.YCR_TOKEN }}
+          password: ${{ secrets.YANDEX_CLIENT_TOKEN }}
       - name: Build and push docker image
         uses: docker/build-push-action@v5
         with:
           context: ./packages/admin
           file: ./packages/admin/Dockerfile
           push: true
-          tags: ${{ secrets.YR }}/${{ secrets.YR_ID }}/${{ secrets.YR_NAME }}:${{ secrets.ADMIN_IMAGE_TAG }}
+          tags: ${{ secrets.YANDEX_REGISTRY_NAME }}/${{ secrets.YANDEX_REGISTRY_ID }}/${{ secrets.YANDEX_REGISTRY_NAME }}:${{ secrets.ADMIN_IMAGE_TAG }}
 

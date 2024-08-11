@@ -1,9 +1,12 @@
 <script lang="ts" setup>
     import { useProductsTable } from '@modules/products/composables/use-products-table'
-    import { icons } from '@shared/enums/icons'
-    import { IProduct } from '@proshop/types'
+
     import { FormCard } from '@shared/components/FormCard'
     import { VSvg } from '@shared/components/VSvg'
+
+    import type { IProduct } from '@proshop-app/types'
+
+    import { icons } from '@shared/enums/icons'
     import { SvgPaths } from '@shared/enums/svg-paths'
 
     defineEmits<{
@@ -58,8 +61,8 @@
             >
                 <template #toolbar>
                     <v-toolbar>
-                        <v-toolbar-logo></v-toolbar-logo>
-                        <v-spacer></v-spacer>
+                        <v-toolbar-logo/>
+                        <v-spacer/>
                         <v-toolbar-items>
                             <v-button
                                 color="primary"

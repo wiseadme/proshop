@@ -4,12 +4,16 @@
         defineAsyncComponent,
         markRaw,
     } from 'vue'
-    import { Sections } from '@modules/settings/enums/sections'
-    import { RightSidebar } from '@shared/components/RightSidebar'
-    import { ISidebarTab } from '@shared/composables/use-right-sidebar'
-    import { RouteNames } from '@modules/settings/enums/route-names'
-    import { router } from '@app/router'
+
     import { useRoute } from 'vue-router'
+
+    import { ISidebarTab } from '@shared/composables/use-right-sidebar'
+
+    import { RightSidebar } from '@shared/components/RightSidebar'
+
+    import { router } from '@app/router'
+    import { RouteNames } from '@modules/settings/enums/route-names'
+    import { Sections } from '@modules/settings/enums/sections'
 
     const ColorsBlock = markRaw(defineAsyncComponent(() => import('@modules/settings/components/Site/ColorsBlock.vue')))
     const SliderBlock = markRaw(defineAsyncComponent(() => import('@modules/settings/components/Site/SliderBlock.vue')))

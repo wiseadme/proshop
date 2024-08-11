@@ -5,19 +5,21 @@ import { TYPES } from '@common/schemes/di-types'
 import { Customer } from '@modules/customer/entity/customer.entity'
 // Types
 import { ILogger } from '@/types/utils'
-import { ICustomerService } from '../types/service'
-import { ICustomerRepository } from '../types/repository'
-import { ICustomer } from '@proshop/types'
+import { ICustomerService } from '@modules/customer/types/service'
+import { ICustomerRepository } from '@modules/customer/types/repository'
+import { ICustomer } from '@proshop-app/types'
 import { IEventBusService } from '@/types/services'
 // Helpers
 import { CustomerHelpers } from '@modules/customer/helpers/customer.helpers'
 import { isExpired, parseJWToken } from '@common/helpers'
+import { CUSTOMER_IOC } from '@modules/customer/di/di.types'
+import { CUSTOMER_TOKEN_KEY } from '@common/constants/cookie-keys'
 
 @injectable()
 export class CustomerService extends CustomerHelpers implements ICustomerService {
     constructor(
         @inject(TYPES.UTILS.ILogger) private logger: ILogger,
-        @inject(TYPES.REPOSITORIES.ICustomerRepository) private repository: ICustomerRepository,
+        @inject(CUSTOMER_IOC.ICustomerRepository) private repository: ICustomerRepository,
         @inject(TYPES.SERVICES.IEventBusService) private events: IEventBusService,
     ) {
         super()
@@ -31,7 +33,7 @@ export class CustomerService extends CustomerHelpers implements ICustomerService
             const { name, phone, id } = created
 
             this.setResponseCookie({
-                key: 'user_token',
+                key: CUSTOMER_TOKEN_KEY,
                 value: this.genAccessToken({ name, phone, id }),
                 res: response,
             })
@@ -42,8 +44,8 @@ export class CustomerService extends CustomerHelpers implements ICustomerService
         }
     }
 
-    async whoami(cookies) {
-        const auth = cookies.user_token
+    async whoami(cookies: Record<string, string>) {
+        const auth = cookies[CUSTOMER_TOKEN_KEY]
 
         if (!auth || isExpired(auth)) {
             return Promise.reject({
@@ -64,7 +66,7 @@ export class CustomerService extends CustomerHelpers implements ICustomerService
         const { name, phone, id } = candidate
 
         this.setResponseCookie({
-            key: 'user_token',
+            key: CUSTOMER_TOKEN_KEY,
             value: this.genAccessToken({ name, phone, id }),
             res: response,
         })
@@ -73,7 +75,7 @@ export class CustomerService extends CustomerHelpers implements ICustomerService
     }
 
     async logoutCustomer(response: Response) {
-        response.clearCookie('user_token')
+        response.clearCookie(CUSTOMER_TOKEN_KEY)
     }
 
     async getCustomers(params: Partial<ICustomer>): Promise<(ICustomer)[]> {

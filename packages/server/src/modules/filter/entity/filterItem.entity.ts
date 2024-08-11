@@ -1,4 +1,4 @@
-import { IFilterItem } from '@proshop/types'
+import { IFilterItem } from '@proshop-app/types'
 
 export class FilterItem implements IFilterItem {
     readonly id: string

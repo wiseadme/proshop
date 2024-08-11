@@ -5,34 +5,37 @@ import { TYPES } from '@common/schemes/di-types'
 import { ILogger } from '@/types/utils'
 import { IFavoritesService } from '@modules/favorites/types/service'
 import { IFavoritesRepository } from '@modules/favorites/types/repository'
-import { Favorite } from '@modules/favorites/entity/favorite.entity'
 import { parseJWToken } from '@common/helpers'
+import { FAVORITES_IOC } from '@modules/favorites/di/di.types'
+import { CUSTOMER_TOKEN_KEY } from '@common/constants/cookie-keys'
+import { Favorite } from '@modules/favorites/entity/favorite.entity'
+import { IFavorite } from '@proshop-app/types'
 
 @injectable()
 export class FavoritesService implements IFavoritesService {
     constructor(
         @inject(TYPES.UTILS.ILogger) private logger: ILogger,
-        @inject(TYPES.REPOSITORIES.IFavoritesRepository) private repository: IFavoritesRepository,
+        @inject(FAVORITES_IOC.IFavoritesRepository) private repository: IFavoritesRepository,
     ) {
     }
 
     async addToFavorites({ cookies, sku }: { cookies: Request['cookies'], sku: string }) {
-        const parsed = parseJWToken(cookies.user_token)
+        const parsed = parseJWToken(cookies[CUSTOMER_TOKEN_KEY])
 
         return this.repository.create({
+            ...Favorite.create({ sku } as IFavorite),
             userId: parsed.id,
-            sku,
         })
     }
 
     async getFavorites(cookies) {
-        const parsed = parseJWToken(cookies.user_token)
+        const parsed = parseJWToken(cookies[CUSTOMER_TOKEN_KEY])
 
         return this.repository.read(parsed.id)
     }
 
     async deleteFavorite(params: { sku: string; cookies: Record<string, any> }): Promise<boolean> {
-        const parsed = parseJWToken(params.cookies.user_token)
+        const parsed = parseJWToken(params.cookies[CUSTOMER_TOKEN_KEY])
 
         return this.repository.delete({
             userId: parsed.id,

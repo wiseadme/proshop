@@ -5,7 +5,7 @@ import { VariantModel } from '@modules/variant/model/variant.model'
 import { Types } from 'mongoose'
 import { validateId } from '@common/utils/mongoose-validate-id'
 import { ILogger } from '@/types/utils'
-import { IVariant, IVariantMongoModel } from '@proshop/types'
+import { IVariant, IVariantMongoModel } from '@proshop-app/types'
 import { IVariantRepository } from '../types/repository'
 import { VariantMapper } from '@modules/variant/mappers/variant.mapper'
 
@@ -32,13 +32,13 @@ export class VariantRepository implements IVariantRepository {
         return variants.map(variant => VariantMapper.toDomain(variant))
     }
 
-    async update($set: Partial<IVariant>) {
+    async update(updates: Partial<IVariant>) {
 
-        validateId($set.id)
+        validateId(updates.id!)
 
         const updated = await VariantModel.findByIdAndUpdate(
-            { _id: $set.id },
-            { $set },
+            { _id: updates.id },
+            { $set: updates },
             { new: true },
         )
             .lean() as IVariantMongoModel

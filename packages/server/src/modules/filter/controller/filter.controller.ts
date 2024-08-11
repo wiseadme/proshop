@@ -6,9 +6,10 @@ import { TYPES } from '@common/schemes/di-types'
 import { ILogger } from '@/types/utils'
 import { IController } from '@/types'
 import { IFilterGroupService, IFilterItemService } from '@modules/filter/types/service'
-import { IFilterGroup, IFilterItem } from '@proshop/types'
+import { IFilterGroup, IFilterItem } from '@proshop-app/types'
 import { FILTERS_MODULE_PATH } from '@common/constants/paths'
 import { setMiddlewares } from '@common/helpers'
+import { FILTER_IOC } from '@modules/filter/di/di.types'
 
 @injectable()
 export class FilterController extends BaseController implements IController {
@@ -17,8 +18,8 @@ export class FilterController extends BaseController implements IController {
 
     constructor(
         @inject(TYPES.UTILS.ILogger) private logger: ILogger,
-        @inject(TYPES.SERVICES.IFilterGroupService) private filterGroupService: IFilterGroupService,
-        @inject(TYPES.SERVICES.IFilterItemService) private filterItemService: IFilterItemService,
+        @inject(FILTER_IOC.IFilterGroupService) private filterGroupService: IFilterGroupService,
+        @inject(FILTER_IOC.IFilterItemService) private filterItemService: IFilterItemService,
     ) {
         super()
         this.initRoutes()
@@ -48,7 +49,7 @@ export class FilterController extends BaseController implements IController {
 
     async getFilterGroups(request: Request<{}, {}, {}, { id?: string }>, response: Response, next: NextFunction) {
         try {
-            const data = await this.filterGroupService.read(request.query?.id)
+            const data = await this.filterGroupService.read(request.query)
 
             this.send({ data, request, response })
         } catch (error) {
@@ -78,7 +79,7 @@ export class FilterController extends BaseController implements IController {
 
     async createFilterItem(request: Request<{}, {}, IFilterItem>, response: Response, next: NextFunction) {
         try {
-            const data = await this.filterItemService.create(request.body)
+            const data = await this.filterItemService.createFilterItem(request.body)
 
             this.send({ data, request, response })
         } catch (error) {
@@ -88,7 +89,7 @@ export class FilterController extends BaseController implements IController {
 
     async getFilterItems(request: Request<{}, {}, {}, Partial<IFilterItem>>, response: Response, next: NextFunction) {
         try {
-            const data = await this.filterItemService.read(request.query)
+            const data = await this.filterItemService.getFilterItems(request.query)
 
             // @ts-ignore
             this.send({ data, request, response })
@@ -98,9 +99,9 @@ export class FilterController extends BaseController implements IController {
         }
     }
 
-    async getGroupFilterItems(request: Request<{}, {}, {groupIds: string[]}>, response: Response, next: NextFunction) {
+    async getGroupFilterItems(request: Request<{}, {}, {ids: string[]}>, response: Response, next: NextFunction) {
         try {
-            const data = await this.filterItemService.findByGroupIds(request.body.groupIds)
+            const data = await this.filterItemService.getFilterItemsByGroupIds(request.body.ids)
 
             this.send({ data, request, response })
         } catch (error) {
@@ -110,7 +111,7 @@ export class FilterController extends BaseController implements IController {
 
     async updateFilterItem(request: Request<{}, {}, {}, { id: string }>, response: Response, next: NextFunction) {
         try {
-            const data = await this.filterItemService.update(request.body)
+            const data = await this.filterItemService.updateFilterItem(request.body)
 
             this.send({ data, request, response })
         } catch (error) {
@@ -120,7 +121,7 @@ export class FilterController extends BaseController implements IController {
 
     async deleteFilterItem(request: Request<{}, {}, {}, { id: string }>, response: Response, next: NextFunction) {
         try {
-            const data = await this.filterItemService.delete(request.query.id)
+            const data = await this.filterItemService.deleteFilterItem(request.query.id)
 
             this.send({ data, request, response })
         } catch (error) {

@@ -2,16 +2,17 @@ import { inject, injectable } from 'inversify'
 import { TYPES } from '@common/schemes/di-types'
 // Types
 import { ILogger } from '@/types/utils'
-import { IMetaTagService } from '../types/service'
-import { IMetaTagRepository } from '../types/repository'
-import { IMetaTag } from '@proshop/types'
+import { IMetaTagService } from '@modules/metatag/types/service'
+import { IMetaTagRepository } from '@modules/metatag/types/repository'
+import { IMetaTag } from '@proshop-app/types'
 import { IEventBusService } from '@/types/services'
+import { META_TAG_IOC } from '@modules/metatag/di/di.types'
 
 @injectable()
 export class MetaTagService implements IMetaTagService {
     constructor(
         @inject(TYPES.UTILS.ILogger) private logger: ILogger,
-        @inject(TYPES.REPOSITORIES.IMetaTagRepository) private repository: IMetaTagRepository,
+        @inject(META_TAG_IOC.IMetaTagRepository) private repository: IMetaTagRepository,
         @inject(TYPES.SERVICES.IEventBusService) private events: IEventBusService,
     ) {
     }

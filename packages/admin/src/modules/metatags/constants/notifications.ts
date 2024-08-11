@@ -1,4 +1,5 @@
 import { markRaw } from 'vue'
+
 import { Notify } from '@shared/components/VNotifications/types'
 
 export const META_TAG_SAVED: Notify = markRaw({

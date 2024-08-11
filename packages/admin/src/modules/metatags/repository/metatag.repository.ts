@@ -1,6 +1,7 @@
+import type { IMetaTag } from '@proshop-app/types'
+
 import { rest } from '@shared/api'
 import { IRepository, IRest } from '@shared/types/app'
-import { IMetaTag } from '@proshop/types'
 
 class Repository implements IRepository<IMetaTag> {
     client: IRest<IMetaTag>

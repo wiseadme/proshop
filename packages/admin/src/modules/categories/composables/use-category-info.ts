@@ -1,25 +1,31 @@
 import { unref } from 'vue'
-import { useCategoryModel } from '@modules/categories/composables/use-category-model'
+
 import { useCategoriesService } from '@modules/categories/composables/use-categories-service'
+import { useCategoryModel } from '@modules/categories/composables/use-category-model'
+
 import { useNotifications } from '@shared/components/VNotifications/use-notifications'
-import { hasDiffs, hasValueDiffs } from '@shared/helpers/diffs.helpers'
+
+import type { ICategory, ICategoryParams } from '@proshop-app/types'
+
 import {
     CHANGES_SAVED,
     NO_CHANGES,
     SAVING_ERROR,
 } from '@shared/constants/notifications'
-import { ICategory } from '@proshop/types'
+import { hasDiffs, hasValueDiffs } from '@shared/helpers/diffs.helpers'
 
 const infoBlockKeys = ['title', 'order', 'seo', 'url', 'parentId']
 
 export const useCategoryInfo = () => {
     const { model, isEditMode } = useCategoryModel()
-    const { category, updateCategory, createCategory } = useCategoriesService()
+    const { categories, updateCategory, createCategory } = useCategoriesService()
     const { notify } = useNotifications()
     const getInfoBlockUpdates = (): Partial<ICategory> => infoBlockKeys.reduce((updates, key) => {
+        const entity = unref(categories).find(it => it.id === unref(model).id)!
+
         const values = {
             model: unref(model)[key],
-            entity: unref(category)![key],
+            entity: entity[key],
         }
 
         if (typeof unref(model)[key] !== 'object' && hasDiffs(values)) {
@@ -41,7 +47,7 @@ export const useCategoryInfo = () => {
         }
 
         try {
-            await updateCategory(updates)
+            await updateCategory(updates as ICategoryParams)
 
             notify(CHANGES_SAVED)
         } catch (err) {

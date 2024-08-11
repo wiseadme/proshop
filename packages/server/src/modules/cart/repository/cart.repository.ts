@@ -6,7 +6,7 @@ import { CartMapper } from '@modules/cart/mappers/cart.mapper'
 // Types
 import { ILogger } from '@/types/utils'
 import { ICartRepository } from '../types/repository'
-import { ICart, ICartMongoModel } from '@proshop/types'
+import type { ICart, ICartMongoModel } from '@proshop-app/types'
 import { CartModel } from '@modules/cart/model/cart.model'
 
 @injectable()
@@ -27,7 +27,10 @@ export class CartRepository implements ICartRepository {
     }
 
     async findByOwnerId(id: string) {
-        const carts = await CartModel.find<ICartMongoModel[]>({ ownerId: id, orderId: null })
+        validateId(id)
+
+        const carts = await CartModel
+            .find<ICartMongoModel[]>({ customerId: id, orderId: null })
             .lean()
 
         return carts.map(cart => CartMapper.toDomain(cart))[0]
@@ -38,11 +41,13 @@ export class CartRepository implements ICartRepository {
         id && validateId(id)
 
         const data = CartMapper.toMongoModelData(params as ICart) as ICartMongoModel
-        id && delete params.id
+
         // @ts-ignore
         !data._id && delete data._id
 
-        const carts = await CartModel.find<ICartMongoModel[]>(data).lean()
+        const carts = await CartModel
+            .find<ICartMongoModel[]>(data)
+            .lean()
 
         return CartMapper.toDomain(carts[0])
     }
@@ -50,11 +55,12 @@ export class CartRepository implements ICartRepository {
     async update(updates: ICart): Promise<ICart> {
         validateId(updates.id)
 
-        const updated = await CartModel.findByIdAndUpdate(
-            { _id: updates.id },
-            { $set: updates },
-            { new: true },
-        )
+        const updated = await CartModel
+            .findByIdAndUpdate(
+                { _id: updates.id },
+                { $set: updates },
+                { new: true },
+            )
             .lean() as ICartMongoModel
 
         return CartMapper.toDomain(updated)

@@ -2,9 +2,9 @@ import { inject, injectable } from 'inversify'
 import { TYPES } from '@common/schemes/di-types'
 // Types
 import { ILogger } from '@/types/utils'
-import { IUnitService } from '../types/service'
-import { IUnitRepository } from '../types/repository'
-import { IUnit } from '@proshop/types'
+import { IUnitService } from '@modules/unit/types/service'
+import { IUnitRepository } from '@modules/unit/types/repository'
+import { IUnit } from '@proshop-app/types'
 
 @injectable()
 export class UnitService implements IUnitService {

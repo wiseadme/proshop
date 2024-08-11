@@ -1,17 +1,23 @@
 <script lang="ts" setup>
-    import { useRightSidebar } from '@shared/composables/use-right-sidebar'
-    import { useCategoriesService } from '@modules/categories/composables/use-categories-service'
-    import { useRoute } from 'vue-router'
     import { unref } from 'vue'
 
+    import { useRoute } from 'vue-router'
+
+    import { useCategoriesService } from '@modules/categories/composables/use-categories-service'
+    import { useCategoryModel } from '@modules/categories/composables/use-category-model'
+
+    import { useRightSidebar } from '@shared/composables/use-right-sidebar'
+
+
     const { activeItem } = useRightSidebar()
+    const {setCategoryModel} = useCategoryModel()
     const { categories, getCategory, getCategories } = useCategoriesService()
     const route = useRoute()
 
     const onEdit = () => {}
 
     if (route.params.categoryId) {
-        getCategory(route.params.categoryId as string)
+        getCategory(route.params.categoryId as string).then(setCategoryModel)
     }
 
     if (!unref(categories).length) {
@@ -25,6 +31,6 @@
             :is="activeItem.component"
             v-if="activeItem"
             @edit="onEdit"
-        ></component>
+        />
     </v-layout>
 </template>

@@ -1,4 +1,4 @@
-import { IAsset, IAssetMongoModel } from '@proshop/types'
+import { IAsset, IAssetMongoModel } from '@proshop-app/types'
 
 export class AssetMapper {
     static toDomain(entity: IAssetMongoModel): IAsset {

@@ -4,23 +4,31 @@
         onMounted,
         watch,
     } from 'vue'
+
     import { useRouter } from 'vue-router'
+
+    import { useOrdersService } from '@modules/orders/composables/service/use-orders-service'
+
+    import { useAuthInterceptor } from '@shared/composables/use-auth-interceptor'
+    import { useAuthService } from '@shared/composables/use-auth-service'
+    import { useSharedHttp } from '@shared/composables/use-http'
     import { usePolling } from '@shared/composables/use-polling'
+
     import { useNotifications } from '@shared/components/VNotifications/use-notifications'
-    import { useOrdersService } from '@modules/orders/composables/use-orders-service'
-    // Components
+    import VNotifications from '@shared/components/VNotifications/VNotifications.vue'
+
+    import type { IOrder, Maybe } from '@proshop-app/types'
+
     import { AppHeader } from '@app/components/AppHeader'
     import { AppNavigation } from '@app/components/AppNavigation'
-    import VNotifications from '@shared/components/VNotifications/VNotifications.vue'
-    // Types
-    import { IOrder, Maybe } from '@proshop/types'
-    import { useAuthService } from '@shared/composables/use-auth-service'
     import { RouteNames } from '@modules/orders/enums/route-names'
 
     const router = useRouter()
     const { newOrders, getNewOrders, getOrders } = useOrdersService()
     const { notify, remove } = useNotifications()
     const { user } = useAuthService()
+
+    useAuthInterceptor(useSharedHttp())
 
     const { stopPolling, startPolling } = usePolling({
         handler: () => getNewOrders(),
@@ -39,11 +47,11 @@
         newOrdersNotifyId = null
         notSeenCount = 0
 
-        if (router.currentRoute.value.path.includes('/order')) {
+        if (router.currentRoute.value.name === RouteNames.ORDERS) {
             getOrders()
         }
 
-        router.replace({ name: RouteNames.ORDERS_TABLE })
+        router.replace({ name: RouteNames.ORDERS })
     }
 
     watch(newOrders!, (newOrders: IOrder[]) => {
@@ -58,7 +66,7 @@
                 setTimeout(() => {
                     newOrdersNotifyId = notify({
                         title: 'Новые заказы',
-                        text: `У вас ${notSeenCount} новых не просмотренных заказа`,
+                        text: `Количество непросмотренных заказов: ${notSeenCount}`,
                         type: 'success',
                         closeOnClick: false,
                         actions: {
@@ -77,7 +85,7 @@
         <app-navigation/>
         <v-main
             class="main-layout"
-            style="padding: 66px 10px 10px 247px; width: 100%;"
+            style="padding: 76px 10px 10px 247px; width: 100%;"
         >
             <router-view/>
         </v-main>

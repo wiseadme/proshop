@@ -1,26 +1,14 @@
 <script lang="ts" setup>
-    import { VSvg } from '@shared/components/VSvg'
-    import { FormCard } from '@shared/components/FormCard'
-    // Composables
     import { useCategoriesService } from '@modules/categories/composables/use-categories-service'
     import { useCategoriesTable } from '@modules/categories/composables/use-categories-table'
-    // Enums
-    import { SvgPaths } from '@shared/enums/svg-paths'
-    import { RouteNames } from '@modules/categories/enums/route-names'
-    // Constants
-    import { CREATE, EDIT } from '@shared/constants/actions'
-    import { INFO_BLOCK } from '@modules/categories/constants/sections'
-    // Types
-    import { ICategory } from '@proshop/types'
 
-    defineEmits<{
-        (e: 'create:category'): void
-        (e: 'edit:category', row: ICategory): void
-        (e: 'delete:category', row: ICategory): void
-    }>()
+    import { FormCard } from '@shared/components/FormCard'
+    import { VSvg } from '@shared/components/VSvg'
+
+    import { SvgPaths } from '@shared/enums/svg-paths'
 
     const { categories } = useCategoriesService()
-    const { cols } = useCategoriesTable()
+    const { cols, onEditRow, onCreateRow, onDeleteRow } = useCategoriesTable()
 </script>
 <template>
     <form-card>
@@ -53,18 +41,13 @@
             >
                 <template #toolbar>
                     <v-toolbar>
-                        <v-toolbar-logo></v-toolbar-logo>
-                        <v-spacer></v-spacer>
+                        <v-toolbar-logo/>
+                        <v-spacer/>
                         <v-toolbar-items>
                             <v-button
                                 color="primary"
                                 elevation="5"
-                                @click="$router.push({
-                                    name: RouteNames.CATEGORY_EDIT,
-                                    params: {
-                                        action: CREATE,
-                                        section: INFO_BLOCK
-                                    }})"
+                                @click="onCreateRow"
                             >
                                 <v-icon
                                     size="14"
@@ -84,13 +67,7 @@
                         color="var(--primary)"
                         elevation="2"
                         text
-                        @click="$router.push({
-                            name: RouteNames.CATEGORY_EDIT,
-                            params: {
-                                action: EDIT,
-                                categoryId: row.id,
-                                section: INFO_BLOCK
-                            }})"
+                        @click="onEditRow(row)"
                     >
                         <v-icon>fas fa-pen</v-icon>
                     </v-button>
@@ -99,7 +76,7 @@
                         color="var(--error)"
                         elevation="2"
                         text
-                        @click="$emit('delete:category', row)"
+                        @click="onDeleteRow(row)"
                     >
                         <v-icon>fas fa-trash-alt</v-icon>
                     </v-button>
@@ -110,7 +87,7 @@
                             v-if="row.image"
                             style="height: 30px; width: auto"
                             :src="row.image"
-                        />
+                        >
                         <v-icon v-else>
                             fas fa-box
                         </v-icon>

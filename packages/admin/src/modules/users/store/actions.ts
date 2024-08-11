@@ -1,5 +1,6 @@
 import { useUsersRepository } from '@modules/users/repository/users.repository'
-import { IUser } from '@proshop/types'
+
+import type { IUser } from '@proshop-app/types'
 
 const repository = useUsersRepository()
 
@@ -33,12 +34,12 @@ export const actions = {
         }
     },
 
-    async deleteUser(id) {
+    async deleteUser(id: string) {
         try {
             await repository.delete(id)
 
             this.$patch(state => {
-                state.users = state.users.filter(u => u._id !== id)
+                state.users = state.users.filter((user) => user.id !== id)
             })
 
             return true

@@ -2,10 +2,12 @@ type NotifyActions = {
     buttons?: {
         ok?: {
             type: NotifyTypes,
+            label: string;
             handler: (...args: any) => any
         },
         dismiss?: {
             type: NotifyTypes,
+            label: string;
             handler: (...args: any) => any
         },
     }
@@ -17,6 +19,12 @@ type NotifyActions = {
 
 type NotifyTypes = 'success' | 'warning' | 'error' | 'info' | 'simple'
 
+export enum NotificationTypes {
+    SUCCESS = 'success',
+    ERROR = 'error',
+    INFO = 'info',
+    WARNING = 'warning',
+}
 export type Notify = {
     id?: number
     title?: string

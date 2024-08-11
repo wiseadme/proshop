@@ -4,8 +4,9 @@ import { TYPES } from '@common/schemes/di-types'
 import { ILogger } from '@/types/utils'
 import { ICartService } from '../types/service'
 import { ICartRepository } from '../types/repository'
-import { ICart } from '@proshop/types'
+import type { ICart } from '@proshop-app/types'
 import { Cart } from '@modules/cart/entity/cart.entity'
+import { CART_IOC } from '@modules/cart/di/di.types'
 
 // import { ICartGatewayService } from '@modules/cart/gateway/gateway.service'
 
@@ -13,27 +14,16 @@ import { Cart } from '@modules/cart/entity/cart.entity'
 export class CartService implements ICartService {
     constructor(
         @inject(TYPES.UTILS.ILogger) private logger: ILogger,
-        @inject(TYPES.REPOSITORIES.ICartRepository) private repository: ICartRepository,
+        @inject(CART_IOC.ICartRepository) private repository: ICartRepository,
     ) {
     }
 
-    async create(cart) {
-        return await this.repository.create(Cart.create(cart))
+    async create(cart: Partial<ICart>) {
+        return await this.repository.create(Cart.create(cart as ICart))
     }
 
     async read(params: Partial<ICart>): Promise<ICart> {
-        if (!params.ownerId) {
-            return await this.repository.read(params)
-        }
-
-        const cart = await this.repository.findByOwnerId(params.ownerId)
-
-        if (cart) return cart
-
-        return Promise.reject({
-            message: 'Not found',
-            status: 404,
-        })
+        return await this.repository.findByOwnerId(params.customerId!)
     }
 
     async update(updates: Partial<ICart>): Promise<ICart> {
@@ -43,12 +33,13 @@ export class CartService implements ICartService {
             updates.totalItems = 0
             updates.totalUniqueItems = updates.items.length
 
+            updates.items = updates.items.filter(it => it.quantity > 0)
+
             updates.items.forEach(it => {
-                const { variant, product, quantity } = it
-                const price = variant?.option.price ?? product.price
+                const { price, quantity } = it
 
                 it.amount = quantity * price!
-                updates.amount! += it.amount
+                updates.amount! += quantity * price!
                 updates.totalItems! += quantity
             })
         }

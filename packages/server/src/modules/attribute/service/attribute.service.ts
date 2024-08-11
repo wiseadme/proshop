@@ -3,15 +3,16 @@ import { id, inject, injectable } from 'inversify'
 import { TYPES } from '@common/schemes/di-types'
 // Types
 import { ILogger } from '@/types/utils'
-import { IAttributeService } from '../types/service'
-import { IAttributeRepository } from '../types/repository'
-import { IAttribute } from '@proshop/types'
+import { IAttributeService } from '@modules/attribute/types/service'
+import { IAttributeRepository } from '@modules/attribute/types/repository'
+import type { IAttribute } from '@proshop-app/types'
+import { ATTRIBUTE_IOC } from '@modules/attribute/di/di.types'
 
 @injectable()
 export class AttributeService implements IAttributeService {
     constructor(
         @inject(TYPES.UTILS.ILogger) private logger: ILogger,
-        @inject(TYPES.REPOSITORIES.IAttributeRepository) private repository: IAttributeRepository,
+        @inject(ATTRIBUTE_IOC.IAttributeRepository) private repository: IAttributeRepository,
     ) {
     }
 

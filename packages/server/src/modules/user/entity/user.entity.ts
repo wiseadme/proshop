@@ -1,4 +1,4 @@
-import { IUser, IUserPosition, Maybe } from '@proshop/types'
+import { IUser, IUserPosition, Maybe } from '@proshop-app/types'
 
 export class User implements IUser {
     readonly id: string

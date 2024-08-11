@@ -1,11 +1,15 @@
 <script lang="ts" setup>
     import { unref } from 'vue'
-    import { useVariantsService } from '@modules/variants/composables/use-variants-service'
+
     import { useAttributesService } from '@modules/attributes/composables/use-attributes-service'
     import { useVariant } from '@modules/variants/composables/use-variant'
+    import { useVariantsService } from '@modules/variants/composables/use-variants-service'
+
     import { ModalCard } from '@shared/components/Modals'
+
     import { Variant } from '@modules/variants/model/variant.model'
-    import type { IAttribute } from '@proshop/types'
+
+    import type { IAttribute } from '@proshop-app/types'
 
     const {
         createVariant,
@@ -59,17 +63,22 @@
                 </template>
                 <template #content>
                     <v-text-field
-                        v-model.trim="model.group"
-                        label="Название группы"
+                        v-model.trim="model.name"
+                        label="Название группы*"
                         color="content"
                         :rules="[val => !!val || 'Обязательное поле']"
                     />
                     <v-select
                         v-model="linkedAttribute"
                         :items="attributes"
-                        label="Аттрибут привязки"
+                        label="Аттрибут привязки *"
                         value-key="key"
                         @select="onSelectAttribute"
+                    />
+                    <v-text-field
+                        v-model.trim="model.key"
+                        label="Ключ (на английском, необязательно)"
+                        color="content"
                     />
                 </template>
                 <template #actions>

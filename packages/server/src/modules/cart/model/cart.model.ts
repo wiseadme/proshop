@@ -1,10 +1,10 @@
 import { model, Schema } from 'mongoose'
-import { ICartMongoModel } from '@proshop/types'
+import type { ICartItem, ICartMongoModel } from '@proshop-app/types'
 
 const CartSchema = new Schema<ICartMongoModel>({
     _id: Schema.Types.ObjectId,
     items: {
-        type: Array as any,
+        type: [] as ICartItem[],
         default: [],
     },
     totalItems: {
@@ -15,24 +15,19 @@ const CartSchema = new Schema<ICartMongoModel>({
         type: Number,
         default: 0,
     },
-    currency: {
-        type: Object,
-        default: null,
-    },
     amount: {
         type: Number,
         default: 0,
     },
-    ownerId: {
+    customerId: {
         type: Schema.Types.ObjectId,
         ref: 'User',
-        default: null,
     },
     orderId: {
         type: String,
         default: null,
     },
-}, {
+} as any, {
     timestamps: true,
 })
 

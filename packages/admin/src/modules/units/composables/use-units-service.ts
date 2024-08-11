@@ -3,9 +3,12 @@ import {
     ref,
     unref
 } from 'vue'
+
+import { createSharedComposable } from '@shared/composables/features/create-shared-composable'
+
+import type { IUnit } from '@proshop-app/types'
+
 import { useUnitsStore } from '@modules/units/store'
-import { IUnit } from '@proshop/types'
-import { createSharedComposable } from '@shared/features/create-shared-composable'
 
 export const useUnitsService = createSharedComposable(() => {
     const _store = useUnitsStore()

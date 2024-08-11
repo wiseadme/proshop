@@ -5,7 +5,7 @@ import { FilterGroupModel } from '@modules/filter/model/filterGroup.model'
 import { validateId } from '@common/utils/mongoose-validate-id'
 // Types
 import { ILogger } from '@/types/utils'
-import { IFilterGroup, IFilterGroupMongoModel } from '@proshop/types'
+import { IFilterGroup, IFilterGroupMongoModel } from '@proshop-app/types'
 import { IFilterGroupRepository } from '../types/repository'
 import { FilterGroupMapper } from '@modules/filter/mappers/filterGroup.mapper'
 
@@ -27,16 +27,16 @@ export class FilterGroupRepository implements IFilterGroupRepository {
         return FilterGroupMapper.toDomain(filterGroupData.toObject())
     }
 
-    async read(id?: string): Promise<IFilterGroup[]> {
-        id && validateId(id)
+    async read(params: Partial<IFilterGroup>): Promise<IFilterGroup[]> {
+        params.id && validateId(params.id)
 
-        const filterGroups = await FilterGroupModel.find(id ? { _id: id } : {}).lean()
+        const filterGroups = await FilterGroupModel.find(params).lean()
 
         return filterGroups.map(filterGroup => FilterGroupMapper.toDomain(filterGroup)) as IFilterGroup[]
     }
 
     async update(updates: Partial<IFilterGroup>): Promise<IFilterGroup> {
-        validateId(updates.id)
+        validateId(updates.id!)
 
         const filterGroup = await FilterGroupModel.findByIdAndUpdate(
             { _id: updates.id },

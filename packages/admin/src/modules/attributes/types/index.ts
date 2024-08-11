@@ -1,7 +1,7 @@
-import { IAttribute } from '@proshop/types'
+import { IAttribute } from '@proshop-app/types'
 
 export interface IAttributeState {
-    attributes: Maybe<Array<IAttribute>>
+    attributes: Maybe<IAttribute[]>
 }
 
 export interface IAttributeActions {
@@ -9,7 +9,7 @@ export interface IAttributeActions {
 
     read(id?: string): Promise<Array<IAttribute>>
 
-    update(updates: Array<IAttribute>): Promise<Array<IAttribute>>
+    update(updates: IAttribute[]): Promise<IAttribute[]>
 
     delete(id: string): Promise<boolean>
 }

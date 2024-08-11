@@ -1,21 +1,21 @@
-import { IVariant } from '@proshop/types'
+import type { IVariant } from '@proshop-app/types'
 
 export class Variant implements IVariant {
     id: string
-    group: string
+    name: string
+    key: Maybe<string>
     attributeId: string
-    ownerId: Maybe<string>
 
     constructor({
         id = '',
-        group = '',
+        name = '',
         attributeId = '',
-        ownerId = null
+        key = null
     }) {
         this.id = id
-        this.group = group
+        this.name = name
         this.attributeId = attributeId
-        this.ownerId = ownerId
+        this.key = key
     }
 
     static create(unit = {}) {

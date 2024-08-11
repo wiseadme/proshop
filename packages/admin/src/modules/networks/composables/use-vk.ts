@@ -1,6 +1,8 @@
-import { useVKStore } from '@modules/networks/store/vk'
-import { useRoute } from 'vue-router'
 import { computed } from 'vue'
+
+import { useRoute } from 'vue-router'
+
+import { useVKStore } from '@modules/networks/store/vk'
 
 export const useVK = () => {
     const _store = useVKStore()

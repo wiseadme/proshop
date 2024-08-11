@@ -1,4 +1,4 @@
-import { ICustomer } from '@proshop/types'
+import { ICustomer } from '@proshop-app/types'
 
 export class Customer implements ICustomer {
     readonly id: string

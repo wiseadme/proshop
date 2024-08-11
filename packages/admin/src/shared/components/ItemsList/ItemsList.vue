@@ -1,5 +1,5 @@
 <script lang="ts" setup generic="T">
-    import { computed } from 'vue'
+    import { DeepReadonly, computed } from 'vue'
 
     type ListItem<S> = S & { id: string }
 
@@ -11,15 +11,15 @@
         items = []
     } = defineProps<{
         modelValue?: Maybe<ListItem<T>>
-        items: ListItem<T>[]
+        items: (DeepReadonly<ListItem<T>> | ListItem<T>)[]
         uniqueKey?: string
         deletable?: boolean
         editable?: boolean
     }>()
 
     defineEmits<{
-        (e: 'delete', value: ListItem<T>): void
-        (e: 'edit', value: ListItem<T>): void
+        (e: 'delete', value: DeepReadonly<ListItem<T>> | ListItem<T>): void
+        (e: 'edit', value: DeepReadonly<ListItem<T>> | ListItem<T>): void
     }>()
 
     const selectedItemId = computed(() => modelValue?.id ?? '')
@@ -56,6 +56,12 @@
                 </v-list-item-subtitle>
             </v-list-item-content>
             <v-spacer/>
+            <v-list-item-content>
+                <slot
+                    name="custom"
+                    :item="item"
+                />
+            </v-list-item-content>
             <v-list-item-content v-if="editable || deletable">
                 <v-list-item-icon>
                     <v-menu

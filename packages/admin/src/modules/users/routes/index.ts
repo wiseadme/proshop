@@ -1,17 +1,18 @@
+import { RouteNames } from '@modules/users/enums/route-names'
+
 export const usersRoutes = [
     {
-        path: '/users',
-        component: () => import(/* webpackChunkName: "Page.Proshop" */ '@modules/users/layouts/UsersLayout.vue'),
-        name: 'users',
+        path: 'users',
+        component: () => import(/* ChunkName: "Page.Proshop" */ '@modules/users/layouts/UsersLayout.vue'),
         children: [
             {
                 path: '',
-                component: () => import(/* webpackChunkName: "Page.Proshop" */ '@modules/users/pages/UsersPage.vue'),
-                name: 'user-table'
+                component: () => import(/* ChunkName: "Page.Proshop" */ '@modules/users/pages/UsersPage.vue'),
+                name: RouteNames.USERS,
             }
         ],
         meta: {
-            name: 'users'
+            name: RouteNames.USERS,
         }
     }
 ]

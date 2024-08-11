@@ -39,6 +39,19 @@
             "error",
             4
         ],
+        "no-multiple-empty-lines": "error",
+        "no-console": "off",
+        "no-debugger": "error",
+        "no-unused-vars": "off",
+        "import/no-named-as-default": "off",
+        "import/extensions": [
+            "error",
+            "ignorePackages",
+            {
+                "js": "never",
+                "ts": "never"
+            }
+        ],
         "vue/script-indent": [
             "error",
             4,
@@ -47,13 +60,16 @@
                 "switchCase": 1
             }
         ],
-        "no-multiple-empty-lines": "error",
-        "no-console": "off",
-        "no-debugger": "error",
-        "no-unused-vars": "off",
-        "import/no-named-as-default": "off",
         "vue/html-quotes": "error",
-        "vue/html-self-closing": "off",
+        "vue/html-self-closing": ["error", {
+            "html": {
+                "void": "never",
+                "normal": "always",
+                "component": "always"
+            },
+            "svg": "always",
+            "math": "always"
+        }],
         "vue/html-closing-bracket-spacing": "off",
         "vue/attribute-hyphenation": "error",
         "vue/require-default-prop": "off",
@@ -61,9 +77,16 @@
             "error",
             "kebab-case"
         ],
+        "vue/component-name-in-template-casing": ["error", "kebab-case", {
+            "registeredComponentsOnly": true,
+        }],
+        "vue/match-component-file-name": ["error", {
+            "extensions": ["vue"],
+            "shouldMatchCase": false
+        }],
         "vue/no-setup-props-destructure": "off",
-        "vue/no-mutating-props": "off",
-        "vue/one-component-per-file": "off",
+        "vue/no-mutating-props": "error",
+        "vue/one-component-per-file": "error",
         "vue/max-attributes-per-line": [
             "error",
             {
@@ -75,11 +98,38 @@
             "error",
             4,
             {
+                "attribute": 1,
                 "baseIndent": 1,
                 "switchCase": 1,
+                "closeBracket": 0,
+                "alignAttributesVertically": true,
                 "ignores": []
             }
         ],
+        "vue/attributes-order": ["error", {
+            "order": [
+                "DEFINITION",
+                "LIST_RENDERING",
+                "CONDITIONALS",
+                "RENDER_MODIFIERS",
+                "GLOBAL",
+                ["UNIQUE", "SLOT"],
+                "TWO_WAY_BINDING",
+                "OTHER_DIRECTIVES",
+                "OTHER_ATTR",
+                "EVENTS",
+                "CONTENT"
+            ],
+            "alphabetical": false
+        }],
+        "vue/no-irregular-whitespace": ["error", {
+            "skipStrings": true,
+            "skipComments": false,
+            "skipRegExps": false,
+            "skipTemplates": false,
+            "skipHTMLAttributeValues": false,
+            "skipHTMLTextContents": false
+        }],
         "@typescript-eslint/no-unused-vars": [
             "error"
         ],
@@ -106,6 +156,70 @@
                 "items": 2,
                 "max-len": 100,
                 "semi": false
+            }
+        ],
+        "import/order": [
+            "error",
+            {
+                "groups": ["builtin", "external", "internal"],
+                "pathGroups": [
+                    {
+                        "pattern": "vue",
+                        "group": "external",
+                        "position": "before"
+                    },
+                    {
+                        "pattern": "@modules/**/composables/**",
+                        "group": "external",
+                        "position": "after"
+                    },
+                    {
+                        "pattern": "@shared/composables/**",
+                        "group": "external",
+                        "position": "after"
+                    },
+                    {
+                        "pattern": "@shared/components/**",
+                        "group": "external",
+                        "position": "after"
+                    },
+                    {
+                        "pattern": "@modules/**/components/**",
+                        "group": "external",
+                        "position": "after"
+                    },
+                    {
+                        "pattern": "@modules/**/repository/**",
+                        "group": "external",
+                        "position": "after"
+                    },
+                    {
+                        "pattern": "@modules/**/model/**",
+                        "group": "external",
+                        "position": "after"
+                    },
+                    {
+                        "pattern": "@shared/features/**",
+                        "group": "external",
+                        "position": "before"
+                    },
+                    {
+                        "pattern": "@shared/utils/**",
+                        "group": "external",
+                        "position": "after"
+                    },
+                    {
+                        "pattern": "@proshop-app/**",
+                        "group": "external",
+                        "position": "after"
+                    }
+                ],
+                "pathGroupsExcludedImportTypes": ["vue"],
+                "newlines-between": "always",
+                "alphabetize": {
+                    "order": "asc",
+                    "caseInsensitive": true
+                }
             }
         ]
     },

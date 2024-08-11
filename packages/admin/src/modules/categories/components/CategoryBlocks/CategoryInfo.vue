@@ -1,10 +1,14 @@
 <script lang="ts" setup>
     import { computed, unref } from 'vue'
-    import { FormCard } from '@shared/components/FormCard'
-    import { useCategoryModel } from '@modules/categories/composables/use-category-model'
+
     import { useCategoriesService } from '@modules/categories/composables/use-categories-service'
-    import { ICategory } from '@proshop/types'
     import { useCategoryInfo } from '@modules/categories/composables/use-category-info'
+    import { useCategoryModel } from '@modules/categories/composables/use-category-model'
+
+    import { FormCard } from '@shared/components/FormCard'
+
+    import type { ICategory } from '@proshop-app/types'
+
 
     const { model } = useCategoryModel()
     const {
@@ -13,8 +17,9 @@
 
     const { onSubmit } = useCategoryInfo()
 
-    const getParent = (): Maybe<ICategory> => unref(categories).find(it => it.id === unref(model).parentId) || null
-
+    const getParent = (): Maybe<ICategory> => {
+        return (unref(categories).find(it => it.id === unref(model).parentId) ?? null) as Maybe<ICategory>
+    }
     const setParent = (category: ICategory) => {
         unref(model).parentId = category.id
     }

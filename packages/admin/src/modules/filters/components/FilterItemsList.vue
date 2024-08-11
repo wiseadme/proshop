@@ -1,30 +1,47 @@
 <script lang="ts" setup>
-    import { unref, watch } from 'vue'
+    import {
+        onBeforeMount,
+        unref,
+        watch
+    } from 'vue'
+
+    import {
+        useFilterGroupService
+    } from '@modules/filters/composables/services/use-filter-group-service'
+    import {
+        useFilterItemsService
+    } from '@modules/filters/composables/services/use-filter-items-service'
+    import { useFilterGroups } from '@modules/filters/composables/view/use-filter-groups'
+    import { useFilterItems } from '@modules/filters/composables/view/use-filter-items'
+
     import { FormCard } from '@shared/components/FormCard'
     import { ItemsList } from '@shared/components/ItemsList'
     import { VSvg } from '@shared/components/VSvg'
 
-    import { useFilterItemsService } from '@modules/filters/composables/use-filter-items-service'
-    import { useFilterItems } from '@modules/filters/composables/use-filter-items'
-    import { useFilterGroupService } from '@modules/filters/composables/use-filter-group-service'
+    import { IFilterGroup } from '@proshop-app/types'
+
     import { SvgPaths } from '@shared/enums/svg-paths'
-    import { IFilterGroup } from '@proshop/types'
 
     const { filterItems, getFilterItems, deleteFilterItem } = useFilterItemsService()
     const { filtersGroup, toggleForm, onEditFilter } = useFilterItems()
-    const { filterGroups, getFilterGroupItems } = useFilterGroupService()
+    const { filterGroups } = useFilterGroups()
+    const { getFilterGroups } = useFilterGroupService()
 
-    const onSelectGroup = (group: IFilterGroup) => {
+    watch(filterGroups, ([group]) => {
         filtersGroup.value = group
-        getFilterItems({ groupId: group.id })
-    }
-
-    watch(filterGroups, async (groups) => {
-        if (!groups.length) await getFilterGroupItems()
-
-        filtersGroup.value = unref(filterGroups)[0]
-        await getFilterItems({ groupId: unref(filtersGroup)!.id })
     }, { immediate: true })
+
+    watch(filtersGroup, (group: IFilterGroup) => {
+        if (group) {
+            getFilterItems({ groupId: group.id })
+        }
+    }, { immediate: true })
+
+    onBeforeMount(async () => {
+        if (!unref(filterGroups).length) {
+            await getFilterGroups()
+        }
+    })
 
 </script>
 <template>
@@ -52,11 +69,10 @@
                 label="Группа фильтров"
                 :items="filterGroups"
                 value-key="name"
-                @select="onSelectGroup"
             />
             <items-list
                 :items="filterItems"
-                @delete="deleteFilterItem"
+                @delete="deleteFilterItem($event.id)"
                 @edit="onEditFilter"
             >
                 <template #title="{item}">

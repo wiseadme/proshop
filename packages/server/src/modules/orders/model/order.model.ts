@@ -1,16 +1,16 @@
 import { model, Schema } from 'mongoose'
-import { IOrderMongoModel } from '@proshop/types'
+import { ICartItem, IOrderMongoModel } from '@proshop-app/types'
 
 const OrderSchema = new Schema<IOrderMongoModel>({
     _id: Schema.Types.ObjectId,
     items: {
-        type: Array as any,
+        type: [] as ICartItem[],
         default: [],
     },
-    cart: {
-        type: Schema.Types.ObjectId,
-        ref: 'Cart',
-    } as any,
+    cartId: {
+        type: String,
+        default: null,
+    },
     amount: {
         type: Number,
         required: true,
@@ -31,6 +31,7 @@ const OrderSchema = new Schema<IOrderMongoModel>({
             message: String,
         },
         default: null,
+        _id: false
     },
     customer: {
         type: Schema.Types.ObjectId,
@@ -51,12 +52,13 @@ const OrderSchema = new Schema<IOrderMongoModel>({
             inDelivery: Boolean,
             completed: Boolean,
             cancelled: Boolean,
+            disbanded: Boolean,
         },
         _id: false,
     },
     payment: {
         type: Number,
-        default: null,
+        required: true
     },
     executor: {
         type: Schema.Types.ObjectId,

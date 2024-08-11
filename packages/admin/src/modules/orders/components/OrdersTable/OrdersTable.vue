@@ -1,10 +1,14 @@
 <script lang="ts" setup>
-    import { VSvg } from '@shared/components/VSvg'
+    import { useOrders } from '@modules/orders/composables/view/use-orders'
+    import { useOrdersTable } from '@modules/orders/composables/view/use-orders-table'
+
     import { FormCard } from '@shared/components/FormCard'
-    import { useOrders } from '@modules/orders/composables/use-orders'
-    import { useOrdersTable } from '@modules/orders/composables/use-orders-table'
+    import { VSvg } from '@shared/components/VSvg'
+
+
+    import type { IOrder } from '@proshop-app/types'
+
     import { SvgPaths } from '@shared/enums/svg-paths'
-    import { IOrder } from '@proshop/types'
 
     defineEmits<{
         (e: 'open:order', row: IOrder): void
@@ -22,14 +26,15 @@
         onUpdateTablePage,
     } = useOrdersTable()
 
-    const getOrderStatusClasses = (row: IOrder) => ({
-        'primary': row.status.created && !row.status.seen,
-        'blue lighten-1': row.status.seen && !row.status.confirmed,
-        'teal accent-3': row.status.confirmed && !row.status.inProcess,
-        'lime': row.status.inProcess && !row.status.ready,
-        'purple': row.status.ready && !row.status.inDelivery,
-        'pink lighten-3': row.status.inDelivery && !row.status.completed,
-        'disabled': row.status.seen && row.status.completed,
+    const getOrderStatusClasses = ({status}: IOrder) => ({
+        'primary': !status.cancelled && status.created && !status.seen,
+        'blue lighten-1': !status.cancelled && status.seen && !status.confirmed,
+        'teal accent-3': !status.cancelled && status.confirmed && !status.inProcess,
+        'lime': !status.cancelled && status.inProcess && !status.ready,
+        'purple': !status.cancelled && status.ready && !status.inDelivery,
+        'pink lighten-3': !status.cancelled && status.inDelivery && !status.completed,
+        'disabled': !status.cancelled && status.seen && status.completed,
+        'red darken-1': status.cancelled
     })
 
 </script>
@@ -89,16 +94,9 @@
                         <v-icon>fas fa-trash-alt</v-icon>
                     </v-button>
                 </template>
-                <template #qrcode="{ row }">
+                <template #executor="{ row }">
                     <div class="d-flex justify-center align-center">
-                        <img
-                            v-if="row.qrcode"
-                            style="height: 30px; width: auto"
-                            :src="row.qrcode"
-                        />
-                        <v-icon v-else>
-                            fas fa-box
-                        </v-icon>
+                        <span v-if="row.executor">{{ row.executor.firstName + ' ' + row.executor.secondName }}</span>
                     </div>
                 </template>
                 <template #status="{ row, format }">

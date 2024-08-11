@@ -1,11 +1,14 @@
 <script lang="ts" setup>
-    import { ItemsList } from '@shared/components/ItemsList'
-    import { FormCard } from '@shared/components/FormCard'
-    import { VSvg } from '@shared/components/VSvg'
-    import { SvgPaths } from '@shared/enums/svg-paths'
     import { onMounted } from 'vue'
-    import { useUnitsService } from '@modules/units/composables/use-units-service'
+
     import { useUnit } from '@modules/units/composables/use-unit'
+    import { useUnitsService } from '@modules/units/composables/use-units-service'
+
+    import { FormCard } from '@shared/components/FormCard'
+    import { ItemsList } from '@shared/components/ItemsList'
+    import { VSvg } from '@shared/components/VSvg'
+
+    import { SvgPaths } from '@shared/enums/svg-paths'
 
     const { units, getUnits } = useUnitsService()
 

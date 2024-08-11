@@ -1,5 +1,6 @@
 <script lang="ts" setup>
     import { VSvg } from '@shared/components/VSvg'
+
     import { SvgPaths } from '@shared/enums/svg-paths'
 
     defineEmits<{

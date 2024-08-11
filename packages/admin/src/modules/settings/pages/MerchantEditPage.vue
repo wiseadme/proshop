@@ -4,11 +4,13 @@
         onBeforeMount,
         unref
     } from 'vue'
-    import OrganizationBlock from '@modules/settings/components/Merchant/OrganizationBlock.vue'
-    import CurrenciesBlock from '@modules/settings/components/Merchant/CurrenciesBlock.vue'
-    import ContactsBlock from '@modules/settings/components/Merchant/ContactsBlock.vue'
-    import SocialBlock from '@modules/settings/components/Merchant/SocialBlock.vue'
+
     import { useMerchant } from '@modules/settings/composables/use-merchant'
+
+    import ContactsBlock from '@modules/settings/components/Merchant/ContactsBlock.vue'
+    import CurrenciesBlock from '@modules/settings/components/Merchant/CurrenciesBlock.vue'
+    import OrganizationBlock from '@modules/settings/components/Merchant/OrganizationBlock.vue'
+    import SocialBlock from '@modules/settings/components/Merchant/SocialBlock.vue'
 
     const {
         isEditMode,
@@ -49,17 +51,17 @@
                         <v-card-content>
                             <v-row>
                                 <v-col cols="6">
-                                    <OrganizationBlock/>
+                                    <organization-block/>
                                 </v-col>
                                 <v-col cols="4">
-                                    <CurrenciesBlock/>
+                                    <currencies-block/>
                                 </v-col>
                                 <v-col
                                     cols="6"
                                     class="mt-4"
                                 >
-                                    <ContactsBlock/>
-                                    <SocialBlock/>
+                                    <contacts-block/>
+                                    <social-block/>
                                 </v-col>
                             </v-row>
                         </v-card-content>

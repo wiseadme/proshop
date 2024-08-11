@@ -1,4 +1,4 @@
-import { IMetaTag, IMetaTagMongoModel } from '@proshop/types'
+import { IMetaTag, IMetaTagMongoModel } from '@proshop-app/types'
 
 export class MetatagMapper {
     static toDomain(entity: IMetaTagMongoModel): IMetaTag {

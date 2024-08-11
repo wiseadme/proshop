@@ -1,42 +1,39 @@
-import { IAsset, IAttribute, IOption, IProduct, Maybe } from '@proshop/types'
+import { IOption } from '@proshop-app/types'
 
 export class Option implements IOption {
     readonly id: string
-    readonly name: string
-    readonly variantId: string
-    readonly ownerId: string
-    readonly product: Maybe<IProduct | string>
-    readonly price: number
+    readonly groupId: string
+    readonly value: string
     readonly order: number
-    readonly quantity: number
-    readonly description: Maybe<string>
-    readonly image: Maybe<string>
-    readonly url: Maybe<string>
+    readonly isAvailable: boolean
+    readonly productName: string
+    readonly productId: string
+    readonly image: string
+    readonly url: string
+    readonly description?: string
 
     constructor({
         id = '',
-        name = '',
-        price = 0,
-        quantity = 0,
         order = 0,
-        description = null,
-        url = null,
-        image = null,
-        variantId = '',
-        ownerId = '',
-        product = null
+        description = '',
+        url = '',
+        image = '',
+        productName,
+        productId,
+        value,
+        groupId,
+        isAvailable = true
     }: IOption) {
         this.id = id
-        this.name = name
-        this.price = price
+        this.groupId = groupId
+        this.value = value
         this.order = order
-        this.quantity = quantity
         this.description = description
         this.image = image
-        this.variantId = variantId
-        this.ownerId = ownerId
         this.url = url
-        this.product = product
+        this.productName = productName
+        this.productId = productId
+        this.isAvailable = isAvailable
     }
 
     static create(option: IOption): IOption {

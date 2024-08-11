@@ -1,6 +1,8 @@
-import { IProduct, Maybe } from '@proshop/types'
+import { injectable } from 'inversify'
+import { IProductMongoRepositoryHelpers } from '@modules/products/types/repository'
 
-export class RepositoryHelpers {
+@injectable()
+export class MongoRepositoryHelpers implements IProductMongoRepositoryHelpers {
     getPaginationParams({ page, count }) {
         return {
             skip: (Number(page) * Number(count)) - Number(count),
@@ -40,53 +42,33 @@ export class RepositoryHelpers {
 
     getVariantsPopulateParams() {
         return {
-            path: 'variants',
+            path: 'groups',
             populate: {
-                path: 'options',
-                select: '_id name product ownerId variantId quantity order price description',
-                options: {
-                    lean: true,
-                },
-                populate: {
-                    path: 'product',
-                    select: 'name url price quantity image',
-                    options: {
-                        lean: true
-                    }
-                }
+                path: 'variant',
             },
-        }
-    }
-
-    getCurrencyPopulateParams() {
-        return {
-            path: 'currency',
-            select: 'currency',
-            transform: (doc) => doc?.currency,
-        }
-    }
-
-    getRelatedPopulateParams() {
-        return {
-            path: 'related',
-            select: 'name price url image categories currency',
-            populate: [
-                this.getCategoriesPopulateParams(),
-                this.getCurrencyPopulateParams(),
-            ],
             options: {
                 lean: true
             }
         }
     }
 
-    getPopulateParams() {
+    getRelatedPopulateParams() {
+        return {
+            path: 'related',
+            select: 'name price url image categories currency conditions sku',
+            populate: [this.getCategoriesPopulateParams()],
+            options: {
+                lean: true
+            }
+        }
+    }
+
+    getProductPopulateParams() {
         return [
             this.getAssetsPopulateParams(),
             this.getCategoriesPopulateParams(),
             this.getVariantsPopulateParams(),
             this.getRelatedPopulateParams(),
-            this.getCurrencyPopulateParams(),
         ]
     }
 

@@ -1,5 +1,5 @@
 import { model, Schema } from 'mongoose'
-import { IMerchantMongoModel } from '@proshop/types'
+import { IMerchantMongoModel } from '@proshop-app/types'
 
 const MerchantSchema: Schema = new Schema<IMerchantMongoModel>({
     _id: Schema.Types.ObjectId,

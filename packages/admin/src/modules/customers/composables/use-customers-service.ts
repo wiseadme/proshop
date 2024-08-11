@@ -1,19 +1,38 @@
-import { computed } from 'vue'
-import { createSharedComposable } from '@shared/features/create-shared-composable'
-import { useCustomersStore } from '@modules/customers/store'
-import { ICustomer, Maybe } from '@proshop/types'
+import {
+    DeepReadonly,
+    Ref,
+    ref
+} from 'vue'
+
+import {
+    useCustomersRepository
+} from '@modules/customers/composables/repository/use-customers-repository'
+
+import { createSharedComposable } from '@shared/composables/features/create-shared-composable'
+
+
+import { useLogger } from '@shared/utils/logger'
+
+import { ICustomer } from '@proshop-app/types'
 
 export const useCustomersService = createSharedComposable(() => {
-    const _store = useCustomersStore()
+    const repository = useCustomersRepository()
+    const { logError } = useLogger()
 
-    const customers = computed<Maybe<ICustomer[]>>(() => _store.customers)
+    const _customers = ref<ICustomer[]>([])
 
-    const fetchCustomers = () => {
-        return _store.getCustomers()
+    const getCustomers = async (params: Partial<ICustomer>) => {
+        try {
+            const { data } = await repository.getCustomers(params)
+            _customers.value = data
+        } catch (err) {
+            logError('Customers Service: customers loading failed', err)
+        }
     }
 
     return {
-        customers,
-        fetchCustomers
+        customers: _customers as Ref<DeepReadonly<ICustomer>[]>,
+        getCustomers,
+        cancelRequests: repository.cancel,
     }
 })

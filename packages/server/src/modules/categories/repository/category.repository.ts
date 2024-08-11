@@ -4,7 +4,7 @@ import { CategoryModel } from '../model/category.model'
 import { TYPES } from '@common/schemes/di-types'
 import { validateId } from '@common/utils/mongoose-validate-id'
 // Types
-import { ICategory, ICategoryMongoModel } from '@proshop/types'
+import { ICategory, ICategoryMongoModel } from '@proshop-app/types'
 import { ICategoryRepository } from '../types/repository'
 import { ILogger } from '@/types/utils'
 // Mappers
@@ -40,13 +40,10 @@ export class CategoryRepository implements ICategoryRepository {
     }
 
     async updateCategory(updates: Partial<ICategory>) {
-        const { id } = updates
-        validateId(updates.id)
-
-        delete updates.id
+        validateId(updates.id!)
 
         const updated = await CategoryModel.findByIdAndUpdate(
-            { _id: id },
+            { _id: updates.id },
             { $set: updates },
             { new: true },
         )

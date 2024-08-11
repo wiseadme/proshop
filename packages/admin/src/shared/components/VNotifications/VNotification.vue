@@ -36,8 +36,25 @@
             />
             <h4>{{ params.title }}</h4>
         </v-card-title>
-        <v-card-content class="white--text">
+        <v-card-content
+            v-if="params.text"
+            class="white--text"
+        >
             {{ params.text }}
         </v-card-content>
+        <v-card-actions v-if="params.actions?.buttons">
+            <template v-for="btn of params.actions.buttons">
+                <v-button
+                    v-if="btn"
+                    :key="btn.type"
+                    :label="btn.label"
+                    :color="btn.type"
+                    width="120"
+                    elevation="2"
+                    class="mr-2"
+                    @click="btn.handler"
+                />
+            </template>
+        </v-card-actions>
     </v-card>
 </template>

@@ -1,8 +1,13 @@
 $hover-color: #e8e8e8;
 
 .app-sidebar {
-  width: 100%;
   height: 100%;
+  width: 100%;
+}
+
+.v-group__header {
+  border-radius: $border-radius;
+  margin-bottom: 5px;
 }
 
 .navigation-item {
@@ -11,7 +16,7 @@ $hover-color: #e8e8e8;
 
   &--active {
     background-color: var(--primary);
-    color: white;
+    color: #fff;
   }
 
   &:hover:not(.navigation-item--active) {
@@ -28,9 +33,4 @@ $hover-color: #e8e8e8;
       }
     }
   }
-}
-
-.v-group__header {
-  border-radius: $border-radius;
-  margin-bottom: 5px;
 }

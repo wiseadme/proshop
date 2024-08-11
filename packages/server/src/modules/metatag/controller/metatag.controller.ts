@@ -5,10 +5,10 @@ import { TYPES } from '@common/schemes/di-types'
 // Types
 import { ILogger } from '@/types/utils'
 import { IController } from '@/types'
-import { IMetaTag } from '@proshop/types'
+import { IMetaTag } from '@proshop-app/types'
 import { META_TAGS_MODULE_PATH } from '@common/constants/paths'
 import { setMiddlewares } from '@common/helpers'
-import * as readline from 'readline'
+import { META_TAG_IOC } from '@modules/metatag/di/di.types'
 
 @injectable()
 export class MetaTagController extends BaseController implements IController {
@@ -17,7 +17,7 @@ export class MetaTagController extends BaseController implements IController {
 
     constructor(
         @inject(TYPES.UTILS.ILogger) private logger: ILogger,
-        @inject(TYPES.SERVICES.IMetaTagService) private service: any,
+        @inject(META_TAG_IOC.IMetaTagService) private service: any,
     ) {
         super()
         this.initRoutes()

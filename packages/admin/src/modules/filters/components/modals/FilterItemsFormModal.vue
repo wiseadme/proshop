@@ -1,27 +1,26 @@
 <script lang="ts" setup>
-    import ModalCard from '@shared/components/Modals/ModalCard.vue'
     import { unref, watch } from 'vue'
-    import { useFilterGroupService } from '@modules/filters/composables/use-filter-group-service'
-    import { useFilterItems } from '@modules/filters/composables/use-filter-items'
-    import { IFilterGroup } from '@proshop/types'
-    import { useFilterItemModel } from '@modules/filters/composables/use-filter-item-model'
 
-    const { filterGroups, getFilterGroupItems } = useFilterGroupService()
+    import { useFilterGroups } from '@modules/filters/composables/view/use-filter-groups'
+    import { useFilterItemModel } from '@modules/filters/composables/view/use-filter-item-model'
+    import { useFilterItems } from '@modules/filters/composables/view/use-filter-items'
+
+    import ModalCard from '@shared/components/Modals/ModalCard.vue'
+
+    import type { IFilterGroup } from '@proshop-app/types'
+
+    const { filterGroups } = useFilterGroups()
     const { filtersGroup, showForm, onCloseForm, onSubmit } = useFilterItems()
     const { model } = useFilterItemModel()
-
-    if (!unref(filterGroups).length) {
-        getFilterGroupItems()
-    }
 
     const onSelectGroup = (group: IFilterGroup) => {
         unref(model).groupId = group.id
     }
 
     watch(filtersGroup, (group) => {
-        if (!group) return
-
-        onSelectGroup(group!)
+        if (group) {
+            onSelectGroup(group!)
+        }
     }, { immediate: true })
 
 </script>

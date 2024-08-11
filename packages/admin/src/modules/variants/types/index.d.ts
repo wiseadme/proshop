@@ -1,4 +1,4 @@
-import { IVariant } from '@proshop/types'
+import { IVariant } from '@proshop-app/types'
 
 declare interface IVariantActions {
     create(variant: IVariant): Promise<IVariant>

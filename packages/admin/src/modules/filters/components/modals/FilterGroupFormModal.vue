@@ -1,5 +1,6 @@
 <script lang="ts" setup>
-    import { useFilterGroups } from '@modules/filters/composables/use-filter-groups'
+    import { useFilterGroups } from '@modules/filters/composables/view/use-filter-groups'
+
     import { ModalCard } from '@shared/components/Modals'
 
     const {

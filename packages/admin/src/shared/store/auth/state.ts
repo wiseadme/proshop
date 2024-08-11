@@ -1,4 +1,4 @@
-import { IUser } from '@proshop/types'
+import { IUser } from '@proshop-app/types'
 
 interface State {
     user: Maybe<IUser>
