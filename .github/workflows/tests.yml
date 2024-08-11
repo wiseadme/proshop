@@ -20,7 +20,6 @@ jobs:
       - name: install project deps
         if: steps.cache-project-deps.outputs.cache-hit != 'true'
         run: |
-          echo "start setting npm ${GITHUB_TOKEN}"
           npm set @proshop-app:registry=https://npm.pkg.github.com
           npm set "//npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}"
           npm run setup
