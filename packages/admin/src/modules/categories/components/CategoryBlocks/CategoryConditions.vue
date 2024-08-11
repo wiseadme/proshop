@@ -15,7 +15,6 @@
     const { model } = useCategoryModel()
     const { onUpdateCondition } = useCategoryConditions()
 
-
     useButtonsPanel({
         title: 'Управление состоянием',
         onOk: () => onUpdateCondition(),

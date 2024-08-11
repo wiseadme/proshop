@@ -19,6 +19,7 @@
     const getParent = (): Maybe<ICategory> => {
         return (unref(categories).find(it => it.id === unref(model).parentId) ?? null) as Maybe<ICategory>
     }
+
     const setParent = (category: ICategory) => {
         unref(model).parentId = category.id
     }
