@@ -11,11 +11,15 @@ const GroupSchema: Schema = new Schema<IGroupMongoModel>({
     name: {
         type: String,
         unique: true,
-        required :true
+        required: true
+    },
+    filterGroupId: {
+        type: String,
+        default: ''
     },
     hasOptions: {
         type: Boolean,
-        required :true
+        required: true
     },
 }, {
     timestamps: false,

@@ -5,5 +5,7 @@ export class OrderDTO {
     items: IOrder['items']
     amount: IOrder['amount']
     delivery: IOrder['delivery']
-    customer: IOrder['customer']
+    customerName: IOrder['customerName']
+    customerPhone: IOrder['customerPhone']
+    customerId: IOrder['customerId']
 }
