@@ -1,6 +1,4 @@
 <script lang="ts" setup>
-    import { inject } from 'vue'
-
     import { useCategoryModel } from '@modules/categories/composables/use-category-model'
     import {
         useCategoryConditions

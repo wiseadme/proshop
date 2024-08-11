@@ -1,8 +1,4 @@
-import {
-    computed,
-    toRaw,
-    unref,
-} from 'vue'
+import { computed, unref } from 'vue'
 
 import { useProduct } from '@modules/products/composables/use-product'
 import { useProductModel } from '@modules/products/composables/use-product-model'
@@ -29,7 +25,6 @@ export const useProductImages = () => {
     const { notify } = useNotifications()
 
     const assets = computed<IAsset[]>(() => (unref(model)?.assets || []) as IAsset[])
-    const mainImage = computed(() => unref(assets).find(it => it.main))
 
     const onLoadImage = async ([file]) => {
         try {
@@ -63,14 +58,7 @@ export const useProductImages = () => {
     }
 
     const setAsMainImage = async (mainAsset: IAsset) => {
-        const currentMainAsset = toRaw(unref(mainImage)!)
-
-        mainAsset.main = true
-        currentMainAsset.main = false
-
         try {
-            await updateProductAssets([mainAsset, currentMainAsset])
-
             const updatedProduct = await updateProductMainImage(mainAsset)
 
             setCurrentProduct(updatedProduct)

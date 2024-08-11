@@ -19,7 +19,8 @@
         IFilterGroup,
         IFilterItem,
         IOption,
-        IProduct
+        IProduct,
+        IVariant
     } from '@proshop-app/types'
 
     import { SvgPaths } from '@shared/enums/svg-paths'
@@ -70,9 +71,9 @@
         getFilterGroups()
     })
 
-    watch(() => unref(groupModel).variant?.id, (value) => {
+    watch(() => (unref(groupModel).variant as IVariant)?.id, (value) => {
         if (!unref(filterGroups).length) {
-            getFilterGroups({ attributeId: value.attributeId })
+            getFilterGroups({ attributeId: (value as unknown as IVariant).attributeId })
         }
     })
 

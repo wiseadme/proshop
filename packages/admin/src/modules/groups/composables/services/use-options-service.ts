@@ -34,7 +34,7 @@ export const useOptionsService = createSharedComposable(() => {
         }
     }
 
-    const getOptions = async (params: Partial<IOption>) => {
+    const getOptions = async (params: Partial<IOption> = {}) => {
         try {
             const { data } = await repository.getOptions(params)
 

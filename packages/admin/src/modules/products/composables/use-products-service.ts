@@ -262,10 +262,7 @@ export const useProductsService = createSharedComposable(() => {
 
     const updateImageAsset = async (update: Partial<IAsset>): Promise<IAsset> => {
         try {
-            return await _filesService.updateFile({
-                id: update.id,
-                main: true,
-            })
+            return await _filesService.updateFile({ id: update.id })
         } catch (err) {
             return Promise.reject(err)
         }
@@ -297,17 +294,11 @@ export const useProductsService = createSharedComposable(() => {
                 file: params.file,
             }) as IAsset
 
-            asset.main = !params.assets.length
             const assets = [...params.assets, asset] as IAsset[]
-
-            if (asset.main) {
-                await updateProductAssets([asset])
-            }
 
             return await updateProduct({
                 id: asset.ownerId,
                 assets: getIds(assets),
-                ...(asset.main ? { image: asset.url } : {}),
             })
 
         } catch (err) {
@@ -320,17 +311,9 @@ export const useProductsService = createSharedComposable(() => {
 
         const assets = params.assets.filter(it => it.id !== params.asset.id)
 
-        if (assets.length && params.asset.main) {
-            assets[0] = await updateImageAsset({
-                id: assets[0].id,
-                main: true,
-            })
-        }
-
         return await updateProduct({
             id: params.asset.ownerId,
             assets: getIds(assets),
-            ...(params.asset.main ? { image: assets.length ? assets[0].url : null } : {}),
         })
     }
 

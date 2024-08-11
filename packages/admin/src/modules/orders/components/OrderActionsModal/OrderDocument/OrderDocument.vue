@@ -91,23 +91,23 @@
                         </v-list-item>
                         <v-list-item
                             v-for="(it, i) in model.items"
-                            :key="it.product.id"
+                            :key="it.id"
                             style="border-bottom: 1px solid #dcdcdc; height: 80px"
                         >
                             <v-list-item-icon>
                                 <span>{{ i + 1 }}</span>
                             </v-list-item-icon>
                             <v-list-item-content style="width: 250px">
-                                <span>{{ it.product.name }}</span>
+                                <span>{{ it.name }}</span>
                             </v-list-item-content>
                             <v-list-item-content style="width: 120px">
-                                <span>{{ it.product.price }}</span>
+                                <span>{{ it.price }}</span>
                             </v-list-item-content>
                             <v-list-item-content style="width: 80px">
                                 <span>{{ it.quantity }}</span>
                             </v-list-item-content>
                             <v-list-item-content style="width: 80px">
-                                <span>{{ it.product.price * it.quantity }}</span>
+                                <span>{{ it.price * it.quantity }}</span>
                             </v-list-item-content>
                         </v-list-item>
                         <v-list-item class="grey lighten-2">

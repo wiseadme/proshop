@@ -1,7 +1,8 @@
 import { unref } from 'vue'
 
 import { useAuthService } from '@shared/composables/use-auth-service'
-import { IHttpModule, IRequestContext } from '@shared/composables/use-http'
+
+import type { IHttpModule, IRequestContext } from '@proshop-app/composables'
 
 export const useAuthInterceptor = (http: IHttpModule) => {
     let promise: Maybe<Promise<any>> = null

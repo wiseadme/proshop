@@ -5,7 +5,7 @@ import { useCategoryModel } from '@modules/categories/composables/use-category-m
 
 import { useNotifications } from '@shared/components/VNotifications/use-notifications'
 
-import type { ICategory } from '@proshop-app/types'
+import type { ICategory, ICategoryParams } from '@proshop-app/types'
 
 import {
     CHANGES_SAVED,
@@ -18,12 +18,14 @@ const infoBlockKeys = ['title', 'order', 'seo', 'url', 'parentId']
 
 export const useCategoryInfo = () => {
     const { model, isEditMode } = useCategoryModel()
-    const { category, updateCategory, createCategory } = useCategoriesService()
+    const { categories, updateCategory, createCategory } = useCategoriesService()
     const { notify } = useNotifications()
     const getInfoBlockUpdates = (): Partial<ICategory> => infoBlockKeys.reduce((updates, key) => {
+        const entity = unref(categories).find(it => it.id === unref(model).id)!
+
         const values = {
             model: unref(model)[key],
-            entity: unref(category)![key],
+            entity: entity[key],
         }
 
         if (typeof unref(model)[key] !== 'object' && hasDiffs(values)) {
@@ -45,7 +47,7 @@ export const useCategoryInfo = () => {
         }
 
         try {
-            await updateCategory(updates)
+            await updateCategory(updates as ICategoryParams)
 
             notify(CHANGES_SAVED)
         } catch (err) {

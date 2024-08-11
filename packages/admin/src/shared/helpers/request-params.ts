@@ -8,7 +8,7 @@ import {
     IRequestPagination,
     IRequestParams,
     IRequestSort
-} from '@proshop/types'
+} from '@proshop-app/types'
 
 export class RequestParams {
     sort: ReturnType<typeof useSort>

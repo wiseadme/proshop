@@ -6,10 +6,10 @@ import {
 
 import {
     useFilterGroupService
-} from '@modules/filters/composables/services/use-filter-group-service.ts'
+} from '@modules/filters/composables/services/use-filter-group-service'
 import {
     useFilterItemsService
-} from '@modules/filters/composables/services/use-filter-items-service.ts'
+} from '@modules/filters/composables/services/use-filter-items-service'
 import { useGroupsService } from '@modules/groups/composables/services/use-groups-service'
 import { useOptionsService } from '@modules/groups/composables/services/use-options-service'
 import { useGroupModel } from '@modules/groups/composables/view/use-group-model'
@@ -79,7 +79,7 @@ export const useOptions = () => {
 
         return updateProduct({
             id: productId,
-            groups: groupIds
+            groups: groupIds.map(it => it.id)
         })
 
     }

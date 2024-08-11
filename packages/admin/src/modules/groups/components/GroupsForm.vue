@@ -38,7 +38,6 @@
     const {
         getOptions,
         clearOptions,
-        getOptionFilterGroupItems,
     } = useOptions()
 
     const { isGroupModalVisible } = useGroupsFormModal()
@@ -51,7 +50,7 @@
         validate().then(() => onCreateGroup())
     }
 
-    watch(() => unref(groupModel).variant?.id, (value: IVariant) => {
+    watch(() => (unref(groupModel).variant as IVariant)?.id, (value) => {
         if (!value) return
 
         selectedFilterGroup.value = null
@@ -60,7 +59,7 @@
     watch(selectedFilterGroup, (value: IFilterGroup) => {
         if (!value) return
 
-        getOptionFilterGroupItems({ groupId: value.id })
+        getOptions({ groupId: value.id })
     })
 
     watch(isGroupModalVisible, (value) => {
