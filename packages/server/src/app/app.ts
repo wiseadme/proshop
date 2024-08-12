@@ -25,6 +25,7 @@ class App {
         this.middleWares(middlewares)
         this.routes(controllers)
         this.db.connect()
+
         // this.redis.connect()
     }
 

@@ -7,7 +7,7 @@
         watch
     } from 'vue'
 
-    import { useFilterGroups } from '@modules/filters/composables/view/use-filter-groups.ts'
+    import { useFilterGroups } from '@modules/filters/composables/view/use-filter-groups'
     import { useGroupModel } from '@modules/groups/composables/view/use-group-model'
     import { useGroups } from '@modules/groups/composables/view/use-groups'
     import { useGroupsFormModal } from '@modules/groups/composables/view/use-groups-form-modal'
