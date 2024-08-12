@@ -46,7 +46,7 @@ jobs:
         with:
           context: ./packages/server
           build-args: |
-            "GITHUB_TOKEN=${GITHUB_TOKEN}"
+            "GITHUB_TOKEN=${{ secrets.PSDEPS_ACCESS_TOKEN }}"
           file: ./packages/server/Dockerfile
           push: true
           tags: ${{ secrets.YANDEX_REGISTRY_NAME }}/${{ secrets.YANDEX_REGISTRY_ID }}/${{ secrets.YANDEX_REGISTRY_REPO_NAME }}:${{ secrets.SERVER_IMAGE_TAG }}
