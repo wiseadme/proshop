@@ -16,6 +16,7 @@ RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 COPY . /usr/src/app
 COPY dist /usr/src/app
+RUN npm install npm@10.5.1 -g
 RUN npm set @proshop-app:registry=https://npm.pkg.github.com
 RUN npm set "//npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}"
 RUN npm install
