@@ -1413,17 +1413,12 @@
     node-addon-api "^3.2.1"
     node-gyp-build "^4.3.0"
 
-"@proshop-app/composables@^0.0.40":
-  version "0.0.40"
-  resolved "https://npm.pkg.github.com/download/@proshop-app/composables/0.0.40/b8e325619e309033a9924996dd3cd1a6795ca6c4#b8e325619e309033a9924996dd3cd1a6795ca6c4"
-  integrity sha512-wbMl2Jvt5B0HVxZ8s6uqHc/plG+vTvlgl9pvhhgxR3m7OMmXU3Fmi1hfNzKHcC1CjGM9rp7/8wkye0lyJ6Y6EQ==
+"@proshop-app/composables@^0.0.42":
+  version "0.0.42"
+  resolved "https://npm.pkg.github.com/download/@proshop-app/composables/0.0.42/e974e1fbd06279ff64802a48e5550b2a224e3152#e974e1fbd06279ff64802a48e5550b2a224e3152"
+  integrity sha512-awwuQlnS0FewFXOct18TZn3C01AzCkdYnZeGDBJVnrIseeC/m7Bv3ZBuTvLs5WZn63HZChqR9+l2O7Mkj6C72g==
   dependencies:
     vue-demi "*"
-
-"@proshop-app/types@^0.0.40":
-  version "0.0.40"
-  resolved "https://npm.pkg.github.com/download/@proshop-app/types/0.0.40/cf017edd341df8965f231d26356d368ce0fda9bf#cf017edd341df8965f231d26356d368ce0fda9bf"
-  integrity sha512-bbN6KTzA+EraM1kIiK0jeZSKLkGyHoW88KHiG6yEqs68AF/DIB99ljGNzi9kelWIMWoIO0WBy+KTVf40+7PoGg==
 
 "@proshop-app/types@^0.0.42":
   version "0.0.42"

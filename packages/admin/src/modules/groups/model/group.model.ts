@@ -5,17 +5,20 @@ export class Group implements IGroup {
     name: IGroup['name']
     variant: IGroup['variant']
     hasOptions: IGroup['hasOptions']
+    filterGroupId: IGroup['filterGroupId']
 
     constructor({
         id = '',
         name = '',
-        variant = null,
+        variant,
+        filterGroupId,
         hasOptions = false,
     }: IGroup) {
         this.id = id
         this.name = name
         this.variant = variant
         this.hasOptions = hasOptions
+        this.filterGroupId = filterGroupId
     }
 
     static create(group = {} as IGroup): IGroup {

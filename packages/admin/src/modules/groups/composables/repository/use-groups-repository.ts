@@ -1,43 +1,24 @@
 import { useSharedHttp } from '@shared/composables/use-http'
 
-import type { IGroup } from '@proshop-app/types'
+import type { IGroup, IGroupParams } from '@proshop-app/types'
 
-interface IGroupsRepository {
-    createGroup(group: IGroup): Promise<{ data: IGroup, ok: boolean }>
 
-    getGroups(params: Partial<IGroup>): Promise<{ data: IGroup[], ok: boolean }>
-
-    updateGroup(updates: Partial<IGroup>): Promise<{ data: IGroup, ok: boolean }>
-
-    deleteGroup(id: string): Promise<{ data: boolean, ok: boolean }>
-
-    cancel(): void
-}
-
-export const useGroupsRepository = (): IGroupsRepository => {
+export const useGroupsRepository = () => {
     const { request, cancel } = useSharedHttp()
 
-    const createGroup = (group: IGroup) => request({
+    const createGroup = (group: IGroupParams) => request<IGroup>({
         url: '/api/v1/groups',
-        headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-        },
         method: 'POST',
         body: group
     })
 
-    const getGroups = (params: Partial<IGroup>) => request({
+    const getGroups = (params: Partial<IGroup>) => request<IGroup[]>({
         url: '/api/v1/groups',
         params
     })
 
     const updateGroup = (updates: Partial<IGroup>) => request({
         url: '/api/v1/groups',
-        headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-        },
         method: 'PATCH',
         body: updates
     })

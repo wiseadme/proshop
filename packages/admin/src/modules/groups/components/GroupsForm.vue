@@ -7,6 +7,7 @@
         watch
     } from 'vue'
 
+    import { useFilterGroups } from '@modules/filters/composables/view/use-filter-groups.ts'
     import { useGroupModel } from '@modules/groups/composables/view/use-group-model'
     import { useGroups } from '@modules/groups/composables/view/use-groups'
     import { useGroupsFormModal } from '@modules/groups/composables/view/use-groups-form-modal'
@@ -14,7 +15,7 @@
 
     import { VSvg } from '@shared/components/VSvg'
 
-    import type { IFilterGroup, IVariant } from '@proshop-app/types'
+    import type { IFilterGroup } from '@proshop-app/types'
 
     import { SvgPaths } from '@shared/enums/svg-paths'
 
@@ -42,16 +43,21 @@
 
     const { isGroupModalVisible } = useGroupsFormModal()
 
-    const selectedFilterGroup = ref<Maybe<IFilterGroup>>(null)
+    const { filterGroups, getFilterGroups } = useFilterGroups()
 
+    const selectedFilterGroup = ref<Maybe<IFilterGroup>>(null)
     const isVariantDisabled = computed(() => Boolean(unref(groupModel).id))
 
     const onCreate = (validate: () => Promise<boolean>) => {
         validate().then(() => onCreateGroup())
     }
 
-    watch(() => (unref(groupModel).variant as IVariant)?.id, (value) => {
+    watch(() => unref(groupModel).variant?.id, (value) => {
         if (!value) return
+
+        unref(groupModel).filterGroupId = unref(filterGroups).find(item => {
+            return item.attributeId === unref(groupModel).variant.attributeId
+        })?.id ?? ''
 
         selectedFilterGroup.value = null
     })
@@ -59,11 +65,17 @@
     watch(selectedFilterGroup, (value: IFilterGroup) => {
         if (!value) return
 
+        unref(groupModel).filterGroupId = value.id
+
         getOptions({ groupId: value.id })
     })
 
     watch(isGroupModalVisible, (value) => {
         if (!value || unref(variants).length) return
+
+        if (!unref(filterGroups).length) {
+            getFilterGroups()
+        }
 
         getVariantItems()
     })

@@ -64,6 +64,7 @@ export const useOptions = () => {
 
     const addProductGroup = () => {
         unref(optionProduct)!.groups ??= []
+
         const varIds = unref(productGroups).map((it: IGroup) => it.id)
 
         varIds.push(unref(groupModel).id)
@@ -109,6 +110,13 @@ export const useOptions = () => {
         try {
             await deleteOption(option.id)
             await deleteProductGroup(option)
+
+            if (!unref(options).length) {
+                await updateGroup({
+                    id: unref(groupModel).id,
+                    hasOptions: false
+                })
+            }
 
             notify(OPTION_DELETE_SUCCESS)
         } catch (err) {

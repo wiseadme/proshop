@@ -11,7 +11,7 @@ import { createSharedComposable } from '@shared/composables/features/create-shar
 
 import { useLogger } from '@shared/utils/logger'
 
-import type { IGroup, IVariant } from '@proshop-app/types'
+import type { IGroup } from '@proshop-app/types'
 
 export const useGroupsService = createSharedComposable(() => {
     const repository = useGroupsRepository()
@@ -23,7 +23,7 @@ export const useGroupsService = createSharedComposable(() => {
         try {
             const { data } = await repository.createGroup({
                 ...group,
-                variant: (group.variant as IVariant).id
+                variant: group.variant.id
             })
 
             _groups.value.push(data)
