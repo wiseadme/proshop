@@ -31,9 +31,9 @@ export class CartService implements ICartService {
 
             updates.amount = 0
             updates.totalItems = 0
-            updates.totalUniqueItems = updates.items.length
 
             updates.items = updates.items.filter(it => it.quantity > 0)
+            updates.totalUniqueItems = updates.items.length
 
             updates.items.forEach(it => {
                 const { price, quantity } = it
