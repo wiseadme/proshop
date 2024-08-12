@@ -1,4 +1,5 @@
 FROM ubuntu:latest
+ARG GITHUB_TOKEN
 RUN apt-get update -y
 RUN apt-get upgrade -y
 RUN apt-get install curl -y
@@ -15,5 +16,7 @@ RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 COPY . /usr/src/app
 COPY dist /usr/src/app
+RUN npm set @proshop-app:registry=https://npm.pkg.github.com
+RUN npm set "//npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}"
 RUN npm install
 #COPY ./.env /usr/src/app/dist
