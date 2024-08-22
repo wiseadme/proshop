@@ -58,7 +58,7 @@ export class CustomerController extends BaseController implements IController {
 
     async whoami(request: Request, response: Response, next: NextFunction) {
         try {
-            const data = await this.service.whoami(request.cookies)
+            const data = await this.service.whoami(request)
 
             this.send({ data, request, response })
         } catch (error) {

@@ -1,4 +1,4 @@
-import { Response } from 'express'
+import { Request, Response } from 'express'
 import { ICustomer } from '@proshop-app/types'
 
 export interface ICustomerService {
@@ -6,7 +6,7 @@ export interface ICustomerService {
 
   loginCustomer(res: Response, customerParams: { phone: string }): Promise<ICustomer>
 
-  whoami(cookies: Record<string, any>): Promise<ICustomer>
+  whoami(request: Request): Promise<ICustomer>
 
   getCustomers(queryParams: Partial<ICustomer>): Promise<(ICustomer)[]>
 

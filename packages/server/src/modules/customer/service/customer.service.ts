@@ -1,4 +1,4 @@
-import { Response } from 'express'
+import { Request, Response } from 'express'
 import { Document } from 'mongoose'
 import { id, inject, injectable } from 'inversify'
 import { TYPES } from '@common/schemes/di-types'
@@ -44,8 +44,8 @@ export class CustomerService extends CustomerHelpers implements ICustomerService
         }
     }
 
-    async whoami(cookies: Record<string, string>) {
-        const auth = cookies[CUSTOMER_TOKEN_KEY]
+    async whoami(request: Request) {
+        const auth = request.cookies[CUSTOMER_TOKEN_KEY] ?? request.headers.token
 
         if (!auth || isExpired(auth)) {
             return Promise.reject({

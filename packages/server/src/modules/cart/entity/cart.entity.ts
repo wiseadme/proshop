@@ -35,14 +35,6 @@ export class Cart implements ICart {
         this.totalUniqueItems = this.items.reduce((acc, it) => acc + it.quantity, 0)
     }
 
-    public setItemsWithAmount() {
-        this.items = this.items.map(it => {
-            it.amount = it.price * it.quantity
-
-            return it
-        })
-    }
-
     public setCartAmount() {
         this.amount = this.items.reduce((acc, it) => {
             acc += it.price * it.quantity
@@ -53,7 +45,6 @@ export class Cart implements ICart {
 
     public unmarshal() {
         this.setTotalUniqueItems()
-        // this.setItemsWithAmount()
         this.setCartAmount()
     }
 
