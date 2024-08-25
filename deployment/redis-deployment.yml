@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      components: redis
+  template:
+    metadata:
+      labels:
+        components: redis
+    spec:
+      containers:
+        - name: proshop-redis
+          image: redis:alpine
+          ports:
+            - containerPort: 6379
+          command: [ "redis-server", "--bind", "0.0.0.0", "--port", "6379", "--protected-mode", "no" ]
+          resources:
+            limits:
+              # Ограничиваем потребляемык ресурсы 128 мегабайт оперативы и не более 100 (10%) (milli processors) процессора
+              memory: "500Mi"
+              cpu: "300m"

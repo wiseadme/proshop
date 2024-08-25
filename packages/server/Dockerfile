@@ -19,4 +19,4 @@ COPY dist /usr/src/app
 RUN npm set @proshop-app:registry=https://npm.pkg.github.com
 RUN npm set "//npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}"
 RUN npm install
-#COPY ./.env /usr/src/app/dist
+COPY ./.env /usr/src/app/dist

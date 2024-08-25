@@ -19,6 +19,7 @@ spec:
           # imagePullPolicy: Always
           ports:
             - containerPort: 3000
+          command: ["nginx", "-g", "daemon off;"]
           resources:
             limits:
               # Ограничиваем потребляемык ресурсы 128 мегабайт оперативы и не более 100 (10%) (milli processors) процессора
