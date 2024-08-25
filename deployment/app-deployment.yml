@@ -15,8 +15,6 @@ spec:
       containers:
         - name: proshop-admin
           image: wiseadme/ecommerce:v1.1
-          # можно постоянно обновлять образ, но лучше делать через версионирование
-          # imagePullPolicy: Always
           ports:
             - containerPort: 3000
           command: ["nginx", "-g", "daemon off;"]
