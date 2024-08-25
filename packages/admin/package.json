@@ -6,7 +6,6 @@
   "homepage": "https://github.com/wiseadme/proshop#readme",
   "license": "ISC",
   "main": "src/app/main.ts",
-  "type": "module",
   "files": [
     "dist"
   ],

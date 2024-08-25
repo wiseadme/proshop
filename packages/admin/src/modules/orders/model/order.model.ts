@@ -6,7 +6,9 @@ export class Order implements IOrder {
     amount: IOrder['amount']
     orderId: IOrder['orderId']
     payment: IOrder['payment']
-    customer: IOrder['customer']
+    customerId: IOrder['customerId']
+    customerPhone: IOrder['customerPhone']
+    customerName: IOrder['customerName']
     status: IOrder['status']
     executor: IOrder['executor']
     delivery: IOrder['delivery']
@@ -19,7 +21,9 @@ export class Order implements IOrder {
         orderId,
         cartId,
         payment,
-        customer,
+        customerId,
+        customerPhone,
+        customerName,
         status,
         qrcode,
         delivery,
@@ -28,7 +32,9 @@ export class Order implements IOrder {
     }: IOrder) {
         this.id = id
         this.cartId = cartId
-        this.customer = customer
+        this.customerId = customerId
+        this.customerPhone = customerPhone
+        this.customerName = customerName
         this.status = status
         this.items = items
         this.qrcode = qrcode

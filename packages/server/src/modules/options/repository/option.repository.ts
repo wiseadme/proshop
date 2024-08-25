@@ -34,6 +34,17 @@ export class OptionRepository implements IOptionRepository {
         return options.map(option => OptionMapper.toDomain(option))
     }
 
+    async findMany(ids: string): Promise<IOption[]> {
+        const arr = JSON.parse(decodeURIComponent(ids))
+
+        const options = await OptionModel.find({
+            groupId: { $in: arr },
+        })
+            .lean()
+
+        return options.map(option => OptionMapper.toDomain(option))
+    }
+
     async update(updates: Partial<IOption>): Promise<IOption> {
         validateId(updates.id!)
 

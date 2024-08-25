@@ -6,12 +6,12 @@ import { defineConfig } from 'vite'
 // @ts-ignore
 import { printUrls } from './cli/print-urls'
 
-const isProd = process.env.NODE_ENV === 'production'
+// const isProd = process.env.NODE_ENV === 'production'
 
 const resolve = (str: string) => path.resolve(__dirname, str)
 
 export default defineConfig({
-    base: isProd ? '/admin' : '/',
+    base: '/',
     resolve: {
         alias: {
             '@': resolve('./src'),
@@ -46,5 +46,6 @@ export default defineConfig({
         minify: true,
         cssCodeSplit: true,
         cssMinify: true,
+        manifest: false
     }
 })

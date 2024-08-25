@@ -28,6 +28,10 @@ export class OptionService implements IOptionService {
         return this.repository.find(params)
     }
 
+    findManyOptions(ids: string): Promise<IOption[]> {
+        return this.repository.findMany(ids)
+    }
+
     updateOption(updates: Partial<IOption>): Promise<IOption> {
         return this.repository.update(updates)
     }

@@ -137,10 +137,10 @@
                         <v-list-item style="height: 80px">
                             <v-list-item-icon/>
                             <v-list-item-content style="width: 250px">
-                                {{ model.customer?.name }}
+                                {{ model.customerName }}
                             </v-list-item-content>
                             <v-list-item-content style="width: 180px">
-                                {{ model.customer?.phone }}
+                                {{ model.customerPhone }}
                             </v-list-item-content>
                             <v-list-item-content style="width: 180px">
                                 {{ model.delivery?.address }}

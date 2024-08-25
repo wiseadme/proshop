@@ -18,6 +18,7 @@ export class Config implements IConfig {
     refreshSecret = process.env.REFRESH_TOKEN_SECRET_KEY!
     uploadsDir = process.env.UPLOADS_DIR!
     websiteUrl = process.env.WEBSITE_URL!
+    telegramBotUrl = process.env.TELEGRAM_BOT_URL!
     redisHost = process.env.REDIS_HOST!
     redisPort = process.env.REDIS_PORT!
     redisUrl = process.env.REDIS_URL!

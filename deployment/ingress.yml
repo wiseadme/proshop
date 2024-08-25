@@ -1,0 +1,22 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: proshop-admin-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/add-base-url: "true"
+  labels:
+    components: frontend
+spec:
+  ingressClassName: nginx
+  rules:
+    # хост который добавлен в /etc/hosts
+    - host: proshop.test
+      http:
+        paths:
+        - pathType: Prefix
+          path: "/"
+          backend:
+            service:
+              name: proshop-admin-clusterip
+              port:
+                number: 3000

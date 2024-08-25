@@ -1,11 +1,11 @@
 <script lang="ts" setup>
-    import type { ICartItem, IOrder } from '@proshop-app/types'
+    import type { ICartItem, IOrderStatuses } from '@proshop-app/types'
 
     defineProps<{
         orderId: string | number
-        client: IOrder['customer']
+        client: string
         items: ICartItem[]
-        status: IOrder['status']
+        status: IOrderStatuses
         qrcode: string
     }>()
 

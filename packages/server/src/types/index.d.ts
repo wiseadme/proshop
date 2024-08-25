@@ -33,6 +33,7 @@ export interface IConfig {
     refreshSecret: string
     uploadsDir: string
     websiteUrl: string
+    telegramBotUrl: string
     redisHost: string
     redisPort: string
     redisUrl: string

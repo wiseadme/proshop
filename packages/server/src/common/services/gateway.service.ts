@@ -1,5 +1,4 @@
 import { inject, injectable } from 'inversify'
-import { TYPES } from '@common/schemes/di-types'
 import { ICategoryService } from '@modules/categories/types/service'
 import { IProductsService } from '@modules/products/types/service'
 import { IOrdersService } from '@modules/orders/types/service'

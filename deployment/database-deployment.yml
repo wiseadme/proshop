@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: database-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      components: database
+  template:
+    metadata:
+      labels:
+        components: database
+    spec:
+      containers:
+        - name: proshop-database
+          image: mongo:5.0.14
+          # можно постоянно обновлять образ, но лучше делать через версионирование
+          # imagePullPolicy: Always
+          ports:
+            - containerPort: 27017
+          env:
+            - name: MONGO_DB_URI
+              value: demo value
+            - name: SECOND_ENV_VAR
+              value: demo value
+          resources:
+            limits:
+              # Ограничиваем потребляемык ресурсы 128 мегабайт оперативы и не более 100 (10%) (milli processors) процессора
+              memory: "500Mi"
+              cpu: "300m"
+          volumeMounts:
+            - mountPath: /data/db
+              name: mongo-data
+              # подпапка которая будет создана для монго в database-pvc
+              subPath: mongo
+      volumes:
+        - name: mongo-data
+          persistentVolumeClaim:
+            claimName: database-pvc

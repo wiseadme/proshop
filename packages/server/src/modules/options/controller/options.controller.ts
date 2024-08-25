@@ -28,6 +28,7 @@ export class OptionsController extends BaseController implements IController {
     initRoutes() {
         this.router.post('/', setMiddlewares({ roles: ['root'], dto: OptionDTO }), this.createOption.bind(this))
         this.router.get('/', this.getOptions.bind(this))
+        this.router.get('/many', this.getManyOptions.bind(this))
         this.router.patch('/', setMiddlewares({ roles: ['root'] }), this.updateOption.bind(this))
         this.router.delete('/', setMiddlewares({ roles: ['root'] }), this.deleteOption.bind(this))
     }
@@ -45,6 +46,18 @@ export class OptionsController extends BaseController implements IController {
     async getOptions(request: Request<{}, {}, {}, Partial<IOption>>, response: Response, next: NextFunction) {
         try {
             const data = await this.service.findOptions(request.query)
+
+            // @ts-ignore
+            this.send({ data, request, response })
+        } catch (error) {
+            // @ts-ignore
+            this.error({ error, request, next })
+        }
+    }
+
+    async getManyOptions(request: Request<{}, {}, {}>, response: Response, next: NextFunction) {
+        try {
+            const data = await this.service.findManyOptions(request.query.ids as string)
 
             // @ts-ignore
             this.send({ data, request, response })
