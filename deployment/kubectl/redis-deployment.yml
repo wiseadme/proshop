@@ -13,7 +13,7 @@ spec:
         components: redis
     spec:
       containers:
-        - name: proshop-redis
+        - name: redis
           image: redis:alpine
           ports:
             - containerPort: 6379

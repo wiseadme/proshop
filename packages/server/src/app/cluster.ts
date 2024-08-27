@@ -16,7 +16,7 @@ class Cluster {
     }
 
     initApp() {
-        cluster.isMaster ? this.initClusters() : this.initServer()
+        /*cluster.isMaster ? this.initClusters() : */this.initServer()
     }
 
     initClusters() {

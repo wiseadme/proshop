@@ -1,22 +1,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: server-deployment
+  name: database-deployment
 spec:
   replicas: 1
   selector:
     matchLabels:
-      components: server
+      components: database
   template:
     metadata:
       labels:
-        components: server
+        components: database
     spec:
       containers:
-        - name: proshop-server
-          image: wiseadme/ecommerce-server:v1.0
+        - name: proshop-database
+          image: mongo:5.0.14
+          # можно постоянно обновлять образ, но лучше делать через версионирование
+          # imagePullPolicy: Always
           ports:
-            - containerPort: 5001
+            - containerPort: 27017
           env:
             - name: MONGO_DB_URI
               valueFrom:
@@ -39,3 +41,4 @@ spec:
         - name: mongo-data
           persistentVolumeClaim:
             claimName: database-pvc
+

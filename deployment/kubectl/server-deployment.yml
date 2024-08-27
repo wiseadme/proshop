@@ -1,0 +1,99 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: server-deployment
+  namespace: server
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      components: server
+  template:
+    metadata:
+      labels:
+        components: server
+    spec:
+      containers:
+        - name: proshop-server
+          image: wiseadme/proshop-server:v1.5
+          command: ["npm", "run", "start"]
+          args: ["GITHUB_TOKEN=$(GITHUB_TOKEN)"]
+          ports:
+            - containerPort: 5001
+          env:
+            - name: MONGO_URL
+              valueFrom:
+                secretKeyRef:
+                  name: server-secrets
+                  key: MONGO_URL
+            - name: REDIS_URL
+              valueFrom:
+                secretKeyRef:
+                  name: server-secrets
+                  key: REDIS_URL
+            - name: REDIS_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: server-secrets
+                  key: REDIS_PORT
+            - name: REDIS_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: server-secrets
+                  key: REDIS_HOST
+            - name: PORT
+              valueFrom:
+                secretKeyRef:
+                  name: server-secrets
+                  key: PORT
+            - name: UPLOADS_DIR
+              valueFrom:
+                secretKeyRef:
+                  name: server-secrets
+                  key: UPLOADS_DIR
+            - name: ACCESS_TOKEN_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: server-secrets
+                  key: ACCESS_TOKEN_SECRET_KEY
+            - name: REFRESH_TOKEN_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: server-secrets
+                  key: REFRESH_TOKEN_SECRET_KEY
+            - name: BULLMQ_MAX_CONCURRENCY
+              valueFrom:
+                secretKeyRef:
+                  name: server-secrets
+                  key: BULLMQ_MAX_CONCURRENCY
+            - name: GITHUB_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: server-secrets
+                  key: GITHUB_TOKEN
+          resources:
+            limits:
+              memory: "500Mi"
+              cpu: "300m"
+          volumeMounts:
+            - mountPath: /etc/test
+              name: test-config
+              readOnly: true
+#          startupProbe:
+#            exec:
+#              - curl
+#              - --fail
+#              - http://localhost:5001/api/v1/products
+#            periodSeconds: 10
+#            failureThreshold: 5
+#          readinessProbe:
+#            exec:
+#              - curl
+#              - --fail
+#              - http://localhost:5001/api/v1/products
+#            periodSeconds: 5
+#            initialDelaySeconds: 5
+      volumes:
+        - name: test-config
+          configMap:
+            name: server-config

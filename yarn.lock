@@ -2521,16 +2521,14 @@ builtins@^5.0.0:
   dependencies:
     semver "^7.0.0"
 
-bullmq@^5.1.1:
-  version "5.1.1"
-  resolved "https://registry.yarnpkg.com/bullmq/-/bullmq-5.1.1.tgz#ce07f513fceae580d766fc15e15be4a5ceeb348f"
-  integrity sha512-j3zbNEQWsyHjpqGWiem2XBfmxAjYcArbwsmGlkM1E9MAVcrqB5hQUsXmyy9gEBAdL+PVotMICr7xTquR4Y2sKQ==
+bullmq@^5.12.10:
+  version "5.12.10"
+  resolved "https://registry.yarnpkg.com/bullmq/-/bullmq-5.12.10.tgz#7ee9e515e965de152d0a2e76dd1080db307db693"
+  integrity sha512-lXH8Caj+FvYHiBS0QBEpQOq57RcVuEPziBC5cBlWguCVNfn1UMSri22bRrynDKuof8o9XB43ctmYASUpoa0DeQ==
   dependencies:
     cron-parser "^4.6.0"
-    glob "^8.0.3"
-    ioredis "^5.3.2"
-    lodash "^4.17.21"
-    msgpackr "^1.6.2"
+    ioredis "^5.4.1"
+    msgpackr "^1.10.1"
     node-abort-controller "^3.1.1"
     semver "^7.5.4"
     tslib "^2.0.0"
@@ -4513,7 +4511,7 @@ glob@^7.1.3, glob@^7.1.4:
     once "^1.3.0"
     path-is-absolute "^1.0.0"
 
-glob@^8.0.1, glob@^8.0.3:
+glob@^8.0.1:
   version "8.1.0"
   resolved "https://registry.yarnpkg.com/glob/-/glob-8.1.0.tgz#d388f656593ef708ee3e34640fdfb99a9fd1c33e"
   integrity sha512-r8hpEjiQEYlF2QU0df3dS+nxxSIreXQS1qRhMJM0Q5NDdR386C7jb7Hwwod8Fgiuex+k0GFjgft18yvxm5XoCQ==
@@ -4932,10 +4930,10 @@ inversify@^6.0.1:
   resolved "https://registry.yarnpkg.com/inversify/-/inversify-6.0.2.tgz#dc7fa0348213d789d35ffb719dea9685570989c7"
   integrity sha512-i9m8j/7YIv4mDuYXUAcrpKPSaju/CIly9AHK5jvCBeoiM/2KEsuCQTTP+rzSWWpLYWRukdXFSl6ZTk2/uumbiA==
 
-ioredis@^5.0.5, ioredis@^5.3.2:
-  version "5.3.2"
-  resolved "https://registry.yarnpkg.com/ioredis/-/ioredis-5.3.2.tgz#9139f596f62fc9c72d873353ac5395bcf05709f7"
-  integrity sha512-1DKMMzlIHM02eBBVOFQ1+AolGjs6+xEcM4PDL7NqOS6szq7H9jSaEkIUH6/a5Hl241LzW6JLSiAbNvTQjUupUA==
+ioredis@^5.4.1:
+  version "5.4.1"
+  resolved "https://registry.yarnpkg.com/ioredis/-/ioredis-5.4.1.tgz#1c56b70b759f01465913887375ed809134296f40"
+  integrity sha512-2YZsvl7jopIa1gaePkeMtd9rAcSjOOjPtpcLlOeusyO+XH2SK5ZcT+UCrElPP+WVIInh2TzeI4XW9ENaSLVVHA==
   dependencies:
     "@ioredis/commands" "^1.1.1"
     cluster-key-slot "^1.1.0"
@@ -6006,10 +6004,10 @@ msgpackr-extract@^3.0.2:
     "@msgpackr-extract/msgpackr-extract-linux-x64" "3.0.2"
     "@msgpackr-extract/msgpackr-extract-win32-x64" "3.0.2"
 
-msgpackr@^1.6.2:
-  version "1.10.1"
-  resolved "https://registry.yarnpkg.com/msgpackr/-/msgpackr-1.10.1.tgz#51953bb4ce4f3494f0c4af3f484f01cfbb306555"
-  integrity sha512-r5VRLv9qouXuLiIBrLpl2d5ZvPt8svdQTl5/vMvE4nzDMyEX4sgW5yWhuBBj5UmgwOTWj8CIdSXn5sAfsHAWIQ==
+msgpackr@^1.10.1:
+  version "1.11.0"
+  resolved "https://registry.yarnpkg.com/msgpackr/-/msgpackr-1.11.0.tgz#8321d52333048cadc749f56385e3231e65337091"
+  integrity sha512-I8qXuuALqJe5laEBYoFykChhSXLikZmUhccjGsPuSJ/7uPip2TJ7lwdIQwWSAi0jGZDXv4WOP8Qg65QZRuXxXw==
   optionalDependencies:
     msgpackr-extract "^3.0.2"
 

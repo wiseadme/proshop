@@ -11,7 +11,7 @@ import { IOrdersRepository } from '@modules/orders/types/repository'
 import { IOrder, IRequestParams } from '@proshop-app/types'
 import { Order } from '@modules/orders/entity/order.entity'
 import { IOrderGatewayService } from '@modules/orders/gateway/gateway.service'
-import { IOrdersQueue } from '@modules/orders/queue/queue'
+// import { IOrdersQueue } from '@modules/orders/queue/queue'
 import { IOrderResponse } from '@modules/orders/types/response'
 import { ORDER_IOC } from '@modules/orders/di/di.types'
 import { PaginatableResponse } from '@common/models/PaginatableResponse'
@@ -22,18 +22,18 @@ export class OrdersService implements IOrdersService {
         @inject(TYPES.UTILS.ILogger) private logger: ILogger,
         @inject(ORDER_IOC.IOrdersRepository) private repository: IOrdersRepository,
         @inject(ORDER_IOC.IOrderGatewayService) private gateway: IOrderGatewayService,
-        @inject(ORDER_IOC.IOrdersQueue) private jobs: IOrdersQueue,
+        // @inject(ORDER_IOC.IOrdersQueue) private jobs: IOrdersQueue,
     ) {
-        this.jobs.worker.setJobProcessor(this.createOrder.bind(this))
+        // this.jobs.worker.setJobProcessor(this.createOrder.bind(this))
     }
 
-    async processOrder({ headers }: Request) {
-        this.logger.info('start order processing')
-
-        const job = await this.jobs.queue.getJob(headers.jobId as string)
-
-        return await this.jobs.queue.waitJobResult(job!)
-    }
+    // async processOrder({ headers }: Request) {
+    //     this.logger.info('start order processing')
+    //
+    //     const job = await this.jobs.queue.getJob(headers.jobId as string)
+    //
+    //     return await this.jobs.queue.waitJobResult(job!)
+    // }
 
     async createOrder(order: IOrder) {
         const { customerName, customerPhone } = order

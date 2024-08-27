@@ -1,7 +1,7 @@
 import 'reflect-metadata'
 import App from '@app/app'
 import { DB } from '@app/db'
-import { RedisDb } from '@app/redis'
+// import { RedisDb } from '@app/redis'
 import { Config } from '@app/config'
 import { TYPES } from '@common/schemes/di-types'
 import { Container } from 'inversify'
