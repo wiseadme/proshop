@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.app.part }}-clusterip
+  namespace: client-ns
+spec:
+  type: ClusterIP
+  ports:
+    - port: {{ .Values.app.ports.client }}
+      protocol: TCP
+#      targetPort: 3000
+  selector:
+    components: {{ .Values.app.components.client }}

@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.app.part }}-deployment
+  namespace: client-ns
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      components: {{ .Values.app.components.client }}
+  template:
+    metadata:
+      labels:
+        components: {{ .Values.app.components.client }}
+    spec:
+      containers:
+        - name: {{ .Values.app.part }}-container
+          image: "{{ .Values.app.image.client }}:{{ .Values.app.version }}"
+          ports:
+            - containerPort: {{ .Values.app.ports.client }}
+          command: ["nginx", "-g", "daemon off;"]
+          resources:
+            limits:
+              memory: {{ .Values.app.limits.client.memory }}
+              cpu: {{ .Values.app.limits.client.cpu }}
+

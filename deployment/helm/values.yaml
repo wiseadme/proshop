@@ -1,0 +1,15 @@
+app:
+  version: v1.1
+  components:
+    client: frontend
+  part: client
+  image:
+    client: wiseadme/ecommerce
+  ports:
+    client: 3000
+    server: 5001
+    mongo: 27017
+  limits:
+    client:
+      memory: "128Mi"
+      cpu: "100m"
