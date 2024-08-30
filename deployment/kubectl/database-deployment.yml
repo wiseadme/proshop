@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: database-deployment
+  namespace: mongo-ns
 spec:
   replicas: 1
   selector:
@@ -15,21 +16,10 @@ spec:
       containers:
         - name: proshop-database
           image: mongo:5.0.14
-          # можно постоянно обновлять образ, но лучше делать через версионирование
-          # imagePullPolicy: Always
           ports:
             - containerPort: 27017
-          env:
-            - name: MONGO_DB_URI
-              valueFrom:
-                secretKeyRef:
-                  name: database-secrets
-                  key: MONGO_DB_URI
-            - name: SECOND_ENV_VAR
-              value: demo value
           resources:
             limits:
-              # Ограничиваем потребляемык ресурсы 128 мегабайт оперативы и не более 100 (10%) (milli processors) процессора
               memory: "500Mi"
               cpu: "300m"
           volumeMounts:

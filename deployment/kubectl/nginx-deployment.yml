@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx
+  labels:
+    components: nginx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      components: nginx
+  template:
+    metadata:
+      labels:
+        components: nginx
+    spec:
+      containers:
+        - name: nginx-web
+          image: nginx:stable-alpine
+          command: ["nginx", "-g", "daemon off;"]
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - mountPath: /etc/nginx/nginx.conf
+              name: prod-conf
+      volumes:
+        - name: prod-conf
+          configMap:
+            name: nginx-conf
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-clusterip
+spec:
+  type: ClusterIP
+  #  clusterIP: None
+  ports:
+    - port: 80
+      protocol: TCP
+      targetPort: 80
+  selector:
+    components: nginx
+
+

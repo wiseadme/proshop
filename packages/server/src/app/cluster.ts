@@ -16,13 +16,13 @@ class Cluster {
     }
 
     initApp() {
-        /*cluster.isMaster ? this.initClusters() : */this.initServer()
+        cluster.isMaster ? this.initCluster() : this.initServer()
     }
 
-    initClusters() {
-        for (let i = 0; i < this.cCPUs; i += 1) {
-            cluster.fork()
-        }
+    initCluster() {
+        // for (let i = 0; i < this.cCPUs; i += 1) {
+        cluster.fork()
+        // }
 
         cluster.on('online', (worker) => {
             consola.success('Worker ' + worker.process.pid + ' is online.')
@@ -38,4 +38,4 @@ class Cluster {
     }
 }
 
-const app = new Cluster(server)
+export const app = new Cluster(server)
