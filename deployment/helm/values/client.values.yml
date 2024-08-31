@@ -1,0 +1,24 @@
+selector:
+  components: frontend
+role: client
+version: v1.1
+namespace: client-ns
+clusterIp: true
+deployment: true
+dockerImage: wiseadme/ecommerce
+containerPort: 3000
+containerCommand: [ "nginx" ]
+containerRunArgs:
+  - "-g"
+  - "daemon off;"
+replicas: 2
+limits:
+  memory: "128Mi"
+  cpu: "100m"
+external:
+  name: client-ext-name
+  namespace: ingress-ns
+  ports:
+    - port: 80
+      protocol: TCP
+      targetPort: 3000

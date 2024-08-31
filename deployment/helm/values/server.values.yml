@@ -1,0 +1,40 @@
+selector:
+  components: server
+role: server
+version: v1.5
+namespace: server-ns
+clusterIp: true
+deployment: true
+dockerImage: wiseadme/proshop-server
+containerPort: 5001
+containerCommand: ["npm"]
+containerRunArgs:
+  - run
+  - start
+#args: ["GITHUB_TOKEN=$(GITHUB_TOKEN)"]
+replicas: 2
+limits:
+  memory: "500Mi"
+  cpu: "5100m"
+external:
+  name: server-ext-name
+  namespace: ingress-ns
+  ports:
+    - port: 80
+      protocol: TCP
+      targetPort: 5001
+secrets:
+  - key: REDIS_URL
+    value: redis://redis-clusterip.default.svc.cluster.local:6379
+  - key: MONGO_URL
+    value: mongodb://database-clusterip.mongo-ns.svc.cluster.local:27017/proshop
+  - key: PORT
+    value: "5001"
+  - key: UPLOADS_DIR
+    value: /home/wiseadme/www/uploads
+  - key: REFRESH_TOKEN_SECRET_KEY
+    value: esilsozmenasibudur
+  - key: ACCESS_TOKEN_SECRET_KEY
+    value: menesilazerbaijanliyam
+  - key: BULLMQ_MAX_CONCURRENCY
+    value: "4"

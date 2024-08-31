@@ -1,0 +1,26 @@
+selector:
+  components: mongodb
+role: database
+version: 5.0.14
+namespace: mongo-ns
+clusterIp: true
+deployment: true
+dockerImage: mongo
+containerPort: 27017
+replicas: 1
+limits:
+  memory: "500Mi"
+  cpu: "300m"
+env: production
+pvc:
+  storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+volumeMounts:
+  - mountPath: /data/db
+    name: mongo-data
+    subPath: mongo
+volumes:
+  - name: mongo-data
+    persistentVolumeClaim:
+      claimName: database-pvc

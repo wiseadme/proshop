@@ -1,0 +1,51 @@
+{{- if .Values.deployment }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.role }}-deployment
+  {{- if .Values.namespace }}
+  namespace: {{ .Values.namespace }}
+  {{- end }}
+  {{- template "common.labels" . }}
+spec:
+  replicas: {{ .Values.replicas }}
+  selector:
+    matchLabels:
+      {{- .Values.selector | toYaml | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- .Values.selector | toYaml | nindent 8 }}
+    spec:
+      {{- with .Values }}
+      containers:
+        - name: {{ .role }}-container
+          image: {{ .dockerImage }}:{{ .version }}
+          ports:
+            - containerPort: {{ .containerPort }}
+          {{- if .containerCommand }}
+          command: {{ .containerCommand }}
+          args: {{ .containerRunArgs | toYaml | nindent 12 }}
+          {{- end }}
+          resources:
+            limits: {{ $.Values.limits | toYaml | nindent 14 }}
+          {{- if .volumeMounts }}
+          volumeMounts:
+          {{- .volumeMounts | toYaml | nindent 12 }}
+          {{- end }}
+          {{- if .secrets }}
+          env:
+            {{- range .secrets }}
+            - name: {{ .key }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ $.Values.role }}-secrets
+                  key: {{ .key }}
+            {{- end }}
+          {{- end }}
+      {{- end }}
+      {{- if .Values.volumes }}
+      volumes:
+      {{- .Values.volumes | toYaml | nindent 8 }}
+      {{- end }}
+{{- end }}

@@ -1,0 +1,12 @@
+{{- if .Values.external }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.external.name }}
+  namespace: {{ .Values.external.namespace }}
+spec:
+  type: ExternalName
+  externalName: {{ .Values.role }}-clusterip.{{ .Values.namespace }}
+  ports:
+    {{- .Values.external.ports | toYaml | nindent 4 }}
+{{- end }}

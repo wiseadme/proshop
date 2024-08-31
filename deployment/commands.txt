@@ -1,0 +1,4 @@
+helm install --debug --dry-run proshop-client-release deployment/helm/ --values=deployment/helm/values/client.values.yml
+helm install --debug --dry-run proshop-server-release deployment/helm/ --values=deployment/helm/values/server.values.yml
+helm install --debug --dry-run proshop-mongo-release deployment/helm/ --values=deployment/helm/values/mongo.values.yml
+helm install --debug --dry-run proshop-ingress-release deployment/helm/client/ --values=deployment/helm/values/main.ingress.values.yml

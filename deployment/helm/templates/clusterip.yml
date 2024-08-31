@@ -1,0 +1,16 @@
+{{- if .Values.clusterIp }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.role }}-clusterip
+  {{- if .Values.namespace }}
+  namespace: {{ .Values.namespace }}
+  {{- end }}
+spec:
+  type: ClusterIP
+  ports:
+    - port: {{ .Values.containerPort }}
+      protocol: TCP
+  selector:
+    {{- .Values.selector | toYaml | nindent 4 }}
+{{- end }}
