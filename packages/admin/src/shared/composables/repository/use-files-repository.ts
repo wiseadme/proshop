@@ -5,7 +5,7 @@ import { IAsset } from '@proshop-app/types'
 export const useFilesRepository = () => {
     const { request, cancel } = useSharedHttp()
 
-    const createAsset = ({ ownerId, fileName, formData }) => request({
+    const createAsset = ({ dir, fileName, formData }) => request({
         url: '/api/v1/assets',
         headers: {
             'Accept': '*/*',
@@ -13,7 +13,7 @@ export const useFilesRepository = () => {
         method: 'POST',
         credentials: 'same-origin',
         cache: 'no-cache',
-        params: { id: ownerId, fileName },
+        params: { dir, fileName },
         data: formData
     })
 

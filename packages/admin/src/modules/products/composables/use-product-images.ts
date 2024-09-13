@@ -30,6 +30,7 @@ export const useProductImages = () => {
         try {
             const updatedProduct = await uploadProductImage({
                 id: unref(product)!.id,
+                dir: unref(product)!.url,
                 assets: unref(product)!.assets as IAsset[],
                 file
             })
@@ -46,6 +47,7 @@ export const useProductImages = () => {
         try {
             const updatedProduct = await deleteProductImage({
                 asset,
+                id: unref(product)!.id,
                 assets: unref(product)!.assets as IAsset[],
             })
 
@@ -59,7 +61,10 @@ export const useProductImages = () => {
 
     const setAsMainImage = async (mainAsset: IAsset) => {
         try {
-            const updatedProduct = await updateProductMainImage(mainAsset)
+            const updatedProduct = await updateProductMainImage({
+                asset: mainAsset,
+                id: unref(product)!.id,
+            })
 
             setCurrentProduct(updatedProduct)
             setProductModel(updatedProduct)

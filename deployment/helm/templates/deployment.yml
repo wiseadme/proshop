@@ -36,11 +36,8 @@ spec:
           {{- if .secrets }}
           env:
             {{- range .secrets }}
-            - name: {{ .key }}
-              valueFrom:
-                secretKeyRef:
-                  name: {{ $.Values.role }}-secrets
-                  key: {{ .key }}
+            {{- $data := dict "role" $.Values.role "key" .key }}
+            {{- include "env.template" $data | indent 12 }}
             {{- end }}
           {{- end }}
       {{- end }}

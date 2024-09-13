@@ -46,7 +46,7 @@ export const useCategoryImages = () => {
             const asset = await filesService.uploadFile({
                 fileName,
                 formData,
-                ownerId: unref(model).id
+                dir: unref(model).url
             })
 
             unref(model).assets.push(asset)
@@ -70,7 +70,7 @@ export const useCategoryImages = () => {
             unref(model).assets = unref(assets).filter(it => it.id !== asset.id)
 
             await updateCategory({
-                id: asset.ownerId,
+                id: unref(model).id,
                 assets: getIds(unref(assets)),
             })
 

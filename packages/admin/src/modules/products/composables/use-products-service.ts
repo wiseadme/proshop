@@ -242,11 +242,11 @@ export const useProductsService = createSharedComposable(() => {
         }
     }
 
-    const loadImage = async ({ file, ownerId }: { file: File, ownerId: string }): Promise<IAsset> => {
+    const loadImage = async ({ file, dir }: { file: File, dir: string }): Promise<IAsset> => {
         try {
             const { formData, fileName } = _filesService.createFormData(file)
 
-            return await _filesService.uploadFile({ ownerId, fileName, formData })
+            return await _filesService.uploadFile({ dir, fileName, formData })
         } catch (err) {
             return Promise.reject(err)
         }
@@ -276,28 +276,33 @@ export const useProductsService = createSharedComposable(() => {
         }
     }
 
-    const updateProductMainImage = async (asset: IAsset) => {
+    const updateProductMainImage = async ({ asset, id }: { asset: IAsset, id: string }) => {
         try {
             return await updateProduct({
-                id: asset.ownerId,
                 image: asset.url,
+                id,
             })
         } catch (err) {
             return Promise.reject(err)
         }
     }
 
-    const uploadProductImage = async (params: { id: string, file: File, assets: IAsset[] }): Promise<IProduct> => {
+    const uploadProductImage = async (params: {
+        id: string,
+        dir: string,
+        file: File,
+        assets: IAsset[]
+    }): Promise<IProduct> => {
         try {
             const asset = await loadImage({
-                ownerId: params.id,
+                dir: params.dir,
                 file: params.file,
             }) as IAsset
 
             const assets = [...params.assets, asset] as IAsset[]
 
             return await updateProduct({
-                id: asset.ownerId,
+                id: params.id,
                 assets: getIds(assets),
             })
 
@@ -306,13 +311,13 @@ export const useProductsService = createSharedComposable(() => {
         }
     }
 
-    const deleteProductImage = async (params: { asset: IAsset, assets: IAsset[] }): Promise<IProduct> => {
+    const deleteProductImage = async (params: { id: string, asset: IAsset, assets: IAsset[] }): Promise<IProduct> => {
         await _filesService.deleteFile(params.asset)
 
         const assets = params.assets.filter(it => it.id !== params.asset.id)
 
         return await updateProduct({
-            id: params.asset.ownerId,
+            id: params.id,
             assets: getIds(assets),
         })
     }

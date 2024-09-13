@@ -45,7 +45,7 @@ export class CustomerService extends CustomerHelpers implements ICustomerService
     }
 
     async whoami(request: Request) {
-        const auth = request.cookies[CUSTOMER_TOKEN_KEY] ?? request.headers.token
+        const auth = request.cookies[CUSTOMER_TOKEN_KEY]
 
         if (!auth || isExpired(auth)) {
             return Promise.reject({

@@ -25,16 +25,16 @@ external:
       targetPort: 5001
 secrets:
   - key: REDIS_URL
-    value: redis://redis-clusterip.default.svc.cluster.local:6379
+    value: ENC[AES256_GCM,data:1+r5eE8VPuei1iKtlLqLD6kohcD1jwcZq1rXdZkTMLcpZN/NnGhKbsK68RkKrl/uZtuPH7Wp,iv:9OTYtWFzD+buDjfua3nKJlTyue7ocIEkmanK3QJPUac=,tag:/aidp9B4bPJrlTi1U7c37Q==,type:str]
   - key: MONGO_URL
-    value: mongodb://database-clusterip.mongo-ns.svc.cluster.local:27017/proshop
+    value:
   - key: PORT
-    value: "5001"
+    value:
   - key: UPLOADS_DIR
-    value: /home/wiseadme/www/uploads
+    value:
   - key: REFRESH_TOKEN_SECRET_KEY
-    value: esilsozmenasibudur
+    value:
   - key: ACCESS_TOKEN_SECRET_KEY
-    value: menesilazerbaijanliyam
+    value:
   - key: BULLMQ_MAX_CONCURRENCY
-    value: "4"
+    value:

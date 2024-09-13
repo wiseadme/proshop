@@ -6,9 +6,9 @@ import { IAsset } from '@proshop-app/types'
 const repository = useFilesRepository()
 
 export const actions = {
-    async uploadFile({ ownerId, fileName, formData }) {
+    async uploadFile({ dir, fileName, formData }) {
         try {
-            const { data } = await repository.createAsset({ ownerId, fileName, formData })
+            const { data } = await repository.createAsset({ dir, fileName, formData })
             return data
         } catch (err) {
             return Promise.reject(err)

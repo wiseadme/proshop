@@ -80,7 +80,7 @@ export class AssetRepository implements IAssetsRepository {
         validateId(asset.id)
 
         const assetData = await AssetModel.findOne({ _id: asset.id })
-        const ownerDir = asset.ownerId.slice(-10)
+        const ownerDir = asset.dir
         const dirPath = `${config.uploadsDir}/${ownerDir}`
 
         await assetData!.deleteOne()

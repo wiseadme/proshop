@@ -1,11 +1,11 @@
 selector:
   components: frontend
 role: client
-version: v1.1
+version: v1.3
 namespace: client-ns
 clusterIp: true
 deployment: true
-dockerImage: wiseadme/ecommerce
+dockerImage: wiseadme/proshop-client
 containerPort: 3000
 containerCommand: [ "nginx" ]
 containerRunArgs:

@@ -20,8 +20,8 @@ export class Service {
         return { formData, fileName }
     }
 
-    uploadFile({ ownerId, fileName, formData }) {
-        return this._store.uploadFile({ ownerId, fileName, formData })
+    uploadFile({ dir, fileName, formData }) {
+        return this._store.uploadFile({ dir, fileName, formData })
     }
 
     async updateFile(updates: Partial<IAsset>): Promise<IAsset> {

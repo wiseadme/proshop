@@ -7,6 +7,7 @@ import { IAssetsService } from '@modules/asset/types/service'
 import { AssetService } from '@modules/asset/service/asset.service'
 import { IAssetsRepository } from '@modules/asset/types/repository'
 import { AssetRepository } from '@modules/asset/repository/asset.repository'
+import {YandexRepository} from '@modules/asset/repository/yandex.repository'
 
 export class AssetDependencies {
     #container: Container
@@ -19,7 +20,7 @@ export class AssetDependencies {
     init() {
         this.#container.bind<IController>(TYPES.CONTROLLERS.IController).to(AssetController)
         this.#container.bind<IAssetsService>(ASSET_IOC.IAssetsService).to(AssetService)
-        this.#container.bind<IAssetsRepository>(ASSET_IOC.IAssetsRepository).to(AssetRepository)
+        this.#container.bind<IAssetsRepository>(ASSET_IOC.IAssetsRepository).to(YandexRepository)
     }
 }
 

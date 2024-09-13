@@ -15,7 +15,7 @@ const AssetSchema: Schema = new Schema<IAssetMongoModel>({
         type: String,
         required: true,
     },
-    ownerId: {
+    dir: {
         type: String,
         required: true,
     },
