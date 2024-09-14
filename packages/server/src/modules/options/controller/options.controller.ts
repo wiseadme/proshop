@@ -43,14 +43,12 @@ export class OptionsController extends BaseController implements IController {
         }
     }
 
-    async getOptions(request: Request<{}, {}, {}, Partial<IOption>>, response: Response, next: NextFunction) {
+    async getOptions(request: Request<{}, {}, {}, Record<keyof IOption, any>>, response: Response, next: NextFunction) {
         try {
             const data = await this.service.findOptions(request.query)
 
-            // @ts-ignore
             this.send({ data, request, response })
         } catch (error) {
-            // @ts-ignore
             this.error({ error, request, next })
         }
     }
@@ -59,10 +57,8 @@ export class OptionsController extends BaseController implements IController {
         try {
             const data = await this.service.findManyOptions(request.query.ids as string)
 
-            // @ts-ignore
             this.send({ data, request, response })
         } catch (error) {
-            // @ts-ignore
             this.error({ error, request, next })
         }
     }

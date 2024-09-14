@@ -17,6 +17,7 @@ const OptionSchema = new Schema<IOptionMongoModel>({
     },
     order: {
         type: Number,
+        default: 0
     },
     productName: {
         type: String,

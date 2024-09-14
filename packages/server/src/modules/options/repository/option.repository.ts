@@ -1,13 +1,13 @@
-import mongoose, { Document } from 'mongoose'
+import mongoose from 'mongoose'
 import { inject, injectable } from 'inversify'
 import { TYPES } from '@common/schemes/di-types'
 import { OptionModel } from '@modules/options/model/option.model'
 import { validateId } from '@common/utils/mongoose-validate-id'
-// Types
-import { ILogger } from '@/types/utils'
-import { IOption, IOptionMongoModel } from '@proshop-app/types'
-import { IOptionRepository } from '../types/repository'
 import { OptionMapper } from '@modules/options/mappers/option.mapper'
+// Types
+import type { ILogger } from '@/types/utils'
+import type { IOption, IOptionMongoModel } from '@proshop-app/types'
+import type { IOptionRepository } from '@modules/options/types/repository'
 
 @injectable()
 export class OptionRepository implements IOptionRepository {
@@ -46,11 +46,11 @@ export class OptionRepository implements IOptionRepository {
     }
 
     async update(updates: Partial<IOption>): Promise<IOption> {
-        validateId(updates.id!)
+        validateId(updates.id! ?? updates.productId!)
 
         const option = await OptionModel
-            .findByIdAndUpdate(
-                { _id: updates.id },
+            .findOneAndUpdate(
+                {...(updates.id ? { _id: updates.id } : { productId: updates.productId })},
                 { $set: updates },
                 { new: true },
             )

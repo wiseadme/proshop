@@ -162,7 +162,17 @@ export class ProductsService extends ServiceHelpers implements IProductsService 
             await this.updateProductCategories(updates)
         }
 
-        return await this.repository.updateProduct(Product.update(updates))
+        const product = await this.repository.updateProduct(Product.update(updates))
+
+        await this.gateway.option.updateOption({
+            productId: product.id,
+            productName: product.name,
+            image: product.image!,
+            isAvailable: Boolean(product.quantity),
+            url: product.url
+        })
+
+        return product
     }
 
     async deleteProduct(id: string) {
