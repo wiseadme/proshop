@@ -1,25 +1,24 @@
 import { ISite } from '@proshop-app/types'
 
-export class Site implements ISite{
-    readonly _id: string
-    readonly _colors: ISite['colors']
-    readonly _components: ISite['components']
+export class Site implements ISite {
+    readonly id: string
+    readonly colors: ISite['colors']
+    readonly components: ISite['components']
+    readonly logo: ISite['logo']
+    readonly assets: ISite['assets']
 
     constructor({
         id = '',
         colors = {},
         components = {},
+        logo = {},
+        assets = []
     }) {
-        this._colors = colors
-        this._components = components
-    }
-
-    get colors() {
-        return this._colors
-    }
-
-    get components() {
-        return this._components
+        this.id = id
+        this.colors = colors
+        this.components = components
+        this.logo = logo
+        this.assets = assets
     }
 
     static create(siteConfig = {}) {

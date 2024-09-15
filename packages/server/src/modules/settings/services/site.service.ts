@@ -5,6 +5,7 @@ import { ILogger } from '@/types/utils'
 import { ISiteService } from '@modules/settings/types/service'
 import { ISiteRepository } from '@modules/settings/types/repository'
 import { ISite } from '@proshop-app/types'
+import { Site } from '@modules/settings/entities/site.entity'
 
 @injectable()
 export class SiteService implements ISiteService {
@@ -15,7 +16,7 @@ export class SiteService implements ISiteService {
     }
 
     async create(siteConfig: Partial<ISite>) {
-        return this.repository.create(siteConfig)
+        return this.repository.create(Site.create(siteConfig))
     }
 
     async read() {
