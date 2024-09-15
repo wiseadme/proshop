@@ -50,7 +50,7 @@
         showColorPicker.value = true
     }
 
-    const palette = computed<PaletteItem[]>(() =>[
+    const palette = computed<PaletteItem[]>(() => [
         {
             color: unref(model).colors!.primary ?? '',
             name: 'Primary цвет',
@@ -167,6 +167,4 @@
         </v-col>
     </v-row>
 </template>
-<style lang="scss">
-    @import "vue-color-kit/dist/vue-color-kit.css";
-</style>
+<style lang="scss" src="vue-color-kit/dist/vue-color-kit.css"/>

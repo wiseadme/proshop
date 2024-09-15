@@ -23,7 +23,6 @@ import type {
 } from '@proshop-app/types'
 
 import { useAttributesStore } from '@modules/attributes/store'
-import { useCategoriesStore } from '@modules/categories/store'
 import { useMetaTagsStore } from '@modules/metatags/store'
 import { getIds } from '@modules/products/helpers'
 import { useProductStore } from '@modules/products/store'
@@ -34,7 +33,6 @@ import { useFilesService } from '@shared/services/files.service'
 export const useProductsService = createSharedComposable(() => {
     const _productsStore = useProductStore()
     const _attributesStore = useAttributesStore()
-    const _categoriesStore = useCategoriesStore()
     const _variantsStore = useVariantsStore()
     const _unitsStore = useUnitsStore()
     const _metaTagsStore = useMetaTagsStore()
@@ -53,7 +51,6 @@ export const useProductsService = createSharedComposable(() => {
 
     const products = computed<IProduct[]>(() => _productsStore.products || [])
     const attributeItems = computed<IAttribute[]>(() => _attributesStore.attributes || [])
-    const categoryItems = computed<ICategory[]>(() => _categoriesStore.categories || [])
     const variantItems = computed<IVariant[]>(() => _variantsStore.variants || [])
     const unitItems = computed<IUnit[]>(() => _unitsStore.units || [])
     const metaTagItems = computed<IMetaTag[]>(() => _metaTagsStore.metaTags || [])
@@ -82,14 +79,6 @@ export const useProductsService = createSharedComposable(() => {
         }
 
         return _unitsStore.read()
-    }
-
-    const getCategories = async (): Promise<ICategory[]> => {
-        if (unref(categoryItems).length) {
-            return unref(categoryItems)!
-        }
-
-        return _categoriesStore.getCategories()
     }
 
     const getVariants = async (): Promise<IVariant[]> => {
@@ -324,7 +313,6 @@ export const useProductsService = createSharedComposable(() => {
 
     const onInit = async () => {
         await Promise.all([
-            getCategories(),
             getAttributes(),
             getProducts(),
             getVariants(),
@@ -342,7 +330,6 @@ export const useProductsService = createSharedComposable(() => {
         pagination,
         products,
         attributeItems,
-        categoryItems,
         variantItems,
         unitItems,
         metaTagItems,
@@ -351,7 +338,6 @@ export const useProductsService = createSharedComposable(() => {
         getMerchant,
         getAttributes,
         getUnits,
-        getCategories,
         getVariants,
         getMetaTags,
         getProducts,

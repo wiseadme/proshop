@@ -5,7 +5,7 @@ import { ICategory, ICategoryParams } from '@proshop-app/types'
 export const useCategoryRepository = () => {
     const { request, cancel } = useSharedHttp()
 
-    const createCategory = (category: ICategory) => request({
+    const createCategory = (category: ICategory) => request<ICategory>({
         url: '/api/v1/category',
         headers: {
             'Content-Type': 'application/json',
@@ -15,12 +15,12 @@ export const useCategoryRepository = () => {
         body: category
     })
 
-    const getCategories = (params: Partial<ICategory> = {}) => request({
+    const getCategories = (params: Partial<ICategory> = {}) => request<ICategory[]>({
         url: '/api/v1/category',
         params
     })
 
-    const updateCategory = (updates: Partial<ICategoryParams>) => request({
+    const updateCategory = (updates: Partial<ICategoryParams>) => request<ICategory>({
         url: '/api/v1/category',
         headers: {
             'Content-Type': 'application/json',
@@ -30,7 +30,7 @@ export const useCategoryRepository = () => {
         body: updates,
     })
 
-    const deleteCategory = (id: string) => request({
+    const deleteCategory = (id: string) => request<boolean>({
         url: '/api/v1/category',
         method: 'DELETE',
         params: { id }

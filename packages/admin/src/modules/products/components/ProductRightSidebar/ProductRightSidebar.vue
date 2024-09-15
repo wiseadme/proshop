@@ -3,11 +3,13 @@
         computed,
         defineAsyncComponent,
         markRaw,
-        unref,
+        onBeforeMount,
+        unref
     } from 'vue'
 
     import { useRoute, useRouter } from 'vue-router'
 
+    import { useCategoriesService } from '@modules/categories/composables/use-categories-service'
     import { useProductModel } from '@modules/products/composables/use-product-model'
     import { useProductsService } from '@modules/products/composables/use-products-service'
 
@@ -37,11 +39,8 @@
     const MetaTagEditModal = markRaw(defineAsyncComponent(() => import('@modules/products/components/modals/MetaTagEditModal.vue')))
 
     const { model } = useProductModel()
-
-    const {
-        categoryItems,
-        attributeItems,
-    } = useProductsService()
+    const { attributeItems } = useProductsService()
+    const { categories, getCategories } = useCategoriesService()
 
     const tabs = computed<ISidebarTab[]>(() => ([
         {
@@ -64,7 +63,7 @@
             component: ProductCategoriesBlock,
             title: 'Категории товара',
             isActive: false,
-            disabled: !unref(categoryItems)?.length || !unref(model)?.id,
+            disabled: !unref(categories)?.length || !unref(model)?.id,
             independent: false,
             section: CATEGORIES_BLOCK,
         },
@@ -90,7 +89,7 @@
             component: ProductRelatedBlock,
             title: 'Рекомендуемые товары',
             isActive: false,
-            disabled: !unref(categoryItems)?.length || !unref(model)?.id,
+            disabled: !unref(categories)?.length || !unref(model)?.id,
             section: RELATED_BLOCK,
             independent: true,
         },
@@ -117,6 +116,10 @@
             },
         })
     }
+
+    onBeforeMount(() => {
+        if (!unref(categories)?.length) getCategories()
+    })
 
 </script>
 <template>

@@ -1420,15 +1420,15 @@
   dependencies:
     vue-demi "*"
 
-"@proshop-app/types@^0.0.42":
-  version "0.0.42"
-  resolved "https://npm.pkg.github.com/download/@proshop-app/types/0.0.42/d89a67be6f5795d730e53671e056360136bf7ed2#d89a67be6f5795d730e53671e056360136bf7ed2"
-  integrity sha512-Ulz0WOMOaVaYfGgFYb16GB2/1u/9KA9DExaRvOC65KUlFhhVHZKzSHK1F2S4hkq6LxTCFDSq1YDr/bBrE+Q5hA==
+"@proshop-app/types@^0.0.64":
+  version "0.0.64"
+  resolved "https://npm.pkg.github.com/download/@proshop-app/types/0.0.64/c5923455143e8d60505ab0b9b75230d07bf3a4c0#c5923455143e8d60505ab0b9b75230d07bf3a4c0"
+  integrity sha512-bdP/J+GSecMkbLJ6uPhBkCmcYd3S95fd/PIN2e+VDV3w7jnxbz8N1Y0vuS8QLu8BgwHHj+9qC6+Iw7syIWGvEA==
 
-"@proshop-app/types@^0.0.63":
-  version "0.0.63"
-  resolved "https://npm.pkg.github.com/download/@proshop-app/types/0.0.63/cd728601d97a4c80c71a1558112279a51b6daad4#cd728601d97a4c80c71a1558112279a51b6daad4"
-  integrity sha512-i5Et4TzUeWbBUPsWRWMTBRQLmUPrC0AvtXKyTLhDQW294BmV72FLI2C4S13fArwgVoLa6ckZwUJODOuxsGE5LA==
+"@proshop-app/types@^0.0.65":
+  version "0.0.65"
+  resolved "https://npm.pkg.github.com/download/@proshop-app/types/0.0.65/e012765f33ac06ee904a2909b3aa6bab22730bcf#e012765f33ac06ee904a2909b3aa6bab22730bcf"
+  integrity sha512-WPS2YVD5KVN9NtpgVzIgpwy5bq+CW5yrls87ffy15n8RLlpdz+z+srEIx2lAe3xC0uSDSPSaNxRO9v9OjWGxyg==
 
 "@rollup/rollup-android-arm-eabi@4.14.3":
   version "4.14.3"

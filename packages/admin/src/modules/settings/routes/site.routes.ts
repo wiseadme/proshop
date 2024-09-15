@@ -1,21 +1,18 @@
 import { RouteNames } from '@modules/settings/enums/route-names'
+
 export const siteRoutes = [
     {
         path: 'site',
-        component: () => import(/* webpackChunkName: "Layout.PAGE" */ '@shared/layouts/PageLayout.vue'),
-        // name: RouteNames.SITE_SETTINGS,
+        component: () => import(/* "Layout.PAGE" */ '@shared/layouts/PageLayout.vue'),
         children: [
             {
                 path: ':action(edit|create)/:section',
                 components: {
-                    default: () => import(/* webpackChunkName: "Page.SiteEditPage" */ '@modules/settings/pages/SiteEditPage.vue'),
-                    right: () => import(/* webpackChunkName: "Page.SiteRightSideBar" */ '@modules/settings/components/RightSideBar/SiteRightSideBar.vue')
+                    default: () => import(/* "Page.SiteEditPage" */ '@modules/settings/pages/SiteSettingsPage.vue'),
+                    right: () => import(/* "Page.SiteRightSideBar" */ '@modules/settings/components/RightSideBar/SiteRightSideBar.vue')
                 },
-                name: RouteNames.SITE_SETTINGS,
+                name: RouteNames.SITE_EDIT_PAGE,
             }
         ],
-        // meta: {
-        //     name: RouteNames.SITE_SETTINGS,
-        // }
     }
 ]

@@ -39,6 +39,7 @@ export const useCategoryInfo = () => {
 
     const onUpdateCategoryInfo = async () => {
         const updates = getInfoBlockUpdates()
+        updates.id = unref(model).id
 
         if (!Object.keys(updates).length) {
             notify(NO_CHANGES)

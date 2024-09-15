@@ -4,6 +4,7 @@ import {
     unref,
 } from 'vue'
 
+import { useCategoriesService } from '@modules/categories/composables/use-categories-service'
 import { useProduct } from '@modules/products/composables/use-product'
 import { useProductModel } from '@modules/products/composables/use-product-model'
 import { useProductsService } from '@modules/products/composables/use-products-service'
@@ -21,12 +22,13 @@ export const useProductCategories = () => {
     const { model } = useProductModel()
     const { notify } = useNotifications()
 
-    const { categoryItems, updateProductCategories } = useProductsService()
+    const { updateProductCategories } = useProductsService()
+    const { categories } = useCategoriesService()
     const { product, setCurrentProduct } = useProduct()
 
     const selectsMap = ref({})
 
-    const categoriesMap = computed(() => unref(categoryItems)?.reduce((map, it) => {
+    const categoriesMap = computed(() => unref(categories)?.reduce((map, it) => {
         map[it.id] = it
 
         return map

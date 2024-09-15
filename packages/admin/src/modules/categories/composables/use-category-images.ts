@@ -15,10 +15,8 @@ import { getIds } from '@modules/products/helpers'
 import { CHANGES_SAVED, SAVING_ERROR } from '@shared/constants/notifications'
 import { useFilesService } from '@shared/services/files.service'
 
-
 export const useCategoryImages = () => {
     const {
-        updateCategoryImagesOrders,
         updateCategory,
     } = useCategoriesService()
 
@@ -31,7 +29,7 @@ export const useCategoryImages = () => {
 
     const onUpdateImagesOrders = async (assets: IAsset[]) => {
         try {
-            await updateCategoryImagesOrders(assets)
+            await filesService.updateMany(assets)
 
             notify(CHANGES_SAVED)
         } catch (err) {
@@ -83,7 +81,7 @@ export const useCategoryImages = () => {
     const onUpdateMainImage = async (asset: IAsset) => {
         try {
             await updateCategory({
-                id: asset.ownerId,
+                id: unref(model).id,
                 image: asset.url,
             })
 

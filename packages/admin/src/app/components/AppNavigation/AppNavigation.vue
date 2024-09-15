@@ -12,7 +12,7 @@
     import { RouteNames as CategoriesRouteNames } from '@modules/categories/enums/route-names'
     import { RouteNames as CustomersRouteNames } from '@modules/customers/enums/route-names'
     import { RouteNames as FiltersRouteNames } from '@modules/filters/enums/route-names'
-    import {RouteNames as GroupsRouteNames} from '@modules/groups/enums/route-names'
+    import { RouteNames as GroupsRouteNames } from '@modules/groups/enums/route-names'
     import { RouteNames as MetaTagsRouteNames } from '@modules/metatags/enums/route-names'
     import { RouteNames as OrdersRouteNames } from '@modules/orders/enums/route-names'
     import { RouteNames as ProductsRouteNames } from '@modules/products/enums/route-names'
@@ -112,14 +112,14 @@
                     icon: 'fas fa-store-alt',
                     name: SettingsRouteNames.MERCHANT_SETTINGS,
                 },
-                [SettingsRouteNames.SITE_SETTINGS]: {
+                [SettingsRouteNames.SITE_EDIT_PAGE]: {
                     title: 'Сайт',
                     icon: 'fas fa-store-alt',
                     params: {
                         action: 'edit',
                         section: 'colors'
                     },
-                    name: SettingsRouteNames.SITE_SETTINGS
+                    name: SettingsRouteNames.SITE_EDIT_PAGE
                 },
             },
         },

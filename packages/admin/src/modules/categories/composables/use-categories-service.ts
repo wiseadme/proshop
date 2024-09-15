@@ -1,29 +1,28 @@
 import {
     DeepReadonly,
     Ref,
-    computed
+    ref,
+    unref
 } from 'vue'
+
+import {
+    useCategoryRepository
+} from '@modules/categories/composables/repository/use-category-repository'
 
 import { createSharedComposable } from '@shared/composables/features/create-shared-composable'
 
-import type {
-    IAsset,
-    ICategory,
-    ICategoryParams
-} from '@proshop-app/types'
-
-import { useCategoriesStore } from '@modules/categories/store'
-import { useFilesService } from '@shared/services/files.service'
+import type { ICategory, ICategoryParams } from '@proshop-app/types'
 
 export const useCategoriesService = createSharedComposable(() => {
-    const _store = useCategoriesStore()
-    const _filesService = useFilesService()
-
-    const _categories = computed<ICategory[]>(() => _store.categories || [])
+    const repository = useCategoryRepository()
+    const _categories = ref<ICategory[]>([])
 
     const createCategory = async (model: ICategory): Promise<ICategory> => {
         try {
-            return await _store.createCategory(model)
+            const { data } = await repository.createCategory(model)
+            _categories.value.push(data)
+
+            return data
         } catch (err) {
             return Promise.reject(err)
         }
@@ -31,7 +30,11 @@ export const useCategoriesService = createSharedComposable(() => {
 
     const getCategories = async (params = {}): Promise<ICategory[]> => {
         try {
-            return await _store.getCategories(params)
+            const { data } = await repository.getCategories(params)
+
+            _categories.value = data
+
+            return data
         } catch (err) {
             return Promise.reject(err)
         }
@@ -39,7 +42,8 @@ export const useCategoriesService = createSharedComposable(() => {
 
     const getCategory = async (id: string): Promise<ICategory> => {
         try {
-            const [category] = await _store.getCategory(id)
+            const { data } = await repository.getCategories({ id })
+            const [category] = data
 
             return category
         } catch (err) {
@@ -49,25 +53,23 @@ export const useCategoriesService = createSharedComposable(() => {
 
     const updateCategory = async (updates: Partial<ICategoryParams>): Promise<ICategory> => {
         try {
-            return await _store.updateCategory(updates)
+            const { data } = await repository.updateCategory(updates)
+
+            _categories.value = unref(_categories).map(it => it.id === updates.id ? data : it)
+
+            return data
         } catch (err) {
             return Promise.reject(err)
         }
     }
 
-    const deleteCategory = async (id: string): Promise<void> => {
+    const deleteCategory = async (id: string): Promise<boolean> => {
         try {
-            await _store.deleteCategory(id)
-        } catch (err) {
-            return Promise.reject(err)
-        }
-    }
+            const {data} = await repository.deleteCategory(id)
 
-    const updateCategoryImagesOrders = async (assets: IAsset[]): Promise<boolean> => {
-        try {
-            await _filesService.updateMany(assets)
+            _categories.value = unref(_categories).filter(it => it.id !== id)
 
-            return true
+            return data
         } catch (err) {
             return Promise.reject(err)
         }
@@ -80,6 +82,5 @@ export const useCategoriesService = createSharedComposable(() => {
         createCategory,
         updateCategory,
         deleteCategory,
-        updateCategoryImagesOrders,
     }
 })

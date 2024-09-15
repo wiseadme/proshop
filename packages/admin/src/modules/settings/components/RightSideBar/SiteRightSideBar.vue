@@ -33,7 +33,7 @@
         {
             component: BrandBlock,
             title: 'Брэнд и логотипы',
-            isActive: true,
+            isActive: false,
             disabled: false,
             independent: false,
             section: Sections.BRAND_BLOCK,
@@ -41,7 +41,7 @@
         {
             component: SliderBlock,
             title: 'Слайдер',
-            isActive: true,
+            isActive: false,
             disabled: false,
             independent: false,
             section: Sections.SLIDER_BLOCK,

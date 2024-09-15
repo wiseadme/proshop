@@ -17,7 +17,7 @@
 
     const props = defineProps<{
         assets: IAsset[]
-        main: Maybe<string>
+        main?: Maybe<string>
     }>()
 
     const emit = defineEmits<{
@@ -123,26 +123,28 @@
             open-on-click
             @hide="imagesContextMenu.show = false"
         >
-            <v-list
-                class="images-menu white"
-            >
-                <v-list-item
-                    class="images-menu__item"
-                    @click="emit('update:main', currentImage)"
+            <slot name="context-menu">
+                <v-list
+                    class="images-menu white"
                 >
-                    <v-list-item-title>
-                        установить главным
-                    </v-list-item-title>
-                </v-list-item>
-                <v-list-item
-                    class="images-menu__item"
-                    @click="emit('delete', currentImage)"
-                >
-                    <v-list-item-title>
-                        удалить
-                    </v-list-item-title>
-                </v-list-item>
-            </v-list>
+                    <v-list-item
+                        class="images-menu__item"
+                        @click="emit('update:main', currentImage)"
+                    >
+                        <v-list-item-title>
+                            установить главным
+                        </v-list-item-title>
+                    </v-list-item>
+                    <v-list-item
+                        class="images-menu__item"
+                        @click="emit('delete', currentImage)"
+                    >
+                        <v-list-item-title>
+                            удалить
+                        </v-list-item-title>
+                    </v-list-item>
+                </v-list>
+            </slot>
         </v-menu>
     </v-layout>
 </template>
