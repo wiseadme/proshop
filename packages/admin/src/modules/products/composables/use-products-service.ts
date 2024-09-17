@@ -158,7 +158,7 @@ export const useProductsService = createSharedComposable(() => {
     const updateProductCategories = async (updates: { id: string, categories: ICategory[] }): Promise<IProduct> => {
         try {
             return await updateProduct({
-                ...updates,
+                id: updates.id,
                 categories: getIds(updates.categories!)
             })
         } catch (err) {

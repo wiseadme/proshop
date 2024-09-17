@@ -45,16 +45,16 @@ export class CustomerService extends CustomerHelpers implements ICustomerService
     }
 
     async whoami(request: Request) {
-        const auth = request.cookies[CUSTOMER_TOKEN_KEY]
+        const token = request.cookies[CUSTOMER_TOKEN_KEY]
 
-        if (!auth || isExpired(auth)) {
+        if (!token || (token && isExpired(token))) {
             return Promise.reject({
                 status: 401,
                 message: 'Unauthorized',
             })
         }
 
-        const { phone } = parseJWToken(auth)
+        const { phone } = parseJWToken(token)
         const [user] = await this.repository.read({ phone })
 
         return user

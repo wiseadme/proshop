@@ -164,13 +164,21 @@ export class ProductsService extends ServiceHelpers implements IProductsService 
 
         const product = await this.repository.updateProduct(Product.update(updates))
 
-        await this.gateway.option.updateOption({
-            productId: product.id,
-            productName: product.name,
-            image: product.image!,
-            isAvailable: Boolean(product.quantity),
-            url: product.url
-        })
+        if (product.groups.length > 0) {
+            const options = await this.gateway.option.findOptions({
+                productId: product.id
+            })
+
+            for await (const option of options) {
+                await this.gateway.option.updateOption({
+                    id: option.id,
+                    productName: product.name,
+                    image: product.image!,
+                    isAvailable: Boolean(product.quantity),
+                    url: product.url
+                })
+            }
+        }
 
         return product
     }

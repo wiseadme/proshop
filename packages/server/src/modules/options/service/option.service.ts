@@ -1,5 +1,4 @@
-import { Document } from 'mongoose'
-import { id, inject, injectable } from 'inversify'
+import { inject, injectable } from 'inversify'
 import { TYPES } from '@common/schemes/di-types'
 // Types
 import { ILogger } from '@/types/utils'
@@ -24,7 +23,7 @@ export class OptionService implements IOptionService {
         return this.repository.create(Option.create(option))
     }
 
-    findOptions(params: Partial<IOption>): Promise<IOption[] | IOption> {
+    findOptions(params: Partial<IOption>): Promise<IOption[]> {
         return this.repository.find(params)
     }
 

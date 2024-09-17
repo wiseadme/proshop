@@ -69,6 +69,7 @@ export const useProductCategories = () => {
     return {
         categoriesMap,
         selectsMap,
+        categories,
         select,
         unSelect,
         toggleCategory,

@@ -1,13 +1,13 @@
 <script lang="ts" setup>
     import {
         computed,
+        onMounted,
         unref,
-        watch,
+        watch
     } from 'vue'
 
     import { useProduct } from '@modules/products/composables/use-product'
     import { useProductCategories } from '@modules/products/composables/use-product-categories'
-    import { useProductsService } from '@modules/products/composables/use-products-service'
 
     import { useTreeView } from '@shared/composables/use-tree-view'
 
@@ -20,9 +20,8 @@
     import { SvgPaths } from '@shared/enums/svg-paths'
     import { clone } from '@shared/helpers'
 
-    const { categoryItems } = useProductsService()
     const { product } = useProduct()
-    const { selectsMap, toggleCategory, select } = useProductCategories()
+    const { categories, selectsMap, toggleCategory, select } = useProductCategories()
     const { treeItems, buildTreeItems } = useTreeView()
 
     const productCategories = computed<ICategory[]>(() => unref(product)?.categories as ICategory[])
@@ -31,11 +30,11 @@
         items?.forEach((ctg) => select(ctg))
     }, { immediate: true })
 
-    watch(categoryItems, (items) => {
-        if (!items) return
-
-        buildTreeItems(clone(unref(items)))
-    }, { immediate: true })
+    onMounted(() => {
+        if (unref(categories)) {
+            buildTreeItems(clone(unref(categories)))
+        }
+    })
 
 </script>
 <template>
