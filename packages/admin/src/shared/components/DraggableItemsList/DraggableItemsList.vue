@@ -49,7 +49,6 @@
     }
 
     const onAdd = (item: any) => {
-        console.log(item)
         const value = unref(items)[item.newIndex as number] as OrderedItem<T>
         value.order = Number(item.newIndex)
         emit('add', value)
@@ -64,7 +63,7 @@
     }
 
     const onDragStart = (item) => {
-        draggableItem.value = items![item.oldIndex]
+        draggableItem.value = unref(items)[item.oldIndex]
     }
 </script>
 <template>
