@@ -1,5 +1,4 @@
 import { inject, injectable } from 'inversify'
-import { Request } from 'express'
 import QRCode from 'qrcode'
 import customId from 'custom-id'
 import { TYPES } from '@common/schemes/di-types'
@@ -11,10 +10,9 @@ import { IOrdersRepository } from '@modules/orders/types/repository'
 import { IOrder, IRequestParams } from '@proshop-app/types'
 import { Order } from '@modules/orders/entity/order.entity'
 import { IOrderGatewayService } from '@modules/orders/gateway/gateway.service'
-// import { IOrdersQueue } from '@modules/orders/queue/queue'
 import { IOrderResponse } from '@modules/orders/types/response'
 import { ORDER_IOC } from '@modules/orders/di/di.types'
-import { PaginatableResponse } from '@common/models/PaginatableResponse'
+import { PaginationResponse } from '@common/models/PaginationResponse'
 
 @injectable()
 export class OrdersService implements IOrdersService {
@@ -22,24 +20,13 @@ export class OrdersService implements IOrdersService {
         @inject(TYPES.UTILS.ILogger) private logger: ILogger,
         @inject(ORDER_IOC.IOrdersRepository) private repository: IOrdersRepository,
         @inject(ORDER_IOC.IOrderGatewayService) private gateway: IOrderGatewayService,
-        // @inject(ORDER_IOC.IOrdersQueue) private jobs: IOrdersQueue,
     ) {
-        // this.jobs.worker.setJobProcessor(this.createOrder.bind(this))
     }
-
-    // async processOrder({ headers }: Request) {
-    //     this.logger.info('start order processing')
-    //
-    //     const job = await this.jobs.queue.getJob(headers.jobId as string)
-    //
-    //     return await this.jobs.queue.waitJobResult(job!)
-    // }
 
     async createOrder(order: IOrder) {
         const { customerName, customerPhone } = order
 
         order.orderId = customId({ name: customerName, email: customerPhone, randomLength: 2 })
-
         order.qrcode = await QRCode.toString(order.orderId, { type: 'svg' })
 
         const created = await this.repository.createOrder(Order.create(order))
@@ -67,25 +54,39 @@ export class OrdersService implements IOrdersService {
         return created
     }
 
-    async getOrders(query: IRequestParams<Partial<IOrder> & { seen?: boolean }> = {}): Promise<IOrderResponse> {
-        if (query.seen !== undefined) {
-            const orders = await this.repository.getOrdersByStatus(query.seen)
+    private async getNewOrders() {
+        const orders = await this.repository.getOrdersByStatus(false)
 
-            return new PaginatableResponse({ items: orders })
-        }
+        return new PaginationResponse<IOrder>({ items: orders })
+    }
 
-        if (query.id) {
-            const order = await this.repository.getOrderById(query.id)
+    private async getOrderById(id: string) {
+        const order = await this.repository.getOrderById(id)
 
-            return new PaginatableResponse({ items: [order] })
-        }
+        return new PaginationResponse<IOrder>({ items: [order] })
+    }
 
+    private async getCustomerOrders(params: IRequestParams<Partial<IOrder>>) {
+        const orders = await this.repository.getOrdersByCustomerId(params)
+
+        return new PaginationResponse<IOrder>({ items: orders })
+    }
+
+    private async getAllOrders(params: IRequestParams<Partial<IOrder>>) {
         const [items, total] = await Promise.all([
-            this.repository.getOrders(query),
+            this.repository.getOrders(params),
             this.repository.getDocumentsCount()
         ])
 
-        return new PaginatableResponse({ items, total })
+        return new PaginationResponse({ items, total })
+    }
+
+    async getOrders(query: IRequestParams<Partial<IOrder & { seen: boolean }>> = {}): Promise<IOrderResponse> {
+        if (query.seen) return this.getNewOrders()
+        if (query.id) return this.getOrderById(query.id)
+        if (query.customerId) return this.getCustomerOrders(query)
+
+        return this.getAllOrders(query)
     }
 
     async updateOrder(updates: Partial<IOrder>): Promise<IOrder> {

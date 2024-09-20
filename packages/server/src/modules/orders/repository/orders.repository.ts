@@ -77,6 +77,22 @@ export class OrdersRepository implements IOrdersRepository {
         return orders.map(order => OrderMapper.toDomain(order))
     }
 
+    async getOrdersByCustomerId(params: IRequestParams<Partial<IOrder>>): Promise<IOrder[]> {
+        const {
+            page = DEFAULT_PAGE,
+            count = DEFAULT_ITEMS_COUNT,
+        } = params
+
+        const orders = await OrderModel
+            .find({ _id: params.customerId })
+            .skip((page * count) - count)
+            .limit(count)
+            .sort({ createdAt: -1 })
+            .lean() as IOrderMongoModel[]
+
+        return orders.map(order => OrderMapper.toDomain(order))
+    }
+
     async updateOrder(updates: Partial<IOrder>): Promise<IOrder> {
         validateId(updates.id!)
 
@@ -96,7 +112,6 @@ export class OrdersRepository implements IOrdersRepository {
     async deleteOrder(id: string) {
         return !!await OrderModel.findByIdAndDelete(id)
     }
-
 
     async getDocumentsCount() {
         return OrderModel.countDocuments({})

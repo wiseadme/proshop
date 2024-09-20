@@ -1,4 +1,4 @@
-import { IOrder } from '@proshop-app/types'
+import { IOrder, IRequestParams } from '@proshop-app/types'
 
 export interface IOrdersRepository {
     createOrder(order: IOrder): Promise<IOrder>
@@ -8,6 +8,8 @@ export interface IOrdersRepository {
     getOrderById(id: string): Promise<IOrder>
 
     getOrdersByStatus(seen: boolean): Promise<IOrder[]>
+
+    getOrdersByCustomerId(params: IRequestParams<Partial<IOrder>>): Promise<IOrder[]>
 
     updateOrder(updates: Partial<IOrder>): Promise<IOrder>
 
