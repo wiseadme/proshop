@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-    import { computed, watch } from 'vue'
+    import { computed } from 'vue'
 
     import { useOptions } from '@modules/groups/composables/view/use-options'
 
@@ -13,10 +13,6 @@
     const { onDeleteOption } = useOptions()
 
     const options = computed(() => props.options.slice().sort((a, b) => a.order - b.order))
-
-    watch(() => props.options, val => {
-        console.log(val)
-    })
 </script>
 <template>
     <v-row>
