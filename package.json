@@ -1,6 +1,6 @@
 {
   "name": "proshop",
-  "version": "1.3.2",
+  "version": "1.3.3",
   "description": "Proshop platform project",
   "scripts": {
     "dev": "lerna run dev",
