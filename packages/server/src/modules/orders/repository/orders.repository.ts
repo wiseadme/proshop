@@ -84,7 +84,7 @@ export class OrdersRepository implements IOrdersRepository {
         } = params
 
         const orders = await OrderModel
-            .find({ _id: params.customerId })
+            .find({ customerId: params.customerId })
             .skip((page * count) - count)
             .limit(count)
             .sort({ createdAt: -1 })
