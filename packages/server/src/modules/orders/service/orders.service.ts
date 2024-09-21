@@ -32,11 +32,6 @@ export class OrdersService implements IOrdersService {
         const created = await this.repository.createOrder(Order.create(order))
 
         /**
-         * @description - привязываем к корзине номер заказа
-         */
-        await this.gateway.cart.update({ id: created.cartId!, orderId: created.orderId })
-
-        /**
          * @description - уменьшаем кол - ва товара в остатках товара
          * на кол - во единиц указанное в заказе.
          */
@@ -50,6 +45,11 @@ export class OrdersService implements IOrdersService {
                 reduceBy: item.quantity,
             })
         }
+
+        /**
+         * @description - привязываем к корзине номер заказа
+         */
+        await this.gateway.cart.update({ id: created.cartId!, orderId: created.orderId })
 
         return created
     }
