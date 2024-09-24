@@ -67,13 +67,20 @@ export class ProductsRepository implements IProductsRepository {
         return ProductMapper.toDomain(product)
     }
 
-    async findByQueryString(queryString: string) {
-        const products = await ProductModel
-            .find({ name: new RegExp(queryString, 'i') })
+    async findByQuery({
+        page = DEFAULT_PAGE,
+        count = DEFAULT_ITEMS_COUNT,
+        name
+    }: IRequestParams<IProductQuery>) {
+        const docsCount = await ProductModel.countDocuments({ name: new RegExp(name as string, 'i') })
+
+        const products = await ProductModel.find({ name: new RegExp(name as string, 'i') })
+            .skip((page * count) - count)
+            .limit(count)
             .lean()
             .populate(this.helpers.getProductPopulateParams()) as IProductMongoModel[]
 
-        return products.map(product => ProductMapper.toDomain(product))
+        return { products: products.map(product => ProductMapper.toDomain(product)), count: docsCount }
     }
 
     async findBySKU(sku) {

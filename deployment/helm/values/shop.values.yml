@@ -1,0 +1,24 @@
+selector:
+  components: frontend
+role: shop
+version: 0.0.11
+namespace: shop-ns
+clusterIp: true
+deployment: true
+dockerImage: cr.yandex/crp4qt6l07lpv7i3k7ir/itbooks-shop
+containerPort: 3000
+containerCommand: [ "nginx" ]
+containerRunArgs:
+  - "-g"
+  - "daemon off;"
+replicas: 2
+limits:
+  memory: "128Mi"
+  cpu: "100m"
+external:
+  name: client-ext-name
+  namespace: ingress-ns
+  ports:
+    - port: 80
+      protocol: TCP
+      targetPort: 3000

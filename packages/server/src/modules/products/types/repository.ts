@@ -14,7 +14,7 @@ export interface IProductsRepository {
 
     findById(id: string): Promise<IProduct>
 
-    findByQueryString(name: string): Promise<IProduct[]>
+    findByQuery(query: IRequestParams<IProductQuery>): Promise<{ products: IProduct[], count: number }>
 
     findByUrl(url: string): Promise<IProduct>
 

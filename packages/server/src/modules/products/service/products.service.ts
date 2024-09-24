@@ -48,10 +48,10 @@ export class ProductsService extends ServiceHelpers implements IProductsService 
         return this.formatToResponse([item], 1)
     }
 
-    async findByName(name: string): Promise<IResponseItems> {
-        const items = await this.repository.findByQueryString(name!)
+    async findByName(query: IRequestParams<IProductQuery>): Promise<IResponseItems> {
+        const { products, count } = await this.repository.findByQuery(query)
 
-        return this.formatToResponse(items, items.length)
+        return this.formatToResponse(products, count)
     }
 
     async findByUrl(url: string): Promise<IResponseItems> {
@@ -101,7 +101,7 @@ export class ProductsService extends ServiceHelpers implements IProductsService 
 
     async getProducts(query: IRequestParams<IProductQuery>): Promise<IResponseItems> {
         if (query.id) return this.findById(query.id)
-        if (query.name) return this.findByName(query.name)
+        if (query.name) return this.findByName(query)
         if (query.url) return this.findByUrl(query.url)
         if (query.sku) return this.findBySKU(query.sku)
         if (query.category) return this.findByCategory(query)
