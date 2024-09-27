@@ -1425,10 +1425,10 @@
   resolved "https://npm.pkg.github.com/download/@proshop-app/types/0.0.64/c5923455143e8d60505ab0b9b75230d07bf3a4c0#c5923455143e8d60505ab0b9b75230d07bf3a4c0"
   integrity sha512-bdP/J+GSecMkbLJ6uPhBkCmcYd3S95fd/PIN2e+VDV3w7jnxbz8N1Y0vuS8QLu8BgwHHj+9qC6+Iw7syIWGvEA==
 
-"@proshop-app/types@^0.0.65":
-  version "0.0.65"
-  resolved "https://npm.pkg.github.com/download/@proshop-app/types/0.0.65/e012765f33ac06ee904a2909b3aa6bab22730bcf#e012765f33ac06ee904a2909b3aa6bab22730bcf"
-  integrity sha512-WPS2YVD5KVN9NtpgVzIgpwy5bq+CW5yrls87ffy15n8RLlpdz+z+srEIx2lAe3xC0uSDSPSaNxRO9v9OjWGxyg==
+"@proshop-app/types@^0.0.70":
+  version "0.0.70"
+  resolved "https://npm.pkg.github.com/download/@proshop-app/types/0.0.70/d1aaa231cab659d4a0bfa745bfcbd859c37c7ece#d1aaa231cab659d4a0bfa745bfcbd859c37c7ece"
+  integrity sha512-FYd4MmLVJ21rTorK0Au1F3kt1tPIch5IvepdYyRYu8oOq8pVOHAVXcNHA/G8YdVAAbKnCKYB6QmPms/TVEwpgA==
 
 "@rollup/rollup-android-arm-eabi@4.14.3":
   version "4.14.3"

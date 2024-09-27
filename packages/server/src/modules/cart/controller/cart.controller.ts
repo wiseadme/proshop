@@ -41,7 +41,6 @@ export class CartController extends BaseController implements IController {
     }
 
     async getCart(request: Request<{}, {}, {}>, response: Response, next: NextFunction) {
-        console.log(request.cookies)
         try {
             const data = await this.service.read(request.query)
 

@@ -1,6 +1,5 @@
 import { Request, Response } from 'express'
-import { Document } from 'mongoose'
-import { id, inject, injectable } from 'inversify'
+import { inject, injectable } from 'inversify'
 import { TYPES } from '@common/schemes/di-types'
 import { Customer } from '@modules/customer/entity/customer.entity'
 // Types
@@ -26,21 +25,38 @@ export class CustomerService extends CustomerHelpers implements ICustomerService
     }
 
     async createCustomer(response: Response, customer: ICustomer) {
-        const [found]: ICustomer[] = await this.repository.read({ phone: customer.phone })
+        const [found]: ICustomer[] = await this.repository.find({ phone: customer.phone })
 
         if (!found) {
             const created = await this.repository.create(Customer.create(customer))
             const { name, phone, id } = created
 
+            const { accessToken, refreshToken } = this.generateTokens({ name, phone, id })
+
             this.setResponseCookie({
                 key: CUSTOMER_TOKEN_KEY,
-                value: this.genAccessToken({ name, phone, id }),
+                value: accessToken,
                 res: response,
             })
+
+            await this.repository.update({
+                id: customer.id,
+                refreshToken,
+            } as any)
 
             return created
         } else {
             return await this.loginCustomer(response, customer)
+        }
+    }
+
+    async refreshToken(request: Request) {
+        const [customer] = await this.repository.find({
+            id: this.getUserIdFromToken(request.cookies[CUSTOMER_TOKEN_KEY]),
+        })
+
+        if (customer && !this.isExpired(customer.phone)) {
+
         }
     }
 
@@ -55,7 +71,7 @@ export class CustomerService extends CustomerHelpers implements ICustomerService
         }
 
         const { phone } = parseJWToken(token)
-        const [user] = await this.repository.read({ phone })
+        const [ user ] = await this.repository.find({ phone })
 
         return user
     }
@@ -65,16 +81,28 @@ export class CustomerService extends CustomerHelpers implements ICustomerService
 
         const { name, phone, id } = candidate
 
+        const { accessToken, refreshToken } = this.generateTokens({ name, phone, id })
+
         this.setResponseCookie({
             key: CUSTOMER_TOKEN_KEY,
-            value: this.genAccessToken({ name, phone, id }),
+            value: accessToken,
             res: response,
         })
+
+        await this.repository.update({
+            id: candidate.id,
+            refreshToken,
+        } as any)
 
         return candidate
     }
 
-    async logoutCustomer(response: Response) {
+    async logoutCustomer(request: Request, response: Response) {
+        const [customer] = await this.repository.update({
+            id: this.getUserIdFromToken(request.cookies[CUSTOMER_TOKEN_KEY]),
+            refreshToken: null
+        } as any)
+
         response.clearCookie(CUSTOMER_TOKEN_KEY)
     }
 
@@ -82,10 +110,10 @@ export class CustomerService extends CustomerHelpers implements ICustomerService
         const { phone } = params
 
         if (phone) {
-            return this.repository.read({ phone })
+            return this.repository.find({ phone })
         }
 
-        return this.repository.read({})
+        return this.repository.find({})
     }
 
     async updateCustomer(updates: Partial<ICustomer>): Promise<ICustomer> {

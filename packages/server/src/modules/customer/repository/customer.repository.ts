@@ -19,7 +19,7 @@ export class CustomerRepository implements ICustomerRepository {
         return CustomerMapper.toDomain(customerData)
     }
 
-    async read(params: Partial<ICustomer>) {
+    async find(params: Partial<ICustomer>) {
         const customers = await CustomerModel
             .find(params)
             .lean() as ICustomerMongoModel[]

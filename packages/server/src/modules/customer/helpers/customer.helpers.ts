@@ -1,6 +1,6 @@
-import { genJWToken } from '@common/helpers'
+import { parseJWToken, isExpired, genJWTokens } from '@common/helpers'
 import { config } from '@app/config'
-import { CUSTOMER_ACCESS_TOKEN_EXP } from '@common/constants/counts'
+import { ICustomer } from '@proshop-app/types'
 
 export class CustomerHelpers {
     config: any
@@ -9,20 +9,25 @@ export class CustomerHelpers {
         this.config = config
     }
 
-    genAccessToken(payload) {
-        return genJWToken({
-            payload,
-            secret: config.accessSecret,
-            expiresIn: CUSTOMER_ACCESS_TOKEN_EXP,
-        })
-    }
-
     setResponseCookie({ key, value, res }) {
         res.cookie(key, value, {
             sameSite: true,
             httpOnly: true,
+            secure: false,
             path: '/',
             maxAge: 60 * 60 * 1000,
         })
+    }
+
+    generateTokens(customer: ICustomer) {
+        return genJWTokens(customer)
+    }
+
+    getUserIdFromToken(token: string): string {
+        return parseJWToken(token)?.id
+    }
+
+    isExpired(token: string) {
+        return isExpired(token)
     }
 }
