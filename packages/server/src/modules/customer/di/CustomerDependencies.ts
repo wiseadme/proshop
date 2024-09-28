@@ -7,6 +7,7 @@ import { CustomerService } from '@modules/customer/service/customer.service'
 import { CustomerRepository } from '@modules/customer/repository/customer.repository'
 import { ICustomerRepository } from '@modules/customer/types/repository'
 import { ICustomerService } from '@modules/customer/types/service'
+import { ITelegramService, TelegramService } from '@common/services/telegram.service'
 
 export class CustomerDependencies {
     #container: Container
@@ -20,6 +21,7 @@ export class CustomerDependencies {
         this.#container.bind<IController>(TYPES.CONTROLLERS.IController).to(CustomerController)
         this.#container.bind<ICustomerService>(CUSTOMER_IOC.ICustomerService).to(CustomerService)
         this.#container.bind<ICustomerRepository>(CUSTOMER_IOC.ICustomerRepository).to(CustomerRepository)
+        this.#container.bind<ITelegramService>(CUSTOMER_IOC.ITelegramService).to(TelegramService)
     }
 }
 

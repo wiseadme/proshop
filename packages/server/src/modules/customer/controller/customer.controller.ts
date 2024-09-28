@@ -11,7 +11,6 @@ import { ICustomerService } from '../types/service'
 // Schemes
 import { TYPES } from '@common/schemes/di-types'
 import { CUSTOMERS_MODULE_PATH } from '@common/constants/paths'
-import { setMiddlewares } from '@common/helpers'
 import { CUSTOMER_IOC } from '@modules/customer/di/di.types'
 
 @injectable()
@@ -32,6 +31,7 @@ export class CustomerController extends BaseController implements IController {
         this.router.post('/account', this.createCustomer.bind(this))
         this.router.post('/login', this.loginCustomer.bind(this))
         this.router.get('/whoami', this.whoami.bind(this))
+        this.router.get('/refresh', this.refreshToken.bind(this))
         this.router.patch('/', this.updateCustomer.bind(this))
         this.router.delete('/', this.deleteCustomer.bind(this))
     }
@@ -76,7 +76,17 @@ export class CustomerController extends BaseController implements IController {
         }
     }
 
-    async getCustomers(request: Request<{}, {}, {}, Partial<ICustomer>>, response: Response, next: NextFunction) {
+    async refreshToken(request: Request<{}, {}, {}>, response: Response, next: NextFunction) {
+        try {
+            const data = await this.service.refreshToken(request, response)
+
+            this.send({ data, request, response })
+        } catch (error) {
+            this.error({ error, request, next })
+        }
+    }
+
+    async getCustomers(request: Request<{}, {}, {}, Record<keyof Partial<ICustomer>, string>>, response: Response, next: NextFunction) {
         try {
             const data = await this.service.getCustomers(request.query)
 

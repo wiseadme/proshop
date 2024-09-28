@@ -55,7 +55,7 @@ import { IMerchantRepository, ISettingsRepository, ISiteRepository } from '@modu
 
 // Utils Types
 import { ILogger } from '@/types/utils'
-import { IConfig, IController, IDb, IRedis } from '@/types'
+import { IConfig, IController, IDb } from '@/types'
 import { IErrorRouteMiddleware, IExpressMiddleware, IFileLoaderMiddleware, IMiddleware } from '@/types/middlewares'
 import { AuthMiddleware } from '@common/middlewares/auth.middleware'
 

@@ -8,7 +8,7 @@ import { IUserRepository } from '@modules/user/types/repository'
 import { IUser } from '@proshop-app/types'
 
 import { UserHelpers } from '@modules/user/helpers'
-import { genJWTokens, isExpired } from '@common/helpers'
+import { isExpired } from '@common/helpers'
 
 import { USER_TOKEN_KEY, COOKIE_PATH, COOKIE_MAX_AGE } from '@common/constants/cookie-keys'
 

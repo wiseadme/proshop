@@ -2,24 +2,26 @@ import { Request, Response } from 'express'
 import { inject, injectable } from 'inversify'
 import { TYPES } from '@common/schemes/di-types'
 import { Customer } from '@modules/customer/entity/customer.entity'
+
 // Types
 import { ILogger } from '@/types/utils'
 import { ICustomerService } from '@modules/customer/types/service'
 import { ICustomerRepository } from '@modules/customer/types/repository'
 import { ICustomer } from '@proshop-app/types'
-import { IEventBusService } from '@/types/services'
+
 // Helpers
 import { CustomerHelpers } from '@modules/customer/helpers/customer.helpers'
 import { isExpired, parseJWToken } from '@common/helpers'
 import { CUSTOMER_IOC } from '@modules/customer/di/di.types'
 import { CUSTOMER_TOKEN_KEY } from '@common/constants/cookie-keys'
+import { ITelegramService } from '@common/services/telegram.service'
 
 @injectable()
 export class CustomerService extends CustomerHelpers implements ICustomerService {
     constructor(
         @inject(TYPES.UTILS.ILogger) private logger: ILogger,
         @inject(CUSTOMER_IOC.ICustomerRepository) private repository: ICustomerRepository,
-        @inject(TYPES.SERVICES.IEventBusService) private events: IEventBusService,
+        @inject(CUSTOMER_IOC.ITelegramService) private telegram: ITelegramService
     ) {
         super()
     }
@@ -42,7 +44,7 @@ export class CustomerService extends CustomerHelpers implements ICustomerService
             await this.repository.update({
                 id: customer.id,
                 refreshToken,
-            } as any)
+            })
 
             return created
         } else {
@@ -50,13 +52,27 @@ export class CustomerService extends CustomerHelpers implements ICustomerService
         }
     }
 
-    async refreshToken(request: Request) {
-        const [customer] = await this.repository.find({
+    async refreshToken(request: Request, response: Response) {
+        const [{ name, phone, id, refreshToken }] = await this.repository.find({
             id: this.getUserIdFromToken(request.cookies[CUSTOMER_TOKEN_KEY]),
         })
 
-        if (customer && !this.isExpired(customer.phone)) {
+        if (refreshToken && !this.isExpired(refreshToken!)) {
+            const { accessToken, refreshToken } = this.generateTokens({ name, phone, id })
 
+            await this.repository.update({ id, refreshToken })
+
+            this.setResponseCookie({
+                key: CUSTOMER_TOKEN_KEY,
+                value: accessToken,
+                res: response,
+            })
+
+            return true
+        } else {
+            await this.logoutCustomer(request, response)
+
+            return false
         }
     }
 
@@ -71,15 +87,13 @@ export class CustomerService extends CustomerHelpers implements ICustomerService
         }
 
         const { phone } = parseJWToken(token)
-        const [ user ] = await this.repository.find({ phone })
+        const [user] = await this.repository.find({ phone })
 
         return user
     }
 
-    async loginCustomer(response: Response, customerParams) {
-        const [candidate] = await this.getCustomers(customerParams)
-
-        const { name, phone, id } = candidate
+    async loginCustomer(response: Response, customerParams = {} as Partial<Record<keyof ICustomer, any>>) {
+        const [{ name, phone, id }] = await this.getCustomers(customerParams)
 
         const { accessToken, refreshToken } = this.generateTokens({ name, phone, id })
 
@@ -89,31 +103,22 @@ export class CustomerService extends CustomerHelpers implements ICustomerService
             res: response,
         })
 
-        await this.repository.update({
-            id: candidate.id,
-            refreshToken,
-        } as any)
+        await this.repository.update({ id, refreshToken })
 
-        return candidate
+        return { name, phone, id }
     }
 
     async logoutCustomer(request: Request, response: Response) {
-        const [customer] = await this.repository.update({
+        await this.repository.update({
             id: this.getUserIdFromToken(request.cookies[CUSTOMER_TOKEN_KEY]),
-            refreshToken: null
-        } as any)
+            refreshToken: undefined
+        })
 
         response.clearCookie(CUSTOMER_TOKEN_KEY)
     }
 
-    async getCustomers(params: Partial<ICustomer>): Promise<(ICustomer)[]> {
-        const { phone } = params
-
-        if (phone) {
-            return this.repository.find({ phone })
-        }
-
-        return this.repository.find({})
+    async getCustomers(params = {} as Partial<Record<keyof ICustomer, string>>): Promise<(ICustomer)[]> {
+        return this.repository.find(params)
     }
 
     async updateCustomer(updates: Partial<ICustomer>): Promise<ICustomer> {

@@ -12,6 +12,18 @@ const CustomerSchema: Schema = new Schema<ICustomerMongoModel>({
         required: true,
         unique: true,
     },
+    networks: {
+        telegram: {
+            username: {
+                type: String,
+                required: true,
+            },
+            chatId: {
+                type: String,
+                default: null,
+            },
+        }
+    },
     refreshToken: {
         type: String,
         default: null,

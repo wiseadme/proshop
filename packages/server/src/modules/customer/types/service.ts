@@ -2,15 +2,17 @@ import { Request, Response } from 'express'
 import { ICustomer } from '@proshop-app/types'
 
 export interface ICustomerService {
-  createCustomer(res: Response, customer: ICustomer): Promise<ICustomer>
+    createCustomer(res: Response, customer: ICustomer): Promise<ICustomer>
 
-  loginCustomer(res: Response, customerParams: { phone: string }): Promise<ICustomer>
+    loginCustomer(res: Response, customerParams: { phone: string }): Promise<ICustomer>
 
-  whoami(request: Request): Promise<ICustomer>
+    refreshToken(request: Request, response: Response): Promise<boolean>
 
-  getCustomers(queryParams: Partial<ICustomer>): Promise<(ICustomer)[]>
+    whoami(request: Request): Promise<ICustomer>
 
-  updateCustomer(updates: Partial<ICustomer>): Promise<ICustomer>
+    getCustomers(queryParams: Partial<Record<keyof ICustomer, string>>): Promise<(ICustomer)[]>
 
-  deleteCustomer(id: string): Promise<boolean>
+    updateCustomer(updates: Partial<ICustomer>): Promise<ICustomer>
+
+    deleteCustomer(id: string): Promise<boolean>
 }

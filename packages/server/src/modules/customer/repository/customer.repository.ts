@@ -1,4 +1,4 @@
-import mongoose, { Document } from 'mongoose'
+import mongoose from 'mongoose'
 import { id, injectable } from 'inversify'
 import { CustomerModel } from '@modules/customer/model/customer.model'
 import { validateId } from '@common/utils/mongoose-validate-id'
@@ -10,16 +10,17 @@ import { CustomerMapper } from '@modules/customer/mappers/customer.mapper'
 export class CustomerRepository implements ICustomerRepository {
     async create(customer: ICustomer): Promise<ICustomer> {
 
-        const customerData = await new CustomerModel({
+        const customerData = (await new CustomerModel({
             ...CustomerMapper.toMongoModelData(customer),
             _id: new mongoose.Types.ObjectId(),
         })
-            .save() as ICustomerMongoModel
+            .save())
+            .toObject()
 
         return CustomerMapper.toDomain(customerData)
     }
 
-    async find(params: Partial<ICustomer>) {
+    async find(params: Partial<Record<keyof ICustomer, string>>) {
         const customers = await CustomerModel
             .find(params)
             .lean() as ICustomerMongoModel[]
@@ -34,12 +35,13 @@ export class CustomerRepository implements ICustomerRepository {
             { _id: updates.id },
             { $set: updates },
             { new: true },
-        ) as ICustomerMongoModel
+        )
+            .lean() as ICustomerMongoModel
 
         return CustomerMapper.toDomain(updated)
     }
 
-    async delete(id) {
+    async delete(id: string) {
         validateId(id)
 
         await CustomerModel.findByIdAndDelete(id)

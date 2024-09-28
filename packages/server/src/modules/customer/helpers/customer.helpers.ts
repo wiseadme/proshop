@@ -1,6 +1,7 @@
 import { parseJWToken, isExpired, genJWTokens } from '@common/helpers'
 import { config } from '@app/config'
 import { ICustomer } from '@proshop-app/types'
+import { ACCESS_TOKEN_EXP } from '@common/constants/counts'
 
 export class CustomerHelpers {
     config: any
@@ -15,11 +16,11 @@ export class CustomerHelpers {
             httpOnly: true,
             secure: false,
             path: '/',
-            maxAge: 60 * 60 * 1000,
+            maxAge: ACCESS_TOKEN_EXP * 1000,
         })
     }
 
-    generateTokens(customer: ICustomer) {
+    generateTokens(customer: Partial<ICustomer>) {
         return genJWTokens(customer)
     }
 
