@@ -10,6 +10,7 @@ export interface IProductsGatewayService {
     category: ICategoryService
     asset: IAssetsService
     option: IOptionService
+    // bot: any
 }
 
 @injectable()

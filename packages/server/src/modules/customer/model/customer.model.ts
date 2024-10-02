@@ -9,18 +9,25 @@ const CustomerSchema: Schema = new Schema<ICustomerMongoModel>({
     },
     phone: {
         type: String,
-        required: true,
         unique: true,
+    },
+    photoUrl: {
+        type: String,
+        default: null
     },
     networks: {
         telegram: {
             username: {
                 type: String,
-                required: true,
+                unique: true
             },
-            chatId: {
+            userId: {
                 type: String,
-                default: null,
+                unique: true
+            },
+            photoUrl: {
+                type: String,
+                default: null
             },
         }
     },

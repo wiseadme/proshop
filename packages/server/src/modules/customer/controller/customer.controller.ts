@@ -38,7 +38,7 @@ export class CustomerController extends BaseController implements IController {
 
     async createCustomer(request: Request<{}, {}, ICustomer>, response: Response, next: NextFunction) {
         try {
-            const data = await this.service.createCustomer(response, request.body)
+            const data = await this.service.createCustomer(request, response)
 
             this.send({ data, request, response })
         } catch (error) {
@@ -48,7 +48,7 @@ export class CustomerController extends BaseController implements IController {
 
     async loginCustomer(request: Request<{}, {}, Partial<ICustomer>>, response: Response, next: NextFunction) {
         try {
-            const data = await this.service.loginCustomer(response, request.body as any)
+            const data = await this.service.loginCustomer(response, request.body)
 
             this.send({ data, request, response })
         } catch (error) {

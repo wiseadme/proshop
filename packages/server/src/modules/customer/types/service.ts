@@ -2,9 +2,9 @@ import { Request, Response } from 'express'
 import { ICustomer } from '@proshop-app/types'
 
 export interface ICustomerService {
-    createCustomer(res: Response, customer: ICustomer): Promise<ICustomer>
+    createCustomer(req: Request, res: Response): Promise<ICustomer>
 
-    loginCustomer(res: Response, customerParams: { phone: string }): Promise<ICustomer>
+    loginCustomer(res: Response, customerParams: Partial<ICustomer>): Promise<ICustomer>
 
     refreshToken(request: Request, response: Response): Promise<boolean>
 

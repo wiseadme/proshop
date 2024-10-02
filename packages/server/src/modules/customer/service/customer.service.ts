@@ -1,68 +1,56 @@
 import { Request, Response } from 'express'
 import { inject, injectable } from 'inversify'
 import { TYPES } from '@common/schemes/di-types'
-import { Customer } from '@modules/customer/entity/customer.entity'
 
 // Types
 import { ILogger } from '@/types/utils'
 import { ICustomerService } from '@modules/customer/types/service'
 import { ICustomerRepository } from '@modules/customer/types/repository'
-import { ICustomer } from '@proshop-app/types'
+import { ICustomer, Maybe } from '@proshop-app/types'
 
 // Helpers
-import { CustomerHelpers } from '@modules/customer/helpers/customer.helpers'
+import { ICustomerHelpers } from '@modules/customer/helpers/customer.helpers'
 import { isExpired, parseJWToken } from '@common/helpers'
 import { CUSTOMER_IOC } from '@modules/customer/di/di.types'
 import { CUSTOMER_TOKEN_KEY } from '@common/constants/cookie-keys'
-import { ITelegramService } from '@common/services/telegram.service'
+import { type ICustomerTelegramService } from '@modules/customer/service/customer.telegram.service'
+import { type ICustomerPhoneService } from '@modules/customer/service/customer.phone.service'
+import { Customer } from '@modules/customer/entity/customer.entity'
 
 @injectable()
-export class CustomerService extends CustomerHelpers implements ICustomerService {
+export class CustomerService implements ICustomerService {
     constructor(
         @inject(TYPES.UTILS.ILogger) private logger: ILogger,
         @inject(CUSTOMER_IOC.ICustomerRepository) private repository: ICustomerRepository,
-        @inject(CUSTOMER_IOC.ITelegramService) private telegram: ITelegramService
+        @inject(CUSTOMER_IOC.ICustomerHelpers) private helpers: ICustomerHelpers,
+        @inject(CUSTOMER_IOC.ICustomerTelegramService) private telegramService: ICustomerTelegramService,
+        @inject(CUSTOMER_IOC.ICustomerPhoneService) private phoneService: ICustomerPhoneService
     ) {
-        super()
     }
 
-    async createCustomer(response: Response, customer: ICustomer) {
-        const [found]: ICustomer[] = await this.repository.find({ phone: customer.phone })
+    async createCustomer(request: Request, response: Response) {
+        let customer: ICustomer = Customer.create(request.body)
 
-        if (!found) {
-            const created = await this.repository.create(Customer.create(customer))
-            const { name, phone, id } = created
-
-            const { accessToken, refreshToken } = this.generateTokens({ name, phone, id })
-
-            this.setResponseCookie({
-                key: CUSTOMER_TOKEN_KEY,
-                value: accessToken,
-                res: response,
-            })
-
-            await this.repository.update({
-                id: customer.id,
-                refreshToken,
-            })
-
-            return created
+        if (request.cookies.telegramLogin) {
+            customer = await this.telegramService.getCustomerAccount(customer)
         } else {
-            return await this.loginCustomer(response, customer)
+            customer = await this.phoneService.getCustomerAccount(customer)
         }
+
+        return await this.loginCustomer(response, customer)
     }
 
     async refreshToken(request: Request, response: Response) {
         const [{ name, phone, id, refreshToken }] = await this.repository.find({
-            id: this.getUserIdFromToken(request.cookies[CUSTOMER_TOKEN_KEY]),
+            id: this.helpers.getUserIdFromToken(request.cookies[CUSTOMER_TOKEN_KEY]),
         })
 
-        if (refreshToken && !this.isExpired(refreshToken!)) {
-            const { accessToken, refreshToken } = this.generateTokens({ name, phone, id })
+        if (refreshToken && !this.helpers.isExpired(refreshToken!)) {
+            const { accessToken, refreshToken } = this.helpers.generateTokens({ name, phone, id })
 
             await this.repository.update({ id, refreshToken })
 
-            this.setResponseCookie({
+            this.helpers.setResponseCookie({
                 key: CUSTOMER_TOKEN_KEY,
                 value: accessToken,
                 res: response,
@@ -86,18 +74,18 @@ export class CustomerService extends CustomerHelpers implements ICustomerService
             })
         }
 
-        const { phone } = parseJWToken(token)
-        const [user] = await this.repository.find({ phone })
+        const { id } = parseJWToken(token)
+        const [user] = await this.repository.find({ id })
 
         return user
     }
 
-    async loginCustomer(response: Response, customerParams = {} as Partial<Record<keyof ICustomer, any>>) {
-        const [{ name, phone, id }] = await this.getCustomers(customerParams)
+    async loginCustomer(response: Response, customer: ICustomer) {
+        const { id } = customer
 
-        const { accessToken, refreshToken } = this.generateTokens({ name, phone, id })
+        const { accessToken, refreshToken } = this.helpers.generateTokens({ id })
 
-        this.setResponseCookie({
+        this.helpers.setResponseCookie({
             key: CUSTOMER_TOKEN_KEY,
             value: accessToken,
             res: response,
@@ -105,12 +93,12 @@ export class CustomerService extends CustomerHelpers implements ICustomerService
 
         await this.repository.update({ id, refreshToken })
 
-        return { name, phone, id }
+        return customer
     }
 
     async logoutCustomer(request: Request, response: Response) {
         await this.repository.update({
-            id: this.getUserIdFromToken(request.cookies[CUSTOMER_TOKEN_KEY]),
+            id: this.helpers.getUserIdFromToken(request.cookies[CUSTOMER_TOKEN_KEY]),
             refreshToken: undefined
         })
 
