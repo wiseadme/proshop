@@ -39,7 +39,7 @@ const OrderSchema = new Schema<IOrderMongoModel>({
     },
     customerPhone: {
         type: String,
-        required: true,
+        default: null,
     },
     customerId: {
         type: String,

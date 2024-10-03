@@ -1,12 +1,14 @@
 import { Request, Response } from 'express'
 import { inject, injectable } from 'inversify'
 import { TYPES } from '@common/schemes/di-types'
+import { AUTH_STRATEGY_COOKIE_KEY } from '@proshop-app/constants'
+import { SocialNetworks } from '@proshop-app/enums'
 
 // Types
 import { ILogger } from '@/types/utils'
 import { ICustomerService } from '@modules/customer/types/service'
 import { ICustomerRepository } from '@modules/customer/types/repository'
-import { ICustomer, Maybe } from '@proshop-app/types'
+import { ICustomer } from '@proshop-app/types'
 
 // Helpers
 import { ICustomerHelpers } from '@modules/customer/helpers/customer.helpers'
@@ -28,16 +30,18 @@ export class CustomerService implements ICustomerService {
     ) {
     }
 
-    async createCustomer(request: Request, response: Response) {
+    async getCustomerAccount(request: Request, response: Response) {
         let customer: ICustomer = Customer.create(request.body)
 
-        if (request.cookies.telegramLogin) {
+        const isTelegram = request.cookies[AUTH_STRATEGY_COOKIE_KEY] === SocialNetworks.TELEGRAM
+
+        if (isTelegram) {
             customer = await this.telegramService.getCustomerAccount(customer)
+            return await this.telegramService.loginCustomer(response, customer)
         } else {
             customer = await this.phoneService.getCustomerAccount(customer)
+            return await this.loginCustomer(response, customer)
         }
-
-        return await this.loginCustomer(response, customer)
     }
 
     async refreshToken(request: Request, response: Response) {

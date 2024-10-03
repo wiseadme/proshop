@@ -17,6 +17,7 @@ export const TYPES = {
         IMerchantService: Symbol.for('IMerchantService'),
         ISettingsService: Symbol.for('ISettingsService'),
         ISiteService: Symbol.for('ISiteService'),
+        IBotService: Symbol.for('IBotService'),
     },
     GATEWAYS: {
         IProductGatewayService: Symbol.for('IProductGatewayService'),

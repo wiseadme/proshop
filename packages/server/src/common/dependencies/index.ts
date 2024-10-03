@@ -72,6 +72,7 @@ import { MetaTagDependencies } from '@modules/metatag/di/MetaTagDependencies'
 import { OptionDependencies } from '@modules/options/di/OptionDependencies'
 import { ProductDependencies } from '@modules/products/di/ProductDependencies'
 import { GroupDependencies } from '@modules/group/di/GroupDependencies'
+import { BotService, IBotService } from '@common/services/bot.service'
 
 export const container = new Container({ skipBaseClassChecks: true })
 
@@ -105,6 +106,7 @@ container.bind<IUserService>(TYPES.SERVICES.IUserService).to(UserService)
 container.bind<IMerchantService>(TYPES.SERVICES.IMerchantService).to(MerchantService)
 container.bind<ISettingsService>(TYPES.SERVICES.ISettingsService).to(SettingsService)
 container.bind<ISiteService>(TYPES.SERVICES.ISiteService).to(SiteService)
+container.bind<IBotService>(TYPES.SERVICES.IBotService).to(BotService)
 
 // Controllers
 container.bind<IController>(TYPES.CONTROLLERS.IController).to(SwaggerController)
