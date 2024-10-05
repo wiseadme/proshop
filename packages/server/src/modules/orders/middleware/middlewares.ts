@@ -4,7 +4,7 @@ import { protect, checkToken } from '@common/helpers'
 import { injectable } from 'inversify'
 import { NextFunction, Response, Request } from 'express'
 
-export interface IOrdersMiddlewaresHelper {
+export interface IOrdersMiddlewares {
     getCreateOrderMiddlewares(): ((req: Request, res: Response, next: NextFunction) => void | Promise<any>)[]
 
     getDisbandOrderMiddlewares(): ((req: Request, res: Response, next: NextFunction) => void | Promise<any>)[]
@@ -15,7 +15,7 @@ export interface IOrdersMiddlewaresHelper {
 }
 
 @injectable()
-export class OrdersMiddlewaresHelper implements IOrdersMiddlewaresHelper {
+export class OrdersMiddlewares implements IOrdersMiddlewares {
     getCreateOrderMiddlewares() {
         const queueMiddleware = new OrdersQueueMiddleware(container)
 

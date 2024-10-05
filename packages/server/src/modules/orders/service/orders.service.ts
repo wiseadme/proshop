@@ -11,6 +11,8 @@ import { IOrder, IRequestParams } from '@proshop-app/types'
 import { Order } from '@modules/orders/entity/order.entity'
 import { IOrderGatewayService } from '@modules/orders/gateway/gateway.service'
 import { IOrderResponse } from '@modules/orders/types/response'
+import { IOrdersHelpers } from '@modules/orders/helpers/orders.helpers'
+
 import { ORDER_IOC } from '@modules/orders/di/di.types'
 import { PaginationResponse } from '@common/models/PaginationResponse'
 
@@ -20,19 +22,16 @@ export class OrdersService implements IOrdersService {
         @inject(TYPES.UTILS.ILogger) private logger: ILogger,
         @inject(ORDER_IOC.IOrdersRepository) private repository: IOrdersRepository,
         @inject(ORDER_IOC.IOrderGatewayService) private gateway: IOrderGatewayService,
+        @inject(ORDER_IOC.IOrdersHelpers) private helpers: IOrdersHelpers,
     ) {
     }
 
-    async createOrder(order: IOrder) {
-        const { customerName, customerPhone } = order
-
-        order.orderId = customId({ name: customerName, email: customerPhone, randomLength: 2 })
-        order.qrcode = await QRCode.toString(order.orderId, { type: 'svg' })
-
+    async createOrder(data: IOrder) {
+        const order = await this.helpers.setOrderAttributes(data)
         const created = await this.repository.createOrder(Order.create(order))
 
         /**
-         * @description - уменьшаем кол - ва товара в остатках товара
+         * @description - уменьшаем кол - во товаров в остатках
          * на кол - во единиц указанное в заказе.
          */
         for (const item of order.items) {

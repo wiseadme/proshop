@@ -9,7 +9,7 @@ import { IOrdersService } from '@modules/orders/types/service'
 import { IOrder } from '@proshop-app/types'
 import { ORDERS_MODULE_PATH } from '@common/constants/paths'
 import { ORDER_IOC } from '@modules/orders/di/di.types'
-import { IOrdersMiddlewaresHelper } from '@modules/orders/helpers/middlewares.helper'
+import { IOrdersMiddlewares } from '@modules/orders/middleware/middlewares'
 
 @injectable()
 export class OrdersController extends BaseController implements IController {
@@ -19,7 +19,7 @@ export class OrdersController extends BaseController implements IController {
     constructor(
         @inject(TYPES.UTILS.ILogger) private logger: ILogger,
         @inject(ORDER_IOC.IOrdersService) private service: IOrdersService,
-        @inject(ORDER_IOC.IOrdersMiddlewaresHelper) private middlewares: IOrdersMiddlewaresHelper,
+        @inject(ORDER_IOC.IOrdersMiddlewares) private middlewares: IOrdersMiddlewares,
     ) {
         super()
         this.initRoutes()
@@ -55,7 +55,6 @@ export class OrdersController extends BaseController implements IController {
 
     async updateOrder(request: Request<{}, {}, Partial<IOrder>>, response: Response, next: NextFunction) {
         try {
-            console.log('body', request.body)
             const data = await this.service.updateOrder(request.body)
 
             this.send({ data, request, response })
