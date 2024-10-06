@@ -6,6 +6,8 @@ export interface ICustomerService {
 
     loginCustomer(res: Response, customerParams: Partial<ICustomer>): Promise<ICustomer>
 
+    logoutCustomer(req: Request, res: Response): Promise<boolean>
+
     refreshToken(request: Request, response: Response): Promise<boolean>
 
     whoami(request: Request): Promise<ICustomer>

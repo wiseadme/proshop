@@ -30,6 +30,7 @@ export class CustomerController extends BaseController implements IController {
         this.router.get('/', this.getCustomers.bind(this))
         this.router.post('/account', this.getCustomerAccount.bind(this))
         this.router.post('/login', this.loginCustomer.bind(this))
+        this.router.post('/logout', this.logoutCustomer.bind(this))
         this.router.get('/whoami', this.whoami.bind(this))
         this.router.get('/refresh', this.refreshToken.bind(this))
         this.router.patch('/', this.updateCustomer.bind(this))
@@ -49,6 +50,16 @@ export class CustomerController extends BaseController implements IController {
     async loginCustomer(request: Request<{}, {}, Partial<ICustomer>>, response: Response, next: NextFunction) {
         try {
             const data = await this.service.loginCustomer(response, request.body)
+
+            this.send({ data, request, response })
+        } catch (error) {
+            this.error({ error, request, next })
+        }
+    }
+
+    async logoutCustomer(request: Request<{}, {}, {}>, response: Response, next: NextFunction) {
+        try {
+            const data = await this.service.logoutCustomer(request, response)
 
             this.send({ data, request, response })
         } catch (error) {

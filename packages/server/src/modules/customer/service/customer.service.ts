@@ -107,6 +107,8 @@ export class CustomerService implements ICustomerService {
         })
 
         response.clearCookie(CUSTOMER_TOKEN_KEY)
+
+        return true
     }
 
     async getCustomers(params = {} as Partial<Record<keyof ICustomer, string>>): Promise<(ICustomer)[]> {
