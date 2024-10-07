@@ -27,8 +27,6 @@ export class CustomerRepository implements ICustomerRepository {
             .find({ ...(id ? { _id: id } : params) })
             .lean() as ICustomerMongoModel[]
 
-        console.log(customers)
-
         return customers.map(customer => CustomerMapper.toDomain(customer))
     }
 

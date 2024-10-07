@@ -6,7 +6,7 @@ export class CustomerMapper {
         const map: Partial<ICustomerMongoModel> = entity
 
         delete map._id
-        delete map.refreshToken
+        // delete map.refreshToken
 
         return {
             id: _id,

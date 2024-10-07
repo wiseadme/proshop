@@ -21,7 +21,7 @@ type MiddlewareFn = (req: Request, res: Response, next: NextFunction) => any
 export const parseJWToken = (token: string) => jwt.decode(token)
 
 export const isExpired = (token: string): boolean => {
-    if (!token) return false
+    if (!token) return true
 
     const { exp } = parseJWToken(token)
 
