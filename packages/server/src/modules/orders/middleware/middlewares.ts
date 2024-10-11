@@ -20,6 +20,7 @@ export class OrdersMiddlewares implements IOrdersMiddlewares {
         const queueMiddleware = new OrdersQueueMiddleware(container)
 
         return [
+            checkToken,
             queueMiddleware.execute.bind(queueMiddleware)
         ]
     }

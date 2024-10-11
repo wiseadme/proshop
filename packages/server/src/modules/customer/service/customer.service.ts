@@ -47,9 +47,15 @@ export class CustomerService implements ICustomerService {
     async refreshToken(request: Request, response: Response) {
         const customerId = this.helpers.getUserIdFromToken(request.cookies[CUSTOMER_TOKEN_KEY])
 
+        if (!customerId) {
+            await this.logoutCustomer(request, response)
+
+            return false
+        }
+
         const [{ id, refreshToken }] = await this.repository.find({ id: customerId })
 
-        if (refreshToken && !this.helpers.isExpired(refreshToken!)) {
+        if (!this.helpers.isExpired(refreshToken!)) {
             const { accessToken, refreshToken } = this.helpers.generateTokens({ id })
 
             await this.repository.update({ id, refreshToken })
@@ -61,11 +67,12 @@ export class CustomerService implements ICustomerService {
             })
 
             return true
-        } else {
-            await this.logoutCustomer(request, response)
-
-            return false
         }
+
+        await this.logoutCustomer(request, response)
+
+        return false
+
     }
 
     async whoami(request: Request) {
