@@ -26,7 +26,7 @@ export class OrdersController extends BaseController implements IController {
     }
 
     initRoutes() {
-        this.router.get('/', this.getOrders.bind(this))
+        this.router.get('/', this.middlewares.getFindOrdersMiddlewares(), this.getOrders.bind(this))
         this.router.post('/', this.middlewares.getCreateOrderMiddlewares(), this.createOrder.bind(this))
         this.router.get('/disband', this.middlewares.getDisbandOrderMiddlewares(), this.disbandOrder.bind(this))
         this.router.patch('/', this.middlewares.getUpdateOrderMiddlewares(), this.updateOrder.bind(this))

@@ -1,11 +1,14 @@
 import { container } from '@common/dependencies'
 import { OrdersQueueMiddleware } from '@modules/orders/middleware/orders.queue.middleware'
-import { protect, checkToken } from '@common/helpers'
+import { protect, getTokenChecker } from '@common/helpers'
 import { injectable } from 'inversify'
 import { NextFunction, Response, Request } from 'express'
+import { CUSTOMER_TOKEN_KEY, USER_TOKEN_KEY } from '@common/constants/cookie-keys'
 
 export interface IOrdersMiddlewares {
     getCreateOrderMiddlewares(): ((req: Request, res: Response, next: NextFunction) => void | Promise<any>)[]
+
+    getFindOrdersMiddlewares(): ((req: Request, res: Response, next: NextFunction) => void | Promise<any>)[]
 
     getDisbandOrderMiddlewares(): ((req: Request, res: Response, next: NextFunction) => void | Promise<any>)[]
 
@@ -16,32 +19,38 @@ export interface IOrdersMiddlewares {
 
 @injectable()
 export class OrdersMiddlewares implements IOrdersMiddlewares {
+    getFindOrdersMiddlewares() {
+        return [
+            getTokenChecker()
+        ]
+    }
+
     getCreateOrderMiddlewares() {
         const queueMiddleware = new OrdersQueueMiddleware(container)
 
         return [
-            checkToken,
+            getTokenChecker(CUSTOMER_TOKEN_KEY),
             queueMiddleware.execute.bind(queueMiddleware)
         ]
     }
 
     getDisbandOrderMiddlewares() {
         return [
-            checkToken,
+            getTokenChecker(USER_TOKEN_KEY),
             protect({ roles: ['root'] })
         ]
     }
 
     getUpdateOrderMiddlewares() {
         return [
-            checkToken,
+            getTokenChecker(USER_TOKEN_KEY),
             protect({ roles: ['root'] })
         ]
     }
 
     getDeleteOrderMiddlewares() {
         return [
-            checkToken,
+            getTokenChecker(USER_TOKEN_KEY),
             protect({ roles: ['root'] })
         ]
     }

@@ -1,7 +1,7 @@
 import { ValidateMiddleware } from '@common/middlewares/validate.middleware'
 import { NextFunction, Request, response, Response } from 'express'
 import jwt from 'jsonwebtoken'
-import { USER_TOKEN_KEY } from '@common/constants/cookie-keys'
+import { CUSTOMER_TOKEN_KEY, USER_TOKEN_KEY } from '@common/constants/cookie-keys'
 import { config } from '@app/config'
 import { ACCESS_TOKEN_EXP, REFRESH_TOKEN_EXP } from '@common/constants/counts'
 import { Maybe } from '@proshop-app/types'
@@ -50,6 +50,30 @@ export const genJWTokens = (payload: Record<string, any>): { accessToken: string
 export const verifyJWToken = (token: string): Promise<boolean> => new Promise((resolve) => {
     jwt.verify(token, config.accessSecret, (err: any) => resolve(!Boolean(err)))
 })
+
+export const getTokenChecker = (key?: string) => {
+    return async ({ cookies }: Request, response: Response, next: NextFunction) => {
+        let token = key ? cookies[key] : undefined
+
+        token ??= cookies[USER_TOKEN_KEY]
+        token ??= cookies[CUSTOMER_TOKEN_KEY]
+
+        try {
+            const isVerified = await verifyJWToken(token)
+            const state = isExpired(token)
+
+            next(!isVerified || state ? {
+                status: 401,
+                message: 'Unauthorized',
+            } : null)
+        } catch (err: any) {
+            next({
+                status: 501,
+                message: err.message ?? err ?? 'Server error',
+            })
+        }
+    }
+}
 
 export const checkToken = async ({ cookies }: Request, response: Response, next: NextFunction) => {
     try {
