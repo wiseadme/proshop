@@ -13,13 +13,19 @@ export class AuthMiddleware implements IMiddleware {
         const isClientRequest = req.headers[X_CLIENT_REQUEST]
         const isAuthRequest = req.headers[X_AUTH_REQUEST]
 
-        console.log(req.headers)
-
-        if (!auth_token && clientId && isClientRequest && isAuthRequest || (auth_token && isExpired(auth_token))) {
+        /**
+         * @description - если запрос прилетает от клиента магазина
+         * по апи где требуется наличие авторизации
+         */
+        if ((!auth_token || isExpired(auth_token))
+            && clientId
+            && isClientRequest
+            && isAuthRequest
+        ) {
             return res.status(403).json({
-              ok: false,
-              status: 403,
-              message: 'Forbidden for you asshole'
+                ok: false,
+                status: 403,
+                message: 'Forbidden for you asshole'
             })
         }
 
