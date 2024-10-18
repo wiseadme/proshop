@@ -1420,18 +1420,18 @@
   dependencies:
     vue-demi "*"
 
-"@proshop-app/constants@^0.0.78":
-  version "0.0.78"
-  resolved "https://npm.pkg.github.com/download/@proshop-app/constants/0.0.78/ada9dc1b06203a64aca9d45677f22abaf0467add#ada9dc1b06203a64aca9d45677f22abaf0467add"
-  integrity sha512-gAvTfVg3vmUVPvZ/SecQ49Q6oXuapsIs2j5p1ko30szi7WD8laA3aIzcU5TTivpgk29797pe581do0gUV6mqXA==
+"@proshop-app/constants@^0.0.89":
+  version "0.0.89"
+  resolved "https://npm.pkg.github.com/download/@proshop-app/constants/0.0.89/0270345c81d1566d29422c755c95465d50ee06f4#0270345c81d1566d29422c755c95465d50ee06f4"
+  integrity sha512-1b3/bNSGAyY+Qoi07pWu4gjbl9AoYv92Nz0mwUc1z4CF9PeEL8bis5EOT4jzCWABb0pEygvlEtxkjfbm4BjfXQ==
   dependencies:
     h3 "^1.12.0"
     vue-demi "*"
 
-"@proshop-app/enums@^0.0.78":
-  version "0.0.78"
-  resolved "https://npm.pkg.github.com/download/@proshop-app/enums/0.0.78/c3a48465a24fb6e23f87d099a467a2cbf2aad05e#c3a48465a24fb6e23f87d099a467a2cbf2aad05e"
-  integrity sha512-MQwTnaBBNVHOxBt1XkcQcuaJrlW7pGEcejSEm607z2xX7BX84YQkA5sOnHOomm+vmC4xIG4+3fL77rwA0OQadg==
+"@proshop-app/enums@^0.0.89":
+  version "0.0.89"
+  resolved "https://npm.pkg.github.com/download/@proshop-app/enums/0.0.89/f2520a53787599c9cbdb655d6a4daef2f90a6f11#f2520a53787599c9cbdb655d6a4daef2f90a6f11"
+  integrity sha512-USkDGX6gaKpjmBe2xbPpHuhmZZ/l9XkWTPPFye3BdVZgEYcZmjaiiAtz1NfO1pfsZ/xBVsltTsu49CiOzN/MdA==
   dependencies:
     h3 "^1.12.0"
     vue-demi "*"
@@ -1441,10 +1441,10 @@
   resolved "https://npm.pkg.github.com/download/@proshop-app/types/0.0.64/c5923455143e8d60505ab0b9b75230d07bf3a4c0#c5923455143e8d60505ab0b9b75230d07bf3a4c0"
   integrity sha512-bdP/J+GSecMkbLJ6uPhBkCmcYd3S95fd/PIN2e+VDV3w7jnxbz8N1Y0vuS8QLu8BgwHHj+9qC6+Iw7syIWGvEA==
 
-"@proshop-app/types@^0.0.78":
-  version "0.0.78"
-  resolved "https://npm.pkg.github.com/download/@proshop-app/types/0.0.78/0cab098785f5162cbe2502b72e1fc270de380faf#0cab098785f5162cbe2502b72e1fc270de380faf"
-  integrity sha512-M8dUXCAxc15gI9/S+OZxGFt6z3d/rg9+r1yU0aYN4NWluNi1rJv8xn3ELhvLQHkXEdtkTsAIACg1ZRjJMIbTiw==
+"@proshop-app/types@^0.0.89":
+  version "0.0.89"
+  resolved "https://npm.pkg.github.com/download/@proshop-app/types/0.0.89/1956597db175f3102bf1a57de2440e56be99156e#1956597db175f3102bf1a57de2440e56be99156e"
+  integrity sha512-d0xMEhMbO0K2WAwQwMM5DIAw3MWgml6EqsZfCI0VyUOcNLDHgiGyvvgL8LJGPTQ50KvnDubdFaD34scimmO+FA==
 
 "@rollup/rollup-android-arm-eabi@4.14.3":
   version "4.14.3"

@@ -49,10 +49,10 @@ export class CustomerTelegramService implements ICustomerTelegramService {
             res: response,
         })
 
-        await this.repository.update({ id, refreshToken })
+        const { networks, name, phone, photoUrl } = await this.repository.update({ id, refreshToken })
         await this.onLoginSuccess(customer)
 
-        return customer
+        return { id, networks, name, phone, photoUrl }
     }
 
     async onLoginSuccess(customer: ICustomer): Promise<boolean> {

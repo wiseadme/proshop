@@ -2,18 +2,25 @@ import { NextFunction, Request, Response } from 'express'
 import { injectable } from 'inversify'
 import { isExpired } from '@common/helpers'
 import { IMiddleware } from '@/types/middlewares'
+import { X_AUTH_REQUEST, X_CLIENT_ID, X_CLIENT_REQUEST } from '@proshop-app/constants'
 
 @injectable()
 export class AuthMiddleware implements IMiddleware {
     execute(req: Request, res: Response, next: NextFunction) {
-        const { auth } = req.cookies
+        const { auth_token, user_token } = req.cookies
 
-        if (!auth || isExpired(auth)) {
-            // throw ({
-            //   ok: false,
-            //   status: 403,
-            //   message: 'Forbidden for you asshole'
-            // })
+        const clientId = req.headers[X_CLIENT_ID]
+        const isClientRequest = req.headers[X_CLIENT_REQUEST]
+        const isAuthRequest = req.headers[X_AUTH_REQUEST]
+
+        console.log(req.headers)
+
+        if (!auth_token && clientId && isClientRequest && isAuthRequest || (auth_token && isExpired(auth_token))) {
+            return res.status(403).json({
+              ok: false,
+              status: 403,
+              message: 'Forbidden for you asshole'
+            })
         }
 
         next()

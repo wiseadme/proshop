@@ -58,6 +58,11 @@ export const getTokenChecker = (key?: string) => {
         token ??= cookies[USER_TOKEN_KEY]
         token ??= cookies[CUSTOMER_TOKEN_KEY]
 
+        if (!token) return next({
+            status: 401,
+            message: 'Unauthorized',
+        })
+
         try {
             const isVerified = await verifyJWToken(token)
             const state = isExpired(token)

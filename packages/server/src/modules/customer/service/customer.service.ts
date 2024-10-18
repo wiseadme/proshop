@@ -72,7 +72,6 @@ export class CustomerService implements ICustomerService {
         await this.logoutCustomer(request, response)
 
         return false
-
     }
 
     async whoami(request: Request) {

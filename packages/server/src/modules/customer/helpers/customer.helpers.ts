@@ -1,9 +1,10 @@
 import { parseJWToken, isExpired, genJWTokens } from '@common/helpers'
 import { config } from '@app/config'
 import { ICustomer } from '@proshop-app/types'
-import { ACCESS_TOKEN_EXP } from '@common/constants/counts'
+import { ACCESS_TOKEN_EXP, REFRESH_TOKEN_EXP } from '@common/constants/counts'
 import { injectable } from 'inversify'
 import { Response } from 'express'
+import * as process from 'node:process'
 
 export interface ICustomerHelpers {
     setResponseCookie(params: { key: string, value: string, res: Response }): void
@@ -27,9 +28,9 @@ export class CustomerHelpers implements ICustomerHelpers {
         res.cookie(key, value, {
             sameSite: true,
             httpOnly: true,
-            secure: false,
+            secure: process.env.NODE_ENV === 'production',
             path: '/',
-            maxAge: ACCESS_TOKEN_EXP * 1000,
+            maxAge: REFRESH_TOKEN_EXP * 1000,
         })
     }
 
