@@ -33,7 +33,7 @@ export class CustomerController extends BaseController implements IController {
         this.router.post('/logout', this.logoutCustomer.bind(this))
         this.router.get('/whoami', this.whoami.bind(this))
         this.router.get('/refresh', this.refreshToken.bind(this))
-        this.router.get('/logout', this.refreshToken.bind(this))
+        this.router.get('/logout', this.logoutCustomer.bind(this))
         this.router.patch('/', this.updateCustomer.bind(this))
         this.router.delete('/', this.deleteCustomer.bind(this))
     }

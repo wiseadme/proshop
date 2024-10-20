@@ -45,13 +45,16 @@ export class CustomerService implements ICustomerService {
     }
 
     async refreshToken(request: Request, response: Response) {
-        const customerId = this.helpers.getUserIdFromToken(request.cookies[CUSTOMER_TOKEN_KEY])
-
-        if (!customerId) {
+        if (!request.cookies[CUSTOMER_TOKEN_KEY]) {
             await this.logoutCustomer(request, response)
 
-            return false
+            return Promise.reject({
+                status: 401,
+                message: 'Unauthorized',
+            })
         }
+
+        const customerId = this.helpers.getUserIdFromToken(request.cookies[CUSTOMER_TOKEN_KEY])
 
         const [{ id, refreshToken }] = await this.repository.find({ id: customerId })
 
@@ -107,6 +110,10 @@ export class CustomerService implements ICustomerService {
     }
 
     async logoutCustomer(request: Request, response: Response) {
+        if (!request.cookies[CUSTOMER_TOKEN_KEY]) {
+            return true
+        }
+
         await this.repository.update({
             id: this.helpers.getUserIdFromToken(request.cookies[CUSTOMER_TOKEN_KEY]),
             refreshToken: undefined
