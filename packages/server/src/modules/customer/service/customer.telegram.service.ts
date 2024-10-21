@@ -28,7 +28,7 @@ export class CustomerTelegramService implements ICustomerTelegramService {
 
     async getCustomerAccount(data: ICustomer): Promise<ICustomer> {
         const [found]: ICustomer[] = await this.repository.find({
-            'networks.telegram.username': data.networks!.telegram!.username
+            'networks.telegram.userId': data.networks!.telegram!.userId
         })
 
         if (!found) {

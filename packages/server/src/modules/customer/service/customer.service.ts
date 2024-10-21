@@ -30,16 +30,23 @@ export class CustomerService implements ICustomerService {
     ) {
     }
 
+    // @ts-ignore
     async getCustomerAccount(request: Request, response: Response) {
         let customer: ICustomer = Customer.create(request.body)
 
         const isTelegram = request.cookies[AUTH_STRATEGY_COOKIE_KEY] === SocialNetworks.TELEGRAM
+        // TODO - дореализовать авторизацию по номеру телефона
+        const isPhone = true
 
         if (isTelegram) {
             customer = await this.telegramService.getCustomerAccount(customer)
+
             return await this.telegramService.loginCustomer(response, customer)
-        } else {
+        }
+
+        if (isPhone) {
             customer = await this.phoneService.getCustomerAccount(customer)
+
             return await this.loginCustomer(response, customer)
         }
     }
